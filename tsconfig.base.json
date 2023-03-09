@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@flyele-nx/ui": ["libs/ui/src/index.ts"],
-      "@flyele-nx/utils": ["libs/utils/src/index.ts"]
+      "@flyele-nx/service": ["libs/service/src/index.ts"],
+      "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],
+      "@flyele-nx/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

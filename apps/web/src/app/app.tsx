@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
-import NxWelcome from './nx-welcome';
-import { Banner } from '@flyele-nx/service-module';
+import styles from './app.module.scss'
+import NxWelcome from './nx-welcome'
+import { Banner } from '@flyele-nx/service-module'
 
 export function App() {
   return (
@@ -10,7 +10,7 @@ export function App() {
       <Banner />
       <div />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -39,3 +39,8 @@ npx nx g @nrwl/react:component banner --project=common-ui --export
 ``
 npx nx g @nrwl/js:lib utils
 ``
+
+## build
+```
+npx nx build web
+```

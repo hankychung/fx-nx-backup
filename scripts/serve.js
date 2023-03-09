@@ -69,7 +69,7 @@ const serve = async () => {
   ])
 
   // 需要过滤的应用
-  const excluded = ['.DS_Store', '.gitkeep']
+  const excluded = ['.DS_Store']
   // 应用选项
   const appChoices = allPackages.filter((item) => !excluded.includes(item.name))
   // 选择应用

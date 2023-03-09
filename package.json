@@ -8,7 +8,7 @@
     "build:web": "yarn nx build web",
     "build": "yarn nx run-many --target=build",
     "prepare": "husky install",
-    "lint": "yarn nx format:write --all && yarn build"
+    "lint": "yarn nx format:write --all && nx run-many --target=tslint"
   },
   "private": true,
   "dependencies": {

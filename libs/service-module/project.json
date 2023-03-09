@@ -1,0 +1,36 @@
+{
+  "name": "service-module",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/service-module/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/service-module/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "build": {
+      "executor": "@nrwl/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/service-module",
+        "tsConfig": "libs/service-module/tsconfig.lib.json",
+        "project": "libs/service-module/package.json",
+        "entryFile": "libs/service-module/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/service-module/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    }
+  }
+}

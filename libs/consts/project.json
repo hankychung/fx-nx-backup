@@ -22,6 +22,9 @@
       "options": {
         "lintFilePatterns": ["libs/consts/**/*.ts"]
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./libs/consts/tsconfig.lib.json"
     }
   },
   "tags": []

@@ -1,0 +1,31 @@
+{
+  "name": "consts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/consts/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/consts",
+        "main": "libs/consts/src/index.ts",
+        "tsConfig": "libs/consts/tsconfig.lib.json",
+        "assets": [],
+        "project": "libs/consts/package.json",
+        "compiler": "swc"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/consts/**/*.ts"]
+      }
+    },
+    "tslint": {
+      "command": "tsc --project ./libs/consts/tsconfig.lib.json"
+    }
+  },
+  "tags": []
+}

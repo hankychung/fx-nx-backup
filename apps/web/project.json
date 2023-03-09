@@ -81,6 +81,9 @@
           "codeCoverage": true
         }
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./apps/web/tsconfig.app.json"
     }
   },
   "tags": []

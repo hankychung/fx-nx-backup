@@ -31,6 +31,9 @@
           }
         ]
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./libs/ui/tsconfig.lib.json"
     }
   }
 }

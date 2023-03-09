@@ -30,8 +30,6 @@ Visit the [Nx Documentation](https://nx.dev) to learn more.
 
 ## 在指定 ui 库中创建组件
 
-
-
 ```
 npx nx g @nrwl/react:component banner --project=your-ui-project --export
 

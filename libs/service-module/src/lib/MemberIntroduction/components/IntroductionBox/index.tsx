@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.module.scss'
 import { IInfoType } from '@flyele-nx/consts'
 import cs from 'classnames'
-import divisionIcon from 'assets/introduction/division.svg'
+import divisionIcon from '../../../../assets/introduction/division.svg'
 
 interface IProps {
   info: IInfoType

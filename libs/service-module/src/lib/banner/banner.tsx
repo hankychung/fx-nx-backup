@@ -1,6 +1,6 @@
-import styles from './banner.module.scss';
+import styles from './banner.module.scss'
 
-import { UsercApi } from '@flyele-nx/service';
+import { UsercApi } from '@flyele-nx/service'
 
 import img from '../../assets/icons/icon.png'
 
@@ -11,18 +11,18 @@ export function Banner(props: BannerProps) {
   return (
     <div className={styles['container']}>
       <h1>Welcome to Banner!</h1>
-      <img src={img} alt='' height={30} width={30}></img>
+      <img src={img} alt="" height={30} width={30}></img>
       <div
         onClick={() => {
-          UsercApi.getCurrentDate().then(res => {
+          UsercApi.getCurrentDate().then((res) => {
             console.log('check res', res)
-          });
+          })
         }}
       >
         get time
       </div>
     </div>
-  );
+  )
 }
 
-export default Banner;
+export default Banner

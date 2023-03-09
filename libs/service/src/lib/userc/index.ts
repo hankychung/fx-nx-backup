@@ -1,9 +1,9 @@
-import * as dayjs from 'dayjs';
-import { service } from '../service';
-import { IUserInfo } from '../typings';
+import * as dayjs from 'dayjs'
+import { service } from '../service'
+import { IUserInfo } from '../typings'
 
 class Userc {
-  private prefix = 'userc/v2';
+  private prefix = 'userc/v2'
 
   async phoneLogin(phone?: number) {
     const res = await service.put<IUserInfo>({
@@ -16,29 +16,29 @@ class Userc {
           device_id: 'fake',
           device_name: 'fake',
           os: 'fake',
-          platform: 'web',
-        },
-      },
-    });
+          platform: 'web'
+        }
+      }
+    })
 
-    console.log('res', res.telephone, res);
+    console.log('res', res.telephone, res)
   }
 
   async getCurrentDate() {
     try {
       const res = await service.get<number>({
         url: `${this.prefix}/system/now`,
-        timeout: 3000,
-      });
+        timeout: 3000
+      })
 
-      console.log('check time', res);
+      console.log('check time', res)
 
-      return res;
+      return res
     } catch (e) {
-      console.error('获取服务器时间戳失败', dayjs().unix(), e);
-      return dayjs().unix();
+      console.error('获取服务器时间戳失败', dayjs().unix(), e)
+      return dayjs().unix()
     }
   }
 }
 
-export const UsercApi = new Userc();
+export const UsercApi = new Userc()

@@ -1,0 +1,92 @@
+{
+  "name": "flyele-management-system",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/flyele-management-system/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/flyele-management-system",
+        "index": "apps/flyele-management-system/src/index.html",
+        "baseHref": "/",
+        "main": "apps/flyele-management-system/src/main.tsx",
+        "tsConfig": "apps/flyele-management-system/tsconfig.app.json",
+        "assets": [
+          "apps/flyele-management-system/src/favicon.ico",
+          "apps/flyele-management-system/src/assets"
+        ],
+        "styles": ["apps/flyele-management-system/src/styles.scss"],
+        "scripts": [],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/flyele-management-system/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/flyele-management-system/src/environments/environment.ts",
+              "with": "apps/flyele-management-system/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "flyele-management-system:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "flyele-management-system:build:development"
+        },
+        "production": {
+          "buildTarget": "flyele-management-system:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/flyele-management-system/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/flyele-management-system/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

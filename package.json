@@ -8,10 +8,12 @@
     "build:web": "yarn nx build web",
     "build": "yarn nx run-many --target=build",
     "prepare": "husky install",
-    "lint": "yarn nx format:write --all && nx run-many --target=tslint"
+    "lint": "yarn nx format:write --all && nx run-many --target=tslint",
+    "login-npm": "node scripts/npm-login.js"
   },
   "private": true,
   "dependencies": {
+    "@flyele/flyele-components": "^2.11.15",
     "@swc/helpers": "~0.4.11",
     "antd": "^5.3.0",
     "classnames": "^2.3.2",

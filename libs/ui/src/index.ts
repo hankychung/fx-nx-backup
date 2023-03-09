@@ -1,2 +1,1 @@
-export * from './lib/banner/banner'
-export * from './lib/ui'
+export { PhoneLogin } from './lib/phoneLogin'

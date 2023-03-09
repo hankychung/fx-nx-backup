@@ -43,14 +43,14 @@ const allPackages = ['apps'].reduce((acc, curr) => {
  * @param apiEnv 启动环境
  */
 const generateCommands = ({ apps, apiEnv } = {}) => {
-  console.log('apps', apps);
+  console.log('apps', apps)
   let filterStr = ''
   for (let i = 0; i < apps.length; i++) {
     const { name } = apps[i]
     filterStr += ` ${name}`
   }
 
-  console.log('apiEnv', apiEnv);
+  console.log('apiEnv', apiEnv)
   const command = `nx serve ${filterStr}`
 
   return { command }
@@ -70,7 +70,7 @@ const serve = async () => {
   // 需要过滤的应用
   const excluded = ['.DS_Store']
   // 应用选项
-  const appChoices = allPackages.filter(item => !excluded.includes(item.name))
+  const appChoices = allPackages.filter((item) => !excluded.includes(item.name))
   // 选择应用
   const { apps } = await inquirer.prompt([
     {

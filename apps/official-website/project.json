@@ -62,7 +62,7 @@
           "buildTarget": "official-website:build:production",
           "hmr": false
         }
-      },
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

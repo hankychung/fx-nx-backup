@@ -26,12 +26,13 @@ Visit the [Nx Documentation](https://nx.dev) to learn more.
 
 ## 创建 ui 库
 
-`npx nx g @nrwl/react:lib common-ui`
+`npx nx g @nrwl/react:lib your-ui-project`
 
-## 在制定 ui 库中创建组件
+## 在指定 ui 库中创建组件
 
 ```
-npx nx g @nrwl/react:component banner --project=common-ui --export
+npx nx g @nrwl/react:component banner --project=your-ui-project --export
+
 ```
 
 ## 创建工具类库

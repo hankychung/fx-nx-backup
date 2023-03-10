@@ -41,7 +41,10 @@
     justify-content: center;
     .contentLeft {
       display: flex;
+      align-items: center;
       .bigLogo {
+        width: 240px;
+        height: 480px;
       }
 
       .textBox {

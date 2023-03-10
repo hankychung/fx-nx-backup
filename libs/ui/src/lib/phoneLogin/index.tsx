@@ -15,10 +15,15 @@ enum CodeStatus {
 const phoneReg = /^1[3-9]\d{9}$/
 const codeReg = /^\d{6}$/
 
+type ChangeValue = {
+  [P in 'phoneNum' | 'code']: string
+}
+
 export const PhoneLogin = ({
   title = '登录',
   btnTitle = '登录',
-  getVerifyCode
+  getVerifyCode,
+  onLoginSuccess
 }: IPhoneLoginProps) => {
   const [form] = Form.useForm()
   const [messageApi, contextHolder] = message.useMessage()
@@ -32,12 +37,37 @@ export const PhoneLogin = ({
   const [isCallCodeIe, setIsCallCodeIe] = useState(true) // 是否已经调用短信接口, 调试模式改成true
   const { timer, exeTimer } = useTimer()
 
-  const onFinish = (values: any) => {
-    console.log(values)
+  const login = () => {
+    console.log('开始登录', phoneNum, code)
+    onLoginSuccess()
   }
 
-  const onClickBtn = () => {
-    console.log('onClickBtn')
+  const onSubmit = () => {
+    form
+      .validateFields()
+      .then(async () => {
+        login()
+      })
+      .catch((err) => {
+        console.log('校验不通过', err)
+      })
+  }
+
+  const onChange = (changedValues: ChangeValue) => {
+    const entries = Object.entries(changedValues)
+
+    entries.forEach((item) => {
+      switch (item[0]) {
+        case 'phoneNum':
+          setPhoneNum(item[1])
+          break
+        case 'code':
+          setCode(item[1])
+          break
+        default:
+          console.log('未匹配')
+      }
+    })
   }
 
   useEffect(() => {
@@ -93,7 +123,7 @@ export const PhoneLogin = ({
 
       return `${timer}s后重试`
     }
-    const cla = cs(styles.form_wrap__code_suffix, {
+    const cla = cs(styles.codeSuffix, {
       [styles.code_suffix__disabled]: codeStatus === CodeStatus.noPn,
       [styles.code_suffix__active]: codeStatus === CodeStatus.hasPn,
       [styles.code_suffix__timer]: codeStatus === CodeStatus.timer
@@ -118,10 +148,11 @@ export const PhoneLogin = ({
             layout="vertical"
             autoComplete="off"
             requiredMark={false}
-            onFinish={onFinish}
+            onValuesChange={onChange}
           >
             <Form.Item
               name="phoneNum"
+              label="手机号"
               rules={[
                 {
                   required: true,
@@ -131,14 +162,9 @@ export const PhoneLogin = ({
               ]}
               wrapperCol={{ span: 24 }}
             >
-              <Input
-                prefix={
-                  <div className={styles.form_wrap__phone_num_prefix}>+86</div>
-                }
-                className={styles.form_wrap__custom_input}
-              />
+              <Input className={styles.customInput} />
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 24 }} name="code">
+            <Form.Item name="code" label="验证码" wrapperCol={{ span: 24 }}>
               <Input
                 type="number"
                 className={styles.customInput}
@@ -153,7 +179,7 @@ export const PhoneLogin = ({
             disable={disabled}
             size="large"
             theme="primary"
-            onClick={onClickBtn}
+            onClick={onSubmit}
           >
             {btnTitle}
           </FlyButton>

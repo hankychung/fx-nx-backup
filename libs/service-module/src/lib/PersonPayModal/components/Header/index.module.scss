@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+
+  .left {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+    margin-left: 24px;
+
+    span {
+      font-size: 14px;
+      color: #000;
+    }
+
+    .user_info {
+      margin-left: 8px;
+    }
+
+    .vip {
+      font-size: 10px;
+      color: #000;
+      opacity: 0.4;
+    }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    margin-right: 20px;
+
+    .close {
+      margin-left: 12px;
+      cursor: pointer;
+    }
+
+    .customer {
+      width: 82px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      opacity: 0.8;
+      border-radius: 20px;
+
+      > span {
+        font-size: 10px;
+        color: #000;
+      }
+    }
+  }
+}

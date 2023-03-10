@@ -1,0 +1,59 @@
+.vipPackage {
+  width: 100%;
+  height: 524px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-top: 19px;
+}
+
+.tabs {
+  display: flex;
+
+  .tabs_item {
+    cursor: pointer;
+    flex: 1;
+    height: 54px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .active_vip_content {
+      display: flex;
+      align-items: center;
+
+      > img {
+        width: 30px;
+        height: 30px;
+        margin-right: 4px;
+      }
+
+      > span {
+        font-size: 16px;
+        color: #000;
+        font-weight: 600;
+      }
+    }
+
+    .vip_content {
+      color: #734c24;
+      font-size: 16px;
+      font-weight: 600;
+
+      .desc {
+        font-size: 10px;
+        margin-left: 8px;
+        font-weight: 400;
+      }
+    }
+
+    .un_active {
+      color: #3b387d !important;
+    }
+  }
+
+  .active {
+    height: 64px;
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,34 @@
+.listItem {
+  width: 100%;
+  min-height: 28px;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  column-gap: 16px;
+
+  .check {
+    flex-shrink: 0;
+  }
+
+  .listItemIcon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &:hover {
+    background: #f8f8f8;
+  }
+}
+
+.listItemActive {
+  background: #f8f8f8;
+}

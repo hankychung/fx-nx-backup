@@ -1,7 +1,11 @@
+
 import { MemberIntroduction } from './lib/MemberIntroduction'
 import { IdentityEqualComparison } from './lib/EquityComparison/identity'
 import { SpaceEqualComparison } from './lib/EquityComparison/space'
-
+import {QuickPay}  from './lib/QuickPay/index'//快捷支付弹窗
+import PersonPayModal from './lib/PersonPayModal/index'//个人支付弹窗
+import TeamPayModal from './lib/TeamPayModal/index' //团队支付
+import PayModal from './lib/PayModal/index'
 export * from './lib/banner/banner'
 export * from './lib/service-module'
-export { MemberIntroduction, IdentityEqualComparison, SpaceEqualComparison }
+export { MemberIntroduction, IdentityEqualComparison, SpaceEqualComparison,QuickPay,PersonPayModal ,TeamPayModal,PayModal}

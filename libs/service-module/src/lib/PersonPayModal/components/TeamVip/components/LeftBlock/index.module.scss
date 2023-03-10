@@ -1,0 +1,61 @@
+.leftBlock {
+  margin-left: 48px;
+  position: relative;
+
+  .person_desc {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .interests {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+    color: #6a67f4;
+    font-size: 10px;
+
+    > span {
+      margin-right: 4px;
+    }
+  }
+
+  .interests_list {
+    margin-top: 24px;
+
+    .interests_item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 19px;
+
+      > img {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+      }
+
+      .interests_info {
+        > span {
+          font-size: 12px;
+          color: #000;
+        }
+
+        > div {
+          font-size: 10px;
+          color: #b3b3b3;
+        }
+      }
+    }
+  }
+
+  .member_list {
+    position: absolute;
+    left: -20px;
+    top: 0;
+    height: 420px;
+    width: 300px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+  }
+}

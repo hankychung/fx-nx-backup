@@ -31,3 +31,11 @@ yarn nx g @nrwl/react:component banner --project=your-ui-project --export
 ```
 yarn nx build web
 ```
+
+## 注意事项
+
+- 引用的所有图标/图标，都用 svg 文件，并且以 ReactComponent 形式引入(https://www.notion.so/33682717e14847fcb6ffed8ebf4bb89c?pvs=4)
+
+  ```
+  import { ReactComponent as TargetIcon } from "./assets/targetIcon.svg";
+  ```

@@ -1,9 +1,20 @@
 import React from 'react'
 import styles from './index.module.scss'
 import flyeleLogo from '../../../assets/flyeleLogo.png'
+import bigLogo from '../../../assets/bigLogo.png'
 import { PhoneLogin } from '@flyele-nx/ui'
 
 export const LoginPage = () => {
+  const onGetVerifyCode = (phone: string) => {
+    return new Promise<string>((resolve, reject) => {
+      try {
+        resolve(phone)
+      } catch (e) {
+        reject('')
+      }
+    })
+  }
+
   return (
     <div className={styles.LoginPageRoot}>
       <div className={styles.pageTop}>
@@ -18,7 +29,7 @@ export const LoginPage = () => {
       <div className={styles.content}>
         <div className={styles.contentLeft}>
           <div className={styles.bigLogo}>
-            <img src="" alt="bigLogo" />
+            <img src={bigLogo} alt="bigLogo" />
           </div>
           <div className={styles.textBox}>
             <div className={styles.title}>把每件事都干得漂漂亮亮</div>
@@ -34,7 +45,7 @@ export const LoginPage = () => {
           </div>
         </div>
         <div className={styles.contentRight}>
-          <PhoneLogin />
+          <PhoneLogin getVerifyCode={onGetVerifyCode} />
         </div>
       </div>
 

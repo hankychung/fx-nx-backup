@@ -15,6 +15,10 @@ export const LoginPage = () => {
     })
   }
 
+  const onLoginSuccess = () => {
+    console.log('onLoginSuccess', onLoginSuccess)
+  }
+
   return (
     <div className={styles.LoginPageRoot}>
       <div className={styles.pageTop}>
@@ -45,7 +49,10 @@ export const LoginPage = () => {
           </div>
         </div>
         <div className={styles.contentRight}>
-          <PhoneLogin getVerifyCode={onGetVerifyCode} />
+          <PhoneLogin
+            getVerifyCode={onGetVerifyCode}
+            onLoginSuccess={onLoginSuccess}
+          />
         </div>
       </div>
 

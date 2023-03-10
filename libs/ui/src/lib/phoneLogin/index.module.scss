@@ -7,6 +7,32 @@
   border-radius: 9px;
   box-sizing: border-box;
 
+  // 隐藏number输入框的按钮
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  :global {
+    .ant-input:hover {
+      border-color: #43dec9;
+    }
+    .ant-input:focus {
+      border-color: #1dd2c1;
+    }
+    .ant-input-affix-wrapper:hover {
+      border-color: #43dec9;
+    }
+    .ant-input-affix-wrapper:focus,
+    .ant-input-affix-wrapper-focused {
+      border-color: #1dd2c1;
+      box-shadow: none;
+    }
+  }
+
   .title {
     text-align: center;
     font-weight: 500;
@@ -16,6 +42,43 @@
   }
 
   .from {
+    margin: 40px 0;
+
+    .customInput {
+      border-radius: 6px;
+      height: 44px;
+    }
+
+    .codeSuffix {
+      font-size: 14px;
+      position: relative;
+      padding-left: 13px;
+      cursor: pointer;
+
+      &::before {
+        content: '';
+        position: absolute;
+        height: 10px;
+        width: 1px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(6, 6, 6, 0.2);
+        left: 0;
+      }
+    }
+
+    .code_suffix__disabled {
+      color: #b4b4b4;
+    }
+
+    .code_suffix__active {
+      color: #1dd2c1;
+      cursor: pointer;
+    }
+
+    .code_suffix__timer {
+      color: #e0e0e0;
+    }
   }
 
   .footer {

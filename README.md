@@ -39,3 +39,5 @@ yarn nx build web
   ```
   import { ReactComponent as TargetIcon } from "./assets/targetIcon.svg";
   ```
+
+- 样式中使用的背景图需要上 cdn，否则该 lib 独立打包出来后无法访问图片

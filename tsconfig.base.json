@@ -15,9 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@flyele-nx/const": ["libs/const/src/index.ts"],
-      "@flyele-nx/const-var": ["libs/const-var/src/index.ts"],
-      "@flyele-nx/consts": ["libs/consts/src/index.ts"],
+      "@flyele-nx/constant": ["libs/constant/src/index.ts"],
       "@flyele-nx/service": ["libs/service/src/index.ts"],
       "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],
       "@flyele-nx/ui": ["libs/ui/src/index.ts"]

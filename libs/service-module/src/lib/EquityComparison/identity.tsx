@@ -1,6 +1,6 @@
 import React from 'react'
 import { EqualComparison } from './components/EqualComparison'
-import { identityEqualComparisonData } from '@flyele-nx/consts'
+import { identityEqualComparisonData } from '@flyele-nx/constant'
 
 export const IdentityEqualComparison = () => {
   return (

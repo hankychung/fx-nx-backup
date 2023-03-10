@@ -1,6 +1,6 @@
 import React from 'react'
 import { EqualComparison } from './components/EqualComparison'
-import { spaceEqualComparisonData } from '@flyele-nx/consts'
+import { spaceEqualComparisonData } from '@flyele-nx/constant'
 
 export const SpaceEqualComparison = () => {
   return (

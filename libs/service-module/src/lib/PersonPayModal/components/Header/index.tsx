@@ -12,10 +12,10 @@ import customer from '../../../../assets/payImg/customer.svg'
 import { FlyAvatar } from '@flyele/flyele-components'
 import style from './index.module.scss'
 interface Iprops {
-  onClose:()=>void
+  onClose: () => void
 }
-const Header = (props:Iprops) => {
-  const {onClose} = props
+const Header = (props: Iprops) => {
+  const { onClose } = props
   return (
     <div className={style.header}>
       <div className={style.userInfo}>
@@ -32,7 +32,14 @@ const Header = (props:Iprops) => {
           <img alt="customer" src={customer} />
           <span>联系客服</span>
         </div>
-        <img alt="close" src={close} className={style.close} onClick={()=>{onClose()}}/>
+        <img
+          alt="close"
+          src={close}
+          className={style.close}
+          onClick={() => {
+            onClose()
+          }}
+        />
       </div>
     </div>
   )

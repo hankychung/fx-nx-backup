@@ -17,7 +17,7 @@ import style from './index.module.scss'
 import { SingleCheckItemRow } from '../../../../../CheckItem/SingleCheckItemRow'
 import {
   CheckBoxState,
-  CheckColorType,
+  CheckColorType
 } from '../../../../../CheckItem/SingleCircleCheckBox'
 import { SelectMemberService } from '../../../../../../context/service'
 import { useListPrevNext } from '../../../../../../hooks/useListPreNext'
@@ -26,13 +26,13 @@ import { VipPayType } from '../../../../../controller'
 const MemberList = ({
   resultArr,
   service,
-  vipType,
+  vipType
 }: {
   resultArr: any
   service: SelectMemberService
   vipType: VipPayType
 }) => {
-  const interacts :any = []
+  const interacts: any = []
   const [searchValue, setSearchValue] = useState<string>('')
   const [activeSearch, setActiveSearch] = useState(false)
   const [searchList, setSearchList] = useState<any[]>([])
@@ -43,8 +43,8 @@ const MemberList = ({
     idPrefix,
     scrollProps: {
       behavior: 'auto',
-      block: 'center',
-    },
+      block: 'center'
+    }
   })
   const showList = interacts
   /**
@@ -163,7 +163,7 @@ const MemberList = ({
         <div className={style.itemList}>
           {showList &&
             showList.length > 0 &&
-            showList.map((_:any) => {
+            showList.map((_: any) => {
               return (
                 <div key={_.user_id}>
                   <SingleCheckItemRow

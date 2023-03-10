@@ -17,10 +17,10 @@ import { VipPayType } from './components/controller'
 
 interface Iprops {
   vipType: VipPayType
-  onClose: ()=>void
+  onClose: () => void
 }
 const TeamPayModal = (props: Iprops) => {
-  const { vipType,onClose } = props
+  const { vipType, onClose } = props
 
   return (
     <div>
@@ -38,7 +38,7 @@ const TeamPayModal = (props: Iprops) => {
         <div className={cs(style.team_block)}>
           {/* 头部信息 */}
           <div>
-            <Header vipType={vipType} onClose={onClose}/>
+            <Header vipType={vipType} onClose={onClose} />
           </div>
           {/* 套餐包信息 */}
           <VipPackage vipType={vipType} />

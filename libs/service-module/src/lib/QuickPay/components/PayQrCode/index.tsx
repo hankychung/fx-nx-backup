@@ -15,7 +15,7 @@ import SuccessPay from './components/SuccessPay'
 
 const PayQrCode = ({
   setShowSuccess,
-  showSuccess,
+  showSuccess
 }: {
   showSuccess: boolean
   setShowSuccess: (_: boolean) => void

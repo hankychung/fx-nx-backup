@@ -13,7 +13,13 @@ import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_ri
 import style from './index.module.scss'
 import { vipPayText, VipPayType } from '../controller'
 
-const Header = ({ vipType,onClose }: { vipType: VipPayType,onClose:()=>void }) => {
+const Header = ({
+  vipType,
+  onClose
+}: {
+  vipType: VipPayType
+  onClose: () => void
+}) => {
   const obj = vipPayText(vipType)
 
   return (
@@ -37,7 +43,14 @@ const Header = ({ vipType,onClose }: { vipType: VipPayType,onClose:()=>void }) =
           <img alt="customer" src={customer} />
           <span>联系客服</span>
         </div>
-        <img alt="close" src={close} className={style.close} onClick={()=>{onClose()}}/>
+        <img
+          alt="close"
+          src={close}
+          className={style.close}
+          onClick={() => {
+            onClose()
+          }}
+        />
       </div>
     </div>
   )

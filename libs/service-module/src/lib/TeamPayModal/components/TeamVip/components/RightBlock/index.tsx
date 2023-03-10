@@ -44,7 +44,7 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
           <div className={style.mealList}>
             <div
               className={cs(style.mealItem, {
-                [style.activeStyle]: true,
+                [style.activeStyle]: true
               })}
               onClick={() => {
                 // mealSelect(_)

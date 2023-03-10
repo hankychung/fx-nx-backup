@@ -58,7 +58,7 @@ const LeftBlock = () => {
   }, [
     createRef,
     document.getElementById('invite_member'),
-    document.getElementById('member_info'),
+    document.getElementById('member_info')
   ])
   return (
     <div className={style.leftBlock}>

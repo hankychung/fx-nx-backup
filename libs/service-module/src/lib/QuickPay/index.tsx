@@ -11,10 +11,10 @@ import Header from './components/Header'
 import MemberInfo from './components/MemberInfo'
 import PayQrCode from './components/PayQrCode'
 interface Iprops {
-onClose:()=>void
+  onClose: () => void
 }
-const QuickPay = (props:Iprops) => {
-  const {onClose} = props
+const QuickPay = (props: Iprops) => {
+  const { onClose } = props
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   return (
@@ -33,7 +33,7 @@ const QuickPay = (props:Iprops) => {
         <div className={cs(style.modal_block)}>
           {/* 头部信息 */}
           <div className={style.topBlock}>
-            <Header onClose={onClose}/>
+            <Header onClose={onClose} />
             {!showSuccess && <MemberInfo />}
           </div>
           <div>
@@ -48,4 +48,4 @@ const QuickPay = (props:Iprops) => {
   )
 }
 
-export  {QuickPay}
+export { QuickPay }

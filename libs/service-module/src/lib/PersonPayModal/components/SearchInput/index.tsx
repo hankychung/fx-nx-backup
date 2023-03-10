@@ -44,7 +44,7 @@ const SearchInput = (props: ISearchInputProps) => {
     overlayStaticClassName,
     searchStyle,
     roundedCornerMode,
-    showCancle = true,
+    showCancle = true
   } = props
 
   const [active, setActive] = useState(false)
@@ -53,7 +53,7 @@ const SearchInput = (props: ISearchInputProps) => {
 
   const inputRef = useRef<InputRef>(null)
 
-  const inputTimer = useRef<NodeJS.Timeout>((null as unknown) as NodeJS.Timeout)
+  const inputTimer = useRef<NodeJS.Timeout>(null as unknown as NodeJS.Timeout)
 
   const handleOnChange = (value: string) => {
     clearTimeout(inputTimer.current)

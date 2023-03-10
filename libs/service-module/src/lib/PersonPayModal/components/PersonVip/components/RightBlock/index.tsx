@@ -19,22 +19,22 @@ const list = [
     name: '1个月',
     oldPrice: '30',
     price: '18',
-    active: true,
+    active: true
   },
   {
     id: '2',
     name: '1年',
     oldPrice: '299',
     price: '148',
-    active: false,
+    active: false
   },
   {
     id: '3',
     name: '终身会员',
     oldPrice: '499',
     price: '188',
-    active: false,
-  },
+    active: false
+  }
 ]
 const RightBlock = () => {
   const [vipMealList, setVipMealList] = useState<any>(list) // 套餐list
@@ -47,12 +47,12 @@ const RightBlock = () => {
       if (item.id === _.id) {
         return {
           ...item,
-          active: true,
+          active: true
         }
       }
       return {
         ...item,
-        active: false,
+        active: false
       }
     })
 
@@ -68,7 +68,7 @@ const RightBlock = () => {
             return (
               <div
                 className={cs(style.mealItem, {
-                  [style.activeStyle]: _.active,
+                  [style.activeStyle]: _.active
                 })}
                 key={_.id}
                 onClick={() => {

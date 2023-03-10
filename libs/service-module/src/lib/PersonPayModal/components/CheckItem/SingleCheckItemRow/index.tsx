@@ -11,7 +11,7 @@ import classNames from 'classnames'
 import {
   CheckBoxState,
   CheckColorType,
-  CircleCheckBox,
+  CircleCheckBox
 } from '../SingleCircleCheckBox'
 import styles from './index.module.scss'
 
@@ -30,23 +30,15 @@ type IProps<T = any> = {
 }
 
 function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
-  const {
-    data,
-    children,
-    state,
-    onClick,
-    className,
-    id,
-    active,
-    colorType,
-  } = props
+  const { data, children, state, onClick, className, id, active, colorType } =
+    props
 
   return (
     <div
       id={id}
       style={{ color: state === CheckBoxState.disable ? '#bebebe' : undefined }}
       className={classNames(styles.listItem, className, {
-        [styles.listItemActive]: active,
+        [styles.listItemActive]: active
       })}
       onClick={() => onClick(data)}
     >

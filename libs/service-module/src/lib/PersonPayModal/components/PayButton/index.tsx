@@ -33,7 +33,7 @@ const PayButton = (props: Iprops) => {
       </div>
       <div
         className={cs(style.payBtn, {
-          [style.teamPayBtn]: vipMealType === VipMealType.TEAM,
+          [style.teamPayBtn]: vipMealType === VipMealType.TEAM
         })}
         onClick={() => {
           service.showPay({ show: true, payInfo: '999' })
@@ -45,7 +45,7 @@ const PayButton = (props: Iprops) => {
         支付即视为同意
         <span
           className={cs({
-            [style.teamColor]: vipMealType === VipMealType.TEAM,
+            [style.teamColor]: vipMealType === VipMealType.TEAM
           })}
         >
           《飞项会员协议》

@@ -19,19 +19,19 @@ import style from './index.module.scss'
 import { SingleCheckItemRow } from '../../../../../CheckItem/SingleCheckItemRow'
 import {
   CheckBoxState,
-  CheckColorType,
+  CheckColorType
 } from '../../../../../CheckItem/SingleCircleCheckBox'
 import { SelectMemberService } from '../../../../../../context/service'
 import { useListPrevNext } from '../../../../../../hooks/useListPreNext'
 
 const MemberList = ({
   resultArr,
-  service,
+  service
 }: {
   resultArr: any
   service: SelectMemberService
 }) => {
-  const interacts :any[] = []
+  const interacts: any[] = []
   const [searchValue, setSearchValue] = useState<string>('')
   const [activeSearch, setActiveSearch] = useState(false)
   const [searchList, setSearchList] = useState<any[]>([])
@@ -42,8 +42,8 @@ const MemberList = ({
     idPrefix,
     scrollProps: {
       behavior: 'auto',
-      block: 'center',
-    },
+      block: 'center'
+    }
   })
   const showList = interacts
   /**

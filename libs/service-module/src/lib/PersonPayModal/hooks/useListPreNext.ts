@@ -39,6 +39,6 @@ export const useListPrevNext = (props: Props) => {
     selIndex,
     setSelIndex,
     next,
-    prev,
+    prev
   }
 }

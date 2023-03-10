@@ -53,12 +53,12 @@ const VipPackage = (props: Iprops) => {
         if (item.type === vipMealType) {
           return {
             ...item,
-            active: true,
+            active: true
           }
         }
         return {
           ...item,
-          active: false,
+          active: false
         }
       })
 
@@ -96,7 +96,7 @@ const VipPackage = (props: Iprops) => {
               {!_.active && (
                 <div
                   className={cs(style.vip_content, {
-                    [style.un_active]: _.type === VipMealType.PERSON,
+                    [style.un_active]: _.type === VipMealType.PERSON
                   })}
                 >
                   <span>{_.h1}</span>
@@ -109,7 +109,7 @@ const VipPackage = (props: Iprops) => {
       </div>
       <div
         style={{
-          display: vipMealType === VipMealType.PERSON ? 'block' : 'none',
+          display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
         <PersonVip />

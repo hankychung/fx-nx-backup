@@ -45,7 +45,7 @@ const RightBlock = () => {
           <div className={style.mealList}>
             <div
               className={cs(style.mealItem, {
-                [style.activeStyle]: true,
+                [style.activeStyle]: true
               })}
               onClick={() => {
                 // mealSelect(_)
@@ -92,7 +92,7 @@ const RightBlock = () => {
                         service.selectMember({
                           list: resultArr.filter(
                             (item) => item.user_id !== _.user_id
-                          ),
+                          )
                         })
                       }}
                     />

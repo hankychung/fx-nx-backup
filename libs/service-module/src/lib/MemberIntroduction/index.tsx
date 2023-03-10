@@ -37,9 +37,14 @@ export const MemberIntroduction = () => {
           />
         )
       })}
-      <PayModal visible={show} modalType="person" payType={payType} onClose={()=>{
-        setShow(false)
-      }}></PayModal>
+      <PayModal
+        visible={show}
+        modalType="person"
+        payType={payType}
+        onClose={() => {
+          setShow(false)
+        }}
+      ></PayModal>
     </div>
   )
 }

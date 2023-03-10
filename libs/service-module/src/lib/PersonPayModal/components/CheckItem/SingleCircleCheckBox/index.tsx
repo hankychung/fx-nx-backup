@@ -15,12 +15,12 @@ import IMG_CHECKED_FALSE from '../../../../../assets/payImg/un_checked.svg'
 export enum CheckBoxState {
   checked = 'checked',
   disable = 'disable',
-  unset = 'unset',
+  unset = 'unset'
 }
 
 export enum CheckColorType {
   GREEN = '',
-  BLUE = 'BLUE',
+  BLUE = 'BLUE'
 }
 
 type IProps = {
@@ -36,7 +36,7 @@ function _CircleCheckBox(props: IProps) {
     checked:
       colorType === CheckColorType.BLUE ? IMG_CHECKED_TRUE : IMG_CHECKED_TRUE,
     unset: IMG_CHECKED_FALSE,
-    disable: IMG_CHECKED_TRUE,
+    disable: IMG_CHECKED_TRUE
   }[state]
 
   return (

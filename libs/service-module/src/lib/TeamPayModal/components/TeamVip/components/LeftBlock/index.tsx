@@ -17,7 +17,7 @@ import { SelectMemberContext } from '../../../../context/context'
 import { SingleCheckItemRow } from '../../../CheckItem/SingleCheckItemRow'
 import {
   CheckBoxState,
-  CheckColorType,
+  CheckColorType
 } from '../../../CheckItem/SingleCircleCheckBox'
 import { VipPayType } from '../../../controller'
 
@@ -67,7 +67,7 @@ const LeftBlock = (props: Iprops) => {
   }, [
     createRef,
     document.getElementById('invite_member'),
-    document.getElementById('member_info'),
+    document.getElementById('member_info')
   ])
 
   return (
@@ -102,7 +102,7 @@ const LeftBlock = (props: Iprops) => {
                       service.selectMember({
                         list: resultArr.filter(
                           (item) => item.user_id !== _.user_id
-                        ),
+                        )
                       })
                     }}
                     state={CheckBoxState.checked}

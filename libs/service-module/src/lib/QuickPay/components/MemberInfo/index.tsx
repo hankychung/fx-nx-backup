@@ -47,7 +47,7 @@ const MemberInfo = () => {
       <div className={style.mealList}>
         <div
           className={cs(style.mealItem, {
-            [style.activeStyle]: true,
+            [style.activeStyle]: true
           })}
           onClick={() => {
             // mealSelect(_)

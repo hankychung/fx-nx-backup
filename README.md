@@ -34,10 +34,12 @@ yarn nx build web
 
 ## 注意事项
 
-- 引用的所有图标/图标，都用 svg 文件，并且以 ReactComponent 形式引入(https://www.notion.so/33682717e14847fcb6ffed8ebf4bb89c?pvs=4)
+- 引用的所有图标/图片，都用 svg 文件，并且以 ReactComponent 形式引入(https://www.notion.so/33682717e14847fcb6ffed8ebf4bb89c?pvs=4)
+
 
   ```
   import { ReactComponent as TargetIcon } from "./assets/targetIcon.svg";
   ```
 
-- 样式中使用的背景图需要上 cdn，否则该 lib 独立打包出来后无法访问图片
+- 样式中使用的背景图需要上 cdn，否则该 lib 独立打包将会把图片转化为 base64
+

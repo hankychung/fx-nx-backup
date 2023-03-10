@@ -63,6 +63,7 @@ class Service {
   }
 
   updateToken(token: string) {
+    console.log('token changing', token)
     this.token = token
   }
 

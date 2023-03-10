@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.scss'
-import { IEqualComparison } from '@flyele-nx/consts'
+import { IEqualComparison } from '@flyele-nx/constant'
 import { DescTooltip } from './components/DescTooltip'
 import cs from 'classnames'
 

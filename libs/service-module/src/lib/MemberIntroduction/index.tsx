@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './index.module.scss'
 import { IntroductionBox } from './components/IntroductionBox'
-import { memberPowerStaticData } from '@flyele-nx/consts'
+import { memberPowerStaticData } from '@flyele-nx/constant'
 
 export const MemberIntroduction = () => {
   const onClickBtn = (key: string) => {

@@ -6,4 +6,9 @@ import { AvatarEdit } from './lib/AvatarEdit'
 export * from './lib/banner/banner'
 export * from './lib/service-module'
 export * from './lib/AvatarEdit'
-export { MemberIntroduction, IdentityEqualComparison, SpaceEqualComparison, AvatarEdit }
+export {
+  MemberIntroduction,
+  IdentityEqualComparison,
+  SpaceEqualComparison,
+  AvatarEdit
+}

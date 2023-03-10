@@ -1,19 +1,13 @@
-import React, {
-  ChangeEvent,
-  memo,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { ChangeEvent, memo, useEffect, useRef, useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import Dropzone from 'react-dropzone'
 import { Slider, Modal, Button } from 'antd'
 import { ReactComponent as ResetIcon } from '../../assets/icons/avatar_reset.svg'
 import { ReactComponent as RotateIcon } from '../../assets/icons/avatar_rotate.svg'
 import css from './index.module.scss'
-import "../../assets/app-overide-antd-no-mask.global.css"
-import "../../assets/app-overide-antd.global.css"
-import "../../assets/app.global.scss"
+import '../../assets/app-overide-antd-no-mask.global.css'
+import '../../assets/app-overide-antd.global.css'
+import '../../assets/app.global.scss'
 
 interface Iprops {
   src: string
@@ -57,7 +51,7 @@ const _AvatarEdit = (props: Iprops) => {
     setScale(val)
   }
 
-  const rotateLeft:React.MouseEventHandler<SVGSVGElement> = (e) => {
+  const rotateLeft: React.MouseEventHandler<SVGSVGElement> = (e) => {
     e.preventDefault()
     setRotate((rotate - 90) % 360)
   }

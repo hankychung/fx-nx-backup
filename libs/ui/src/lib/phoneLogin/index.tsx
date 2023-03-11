@@ -23,7 +23,7 @@ export const PhoneLogin = ({
   title = '登录',
   btnTitle = '登录',
   getVerifyCode,
-  onLoginSuccess
+  onLogin
 }: IPhoneLoginProps) => {
   const [form] = Form.useForm()
   const [messageApi, contextHolder] = message.useMessage()
@@ -39,7 +39,7 @@ export const PhoneLogin = ({
 
   const login = () => {
     console.log('开始登录', phoneNum, code)
-    onLoginSuccess()
+    onLogin()
   }
 
   const onSubmit = () => {

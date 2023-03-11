@@ -3,8 +3,12 @@ import styles from './index.module.scss'
 import flyeleLogo from '../../../assets/flyeleLogo.png'
 import bigLogo from '../../../assets/bigLogo.png'
 import { PhoneLogin } from '@flyele-nx/ui'
+import { useNavigate } from 'react-router-dom'
+import { routePath } from '../../routes'
 
 export const LoginPage = () => {
+  const navigate = useNavigate()
+
   const onGetVerifyCode = (phone: string) => {
     return new Promise<string>((resolve, reject) => {
       try {
@@ -15,8 +19,9 @@ export const LoginPage = () => {
     })
   }
 
-  const onLoginSuccess = () => {
-    console.log('onLoginSuccess', onLoginSuccess)
+  const onLogin = () => {
+    localStorage.setItem('token', '123456789')
+    navigate(routePath.order)
   }
 
   return (
@@ -49,10 +54,7 @@ export const LoginPage = () => {
           </div>
         </div>
         <div className={styles.contentRight}>
-          <PhoneLogin
-            getVerifyCode={onGetVerifyCode}
-            onLoginSuccess={onLoginSuccess}
-          />
+          <PhoneLogin getVerifyCode={onGetVerifyCode} onLogin={onLogin} />
         </div>
       </div>
 

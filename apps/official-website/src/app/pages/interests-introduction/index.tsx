@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import {
   MemberIntroduction,
   IdentityEqualComparison,
-  SpaceEqualComparison
+  SpaceEqualComparison,
 } from '@flyele-nx/service-module'
 const InterestsIntroduction = () => {
   const goToPage = () => {

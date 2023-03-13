@@ -1,5 +1,5 @@
 import React from 'react'
-import close from '../../../../assets/payImg/close.svg'
+import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_right.svg'
 import style from './index.module.scss'
 interface Iprops {
@@ -26,7 +26,7 @@ const Header = (props: Iprops) => {
           onClose()
         }}
       >
-        <img alt="close" src={close} className={style.close} />
+        <Close className={style.close}></Close>
       </div>
     </div>
   )

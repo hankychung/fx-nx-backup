@@ -7,7 +7,7 @@
   position: relative;
 
   &::after {
-    content: url('../../../../../../assets/payImg/team_line.svg');
+    content: url('https://cdn.flyele.net/resources/PC/team_line.svg');
     width: 1px;
     height: 425px;
     position: absolute;
@@ -212,7 +212,7 @@
         position: relative;
 
         &::after {
-          content: url('../../../../../../assets/payImg/team_active.svg');
+          content: url('https://cdn.flyele.net/resources/PC/team_active.svg');
           position: absolute;
           width: 24px;
           height: 24px;

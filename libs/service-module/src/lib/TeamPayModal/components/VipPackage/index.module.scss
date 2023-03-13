@@ -5,7 +5,7 @@
   position: relative;
 
   &::after {
-    content: url('../../../../assets/payImg/team_space_line.svg');
+    content: url('https://cdn.flyele.net/resources/PC/team_space_line.svg');
     width: 1px;
     position: absolute;
     left: 347px;
@@ -15,7 +15,7 @@
   .team_bg {
     width: 752px;
     height: 520px;
-    background-image: url('../../../../assets/payImg/team_space_bg.png');
+    background-image: url('https://cdn.flyele.net/resources/PC/team_space_bg.png');
     background-size: cover;
     background-repeat: no-repeat;
   }

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 17:44:56
+ * @LastEditTime: 2023-03-13 10:42:02
  */
 
 import React from 'react'
@@ -35,5 +35,5 @@ export default function PayModal(props: Iprops) {
     }
   }
 
-  return <>{visible && <div>{buildPayModal()}</div>}</>
+  return <div>{visible && <div>{buildPayModal()}</div>}</div>
 }

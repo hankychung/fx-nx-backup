@@ -2,13 +2,11 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 16:02:30
+ * @LastEditTime: 2023-03-13 11:17:49
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React, { useContext, useEffect, useState } from 'react'
-import person_package_bg from '../../../../assets/payImg/person_package_bg.png'
-import team_package_bg from '../../../../assets/payImg/team_package_bg.png'
 import cs from 'classnames'
 import style from './index.module.scss'
 import { tabs, TabType, VipMealType } from '../controller'
@@ -16,7 +14,7 @@ import PersonVip from '../PersonVip'
 import TeamVip from '../TeamVip'
 import { SelectMemberContext } from '../../context/context'
 import PayQrCode from '../PayQrCode'
-
+const url= `https://cdn.flyele.net/resources/PC/`
 interface Iprops {
   vipMealType: VipMealType
   setVipMealType: (_: VipMealType) => void
@@ -68,7 +66,7 @@ const VipPackage = (props: Iprops) => {
 
   // 背景图
   const bgUrl =
-    vipMealType === VipMealType.PERSON ? person_package_bg : team_package_bg
+    vipMealType === VipMealType.PERSON ? `${url}person_package_bg.png`  :  `${url}team_package_bg.png`
 
   return (
     <div

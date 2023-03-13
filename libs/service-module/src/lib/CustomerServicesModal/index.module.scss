@@ -1,0 +1,63 @@
+.customer {
+  width: 320px;
+  height: 333px;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .close {
+      margin-right: 16px;
+      cursor: pointer;
+    }
+  }
+  .qrcode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    // margin-top: 28px;
+    > div {
+      text-align: center;
+      color: #6a6a6a;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+  }
+  .lable_customer {
+    width: 149.6px;
+    height: 44px;
+    position: relative;
+    text-align: center;
+    line-height: 44px;
+    .bg {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  }
+  .phone_num {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6a6a6a;
+    font-size: 12px;
+    background: #f5f7fa;
+    border-radius: 0px 0px 8px 8px;
+    > span {
+      color: rgba(29, 210, 193, 1);
+      font-size: 12px;
+      margin-left: 4px;
+    }
+  }
+}

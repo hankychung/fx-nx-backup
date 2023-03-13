@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 17:44:56
+ * @LastEditTime: 2023-03-13 15:53:30
  */
 
 import React from 'react'
@@ -11,11 +11,18 @@ import PersonPayModal from '../PersonPayModal/index' //个人支付弹窗
 import TeamPayModal from '../TeamPayModal/index' //团队支付
 import { VipMealType } from '../PersonPayModal/components/controller'
 
+export declare type IFlyAvatarItem = {
+  userId: string
+  name: string
+  pinyin?: string
+  avatar: string
+}
 interface Iprops {
   visible: boolean
   payType?: VipMealType //个人支付类型 1个人 2团队
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   onClose: () => void
+  memberList?: IFlyAvatarItem[]
 }
 
 export default function PayModal(props: Iprops) {
@@ -35,5 +42,5 @@ export default function PayModal(props: Iprops) {
     }
   }
 
-  return <>{visible && <div>{buildPayModal()}</div>}</>
+  return <div>{visible && <div>{buildPayModal()}</div>}</div>
 }

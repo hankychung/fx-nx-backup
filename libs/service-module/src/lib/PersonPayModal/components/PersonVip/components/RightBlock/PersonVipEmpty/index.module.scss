@@ -1,0 +1,16 @@
+.personVipEmpty {
+  width: 325px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 96px;
+  .emptyText {
+    color: #b3b3b3;
+    font-size: 12px;
+    text-align: center;
+    width: 240px;
+    > span {
+      color: rgba(241, 170, 64, 1);
+    }
+  }
+}

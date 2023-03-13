@@ -2,15 +2,16 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 16:03:49
+ * @LastEditTime: 2023-03-13 10:00:52
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React, { useContext, useState } from 'react'
-import wechat_icon from '../../../../assets/payImg/wechat_icon.svg'
-import alipay_icon from '../../../../assets/payImg/alipay_icon.svg'
+import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_icon.svg'
+import { ReactComponent as AlipayIcon } from '../../../../assets/payImg/alipay_icon.svg'
 import { Modal } from 'antd'
-import close from '../../../../assets/payImg/close.svg'
+import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
+
 import style from './index.module.scss'
 import Protocol from './components/Protocol'
 import { SelectMemberContext } from '../../context/context'
@@ -40,14 +41,12 @@ const PayQrCode = () => {
                 <span>扫码支付</span>
                 <div className={style.telephone}>对公支付联系: 12345678901</div>
               </div>
-              <img
-                alt="close"
-                src={close}
+              <Close
                 className={style.close}
                 onClick={() => {
                   service.showPay({ show: false })
                 }}
-              />
+              ></Close>
             </div>
             <div className={style.payInfo}>
               <div className={style.price}>
@@ -64,20 +63,12 @@ const PayQrCode = () => {
               </div>
               <div className={style.payIcon}>
                 <div className={style.iconItem}>
-                  <img
-                    alt="wechat"
-                    src={wechat_icon}
-                    className={style.qrcode}
-                  />
+                  <WechatIcon className={style.qrcode}></WechatIcon>
                   <span>微信支付</span>
                 </div>
                 <span>/</span>
                 <div className={style.iconItem}>
-                  <img
-                    alt="alipay"
-                    src={alipay_icon}
-                    className={style.qrcode}
-                  />
+                  <AlipayIcon className={style.qrcode}></AlipayIcon>
                   <span>支付宝支付</span>
                 </div>
               </div>

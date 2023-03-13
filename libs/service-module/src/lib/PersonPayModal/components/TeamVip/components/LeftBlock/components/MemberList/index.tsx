@@ -2,18 +2,19 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 16:38:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 16:10:21
+ * @LastEditTime: 2023-03-13 10:06:56
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React, { useEffect, useMemo, useState } from 'react'
-import close from '../../../../../../../../assets/payImg/close.svg'
+import { ReactComponent as Close } from '../../../../../../../../assets/payImg/close.svg'
 // import { useInteracts } from '../../../../../../../../hooks/cache/useInteracts'
 import { FlyAvatar } from '@flyele/flyele-components'
 import { useMemoizedFn } from 'ahooks'
 import { filter, uniqueId } from 'lodash'
-import member_person_vip from '../../../../../../../../assets/payImg/member_person_vip.svg'
-import member_team_vip from '../../../../../../../../assets/payImg/member_team_vip.svg'
+import { ReactComponent as MemberPersonVip } from '../../../../../../../../assets/payImg/member_person_vip.svg'
+import { ReactComponent as MemberTeamVip } from '../../../../../../../../assets/payImg/member_team_vip.svg'
+
 import SearchInput from '../../../../../SearchInput'
 import style from './index.module.scss'
 import { SingleCheckItemRow } from '../../../../../CheckItem/SingleCheckItemRow'
@@ -139,14 +140,12 @@ const MemberList = ({
     <div className={style.memberList}>
       <div className={style.title}>
         <div>{`选择更多好友开通（${resultArr.length}）`}</div>
-        <img
-          alt="close"
-          src={close}
+        <Close
           className={style.close}
           onClick={() => {
             service.close()
           }}
-        />
+        ></Close>
       </div>
       <div className={style.search}>
         <SearchInput
@@ -189,16 +188,12 @@ const MemberList = ({
                         <div className={style.name_icon}>
                           <span>{_.original_name || _.nick_name}</span>
                           <div className={style.mine}>我</div>
-                          <img
-                            alt="member_person_vip"
-                            src={member_person_vip}
+                          <MemberPersonVip
                             className={style.member_person_vip}
-                          />
-                          <img
-                            alt="member_team_vip"
-                            src={member_team_vip}
+                          ></MemberPersonVip>
+                          <MemberTeamVip
                             className={style.member_team_vip}
-                          />
+                          ></MemberTeamVip>
                         </div>
                         <span>{_.telephone}</span>
                       </div>

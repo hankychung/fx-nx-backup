@@ -111,7 +111,7 @@ const RightBlock = () => {
               }}
               id="invite_member"
             >
-              <InviteMember  className={style.invite_member}></InviteMember>
+              <InviteMember className={style.invite_member}></InviteMember>
             </div>
           </div>
         </div>

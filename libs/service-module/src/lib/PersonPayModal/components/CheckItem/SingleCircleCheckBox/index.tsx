@@ -31,20 +31,20 @@ type IProps = {
 }
 
 function _CircleCheckBox(props: IProps) {
-  const { state = CheckBoxState.unset,  colorType = '' } = props
+  const { state = CheckBoxState.unset, colorType = '' } = props
 
   const _state = {
     checked:
-      colorType === CheckColorType.BLUE ? <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE> : <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE>,
+      colorType === CheckColorType.BLUE ? (
+        <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE>
+      ) : (
+        <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE>
+      ),
     unset: <IMG_CHECKED_FALSE width={16} height={16}></IMG_CHECKED_FALSE>,
     disable: <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE>
   }[state]
 
-  return (
-    <div>
-     { _state}
-    </div>
-  )
+  return <div>{_state}</div>
 }
 
 export const CircleCheckBox = React.memo(_CircleCheckBox)

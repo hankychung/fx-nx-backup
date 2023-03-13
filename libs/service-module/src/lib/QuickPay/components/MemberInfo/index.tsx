@@ -21,13 +21,15 @@ const MemberInfo = () => {
     <div className={style.memberInfo}>
       <div className={style.member}>
         <div className={style.mem_info}>
-          <FlyAvatar src={""} size={30} />
+          <FlyAvatar src={''} size={30} />
           <div className={style.mem_name}>
             <div className={style.name_icon}>
               <span>圣诞节快乐妇女经典款</span>
               <div className={style.mine}>我</div>
-              <MemberPersonVip className={style.member_person_vip}></MemberPersonVip>
-              <MemberTeamVip  className={style.member_team_vip}></MemberTeamVip>
+              <MemberPersonVip
+                className={style.member_person_vip}
+              ></MemberPersonVip>
+              <MemberTeamVip className={style.member_team_vip}></MemberTeamVip>
             </div>
             <span>16651150991</span>
           </div>

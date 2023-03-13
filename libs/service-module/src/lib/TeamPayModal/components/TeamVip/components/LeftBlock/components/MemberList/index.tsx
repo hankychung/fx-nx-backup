@@ -188,8 +188,12 @@ const MemberList = ({
                         <div className={style.name_icon}>
                           <span>{_.original_name || _.nick_name}</span>
                           <div className={style.mine}>我</div>
-                          <MemberPersonVip  className={style.member_person_vip}></MemberPersonVip>
-                          <MemberTeamVip  className={style.member_team_vip}></MemberTeamVip>
+                          <MemberPersonVip
+                            className={style.member_person_vip}
+                          ></MemberPersonVip>
+                          <MemberTeamVip
+                            className={style.member_team_vip}
+                          ></MemberTeamVip>
                         </div>
                         <span>{_.telephone}</span>
                       </div>

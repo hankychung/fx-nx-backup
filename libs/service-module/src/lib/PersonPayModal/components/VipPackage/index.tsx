@@ -14,7 +14,7 @@ import PersonVip from '../PersonVip'
 import TeamVip from '../TeamVip'
 import { SelectMemberContext } from '../../context/context'
 import PayQrCode from '../PayQrCode'
-const url= `https://cdn.flyele.net/resources/PC/`
+const url = `https://cdn.flyele.net/resources/PC/`
 interface Iprops {
   vipMealType: VipMealType
   setVipMealType: (_: VipMealType) => void
@@ -66,7 +66,9 @@ const VipPackage = (props: Iprops) => {
 
   // 背景图
   const bgUrl =
-    vipMealType === VipMealType.PERSON ? `${url}person_package_bg.png`  :  `${url}team_package_bg.png`
+    vipMealType === VipMealType.PERSON
+      ? `${url}person_package_bg.png`
+      : `${url}team_package_bg.png`
 
   return (
     <div

@@ -88,7 +88,7 @@ const RightBlock = () => {
                 </div>
                 <div className={style.time}>
                   <span> 限时 23:59:00</span>
-                  <MealTime className={style.mealTime} ></MealTime>
+                  <MealTime className={style.mealTime}></MealTime>
                 </div>
               </div>
             )

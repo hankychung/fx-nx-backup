@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './index.module.scss'
 import { IInfoType } from '@flyele-nx/constant'
-import cs from 'classnames'
 import divisionIcon from '../../../../assets/introduction/division.svg'
+import { ReactComponent as SelectIcon } from '../../../../assets/introduction/select.svg'
 
 interface IProps {
   info: IInfoType
@@ -64,11 +64,11 @@ export const IntroductionBox = ({ info, onClickBtn }: IProps) => {
           {powerList.map((item, index) => {
             return (
               <div key={index} className={styles.listItem}>
-                <div
-                  className={cs(styles.status, {
-                    [styles.statusBg]: item.active
-                  })}
-                />
+                <div className={styles.status}>
+                  {item.active && (
+                    <SelectIcon color="#1DD2C1" width={14} height={14} />
+                  )}
+                </div>
                 <div className={styles.title}>{item.title}</div>
               </div>
             )

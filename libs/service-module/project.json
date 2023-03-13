@@ -21,7 +21,10 @@
         "project": "libs/service-module/package.json",
         "entryFile": "libs/service-module/src/index.ts",
         "external": ["react/jsx-runtime"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "rollupConfig": [
+          "@nrwl/react/plugins/bundle-rollup",
+          "libs/service-module/rollup.config.js"
+        ],
         "compiler": "babel",
         "assets": [
           {

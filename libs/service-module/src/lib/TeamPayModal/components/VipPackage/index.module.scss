@@ -1,0 +1,31 @@
+.vipPackage {
+  width: 752px;
+  height: 524px;
+  margin-top: 17px;
+  position: relative;
+
+  &::after {
+    content: url('../../../../assets/payImg/team_space_line.svg');
+    width: 1px;
+    position: absolute;
+    left: 347px;
+    top: 12px;
+  }
+
+  .team_bg {
+    width: 752px;
+    height: 520px;
+    background-image: url('../../../../assets/payImg/team_space_bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .empty_white {
+    width: 752px;
+    height: 200px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+  }
+}

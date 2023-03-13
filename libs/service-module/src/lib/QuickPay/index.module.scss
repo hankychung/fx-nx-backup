@@ -1,0 +1,35 @@
+.custom_modal {
+  :global {
+    .ant-modal {
+      width: auto !important;
+      padding: 0;
+      .ant-modal-content {
+        padding: 0;
+        .ant-modal-body {
+          padding: 0;
+          overflow: hidden;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
+
+.modal_block {
+  height: 514px;
+  width: 360px;
+  background: linear-gradient(
+    180deg,
+    rgba(230, 224, 255, 2.5) 0%,
+    rgba(255, 255, 255, 0) 14.06%
+  );
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .topBlock {
+    padding-bottom: 24px;
+    border-bottom: 1px dashed rgba(117, 94, 239, 0.1);
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "gts",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  },
+  "devDependencies": {
+    "vite-plugin-style-inject": "^0.0.1",
+    "vite-plugin-svgr": "^2.4.0"
+  }
+}

@@ -2,13 +2,13 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 16:02:43
+ * @LastEditTime: 2023-03-13 10:02:29
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React, { useEffect, useState } from 'react'
 import cs from 'classnames'
-import meal_time from '../../../../../../assets/payImg/meal_time.svg'
+import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
 import style from './index.module.scss'
 import PayButton from '../../../PayButton'
 import { VipMealType } from '../../../controller'
@@ -88,7 +88,7 @@ const RightBlock = () => {
                 </div>
                 <div className={style.time}>
                   <span> 限时 23:59:00</span>
-                  <img alt="time" src={meal_time} className={style.mealTime} />
+                  <MealTime className={style.mealTime}></MealTime>
                 </div>
               </div>
             )

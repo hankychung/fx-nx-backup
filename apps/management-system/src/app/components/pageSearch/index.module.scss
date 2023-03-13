@@ -1,0 +1,39 @@
+.pageSearchRoot {
+  padding: 20px 32px;
+  display: flex;
+  column-gap: 40px;
+  background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+
+  .searchItem {
+    .searchTitle {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: #262626;
+      margin-bottom: 8px;
+    }
+    .search {
+      display: flex;
+      column-gap: 12px;
+    }
+  }
+
+  :global {
+    .ant-input:hover {
+      border-color: #43dec9;
+    }
+    .ant-input:focus {
+      border-color: #1dd2c1;
+    }
+    .ant-input-affix-wrapper:hover {
+      border-color: #43dec9;
+    }
+    .ant-input-affix-wrapper:focus,
+    .ant-input-affix-wrapper-focused {
+      border-color: #1dd2c1;
+      box-shadow: none;
+    }
+  }
+}

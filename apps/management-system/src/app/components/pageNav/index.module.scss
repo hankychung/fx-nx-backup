@@ -1,13 +1,17 @@
+// 为了居中，所以搞了个相同宽度，如果后续tab增加，那么宽度也要增加了
+$itemWidth: 250px;
+
 .pageNavRoot {
   padding-left: 40px;
   padding-right: 25px;
   height: 80px;
   display: flex;
   justify-content: space-between;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
 
   .navLeft {
+    width: $itemWidth;
     display: flex;
     align-items: center;
 
@@ -28,12 +32,14 @@
   }
 
   .navCenter {
-
+    width: $itemWidth;
   }
 
   .navRight {
+    width: $itemWidth;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 
     .userName {
       font-weight: 500;
@@ -41,5 +47,10 @@
       color: #262626;
       margin-right: 4px;
     }
+  }
+
+  .tabBoldItem {
+    font-size: 18px !important;
+    color: #262626 !important;
   }
 }

@@ -1,0 +1,88 @@
+.memberList {
+  padding: 16px 0;
+
+  .title {
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #6a6a6a;
+
+    .close {
+      cursor: pointer;
+    }
+  }
+
+  .row_name {
+    padding: 0;
+
+    &:hover {
+      background: none;
+    }
+  }
+
+  .itemList {
+    padding: 0 16px;
+    height: 330px;
+    width: 100%;
+    overflow-y: scroll;
+
+    .mem_info {
+      height: 56px;
+      display: flex;
+      align-items: center;
+
+      .mem_name {
+        margin-left: 8px;
+
+        .name_icon {
+          display: flex;
+          align-items: center;
+
+          .mine {
+            width: 22px;
+            height: 14px;
+            background: #755eef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+            margin-left: 4px;
+          }
+
+          .member_person_vip {
+            margin-left: 4px;
+          }
+
+          .member_team_vip {
+            margin-left: 4px;
+          }
+        }
+
+        > span {
+          font-size: 12px;
+          color: #8a8a8a;
+        }
+
+        > div {
+          font-size: 14px;
+          color: #6a6a6a;
+        }
+      }
+    }
+  }
+
+  .search {
+    padding: 0 16px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+.searchOverClassName {
+  border-radius: 16px;
+  height: 32px;
+  border: 1px solid #e2e2e2;
+}

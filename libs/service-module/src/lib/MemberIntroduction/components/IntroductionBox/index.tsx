@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.scss'
-import { IInfoType } from '@flyele-nx/consts'
+import { IInfoType } from '@flyele-nx/constant'
 import cs from 'classnames'
 import divisionIcon from '../../../../assets/introduction/division.svg'
 

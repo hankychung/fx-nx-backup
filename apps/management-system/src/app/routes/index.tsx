@@ -1,8 +1,8 @@
 import { useRoutes } from 'react-router-dom'
-import { HomePage } from '../page/home'
-import { LoginPage } from '../page/login'
-import { OrderManagement } from '../page/order-management'
-import { InvoiceManagement } from '../page/invoice-management '
+import { HomePage } from '../pages/home'
+import { LoginPage } from '../pages/login'
+import { OrderManagement } from '../pages/order-management'
+import { InvoiceManagement } from '../pages/invoice-management '
 
 export const routePath = {
   home: '/',

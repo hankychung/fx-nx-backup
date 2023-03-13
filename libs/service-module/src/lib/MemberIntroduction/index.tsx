@@ -15,6 +15,7 @@ import PayModal from '../PayModal'
 export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
+
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
@@ -26,6 +27,7 @@ export const MemberIntroduction = () => {
   const payType = useMemo(() => {
     return vipType === 'personal' ? 1 : 2
   }, [vipType])
+
   return (
     <div className={styles.memberIntroduction}>
       {memberPowerStaticData.map((item) => {

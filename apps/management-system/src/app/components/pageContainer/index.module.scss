@@ -1,0 +1,66 @@
+.pageContainerRoot {
+  padding: 0 13.55%;
+  background: #f3f5f7;
+  position: relative;
+
+  .content {
+    display: flex;
+    padding-top: 20px;
+
+    .contentLeft {
+      width: 180px;
+      margin-right: 20px;
+
+      .dataItem {
+        width: 140px;
+        padding: 20px;
+        margin-bottom: 22px;
+        background: #ffffff;
+        border-radius: 8px;
+
+        .dataTitleBox {
+          display: flex;
+          margin-bottom: 8px;
+          .title {
+            font-weight: 500;
+            font-size: 15px;
+            color: #303030;
+          }
+          .subTitle {
+            margin-left: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            color: #333333;
+          }
+        }
+        .valueBox {
+          font-weight: 600;
+          font-size: 28px;
+          color: #1dd2c1;
+          .money {
+            margin-right: 4px;
+            font-size: 18px;
+          }
+          .person {
+            margin-left: 4px;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
+    .contentRight {
+      width: 100%;
+    }
+  }
+
+  .copyright {
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 170px);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #b4b4b4;
+  }
+}

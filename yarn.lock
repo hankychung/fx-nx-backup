@@ -3672,7 +3672,7 @@ ahooks-v3-count@^1.0.0:
   resolved "https://registry.npmmirror.com/ahooks-v3-count/-/ahooks-v3-count-1.0.0.tgz#ddeb392e009ad6e748905b3cbf63a9fd8262ca80"
   integrity sha512-V7uUvAwnimu6eh/PED4mCDjE7tokeZQLKlxg9lCTMPhN+NjsSbtdacByVlR1oluXQzD3MOw55wylDmQo4+S9ZQ==
 
-ahooks@^3.7.2:
+ahooks@^3.7.2, ahooks@^3.7.5:
   version "3.7.5"
   resolved "https://registry.npmmirror.com/ahooks/-/ahooks-3.7.5.tgz#fe450bbe1b25edaa5915363583abc32845245a92"
   integrity sha512-RWkJYK5xj9ZXROj9jABRDqdpTBimkY1tlyeJQ8Ci7MAl1sC5xzSzwO20ydk6BjtdbWt56DPCYZhq4lGu3O2Zwg==

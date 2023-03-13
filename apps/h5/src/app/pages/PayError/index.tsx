@@ -23,7 +23,7 @@ const PayError = () => {
       <div className={styles.order_status}>
         <Expired></Expired>
         <div className={styles.text}>{statusText['expired']}</div>
-        </div>
+      </div>
     </div>
   )
 }

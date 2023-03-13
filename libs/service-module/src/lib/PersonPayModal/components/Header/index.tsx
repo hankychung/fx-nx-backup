@@ -10,7 +10,12 @@ import React from 'react'
 import close from '../../../../assets/payImg/close.svg'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as Customer } from '../../../../assets/payImg/customer.svg'
-import { FlyAvatar, FlyBasePopper, FlyBasePopperCtrl, useController } from '@flyele/flyele-components'
+import {
+  FlyAvatar,
+  FlyBasePopper,
+  FlyBasePopperCtrl,
+  useController
+} from '@flyele/flyele-components'
 import style from './index.module.scss'
 import CustomerServicesModal from '../../../CustomerServicesModal'
 interface Iprops {
@@ -32,15 +37,17 @@ const Header = (props: Iprops) => {
       </div>
       <div className={style.right}>
         <FlyBasePopper
-        controller={Controller}
+          controller={Controller}
           trigger="click"
           placement="bottom-end"
           showArrow={false}
           content={() => (
             <div>
-              <CustomerServicesModal onClose={()=>{
-                Controller.hide()
-              }}></CustomerServicesModal>
+              <CustomerServicesModal
+                onClose={() => {
+                  Controller.hide()
+                }}
+              ></CustomerServicesModal>
             </div>
           )}
         >

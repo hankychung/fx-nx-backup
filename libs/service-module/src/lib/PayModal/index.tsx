@@ -12,11 +12,11 @@ import TeamPayModal from '../TeamPayModal/index' //团队支付
 import { VipMealType } from '../PersonPayModal/components/controller'
 
 export declare type IFlyAvatarItem = {
-  userId: string;
-  name: string;
-  pinyin?: string;
-  avatar: string;
-};
+  userId: string
+  name: string
+  pinyin?: string
+  avatar: string
+}
 interface Iprops {
   visible: boolean
   payType?: VipMealType //个人支付类型 1个人 2团队

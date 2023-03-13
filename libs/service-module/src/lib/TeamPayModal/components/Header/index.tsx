@@ -12,7 +12,11 @@ import { ReactComponent as Customer } from '../../../../assets/payImg/customer.s
 import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_right.svg'
 import style from './index.module.scss'
 import { vipPayText, VipPayType } from '../controller'
-import { FlyBasePopper, FlyBasePopperCtrl, useController } from '@flyele/flyele-components'
+import {
+  FlyBasePopper,
+  FlyBasePopperCtrl,
+  useController
+} from '@flyele/flyele-components'
 import CustomerServicesModal from '../../../CustomerServicesModal'
 
 const Header = ({
@@ -42,23 +46,25 @@ const Header = ({
         </div>
       </div>
       <div className={style.right}>
-      <FlyBasePopper
-        controller={Controller}
+        <FlyBasePopper
+          controller={Controller}
           trigger="click"
           placement="bottom-end"
           showArrow={false}
           content={() => (
             <div>
-              <CustomerServicesModal onClose={()=>{
-                Controller.hide()
-              }}></CustomerServicesModal>
+              <CustomerServicesModal
+                onClose={() => {
+                  Controller.hide()
+                }}
+              ></CustomerServicesModal>
             </div>
           )}
         >
-               <div className={style.customer}>
-          <Customer></Customer>
-          <span>联系客服</span>
-        </div>
+          <div className={style.customer}>
+            <Customer></Customer>
+            <span>联系客服</span>
+          </div>
         </FlyBasePopper>
 
         <Close

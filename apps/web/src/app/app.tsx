@@ -1,14 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss'
-import NxWelcome from './nx-welcome'
-// import { Banner } from '@flyele-nx/service-module'
+// import { LureModal } from '@flyele-nx/ui'
 
 export function App() {
   return (
     <>
-      <NxWelcome title="web" />
-      {/* <Banner /> */}
       <div />
+      {/* <LureModal open={true} handleClose={() => {}} handleConfirm={() => {}} /> */}
     </>
   )
 }

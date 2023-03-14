@@ -5,7 +5,11 @@
   :global {
     .ant-modal-content {
       padding: 20px 28px 24px 28px;
-      background-image: linear-gradient(to bottom,rgba(255, 223, 180, 1), rgba(255, 255, 254, 1));
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255, 223, 180, 1),
+        rgba(255, 255, 254, 1)
+      );
     }
   }
 
@@ -67,7 +71,7 @@
       margin-top: 12px;
       margin-bottom: 10px;
     }
-  
+
     .btn {
       display: flex;
       align-items: center;
@@ -75,7 +79,11 @@
       width: 200px;
       height: 40px;
       border-radius: 8px;
-      background-image: linear-gradient(to left, rgba(255, 184, 94, 1), rgba(255, 208, 117, 1));
+      background-image: linear-gradient(
+        to left,
+        rgba(255, 184, 94, 1),
+        rgba(255, 208, 117, 1)
+      );
     }
   }
 }

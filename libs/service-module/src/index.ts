@@ -6,7 +6,6 @@ import PersonPayModal from './lib/PersonPayModal/index' //个人支付弹窗
 import TeamPayModal from './lib/TeamPayModal/index' //团队支付
 import PayModal from './lib/PayModal/index' //支付聚合
 import CustomerServicesModal from './lib/CustomerServicesModal/index' //客服弹窗
-export * from './lib/banner/banner'
 export * from './lib/service-module'
 export {
   MemberIntroduction,

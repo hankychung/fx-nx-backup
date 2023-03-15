@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { IDataShow, PageContainer } from '../../components/pageContainer'
 import tableStyles from '../../styles/index.module.scss'
-import { FlyTabs, IFlyTabs } from '@flyele-nx/ui'
-import { FlyButton } from '@flyele/flyele-components'
+import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 

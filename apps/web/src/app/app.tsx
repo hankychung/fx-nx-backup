@@ -1,8 +1,14 @@
 // import { LureModal } from '@flyele-nx/ui'
+import { VipexpiredBanner } from '@flyele-nx/ui'
 
 export function App() {
   return (
     <>
+      <VipexpiredBanner
+        handleConfirm={() => {
+          console.log('ss')
+        }}
+      />
       <div />
       {/* <LureModal
         open={true}

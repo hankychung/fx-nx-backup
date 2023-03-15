@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import styles from './index.module.scss'
 import flyeleLogo from '../../../assets/flyeleLogo.png'
 import { Button } from 'antd'
-import { FlyTabs, IFlyTabs } from '@flyele-nx/ui'
+import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { routePath } from '../../routes'
 import { useNavigate } from 'react-router-dom'
 

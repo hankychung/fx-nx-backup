@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@flyele-nx/api-store": ["libs/api-store/src/index.ts"],
       "@flyele-nx/constant": ["libs/constant/src/index.ts"],
       "@flyele-nx/service": ["libs/service/src/index.ts"],
       "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],

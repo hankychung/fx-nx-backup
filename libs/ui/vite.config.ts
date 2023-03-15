@@ -6,6 +6,7 @@ import dts from 'vite-plugin-dts'
 import { join } from 'path'
 import svgr from 'vite-plugin-svgr'
 import VitePluginStyleInject from 'vite-plugin-style-inject'
+// import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ui',
@@ -22,6 +23,13 @@ export default defineConfig({
     viteTsConfigPaths({
       root: '../../'
     })
+    // viteCompression({
+    //   verbose: true,
+    //   disable: false,
+    //   threshold: 10240,
+    //   algorithm: 'gzip',
+    //   ext: '.gz'
+    // })
   ],
 
   // Uncomment this if you are using workers.
@@ -47,7 +55,15 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: ['react', 'react-dom', 'react/jsx-runtime', 'ahooks']
+      external: ['react', 'react-dom', 'react/jsx-runtime']
+    },
+    sourcemap: false,
+    reportCompressedSize: false,
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
     }
   }
 })

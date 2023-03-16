@@ -1,0 +1,390 @@
+$seleColor: #1dd2c1;
+
+.selectNow,
+.g-task-status,
+.g-flow-step,
+.g-application-name,
+.g-step-name,
+.g-step-name-rect,
+.g-step-name-text,
+.g-meetting,
+.g-check,
+.g-union,
+.g-smalltask-btn,
+.g-accept-btn,
+.g-space-avatar,
+.g-project-avatar,
+.g-partner,
+.g-project-text,
+.g-note-icon,
+.g-target-icon,
+.g-target-progress,
+.g-target-progress-all,
+.g-target-progress-now,
+.g-target-level,
+.g-target-status,
+.g-die,
+.g-smalltask-list,
+.g-refuse-btn,
+.g-smalltask-arrows,
+.collapse {
+  opacity: 1;
+}
+
+.g-partner,
+.g-target-progress,
+.g-target-status {
+  cursor: pointer;
+}
+.g-union.g-union-hovered > rect {
+  fill: #bbf2ec;
+}
+.g-repeat-icon {
+  > path {
+    transform: translate(1.7px, 2.2px) rotate(75deg);
+    transform-origin: 5px 5px;
+  }
+}
+.g-repeat-btn {
+  transform: translate(0px, 2px);
+  > path {
+    transform: translate(4px, -0.5px) rotate(75deg);
+    transform-origin: 5px 5px;
+  }
+}
+.g-accept-btn > text {
+  font-size: 12px;
+  transform: translate(16px, 15px);
+}
+.g-refuse-btn > text {
+  font-size: 12px;
+  transform: translate(16px, 15px);
+}
+.g-smalltask-btn {
+  user-select: none;
+}
+.g-smalltask-btn > text {
+  transform: translate(12.5px, 12px);
+}
+.g-space-text,
+.g-note-text,
+.g-text-card,
+.g-file-text,
+.g-target-text,
+.g-project-text {
+  fill: #262626;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.g-target-progress-text {
+  fill: #6a6a6a;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.g-target-level {
+  fill: #6a6a6a;
+}
+
+.g-file-origin,
+.g-note-creator {
+  fill: #92929d;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+
+  svg text {
+    white-space: pre;
+  }
+
+  .svg-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .asst-svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f7f7;
+  cursor: grab;
+  .none-fill {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .AddAndEditWrap {
+    background-color: transparent;
+    overflow: visible;
+
+    div {
+      outline: none;
+    }
+    > div {
+      display: inline-block;
+      width: max-content;
+      padding: 0 1px;
+      white-space: nowrap;
+    }
+  }
+
+  .trigger {
+    fill: transparent;
+  }
+
+  &.dragging .add-btn {
+    visibility: hidden;
+  }
+  &.dragging {
+    .selected > path {
+      display: none;
+    }
+    .selected > line {
+      display: none;
+    }
+    .selected .content {
+      opacity: 0.6;
+    }
+  }
+  .hide {
+    display: none;
+  }
+  .show {
+    display: block;
+  }
+  .add-btn {
+    opacity: 0;
+  }
+
+  .expand-btn {
+    > text {
+      text-anchor: middle;
+      transform: translate(0, 0.5px);
+    }
+
+    > path {
+      transform: translate(-7px, -13.7px);
+    }
+
+    &:hover {
+      rect {
+        fill: white;
+      }
+
+      path {
+        fill: currentColor;
+      }
+    }
+  }
+
+  .g-box {
+    user-select: none;
+  }
+
+  .g-box > rect {
+    opacity: 1;
+    fill: $seleColor;
+  }
+  .hovered > rect {
+    opacity: 1;
+    fill: url('#shadow') !important;
+  }
+
+  .isToday > .content > .g-box > rect {
+    stroke: url('#heightlightBorder');
+  }
+
+  .selected > .content > .g-box > rect {
+    opacity: 1;
+    stroke-width: 2;
+    stroke: $seleColor !important;
+    transition: 0.1s;
+  }
+
+  .selected > .content > .expand-btn > path {
+    fill: $seleColor !important;
+  }
+
+  .selected > .content > .add-btn {
+    opacity: 1;
+  }
+
+  .selected > .content > .add-btn-path {
+    fill: $seleColor !important;
+  }
+
+  .selected > line {
+    stroke: $seleColor !important;
+  }
+
+  .selected.isCreateCard > .content > .add-btn {
+    opacity: 0;
+    display: block;
+  }
+
+  .edited > .content > .g-box .text {
+    opacity: 1;
+  }
+
+  .content > .g-box > rect {
+    opacity: 1;
+    fill: #fff;
+  }
+
+  .g-check > path {
+    transform: translate(3px, 1.5px) scale(1.3);
+  }
+
+  .g-timer {
+    opacity: 1;
+  }
+
+  .g-smalltask-list {
+    .g-smalltask-node:nth-of-type(1) {
+      g {
+        .g-smalltask-box {
+          > rect {
+            transform: translate(15px, 31px);
+          }
+          .g-smalltask-meeting {
+            transform: translate(26px, 38px);
+          }
+          .g-smalltask-main {
+            > path {
+              transform: translate(28px, 38px) scale(1.2);
+            }
+            rect {
+              transform: translate(26px, 38px);
+            }
+            text {
+              transform: translate(47px, 50.5px);
+            }
+          }
+        }
+      }
+    }
+
+    .g-smalltask-node {
+      g {
+        .g-smalltask-box {
+          > rect {
+            transform: translate(15px, 45px);
+          }
+
+          &.g-smalltask-selected {
+            > rect {
+              stroke: #36c2bc;
+              stroke-width: 1;
+            }
+          }
+          &.g-smalltask-hovered > rect {
+            fill: #dff9f6;
+          }
+          .g-smalltask-meeting {
+            cursor: pointer;
+            transform: translate(26px, 52px);
+          }
+          .g-smalltask-main {
+            > path {
+              transform: translate(28px, 52px) scale(1.2);
+            }
+            .g-smalltask-text {
+              font-size: 14px;
+              color: #060606;
+              user-select: none;
+              -webkit-user-select: none;
+            }
+            .g-smalltask-edit {
+              opacity: 0;
+            }
+            .g-smalltask-all {
+              user-select: none;
+              transform: translate(28px, 60.5px);
+              font-weight: 600;
+              text-decoration: underline;
+            }
+            text {
+              cursor: pointer;
+              font-size: 12px;
+              transform: translate(47px, 64px);
+            }
+            > rect {
+              transform: translate(26px, 52px);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  g.leaf .expand-btn {
+    display: none;
+  }
+}
+
+.button-list {
+  position: absolute;
+
+  &.right-bottom {
+    bottom: 17px;
+    right: 17px;
+  }
+  &.right-top {
+    top: 0;
+    right: 17px;
+    display: flex;
+  }
+}
+
+.button-list button {
+  position: relative;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  color: #3f51b5;
+
+  &::before {
+    background-color: currentColor;
+    border-radius: inherit;
+    content: '';
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.6, 1);
+  }
+
+  &:hover::before {
+    opacity: 0.1;
+  }
+
+  &.disabled {
+    pointer-events: none;
+
+    i {
+      filter: invert(85%) sepia(20%) saturate(0%) hue-rotate(125deg)
+        brightness(86%) contrast(93%);
+    }
+  }
+}

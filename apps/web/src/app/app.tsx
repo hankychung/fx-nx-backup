@@ -1,12 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
-import NxWelcome from './nx-welcome'
-// import { Banner } from '@flyele-nx/service-module'
+// import NxWelcome from './nx-welcome'
+import { MapSvg } from '@flyele-nx/service-module'
 
 export function App() {
   return (
     <>
-      <NxWelcome title="web" />
+      {/* <NxWelcome title="web" /> */}
+      <div className={styles.wrap}>
+        <MapSvg />
+      </div>
       {/* <Banner /> */}
       <div />
     </>

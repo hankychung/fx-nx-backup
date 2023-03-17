@@ -62,7 +62,7 @@ const RightBlock = () => {
 
   return (
     <div className={style.rightBlock}>
-      { (
+      {
         <div className={style.mealBlock}>
           <div className={style.title}>套餐选择</div>
           <div className={style.mealList}>
@@ -97,16 +97,18 @@ const RightBlock = () => {
             })}
           </div>
         </div>
-      )}
+      }
       {/* 支付按钮 */}
-      {(
+      {
         <div>
           <PayButton vipMealType={VipMealType.PERSON} />
         </div>
+      }
+      {false && (
+        <div>
+          <PersonVipEmpty></PersonVipEmpty>
+        </div>
       )}
-    {  false&&<div>
-        <PersonVipEmpty></PersonVipEmpty>
-      </div>}
     </div>
   )
 }

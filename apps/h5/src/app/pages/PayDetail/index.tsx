@@ -50,8 +50,7 @@ const PayDetail = () => {
   }
   //获取支付参数
   const getPayParams = (code: string) => {
-    console.log(code);
-    
+    console.log(code)
   }
 
   const onBridgeReady = () => {

@@ -34,18 +34,16 @@ const PayQrCode = () => {
       // setValidityTime(dateText)
 
       // url += `&expire_at=${date}&dispatch_at=${currentTime}`
-     const url = 'https://feixiang.cn?a=1'
+      const url = 'https://feixiang.cn?a=1'
       const res = await QRCode.toDataURL(
         'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=' +
           encodeURIComponent(url) +
           '&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect'
       )
-//https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=http://127.0.0.1:4200/payDetail&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect
+      //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=http://127.0.0.1:4200/payDetail&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect
       setQrCode(res)
-
-    } catch{
-      console.log('00');
-      
+    } catch {
+      console.log('00')
     }
   })
   return (
@@ -93,7 +91,6 @@ const PayQrCode = () => {
                   <WechatIcon className={style.qrcode}></WechatIcon>
                   <span>微信支付</span>
                 </div>
-    
               </div>
             </div>
             {/* 协议 */}

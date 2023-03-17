@@ -6,6 +6,7 @@ import {
   getExpandBtnTransform,
   getGTransform,
   getPath,
+  getSExpandBtnTransform,
   getSiblingGClass
 } from '../draw/get'
 import { SelectionG, SelectionRect, Transition } from '../type'
@@ -100,14 +101,39 @@ export const attrLine = (
     })
 }
 
-export const attrExpandBtn = (g: SelectionG, trp: number): void => {
-  g.attr('class', styleName['expand-btn'])
-    .attr('transform', (d) => getExpandBtnTransform(d, trp))
-    .style('display', (d) =>
-      d.children.length || d._children.length || d.child_total
+export const attrSExpandBtn = (g: SelectionG) => {
+  g.attr('transform', (d) => getSExpandBtnTransform(d)).style(
+    'display',
+    (d) => {
+      if (!d.isRoot && !d.isSuperiors) {
+        return 'none'
+      }
+      return d.superior_total || d.superiors.length || d._superiors.length
         ? 'block'
         : 'none'
-    )
+    }
+  )
+
+  g.select(':scope > text').text((d) =>
+    !d.superior_collapse && d.superiors.length
+      ? '—'
+      : String(d._superiors.length || d.superior_total)
+  )
+}
+
+export const attrExpandBtn = (g: SelectionG, trp: number): void => {
+  g.attr('transform', (d) => getExpandBtnTransform(d, trp)).style(
+    'display',
+    (d) => {
+      if (d.isSuperiors) {
+        return 'none'
+      }
+
+      return d.children.length || d._children.length || d.child_total
+        ? 'block'
+        : 'none'
+    }
+  )
 
   g.select(':scope > text').text((d) =>
     !d.collapse && d.children.length

@@ -29,25 +29,54 @@ export const MapSvg = () => {
       const clone = cloneDeep(FakerData)
 
       for (const d of clone) {
-        d.children = new Array(Math.floor(Math.random() * 10 + 1))
+        d.children = new Array(Math.floor(Math.random() * 0 + 3))
           .fill('')
           .map((v) => {
             const objective_id = String(
               Math.floor(Math.random() * 100000000000)
             )
-            return { ...cloneDeep(FakerData[0]), objective_id }
+
+            const newd = { ...cloneDeep(FakerData[0]), objective_id }
+
+            newd.children = new Array(Math.floor(Math.random() * 4 + 1))
+              .fill('')
+              .map((v) => {
+                const objective_id = String(
+                  Math.floor(Math.random() * 100000000000)
+                )
+
+                return { ...cloneDeep(FakerData[0]), objective_id }
+              })
+
+            return newd
           })
 
-        d.superiors = cloneDeep(FakerData).map((v) => {
-          const objective_id = String(Math.floor(Math.random() * 100000000000))
+        d.superiors = new Array(Math.floor(Math.random() * 0 + 3))
+          .fill('')
+          .map((v) => {
+            const objective_id = String(
+              Math.floor(Math.random() * 100000000000)
+            )
 
-          return { ...v, objective_id }
-        })
+            const newd = { ...cloneDeep(FakerData[0]), objective_id }
+
+            newd.superiors = new Array(Math.floor(Math.random() * 4 + 1))
+              .fill('')
+              .map((v) => {
+                const objective_id = String(
+                  Math.floor(Math.random() * 100000000000)
+                )
+
+                return { ...cloneDeep(FakerData[0]), objective_id }
+              })
+
+            return newd
+          })
 
         data.push(formatMdata(d))
       }
 
-      mmdata.value = new ImData(data.slice(0, 4))
+      mmdata.value = new ImData(data.slice(0, 2))
 
       afterOperation()
     }, 1000)

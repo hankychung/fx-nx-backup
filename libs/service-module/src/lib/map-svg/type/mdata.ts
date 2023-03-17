@@ -72,6 +72,14 @@ export interface BaseData extends BaseTimerData, BasePosition, BaseLevelData {
   title: string
   type: MDataTypeEnum
 
+  cache: {
+    children: Mdata[]
+    _children: Mdata[]
+
+    superiors: Mdata[]
+    _superiors: Mdata[]
+  }
+
   takers?: MdataTaker[]
   ref_id?: string
   timer?: string // 预处理时间文本

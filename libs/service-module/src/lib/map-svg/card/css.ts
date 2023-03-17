@@ -34,6 +34,7 @@ export const styleName = {
   'add-btn': 'add-btn',
   hidden: 'hidden',
   'expand-btn': 'expand-btn',
+  's-expand-btn': 's-expand-btn',
   collapse: 'collapse',
   content: 'content',
   trigger: 'trigger',

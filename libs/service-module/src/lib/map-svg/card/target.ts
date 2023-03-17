@@ -12,6 +12,7 @@ import {
   attrTargetStatusText,
   attrTargetText
 } from '../attr/target'
+import { BindTargetEvent } from '../card-event/target'
 import { MapSvgConfig } from '../config'
 import { draw } from '../draw'
 import { EnterE, GContent, SelectionG } from '../type'
@@ -175,6 +176,8 @@ export const enterTargetNode = (enter: EnterE, d: Mdata) => {
   AddTargetCard(gContent, d)
 
   CreateButtons(padding, gContent)
+
+  BindTargetEvent(enterG)
 
   enterG.each((d, i) => {
     if (d.children.length) {

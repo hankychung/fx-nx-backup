@@ -35,12 +35,7 @@ export const getPath = (d: Mdata) => {
   let dpw = 0
   let dph = 0
 
-  // const trp = Math.max(MapSvgConfig.textRectPadding - 3, 0) // -3为了不超过选中框
-
   let w = d.width
-
-  // const targetOffset = getYOffset()
-  // let sourceOffset = targetOffset
 
   const { parent } = d
 
@@ -114,22 +109,12 @@ export const getPath = (d: Mdata) => {
   const SY = source[1]
   const TY = target[1]
 
-  if (d.dy > (d.parent?.dy || 0)) {
+  if (SY < TY) {
     M2[1] = Math.max(TY - splitX, TY - splitY)
-
-    if (SY > 0) {
-      T1[1] = Math.min(SY - splitX, SY - splitY)
-    } else {
-      T1[1] = Math.min(SY + splitX, SY + splitY)
-    }
+    T1[1] = Math.min(SY + splitX, SY + splitY)
   } else {
     M2[1] = Math.min(TY + splitX, TY + splitY)
-
-    if (SY > 0) {
-      T1[1] = Math.max(SY - splitX, SY - splitY)
-    } else {
-      T1[1] = Math.max(SY + splitX, SY + splitY)
-    }
+    T1[1] = Math.max(SY - splitX, SY - splitY)
   }
 
   const M1Q = [T1[0] + (splitY < splitX ? (d.isSuperiors ? 5 : -5) : 0), M1[1]]
@@ -140,9 +125,9 @@ export const getPath = (d: Mdata) => {
   const M2Line = `M${M2.join()}Q${M2Q.join(' ')} ${T2.join()}`
 
   const MtoMLine = `L${M2.join()}`
-  // const MtoMLine = ''
 
-  return `${M1Line}${MtoMLine}${M2Line}`
+  // 节点的下划线
+  return `${M1Line}${MtoMLine}${M2Line}${TextUnderline}`
 }
 
 /**
@@ -245,13 +230,20 @@ export const getAddBtnTransform = (d: Mdata, trp: number): string => {
 
 export const getExpandBtnTransform = (d: Mdata, trp: number): string => {
   const typeSize = d.typeSize
-  const gap = 1
-  const y = typeSize.height / 2
-  let x = d.width + trp + MapSvgConfig.expandBtnRect.width / 2 + gap - 1 + 0.5
-  if (d.isSuperiors) {
-    x = -x
-  }
+  const padding = getPadding(d.type)
+  const y = typeSize.height / 2 - padding
+  const x = d.width + trp
+
   return `translate(${x},${y})`
+}
+
+export const getSExpandBtnTransform = (d: Mdata): string => {
+  const typeSize = d.typeSize
+  const padding = getPadding(d.type)
+
+  const y = typeSize.height / 2
+
+  return `translate(${0 - padding - 14},${y - padding})`
 }
 
 export const getTargetLevelText = (level: TargetLevel) => {

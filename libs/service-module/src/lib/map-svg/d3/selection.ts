@@ -9,6 +9,7 @@ export type selectionSvg =
 export const svg = CreateProxy<selectionSvg>(undefined, (svg) => {
   if (svg) {
     zoom(svg)
+    svg.on('dblclick.zoom', null)
   }
 })
 

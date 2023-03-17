@@ -9,7 +9,7 @@ interface FakerDataType {
   children: FakerDataType[]
   superiors: FakerDataType[]
   superior_total: number
-  child_toast: number
+  child_total: number
 }
 
 export const FakerData: FakerDataType[] = [
@@ -22,7 +22,7 @@ export const FakerData: FakerDataType[] = [
     children: [],
     superiors: [],
     superior_total: 5,
-    child_toast: 5
+    child_total: 5
   },
   {
     objective_id: '123',
@@ -33,7 +33,7 @@ export const FakerData: FakerDataType[] = [
     children: [],
     superiors: [],
     superior_total: 5,
-    child_toast: 5
+    child_total: 5
   },
   {
     objective_id: '123121',
@@ -44,7 +44,7 @@ export const FakerData: FakerDataType[] = [
     children: [],
     superiors: [],
     superior_total: 5,
-    child_toast: 5
+    child_total: 5
   },
   {
     objective_id: '1233',
@@ -55,7 +55,7 @@ export const FakerData: FakerDataType[] = [
     children: [],
     superiors: [],
     superior_total: 5,
-    child_toast: 5
+    child_total: 5
   },
   {
     objective_id: '23',
@@ -66,6 +66,6 @@ export const FakerData: FakerDataType[] = [
     children: [],
     superiors: [],
     superior_total: 5,
-    child_toast: 5
+    child_total: 5
   }
 ]

@@ -1,7 +1,13 @@
 import { GContent, SelectionG } from '../type'
 import * as d3 from '../d3/d3-import'
 import { Mdata, MdataTaker } from '../type/mdata'
-import { attrExpandBtn, attrG, attrLine, attrPath } from '../attr'
+import {
+  attrExpandBtn,
+  attrG,
+  attrLine,
+  attrPath,
+  attrSExpandBtn
+} from '../attr'
 import { expandIcon, getPathIcon } from '../svg-icon'
 import { getTakerId, getTextSize } from '../draw/get'
 import { styleName } from './css'
@@ -26,26 +32,32 @@ export const appendPublic = (enterG: SelectionG) => {
   // 绘制线
   attrPath(enterG.append('path').attr('class', styleName['none-fill']))
 
-  const line = enterG.append('line')
-
-  attrLine(line)
+  // const line = enterG.append('line')
+  // attrLine(line)
 }
 
 export const updatePublic = (update: SelectionG) => {
   const tran = makeTransition(500, d3.easePolyOut)
   attrG(update, tran)
   attrPath(update.select<SVGPathElement>(':scope > path'), tran)
-  attrLine(update.select<SVGLineElement>(':scope > line'))
+  // attrLine(update.select<SVGLineElement>(':scope > line'))
 }
 
 export const CreateButtons = (Padding: number, gContent: SelectionG) => {
   // 绘制折叠按钮
   let gExpandBtn
-  if (gContent.data()?.length > 0) {
+  let gSExpandBtn
+  if (gContent.data().length > 0) {
     gExpandBtn = appendExpandBtn(gContent)
+    gSExpandBtn = appendExpandBtn(gContent)
   }
   if (gExpandBtn) {
+    gExpandBtn.attr('class', styleName['expand-btn'])
     attrExpandBtn(gExpandBtn, Padding)
+  }
+  if (gSExpandBtn) {
+    gSExpandBtn.attr('class', styleName['s-expand-btn'])
+    attrSExpandBtn(gSExpandBtn)
   }
 }
 
@@ -53,9 +65,12 @@ export const UpdateButtons = (Padding: number, gContent: SelectionG) => {
   const gExpandBtn = gContent.select<SVGGElement>(
     `g.${styleName['expand-btn']}`
   )
-  if (gExpandBtn) {
-    attrExpandBtn(gExpandBtn, Padding)
-  }
+  if (gExpandBtn) attrExpandBtn(gExpandBtn, Padding)
+
+  const gSExpandBtn = gContent.select<SVGGElement>(
+    `g.${styleName['s-expand-btn']}`
+  )
+  if (gSExpandBtn) attrSExpandBtn(gSExpandBtn)
 }
 
 export const appendExpandBtn = (g: SelectionG): SelectionG => {

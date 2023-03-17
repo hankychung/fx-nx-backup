@@ -89,10 +89,12 @@ export const formatObjectiveData = (
 }
 
 export const formatMdata = (data: Data) => {
-  const { children, superiors } = data
+  const { children, superiors, superior_total, child_total } = data
 
   const formatData = {
     title: '',
+    superior_total,
+    child_total,
     children: [] as Data[],
     superiors: [] as Data[]
   }

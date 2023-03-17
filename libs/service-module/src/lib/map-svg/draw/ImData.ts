@@ -8,6 +8,9 @@ import { Data } from '../type/data'
 import { Processer } from '../type/bin'
 import { isSuperiors } from '../utils/is'
 import { getPadding } from './get'
+import { DeleteDom } from './handle'
+
+// const renewId = (d: Mdata, id: string) => (d.id = id)
 
 /**
  * 布局树
@@ -229,6 +232,23 @@ const refreshXy = (data: Mdata) => {
   extractDataFromFlexNode(root_children.descendants(), data)
 }
 
+// 翻转所有的上级到下级关系
+const reverseLevel = (data: Mdata) => {
+  ;[data.cache.children, data.children] = [[...data.children], data.superiors]
+
+  for (const d of data.children) {
+    reverseLevel(d)
+  }
+}
+
+const restoreLevel = (data: Mdata) => {
+  ;[data.superiors, data.children] = [data.children, [...data.cache.children]]
+
+  for (const d of data.superiors) {
+    restoreLevel(d)
+  }
+}
+
 /**
  * 获取新的xy
  * @param data Mdata
@@ -240,11 +260,10 @@ const renewXY = (data: Mdata, plugins: Processer[]) => {
   // 刷新下级坐标
   refreshXy(data)
 
-  /** 翻转上下级关系 刷新上级的坐标 再翻转回来 */
-  const children = [...data.children]
-  data.children = data.superiors
+  /** 翻转所有的上下级关系 刷新上级的坐标 再翻转回来 */
+  reverseLevel(data)
   refreshXy(data)
-  data.children = children
+  restoreLevel(data)
 
   const temp: Processer[] = [renewDelta]
   traverse(data, temp)
@@ -263,6 +282,12 @@ class ImData {
     width: 0,
     height: 0,
     isRoot: false,
+    cache: {
+      superiors: [] as Mdata[],
+      _superiors: [] as Mdata[],
+      children: [] as Mdata[],
+      _children: [] as Mdata[]
+    },
     superiors: [] as Mdata[],
     _superiors: [] as Mdata[],
     children: [] as Mdata[],
@@ -353,6 +378,8 @@ class ImData {
 
       takers,
 
+      cache: {},
+
       child_total,
       collapse: collapse as boolean,
 
@@ -422,6 +449,91 @@ class ImData {
         minCtoRootOffset
       })
     }
+  }
+
+  find(id: string, data = this.data): IsMdata {
+    // 根据id找到数据
+
+    if (!data) return null
+
+    const all: Mdata[] = []
+
+    const isS = isSuperiors(id)
+
+    let findD
+
+    for (const d of data) {
+      if (d.id === id) {
+        findD = d
+        break
+      }
+
+      if (isS) {
+        all.push(...d.superiors)
+      } else {
+        all.push(...d.children)
+      }
+    }
+
+    if (!findD) {
+      findD = this.find(id, all)
+    }
+
+    return findD
+  }
+
+  expand(id: string): IsMdata {
+    return this.eoc(id, false)
+  } //
+  collapse(id: string): IsMdata {
+    return this.eoc(id, true)
+  }
+  expandS(id: string): IsMdata {
+    return this.eoc(id, false, { isSuperiors: true })
+  }
+  collapseS(id: string): IsMdata {
+    return this.eoc(id, true, { isSuperiors: true })
+  }
+
+  /**
+   * 展开或折叠(expand or collapse)
+   */
+  eoc(
+    id: string,
+    collapse: boolean,
+    options?: { plugins?: Processer[]; isSuperiors?: boolean }
+  ): IsMdata {
+    const d = this.find(id)
+
+    const { plugins = [], isSuperiors } = options || {}
+
+    if (d) {
+      if (isSuperiors) {
+        if (d.superior_collapse === collapse) return d
+        // 赋值
+        d.superior_collapse = collapse
+        // 置换
+        ;[d._superiors, d.superiors] = [d.superiors, d._superiors]
+      } else {
+        // 当展开折叠不变的情况下 不需要执行赋值和置换操作
+        if (d.collapse === collapse) return d
+        // 赋值
+        d.collapse = collapse
+        // 置换
+        ;[d._children, d.children] = [d.children, d._children]
+      }
+
+      if (collapse) {
+        const childs = isSuperiors ? d._superiors : d._children
+
+        for (const { id } of childs) {
+          DeleteDom.value.push(`g[data-id='${id}']`)
+        }
+      }
+
+      this.renew(...plugins)
+    }
+    return d
   }
 }
 

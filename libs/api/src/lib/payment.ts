@@ -1,4 +1,11 @@
-import { IGetPriceParams, IGetPriceRes, GetPrice, IGetCouponParams, GetCoupon, IGetCpuponRes } from '../types/payment'
+import {
+  IGetPriceParams,
+  IGetPriceRes,
+  GetPrice,
+  IGetCouponParams,
+  GetCoupon,
+  IGetCpuponRes
+} from '../types/payment'
 
 class PaymentApi {
   getPrice(_params: IGetPriceParams) {
@@ -17,8 +24,10 @@ class PaymentApi {
 
 export const paymentApi = new PaymentApi()
 
-export const init = (options: { getPrice: GetPrice, createCoupon: GetCoupon  }) => {
-  
+export const init = (options: {
+  getPrice: GetPrice
+  createCoupon: GetCoupon
+}) => {
   paymentApi.registerGetPrice(options.getPrice)
   paymentApi.registerCreateCoupon(options.createCoupon)
 }

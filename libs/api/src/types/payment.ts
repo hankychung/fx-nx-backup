@@ -1,4 +1,3 @@
-
 export type IGetPriceParams = {
   good_type: 'person' | 'team'
   is_ios?: boolean
@@ -9,7 +8,7 @@ export type IGetPriceParams = {
 export type IGetCouponParams = {
   coupon_id: number[]
 }
-export type IGoods={
+export type IGoods = {
   create_at: number
   day_num: number
   id: number
@@ -20,16 +19,16 @@ export type IGoods={
   type: number
 }
 export interface ICoupon {
-  end_at:number
-  ref_goods_id:string
+  end_at: number
+  ref_goods_id: string
   coupon_id: number
 }
- export interface IActiveGoods extends IGoods{
-  active:boolean
-  end_at:number
-  ref_goods_id:string
+export interface IActiveGoods extends IGoods {
+  active: boolean
+  end_at: number
+  ref_goods_id: string
   coupon_id: number
-  a?:{isShow:boolean,residueTime:string}
+  a?: { isShow: boolean; residueTime: string }
 }
 export type IGetPriceRes = {
   code: number

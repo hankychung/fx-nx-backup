@@ -11,7 +11,7 @@ class Payment {
       data: params
     })
   }
-   /**
+  /**
    * 创建优惠券
    */
   async createCoupon(params: IGetCouponParams) {
@@ -20,9 +20,11 @@ class Payment {
       data: params
     })
   }
-   
 }
 
 const PaymentApi = new Payment()
-init({ getPrice: PaymentApi.getGoodsList,createCoupon:PaymentApi.createCoupon })
+init({
+  getPrice: PaymentApi.getGoodsList,
+  createCoupon: PaymentApi.createCoupon
+})
 export default new Payment()

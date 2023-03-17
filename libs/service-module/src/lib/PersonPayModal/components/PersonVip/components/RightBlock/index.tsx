@@ -136,9 +136,9 @@ const RightBlock = () => {
                       {regFenToYuan(_.now_price)}
                     </div>
                   </div>
-                  {_.end_at &&_.a&& (
+                  {_.end_at && _.a && (
                     <div className={style.time}>
-                      <span>{_.a&&_.a.residueTime}</span>
+                      <span>{_.a && _.a.residueTime}</span>
                       <MealTime className={style.mealTime}></MealTime>
                     </div>
                   )}

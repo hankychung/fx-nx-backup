@@ -4,13 +4,14 @@ import { Mdata, MdataTaker } from '../type/mdata'
 import {
   attrExpandBtn,
   attrG,
-  attrLine,
+  // attrLine,
   attrPath,
   attrSExpandBtn
 } from '../attr'
 import { expandIcon, getPathIcon } from '../svg-icon'
 import { getTakerId, getTextSize } from '../draw/get'
 import { styleName } from './css'
+import addTakerIcon from '../../../assets/icons/map-svg-icon/add-taker.png'
 
 export const makeTransition = (
   dura: number,
@@ -209,7 +210,7 @@ export const formatTakerList = (g: GContent, d: Mdata) => {
       // 新增协作人图标
       const gIcon = gAddBox.append('svg:image')
       gIcon
-        .attr('xlink:href', '/icons/addTaker.png')
+        .attr('xlink:href', addTakerIcon)
         .attr('width', 16)
         .attr('height', 16)
     }

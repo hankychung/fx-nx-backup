@@ -17,6 +17,7 @@ import { MapSvgConfig } from '../config'
 import { draw } from '../draw'
 import { EnterE, GContent, SelectionG } from '../type'
 import { Mdata } from '../type/mdata'
+import targetIcon from '../../../assets/icons/map-svg-icon/target-icon.png'
 
 import { styleName } from './css'
 
@@ -60,7 +61,7 @@ const AddTargetCard = (gContent: GContent, d: Mdata) => {
   gTargetIconImage
     .attr('width', 20)
     .attr('height', 20)
-    .attr('xlink:href', '/icons/target-icon.png')
+    .attr('xlink:href', targetIcon)
 
   const oneLineTopMargin = padding + 1
   const left = 28

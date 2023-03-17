@@ -15,7 +15,8 @@ import { FakerData } from './fakerData'
 
 import './index.scss'
 import { styleName } from './card/css'
-import { afterOperation } from './draw/handle'
+import { afterOperation, toCenter } from './draw/handle'
+import { SvgController } from './components/svg-controller'
 
 export const MapSvg = () => {
   const initLoading = useRef<boolean>(false)
@@ -76,9 +77,11 @@ export const MapSvg = () => {
         data.push(formatMdata(d))
       }
 
-      mmdata.value = new ImData(data.slice(0, 2))
+      mmdata.value = new ImData(data.slice(0, 4))
 
       afterOperation()
+
+      toCenter(true)
     }, 1000)
   }
 
@@ -104,6 +107,8 @@ export const MapSvg = () => {
         <Scrollbar />
 
         <svg ref={asstSvgEleRef} className={styleName['asst-svg']} />
+
+        <SvgController />
       </div>
     )
   }, [])

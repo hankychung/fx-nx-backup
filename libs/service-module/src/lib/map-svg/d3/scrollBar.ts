@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from './d3-import'
 import { CreateProxy, CreateProxyRefCallBack } from '../type/bin'
-import { svgEle as attach, gEle as target } from './element'
+import { gEle as target, svgEle } from './element'
 import { transitionExtent, zoom, zoomTransform } from './zoom'
 import { svg } from './selection'
 
@@ -25,7 +25,7 @@ let startX = 0
 let startY = 0
 let isScrollingH = false
 let isScrollingV = false
-let topToolsHeight = 0
+const topToolsHeight = 0
 
 export const hMouseDown = (
   e: MouseEvent | React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -86,6 +86,7 @@ export const hMouseMove = (
       return
     }
     const transformInfo = d3.zoomIdentity.translate(tbx, y).scale(k)
+
     if (transitionExtent(transformInfo)) {
       hScrollThumb.value.style.width = tbW + 'px'
       hScrollThumb.value.style.transform = `translateX(${left}px)`
@@ -183,46 +184,16 @@ export const vMouseUp = (): void => {
     vScrollThumb.value.classList.remove('hover')
   }
 }
-export const getWindowConfig = (): {
-  windowWidth: number
-  windowHeight: number
-} => {
-  let windowWidth = window.innerWidth
-  let windowHeight = window.innerHeight
-  if (typeof windowWidth !== 'number') {
-    if (document.compatMode === 'CSS1Compat') {
-      windowWidth = document.documentElement.clientWidth
-      windowHeight = document.documentElement.clientHeight
-    } else {
-      windowWidth = document.body.clientWidth
-      windowHeight = document.body.clientHeight
-    }
-  }
-  return {
-    windowWidth: windowWidth,
-    windowHeight: windowHeight
-  }
-}
 export const initSize = (): void => {
-  const { windowWidth, windowHeight } = getWindowConfig()
-  const dom = document.getElementById('fx-mind-map-container') as HTMLElement
-  if (dom) {
-    dom.style.width = windowWidth + 'px'
-    const tH =
-      document.querySelector('.TopTools')?.getBoundingClientRect().height || 0
-    dom.style.height = windowHeight - tH + 'px'
-  }
-  attachWidth = (attach.value?.getBoundingClientRect().width as number) - 16
-  attachHeight = (attach.value?.getBoundingClientRect().height as number) - 16
+  attachWidth = (svgEle.value?.getBoundingClientRect().width as number) - 16
+  attachHeight = (svgEle.value?.getBoundingClientRect().height as number) - 16
   scrollThumbWidth = hScrollThumb.value?.getBoundingClientRect().width as number
   scrollThumbHeight = vScrollThumb.value?.getBoundingClientRect()
     .height as number
-  topToolsHeight =
-    document.querySelector('.TopTools')?.getBoundingClientRect().height || 0
 }
-const winResize = () => {
-  initSize()
-}
+
+const winResize = () => initSize()
+
 export const onMountedFn = (): void => {
   initSize()
   window.addEventListener('mouseup', hMouseUp)

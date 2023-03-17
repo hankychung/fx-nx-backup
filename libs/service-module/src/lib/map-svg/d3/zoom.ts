@@ -69,6 +69,13 @@ export const onZoomMove = (e: d3.D3ZoomEvent<SVGSVGElement, null>): void => {
   }
 }
 
+export const scaleTo = (k: number) => {
+  if (!svg.value || !gEle.value || !svgEle.value) {
+    return
+  }
+  zoom.scaleTo(svg.value, k)
+}
+
 export const zoomTransform = CreateProxy(
   d3.zoomIdentity,
   (newValue, oldValue) => {

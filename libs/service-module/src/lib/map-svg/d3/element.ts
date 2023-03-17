@@ -1,6 +1,7 @@
 import { d3 } from '.'
 import { SelectionG } from '../type'
 import { CreateProxy, CreateProxyRefCallBack } from '../type/bin'
+import { onMountedFn } from './scrollBar'
 import { g, svg } from './selection'
 
 export const svgEle = CreateProxy<SVGSVGElement | null>(null, (value) => {
@@ -14,7 +15,9 @@ export const gEle = CreateProxy<SVGGElement | null>(null, (value) => {
 
 export const gEleRef = CreateProxyRefCallBack<SVGGElement>(gEle)
 
-export const wrapperEle = CreateProxy<HTMLDivElement | null>(null)
+export const wrapperEle = CreateProxy<HTMLDivElement | null>(null, () => {
+  onMountedFn()
+})
 export const wrapperEleRef = CreateProxyRefCallBack<HTMLDivElement>(wrapperEle)
 
 export const asstSvgEle = CreateProxy<SVGSVGElement | null>(null)

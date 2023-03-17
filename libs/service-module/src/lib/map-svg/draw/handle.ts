@@ -1,4 +1,9 @@
 import { draw } from '.'
+import { MapSvgConfig } from '../config'
+import { d3 } from '../d3'
+import { gEle, svgEle } from '../d3/element'
+import { svg } from '../d3/selection'
+import { zoom, zoomTransform } from '../d3/zoom'
 import { CreateProxy } from '../type/bin'
 import { mmdata } from './const'
 
@@ -6,8 +11,6 @@ export const DeleteDom = CreateProxy<string[]>([])
 
 export const afterOperation = () => {
   while (DeleteDom.value.length > 0) {
-    // const dom = document.querySelector(DeleteDom.value.shift() as string)
-
     document.querySelector(DeleteDom.value.shift() as string)?.remove()
   }
 
@@ -40,4 +43,33 @@ export const collapseS = (id: string): void => {
 
   mmdata.value.collapseS(id)
   afterOperation()
+}
+
+export const toCenter = (isFit = false): void => {
+  if (!svg.value || !gEle.value || !svgEle.value) {
+    return
+  }
+  const gBB = gEle.value.getBBox()
+  const svgBCR = svgEle.value.getBoundingClientRect()
+  const svgCenter = { x: svgBCR.width / 2, y: svgBCR.height / 2 }
+  let multiple = isFit
+    ? Math.min(svgBCR.width / gBB.width, svgBCR.height / gBB.height)
+    : zoomTransform.value.k
+
+  if (isFit) {
+    multiple = Math.max(multiple, MapSvgConfig.scaleExtent[0])
+  }
+
+  const gCenter = {
+    x: (gBB.width * multiple) / 2,
+    y: (gBB.height * multiple) / 2
+  }
+
+  const center = d3.zoomIdentity
+    .translate(
+      -gBB.x * multiple + svgCenter.x - gCenter.x,
+      -gBB.y * multiple + svgCenter.y - gCenter.y
+    )
+    .scale(multiple)
+  zoom.transform(svg.value, center)
 }

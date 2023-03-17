@@ -1,5 +1,1 @@
-import { UsercApi } from './lib/userc'
-
-export * from './lib/service'
-
-export { UsercApi }
+export * from './lib/payment'

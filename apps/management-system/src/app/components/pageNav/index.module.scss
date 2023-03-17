@@ -6,6 +6,7 @@ $itemWidth: 250px;
   padding-right: 25px;
   height: 80px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
@@ -33,6 +34,7 @@ $itemWidth: 250px;
 
   .navCenter {
     width: $itemWidth;
+    height: 85%;
   }
 
   .navRight {

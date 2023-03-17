@@ -1478,10 +1478,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@flyele/flyele-components@^2.11.15":
-  version "2.11.15"
-  resolved "https://npm.flyele.vip/@flyele%2fflyele-components/-/flyele-components-2.11.15.tgz#ee651aacaa9a468d12548d7470b31b6a01a9f6ce"
-  integrity sha512-auIgEZf82EqxE9zm2bIZm/QZv7zxfWsEy9W2s8AjFNJWNv2DFHNRKmI4BHxypov/Uas0VYudwJ96+PZXdJKrIg==
+"@flyele/flyele-components@^2.12.1":
+  version "2.12.1"
+  resolved "https://npm.flyele.vip/@flyele%2fflyele-components/-/flyele-components-2.12.1.tgz#7f6dddc1db53ecebcbff049c3afc373d9b5cd6de"
+  integrity sha512-Jsd7cp9/tDuoL2ZKOlshi/FUCwD3u8RTfPnP/FU1QV3SNiXb8LWOAA9zgmiQ5GW5UWMr4AIIwIGAyhTJ4aC4Eg==
   dependencies:
     "@popperjs/core" "^2.11.6"
     "@types/lodash" "^4.14.186"

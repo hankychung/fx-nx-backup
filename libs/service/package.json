@@ -1,8 +1,5 @@
 {
   "name": "@flyele-nx/service",
   "version": "0.0.1",
-  "type": "commonjs",
-  "dependencies": {
-    "dayjs": "^1.11.7"
-  }
+  "type": "commonjs"
 }

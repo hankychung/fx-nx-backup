@@ -1,3 +1,4 @@
+
 export type IGetPriceParams = {
   good_type: 'person' | 'team'
   is_ios?: boolean
@@ -5,26 +6,39 @@ export type IGetPriceParams = {
   is_old_user?: boolean
   num?: number
 }
-
+export type IGetCouponParams = {
+  coupon_id: number[]
+}
+export type IGoods={
+  create_at: number
+  day_num: number
+  id: number
+  name: string
+  now_price: number
+  original_price: number
+  state: number
+  type: number
+}
+export interface ICoupon {
+  end_at:number
+  ref_goods_id:string
+  coupon_id: number
+}
+ export interface IActiveGoods extends IGoods{
+  active:boolean
+  end_at:number
+  ref_goods_id:string
+  coupon_id: number
+  a?:{isShow:boolean,residueTime:string}
+}
 export type IGetPriceRes = {
   code: number
-  complete_total: number
-  cursor: number
-  data: {
-    create_at: number
-    day_num: number
-    id: number
-    name: string
-    now_price: number
-    original_price: number
-    state: number
-    type: number
-  }[]
-  dbg_error: string
-  message: string
-  not_today_total: number
-  scroll_id: string
-  total: number
+  data: IActiveGoods[]
+}
+export type IGetCpuponRes = {
+  code: number
+  data: ICoupon[]
 }
 
 export type GetPrice = (params: IGetPriceParams) => Promise<IGetPriceRes>
+export type GetCoupon = (params: IGetCouponParams) => Promise<IGetCpuponRes>

@@ -26,14 +26,22 @@ interface Iprops {
   visible: boolean
   mineId: string
   payType?: VipMealType //个人支付类型 1个人 2团队
-  teamVipType?: VipPayType 
+  teamVipType?: VipPayType
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   onClose: () => void
   memberList: IFlyeleAvatarItem[]
 }
 
 export default function PayModal(props: Iprops) {
-  const { visible, modalType, payType, onClose, memberList, mineId,teamVipType=1 } = props
+  const {
+    visible,
+    modalType,
+    payType,
+    onClose,
+    memberList,
+    mineId,
+    teamVipType = 1
+  } = props
 
   const buildPayModal = () => {
     if (!modalType) return null

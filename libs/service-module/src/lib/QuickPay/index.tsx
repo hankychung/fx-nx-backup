@@ -39,12 +39,17 @@ const QuickPay = (props: Iprops) => {
           <div className={style.topBlock}>
             <Header onClose={onClose} />
             {!showSuccess && (
-              <MemberInfo memberList={memberList} mineId={mineId} setVipMeal={setVipMeal} vipMeal={vipMeal}/>
+              <MemberInfo
+                memberList={memberList}
+                mineId={mineId}
+                setVipMeal={setVipMeal}
+                vipMeal={vipMeal}
+              />
             )}
           </div>
           <div>
             <PayQrCode
-               vipMeal={vipMeal}
+              vipMeal={vipMeal}
               setShowSuccess={setShowSuccess}
               showSuccess={showSuccess}
             />

@@ -21,16 +21,15 @@ class Payment {
       data: params
     })
   }
-    /**
+  /**
    * 下单
    */
-    async createOrder(params: ICreateOrderParams) {
-      return service.post({
-        url: `payment/v2/indent`,
-        data: params
-      })
-    }
-
+  async createOrder(params: ICreateOrderParams) {
+    return service.post({
+      url: `payment/v2/indent`,
+      data: params
+    })
+  }
 }
 
 const PaymentApi = new Payment()

@@ -35,7 +35,7 @@ const MemberInfo = ({
   memberList: IFlyeleAvatarItem[]
   mineId: string
   vipMeal?: IActiveGoods
-  setVipMeal: (_:IActiveGoods)=>void
+  setVipMeal: (_: IActiveGoods) => void
 }) => {
   const Controller = useController(new FlyBasePopperCtrl())
   const { nowScecond } = useCurrentTime()

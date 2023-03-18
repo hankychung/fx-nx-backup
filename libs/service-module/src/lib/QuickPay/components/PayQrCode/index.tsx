@@ -51,8 +51,6 @@ const PayQrCode = ({
     }
   })
 
-
-  
   return (
     <div>
       {!showSuccess && (

@@ -1,4 +1,3 @@
-
 export interface IErrorResponse {
   code: number
   dbg_error: string
@@ -28,6 +27,6 @@ export interface ICreateOrderParams {
   coupon_id: number
   good_id: number
   origin_route: string
-  total_price:number
+  total_price: number
   users_id: string[]
-} 
+}

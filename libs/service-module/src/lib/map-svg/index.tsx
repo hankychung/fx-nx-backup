@@ -19,6 +19,7 @@ import { useState } from 'react'
 import { zoomTransform } from './d3/zoom'
 import { d3 } from './d3'
 import { wheelPreventDefault } from './utils'
+import { ZoomToast } from './components/zoom-toast'
 
 const MapSvgRender: ForwardRefRenderFunction<MapSvgRef> = (props, ref) => {
   const [initKey] = useState(
@@ -137,6 +138,8 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef> = (props, ref) => {
         />
 
         <SvgController componentKey={initKey} />
+
+        <ZoomToast componentKey={initKey} />
       </div>
     )
   }, [])

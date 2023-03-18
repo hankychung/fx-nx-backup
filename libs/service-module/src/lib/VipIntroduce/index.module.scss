@@ -1,0 +1,30 @@
+.container {
+  :global(.ant-modal-close) {
+    top: 27px !important;
+  }
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .desc {
+    font-size: 10px;
+    color: rgba($color: #000, $alpha: 0.4);
+  }
+
+  button {
+    border-radius: 22px;
+    background-color: rgba($color: #000, $alpha: 0.1);
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    margin-right: 17px;
+    height: 24px;
+    line-height: 24px;
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+}

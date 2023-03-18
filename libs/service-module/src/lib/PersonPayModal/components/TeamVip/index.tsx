@@ -2,33 +2,31 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-08 16:37:05
+ * @LastEditTime: 2023-03-18 14:22:32
  */
-import { useCreation } from 'ahooks'
 import React from 'react'
-import { SelectMemberContext } from '../../context/context'
-import { SelectMemberService } from '../../context/service'
+import { IFlyeleAvatarItem } from '../../../PayModal'
 import LeftBlock from './components/LeftBlock'
 import RightBlock from './components/RightBlock'
 
 import style from './index.module.scss'
 
-const TeamVip = () => {
-  const service = useCreation(() => {
-    return new SelectMemberService()
-  }, [])
-
+const TeamVip = ({
+  memberList,
+  mineId
+}: {
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
+}) => {
   return (
-    <SelectMemberContext.Provider value={service}>
-      <div className={style.teamVip}>
-        <div>
-          <LeftBlock />
-        </div>
-        <div>
-          <RightBlock />
-        </div>
+    <div className={style.teamVip}>
+      <div>
+        <LeftBlock memberList={memberList} mineId={mineId} />
       </div>
-    </SelectMemberContext.Provider>
+      <div>
+        <RightBlock />
+      </div>
+    </div>
   )
 }
 

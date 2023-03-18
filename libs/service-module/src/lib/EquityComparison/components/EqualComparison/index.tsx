@@ -3,6 +3,8 @@ import styles from './index.module.scss'
 import { IEqualComparison } from '@flyele-nx/constant'
 import { DescTooltip } from './components/DescTooltip'
 import cs from 'classnames'
+import { ReactComponent as SelectIcon } from '../../../../assets/introduction/select.svg'
+import { ReactComponent as CloseIcon } from '../../../../assets/introduction/close.svg'
 
 interface IProps {
   title: string
@@ -20,9 +22,11 @@ export const TableData = ({
   if (typeof data === 'boolean') {
     return (
       <div className={cs(styles.tableItem)}>
-        <div
-          className={cs(styles.iconBox, data ? styles.selected : styles.close)}
-        />
+        {data ? (
+          <SelectIcon color="#1DD2C1" width={14} height={14} />
+        ) : (
+          <CloseIcon color="#F26B57" width={14} height={14} />
+        )}
       </div>
     )
   } else {

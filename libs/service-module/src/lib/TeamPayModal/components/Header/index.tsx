@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 10:22:55
+ * @LastEditTime: 2023-03-13 20:09:11
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,6 +12,12 @@ import { ReactComponent as Customer } from '../../../../assets/payImg/customer.s
 import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_right.svg'
 import style from './index.module.scss'
 import { vipPayText, VipPayType } from '../controller'
+import {
+  FlyBasePopper,
+  FlyBasePopperCtrl,
+  useController
+} from '@flyele/flyele-components'
+import CustomerServicesModal from '../../../CustomerServicesModal'
 
 const Header = ({
   vipType,
@@ -20,6 +26,7 @@ const Header = ({
   vipType: VipPayType
   onClose: () => void
 }) => {
+  const Controller = useController(new FlyBasePopperCtrl())
   const obj = vipPayText(vipType)
 
   return (
@@ -39,10 +46,27 @@ const Header = ({
         </div>
       </div>
       <div className={style.right}>
-        <div className={style.customer}>
-          <Customer></Customer>
-          <span>联系客服</span>
-        </div>
+        <FlyBasePopper
+          controller={Controller}
+          trigger="click"
+          placement="bottom-end"
+          showArrow={false}
+          content={() => (
+            <div>
+              <CustomerServicesModal
+                onClose={() => {
+                  Controller.hide()
+                }}
+              ></CustomerServicesModal>
+            </div>
+          )}
+        >
+          <div className={style.customer}>
+            <Customer></Customer>
+            <span>联系客服</span>
+          </div>
+        </FlyBasePopper>
+
         <Close
           className={style.close}
           onClick={() => {

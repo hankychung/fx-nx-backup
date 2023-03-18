@@ -5,6 +5,7 @@ import {
   IdentityEqualComparison,
   SpaceEqualComparison
 } from '@flyele-nx/service-module'
+
 const InterestsIntroduction = () => {
   const goToPage = () => {
     window.location.replace('https://www.feixiang.cn/bbxz')

@@ -1,14 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss'
-import NxWelcome from './nx-welcome'
-// import { Banner } from '@flyele-nx/service-module'
+// import { LureModal } from '@flyele-nx/ui'
+import { VipexpiredBanner } from '@flyele-nx/ui'
 
 export function App() {
   return (
     <>
-      <NxWelcome title="web" />
-      {/* <Banner /> */}
+      <VipexpiredBanner
+        handleConfirm={() => {
+          console.log('ss')
+        }}
+      />
       <div />
+      {/* <LureModal
+        open={true}
+        handleClose={() => {}}
+        handleConfirm={() => {}}
+        title="增加文sd件大小"
+        tip="tipasdasdas"
+        freeTxt="30M"
+        vipTxt="50M"
+        highlight="在思维导图中结构化创建事项"
+        imgType="application"
+      /> */}
     </>
   )
 }

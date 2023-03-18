@@ -21,3 +21,12 @@ export interface IUserInfo {
   user_id: string
   pinyin: string
 }
+
+export interface ICreateOrderParams {
+  amount: number
+  coupon_id: number
+  good_id: number
+  origin_route: string
+  total_price: number
+  users_id: string[]
+}

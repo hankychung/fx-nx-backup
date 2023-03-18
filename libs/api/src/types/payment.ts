@@ -28,7 +28,6 @@ export interface IActiveGoods extends IGoods {
   end_at: number
   ref_goods_id: string
   coupon_id: number
-  a?: { isShow: boolean; residueTime: string }
 }
 export type IGetPriceRes = {
   code: number

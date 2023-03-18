@@ -2,10 +2,11 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-09 14:53:18
+ * @LastEditTime: 2023-03-18 12:33:17
  */
 import { useCreation } from 'ahooks'
 import React, { useEffect, useState } from 'react'
+import { IFlyeleAvatarItem } from '../../../PayModal'
 import { SelectMemberContext } from '../../context/context'
 import { SelectMemberService } from '../../context/service'
 import { VipPayType } from '../controller'
@@ -16,10 +17,12 @@ import RightBlock from './components/RightBlock'
 import style from './index.module.scss'
 
 interface Iprops {
+  memberList: IFlyeleAvatarItem[]
   vipType: VipPayType
+  mineId: string
 }
 const TeamVip = (props: Iprops) => {
-  const { vipType } = props
+  const { vipType,memberList, mineId } = props
 
   const [showPay, setShowPay] = useState<boolean>(false)
   const service = useCreation(() => {
@@ -48,7 +51,7 @@ const TeamVip = (props: Iprops) => {
     <SelectMemberContext.Provider value={service}>
       <div className={style.teamVip}>
         <div className={style.block}>
-          <LeftBlock vipType={vipType} />
+          <LeftBlock vipType={vipType} memberList={memberList} mineId={mineId}/>
         </div>
         <div className={style.block}>
           <RightBlock vipType={vipType} />

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 16:38:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 10:28:47
+ * @LastEditTime: 2023-03-18 14:19:36
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,20 +23,25 @@ import {
 import { SelectMemberService } from '../../../../../../context/service'
 import { useListPrevNext } from '../../../../../../hooks/useListPreNext'
 import { VipPayType } from '../../../../../controller'
+import { IFlyeleAvatarItem } from '../../../../../../../PayModal'
 
 const MemberList = ({
   resultArr,
   service,
-  vipType
+  vipType,
+  memberList,
+  mineId
 }: {
-  resultArr: any
+  resultArr: IFlyeleAvatarItem[]
   service: SelectMemberService
   vipType: VipPayType
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
 }) => {
-  const interacts: any = []
+  const interacts = memberList
   const [searchValue, setSearchValue] = useState<string>('')
   const [activeSearch, setActiveSearch] = useState(false)
-  const [searchList, setSearchList] = useState<any[]>([])
+  const [searchList, setSearchList] = useState<IFlyeleAvatarItem[]>([])
   const idPrefix = useMemo(() => uniqueId('searchPopover_list'), [])
   const { selIndex, next, prev } = useListPrevNext({
     list: searchList,
@@ -53,8 +58,8 @@ const MemberList = ({
    */
   const onClickItem = useMemoizedFn((item: any) => {
     const resArr = [...resultArr]
-    const key = item.user_id
-    const findItem = resArr.findIndex((item) => item.user_id === key)
+    const key = item.userId
+    const findItem = resArr.findIndex((item) => item.userId === key)
 
     if (findItem === -1) {
       resArr.push(item)
@@ -164,16 +169,14 @@ const MemberList = ({
         <div className={style.itemList}>
           {showList &&
             showList.length > 0 &&
-            showList.map((_: any) => {
+            showList.map((_) => {
               return (
-                <div key={_.user_id}>
+                <div key={_.userId}>
                   <SingleCheckItemRow
                     // key={item.id}
                     data={{}}
                     state={
-                      resultArr
-                        .map((item: any) => item.user_id)
-                        .includes(_.user_id)
+                      resultArr.map((item) => item.userId).includes(_.userId)
                         ? CheckBoxState.checked
                         : CheckBoxState.unset
                     }
@@ -186,14 +189,18 @@ const MemberList = ({
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
-                          <span>{_.original_name || _.nick_name}</span>
-                          <div className={style.mine}>我</div>
-                          <MemberPersonVip
-                            className={style.member_person_vip}
-                          ></MemberPersonVip>
-                          <MemberTeamVip
-                            className={style.member_team_vip}
-                          ></MemberTeamVip>
+                          <span>{_.name}</span>
+                          {mineId===_.userId&& <div className={style.mine}>我</div>}
+                          {_.isVip && (
+                            <MemberPersonVip
+                              className={style.member_person_vip}
+                            ></MemberPersonVip>
+                          )}
+                          {_.isTeamVip && (
+                            <MemberTeamVip
+                              className={style.member_team_vip}
+                            ></MemberTeamVip>
+                          )}
                         </div>
                         <span>{_.telephone}</span>
                       </div>
@@ -210,14 +217,14 @@ const MemberList = ({
             searchList.length > 0 &&
             searchList.map((_) => {
               return (
-                <div key={_.user_id}>
+                <div key={_.userId}>
                   <SingleCheckItemRow
                     // key={item.id}
                     data={{}}
                     state={
                       resultArr
-                        .map((item: any) => item.user_id)
-                        .includes(_.user_id)
+                        .map((item: any) => item.userId)
+                        .includes(_.userId)
                         ? CheckBoxState.checked
                         : CheckBoxState.unset
                     }
@@ -226,10 +233,23 @@ const MemberList = ({
                     colorType={CheckColorType.GREEN}
                     // isClickIcon
                   >
-                    <div className={style.mem_info}>
+                       <div className={style.mem_info}>
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
-                        <div>{_.original_name || _.nick_name}</div>
+                        <div className={style.name_icon}>
+                          <span>{_.name}</span>
+                          {mineId===_.userId&& <div className={style.mine}>我</div>}
+                          {_.isVip && (
+                            <MemberPersonVip
+                              className={style.member_person_vip}
+                            ></MemberPersonVip>
+                          )}
+                          {_.isTeamVip && (
+                            <MemberTeamVip
+                              className={style.member_team_vip}
+                            ></MemberTeamVip>
+                          )}
+                        </div>
                         <span>{_.telephone}</span>
                       </div>
                     </div>

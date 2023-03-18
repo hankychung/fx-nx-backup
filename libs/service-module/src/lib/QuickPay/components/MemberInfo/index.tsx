@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 17:03:34
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 20:10:21
+ * @LastEditTime: 2023-03-18 12:24:11
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
@@ -21,8 +21,9 @@ import { ReactComponent as MemberTeamVip } from '../../../../assets/payImg/membe
 import cs from 'classnames'
 import style from './index.module.scss'
 import CustomerServicesModal from '../../../CustomerServicesModal'
+import { IFlyeleAvatarItem } from '../../../PayModal'
 
-const MemberInfo = () => {
+const MemberInfo = ({ memberList, mineId}: { memberList: IFlyeleAvatarItem[],mineId:string }) => {
   const Controller = useController(new FlyBasePopperCtrl())
   return (
     <div className={style.memberInfo}>
@@ -31,14 +32,20 @@ const MemberInfo = () => {
           <FlyAvatar src={''} size={30} />
           <div className={style.mem_name}>
             <div className={style.name_icon}>
-              <span>圣诞节快乐妇女经典款</span>
-              <div className={style.mine}>我</div>
-              <MemberPersonVip
-                className={style.member_person_vip}
-              ></MemberPersonVip>
-              <MemberTeamVip className={style.member_team_vip}></MemberTeamVip>
+              <span>{memberList[0].name}</span>
+              {mineId===memberList[0].userId&&<div className={style.mine}>我</div>}
+              {memberList[0].isVip && (
+                <MemberPersonVip
+                  className={style.member_person_vip}
+                ></MemberPersonVip>
+              )}
+              {memberList[0].isTeamVip && (
+                <MemberTeamVip
+                  className={style.member_team_vip}
+                ></MemberTeamVip>
+              )}
             </div>
-            <span>16651150991</span>
+            <span>{ memberList[0].telephone}</span>
           </div>
         </div>
         <FlyBasePopper

@@ -2,11 +2,11 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 10:08:56
+ * @LastEditTime: 2023-03-18 14:34:58
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
 import { FlyAvatar, FlyAvatarWithIcon } from '@flyele/flyele-components'
@@ -15,11 +15,16 @@ import style from './index.module.scss'
 import PayButton from '../../../PayButton'
 import { VipMealType } from '../../../controller'
 import { SelectMemberContext } from '../../../../context/context'
-
+import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { getResidueTime, regFenToYuan } from '../../../../utils'
+import { useCurrentTime } from '../../../../hooks/useCurrentTime'
+import * as dayjs from 'dayjs'
+import { IFlyeleAvatarItem } from '../../../../../PayModal'
 const RightBlock = () => {
   const service = useContext(SelectMemberContext)
-  const [resultArr, setResultArr] = useState<any[]>([])
-
+  const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
+  const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
+  const { nowScecond } = useCurrentTime()
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
@@ -37,6 +42,36 @@ const RightBlock = () => {
       service.dispose()
     }
   }, [service])
+  //获取套餐
+  useEffect(() => {
+    getMealList()
+  }, [])
+  const getItem = (id: number, list: ICoupon[]) => {
+    return list.filter((item) => +item.ref_goods_id === id)
+  }
+  const getMealList = async () => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
+      paymentApi.getPrice({ good_type: 'team' }).then((res) => {
+        if (res.code === 0) {
+          const new_arr = res.data.map((item) => {
+            const arr = getItem(item.id, _.data || [])
+            return {
+              ...item,
+              active: false,
+              ...arr[0]
+            }
+          })
+          setVipMeal(new_arr[0])
+        }
+      })
+    })
+  }
+  const num = useMemo(() => {
+    return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
+  }, [vipMeal])
+  const payClick=() => {
+    service.showPay({ show: true, payInfo: vipMeal ,userInfo: resultArr})
+  }
   return (
     <div className={style.rightBlock}>
       <div>
@@ -53,19 +88,23 @@ const RightBlock = () => {
             >
               <div className={style.vip_name}>团队会员</div>
               <div className={style.price}>
-                <span>
-                  <i>￥</i>
-                  <span>599</span>
-                </span>
+                {vipMeal?.original_price && (
+                  <span>
+                    <i>￥</i>
+                    <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
+                  </span>
+                )}
                 <div>
                   <span>￥</span>
-                  298/人/年
+                  {`${regFenToYuan(vipMeal?.now_price || 0)}/人/年`}
                 </div>
               </div>
-              <div className={style.time}>
-                <span> 限时 23:59:00</span>
-                <MealTime className={style.mealTime}></MealTime>
-              </div>
+              {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
+                <div className={style.time}>
+                  <span> {getResidueTime(num - nowScecond)}</span>
+                  <MealTime className={style.mealTime}></MealTime>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -79,9 +118,9 @@ const RightBlock = () => {
           </div>
 
           <div className={style.members}>
-            {resultArr.map((_: any) => {
+            {resultArr.map((_) => {
               return (
-                <div key={_.user_id} className={style.item}>
+                <div key={_.userId} className={style.item}>
                   <div className={style.show} id="member_info">
                     <FlyAvatarWithIcon
                       iconPos="topRight"
@@ -91,7 +130,7 @@ const RightBlock = () => {
                       onClickIcon={() => {
                         service.selectMember({
                           list: resultArr.filter(
-                            (item) => item.user_id !== _.user_id
+                            (item) => item.userId !== _.userId
                           )
                         })
                       }}
@@ -100,7 +139,7 @@ const RightBlock = () => {
                   <div className={style.hide}>
                     <FlyAvatar src={_.avatar} />
                   </div>
-                  <p className={style.name}>是的空间发挥的苦上加苦可是打开</p>
+                  <p className={style.name}>{_.name}</p>
                 </div>
               )
             })}
@@ -119,7 +158,7 @@ const RightBlock = () => {
 
       {/* 支付按钮 */}
       <div>
-        <PayButton vipMealType={VipMealType.TEAM} />
+        <PayButton vipMealType={VipMealType.TEAM} activeGood={vipMeal?[vipMeal]:[]} payClick={payClick} resultArr={resultArr}/>
       </div>
     </div>
   )

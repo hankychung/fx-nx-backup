@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-17 11:55:01
+ * @LastEditTime: 2023-03-18 10:47:02
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,8 +17,10 @@ import Protocol from './components/Protocol'
 import { SelectMemberContext } from '../../context/context'
 import SuccessPay from './components/SuccessPay'
 import { useMemoizedFn } from '@flyele/flyele-components'
+import { IActiveGoods } from '@flyele-nx/api'
+import { regFenToYuan } from '../../utils'
 
-const PayQrCode = () => {
+const PayQrCode = ({ payInfo }: { payInfo?: IActiveGoods }) => {
   const service = useContext(SelectMemberContext)
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [qrCode, setQrCode] = useState('')
@@ -76,7 +78,7 @@ const PayQrCode = () => {
             <div className={style.payInfo}>
               <div className={style.price}>
                 <span> ￥</span>
-                <span>298</span>
+                <span>{regFenToYuan(payInfo&&payInfo.now_price||0)}</span>
               </div>
               <div
                 className={style.code}

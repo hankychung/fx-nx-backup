@@ -1,12 +1,5 @@
-/*
- * @Author: wanghui wanghui@flyele.net
- * @Date: 2023-03-08 09:43:55
- * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-17 20:25:23
- * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-import React, { useEffect, useState } from 'react'
+
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
 import style from './index.module.scss'
@@ -15,40 +8,17 @@ import { VipMealType } from '../../../controller'
 import PersonVipEmpty from './PersonVipEmpty'
 import { IActiveGoods, paymentApi, ICoupon } from '@flyele-nx/api'
 import { getResidueTime, regFenToYuan } from '../../../../utils'
-
+import * as dayjs from 'dayjs'
+import { useCurrentTime } from '../../../../hooks/useCurrentTime'
+import { SelectMemberContext } from '../../../../context/context'
 const RightBlock = () => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
-  const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
+  const service = useContext(SelectMemberContext)
+  const { nowScecond } = useCurrentTime()
   useEffect(() => {
     getMealList()
   }, [])
-  useEffect(() => {
-    if (vipMealList.length > 0) {
-      // const a=vipMealList
-      // if(a.length>0) return
-      const id: NodeJS.Timer = setInterval(() => {
-        // const a=vipMealList
-        const new_arr = vipMealList.map((item) => {
-          if (item.end_at) {
-            return {
-              ...item,
-              a: getResidueTime(1679141829)
-            }
-          }
-          return {
-            ...item
-          }
-        })
-        console.log(new_arr)
 
-        setVipMealList(new_arr)
-      }, 1000)
-      setIntervalId(id)
-    }
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [vipMealList])
 
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
@@ -91,6 +61,7 @@ const RightBlock = () => {
       })
     })
   }
+  //选择套餐
   const mealSelect = (_: IActiveGoods) => {
     const new_arr = vipMealList.map((item) => {
       if (item.id === _.id) {
@@ -107,6 +78,12 @@ const RightBlock = () => {
 
     setVipMealList(new_arr)
   }
+  const activeGood = useMemo(() => {
+    return vipMealList.filter((item) => item.active)
+  }, [vipMealList])
+  const payClick=() => {
+    service.showPay({ show: true, payInfo: activeGood[0] })
+  }
 
   return (
     <div className={style.rightBlock}>
@@ -115,6 +92,11 @@ const RightBlock = () => {
           <div className={style.title}>套餐选择</div>
           <div className={style.mealList}>
             {vipMealList.map((_: IActiveGoods) => {
+              let num = 0
+              if (_.end_at) {
+                num = dayjs.unix(_.end_at).valueOf() / 1000 //结束时间
+              }
+
               return (
                 <div
                   className={cs(style.mealItem, {
@@ -127,18 +109,20 @@ const RightBlock = () => {
                 >
                   <div className={style.name}>{_.name}</div>
                   <div className={style.price}>
-                    <span>
-                      <i>￥</i>
-                      <span>{regFenToYuan(_.original_price)}</span>
-                    </span>
+                    {_.original_price && (
+                      <span>
+                        <i>￥</i>
+                        <span>{regFenToYuan(_.original_price)}</span>
+                      </span>
+                    )}
                     <div>
                       <span>￥</span>
                       {regFenToYuan(_.now_price)}
                     </div>
                   </div>
-                  {_.end_at && _.a && (
+                  {_.end_at && getResidueTime(num - nowScecond) !== '0' && (
                     <div className={style.time}>
-                      <span>{_.a && _.a.residueTime}</span>
+                      <span>{getResidueTime(num - nowScecond)}</span>
                       <MealTime className={style.mealTime}></MealTime>
                     </div>
                   )}
@@ -151,7 +135,7 @@ const RightBlock = () => {
       {/* 支付按钮 */}
       {
         <div>
-          <PayButton vipMealType={VipMealType.PERSON} />
+          <PayButton vipMealType={VipMealType.PERSON} activeGood={activeGood} payClick={payClick}/>
         </div>
       }
       {false && (

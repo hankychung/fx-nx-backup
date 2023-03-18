@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 11:17:49
+ * @LastEditTime: 2023-03-18 14:22:14
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,16 +14,21 @@ import PersonVip from '../PersonVip'
 import TeamVip from '../TeamVip'
 import { SelectMemberContext } from '../../context/context'
 import PayQrCode from '../PayQrCode'
+import { IActiveGoods } from '@flyele-nx/api'
+import { IFlyeleAvatarItem } from '../../../PayModal'
 const url = `https://cdn.flyele.net/resources/PC/`
 interface Iprops {
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
   vipMealType: VipMealType
   setVipMealType: (_: VipMealType) => void
 }
 
 const VipPackage = (props: Iprops) => {
-  const { vipMealType, setVipMealType } = props
+  const { vipMealType, setVipMealType, memberList, mineId } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
+  const [payInfo, setPayInfo] = useState<IActiveGoods>()
   const service = useContext(SelectMemberContext)
 
   useEffect(() => {
@@ -32,8 +37,10 @@ const VipPackage = (props: Iprops) => {
 
       switch (event) {
         case 'showPay':
+          console.log(service.getData('showPay'));
+          
           setShowPay(service.getData('showPay').show)
-
+          setPayInfo(service.getData("showPay").payInfo)
           break
 
         default:
@@ -77,7 +84,7 @@ const VipPackage = (props: Iprops) => {
     >
       <div className={style.tabs}>
         {tabsList.map((_) => {
-          console.log(_)
+        
 
           return (
             <div
@@ -117,10 +124,10 @@ const VipPackage = (props: Iprops) => {
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
       >
-        <TeamVip />
+        <TeamVip memberList={memberList} mineId={mineId}/>
       </div>
       {/* 支付弹窗 */}
-      {showPay && <PayQrCode />}
+      {showPay && <PayQrCode payInfo={payInfo}/>}
     </div>
   )
 }

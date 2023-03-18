@@ -11,6 +11,7 @@ import Header from './components/Header'
 import MemberInfo from './components/MemberInfo'
 import PayQrCode from './components/PayQrCode'
 import { IFlyeleAvatarItem } from '../PayModal'
+import { IActiveGoods } from '@flyele-nx/api'
 interface Iprops {
   onClose: () => void
   mineId: string
@@ -19,7 +20,7 @@ interface Iprops {
 const QuickPay = (props: Iprops) => {
   const { onClose, memberList, mineId } = props
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
-
+  const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   return (
     <div>
       <Modal
@@ -38,11 +39,12 @@ const QuickPay = (props: Iprops) => {
           <div className={style.topBlock}>
             <Header onClose={onClose} />
             {!showSuccess && (
-              <MemberInfo memberList={memberList} mineId={mineId} />
+              <MemberInfo memberList={memberList} mineId={mineId} setVipMeal={setVipMeal} vipMeal={vipMeal}/>
             )}
           </div>
           <div>
             <PayQrCode
+               vipMeal={vipMeal}
               setShowSuccess={setShowSuccess}
               showSuccess={showSuccess}
             />

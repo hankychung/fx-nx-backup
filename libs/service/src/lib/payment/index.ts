@@ -1,5 +1,6 @@
 import { IGetCouponParams, IGetPriceParams, init } from '@flyele-nx/api'
 import { service } from '../service'
+import { ICreateOrderParams } from '../typings'
 
 class Payment {
   /**
@@ -20,6 +21,16 @@ class Payment {
       data: params
     })
   }
+    /**
+   * 下单
+   */
+    async createOrder(params: ICreateOrderParams) {
+      return service.post({
+        url: `payment/v2/indent`,
+        data: params
+      })
+    }
+
 }
 
 const PaymentApi = new Payment()

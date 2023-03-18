@@ -281,6 +281,7 @@ class ImData {
     py: 0,
     width: 0,
     height: 0,
+    componentKey: '',
     isRoot: false,
     cache: {
       superiors: [] as Mdata[],
@@ -294,7 +295,9 @@ class ImData {
     _children: [] as Mdata[]
   }
 
-  constructor(d: Data[]) {
+  constructor(componentKey: string, d: Data[]) {
+    this.MdataDefaultValue.componentKey = componentKey
+
     this.getSize = getSize
     this.data = []
 

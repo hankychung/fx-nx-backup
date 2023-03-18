@@ -1,6 +1,6 @@
 import { MapSvgConfig } from '../config'
 import { linkHorizontal } from '../d3'
-import { asstSvg } from '../d3/selection'
+import { asstSvg, selectionAsstSvg } from '../d3/selection'
 import { EnterE } from '../type'
 import { TwoNumber } from '../type/data'
 import { Mdata, MdataTaker, MDataTypeEnum } from '../type/mdata'
@@ -156,10 +156,14 @@ export const getMultilineTexts = (
   maxWidth = 214,
   fontSize = 12
 ) => {
-  if (!asstSvg.value) {
+  const asst = Object.entries(asstSvg).filter(
+    ([key]) => key !== 'effect'
+  )?.[0]?.[1] as unknown as selectionAsstSvg
+
+  if (!asst) {
     throw new Error('asstSvg undefined')
   }
-  const t = asstSvg.value.append('text').attr('font-size', fontSize)
+  const t = asst.append('text').attr('font-size', fontSize)
 
   const texts = text.split('')
   const textLineDatas: string[] = []
@@ -196,11 +200,16 @@ export const getTextSize = (
   text: string,
   fontSize = 12
 ): { width: number; height: number } => {
-  if (!asstSvg.value) {
+  const asst = Object.entries(asstSvg).filter(
+    ([key]) => key !== 'effect'
+  )?.[0]?.[1] as unknown as selectionAsstSvg
+
+  if (!asst) {
     throw new Error('asstSvg undefined')
   }
   const multiline = getMultiline(text)
-  const t = asstSvg.value.append('text')
+  const t = asst.append('text')
+
   t.selectAll('tspan')
     .data(multiline)
     .enter()

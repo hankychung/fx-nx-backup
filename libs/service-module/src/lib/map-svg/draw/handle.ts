@@ -1,60 +1,78 @@
 import { draw } from '.'
 import { MapSvgConfig } from '../config'
 import { d3 } from '../d3'
-import { gEle, svgEle } from '../d3/element'
-import { svg } from '../d3/selection'
-import { zoom, zoomTransform } from '../d3/zoom'
+import { gEleGet, svgEleGet, wrapperEleGet } from '../d3/element'
+import { svgGet } from '../d3/selection'
+import { zoomMapGet, zoomTransformGet } from '../d3/zoom'
 import { CreateProxy } from '../type/bin'
-import { mmdata } from './const'
+import { Mdata } from '../type/mdata'
+import { mmdataGet } from './const'
 
 export const DeleteDom = CreateProxy<string[]>([])
 
-export const afterOperation = () => {
-  while (DeleteDom.value.length > 0) {
-    document.querySelector(DeleteDom.value.shift() as string)?.remove()
+export const afterOperation = (key: string) => {
+  const wrapper = wrapperEleGet(key)
+
+  if (wrapper) {
+    while (DeleteDom.value.length > 0) {
+      wrapper.querySelector(DeleteDom.value.shift() as string)?.remove()
+    }
   }
 
-  draw()
+  draw(key)
 }
 
-export const expand = (id: string): void => {
-  if (!mmdata.value) return
+export const expand = (d: Mdata): void => {
+  const mmdata = mmdataGet(d.componentKey)
 
-  mmdata.value.expand(id)
-  afterOperation()
+  if (!mmdata) return
+
+  mmdata.expand(d.id)
+  afterOperation(d.componentKey)
 }
 
-export const expandS = (id: string): void => {
-  if (!mmdata.value) return
+export const expandS = (d: Mdata): void => {
+  const mmdata = mmdataGet(d.componentKey)
 
-  mmdata.value.expandS(id)
-  afterOperation()
+  if (!mmdata) return
+
+  mmdata.expandS(d.id)
+  afterOperation(d.componentKey)
 }
 
-export const collapse = (id: string): void => {
-  if (!mmdata.value) return
+export const collapse = (d: Mdata): void => {
+  const mmdata = mmdataGet(d.componentKey)
 
-  mmdata.value.collapse(id)
-  afterOperation()
+  if (!mmdata) return
+
+  mmdata.collapse(d.id)
+  afterOperation(d.componentKey)
 }
 
-export const collapseS = (id: string): void => {
-  if (!mmdata.value) return
+export const collapseS = (d: Mdata): void => {
+  const mmdata = mmdataGet(d.componentKey)
 
-  mmdata.value.collapseS(id)
-  afterOperation()
+  if (!mmdata) return
+
+  mmdata.collapseS(d.id)
+  afterOperation(d.componentKey)
 }
 
-export const toCenter = (isFit = false): void => {
-  if (!svg.value || !gEle.value || !svgEle.value) {
+export const toCenter = (key: string, isFit = false): void => {
+  const svg = svgGet(key)
+  const gEle = gEleGet(key)
+  const svgEle = svgEleGet(key)
+  const zoomT = zoomTransformGet(key)
+
+  if (!svg || !gEle || !svgEle || !zoomT) {
     return
   }
-  const gBB = gEle.value.getBBox()
-  const svgBCR = svgEle.value.getBoundingClientRect()
+  const gBB = gEle.getBBox()
+  const svgBCR = svgEle.getBoundingClientRect()
   const svgCenter = { x: svgBCR.width / 2, y: svgBCR.height / 2 }
   let multiple = isFit
     ? Math.min(svgBCR.width / gBB.width, svgBCR.height / gBB.height)
-    : zoomTransform.value.k
+    : zoomT.k
 
   if (isFit) {
     multiple = Math.max(multiple, MapSvgConfig.scaleExtent[0])
@@ -71,5 +89,8 @@ export const toCenter = (isFit = false): void => {
       -gBB.y * multiple + svgCenter.y - gCenter.y
     )
     .scale(multiple)
-  zoom.transform(svg.value, center)
+
+  const zoomFn = zoomMapGet(key)
+
+  zoomFn && zoomFn.transform(svg, center)
 }

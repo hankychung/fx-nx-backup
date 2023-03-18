@@ -1,4 +1,5 @@
-import { CreateProxy } from '../type/bin'
+import { CreateMapProxy, CreateMapProxyValueGet } from '../type/bin'
 import ImData from './ImData'
 
-export const mmdata = CreateProxy<ImData | null>(null)
+export const mmdata = CreateMapProxy<ImData>()
+export const mmdataGet = CreateMapProxyValueGet(mmdata)

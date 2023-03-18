@@ -1,5 +1,5 @@
-import { scaleTo, zoomTransform } from '../../d3/zoom'
-import { useGetProxyState } from '../../hooks/proxyToState'
+import { scaleTo, zoomTransform, zoomTransformGet } from '../../d3/zoom'
+import { useGetMapProxyState } from '../../hooks/proxyToState'
 import { ReactComponent as FullScreenIcon } from '../../../../assets/icons/map-svg-icon/full-screen.svg'
 import { ReactComponent as PlusZoomIcon } from '../../../../assets/icons/map-svg-icon/plus-zoom-button.svg'
 import { ReactComponent as ReduceZoomIcon } from '../../../../assets/icons/map-svg-icon/reduce-zoom-button.svg'
@@ -8,32 +8,34 @@ import { Slider } from 'antd'
 import { MapSvgConfig } from '../../config'
 import styles from './index.module.scss'
 import classNames from 'classnames'
+import { useMemoizedFn } from 'ahooks'
+import { wheelPreventDefault } from '../../utils'
 
 const marks = {
   100: '0'
 }
 
-export const SvgController = () => {
-  const { state: zoomSize } = useGetProxyState(zoomTransform, (v) =>
-    Math.floor(v.k * 100)
+interface SvgControllerPropx {
+  componentKey: string
+}
+
+export const SvgController = (props: SvgControllerPropx) => {
+  const { componentKey } = props
+
+  const { state: zoomSize } = useGetMapProxyState(
+    zoomTransform,
+    componentKey,
+    (v) => Math.floor((v?.k || 0.02) * 100)
   )
 
-  const preventDefault = (dom: HTMLElement | HTMLDivElement | null) => {
-    dom?.addEventListener(
-      'wheel',
-      (e) => {
-        e.preventDefault()
-      },
-      { passive: false }
-    )
-  }
-
-  const sliderScaleTo = (v: number) => {
-    scaleTo(v / 100)
-  }
+  const sliderScaleTo = useMemoizedFn((v: number) => {
+    scaleTo(componentKey, v / 100)
+  })
 
   const changeZoomSize = (v: number) => {
-    const next = (zoomTransform.value.k || 0.2) * 100 + v
+    const zoomTransform = zoomTransformGet(componentKey)
+
+    const next = (zoomTransform?.k || 0.2) * 100 + v
 
     if (next > 200 || next < 20) {
       return
@@ -44,7 +46,7 @@ export const SvgController = () => {
 
   const content = () => {
     return (
-      <div className={styles.UtilList} ref={preventDefault}>
+      <div className={styles.UtilList} ref={wheelPreventDefault}>
         <div className={classNames(styles.UtilItem, styles.slider)}>
           <ReduceZoomIcon
             className={styles.SliderIcon}
@@ -77,7 +79,7 @@ export const SvgController = () => {
   }
 
   return (
-    <div className={styles.SvgController} ref={preventDefault}>
+    <div className={styles.SvgController} ref={wheelPreventDefault}>
       <div className={styles.smallShow}>
         <div className={styles.zoomSizeValue}>
           <FlyBasePopper
@@ -91,7 +93,7 @@ export const SvgController = () => {
                   'div[data-id="popper-mask"]'
                 ) as HTMLDivElement
 
-                preventDefault(mask)
+                wheelPreventDefault(mask)
               }
             }}
           >

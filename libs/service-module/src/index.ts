@@ -7,9 +7,13 @@ import TeamPayModal from './lib/TeamPayModal/index' //团队支付
 import PayModal from './lib/PayModal/index' //支付聚合
 import CustomerServicesModal from './lib/CustomerServicesModal/index' //客服弹窗
 import { MapSvg } from './lib/map-svg/index'
+import { MapSvgRef, InitMapSvgRef } from './lib/map-svg/type/props'
 export * from './lib/service-module'
+
 export {
   MapSvg,
+  MapSvgRef,
+  InitMapSvgRef,
   MemberIntroduction,
   IdentityEqualComparison,
   SpaceEqualComparison,

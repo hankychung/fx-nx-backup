@@ -2,13 +2,7 @@ import { cloneDeep } from 'lodash'
 import { useMemo, useEffect, useRef } from 'react'
 import { Scrollbar } from './components/scrollbar'
 import { formatMdata } from './utils/formart'
-import {
-  asstSvgEleRef,
-  foreignEleRef,
-  gEleRef,
-  svgEleRef,
-  wrapperEleRef
-} from './d3/element'
+import { asstSvgEle, foreignEle, gEle, svgEle, wrapperEle } from './d3/element'
 import { mmdata } from './draw/const'
 import ImData from './draw/ImData'
 import { FakerData } from './fakerData'
@@ -17,15 +11,26 @@ import './index.scss'
 import { styleName } from './card/css'
 import { afterOperation, toCenter } from './draw/handle'
 import { SvgController } from './components/svg-controller'
+import { ForwardRefRenderFunction } from 'react'
+import { MapSvgRef } from './type/props'
+import { forwardRef } from 'react'
+import { useImperativeHandle } from 'react'
+import { useState } from 'react'
+import { zoomTransform } from './d3/zoom'
+import { d3 } from './d3'
+import { wheelPreventDefault } from './utils'
 
-export const MapSvg = () => {
+const MapSvgRender: ForwardRefRenderFunction<MapSvgRef> = (props, ref) => {
+  const [initKey] = useState(
+    String(Math.floor(Math.random() * 100000000000000))
+  )
+
   const initLoading = useRef<boolean>(false)
+
   const init = () => {
-    if (initLoading.current) return
-
-    initLoading.current = true
-
     setTimeout(() => {
+      zoomTransform[initKey] = d3.zoomIdentity
+
       const data = []
       const clone = cloneDeep(FakerData)
 
@@ -77,39 +82,64 @@ export const MapSvg = () => {
         data.push(formatMdata(d))
       }
 
-      mmdata.value = new ImData(data.slice(0, 4))
+      mmdata[initKey] = new ImData(initKey, data.slice(0, 4))
 
-      afterOperation()
+      afterOperation(initKey)
 
-      toCenter(true)
+      toCenter(initKey, true)
     }, 1000)
   }
 
   useEffect(() => {
+    if (initLoading.current) return
+
+    initLoading.current = true
     init()
   }, [])
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        refresh: init
+      }
+    },
+    []
+  )
+
   return useMemo(() => {
     return (
-      <div className={styleName.container}>
-        <div className={styleName['svg-wrapper']} ref={wrapperEleRef}>
-          <svg className={styleName.svg} ref={svgEleRef}>
-            <g ref={gEleRef}>
+      <div className={styleName.container} ref={wheelPreventDefault}>
+        <div
+          className={styleName['svg-wrapper']}
+          ref={(dom) => (wrapperEle[initKey] = dom)}
+        >
+          <svg
+            className={styleName.svg}
+            data-componentkey={initKey}
+            ref={(dom) => (svgEle[initKey] = dom)}
+          >
+            <g ref={(dom) => (gEle[initKey] = dom)}>
               <foreignObject
                 className={styleName.AddAndEditWrap}
-                ref={foreignEleRef}
+                ref={(dom) => (foreignEle[initKey] = dom)}
               >
                 <div />
               </foreignObject>
             </g>
           </svg>
         </div>
-        <Scrollbar />
+        <Scrollbar componentKey={initKey} />
 
-        <svg ref={asstSvgEleRef} className={styleName['asst-svg']} />
+        <svg
+          ref={(dom) => (asstSvgEle[initKey] = dom)}
+          className={styleName['asst-svg']}
+        />
 
-        <SvgController />
+        <SvgController componentKey={initKey} />
       </div>
     )
   }, [])
 }
+
+export const MapSvg = forwardRef(MapSvgRender)

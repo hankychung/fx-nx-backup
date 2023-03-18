@@ -183,6 +183,7 @@ export const enterTargetNode = (enter: EnterE, d: Mdata) => {
   enterG.each((d, i) => {
     if (d.children.length) {
       draw(
+        d.componentKey,
         d.children,
         enterG.filter((_a, b) => i === b)
       )
@@ -190,6 +191,7 @@ export const enterTargetNode = (enter: EnterE, d: Mdata) => {
 
     if (d.superiors.length) {
       draw(
+        d.componentKey,
         d.superiors,
         enterG.filter((_a, b) => i === b)
       )

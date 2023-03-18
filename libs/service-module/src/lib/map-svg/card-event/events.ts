@@ -2,26 +2,24 @@ import { getDataId } from '../draw/get'
 import { collapse, collapseS, expand, expandS } from '../draw/handle'
 import { Mdata } from '../type/mdata'
 import { styleName } from '../card/css'
-import { svgEle } from '../d3/element'
+import { svgEleGet } from '../d3/element'
 
 export const onClickExpandBtn = async (_e: MouseEvent, d: Mdata) => {
-  console.log('onClickExpandBtn')
-
-  if (d.collapse) expand(d.id)
-  else collapse(d.id)
+  if (d.collapse) expand(d)
+  else collapse(d)
 }
 
 export const onClickSExpandBtn = async (_e: MouseEvent, d: Mdata) => {
-  console.log('onClickSExpandBtn')
-
-  if (d.superior_collapse) expandS(d.id)
-  else collapseS(d.id)
+  if (d.superior_collapse) expandS(d)
+  else collapseS(d)
 }
 
 export function selectGNode(d: Mdata): void {
-  if (!svgEle.value) return
+  const key = d.componentKey
 
-  const svgE = svgEle.value
+  const svgE = svgEleGet(key)
+
+  if (!svgE) return
 
   const ele = svgE.querySelector<SVGGElement>(`g[data-id='${getDataId(d)}']`)
 

@@ -72,6 +72,8 @@ export interface BaseData extends BaseTimerData, BasePosition, BaseLevelData {
   title: string
   type: MDataTypeEnum
 
+  componentKey: string
+
   cache: {
     children: Mdata[]
     _children: Mdata[]

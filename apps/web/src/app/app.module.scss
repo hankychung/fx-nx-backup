@@ -6,4 +6,14 @@ body {
 .wrap {
   width: 100vw;
   height: 100vh;
+
+  .testRefresh {
+    cursor: pointer;
+    position: fixed;
+    left: 50%;
+    top: 0;
+    background-color: #fff;
+    padding: 6px;
+    border-radius: 10px;
+  }
 }

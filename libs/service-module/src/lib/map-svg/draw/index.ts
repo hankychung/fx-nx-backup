@@ -1,10 +1,10 @@
 import { enterTargetNode, updateTargetNode } from '../card/target'
 import * as d3 from '../d3/d3-import'
-import { foreignEle } from '../d3/element'
-import { g } from '../d3/selection'
+import { foreignEleGet } from '../d3/element'
+import { gGet } from '../d3/selection'
 import { EnterE, SelectionG } from '../type'
 import { Mdata } from '../type/mdata'
-import { mmdata } from './const'
+import { mmdataGet } from './const'
 import { getSiblingGClass } from './get'
 
 const enterNode = (enterElement: EnterE, d: Mdata) => {
@@ -27,11 +27,17 @@ const mergeNode = (node: SelectionG, d: Mdata) => {
 }
 
 export const draw = (
-  d = mmdata.value?.data || [],
-  sele = g.value,
-  foreign = foreignEle.value as SVGForeignObjectElement
+  key: string,
+  datas?: Mdata[],
+  seleE?: SelectionG
 ): void => {
+  const sele = seleE || gGet(key)
+
+  const d = datas || mmdataGet(key)?.data || []
+
   if (!sele) return
+
+  const foreign = foreignEleGet(key)
 
   const temp = sele
     .selectAll<SVGGElement, Mdata>(`g.${getSiblingGClass(d[0]).join('.')}`)
@@ -44,7 +50,7 @@ export const draw = (
     const node = createNode.node() as SVGGElement
 
     /** 别问，禁止any，这里的类型处理很勾八狗血，能过就能用 */
-    if (d.isRoot) {
+    if (d.isRoot && foreign) {
       return this.insertBefore(node, foreign) as unknown as null
     }
     return this.appendChild(node) as unknown as null
@@ -54,9 +60,9 @@ export const draw = (
   temp.merge(temp).each(function (d, i) {
     const node = d3.select(this) as unknown as SelectionG
 
-    if (d.children.length) draw(d.children, node)
+    if (d.children.length) draw(key, d.children, node)
 
-    if (d.superiors.length) draw(d.superiors, node)
+    if (d.superiors.length) draw(key, d.superiors, node)
 
     mergeNode(node, d)
   })

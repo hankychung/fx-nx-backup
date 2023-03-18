@@ -17,13 +17,42 @@ export interface Res {
 const PayDetail = () => {
   useEffect(() => {
     document.title = '支付订单'
-    handlePay()
-  }, [])
+    getCode()
+  }, [window.location.href])
   const statusText = {
     processing: '处理中',
     expired: '已失效',
     completed: '处理中'
   }
+  const getCode = () => {
+    const local = window.location.href
+    const code = getParam('code')
+    if (code) {
+      getPayParams(code)
+    } else {
+      // 跳转至授权地址，该地址只支持微信浏览器打开
+      window.location.href =
+        'https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=' +
+        encodeURIComponent(local) +
+        '&response_type=code&scope=SCOPE#wechat_redirect'
+    }
+  }
+  const getParam = (paramName: string) => {
+    const query = window.location.search.substring(1)
+    const vars = query.split('&')
+    for (let i = 0; i < vars.length; i++) {
+      const pair = vars[i].split('=')
+      if (pair[0] === paramName) {
+        return pair[1]
+      }
+    }
+    return false
+  }
+  //获取支付参数
+  const getPayParams = (code: string) => {
+    console.log(code)
+  }
+
   const onBridgeReady = () => {
     // let params = {
     //   // ... 支付相关参数，商品名称价格等等

@@ -1,3 +1,11 @@
+/*
+ * @Author: wanghui wanghui@flyele.net
+ * @Date: 2023-03-10 18:01:01
+ * @LastEditors: wanghui wanghui@flyele.net
+ * @LastEditTime: 2023-03-18 10:48:52
+ * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/PersonVip/components/LeftBlock/index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import React from 'react'
 
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
@@ -17,7 +25,7 @@ const LeftBlock = () => {
       <div className={style.interests_list}>
         {obj.list.map((_) => {
           return (
-            <div className={style.interests_item} key={_.icon}>
+            <div className={style.interests_item} key={_.title}>
               <img src={_.icon} alt="tabs" />
               <div className={style.interests_info}>
                 <span>{_.title}</span>

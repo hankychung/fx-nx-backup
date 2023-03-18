@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 15:53:30
+ * @LastEditTime: 2023-03-18 16:04:16
  */
 
 import React from 'react'
@@ -11,32 +11,53 @@ import PersonPayModal from '../PersonPayModal/index' //个人支付弹窗
 import TeamPayModal from '../TeamPayModal/index' //团队支付
 import { VipMealType } from '../PersonPayModal/components/controller'
 
-export declare type IFlyAvatarItem = {
+export declare type IFlyeleAvatarItem = {
   userId: string
   name: string
   pinyin?: string
   avatar: string
+  telephone: string
+  isVip: boolean
+  isTeamVip: boolean
 }
+
 interface Iprops {
   visible: boolean
+  mineId: string
   payType?: VipMealType //个人支付类型 1个人 2团队
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   onClose: () => void
-  memberList?: IFlyAvatarItem[]
+  memberList: IFlyeleAvatarItem[]
 }
 
 export default function PayModal(props: Iprops) {
-  const { visible, modalType, payType, onClose } = props
+  const { visible, modalType, payType, onClose, memberList, mineId } = props
 
   const buildPayModal = () => {
     if (!modalType) return null
     switch (modalType) {
       case 'quick':
-        return <QuickPay onClose={onClose} />
+        return (
+          <QuickPay onClose={onClose} memberList={memberList} mineId={mineId} />
+        )
       case 'person':
-        return <PersonPayModal payType={payType} onClose={onClose} />
+        return (
+          <PersonPayModal
+            payType={payType}
+            onClose={onClose}
+            memberList={memberList}
+            mineId={mineId}
+          />
+        )
       case 'team':
-        return <TeamPayModal vipType={1} onClose={onClose} />
+        return (
+          <TeamPayModal
+            vipType={1}
+            onClose={onClose}
+            memberList={memberList}
+            mineId={mineId}
+          />
+        )
       default:
         return null
     }

@@ -16,9 +16,11 @@
   "dependencies": {
     "@flyele/flyele-components": "^2.12.1",
     "@swc/helpers": "~0.4.11",
+    "@types/qrcode": "^1.5.0",
     "ahooks": "^3.7.5",
     "antd": "^5.3.0",
     "classnames": "^2.3.2",
+    "qrcode": "^1.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.8.1",

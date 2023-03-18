@@ -37,10 +37,10 @@ const VipPackage = (props: Iprops) => {
 
       switch (event) {
         case 'showPay':
-          console.log(service.getData('showPay'));
-          
+          console.log(service.getData('showPay'))
+
           setShowPay(service.getData('showPay').show)
-          setPayInfo(service.getData("showPay").payInfo)
+          setPayInfo(service.getData('showPay').payInfo)
           break
 
         default:
@@ -84,8 +84,6 @@ const VipPackage = (props: Iprops) => {
     >
       <div className={style.tabs}>
         {tabsList.map((_) => {
-        
-
           return (
             <div
               key={_.type}
@@ -124,10 +122,10 @@ const VipPackage = (props: Iprops) => {
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
       >
-        <TeamVip memberList={memberList} mineId={mineId}/>
+        <TeamVip memberList={memberList} mineId={mineId} />
       </div>
       {/* 支付弹窗 */}
-      {showPay && <PayQrCode payInfo={payInfo}/>}
+      {showPay && <PayQrCode payInfo={payInfo} />}
     </div>
   )
 }

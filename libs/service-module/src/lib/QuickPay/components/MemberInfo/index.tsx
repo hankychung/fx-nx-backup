@@ -23,7 +23,13 @@ import style from './index.module.scss'
 import CustomerServicesModal from '../../../CustomerServicesModal'
 import { IFlyeleAvatarItem } from '../../../PayModal'
 
-const MemberInfo = ({ memberList, mineId}: { memberList: IFlyeleAvatarItem[],mineId:string }) => {
+const MemberInfo = ({
+  memberList,
+  mineId
+}: {
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
+}) => {
   const Controller = useController(new FlyBasePopperCtrl())
   return (
     <div className={style.memberInfo}>
@@ -33,7 +39,9 @@ const MemberInfo = ({ memberList, mineId}: { memberList: IFlyeleAvatarItem[],min
           <div className={style.mem_name}>
             <div className={style.name_icon}>
               <span>{memberList[0].name}</span>
-              {mineId===memberList[0].userId&&<div className={style.mine}>我</div>}
+              {mineId === memberList[0].userId && (
+                <div className={style.mine}>我</div>
+              )}
               {memberList[0].isVip && (
                 <MemberPersonVip
                   className={style.member_person_vip}
@@ -45,7 +53,7 @@ const MemberInfo = ({ memberList, mineId}: { memberList: IFlyeleAvatarItem[],min
                 ></MemberTeamVip>
               )}
             </div>
-            <span>{ memberList[0].telephone}</span>
+            <span>{memberList[0].telephone}</span>
           </div>
         </div>
         <FlyBasePopper

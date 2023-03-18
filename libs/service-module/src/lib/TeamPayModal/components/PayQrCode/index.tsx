@@ -78,7 +78,7 @@ const PayQrCode = ({ payInfo }: { payInfo?: IActiveGoods }) => {
             <div className={style.payInfo}>
               <div className={style.price}>
                 <span> ￥</span>
-                <span>{regFenToYuan(payInfo&&payInfo.now_price||0)}</span>
+                <span>{regFenToYuan((payInfo && payInfo.now_price) || 0)}</span>
               </div>
               <div
                 className={style.code}

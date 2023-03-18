@@ -17,7 +17,13 @@ import MemberList from './components/MemberList'
 import { SelectMemberContext } from '../../../../context/context'
 import { IFlyeleAvatarItem } from '../../../../../PayModal'
 
-const LeftBlock = ({ memberList,mineId }: { memberList: IFlyeleAvatarItem[],mineId:string }) => {
+const LeftBlock = ({
+  memberList,
+  mineId
+}: {
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
+}) => {
   const obj: SectionType = createVipMealText().team
   const service = useContext(SelectMemberContext)
   // 打开添加协作人
@@ -31,7 +37,6 @@ const LeftBlock = ({ memberList,mineId }: { memberList: IFlyeleAvatarItem[],mine
 
       switch (event) {
         case 'show':
-
           setOpenAddModal(true)
 
           break

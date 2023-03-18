@@ -21,7 +21,7 @@ interface Iprops {
   payClick: () => void
 }
 const PayButton = (props: Iprops) => {
-  const {  activeGood = [], payClick, resultArr = [] } = props
+  const { activeGood = [], payClick, resultArr = [] } = props
 
   const activeItem = activeGood[0]
   return (

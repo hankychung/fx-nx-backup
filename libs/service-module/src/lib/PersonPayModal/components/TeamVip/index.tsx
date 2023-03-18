@@ -11,19 +11,22 @@ import RightBlock from './components/RightBlock'
 
 import style from './index.module.scss'
 
-const TeamVip = ({memberList,mineId}:{memberList: IFlyeleAvatarItem[],mineId:string}) => {
-
-
+const TeamVip = ({
+  memberList,
+  mineId
+}: {
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
+}) => {
   return (
-    
-      <div className={style.teamVip}>
-        <div>
-          <LeftBlock memberList={memberList} mineId={mineId}/>
-        </div>
-        <div>
-          <RightBlock />
-        </div>
+    <div className={style.teamVip}>
+      <div>
+        <LeftBlock memberList={memberList} mineId={mineId} />
       </div>
+      <div>
+        <RightBlock />
+      </div>
+    </div>
   )
 }
 

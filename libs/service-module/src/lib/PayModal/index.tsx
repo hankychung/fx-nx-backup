@@ -23,7 +23,7 @@ export declare type IFlyeleAvatarItem = {
 
 interface Iprops {
   visible: boolean
-  mineId:string
+  mineId: string
   payType?: VipMealType //个人支付类型 1个人 2团队
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   onClose: () => void
@@ -37,11 +37,27 @@ export default function PayModal(props: Iprops) {
     if (!modalType) return null
     switch (modalType) {
       case 'quick':
-        return <QuickPay onClose={onClose} memberList={memberList} mineId={mineId}/>
+        return (
+          <QuickPay onClose={onClose} memberList={memberList} mineId={mineId} />
+        )
       case 'person':
-        return <PersonPayModal payType={payType} onClose={onClose} memberList={memberList} mineId={mineId}/>
+        return (
+          <PersonPayModal
+            payType={payType}
+            onClose={onClose}
+            memberList={memberList}
+            mineId={mineId}
+          />
+        )
       case 'team':
-        return <TeamPayModal vipType={1} onClose={onClose} memberList={memberList} mineId={mineId}/>
+        return (
+          <TeamPayModal
+            vipType={1}
+            onClose={onClose}
+            memberList={memberList}
+            mineId={mineId}
+          />
+        )
       default:
         return null
     }

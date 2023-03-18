@@ -16,7 +16,6 @@ import VipPackage from './components/VipPackage'
 import { VipPayType } from './components/controller'
 import { IFlyeleAvatarItem } from '../PayModal'
 
-
 interface Iprops {
   vipType: VipPayType
   memberList: IFlyeleAvatarItem[]
@@ -45,7 +44,11 @@ const TeamPayModal = (props: Iprops) => {
             <Header vipType={vipType} onClose={onClose} />
           </div>
           {/* 套餐包信息 */}
-          <VipPackage vipType={vipType}   memberList={memberList} mineId={mineId}/>
+          <VipPackage
+            vipType={vipType}
+            memberList={memberList}
+            mineId={mineId}
+          />
         </div>
       </Modal>
     </div>

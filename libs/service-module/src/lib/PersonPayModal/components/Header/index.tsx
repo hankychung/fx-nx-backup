@@ -27,9 +27,9 @@ interface Iprops {
 const Header = (props: Iprops) => {
   const Controller = useController(new FlyBasePopperCtrl())
   const { onClose, memberList, mineId } = props
-  const userInfo = useMemo(()=>{
-return memberList.filter(item=>item.userId===mineId)[0]
-  },[mineId,memberList])
+  const userInfo = useMemo(() => {
+    return memberList.filter((item) => item.userId === mineId)[0]
+  }, [mineId, memberList])
   return (
     <div className={style.header}>
       <div className={style.userInfo}>

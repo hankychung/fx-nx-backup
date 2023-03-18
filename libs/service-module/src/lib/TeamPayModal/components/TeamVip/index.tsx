@@ -22,7 +22,7 @@ interface Iprops {
   mineId: string
 }
 const TeamVip = (props: Iprops) => {
-  const { vipType,memberList, mineId } = props
+  const { vipType, memberList, mineId } = props
 
   const [showPay, setShowPay] = useState<boolean>(false)
   const service = useCreation(() => {
@@ -51,7 +51,11 @@ const TeamVip = (props: Iprops) => {
     <SelectMemberContext.Provider value={service}>
       <div className={style.teamVip}>
         <div className={style.block}>
-          <LeftBlock vipType={vipType} memberList={memberList} mineId={mineId}/>
+          <LeftBlock
+            vipType={vipType}
+            memberList={memberList}
+            mineId={mineId}
+          />
         </div>
         <div className={style.block}>
           <RightBlock vipType={vipType} />

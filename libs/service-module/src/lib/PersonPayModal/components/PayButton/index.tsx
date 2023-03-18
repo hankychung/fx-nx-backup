@@ -33,18 +33,22 @@ const PayButton = (props: Iprops) => {
           <span>合计</span>
           <div className={style.price}>
             {activeItem && activeItem.end_at && (
-              <span>{`已省¥${vipMealType === VipMealType.TEAM?
-                +regFenToYuan(
-                  activeItem.original_price - activeItem.now_price
-                ) * resultArr?.length:regFenToYuan(
-                  activeItem.original_price - activeItem.now_price
-                )
+              <span>{`已省¥${
+                vipMealType === VipMealType.TEAM
+                  ? +regFenToYuan(
+                      activeItem.original_price - activeItem.now_price
+                    ) * resultArr?.length
+                  : regFenToYuan(
+                      activeItem.original_price - activeItem.now_price
+                    )
               }`}</span>
             )}
             <div>
               <span>¥</span>
               <span>
-                {vipMealType === VipMealType.TEAM?+regFenToYuan(activeItem.now_price) * resultArr?.length:regFenToYuan(activeItem.now_price)}
+                {vipMealType === VipMealType.TEAM
+                  ? +regFenToYuan(activeItem.now_price) * resultArr?.length
+                  : regFenToYuan(activeItem.now_price)}
               </span>
             </div>
           </div>

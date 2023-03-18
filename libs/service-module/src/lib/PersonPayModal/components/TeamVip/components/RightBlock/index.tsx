@@ -69,8 +69,8 @@ const RightBlock = () => {
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
-  const payClick=() => {
-    service.showPay({ show: true, payInfo: vipMeal ,userInfo: resultArr})
+  const payClick = () => {
+    service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
   }
   return (
     <div className={style.rightBlock}>
@@ -158,7 +158,12 @@ const RightBlock = () => {
 
       {/* 支付按钮 */}
       <div>
-        <PayButton vipMealType={VipMealType.TEAM} activeGood={vipMeal?[vipMeal]:[]} payClick={payClick} resultArr={resultArr}/>
+        <PayButton
+          vipMealType={VipMealType.TEAM}
+          activeGood={vipMeal ? [vipMeal] : []}
+          payClick={payClick}
+          resultArr={resultArr}
+        />
       </div>
     </div>
   )

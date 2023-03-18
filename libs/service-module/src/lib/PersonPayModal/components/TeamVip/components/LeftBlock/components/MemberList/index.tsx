@@ -191,7 +191,9 @@ const MemberList = ({
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
                           <span>{_.name}</span>
-                          {mineId===_.userId&&<div className={style.mine}>我</div>}
+                          {mineId === _.userId && (
+                            <div className={style.mine}>我</div>
+                          )}
                           {_.isVip && (
                             <MemberPersonVip
                               className={style.member_person_vip}
@@ -239,7 +241,9 @@ const MemberList = ({
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
                           <span>{_.name}</span>
-                          {mineId===_.userId&&<div className={style.mine}>我</div>}
+                          {mineId === _.userId && (
+                            <div className={style.mine}>我</div>
+                          )}
                           {_.isVip && (
                             <MemberPersonVip
                               className={style.member_person_vip}

@@ -1,4 +1,3 @@
-
 export const regFenToYuan = (a: number) => {
   let num = Number(a)
   let num1: string
@@ -20,9 +19,9 @@ export const regFenToYuan = (a: number) => {
 }
 
 export const getResidueTime = (totalSeconds: number) => {
-//   const nowtime = new Date().getTime() // 当前时间 毫秒数
-//   const endTime = dayjs.unix(end).valueOf() //结束时间  毫秒数
-//   const totalSeconds = (endTime - nowtime) / 1000 // 结束时间-当前时间 = 剩余多少时间
+  //   const nowtime = new Date().getTime() // 当前时间 毫秒数
+  //   const endTime = dayjs.unix(end).valueOf() //结束时间  毫秒数
+  //   const totalSeconds = (endTime - nowtime) / 1000 // 结束时间-当前时间 = 剩余多少时间
   const day = parseInt(`${totalSeconds / 3600 / 24}`) //天
   const hour = parseInt(`${(totalSeconds / 3600) % 24}`)
     .toString()

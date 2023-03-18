@@ -115,12 +115,14 @@ const LeftBlock = (props: Iprops) => {
                     colorType={CheckColorType.GREEN}
                     // isClickIcon
                   >
-                         <div className={style.mem_info}>
+                    <div className={style.mem_info}>
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
                           <span>{_.name}</span>
-                         {mineId===_.userId&& <div className={style.mine}>我</div>}
+                          {mineId === _.userId && (
+                            <div className={style.mine}>我</div>
+                          )}
                           {_.isVip && (
                             <MemberPersonVip
                               className={style.member_person_vip}
@@ -142,7 +144,13 @@ const LeftBlock = (props: Iprops) => {
         </div>
       )}
       <div className={style.member_list} ref={createRef}>
-        <MemberList resultArr={resultArr} service={service} vipType={vipType} memberList={memberList} mineId={mineId}/>
+        <MemberList
+          resultArr={resultArr}
+          service={service}
+          vipType={vipType}
+          memberList={memberList}
+          mineId={mineId}
+        />
       </div>
     </div>
   )

@@ -6,13 +6,16 @@
  */
 import { IActiveGoods } from '@flyele-nx/api'
 import { BaseEventNotify } from '@flyele/flyele-components'
-import {IFlyeleAvatarItem} from '../../PayModal'
+import { IFlyeleAvatarItem } from '../../PayModal'
 export type IEvent = {
   show: boolean
   close: undefined
   selectMember: { list: any[] }
-  showPay: { show: boolean; payInfo?: IActiveGoods ,userInfo?: IFlyeleAvatarItem[]}
-
+  showPay: {
+    show: boolean
+    payInfo?: IActiveGoods
+    userInfo?: IFlyeleAvatarItem[]
+  }
 }
 export class SelectMemberService extends BaseEventNotify<IEvent> {
   selectMember(args: IEvent['selectMember']) {

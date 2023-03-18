@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
@@ -18,7 +17,6 @@ const RightBlock = () => {
   useEffect(() => {
     getMealList()
   }, [])
-
 
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
@@ -81,7 +79,7 @@ const RightBlock = () => {
   const activeGood = useMemo(() => {
     return vipMealList.filter((item) => item.active)
   }, [vipMealList])
-  const payClick=() => {
+  const payClick = () => {
     service.showPay({ show: true, payInfo: activeGood[0] })
   }
 
@@ -135,7 +133,11 @@ const RightBlock = () => {
       {/* 支付按钮 */}
       {
         <div>
-          <PayButton vipMealType={VipMealType.PERSON} activeGood={activeGood} payClick={payClick}/>
+          <PayButton
+            vipMealType={VipMealType.PERSON}
+            activeGood={activeGood}
+            payClick={payClick}
+          />
         </div>
       }
       {false && (

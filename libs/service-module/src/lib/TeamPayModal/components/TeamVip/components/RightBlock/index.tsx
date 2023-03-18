@@ -43,42 +43,42 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
       service.dispose()
     }
   }, [service])
-    //获取套餐
-    useEffect(() => {
-      getMealList()
-    }, [])
-    const getItem = (id: number, list: ICoupon[]) => {
-      return list.filter((item) => +item.ref_goods_id === id)
-    }
-    const getMealList = async () => {
-      paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
-        paymentApi.getPrice({ good_type: 'team' }).then((res) => {
-          if (res.code === 0) {
-            const new_arr = res.data.map((item) => {
-              const arr = getItem(item.id, _.data || [])
-              return {
-                ...item,
-                active: false,
-                ...arr[0]
-              }
-            })
-            setVipMeal(new_arr[0])
-          }
-        })
+  //获取套餐
+  useEffect(() => {
+    getMealList()
+  }, [])
+  const getItem = (id: number, list: ICoupon[]) => {
+    return list.filter((item) => +item.ref_goods_id === id)
+  }
+  const getMealList = async () => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
+      paymentApi.getPrice({ good_type: 'team' }).then((res) => {
+        if (res.code === 0) {
+          const new_arr = res.data.map((item) => {
+            const arr = getItem(item.id, _.data || [])
+            return {
+              ...item,
+              active: false,
+              ...arr[0]
+            }
+          })
+          setVipMeal(new_arr[0])
+        }
       })
+    })
+  }
+  const num = useMemo(() => {
+    return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
+  }, [vipMeal])
+  const payClick = () => {
+    if (resultArr.length === 0) {
+      message.info({
+        content: '请选择协作人'
+      })
+      return
     }
-    const num = useMemo(() => {
-      return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
-    }, [vipMeal])
-    const payClick=() => {
-      if(resultArr.length===0){
-         message.info({
-          content: '请选择协作人',
-        })
-        return
-      }
-      service.showPay({ show: true, payInfo: vipMeal ,userInfo: resultArr})
-    }
+    service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
+  }
   return (
     <div className={style.rightBlock}>
       <div>
@@ -96,7 +96,7 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
             >
               <div className={style.name}>团队会员</div>
               <div className={style.price}>
-              {vipMeal?.original_price && (
+                {vipMeal?.original_price && (
                   <span>
                     <i>￥</i>
                     <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
@@ -128,7 +128,11 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
 
       {/* 支付按钮 */}
       <div>
-        <PayButton  payClick={payClick} resultArr={resultArr} activeGood={vipMeal?[vipMeal]:[]}/>
+        <PayButton
+          payClick={payClick}
+          resultArr={resultArr}
+          activeGood={vipMeal ? [vipMeal] : []}
+        />
       </div>
     </div>
   )

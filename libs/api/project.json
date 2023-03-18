@@ -1,20 +1,20 @@
 {
-  "name": "service",
+  "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/service/src",
+  "sourceRoot": "libs/api/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/service"
+        "outputPath": "dist/libs/api"
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node tools/scripts/publish.mjs service {args.ver} {args.tag}"
+        "command": "node tools/scripts/publish.mjs api {args.ver} {args.tag}"
       },
       "dependsOn": ["build"]
     },
@@ -22,11 +22,11 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/service/**/*.ts"]
+        "lintFilePatterns": ["libs/api/**/*.ts"]
       }
     },
     "tslint": {
-      "command": "tsc --project ./libs/service/tsconfig.lib.json"
+      "command": "tsc --project ./libs/api/tsconfig.lib.json"
     }
   },
   "tags": []

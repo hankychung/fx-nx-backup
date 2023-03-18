@@ -15,14 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@flyele-nx/api": ["libs/api/src/index.ts"],
       "@flyele-nx/constant": ["libs/constant/src/index.ts"],
-      "@flyele-nx/great": ["libs/great/src/index.ts"],
-      "@flyele-nx/mylib": ["libs/mylib/src/index.ts"],
       "@flyele-nx/service": ["libs/service/src/index.ts"],
       "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],
-      "@flyele-nx/ui": ["libs/ui/src/index.ts"],
-      "gt": ["libs/gt/src/index.ts"],
-      "gts": ["libs/gts/src/index.ts"]
+      "@flyele-nx/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

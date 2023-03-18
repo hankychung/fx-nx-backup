@@ -9,11 +9,12 @@
     "build": "yarn nx run-many --target=build",
     "prepare": "husky install",
     "lint": "yarn nx format:write --all && nx run-many --target=tslint",
-    "login-npm": "node scripts/npm-login.js"
+    "login-npm": "node scripts/npm-login.js",
+    "install-last-fly": "yarn add @flyele/flyele-components@last"
   },
   "private": true,
   "dependencies": {
-    "@flyele/flyele-components": "^2.11.15",
+    "@flyele/flyele-components": "^2.12.1",
     "@swc/helpers": "~0.4.11",
     "@types/d3-flextree": "^2.1.0",
     "ahooks": "^3.7.5",
@@ -103,6 +104,7 @@
     "typescript": "~4.9.5",
     "url-loader": "^4.1.1",
     "vite": "^4.0.1",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-dts": "~1.7.1",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-style-inject": "^0.0.1",

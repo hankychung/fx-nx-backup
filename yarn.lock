@@ -1478,10 +1478,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@flyele/flyele-components@^2.11.15":
-  version "2.11.15"
-  resolved "https://npm.flyele.vip/@flyele%2fflyele-components/-/flyele-components-2.11.15.tgz#ee651aacaa9a468d12548d7470b31b6a01a9f6ce"
-  integrity sha512-auIgEZf82EqxE9zm2bIZm/QZv7zxfWsEy9W2s8AjFNJWNv2DFHNRKmI4BHxypov/Uas0VYudwJ96+PZXdJKrIg==
+"@flyele/flyele-components@^2.12.1":
+  version "2.12.1"
+  resolved "https://npm.flyele.vip/@flyele%2fflyele-components/-/flyele-components-2.12.1.tgz#7f6dddc1db53ecebcbff049c3afc373d9b5cd6de"
+  integrity sha512-Jsd7cp9/tDuoL2ZKOlshi/FUCwD3u8RTfPnP/FU1QV3SNiXb8LWOAA9zgmiQ5GW5UWMr4AIIwIGAyhTJ4aC4Eg==
   dependencies:
     "@popperjs/core" "^2.11.6"
     "@types/lodash" "^4.14.186"
@@ -5497,7 +5497,7 @@ debug@2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
+debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
@@ -12444,6 +12444,15 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+vite-plugin-compression@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.npmmirror.com/vite-plugin-compression/-/vite-plugin-compression-0.5.1.tgz#a75b0d8f48357ebb377b65016da9f20885ef39b6"
+  integrity sha512-5QJKBDc+gNYVqL/skgFAP81Yuzo9R+EAf19d+EtsMF/i8kFUpNi3J/H01QD3Oo8zBQn+NzoCIFkpPLynoOzaJg==
+  dependencies:
+    chalk "^4.1.2"
+    debug "^4.3.3"
+    fs-extra "^10.0.0"
 
 vite-plugin-dts@~1.7.1:
   version "1.7.3"

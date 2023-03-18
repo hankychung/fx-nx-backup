@@ -12,6 +12,17 @@ export function App() {
       </div>
       {/* <Banner /> */}
       <div />
+      {/* <LureModal
+        open={true}
+        handleClose={() => {}}
+        handleConfirm={() => {}}
+        title="增加文sd件大小"
+        tip="tipasdasdas"
+        freeTxt="30M"
+        vipTxt="50M"
+        highlight="在思维导图中结构化创建事项"
+        imgType="application"
+      /> */}
     </>
   )
 }

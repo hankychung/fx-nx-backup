@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 12:23:26
+ * @LastEditTime: 2023-03-18 16:04:16
  */
 
 import React from 'react'
@@ -14,7 +14,7 @@ import { VipMealType } from '../PersonPayModal/components/controller'
 export declare type IFlyeleAvatarItem = {
   userId: string
   name: string
-  pinyin: string
+  pinyin?: string
   avatar: string
   telephone: string
   isVip: boolean

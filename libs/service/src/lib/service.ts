@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-17 15:42:11
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 14:40:00
+ * @LastEditTime: 2023-03-18 17:36:27
  * @FilePath: /fx-nx/libs/service/src/lib/service.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,7 +22,7 @@ class Service {
   }
 
   private token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzkxMzAzMjQsImlhdCI6MTY3OTEyMTUyMCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyMDYyMTAwMDkxMTA5NTg5IiwiRGV2aWNlSUQiOiJjM2IyZjNjNy0xN2Q0LTQxMzktYTMyNC03MTgyN2EzOGQxNWEiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.ibzsp70UqYIT-tKLhdT95kdH0Pa6oXzH4CXGiItbY4M'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzkxNDAxMzgsImlhdCI6MTY3OTEzMjEyNSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyMDYyMTAwMDkxMTA5NTg5IiwiRGV2aWNlSUQiOiJmZWY5YTZhMi05NDc2LTRkMzAtYmNhZC03NGFjYTVkZWM2NDciLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.zisuGv5KpN5cIRGseAH7NiRxh7m34gADNpcWTzmt2Ds'
 
   private requestInterceptors() {
     this.axios.interceptors.request.use(

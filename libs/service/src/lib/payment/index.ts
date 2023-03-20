@@ -39,6 +39,15 @@ class Payment {
       data: params
     })
   }
+  /**
+   * 查询订单
+   */
+  async getOrderDetail(params: { out_trade_no: string | false }) {
+    return service.post({
+      url: `payment/v2/payment/query`,
+      data: params
+    })
+  }
 }
 
 const PaymentApi = new Payment()

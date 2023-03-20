@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 10:47:02
+ * @LastEditTime: 2023-03-20 20:16:20
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -19,8 +19,15 @@ import SuccessPay from './components/SuccessPay'
 import { useMemoizedFn } from '@flyele/flyele-components'
 import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
+import { IFlyeleAvatarItem } from '../../../PayModal'
 
-const PayQrCode = ({ payInfo }: { payInfo?: IActiveGoods }) => {
+const PayQrCode = ({
+  payInfo,
+  userInfo
+}: {
+  payInfo?: IActiveGoods
+  userInfo: IFlyeleAvatarItem[]
+}) => {
   const service = useContext(SelectMemberContext)
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [qrCode, setQrCode] = useState('')
@@ -29,20 +36,20 @@ const PayQrCode = ({ payInfo }: { payInfo?: IActiveGoods }) => {
   }, [])
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
+    const params = {
+      amount: userInfo.length,
+      coupon_id: payInfo?.coupon_id || 0,
+      good_id: payInfo?.id || 0,
+      // good_id: 8,
+      origin_route: 'PC客户端',
+      total_price: (payInfo?.now_price || 0) * userInfo.length,
+      // total_price: 1,
+      users_id: userInfo.map((item) => item.userId)
+    }
     try {
-      // const { date, dateText } = await getValidityTime()
-      // const currentTime = Math.trunc(new Date().getTime() / 1000) // 当前时间 单位：秒
-
-      // setValidityTime(dateText)
-
-      // url += `&expire_at=${date}&dispatch_at=${currentTime}`
-      const url = 'https://feixiang.cn?a=1'
       const res = await QRCode.toDataURL(
-        'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=' +
-          encodeURIComponent(url) +
-          '&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect'
+        `http://127.0.0.1:4200/payDetail?params=${JSON.stringify(params)}`
       )
-      //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=http://127.0.0.1:4200/payDetail&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect
       setQrCode(res)
     } catch {
       console.log('00')

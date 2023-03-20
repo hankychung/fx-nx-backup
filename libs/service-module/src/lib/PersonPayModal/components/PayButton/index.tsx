@@ -26,8 +26,8 @@ const PayButton = (props: Iprops) => {
   const { vipMealType = 1, activeGood = [], payClick, resultArr = [] } = props
 
   const activeItem = activeGood[0]
-  console.log(activeItem);
-  
+  console.log(activeItem)
+
   return (
     <div className={style.payButton}>
       {activeItem && (

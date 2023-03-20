@@ -14,7 +14,6 @@ import RightBlock from './components/RightBlock'
 import style from './index.module.scss'
 
 const PersonVip = () => {
-
   return (
     <div className={style.personVip}>
       <div>

@@ -47,4 +47,4 @@ init({
   createCoupon: PaymentApi.createCoupon,
   createOrder: PaymentApi.createOrder
 })
-export  const paymentApi = new Payment()
+export const paymentApi = new Payment()

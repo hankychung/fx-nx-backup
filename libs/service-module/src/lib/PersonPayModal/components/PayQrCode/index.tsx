@@ -43,7 +43,7 @@ const PayQrCode = ({
         amount: userInfo.length,
         coupon_id: payInfo?.coupon_id || 0,
         // good_id: payInfo?.id || 0,
-        good_id:8,
+        good_id: 8,
         origin_route: 'PC客户端',
         // total_price: (payInfo?.now_price || 0) * userInfo.length,
         total_price: 100,

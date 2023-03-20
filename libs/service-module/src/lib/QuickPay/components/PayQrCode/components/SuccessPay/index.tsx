@@ -16,7 +16,6 @@ const SuccessPay = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (time === 1) {
-      
         return
       }
       setTime(time - 1)

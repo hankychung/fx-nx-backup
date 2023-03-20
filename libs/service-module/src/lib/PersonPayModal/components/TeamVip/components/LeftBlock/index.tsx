@@ -29,7 +29,9 @@ const LeftBlock = ({
   // 打开添加协作人
   const [openAddModal, setOpenAddModal] = useState(false)
   const createRef = useRef<HTMLDivElement>(null)
-  const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>(memberList.filter(item=>item.userId===mineId))
+  const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>(
+    memberList.filter((item) => item.userId === mineId)
+  )
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -38,7 +40,7 @@ const LeftBlock = ({
       switch (event) {
         case 'show':
           setOpenAddModal(true)
-          
+
           break
         case 'close':
           setOpenAddModal(false)

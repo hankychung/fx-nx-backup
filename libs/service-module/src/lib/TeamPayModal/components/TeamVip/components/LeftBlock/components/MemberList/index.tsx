@@ -230,10 +230,10 @@ const MemberList = ({
                       resultArr
                         .map((item: any) => item.userId)
                         .includes(_.userId)
-                        ?  _.userId === mineId &&
-                        vipType === VipPayType.NOVIPCREATE
-                        ? CheckBoxState.disable
-                        : CheckBoxState.checked
+                        ? _.userId === mineId &&
+                          vipType === VipPayType.NOVIPCREATE
+                          ? CheckBoxState.disable
+                          : CheckBoxState.checked
                         : CheckBoxState.unset
                     }
                     className={style.row_name}

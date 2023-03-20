@@ -68,16 +68,15 @@ const PayDetail = () => {
   }
 
   const onBridgeReady = (params: any) => {
- 
     WeixinJSBridge.invoke(
       'getBrandWCPayRequest',
       {
-        "appId": params.app_id,               //公众号ID，由商户传入
-        "timeStamp": params.timestamp,       //时间戳，自1970年以来的秒数
-        "nonceStr": params.nonce_str,         //随机串
-        "package": params.package,          //prepayId
-        "signType": params.sign_type,         //微信签名方式：
-        "paySign": params.pay_sign    ,        //微信签名
+        appId: params.app_id, //公众号ID，由商户传入
+        timeStamp: params.timestamp, //时间戳，自1970年以来的秒数
+        nonceStr: params.nonce_str, //随机串
+        package: params.package, //prepayId
+        signType: params.sign_type, //微信签名方式：
+        paySign: params.pay_sign //微信签名
       },
       function (res: any) {
         if (res.err_msg === 'get_brand_wcpay_request:ok') {
@@ -95,7 +94,7 @@ const PayDetail = () => {
     )
   }
 
-  const handlePay = (params:any) => {
+  const handlePay = (params: any) => {
     onBridgeReady(params)
   }
 
@@ -121,9 +120,14 @@ const PayDetail = () => {
       </div>
       <div className={styles.btns}>
         <div className={styles.btn}>已完成支付</div>
-        <div className={styles.btn} onClick={()=>{
-          handlePay(payParams)
-        }}>重新支付</div>
+        <div
+          className={styles.btn}
+          onClick={() => {
+            handlePay(payParams)
+          }}
+        >
+          重新支付
+        </div>
       </div>
     </div>
   )

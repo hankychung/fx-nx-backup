@@ -45,7 +45,7 @@ export default function PayModal(props: Iprops) {
 
   const buildPayModal = () => {
     if (!modalType) return null
-    
+
     switch (modalType) {
       case 'quick':
         return (

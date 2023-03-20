@@ -20,7 +20,7 @@ import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import * as dayjs from 'dayjs'
 import { IFlyeleAvatarItem } from '../../../../../PayModal'
-const RightBlock = ({vipMealType}:{vipMealType:VipMealType}) => {
+const RightBlock = ({ vipMealType }: { vipMealType: VipMealType }) => {
   const service = useContext(SelectMemberContext)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
@@ -44,7 +44,7 @@ const RightBlock = ({vipMealType}:{vipMealType:VipMealType}) => {
   }, [service])
   //获取套餐
   useEffect(() => {
-    if(vipMealType===VipMealType.TEAM){
+    if (vipMealType === VipMealType.TEAM) {
       getMealList()
     }
   }, [vipMealType])
@@ -52,23 +52,21 @@ const RightBlock = ({vipMealType}:{vipMealType:VipMealType}) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
   const getMealList = async () => {
- 
-      paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
-        paymentApi.getPrice({ good_type: 'team' }).then((res) => {
-          if (res.code === 0) {
-            const new_arr = res.data.map((item) => {
-              const arr = getItem(item.id, _.data || [])
-              return {
-                ...item,
-                active: false,
-                ...arr[0]
-              }
-            })
-            setVipMeal(new_arr[0])
-          }
-        })
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
+      paymentApi.getPrice({ good_type: 'team' }).then((res) => {
+        if (res.code === 0) {
+          const new_arr = res.data.map((item) => {
+            const arr = getItem(item.id, _.data || [])
+            return {
+              ...item,
+              active: false,
+              ...arr[0]
+            }
+          })
+          setVipMeal(new_arr[0])
+        }
       })
- 
+    })
   }
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数

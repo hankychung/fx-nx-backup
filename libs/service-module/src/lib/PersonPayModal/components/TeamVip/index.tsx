@@ -19,7 +19,7 @@ const TeamVip = ({
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
-  vipMealType:VipMealType
+  vipMealType: VipMealType
 }) => {
   return (
     <div className={style.teamVip}>
@@ -27,7 +27,7 @@ const TeamVip = ({
         <LeftBlock memberList={memberList} mineId={mineId} />
       </div>
       <div>
-        <RightBlock vipMealType={vipMealType}/>
+        <RightBlock vipMealType={vipMealType} />
       </div>
     </div>
   )

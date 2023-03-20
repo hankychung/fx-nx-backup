@@ -11,7 +11,7 @@ import { ReactComponent as IMG_CHECKED_TRUE } from '../../../../../assets/payImg
 // import IMG_CHECKED_TRUE_BLUE from '../../../../../assets/payImg/un_checked.svg'
 import { ReactComponent as IMG_CHECKED_FALSE } from '../../../../../assets/payImg/un_checked.svg'
 // import IMG_CHECKED_FALSE from '../../../../../assets/payImg/un_checked.svg'
-import  { ReactComponent as IMG_DISABLED } from '../../../../../assets/payImg/member_disable.svg'
+import { ReactComponent as IMG_DISABLED } from '../../../../../assets/payImg/member_disable.svg'
 
 export enum CheckBoxState {
   checked = 'checked',

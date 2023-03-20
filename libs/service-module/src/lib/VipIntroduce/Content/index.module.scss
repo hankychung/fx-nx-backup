@@ -1,0 +1,84 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: flex-end;
+  gap: 12px;
+
+  .top {
+    padding: 6px;
+    border-radius: 12px 12px 0 0;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .card {
+    display: block;
+
+    .body {
+      height: 456px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .header {
+      .title {
+        padding: 11px 16px;
+        box-sizing: border-box;
+
+        h1 {
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        span {
+          font-weight: 400;
+          font-size: 10px;
+          line-height: 14px;
+          color: #b3b3b3;
+        }
+      }
+    }
+
+    .content {
+      padding: 16px;
+      box-sizing: border-box;
+      flex: 1;
+      color: #6a6a6a;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 96px;
+      padding: 16px;
+
+      p {
+        color: #f26b57;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .small {
+        font-size: 10px;
+      }
+
+      .gray {
+        color: #b3b3b3;
+      }
+
+      button {
+        width: 100%;
+        color: #fff;
+        border: none;
+      }
+    }
+  }
+}

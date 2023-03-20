@@ -23,6 +23,14 @@ export interface ICoupon {
   ref_goods_id: string
   coupon_id: number
 }
+export interface ICreateOrderParams {
+  amount: number
+  coupon_id: number
+  good_id: number
+  origin_route: string
+  total_price: number
+  users_id: string[]
+}
 export interface IActiveGoods extends IGoods {
   active: boolean
   end_at: number
@@ -40,3 +48,4 @@ export type IGetCpuponRes = {
 
 export type GetPrice = (params: IGetPriceParams) => Promise<IGetPriceRes>
 export type GetCoupon = (params: IGetCouponParams) => Promise<IGetCpuponRes>
+export type CreateOrder = (params: ICreateOrderParams) => Promise<IGetCpuponRes>

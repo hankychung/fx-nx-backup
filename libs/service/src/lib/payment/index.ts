@@ -30,11 +30,21 @@ class Payment {
       data: params
     })
   }
+  /**
+   * 获取支付信息
+   */
+  async prePay(params: any) {
+    return service.post({
+      url: `payment/v2/payment/prepay`,
+      data: params
+    })
+  }
 }
 
 const PaymentApi = new Payment()
 init({
   getPrice: PaymentApi.getGoodsList,
-  createCoupon: PaymentApi.createCoupon
+  createCoupon: PaymentApi.createCoupon,
+  createOrder: PaymentApi.createOrder
 })
-export default new Payment()
+export const paymentApi = new Payment()

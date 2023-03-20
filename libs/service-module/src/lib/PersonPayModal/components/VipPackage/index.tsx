@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 14:22:14
+ * @LastEditTime: 2023-03-20 11:50:16
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -29,6 +29,7 @@ const VipPackage = (props: Iprops) => {
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
   const [payInfo, setPayInfo] = useState<IActiveGoods>()
+  const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
   const service = useContext(SelectMemberContext)
 
   useEffect(() => {
@@ -37,10 +38,9 @@ const VipPackage = (props: Iprops) => {
 
       switch (event) {
         case 'showPay':
-          console.log(service.getData('showPay'))
-
           setShowPay(service.getData('showPay').show)
           setPayInfo(service.getData('showPay').payInfo)
+          setUserInfo(service.getData('showPay').userInfo)
           break
 
         default:
@@ -122,10 +122,23 @@ const VipPackage = (props: Iprops) => {
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
       >
-        <TeamVip memberList={memberList} mineId={mineId} />
+        <TeamVip
+          memberList={memberList}
+          mineId={mineId}
+          vipMealType={vipMealType}
+        />
       </div>
       {/* 支付弹窗 */}
-      {showPay && <PayQrCode payInfo={payInfo} />}
+      {showPay && (
+        <PayQrCode
+          payInfo={payInfo}
+          userInfo={
+            userInfo
+              ? userInfo
+              : memberList.filter((item) => item.userId === mineId)
+          }
+        />
+      )}
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import * as dayjs from 'dayjs'
+import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
-import { IUserInfo } from '../typings'
+import { IUserInfo, ILoginKeyParams, CommonResponse } from '../typings'
+import { AxiosRequestConfig } from 'axios'
 
 class Userc {
   private prefix = 'userc/v2'
@@ -38,6 +40,37 @@ class Userc {
       console.error('获取服务器时间戳失败', dayjs().unix(), e)
       return dayjs().unix()
     }
+  }
+
+  async getLoginKey(
+    data: ILoginKeyParams,
+    headers: AxiosRequestConfig['headers'] = {}
+  ) {
+    return await service.post({
+      url: `${this.prefix}/auth/scanlogin/code`,
+      data,
+      timeout: 20000,
+      headers
+    })
+  }
+
+  async updateUid() {
+    const data = {
+      device_id: uid,
+      platform: 'pc'
+    }
+
+    return await service.put({
+      url: `${this.prefix}/user/device`,
+      data
+    })
+  }
+
+  async getLoginUserInfo() {
+    return await service.get<CommonResponse<IUserInfo>>({
+      url: '/user',
+      timeout: 20000
+    })
   }
 }
 

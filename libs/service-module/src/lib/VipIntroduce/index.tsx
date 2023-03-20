@@ -4,7 +4,13 @@ import { ReactComponent as CustomerIcon } from '../../assets/vip-introduce/custo
 import { VipIntroduceContent } from './Content'
 import css from './index.module.scss'
 import { BaseUserInfo } from '@flyele-nx/ui'
-import { FlyAvatar } from '@flyele/flyele-components'
+import {
+  FlyAvatar,
+  FlyBasePopper,
+  FlyBasePopperCtrl,
+  useController
+} from '@flyele/flyele-components'
+import CustomerServicesModal from '../CustomerServicesModal'
 
 interface IProps {
   open: boolean
@@ -12,6 +18,7 @@ interface IProps {
 }
 const _VipIntroduce = (props: IProps) => {
   const { open, onClose } = props
+  const Controller = useController(new FlyBasePopperCtrl())
 
   return (
     <Modal
@@ -32,7 +39,32 @@ const _VipIntroduce = (props: IProps) => {
           avatar="https://cdn.flyele.net/resources/default_avatar.png"
           bottomRender={<span className={css.desc}>你当前是个人会员</span>}
         />
-        <Button icon={<CustomerIcon />}>联系客服</Button>
+
+        <FlyBasePopper
+          controller={Controller}
+          trigger="click"
+          placement="bottom-end"
+          showArrow={false}
+          zIndex={1003}
+          content={() => (
+            <div>
+              <CustomerServicesModal
+                onClose={() => {
+                  Controller.hide()
+                }}
+              ></CustomerServicesModal>
+            </div>
+          )}
+        >
+          <Button
+            onClick={() => {
+              Controller.show()
+            }}
+            icon={<CustomerIcon />}
+          >
+            联系客服
+          </Button>
+        </FlyBasePopper>
       </div>
       <VipIntroduceContent />
     </Modal>

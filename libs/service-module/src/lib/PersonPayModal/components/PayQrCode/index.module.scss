@@ -95,11 +95,12 @@
       margin-top: 8px;
       width: 160px;
       height: 160px;
-      border-radius: 8px;
-      border: 1px solid #eee;
+  
       .qrcode {
         width: 160px;
         height: 160px;
+        border-radius: 8px;
+        border: 1px solid #eee;
       }
     }
   }

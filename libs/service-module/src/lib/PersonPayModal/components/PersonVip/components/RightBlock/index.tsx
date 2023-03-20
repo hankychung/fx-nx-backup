@@ -16,6 +16,7 @@ const RightBlock = () => {
   const { nowScecond } = useCurrentTime()
   useEffect(() => {
     getMealList()
+
   }, [])
 
   const getItem = (id: number, list: ICoupon[]) => {
@@ -80,7 +81,7 @@ const RightBlock = () => {
     return vipMealList.filter((item) => item.active)
   }, [vipMealList])
   const payClick = () => {
-    service.showPay({ show: true, payInfo: activeGood[0] })
+    service.showPay({ show: true, payInfo: activeGood[0], })
   }
 
   return (

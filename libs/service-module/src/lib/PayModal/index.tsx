@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 18:10:42
+ * @LastEditTime: 2023-03-20 10:51:48
  */
 
 import React from 'react'
@@ -45,6 +45,7 @@ export default function PayModal(props: Iprops) {
 
   const buildPayModal = () => {
     if (!modalType) return null
+    
     switch (modalType) {
       case 'quick':
         return (

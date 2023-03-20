@@ -39,61 +39,61 @@ export const memberPowerStaticData: IInfoType[] = [
     powerList: [
       {
         title: '永久免费',
-        active: true,
+        active: true
       },
       {
         title: '无限事项数量',
-        active: true,
+        active: true
       },
       {
         title: '三端同步',
-        active: true,
+        active: true
       },
       {
         title: '微信任务机器人',
-        active: true,
+        active: true
       },
       {
         title: '日、周、月、全量视图',
-        active: true,
+        active: true
       },
       {
         title: '无限笔记数量',
-        active: true,
+        active: true
       },
       {
         title: '子事项支持3级（20个）',
-        active: true,
+        active: true
       },
       {
         title: '事项协作人数20人',
-        active: true,
+        active: true
       },
       {
         title: '单个文件上限50M',
-        active: true,
+        active: true
       },
       {
         title: '个人文件容量2G',
-        active: true,
+        active: true
       },
       {
         title: '自定义视图1个',
-        active: true,
+        active: true
       },
       {
         title: '个人目标20个',
-        active: true,
+        active: true
       },
       {
         title: '免费团队空间1个',
-        active: true,
+        active: true
       },
       {
         title: '全量表头数量5个',
-        active: true,
-      },
-    ],
+        active: true
+      }
+    ]
   },
   {
     key: 'personal',
@@ -112,57 +112,57 @@ export const memberPowerStaticData: IInfoType[] = [
     powerList: [
       {
         title: '包含所有免费账户能力',
-        active: true,
+        active: true
       },
       {
         title: '子事项支持8级（200个）',
-        active: true,
+        active: true
       },
       {
         title: '四象限视图',
-        active: true,
+        active: true
       },
       {
         title: '事项协作人数提升至100人',
-        active: true,
+        active: true
       },
       {
         title: '单个文件上限300M',
-        active: true,
+        active: true
       },
       {
         title: '个人文件容量50G',
-        active: true,
+        active: true
       },
       {
         title: '自定义视图10个',
-        active: true,
+        active: true
       },
       {
         title: '个人目标无限数量，并支持派发',
-        active: true,
+        active: true
       },
       {
         title: '个人脉络视图',
-        active: true,
+        active: true
       },
       {
         title: '个人关系视图',
-        active: true,
+        active: true
       },
       {
         title: '全量表头数量无限',
-        active: true,
+        active: true
       },
       {
         title: '批量操作、导出事项、自定义循环频率',
-        active: true,
+        active: true
       },
       {
         title: '……',
-        active: false,
-      },
-    ],
+        active: false
+      }
+    ]
   },
   {
     key: 'team',
@@ -181,57 +181,57 @@ export const memberPowerStaticData: IInfoType[] = [
     powerList: [
       {
         title: '包含所有个人会员能力',
-        active: true,
+        active: true
       },
       {
         title: '支持创建无限的专业团队空间',
-        active: true,
+        active: true
       },
       {
         title: '支持创建无限的项目',
-        active: true,
+        active: true
       },
       {
         title: '协作人数无限',
-        active: true,
+        active: true
       },
       {
         title: '专业空间角色管理',
-        active: true,
+        active: true
       },
       {
         title: '更大存储容量（人数*10G)',
-        active: true,
+        active: true
       },
       {
         title: '团队脉络视图',
-        active: true,
+        active: true
       },
       {
         title: '空间关系视图',
-        active: true,
+        active: true
       },
       {
         title: '数据分析',
-        active: true,
+        active: true
       },
       {
         title: '成员日程',
-        active: true,
+        active: true
       },
       {
         title: '团队目标',
-        active: true,
+        active: true
       },
       {
         title: '团队应用库',
-        active: true,
+        active: true
       },
       {
         title: '……',
-        active: false,
-      },
-    ],
+        active: false
+      }
+    ]
   },
   {
     key: 'custom',
@@ -251,24 +251,24 @@ export const memberPowerStaticData: IInfoType[] = [
     powerList: [
       {
         title: '包含所有团队会员能力',
-        active: true,
+        active: true
       },
       {
         title: '自定义私有化部署',
-        active: true,
+        active: true
       },
       {
         title: '企业组织结构导入',
-        active: true,
+        active: true
       },
       {
         title: '对接内部系统',
-        active: true,
+        active: true
       },
       {
         title: '……',
-        active: false,
-      },
-    ],
-  },
+        active: false
+      }
+    ]
+  }
 ]

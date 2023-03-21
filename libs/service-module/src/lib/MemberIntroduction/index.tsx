@@ -77,9 +77,10 @@ export const MemberIntroduction = () => {
       >
         <div>
           <div className={styles.loginTitleBox}>
-            <div>
+            <div style={{ marginLeft: '-24px' }}>
               <LoginTextBg />
             </div>
+            <div className={styles.text}>未注册用户将自动注册</div>
           </div>
           <QrCodeLogin
             deviceParams={{

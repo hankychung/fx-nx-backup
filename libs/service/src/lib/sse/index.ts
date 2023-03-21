@@ -34,7 +34,7 @@ class SSe {
     params?: { [p: string]: string },
     reconnection = false
   ) {
-    this.url = `https://api.flyele.vip/intime/${url}?${SSe.composeParams(
+    this.url = `https://api-test.flyele.vip/intime/${url}?${SSe.composeParams(
       params
     )}`
 

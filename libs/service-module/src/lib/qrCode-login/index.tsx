@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { UsercApi } from '@flyele-nx/service'
-import { SSe } from '@flyele-nx/service'
+import { service, UsercApi, SSe, IDevice } from '@flyele-nx/service'
 import Qc from 'qrcode'
 import { uid } from '@flyele-nx/utils'
 import { message } from 'antd'
@@ -15,6 +14,7 @@ import util from './utils'
 import style from './index.module.scss'
 
 interface Props {
+  deviceParams: Omit<IDevice, 'device_id'>
   onSuccess?(): void
 }
 let watchTimeoutId: NodeJS.Timeout
@@ -25,7 +25,7 @@ const timeOut = 3 * 60 * 1000
 const MAX_COUNTER = 5
 
 const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
-  const { onSuccess } = props
+  const { deviceParams, onSuccess } = props
   const [messageApi, contextHolder] = message.useMessage()
 
   const [loginKey, setLoginKey] = useState('')
@@ -80,7 +80,7 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
   }, [countDown])
 
   const getLoginKey = useMemoizedFn(async () => {
-    const params = await util.getLoginKeyParams(loginKey)
+    const params = await util.getLoginKeyParams(loginKey, deviceParams)
 
     const res = await UsercApi.getLoginKey(params)
 
@@ -95,14 +95,14 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
 
     const params = `login_key=${loginKey}&channel=${channel}&device_id=${uid}`
 
-    let url = `https://api.flyele.vip/md/index.html?${params}`
+    let url = `https://api-test.flyele.vip/md/index.html?${params}`
 
-    if ('api.flyele.vip'.indexOf('net') !== -1) {
+    if ('api-test.flyele.vip'.indexOf('net') !== -1) {
       url = `https://h5.flyele.net/index.html?${params}`
     }
 
     console.log('url', url)
-    return await Qc.toDataURL(url)
+    return Qc.toDataURL(url)
   }, [])
 
   const generateQrCode = async () => {
@@ -144,7 +144,7 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
    * 连接sse
    */
   const connectSse = (loginKey: string) => {
-    const sse = new SSe('/stream', { identity: loginKey }, true)
+    const sse = new SSe('stream', { identity: loginKey }, true)
 
     sseRef.current = sse
 
@@ -179,6 +179,8 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
 
             if (data.code === 0) {
               console.log('sse login success')
+
+              service.updateToken(data.token)
 
               getUserInfo({
                 onSuccess() {
@@ -241,7 +243,6 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
     <div className={style.wrap}>
       {!scanCode ? (
         <>
-          <img src="assets/logo.png" alt="飞项" className={style.logo} />
           <div className={style.qrcode_wrap}>
             {(isWatchTimeOut || exception) && (
               <div

@@ -6,6 +6,7 @@ import PayModal from '../PayModal'
 import { Modal } from 'antd'
 import CustomerServicesModal from '../CustomerServicesModal'
 import QrCodeLogin from '../qrCode-login'
+import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
 
 export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
@@ -17,11 +18,15 @@ export const MemberIntroduction = () => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
       setShowLoginModal(true)
-      // setShow(true)
     }
     if (key === 'custom') {
       setShowCustomerModal(true)
     }
+  }
+
+  const onLoginSuccess = () => {
+    console.log('登录成功 onLoginSuccess')
+    setShow(true)
   }
 
   const payType = useMemo(() => {
@@ -70,7 +75,22 @@ export const MemberIntroduction = () => {
         maskClosable={false}
         onCancel={() => setShowLoginModal(false)}
       >
-        <QrCodeLogin />
+        <div>
+          <div className={styles.loginTitleBox}>
+            <div>
+              <LoginTextBg />
+            </div>
+          </div>
+          <QrCodeLogin
+            deviceParams={{
+              client_version: '0.0.1',
+              os: 'html5',
+              platform: 'web',
+              device_name: 'browser'
+            }}
+            onSuccess={onLoginSuccess}
+          />
+        </div>
       </Modal>
     </div>
   )

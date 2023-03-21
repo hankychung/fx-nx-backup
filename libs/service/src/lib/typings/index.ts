@@ -64,7 +64,7 @@ export interface IDevice {
   device_name?: string
   mac_addr?: string
   os: string
-  platform: 'pc'
+  platform: 'pc' | 'web'
   device_id: string
 }
 

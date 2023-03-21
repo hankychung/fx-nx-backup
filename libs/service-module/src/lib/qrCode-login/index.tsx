@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { service, UsercApi, SSe, IDevice } from '@flyele-nx/service'
+import { service, UsercApi, SSe, IDevice, envStore } from '@flyele-nx/service'
 import Qc from 'qrcode'
 import { uid } from '@flyele-nx/utils'
 import { message } from 'antd'
@@ -8,6 +8,7 @@ import { getUserInfo } from './utils/user'
 import RefreshIcon from '../../assets/login/refresh.png'
 import { debounce } from 'lodash'
 import loginRefreshIcon from '../../assets/login/loginRefresh.svg'
+import loadingGif from '../../assets/login/loading3.gif'
 import cs from 'classnames'
 import { useMemoizedFn } from 'ahooks'
 import util from './utils'
@@ -95,9 +96,10 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
 
     const params = `login_key=${loginKey}&channel=${channel}&device_id=${uid}`
 
-    let url = `https://api-test.flyele.vip/md/index.html?${params}`
+    const envHost = envStore.getHost()
+    let url = `${envHost}/md/index.html?${params}`
 
-    if ('api-test.flyele.vip'.indexOf('net') !== -1) {
+    if (envHost.indexOf('net') !== -1) {
       url = `https://h5.flyele.net/index.html?${params}`
     }
 
@@ -267,9 +269,7 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
                 )}
               </div>
             )}
-            {!exception && (
-              <img alt="二维码" src={qrCode || 'assets/loading3.gif'} />
-            )}
+            {!exception && <img alt="二维码" src={qrCode || loadingGif} />}
             {isWatchTimeOut && !exception && (
               <div className={style.tips}>请使用微信或飞项app扫码登录</div>
             )}

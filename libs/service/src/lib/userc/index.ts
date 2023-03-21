@@ -2,6 +2,7 @@ import * as dayjs from 'dayjs'
 import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
 import { IUserInfo, ILoginKeyParams, CommonResponse } from '../typings'
+import { IContactsAndStatus, EConCheckStatus } from '../typings/taker'
 import { AxiosRequestConfig } from 'axios'
 
 class Userc {
@@ -68,9 +69,26 @@ class Userc {
 
   async getLoginUserInfo() {
     return await service.get<CommonResponse<IUserInfo>>({
-      url: '/user',
+      url: `${this.prefix}/user`,
       timeout: 20000
     })
+  }
+
+  // 邀请协作人[模态框] > 获取 - 飞项协作人 - 列表
+  async getContacts(last_sync_at?: number) {
+    // const res = await service.get<CommonResponse<IContactsAndStatus[]>>({
+    let res = await service.get<IContactsAndStatus[]>({
+      url: `${this.prefix}/user/interacts`,
+      params: { last_sync_at }
+    })
+
+    // res.data = (res.data || []).map((item) => ({
+    res = (res || []).map((item) => ({
+      ...item,
+      status: EConCheckStatus.unChecked
+    }))
+
+    return res
   }
 }
 

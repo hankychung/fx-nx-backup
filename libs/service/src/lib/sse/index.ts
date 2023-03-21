@@ -1,4 +1,5 @@
 import { GetObjKeyOfType } from '../typings'
+import { envStore } from '../env/index'
 
 class SSe {
   source: EventSource
@@ -34,9 +35,8 @@ class SSe {
     params?: { [p: string]: string },
     reconnection = false
   ) {
-    this.url = `https://api-test.flyele.vip/intime/${url}?${SSe.composeParams(
-      params
-    )}`
+    const envHost = envStore.getHost()
+    this.url = `${envHost}/intime/${url}?${SSe.composeParams(params)}`
 
     this.messageListener = null
 

@@ -7,12 +7,14 @@ import { Modal } from 'antd'
 import CustomerServicesModal from '../CustomerServicesModal'
 import QrCodeLogin from '../qrCode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
+import { UsercApi, IContactsAndStatus } from '@flyele-nx/service'
 
 export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCustomerModal, setShowCustomerModal] = useState(false)
+  const [taker, setTaker] = useState<IContactsAndStatus[]>([])
 
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
@@ -24,8 +26,17 @@ export const MemberIntroduction = () => {
     }
   }
 
-  const onLoginSuccess = () => {
-    console.log('登录成功 onLoginSuccess')
+  /**
+   * 请求协作人列表
+   */
+  const fetchTakerList = async () => {
+    const res = await UsercApi.getContacts()
+    setTaker(res)
+  }
+
+  const onLoginSuccess = async () => {
+    await fetchTakerList()
+    setShowLoginModal(false)
     setShow(true)
   }
 

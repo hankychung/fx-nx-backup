@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 17:28:43
+ * @LastEditTime: 2023-03-20 20:14:10
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -15,15 +15,18 @@ import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
 import { useMemoizedFn } from 'ahooks'
 import QRCode from 'qrcode'
+import { IFlyeleAvatarItem } from '../../../PayModal'
 
 const PayQrCode = ({
   setShowSuccess,
   showSuccess,
-  vipMeal
+  vipMeal,
+  memberList
 }: {
   showSuccess: boolean
   vipMeal?: IActiveGoods
   setShowSuccess: (_: boolean) => void
+  memberList: IFlyeleAvatarItem[]
 }) => {
   const [qrCode, setQrCode] = useState('')
   useEffect(() => {
@@ -31,20 +34,20 @@ const PayQrCode = ({
   }, [])
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
+    const params = {
+      amount: 1,
+      coupon_id: vipMeal?.coupon_id || 0,
+      good_id: vipMeal?.id || 0,
+      // good_id: 8,
+      origin_route: 'PC客户端',
+      total_price: vipMeal?.now_price || 0,
+      // total_price: 1,
+      users_id: memberList.map((item) => item.userId)
+    }
     try {
-      // const { date, dateText } = await getValidityTime()
-      // const currentTime = Math.trunc(new Date().getTime() / 1000) // 当前时间 单位：秒
-
-      // setValidityTime(dateText)
-
-      // url += `&expire_at=${date}&dispatch_at=${currentTime}`
-      const url = 'https://feixiang.cn?a=1'
       const res = await QRCode.toDataURL(
-        'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=' +
-          encodeURIComponent(url) +
-          '&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect'
+        `http://127.0.0.1:4200/payDetail?params=${JSON.stringify(params)}`
       )
-      //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=http://127.0.0.1:4200/payDetail&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect
       setQrCode(res)
     } catch {
       console.log('00')

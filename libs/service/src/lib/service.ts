@@ -13,7 +13,7 @@ class Service {
     this.responseInterceptors()
   }
 
-  private token = ''
+  token = ''
 
   private requestInterceptors() {
     this.axios.interceptors.request.use(

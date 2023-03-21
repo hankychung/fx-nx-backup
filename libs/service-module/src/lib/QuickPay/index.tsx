@@ -49,6 +49,7 @@ const QuickPay = (props: Iprops) => {
           </div>
           <div>
             <PayQrCode
+              memberList={memberList}
               vipMeal={vipMeal}
               setShowSuccess={setShowSuccess}
               showSuccess={showSuccess}

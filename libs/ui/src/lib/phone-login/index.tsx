@@ -70,27 +70,6 @@ export const PhoneLogin = ({
     })
   }
 
-  useEffect(() => {
-    setCodeStatus((value) => {
-      if (value === CodeStatus.timer) return value // 倒计时中
-      return phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
-    })
-  }, [phoneNum])
-
-  useEffect(() => {
-    setDisabled(
-      !(phoneReg.test(phoneNum) && codeReg.test(code) && isCallCodeIe)
-    )
-  }, [phoneNum, code, isCallCodeIe])
-
-  useEffect(() => {
-    if (timer === 0) {
-      setCodeStatus(
-        phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
-      )
-    }
-  }, [phoneNum, timer])
-
   const getCode = async (events: MouseEvent<HTMLDivElement>) => {
     events.preventDefault()
     if (codeStatus === CodeStatus.hasPn) {
@@ -115,6 +94,41 @@ export const PhoneLogin = ({
       }
     }
   }
+
+  // 手机号码为 344 格式显示
+  const phoneFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value // 旧值
+    let newVal = val.substring(0, 13).replace(/[^\d]/g, '') // 提取中字符串中的数字（只数字）
+    // 检测到第4位数字和第8位数字时，在第3位和第7位加入空格
+    // （注意：如果检测到第3位数字和第7位数字时添加空格（判断条件为>6和>2），删除时会导致删除到空格时无法继续删除，可自行尝试）
+    if (newVal.length > 7) {
+      newVal = newVal.replace(/^(.{3})(.{4})(.*)$/, '$1 $2 $3')
+    } else if (newVal.length > 3) {
+      newVal = newVal.replace(/^(.{3})(.*)$/, '$1 $2')
+    }
+    // 返回格式化之后的值
+    return newVal
+  }
+
+  useEffect(() => {
+    setCodeStatus((value) => {
+      if (value === CodeStatus.timer) return value // 倒计时中
+      return phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
+    })
+  }, [phoneNum])
+
+  useEffect(() => {
+    const phone = phoneNum.replace(/\s*/g, '')
+    setDisabled(!(phoneReg.test(phone) && codeReg.test(code) && isCallCodeIe))
+  }, [phoneNum, code, isCallCodeIe])
+
+  useEffect(() => {
+    if (timer === 0) {
+      setCodeStatus(
+        phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
+      )
+    }
+  }, [phoneNum, timer])
 
   const render = () => {
     const getText = () => {
@@ -156,11 +170,13 @@ export const PhoneLogin = ({
               rules={[
                 {
                   required: true,
+                  transform: (value) => value.replace(/\s*/g, ''),
                   pattern: phoneReg,
                   message: '输入正确的手机号'
                 }
               ]}
               wrapperCol={{ span: 24 }}
+              getValueFromEvent={phoneFormat}
             >
               <Input className={styles.customInput} />
             </Form.Item>

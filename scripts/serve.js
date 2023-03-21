@@ -52,7 +52,7 @@ const generateCommands = ({ apps, apiEnv } = {}) => {
   const { name } = apps
 
   console.log('apiEnv', apiEnv)
-  const command = `nx serve ${name}`
+  const command = `nx serve ${name} --host 0.0.0.0`
 
   return { command }
 }

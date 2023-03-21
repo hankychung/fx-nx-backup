@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 17:24:20
+ * @LastEditTime: 2023-03-18 12:32:54
  * @FilePath: /electron-client/app/components/TeamPayModal/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,13 +14,16 @@ import style from './index.module.scss'
 import Header from './components/Header'
 import VipPackage from './components/VipPackage'
 import { VipPayType } from './components/controller'
+import { IFlyeleAvatarItem } from '../PayModal'
 
 interface Iprops {
   vipType: VipPayType
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
   onClose: () => void
 }
 const TeamPayModal = (props: Iprops) => {
-  const { vipType, onClose } = props
+  const { vipType, onClose, memberList, mineId } = props
 
   return (
     <div>
@@ -41,7 +44,11 @@ const TeamPayModal = (props: Iprops) => {
             <Header vipType={vipType} onClose={onClose} />
           </div>
           {/* 套餐包信息 */}
-          <VipPackage vipType={vipType} />
+          <VipPackage
+            vipType={vipType}
+            memberList={memberList}
+            mineId={mineId}
+          />
         </div>
       </Modal>
     </div>

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-10 17:36:38
+ * @LastEditTime: 2023-03-20 10:58:44
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -19,18 +19,28 @@ import Header from './components/Header'
 import VipPackage from './components/VipPackage'
 import { VipMealType } from './components/controller'
 import { useEffect } from 'react'
+import { useCreation } from 'ahooks'
+import { SelectMemberService } from './context/service'
+import { SelectMemberContext } from './context/context'
+import { IFlyeleAvatarItem } from '../PayModal'
 interface Iprops {
   onClose: () => void
   payType?: VipMealType
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
 }
 const PersonPayModal = (props: Iprops) => {
-  const { payType, onClose } = props
+  const { payType, onClose, memberList, mineId } = props
   const [vipMealType, setVipMealType] = useState<VipMealType>(1) // 切换tab
   useEffect(() => {
     if (payType) {
       setVipMealType(payType)
     }
   }, [payType])
+  const service = useCreation(() => {
+    return new SelectMemberService()
+  }, [])
+
   return (
     <div>
       <Modal
@@ -44,21 +54,29 @@ const PersonPayModal = (props: Iprops) => {
         wrapClassName={style.custom_modal}
         maskStyle={{ opacity: '0.4', background: '#000000', animation: 'none' }}
       >
-        <div
-          className={cs(style.modal_block, {
-            [style.team_block]: vipMealType === VipMealType.TEAM
-          })}
-        >
-          {/* 头部信息 */}
-          <div>
-            <Header onClose={onClose} />
+        <SelectMemberContext.Provider value={service}>
+          <div
+            className={cs(style.modal_block, {
+              [style.team_block]: vipMealType === VipMealType.TEAM
+            })}
+          >
+            {/* 头部信息 */}
+            <div>
+              <Header
+                onClose={onClose}
+                mineId={mineId}
+                memberList={memberList}
+              />
+            </div>
+            {/* 套餐包信息 */}
+            <VipPackage
+              setVipMealType={setVipMealType}
+              vipMealType={vipMealType}
+              memberList={memberList}
+              mineId={mineId}
+            />
           </div>
-          {/* 套餐包信息 */}
-          <VipPackage
-            setVipMealType={setVipMealType}
-            vipMealType={vipMealType}
-          />
-        </div>
+        </SelectMemberContext.Provider>
       </Modal>
     </div>
   )

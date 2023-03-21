@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import { ReactComponent as Completed } from '../../../assets/payImg/completed.svg'
 import { ReactComponent as Expired } from '../../../assets/payImg/expired.svg'
 import { ReactComponent as Processing } from '../../../assets/payImg/processing.svg'
+import { paymentApi } from '@flyele-nx/service'
 declare let WeixinJSBridge: any
 export interface Res {
   // 微信需要传入的数据，数据格式定义
@@ -15,33 +16,67 @@ export interface Res {
 }
 
 const PayDetail = () => {
+  const [payParams, setPayParam] = useState()
   useEffect(() => {
     document.title = '支付订单'
-    handlePay()
+    getCode()
   }, [])
   const statusText = {
     processing: '处理中',
     expired: '已失效',
-    completed: '处理中'
+    completed: '您已完成支付，订单已完成'
   }
-  const onBridgeReady = () => {
-    // let params = {
-    //   // ... 支付相关参数，商品名称价格等等
-    // }
-    // 调用获取支付签名接口
-    // getPaySign(params).then(({data})=>{
-    //   let {appid:appId,timeStamp,nonce_str:nonceStr,packageStr,signType,sign:paySign} = data;
+  const getCode = () => {
+    const local = 'https://feixiang.cn'
+    const code = getParam('code')
+    if (code) {
+      getPayParams(code)
+    } else {
+      // 跳转至授权地址，该地址只支持微信浏览器打开
+      window.location.href =
+        'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=' +
+        encodeURIComponent(local) +
+        '&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+    }
+  }
+  const getParam = (paramName: string) => {
+    const query = window.location.search.substring(1)
+    const vars = query.split('&')
+    for (let i = 0; i < vars.length; i++) {
+      const pair = vars[i].split('=')
+      if (pair[0] === paramName) {
+        return pair[1]
+      }
+    }
+    return false
+  }
+  //获取支付参数
+  const getPayParams = (code: string) => {
+    paymentApi
+      .prePay({
+        code,
+        name: '个人会员-月套餐',
+        order_method: 3,
+        out_trade_no: '2375276954125386'
+      })
+      .then((res) => {
+        if (res.code === 0) {
+          handlePay(res.data)
+          setPayParam(res.data)
+        }
+      })
+  }
 
-    // })
+  const onBridgeReady = (params: any) => {
     WeixinJSBridge.invoke(
       'getBrandWCPayRequest',
       {
-        appId: 'wx2421b1c4370ec43b', //公众号ID，由商户传入
-        timeStamp: '1395712654', //时间戳，自1970年以来的秒数
-        nonceStr: 'e61463f8efa94090b1f366cccfbbb444', //随机串
-        package: 'prepay_id=u802345jgfjsdfgsdg888',
-        signType: 'MD5', //微信签名方式：
-        paySign: '70EA570631E4BB79628FBCA90534C63FF7FADD89' //微信签名
+        appId: params.app_id, //公众号ID，由商户传入
+        timeStamp: params.timestamp, //时间戳，自1970年以来的秒数
+        nonceStr: params.nonce_str, //随机串
+        package: params.package, //prepayId
+        signType: params.sign_type, //微信签名方式：
+        paySign: params.pay_sign //微信签名
       },
       function (res: any) {
         if (res.err_msg === 'get_brand_wcpay_request:ok') {
@@ -59,14 +94,8 @@ const PayDetail = () => {
     )
   }
 
-  const handlePay = () => {
-    if (typeof WeixinJSBridge == 'undefined') {
-      if (document.addEventListener) {
-        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
-      }
-    } else {
-      onBridgeReady()
-    }
+  const handlePay = (params: any) => {
+    onBridgeReady(params)
   }
 
   return (
@@ -91,7 +120,14 @@ const PayDetail = () => {
       </div>
       <div className={styles.btns}>
         <div className={styles.btn}>已完成支付</div>
-        <div className={styles.btn}>重新支付</div>
+        <div
+          className={styles.btn}
+          onClick={() => {
+            handlePay(payParams)
+          }}
+        >
+          重新支付
+        </div>
       </div>
     </div>
   )

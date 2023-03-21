@@ -16,7 +16,6 @@
   "dependencies": {
     "@flyele/flyele-components": "^2.12.1",
     "@swc/helpers": "~0.4.11",
-    "@types/d3-flextree": "^2.1.0",
     "ahooks": "^3.7.5",
     "antd": "^5.3.0",
     "classnames": "^2.3.2",
@@ -33,12 +32,17 @@
     "d3-zoom": "^2.0.0",
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
+    "qrcode": "^1.5.1",
     "react": "18.2.0",
+    "react-avatar-editor": "^13.0.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-router-dom": "6.8.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@types/qrcode": "^1.5.0",
+    "@types/d3-flextree": "^2.1.0",
     "@babel/preset-react": "^7.14.5",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
@@ -73,6 +77,7 @@
     "@types/jest": "^29.4.0",
     "@types/node": "18.14.2",
     "@types/react": "18.0.28",
+    "@types/react-avatar-editor": "^13.0.0",
     "@types/react-dom": "18.0.11",
     "@types/react-router-dom": "5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.36.1",

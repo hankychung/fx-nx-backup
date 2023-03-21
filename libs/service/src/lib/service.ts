@@ -1,12 +1,12 @@
 import axios, { AxiosInstance, AxiosError } from 'axios'
 import { IErrorResponse, RequestConfig, IResponse } from './typings'
+import { envStore } from './env'
 
 class Service {
   axios: AxiosInstance
 
   constructor() {
     this.axios = axios.create({
-      baseURL: 'https://api-test.flyele.vip',
       headers: {}
     })
     this.requestInterceptors()
@@ -20,6 +20,8 @@ class Service {
       (config) => {
         // before request is sent
         config.headers.Authorization = this.token
+
+        config.baseURL = envStore.getHost()
 
         return config
       },

@@ -3,6 +3,9 @@ import * as ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import '@flyele-nx/service'
 import { AllRoutes } from './app/routes'
+import { envStore } from '@flyele-nx/service'
+
+envStore.initEnv(process.env.NODE_ENV as string)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

@@ -1,27 +1,32 @@
-/*
- * @Author: wanghui wanghui@flyele.net
- * @Date: 2023-03-10 14:44:25
- * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 19:05:29
- * @FilePath: /fx-nx/libs/service-module/src/lib/MemberIntroduction/index.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import React, { useMemo, useState } from 'react'
 import styles from './index.module.scss'
 import { IntroductionBox } from './components/IntroductionBox'
 import { memberPowerStaticData } from '@flyele-nx/constant'
 import PayModal from '../PayModal'
+import { Modal } from 'antd'
+import CustomerServicesModal from '../CustomerServicesModal'
+import QrCodeLogin from '../qrCode-login'
+import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
 
 export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showCustomerModal, setShowCustomerModal] = useState(false)
 
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
-      setShow(true)
+      setShowLoginModal(true)
     }
-    console.log('onClickBtn', key)
+    if (key === 'custom') {
+      setShowCustomerModal(true)
+    }
+  }
+
+  const onLoginSuccess = () => {
+    console.log('登录成功 onLoginSuccess')
+    setShow(true)
   }
 
   const payType = useMemo(() => {
@@ -39,6 +44,7 @@ export const MemberIntroduction = () => {
           />
         )
       })}
+
       <PayModal
         visible={show}
         mineId=""
@@ -49,6 +55,44 @@ export const MemberIntroduction = () => {
           setShow(false)
         }}
       ></PayModal>
+
+      <Modal
+        open={showCustomerModal}
+        width={320}
+        centered
+        footer={null}
+        closable={false}
+        wrapClassName={styles.modalWrap}
+      >
+        <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
+      </Modal>
+
+      <Modal
+        open={showLoginModal}
+        width={480}
+        centered
+        footer={null}
+        maskClosable={false}
+        onCancel={() => setShowLoginModal(false)}
+      >
+        <div>
+          <div className={styles.loginTitleBox}>
+            <div style={{ marginLeft: '-24px' }}>
+              <LoginTextBg />
+            </div>
+            <div className={styles.text}>未注册用户将自动注册</div>
+          </div>
+          <QrCodeLogin
+            deviceParams={{
+              client_version: '0.0.1',
+              os: 'html5',
+              platform: 'web',
+              device_name: 'browser'
+            }}
+            onSuccess={onLoginSuccess}
+          />
+        </div>
+      </Modal>
     </div>
   )
 }

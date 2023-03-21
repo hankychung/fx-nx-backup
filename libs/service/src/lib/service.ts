@@ -1,11 +1,3 @@
-/*
- * @Author: wanghui wanghui@flyele.net
- * @Date: 2023-03-17 15:42:11
- * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-21 14:38:48
- * @FilePath: /fx-nx/libs/service/src/lib/service.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import axios, { AxiosInstance, AxiosError } from 'axios'
 import { IErrorResponse, RequestConfig, IResponse } from './typings'
 
@@ -14,15 +6,14 @@ class Service {
 
   constructor() {
     this.axios = axios.create({
-      baseURL: 'https://api.flyele.vip',
+      baseURL: 'https://api-test.flyele.vip',
       headers: {}
     })
     this.requestInterceptors()
     this.responseInterceptors()
   }
 
-  private token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzkzMTkxNjMsImlhdCI6MTY3OTMxMDc2MSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyMDYyMTAwMDkxMTA5NTg5IiwiRGV2aWNlSUQiOiJkMTA4OGVjNC0xMjJjLTQ4MDMtOWM2NS1kOWY0NmZlNDg3YjUiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.Ugpf4q5JvdWPkLzjcLpzyZUN62M8ZYFq8TB_fOadoUA'
+  token = ''
 
   private requestInterceptors() {
     this.axios.interceptors.request.use(

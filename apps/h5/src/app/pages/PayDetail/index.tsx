@@ -7,6 +7,7 @@ import { paymentApi } from '@flyele-nx/service'
 import { regFenToYuan } from './utils'
 import { ICreateOrderParams } from '@flyele-nx/api'
 import { message } from 'antd'
+import { service } from '@flyele-nx/service'
 declare let WeixinJSBridge: any
 export interface Res {
   // 微信需要传入的数据，数据格式定义
@@ -44,7 +45,13 @@ const PayDetail = () => {
       setOrderDetail(JSON.parse(params))
     }
     if (code) {
-      createOrder(code)
+      const token = getParam('token')
+      if (token) {
+        service.updateToken(token)
+        createOrder(code)
+      } else {
+        message.info({ content: '无token' })
+      }
     } else {
       // 跳转至授权地址，该地址只支持微信浏览器打开
       window.location.href =

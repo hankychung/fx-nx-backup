@@ -49,7 +49,7 @@ class Payment {
     })
   }
   getToken() {
-    return 'token'
+    return service.token
   }
 }
 

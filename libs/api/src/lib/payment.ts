@@ -6,7 +6,8 @@ import {
   GetCoupon,
   IGetCpuponRes,
   ICreateOrderParams,
-  CreateOrder
+  CreateOrder,
+  GetToken
 } from '../types/payment'
 
 class PaymentApi {
@@ -19,6 +20,9 @@ class PaymentApi {
   createOrder(_params: ICreateOrderParams) {
     return Promise.resolve({} as any)
   }
+  getToken() {
+    return '' as string
+  }
   registerGetPrice(fn: GetPrice) {
     this.getPrice = fn
   }
@@ -28,6 +32,9 @@ class PaymentApi {
   registerCreateOrder(fn: CreateOrder) {
     this.createOrder = fn
   }
+  registerGetToken(fn: GetToken) {
+    this.getToken = fn
+  }
 }
 
 export const paymentApi = new PaymentApi()
@@ -36,9 +43,11 @@ export const init = (options: {
   getPrice: GetPrice
   createCoupon: GetCoupon
   createOrder: CreateOrder
+  getToken: GetToken
 }) => {
   paymentApi.registerGetPrice(options.getPrice)
   paymentApi.registerCreateCoupon(options.createCoupon)
   paymentApi.registerCreateOrder(options.createOrder)
+  paymentApi.registerGetToken(options.getToken)
 }
 export * from '../types/payment'

@@ -48,12 +48,16 @@ class Payment {
       data: params
     })
   }
+  getToken() {
+    return 'token'
+  }
 }
 
 const PaymentApi = new Payment()
 init({
   getPrice: PaymentApi.getGoodsList,
   createCoupon: PaymentApi.createCoupon,
-  createOrder: PaymentApi.createOrder
+  createOrder: PaymentApi.createOrder,
+  getToken: PaymentApi.getToken
 })
 export const paymentApi = new Payment()

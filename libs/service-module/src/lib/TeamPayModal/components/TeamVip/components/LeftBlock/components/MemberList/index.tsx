@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 16:38:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-20 16:25:06
+ * @LastEditTime: 2023-03-21 09:51:52
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -57,6 +57,9 @@ const MemberList = ({
    * 选中某一项
    */
   const onClickItem = useMemoizedFn((item: any) => {
+    if (item.userId === mineId && vipType === VipPayType.NOVIPCREATE) {
+      return
+    }
     const resArr = [...resultArr]
     const key = item.userId
     const findItem = resArr.findIndex((item) => item.userId === key)

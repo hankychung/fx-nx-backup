@@ -49,3 +49,4 @@ export type IGetCpuponRes = {
 export type GetPrice = (params: IGetPriceParams) => Promise<IGetPriceRes>
 export type GetCoupon = (params: IGetCouponParams) => Promise<IGetCpuponRes>
 export type CreateOrder = (params: ICreateOrderParams) => Promise<IGetCpuponRes>
+export type GetToken = () => string

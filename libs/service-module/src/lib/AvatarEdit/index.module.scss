@@ -1,0 +1,70 @@
+.container {
+  :global(.ant-modal-content) {
+    padding: 0 !important;
+  }
+  .modal-body {
+    padding: 0 20px;
+    box-sizing: border-box;
+    .preview {
+      cursor: move;
+    }
+  }
+
+  .operate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0 24px -4px;
+
+    .icon {
+      cursor: pointer;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  :global(.ant-modal-header) {
+    border-bottom: none;
+    padding: 20px;
+  }
+
+  .slide-wrap {
+    width: 198px;
+    height: 20px;
+    border: 0.5px solid #cfcfcf;
+    border-radius: 104.882px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon {
+      color: #8b8d95;
+      padding: 0 6px;
+      padding-bottom: 2px;
+      cursor: pointer;
+    }
+
+    .slide {
+      flex: 1;
+
+      :global(.ant-slider-handle) {
+        border: 2px solid #1dd2c1;
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 15px 20px 15px;
+
+    button {
+      padding: 0 25px;
+      box-sizing: border-box;
+      column-gap: 10px;
+    }
+  }
+}

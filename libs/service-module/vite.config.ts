@@ -47,7 +47,13 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@flyele-nx/api', 'dayjs']
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@flyele-nx/api',
+        'dayjs'
+      ]
     }
   }
 })

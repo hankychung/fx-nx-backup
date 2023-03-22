@@ -3,17 +3,25 @@ import { IDataShow, PageContainer } from '../../components/pageContainer'
 import { PageSearch } from '../../components/pageSearch'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyButton, FlyTabs, IFlyTabs } from '@flyele/flyele-components'
-import { Table } from 'antd'
+import { Table, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
+import { useMount } from 'ahooks'
+import {
+  IIndentAnalysis,
+  IIndentList,
+  IIndentListParams,
+  IndentMemberType,
+  IndentTimeType,
+  OrderSystemApi,
+  IndentStateLabel,
+  OrderMethodLabel
+} from '@flyele-nx/service'
 
-interface DataType {
-  key: React.Key
-  name: string
-  age: number
-  address: string
-}
+const pageSize = 20
 
 export const OrderManagement = () => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const tabs: IFlyTabs[] = [
     {
       key: 'all',
@@ -32,7 +40,7 @@ export const OrderManagement = () => {
       title: '个人版订单'
     },
     {
-      key: 'company',
+      key: 'corp',
       title: '企业版订单'
     }
   ]
@@ -42,7 +50,7 @@ export const OrderManagement = () => {
       title: '查找用户'
     },
     {
-      key: 'company',
+      key: 'corp',
       title: '查找公司（企业）'
     },
     {
@@ -50,11 +58,11 @@ export const OrderManagement = () => {
       title: '查找订单'
     }
   ]
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<IIndentList> = [
     {
       width: 192,
       title: '订单内容',
-      dataIndex: 'name'
+      dataIndex: 'indent_content'
     },
     {
       width: 100,
@@ -69,32 +77,35 @@ export const OrderManagement = () => {
     {
       width: 168,
       title: '充值对象',
-      dataIndex: 'aaa'
+      dataIndex: 'users',
+      render: (text, record) => <span>{record.users.user_name}</span>
     },
     {
       width: 148,
       title: '订单号',
-      dataIndex: 'order'
+      dataIndex: 'indent_num'
     },
     {
       width: 92,
       title: '订单渠道',
-      dataIndex: 'address'
+      dataIndex: 'origin_route'
     },
     {
       width: 102,
       title: '支付方式',
-      dataIndex: 'type'
+      dataIndex: 'order_method',
+      render: (text) => <span>{OrderMethodLabel[text]}</span>
     },
     {
       width: 108,
       title: '支付状态',
-      dataIndex: 'state'
+      dataIndex: 'state',
+      render: (text) => <span>{IndentStateLabel[text]}</span>
     },
     {
       width: 110,
       title: '支付时间',
-      dataIndex: 'time'
+      dataIndex: 'payment_at'
     },
     {
       width: 100,
@@ -108,48 +119,115 @@ export const OrderManagement = () => {
   ]
 
   const [activeTab, setActiveTab] = useState<string>('all')
-  const [tableData, setTableData] = useState<DataType[]>([
-    {
-      key: '122',
-      name: '111',
-      age: 1,
-      address: '2222'
+  const [tableData, setTableData] = useState<IIndentList[]>([])
+  const [indentAnalysis, setIndentAnalysis] = useState<IIndentAnalysis>({
+    today_indent: {
+      amount: 0,
+      count: 0
     },
-    {
-      key: '233',
-      name: '222',
-      age: 2,
-      address: '3333'
+    total_indent: {
+      amount: 0,
+      count: 0
+    },
+    month_indent: {
+      amount: 0,
+      count: 0
+    },
+    member: {
+      personal_count: 0,
+      team_count: 0
     }
-  ])
+  })
 
   /**
    * 切换tab
    */
-  const onChangeTab = (key: string) => {
+  const onChangeTab = async (key: string) => {
     setActiveTab(key)
-    // TODO 请求列表
+    const params: IIndentListParams = {}
+    switch (key) {
+      case 'today':
+        params.time_type = IndentTimeType.TODAY
+        break
+      case 'month':
+        params.time_type = IndentTimeType.MONTH
+        break
+      case 'personal':
+        params.indent_member_type = IndentMemberType.PERSONAL
+        break
+      case 'corp':
+        params.indent_member_type = IndentMemberType.CORP
+        break
+      default:
+        console.log('没匹配')
+    }
+    await fetchIndentList({ page_number: 1, ...params })
+  }
+
+  /**
+   * 请求订单统计数据
+   */
+  const fetchIndentAnalysis = async () => {
+    try {
+      const res = await OrderSystemApi.getIndentAnalysis()
+      setIndentAnalysis(res)
+    } catch (e) {
+      messageApi.open({
+        type: 'error',
+        content: '获取订单统计数据失败'
+      })
+    }
+  }
+
+  /**
+   * 请求订单列表
+   */
+  const fetchIndentList = async (options?: IIndentListParams) => {
+    const requestParams = options || { page_number: 1, page_record: pageSize }
+
+    try {
+      const params: IIndentListParams = {
+        ...requestParams
+      }
+      const list = await OrderSystemApi.getIndentList(params)
+      if (list) {
+        setTableData(list)
+      } else {
+        setTableData([])
+      }
+    } catch (e) {
+      messageApi.open({
+        type: 'error',
+        content: '获取订单列表失败'
+      })
+    }
+  }
+
+  const onChangePage = async (page: number) => {
+    await fetchIndentList({ page_number: page })
   }
 
   /**
    * 搜索表格
    */
-  const onSearch = (key: string, value: string) => {
+  const onSearch = async (key: string, value: string) => {
     if (!value) return
 
+    const params: IIndentListParams = {}
     switch (key) {
       case 'user':
-        console.log('搜索用户', value)
+        params.user_keyword = value
         break
-      case 'company':
-        console.log('搜索公司', value)
+      case 'corp':
+        params.corp_keyword = value
         break
       case 'order':
-        console.log('搜索订单', value)
+        params.indent_num = value
         break
       default:
         break
     }
+    await fetchIndentList({ page_number: 1, ...params })
   }
 
   /**
@@ -160,45 +238,52 @@ export const OrderManagement = () => {
   }
 
   const dataArray: IDataShow[] = useMemo(() => {
+    const { today_indent, month_indent, total_indent, member } = indentAnalysis
     return [
       {
         key: 'today',
         title: '今日订单',
-        value: '2840',
-        subTitle: '14个',
+        value: today_indent.amount,
+        subTitle: `${today_indent.count}个`,
         unitType: 'money'
       },
       {
         key: 'month',
         title: '本月订单',
-        value: '425069',
-        subTitle: '307个',
+        value: month_indent.amount,
+        subTitle: `${month_indent.count}个`,
         unitType: 'money'
       },
       {
         key: 'all',
         title: '累计订单',
-        value: '4250690',
-        subTitle: '3075个',
+        value: total_indent.amount,
+        subTitle: `${total_indent.count}个`,
         unitType: 'money'
       },
       {
         key: 'personal',
         title: '个人会员数量',
-        value: '425069',
+        value: member.personal_count,
         unitType: 'person'
       },
       {
         key: 'team',
         title: '团队会员数量',
-        value: '425069',
+        value: member.team_count,
         unitType: 'person'
       }
     ]
-  }, [])
+  }, [indentAnalysis])
+
+  useMount(async () => {
+    await fetchIndentAnalysis()
+    await fetchIndentList({ page_number: 1 })
+  })
 
   return (
     <PageContainer dataArray={dataArray}>
+      {contextHolder}
       <div className={tableStyles.antdTable}>
         <PageSearch searchItems={searchItems} onSearch={onSearch} />
         <div className={tableStyles.tableTabRow}>
@@ -210,9 +295,17 @@ export const OrderManagement = () => {
           </FlyButton>
         </div>
         <Table
+          rowKey="id"
           columns={columns}
           dataSource={tableData}
-          pagination={{ pageSize: 15, showQuickJumper: true }}
+          pagination={{
+            pageSize: pageSize,
+            total: 500,
+            showQuickJumper: true,
+            showSizeChanger: false,
+            onChange: onChangePage
+          }}
+          scroll={{ y: '55vh', x: true }}
         />
       </div>
     </PageContainer>

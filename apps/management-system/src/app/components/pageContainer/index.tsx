@@ -4,7 +4,7 @@ import styles from './index.module.scss'
 export interface IDataShow {
   key: string
   title: string
-  value: string
+  value: string | number
   subTitle?: string
   unitType?: 'money' | 'person'
 }

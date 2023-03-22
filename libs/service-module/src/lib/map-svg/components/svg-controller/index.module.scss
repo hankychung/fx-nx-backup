@@ -1,0 +1,139 @@
+.SvgController {
+  position: absolute;
+  right: 50px;
+  bottom: 30px;
+  overflow: hidden;
+  user-select: none;
+
+  .smallShow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    float: right;
+    box-sizing: border-box;
+
+    padding: 6px 9px;
+    width: 80px;
+    height: 32px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.103359);
+
+    .zoomSizeValue {
+      cursor: pointer;
+
+      font-weight: 400;
+      font-size: 14px;
+      width: 39px;
+      line-height: 20px;
+      text-align: center;
+      color: #262626;
+      border-radius: 4px;
+
+      &:hover {
+        background: #f2f2f2;
+      }
+    }
+
+    .windowFullScreen {
+      cursor: pointer;
+
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.UtilList {
+  border-radius: 8px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .UtilItem {
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 196px;
+    height: 53px;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+
+    &.slider {
+      justify-content: space-between;
+      cursor: default;
+      border-top: 0.5px solid #ededed;
+
+      :global {
+        .ant-slider {
+          margin-bottom: 10px;
+
+          .ant-slider-rail {
+            background: #d2d2d2 !important;
+            height: 2px !important;
+          }
+          .ant-slider-step {
+            .ant-slider-dot {
+              border: none;
+            }
+          }
+          .ant-slider-track {
+            background: #262626 !important;
+            height: 2px !important;
+          }
+          .ant-slider-handle {
+            &::before {
+              width: 8px;
+              height: 8px;
+            }
+
+            &::after {
+              width: 8px;
+              height: 8px;
+              box-shadow: none;
+              border: 1px solid #262626;
+            }
+
+            &:focus::after {
+              inset-inline-start: 0px !important;
+              inset-block-start: 0px !important;
+            }
+            // margin-top: -4px;
+            // width: 8px;
+            // height: 8px;
+            // background: #ffffff;
+            // border: 1px solid #262626;
+          }
+          .ant-slider-mark {
+            display: none;
+          }
+        }
+      }
+
+      &:hover {
+        background: #fff;
+      }
+    }
+
+    .UtilItemIcon {
+      width: 20px;
+      height: 20px;
+      margin-right: 16px;
+    }
+    .SliderIcon {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+    .UtilItemName {
+      font-size: 15px;
+      line-height: 21px;
+      color: #262626;
+    }
+    &:hover {
+      background: #f8f8f8;
+    }
+  }
+}

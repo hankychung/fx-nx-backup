@@ -2,26 +2,67 @@ import React from 'react'
 import styles from './index.module.scss'
 import flyeleLogo from '../../../assets/flyeleLogo.png'
 import bigLogo from '../../../assets/bigLogo.png'
-import { PhoneLogin } from '@flyele-nx/ui'
+import { PhoneLogin, IPhoneLoginData } from '@flyele-nx/ui'
+import { OrderSystemApi, service, IErrorResponse } from '@flyele-nx/service'
 import { useNavigate } from 'react-router-dom'
 import { routePath } from '../../routes'
+import { message } from 'antd'
+import { AxiosError } from 'axios'
+import { useUserStore } from '../../store/user'
 
 export const LoginPage = () => {
+  const [messageApi, contextHolder] = message.useMessage()
+  const userStore = useUserStore()
   const navigate = useNavigate()
 
   const onGetVerifyCode = (phone: string) => {
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<boolean>((resolve, reject) => {
       try {
-        resolve(phone)
+        OrderSystemApi.getPhoneLoginCode({ telephone: phone })
+          .then(() => {
+            resolve(true)
+          })
+          .catch((e) => {
+            reject(false)
+          })
       } catch (e) {
-        reject('')
+        reject(false)
       }
     })
   }
 
-  const onLogin = () => {
-    localStorage.setItem('token', '123456789')
-    navigate(routePath.order)
+  const onLogin = async (loginData: IPhoneLoginData) => {
+    const { telephone, verify_code } = loginData
+    try {
+      const { code, data } = await OrderSystemApi.phoneLogin({
+        telephone: telephone,
+        verify_code: verify_code
+      })
+      if (code === 0) {
+        const { token } = data
+        userStore.updateUserInfo({ ...data })
+        localStorage.setItem('Authorization', token)
+        service.updateToken(token)
+        navigate(routePath.order)
+      }
+    } catch (e) {
+      const error = e as AxiosError<IErrorResponse>
+      let msg = '登录失败，请稍后重试'
+      if (error.response) {
+        const {
+          data: { code, message }
+        } = error.response
+        msg = message
+        if (code === 40010) {
+          msg = '账号不存在'
+        }
+      }
+
+      messageApi.open({
+        type: 'error',
+        content: msg
+      })
+    }
   }
 
   return (
@@ -61,6 +102,8 @@ export const LoginPage = () => {
       <div className={styles.footer}>
         Copyright © 2022-2022 Flyele. All Rights Reserved.
       </div>
+
+      {contextHolder}
     </div>
   )
 }

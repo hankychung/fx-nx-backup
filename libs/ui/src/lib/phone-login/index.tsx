@@ -37,16 +37,15 @@ export const PhoneLogin = ({
   const [isCallCodeIe, setIsCallCodeIe] = useState(true) // 是否已经调用短信接口, 调试模式改成true
   const { timer, exeTimer } = useTimer()
 
-  const login = () => {
-    console.log('开始登录', phoneNum, code)
-    onLogin()
-  }
-
   const onSubmit = () => {
     form
       .validateFields()
       .then(async () => {
-        login()
+        const phone = phoneNum.replace(/\s*/g, '')
+        onLogin({
+          telephone: phone,
+          verify_code: code
+        })
       })
       .catch((err) => {
         console.log('校验不通过', err)
@@ -74,22 +73,16 @@ export const PhoneLogin = ({
     events.preventDefault()
     if (codeStatus === CodeStatus.hasPn) {
       try {
-        const res = await getVerifyCode(phoneNum)
-        setCode(res)
+        const phone = phoneNum.replace(/\s*/g, '')
+        await getVerifyCode(phone)
         setIsCallCodeIe(true) // 已调用生成短信接口
         setCodeStatus(CodeStatus.timer)
         exeTimer() // 启动定时器
       } catch (err) {
         setIsCallCodeIe(true) // 调试用，记得清除
-        const content = '获取验证码失败'
-        console.log('err', err)
-        // if (err && err.data) {
-        //   content = err.data.message
-        // }
-
         messageApi.open({
           type: 'error',
-          content
+          content: '获取验证码失败'
         })
       }
     }
@@ -113,7 +106,8 @@ export const PhoneLogin = ({
   useEffect(() => {
     setCodeStatus((value) => {
       if (value === CodeStatus.timer) return value // 倒计时中
-      return phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
+      const phone = phoneNum.replace(/\s*/g, '')
+      return phoneReg.test(phone) ? CodeStatus.hasPn : CodeStatus.noPn
     })
   }, [phoneNum])
 
@@ -124,9 +118,8 @@ export const PhoneLogin = ({
 
   useEffect(() => {
     if (timer === 0) {
-      setCodeStatus(
-        phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
-      )
+      const phone = phoneNum.replace(/\s*/g, '')
+      setCodeStatus(phoneReg.test(phone) ? CodeStatus.hasPn : CodeStatus.noPn)
     }
   }, [phoneNum, timer])
 

@@ -6,12 +6,15 @@ import PersonPayModal from './lib/PersonPayModal/index' //个人支付弹窗
 import TeamPayModal from './lib/TeamPayModal/index' //团队支付
 import PayModal from './lib/PayModal/index' //支付聚合
 import CustomerServicesModal from './lib/CustomerServicesModal/index' //客服弹窗
+import { MapSvg } from './lib/map-svg/index'
 import { VipIntroduce } from './lib/VipIntroduce/index'
 import { VipIntroduceContent } from './lib/VipIntroduce/Content/index'
 
 import { init } from '@flyele-nx/api' //客服弹窗
 export * from './lib/service-module'
+
 export {
+  MapSvg,
   MemberIntroduction,
   IdentityEqualComparison,
   SpaceEqualComparison,
@@ -23,5 +26,7 @@ export {
   VipIntroduce,
   VipIntroduceContent
 }
+
+export * from './lib/map-svg/type/props'
 
 export const registerPaymentInit = init

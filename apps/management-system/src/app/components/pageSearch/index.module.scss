@@ -1,6 +1,8 @@
 .pageSearchRoot {
   padding: 20px 32px;
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 20px;
   column-gap: 40px;
   background: #ffffff;
   border-radius: 8px;

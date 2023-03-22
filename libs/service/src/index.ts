@@ -12,11 +12,32 @@ import './lib/payment'
 
 import { ILoginKeyParams, IDevice, IErrorResponse } from './lib/typings'
 import { IContactsAndStatus } from './lib/typings/taker'
-import { ILoginParams, IUser, ILoginUser } from './lib/typings/order-system'
+import {
+  ILoginParams,
+  IUser,
+  ILoginUser,
+  IIndentAnalysis,
+  IIndentList,
+  IIndentListParams,
+  IndentMemberType,
+  IndentTimeType,
+  IndentStateLabel,
+  OrderMethodLabel
+} from './lib/typings/order-system'
 
 export * from './lib/service'
 export * from './lib/env'
-export { service, SSe, UsercApi, paymentApi, OrderSystemApi }
+export {
+  service,
+  SSe,
+  UsercApi,
+  paymentApi,
+  OrderSystemApi,
+  IndentStateLabel,
+  OrderMethodLabel,
+  IndentMemberType,
+  IndentTimeType
+}
 export type {
   ILoginKeyParams,
   IDevice,
@@ -24,5 +45,8 @@ export type {
   IErrorResponse,
   ILoginParams,
   IUser,
-  ILoginUser
+  ILoginUser,
+  IIndentAnalysis,
+  IIndentList,
+  IIndentListParams
 }

@@ -1,6 +1,12 @@
 import { service } from '../service'
 import { CommonResponse } from '../typings'
-import { ILoginParams, ILoginUser } from '../../index'
+import {
+  ILoginParams,
+  ILoginUser,
+  IIndentAnalysis,
+  IIndentList
+} from '../../index'
+import { IIndentListParams } from '../typings/order-system'
 
 class OrderSystem {
   private prefix = 'order-system/v1'
@@ -31,6 +37,34 @@ class OrderSystem {
   async logout() {
     return await service.post({
       url: `${this.prefix}/logout`
+    })
+  }
+
+  /**
+   * 订单统计
+   */
+  async getIndentAnalysis(): Promise<IIndentAnalysis> {
+    return await service.get({
+      url: `${this.prefix}/indent/analysis`
+    })
+  }
+
+  /**
+   * 订单列表
+   */
+  async getIndentList(params: IIndentListParams): Promise<IIndentList[]> {
+    return await service.get({
+      url: `${this.prefix}/indent/list`,
+      params
+    })
+  }
+
+  /**
+   * 获取订单详情
+   */
+  async getIndentDetail(indent_id: string) {
+    return await service.get({
+      url: `${this.prefix}/indent/${indent_id}`
     })
   }
 }

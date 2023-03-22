@@ -1,5 +1,3 @@
-import { d3 } from '../d3'
-import { zoomMap, zoomTransform } from '../d3/zoom'
 import { Mdata } from './mdata'
 
 export type Processer = (d: Mdata, id: string) => void

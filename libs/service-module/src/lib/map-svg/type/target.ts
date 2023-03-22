@@ -19,9 +19,7 @@ export interface ObjectiveMember {
 export interface ObjectiveData {
   create_at: number
   creator_id: string
-  creator_nick_name: string
   delete_at: number
-  detail: string
   // files: [], 用不着直接注释
   level: TargetLevel
   objective_id: string
@@ -32,7 +30,11 @@ export interface ObjectiveData {
   title: string
   type: number
   update_at: number
-  workspace_name: string
+
+  relation_total: number
+
+  up_objective?: ObjectiveData[]
+  down_object?: ObjectiveData[]
 }
 
 export enum TargetStatus {

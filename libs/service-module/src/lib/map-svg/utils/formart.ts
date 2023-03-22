@@ -70,14 +70,16 @@ export const FomratMainTimerStr = (d: BaseTimerData): string => {
 
 export const formatObjectiveData = (
   objective_data: ObjectiveData,
-  ref_id?: string
+  isSuperiors?: boolean
 ) => {
   return {
     title: objective_data.title,
-    target_id: objective_data.objective_id || ref_id,
+    target_id: objective_data.objective_id,
     target_status: objective_data.state,
     target_progress: (objective_data.schedule || 0) / 100,
     target_level: objective_data.level,
+    superiors_total: isSuperiors ? objective_data.relation_total : 0,
+    children_total: !isSuperiors ? objective_data.relation_total : 0,
     takers: (objective_data?.objective_member || []).map((v) => {
       return {
         avatar: v.avatar,
@@ -88,30 +90,31 @@ export const formatObjectiveData = (
   }
 }
 
-export const formatMdata = (data: Data) => {
-  const { children, superiors, superior_total, child_total } = data
+export const formatMdata = (data: Data, isSuperiors?: boolean) => {
+  const { up_objective, down_objective } = data
 
   const formatData = {
     title: '',
-    superior_total,
-    child_total,
     children: [] as Data[],
     superiors: [] as Data[]
   }
 
-  if (children && children.length) {
-    for (const c of children) {
+  if (up_objective && up_objective.length) {
+    for (const c of up_objective) {
       formatData.children.push(formatMdata(c))
     }
   }
 
-  if (superiors && superiors.length) {
-    for (const s of superiors) {
+  if (down_objective && down_objective.length) {
+    for (const s of down_objective) {
       formatData.superiors.push(formatMdata(s))
     }
   }
 
-  Object.assign(formatData, formatObjectiveData(data as ObjectiveData))
+  Object.assign(
+    formatData,
+    formatObjectiveData(data as ObjectiveData, isSuperiors)
+  )
 
   return formatData
 }

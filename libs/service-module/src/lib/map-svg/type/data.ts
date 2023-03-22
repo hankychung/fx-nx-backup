@@ -23,6 +23,9 @@ export interface Data extends BaseTimerData {
   superior_collapse?: boolean
   superiors?: Array<Data>
   superior_total?: number
+
+  up_objective?: Array<Data>
+  down_objective?: Array<Data>
 }
 
 export type TwoNumber = [number, number]

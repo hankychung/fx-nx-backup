@@ -16,7 +16,7 @@ export const ZoomToast = (props: ZoomToastProps) => {
   const { state: zoomSize } = useGetMapProxyState(
     zoomTransform,
     componentKey,
-    (v) => Math.floor((v?.k || 0.02) * 100)
+    (v) => Math.floor((v?.k || 0.2) * 100)
   )
 
   const [show, setShow] = useState(false)

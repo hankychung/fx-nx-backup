@@ -4,6 +4,6 @@ export interface MapSvgRef {
 
 export class InitMapSvgRef {
   refresh() {
-    // InitRefresh
+    // 刷新
   }
 }

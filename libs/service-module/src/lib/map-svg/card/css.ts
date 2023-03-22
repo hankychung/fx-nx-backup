@@ -1,5 +1,6 @@
 export const styleName = {
   container: 'container',
+  'svg-all-wrapper': 'svg-all-wrapper',
   'svg-wrapper': 'svg-wrapper',
   'g-task-status': 'g-task-status',
   'g-application-name': 'g-application-name',
@@ -7,6 +8,8 @@ export const styleName = {
   'g-step-name': 'g-step-name',
   'g-step-name-rect': 'g-step-name-rect',
   'g-step-name-text': 'g-step-name-text',
+  emptyBox: 'emptyBox',
+  emptyBg: 'emptyBg',
   svg: 'svg',
   AddAndEditWrap: 'AddAndEditWrap',
   'none-fill': 'none-fill',

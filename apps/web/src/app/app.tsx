@@ -14,7 +14,7 @@ export function App() {
     <>
       {/* <NxWelcome title="web" /> */}
       <div className={styles.wrap}>
-        <MapSvg ref={mapSvgRef} />
+        {/* <MapSvg ref={mapSvgRef} /> */}
 
         <div className={styles.testRefresh} onClick={refresh}>
           测试刷新

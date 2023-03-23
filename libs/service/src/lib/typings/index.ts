@@ -9,7 +9,7 @@ export type GetObjKeyOfType<T, K extends keyof T> = Required<
   ? U
   : never
 
-export interface CommonResponse<T = any> {
+export interface CommonResponse<T> {
   code?: number
   message?: string
   data: T

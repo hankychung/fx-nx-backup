@@ -21,6 +21,7 @@ import {
   IIndentListParams,
   IndentMemberType,
   IndentTimeType,
+  IndentState,
   IndentStateLabel,
   OrderMethodLabel
 } from './lib/typings/order-system'
@@ -36,7 +37,8 @@ export {
   IndentStateLabel,
   OrderMethodLabel,
   IndentMemberType,
-  IndentTimeType
+  IndentTimeType,
+  IndentState
 }
 export type {
   ILoginKeyParams,

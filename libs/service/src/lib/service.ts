@@ -73,17 +73,17 @@ class Service {
     const { data } = await this.axios.put<IResponse<T>>(config.url, config.data)
 
     if (!data.code) {
-      return data.data
+      return data
     }
 
     throw new Error(`error: ${config.url}`)
   }
 
-  async get<T>(config: RequestConfig): Promise<T> {
+  async get<T>(config: RequestConfig): Promise<IResponse<T>> {
     const { data } = await this.axios.get<IResponse<T>>(`${config.url}`, config)
 
     if (!data.code) {
-      return data.data
+      return data
     }
 
     throw new Error(`error: ${config.url}`)

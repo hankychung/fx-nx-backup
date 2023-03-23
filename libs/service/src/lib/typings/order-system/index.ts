@@ -139,6 +139,7 @@ export interface IIndentListParams extends IRequestList {
   indent_num?: string // 订单编号
   time_type?: IndentTimeType // 时间类型
   indent_member_type?: IndentMemberType // 订单属性
+  state?: string // 状态，多个用，拼接
 }
 
 /**

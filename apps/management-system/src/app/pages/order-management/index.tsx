@@ -4,8 +4,10 @@ import { PageSearch } from '../../components/pageSearch'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyButton, FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { Table, message } from 'antd'
-import type { ColumnsType } from 'antd/es/table'
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
+import { FilterValue, ColumnFilterItem } from 'antd/es/table/interface'
 import { useMount } from 'ahooks'
+import { ReactComponent as TableFilter } from '../../../assets/tableFilter.svg'
 import {
   IIndentAnalysis,
   IIndentList,
@@ -14,7 +16,8 @@ import {
   IndentTimeType,
   OrderSystemApi,
   IndentStateLabel,
-  OrderMethodLabel
+  OrderMethodLabel,
+  IndentState
 } from '@flyele-nx/service'
 
 const pageSize = 20
@@ -58,68 +61,92 @@ export const OrderManagement = () => {
       title: '查找订单'
     }
   ]
-  const columns: ColumnsType<IIndentList> = [
-    {
-      width: 192,
-      title: '订单内容',
-      dataIndex: 'indent_content'
-    },
-    {
-      width: 100,
-      title: '订单金额',
-      dataIndex: 'age'
-    },
-    {
-      width: 108,
-      title: '付款人',
-      dataIndex: 'people'
-    },
-    {
-      width: 168,
-      title: '充值对象',
-      dataIndex: 'users',
-      render: (text, record) => <span>{record.users.user_name}</span>
-    },
-    {
-      width: 148,
-      title: '订单号',
-      dataIndex: 'indent_num'
-    },
-    {
-      width: 92,
-      title: '订单渠道',
-      dataIndex: 'origin_route'
-    },
-    {
-      width: 102,
-      title: '支付方式',
-      dataIndex: 'order_method',
-      render: (text) => <span>{OrderMethodLabel[text]}</span>
-    },
-    {
-      width: 108,
-      title: '支付状态',
-      dataIndex: 'state',
-      render: (text) => <span>{IndentStateLabel[text]}</span>
-    },
-    {
-      width: 110,
-      title: '支付时间',
-      dataIndex: 'payment_at'
-    },
-    {
-      width: 100,
-      title: '操作',
-      dataIndex: '',
-      key: 'action',
-      render: () => (
-        <span className={tableStyles.tableActionText}>订单详情</span>
-      )
+  const columns: ColumnsType<IIndentList> = useMemo(() => {
+    const stateFilter = () => {
+      const arr: ColumnFilterItem[] = []
+      for (const key in IndentStateLabel) {
+        const item = IndentStateLabel[key]
+        arr.push({
+          text: item,
+          value: key
+        })
+      }
+      return arr
     }
-  ]
+    return [
+      {
+        width: 192,
+        title: '订单内容',
+        dataIndex: 'indent_content'
+      },
+      {
+        width: 100,
+        title: '订单金额',
+        dataIndex: 'total_price'
+      },
+      {
+        width: 108,
+        title: '付款人',
+        dataIndex: 'creator',
+        render: (text, record) => <span>{record.creator.user_name}</span>
+      },
+      {
+        width: 168,
+        title: '充值对象',
+        dataIndex: 'users',
+        render: (text, record) => <span>{record.users.user_name}</span>
+      },
+      {
+        width: 148,
+        title: '订单号',
+        dataIndex: 'indent_num'
+      },
+      {
+        width: 92,
+        title: '订单渠道',
+        dataIndex: 'origin_route'
+      },
+      {
+        width: 102,
+        title: '支付方式',
+        dataIndex: 'order_method',
+        render: (text, record) =>
+          record.state === IndentState.SUCCESS ? (
+            <span>{OrderMethodLabel[text]}</span>
+          ) : (
+            <span />
+          )
+      },
+      {
+        width: 120,
+        title: '支付状态',
+        dataIndex: 'state',
+        render: (text) => <span>{IndentStateLabel[text]}</span>,
+        filters: stateFilter(),
+        filterIcon: (filtered) => {
+          return <TableFilter color={filtered ? '#1dd2c1' : '#ACB0B4'} />
+        }
+      },
+      {
+        width: 110,
+        title: '支付时间',
+        dataIndex: 'payment_at'
+      },
+      {
+        width: 100,
+        title: '操作',
+        dataIndex: '',
+        key: 'action',
+        render: () => (
+          <span className={tableStyles.tableActionText}>订单详情</span>
+        )
+      }
+    ]
+  }, [])
 
   const [activeTab, setActiveTab] = useState<string>('all')
   const [tableData, setTableData] = useState<IIndentList[]>([])
+  const [tableTotal, setTableTotal] = useState<number>(0)
   const [indentAnalysis, setIndentAnalysis] = useState<IIndentAnalysis>({
     today_indent: {
       amount: 0,
@@ -169,8 +196,10 @@ export const OrderManagement = () => {
    */
   const fetchIndentAnalysis = async () => {
     try {
-      const res = await OrderSystemApi.getIndentAnalysis()
-      setIndentAnalysis(res)
+      const { code, data } = await OrderSystemApi.getIndentAnalysis()
+      if (code === 0) {
+        setIndentAnalysis(data)
+      }
     } catch (e) {
       messageApi.open({
         type: 'error',
@@ -189,11 +218,13 @@ export const OrderManagement = () => {
       const params: IIndentListParams = {
         ...requestParams
       }
-      const list = await OrderSystemApi.getIndentList(params)
-      if (list) {
-        setTableData(list)
+      const { code, data, total } = await OrderSystemApi.getIndentList(params)
+      if (code === 0 && data) {
+        setTableData(data)
+        if (total) setTableTotal(total)
       } else {
         setTableData([])
+        setTableTotal(0)
       }
     } catch (e) {
       messageApi.open({
@@ -203,8 +234,18 @@ export const OrderManagement = () => {
     }
   }
 
-  const onChangePage = async (page: number) => {
-    await fetchIndentList({ page_number: page })
+  const onChangePage = async (
+    pagination: TablePaginationConfig,
+    filter: Record<string, FilterValue | null>
+  ) => {
+    const { current } = pagination
+    const { state } = filter
+    const params: IIndentListParams = { page_number: current }
+
+    if (state && state.length) {
+      params.state = state.join(',')
+    }
+    await fetchIndentList(params)
   }
 
   /**
@@ -300,12 +341,12 @@ export const OrderManagement = () => {
           dataSource={tableData}
           pagination={{
             pageSize: pageSize,
-            total: 500,
+            total: tableTotal,
             showQuickJumper: true,
-            showSizeChanger: false,
-            onChange: onChangePage
+            showSizeChanger: false
           }}
           scroll={{ y: '55vh', x: true }}
+          onChange={(pagination, filters) => onChangePage(pagination, filters)}
         />
       </div>
     </PageContainer>

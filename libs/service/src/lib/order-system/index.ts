@@ -1,12 +1,12 @@
 import { service } from '../service'
-import { CommonResponse } from '../typings'
+import { CommonListResponse, CommonResponse } from '../typings'
 import {
   ILoginParams,
   ILoginUser,
   IIndentAnalysis,
-  IIndentList
+  IIndentList,
+  IIndentListParams
 } from '../../index'
-import { IIndentListParams } from '../typings/order-system'
 
 class OrderSystem {
   private prefix = 'order-system/v1'
@@ -43,7 +43,7 @@ class OrderSystem {
   /**
    * 订单统计
    */
-  async getIndentAnalysis(): Promise<IIndentAnalysis> {
+  async getIndentAnalysis(): Promise<CommonResponse<IIndentAnalysis>> {
     return await service.get({
       url: `${this.prefix}/indent/analysis`
     })
@@ -52,7 +52,9 @@ class OrderSystem {
   /**
    * 订单列表
    */
-  async getIndentList(params: IIndentListParams): Promise<IIndentList[]> {
+  async getIndentList(
+    params: IIndentListParams
+  ): Promise<CommonListResponse<IIndentList[]>> {
     return await service.get({
       url: `${this.prefix}/indent/list`,
       params

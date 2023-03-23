@@ -1,12 +1,6 @@
 import { service } from '../service'
-import { CommonResponse } from '../typings'
-import {
-  ILoginParams,
-  ILoginUser,
-  IIndentAnalysis,
-  IIndentList
-} from '../../index'
-import { IIndentListParams } from '../typings/order-system'
+import { CommonListResponse, CommonResponse } from '../typings'
+import { OrderSystemType } from '../../index'
 
 class OrderSystem {
   private prefix = 'order-system/v1'
@@ -14,7 +8,9 @@ class OrderSystem {
   /**
    * 手机号登录
    */
-  async phoneLogin(params: ILoginParams): Promise<CommonResponse<ILoginUser>> {
+  async phoneLogin(
+    params: OrderSystemType.ILoginParams
+  ): Promise<CommonResponse<OrderSystemType.ILoginUser>> {
     return await service.post({
       url: `${this.prefix}/login`,
       data: params
@@ -43,7 +39,9 @@ class OrderSystem {
   /**
    * 订单统计
    */
-  async getIndentAnalysis(): Promise<IIndentAnalysis> {
+  async getIndentAnalysis(): Promise<
+    CommonResponse<OrderSystemType.IIndentAnalysis>
+  > {
     return await service.get({
       url: `${this.prefix}/indent/analysis`
     })
@@ -52,7 +50,9 @@ class OrderSystem {
   /**
    * 订单列表
    */
-  async getIndentList(params: IIndentListParams): Promise<IIndentList[]> {
+  async getIndentList(
+    params: OrderSystemType.IIndentListParams
+  ): Promise<CommonListResponse<OrderSystemType.IIndentList[]>> {
     return await service.get({
       url: `${this.prefix}/indent/list`,
       params

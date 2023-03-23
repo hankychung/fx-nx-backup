@@ -1,7 +1,7 @@
 import * as dayjs from 'dayjs'
 import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
-import { IUserInfo, ILoginKeyParams, CommonResponse } from '../typings'
+import { IUserInfo, ILoginKeyParams } from '../typings'
 import { IContactsAndStatus, EConCheckStatus } from '../typings/taker'
 import { AxiosRequestConfig } from 'axios'
 
@@ -24,7 +24,7 @@ class Userc {
       }
     })
 
-    console.log('res', res.telephone, res)
+    console.log('res', res.data.telephone, res)
   }
 
   async getCurrentDate() {
@@ -68,7 +68,7 @@ class Userc {
   }
 
   async getLoginUserInfo() {
-    return await service.get<CommonResponse<IUserInfo>>({
+    return await service.get<IUserInfo>({
       url: `${this.prefix}/user`,
       timeout: 20000
     })
@@ -76,14 +76,12 @@ class Userc {
 
   // 邀请协作人[模态框] > 获取 - 飞项协作人 - 列表
   async getContacts(last_sync_at?: number) {
-    // const res = await service.get<CommonResponse<IContactsAndStatus[]>>({
-    let res = await service.get<IContactsAndStatus[]>({
+    const res = await service.get<IContactsAndStatus[]>({
       url: `${this.prefix}/user/interacts`,
       params: { last_sync_at }
     })
 
-    // res.data = (res.data || []).map((item) => ({
-    res = (res || []).map((item) => ({
+    res.data = (res.data || []).map((item) => ({
       ...item,
       status: EConCheckStatus.unChecked
     }))

@@ -28,7 +28,7 @@ export interface IErrorResponse {
   message: string
 }
 
-export type IResponse<T> = CommonListResponse<T>
+export type IResponse<T> = CommonListResponse<T> | CommonResponse<T>
 
 export type RequestConfig = import('axios').AxiosRequestConfig & { url: string }
 

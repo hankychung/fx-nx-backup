@@ -30,8 +30,8 @@ export const MemberIntroduction = () => {
    * 请求协作人列表
    */
   const fetchTakerList = async () => {
-    const res = await UsercApi.getContacts()
-    setTaker(res)
+    const { data } = await UsercApi.getContacts()
+    setTaker(data)
   }
 
   const onLoginSuccess = async () => {

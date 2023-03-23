@@ -10,7 +10,10 @@ import { service } from './lib/service'
 import SSe from './lib/sse'
 import './lib/payment'
 
+// 全局类型
 import { ILoginKeyParams, IDevice, IErrorResponse } from './lib/typings'
+
+// 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
 
 // 订单管理系统

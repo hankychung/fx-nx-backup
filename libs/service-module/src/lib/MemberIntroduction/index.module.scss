@@ -9,3 +9,20 @@
   padding-top: 64px;
   column-gap: 20px;
 }
+
+.modalWrap {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+}
+
+.loginTitleBox {
+  .text {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    color: #6a6a6a;
+  }
+}

@@ -5,7 +5,6 @@ import { VipIntroduceContent } from './Content'
 import css from './index.module.scss'
 import { BaseUserInfo } from '@flyele-nx/ui'
 import {
-  FlyAvatar,
   FlyBasePopper,
   FlyBasePopperCtrl,
   useController

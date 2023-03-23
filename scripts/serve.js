@@ -51,8 +51,7 @@ const generateCommands = ({ apps, apiEnv } = {}) => {
   // }
   const { name } = apps
 
-  console.log('apiEnv', apiEnv)
-  const command = `nx serve ${name} --host 0.0.0.0`
+  const command = `cross-env NODE_ENV=${apiEnv} nx serve ${name} --host 0.0.0.0`
 
   return { command }
 }

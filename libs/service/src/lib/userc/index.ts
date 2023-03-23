@@ -1,6 +1,9 @@
 import * as dayjs from 'dayjs'
+import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
-import { IUserInfo } from '../typings'
+import { IUserInfo, ILoginKeyParams } from '../typings'
+import { IContactsAndStatus, EConCheckStatus } from '../typings/taker'
+import { AxiosRequestConfig } from 'axios'
 
 class Userc {
   private prefix = 'userc/v2'
@@ -21,7 +24,7 @@ class Userc {
       }
     })
 
-    console.log('res', res.telephone, res)
+    console.log('res', res.data.telephone, res)
   }
 
   async getCurrentDate() {
@@ -38,6 +41,52 @@ class Userc {
       console.error('获取服务器时间戳失败', dayjs().unix(), e)
       return dayjs().unix()
     }
+  }
+
+  async getLoginKey(
+    data: ILoginKeyParams,
+    headers: AxiosRequestConfig['headers'] = {}
+  ) {
+    return await service.post({
+      url: `${this.prefix}/auth/scanlogin/code`,
+      data,
+      timeout: 20000,
+      headers
+    })
+  }
+
+  async updateUid() {
+    const data = {
+      device_id: uid,
+      platform: 'pc'
+    }
+
+    return await service.put({
+      url: `${this.prefix}/user/device`,
+      data
+    })
+  }
+
+  async getLoginUserInfo() {
+    return await service.get<IUserInfo>({
+      url: `${this.prefix}/user`,
+      timeout: 20000
+    })
+  }
+
+  // 邀请协作人[模态框] > 获取 - 飞项协作人 - 列表
+  async getContacts(last_sync_at?: number) {
+    const res = await service.get<IContactsAndStatus[]>({
+      url: `${this.prefix}/user/interacts`,
+      params: { last_sync_at }
+    })
+
+    res.data = (res.data || []).map((item) => ({
+      ...item,
+      status: EConCheckStatus.unChecked
+    }))
+
+    return res
   }
 }
 

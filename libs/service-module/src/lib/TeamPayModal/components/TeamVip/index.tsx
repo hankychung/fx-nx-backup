@@ -2,8 +2,9 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 12:33:17
+ * @LastEditTime: 2023-03-20 20:16:32
  */
+import { IActiveGoods } from '@flyele-nx/api'
 import { useCreation } from 'ahooks'
 import React, { useEffect, useState } from 'react'
 import { IFlyeleAvatarItem } from '../../../PayModal'
@@ -25,6 +26,8 @@ const TeamVip = (props: Iprops) => {
   const { vipType, memberList, mineId } = props
 
   const [showPay, setShowPay] = useState<boolean>(false)
+  const [payInfo, setPayInfo] = useState<IActiveGoods>()
+  const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
   const service = useCreation(() => {
     return new SelectMemberService()
   }, [])
@@ -36,7 +39,8 @@ const TeamVip = (props: Iprops) => {
       switch (event) {
         case 'showPay':
           setShowPay(service.getData('showPay').show)
-
+          setPayInfo(service.getData('showPay').payInfo)
+          setUserInfo(service.getData('showPay').userInfo)
           break
 
         default:
@@ -61,7 +65,16 @@ const TeamVip = (props: Iprops) => {
           <RightBlock vipType={vipType} />
         </div>
         {/* 支付弹窗 */}
-        {showPay && <PayQrCode />}
+        {showPay && (
+          <PayQrCode
+            payInfo={payInfo}
+            userInfo={
+              userInfo
+                ? userInfo
+                : memberList.filter((item) => item.userId === mineId)
+            }
+          />
+        )}
       </div>
     </SelectMemberContext.Provider>
   )

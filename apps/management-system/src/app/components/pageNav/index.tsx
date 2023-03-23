@@ -5,6 +5,7 @@ import { Button } from 'antd'
 import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { routePath } from '../../routes'
 import { useNavigate } from 'react-router-dom'
+import { useUserStore } from '../../store/user'
 
 const _PageNav = ({
   defaultTab,
@@ -13,6 +14,7 @@ const _PageNav = ({
   defaultTab: string
   loginOut: () => void
 }) => {
+  const userStore = useUserStore()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('')
 
@@ -68,7 +70,7 @@ const _PageNav = ({
         />
       </div>
       <div className={styles.navRight}>
-        <div className={styles.userName}>周杰伦</div>
+        <div className={styles.userName}>{userStore.userInfo.nick_name}</div>
         <Button type="text" onClick={loginOut}>
           退出
         </Button>

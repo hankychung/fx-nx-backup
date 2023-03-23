@@ -4,6 +4,10 @@ import { ReactComponent as Completed } from '../../../assets/payImg/completed.sv
 import { ReactComponent as Expired } from '../../../assets/payImg/expired.svg'
 import { ReactComponent as Processing } from '../../../assets/payImg/processing.svg'
 import { paymentApi } from '@flyele-nx/service'
+import { regFenToYuan } from './utils'
+import { ICreateOrderParams } from '@flyele-nx/api'
+import { message } from 'antd'
+import { service } from '@flyele-nx/service'
 declare let WeixinJSBridge: any
 export interface Res {
   // 微信需要传入的数据，数据格式定义
@@ -17,6 +21,13 @@ export interface Res {
 
 const PayDetail = () => {
   const [payParams, setPayParam] = useState()
+  const [state, setStatus] = useState(12000)
+  const [orderDetail, setOrderDetail] = useState<ICreateOrderParams>()
+  const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
+  const [orderInfo, setOrderInfo] = useState<{
+    description: string
+    out_trade_no: string
+  }>()
   useEffect(() => {
     document.title = '支付订单'
     getCode()
@@ -27,16 +38,38 @@ const PayDetail = () => {
     completed: '您已完成支付，订单已完成'
   }
   const getCode = () => {
-    const local = 'https://feixiang.cn'
+    const local = window.location.href
     const code = getParam('code')
+    const params = getParam('params')
+    if (params) {
+      setOrderDetail(JSON.parse(params))
+    }
     if (code) {
-      getPayParams(code)
+      const token = getParam('token')
+      if (token) {
+        service.updateToken(token)
+        createOrder(code)
+      } else {
+        message.info({ content: '无token' })
+      }
     } else {
       // 跳转至授权地址，该地址只支持微信浏览器打开
       window.location.href =
         'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2edc8ed2729bdddf&redirect_uri=' +
         encodeURIComponent(local) +
         '&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+    }
+  }
+  const createOrder = (code: string) => {
+    const params = getParam('params')
+
+    if (params) {
+      paymentApi.createOrder(JSON.parse(params)).then((res) => {
+        if (res.code === 0) {
+          getPayParams(code, res.data)
+          setOrderInfo(res.data)
+        }
+      })
     }
   }
   const getParam = (paramName: string) => {
@@ -51,13 +84,19 @@ const PayDetail = () => {
     return false
   }
   //获取支付参数
-  const getPayParams = (code: string) => {
+  const getPayParams = (
+    code: string,
+    info: {
+      description: string
+      out_trade_no: string
+    }
+  ) => {
     paymentApi
       .prePay({
         code,
-        name: '个人会员-月套餐',
+        name: info.description,
         order_method: 3,
-        out_trade_no: '2375276954125386'
+        out_trade_no: info.out_trade_no
       })
       .then((res) => {
         if (res.code === 0) {
@@ -82,13 +121,23 @@ const PayDetail = () => {
         if (res.err_msg === 'get_brand_wcpay_request:ok') {
           // 使用以上方式判断前端返回,微信团队郑重提示：
           // res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+
+          const interval = setInterval(() => {
+            getOrderDetail()
+            if (state === 12001) {
+              clearInterval(intervalId)
+            }
+          }, 1000)
+          setIntervalId(interval)
         }
         if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+          getOrderDetail()
           // 支付取消
         }
 
         if (res.err_msg === 'get_brand_wcpay_request:fail') {
           // 支付失败
+          getOrderDetail()
         }
       }
     )
@@ -97,38 +146,81 @@ const PayDetail = () => {
   const handlePay = (params: any) => {
     onBridgeReady(params)
   }
-
+  const getOrderDetail = (isPAY = false) => {
+    paymentApi
+      .getOrderDetail({
+        out_trade_no: orderInfo?.out_trade_no || ''
+      })
+      .then((res) => {
+        if (res.code === 0) {
+          if (res.data === 12000 && isPAY) {
+            message.info({
+              content: '订单未支付'
+            })
+          }
+          setStatus(res.data)
+        }
+      })
+  }
+  const status = (key?: number) => {
+    let str = statusText['processing']
+    switch (key) {
+      case 12000:
+        str = statusText['processing']
+        break
+      case 12001:
+        str = statusText['completed']
+        break
+      case 12004:
+        str = statusText['expired']
+        break
+      default:
+        break
+    }
+    return str
+  }
   return (
     <div className={styles.payDetail}>
       <div className={styles.order_status}>
-        {false && <Completed></Completed>}
-        {false && <Expired></Expired>}
-        <Processing></Processing>
-        <div className={styles.text}>{statusText['completed']}</div>
+        {state === 12001 && <Completed></Completed>}
+        {state === 12004 && <Expired></Expired>}
+        {state === 12000 && <Processing></Processing>}
+        <div className={styles.text}>{status(state)}</div>
         <div className={styles.order_info}>
           <span>订单信息</span>
-          <span>飞项-个人会员1个月</span>
+          <span>{`飞项-${orderInfo?.description}`}</span>
         </div>
         <div className={styles.order_price}>
           <span>订单金额</span>
-          <span>¥18.00</span>
+          <span>{`¥${regFenToYuan(orderDetail?.total_price || 0)}`}</span>
         </div>
       </div>
-      <div className={styles.tips}>
-        <div>1. 如您已支付成功，请点击【已完成支付】</div>
-        <div>2. 如未打开微信app或未支付成功，请点击【重新支付】</div>
-      </div>
-      <div className={styles.btns}>
-        <div className={styles.btn}>已完成支付</div>
-        <div
-          className={styles.btn}
-          onClick={() => {
-            handlePay(payParams)
-          }}
-        >
-          重新支付
+      {state === 12000 && (
+        <div className={styles.tips}>
+          <div>1. 如您已支付成功，请点击【已完成支付】</div>
+          <div>2. 如未打开微信app或未支付成功，请点击【重新支付】</div>
         </div>
-      </div>
+      )}
+      {state === 12001 && (
+        <div className={styles.btns}>
+          <div
+            className={styles.btn}
+            onClick={() => {
+              getOrderDetail(true)
+            }}
+          >
+            已完成支付
+          </div>
+          <div
+            className={styles.btn}
+            onClick={() => {
+              handlePay(payParams)
+            }}
+          >
+            重新支付
+          </div>
+        </div>
+      )}
     </div>
   )
 }

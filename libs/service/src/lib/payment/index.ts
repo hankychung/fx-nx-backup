@@ -39,12 +39,25 @@ class Payment {
       data: params
     })
   }
+  /**
+   * 查询订单
+   */
+  async getOrderDetail(params: { out_trade_no: string | false }) {
+    return service.post({
+      url: `payment/v2/payment/query`,
+      data: params
+    })
+  }
+  getToken() {
+    return service.token
+  }
 }
 
 const PaymentApi = new Payment()
 init({
   getPrice: PaymentApi.getGoodsList,
   createCoupon: PaymentApi.createCoupon,
-  createOrder: PaymentApi.createOrder
+  createOrder: PaymentApi.createOrder,
+  getToken: PaymentApi.getToken
 })
 export const paymentApi = new Payment()

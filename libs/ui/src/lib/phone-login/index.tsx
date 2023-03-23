@@ -37,16 +37,15 @@ export const PhoneLogin = ({
   const [isCallCodeIe, setIsCallCodeIe] = useState(true) // 是否已经调用短信接口, 调试模式改成true
   const { timer, exeTimer } = useTimer()
 
-  const login = () => {
-    console.log('开始登录', phoneNum, code)
-    onLogin()
-  }
-
   const onSubmit = () => {
     form
       .validateFields()
       .then(async () => {
-        login()
+        const phone = phoneNum.replace(/\s*/g, '')
+        onLogin({
+          telephone: phone,
+          verify_code: code
+        })
       })
       .catch((err) => {
         console.log('校验不通过', err)
@@ -70,51 +69,59 @@ export const PhoneLogin = ({
     })
   }
 
-  useEffect(() => {
-    setCodeStatus((value) => {
-      if (value === CodeStatus.timer) return value // 倒计时中
-      return phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
-    })
-  }, [phoneNum])
-
-  useEffect(() => {
-    setDisabled(
-      !(phoneReg.test(phoneNum) && codeReg.test(code) && isCallCodeIe)
-    )
-  }, [phoneNum, code, isCallCodeIe])
-
-  useEffect(() => {
-    if (timer === 0) {
-      setCodeStatus(
-        phoneReg.test(phoneNum) ? CodeStatus.hasPn : CodeStatus.noPn
-      )
-    }
-  }, [phoneNum, timer])
-
   const getCode = async (events: MouseEvent<HTMLDivElement>) => {
     events.preventDefault()
     if (codeStatus === CodeStatus.hasPn) {
       try {
-        const res = await getVerifyCode(phoneNum)
-        setCode(res)
+        const phone = phoneNum.replace(/\s*/g, '')
+        await getVerifyCode(phone)
         setIsCallCodeIe(true) // 已调用生成短信接口
         setCodeStatus(CodeStatus.timer)
         exeTimer() // 启动定时器
       } catch (err) {
         setIsCallCodeIe(true) // 调试用，记得清除
-        const content = '获取验证码失败'
-        console.log('err', err)
-        // if (err && err.data) {
-        //   content = err.data.message
-        // }
-
         messageApi.open({
           type: 'error',
-          content
+          content: '获取验证码失败'
         })
       }
     }
   }
+
+  // 手机号码为 344 格式显示
+  const phoneFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value // 旧值
+    let newVal = val.substring(0, 13).replace(/[^\d]/g, '') // 提取中字符串中的数字（只数字）
+    // 检测到第4位数字和第8位数字时，在第3位和第7位加入空格
+    // （注意：如果检测到第3位数字和第7位数字时添加空格（判断条件为>6和>2），删除时会导致删除到空格时无法继续删除，可自行尝试）
+    if (newVal.length > 7) {
+      newVal = newVal.replace(/^(.{3})(.{4})(.*)$/, '$1 $2 $3')
+    } else if (newVal.length > 3) {
+      newVal = newVal.replace(/^(.{3})(.*)$/, '$1 $2')
+    }
+    // 返回格式化之后的值
+    return newVal
+  }
+
+  useEffect(() => {
+    setCodeStatus((value) => {
+      if (value === CodeStatus.timer) return value // 倒计时中
+      const phone = phoneNum.replace(/\s*/g, '')
+      return phoneReg.test(phone) ? CodeStatus.hasPn : CodeStatus.noPn
+    })
+  }, [phoneNum])
+
+  useEffect(() => {
+    const phone = phoneNum.replace(/\s*/g, '')
+    setDisabled(!(phoneReg.test(phone) && codeReg.test(code) && isCallCodeIe))
+  }, [phoneNum, code, isCallCodeIe])
+
+  useEffect(() => {
+    if (timer === 0) {
+      const phone = phoneNum.replace(/\s*/g, '')
+      setCodeStatus(phoneReg.test(phone) ? CodeStatus.hasPn : CodeStatus.noPn)
+    }
+  }, [phoneNum, timer])
 
   const render = () => {
     const getText = () => {
@@ -156,11 +163,13 @@ export const PhoneLogin = ({
               rules={[
                 {
                   required: true,
+                  transform: (value) => value.replace(/\s*/g, ''),
                   pattern: phoneReg,
                   message: '输入正确的手机号'
                 }
               ]}
               wrapperCol={{ span: 24 }}
+              getValueFromEvent={phoneFormat}
             >
               <Input className={styles.customInput} />
             </Form.Item>

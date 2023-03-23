@@ -9,8 +9,7 @@ import CustomerServicesModal from './lib/CustomerServicesModal/index' //客服�
 import { MapSvg } from './lib/map-svg/index'
 import { VipIntroduce } from './lib/VipIntroduce/index'
 import { VipIntroduceContent } from './lib/VipIntroduce/Content'
-
-import { init } from '@flyele-nx/api' //客服弹窗
+import { init, objectiveApi as NxObjectiveApi } from '@flyele-nx/api' //客服弹窗
 export * from './lib/service-module'
 
 export {
@@ -28,5 +27,7 @@ export {
 }
 
 export * from './lib/map-svg/type/props'
+
+export const SMobjectiveApi = NxObjectiveApi
 
 export const registerPaymentInit = init

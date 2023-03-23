@@ -59,8 +59,8 @@ interface BaseLevelData {
   collapse?: boolean
   superior_collapse?: boolean
 
-  child_total?: number
-  superior_total?: number
+  children_total?: number
+  superiors_total?: number
 
   depth: string
   isRoot: boolean

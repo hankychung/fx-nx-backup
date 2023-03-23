@@ -17,7 +17,7 @@ import { styleName } from '../card/css'
 export const attrTargetText = (text: SelectionText) => {
   text
     .text((d) => {
-      return d.target_id as unknown as string
+      return d.title
     })
     .each(function () {
       textNameSlice(d3.select(this), 184)

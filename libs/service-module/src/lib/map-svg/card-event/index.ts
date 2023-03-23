@@ -1,7 +1,12 @@
 import { SelectionG } from '../type'
 import { styleName } from '../card/css'
 import { StopPropagation } from '../utils'
-import { onClickExpandBtn, onClickSExpandBtn, onSelect } from './events'
+import {
+  onBoxClick,
+  onClickExpandBtn,
+  onClickSExpandBtn,
+  onSelect
+} from './events'
 
 export const bindPublicEvent = (g: SelectionG) => {
   const gExpandBtn = g.select(
@@ -20,7 +25,7 @@ export const bindPublicEvent = (g: SelectionG) => {
 
   gBox.on('mousedown', onSelect)
 
-  // gBox.on('dblclick', onBoxClick as d3listener)
+  gBox.on('dblclick', onBoxClick)
 
   const gTakers = gBox.select<SVGGElement>(
     `:scope > g.${styleName['g-partner']}`

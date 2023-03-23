@@ -16,16 +16,16 @@ export interface Data extends BaseTimerData {
 
   creator_id?: string
 
-  child_total?: number // 子事项数量
+  children_total?: number // 子事项数量
   children?: Array<Data>
   collapse?: boolean
 
   superior_collapse?: boolean
   superiors?: Array<Data>
-  superior_total?: number
+  superiors_total?: number
 
-  up_objective?: Array<Data>
-  down_objective?: Array<Data>
+  up_list?: Array<Data>
+  down_list?: Array<Data>
 }
 
 export type TwoNumber = [number, number]

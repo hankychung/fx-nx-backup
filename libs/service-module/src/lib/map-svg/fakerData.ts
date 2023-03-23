@@ -8,8 +8,8 @@ interface FakerDataType {
   level: TargetLevel
   children: FakerDataType[]
   superiors: FakerDataType[]
-  superior_total: number
-  child_total: number
+  superiors_total: number
+  children_total: number
 }
 
 export const FakerData: FakerDataType[] = [
@@ -21,8 +21,8 @@ export const FakerData: FakerDataType[] = [
     level: TargetLevel.personal,
     children: [],
     superiors: [],
-    superior_total: 5,
-    child_total: 5
+    superiors_total: 5,
+    children_total: 5
   },
   {
     objective_id: '123',
@@ -32,8 +32,8 @@ export const FakerData: FakerDataType[] = [
     level: TargetLevel.company,
     children: [],
     superiors: [],
-    superior_total: 5,
-    child_total: 5
+    superiors_total: 5,
+    children_total: 5
   },
   {
     objective_id: '123121',
@@ -43,8 +43,8 @@ export const FakerData: FakerDataType[] = [
     level: TargetLevel.part,
     children: [],
     superiors: [],
-    superior_total: 5,
-    child_total: 5
+    superiors_total: 5,
+    children_total: 5
   },
   {
     objective_id: '1233',
@@ -54,8 +54,8 @@ export const FakerData: FakerDataType[] = [
     level: TargetLevel.part,
     children: [],
     superiors: [],
-    superior_total: 5,
-    child_total: 5
+    superiors_total: 5,
+    children_total: 5
   },
   {
     objective_id: '23',
@@ -65,7 +65,7 @@ export const FakerData: FakerDataType[] = [
     level: TargetLevel.part,
     children: [],
     superiors: [],
-    superior_total: 5,
-    child_total: 5
+    superiors_total: 5,
+    children_total: 5
   }
 ]

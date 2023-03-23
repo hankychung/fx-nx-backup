@@ -45,8 +45,8 @@ export interface ObjectiveSnapMapItem {
   title: string
   relation_total: number
 
-  up_objective?: ObjectiveSnapMapItem[]
-  down_object?: ObjectiveSnapMapItem[]
+  up_list?: ObjectiveSnapMapItem[]
+  down_list?: ObjectiveSnapMapItem[]
 }
 
 export interface ObjectiveSnapMapParams {

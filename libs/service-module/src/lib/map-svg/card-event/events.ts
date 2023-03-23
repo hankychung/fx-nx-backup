@@ -3,14 +3,16 @@ import { collapse, collapseS, expand, expandS } from '../draw/handle'
 import { Mdata } from '../type/mdata'
 import { styleName } from '../card/css'
 import { svgEleGet } from '../d3/element'
+import { debounce } from 'lodash'
+import { openCardWin } from '../utils/system'
 
 export const onClickExpandBtn = async (_e: MouseEvent, d: Mdata) => {
-  if (d.collapse) expand(d)
+  if (d.collapse || d.children_total) expand(d)
   else collapse(d)
 }
 
 export const onClickSExpandBtn = async (_e: MouseEvent, d: Mdata) => {
-  if (d.superior_collapse) expandS(d)
+  if (d.superior_collapse || d.superiors_total) expandS(d)
   else collapseS(d)
 }
 
@@ -45,3 +47,7 @@ export const onSelect = (e: MouseEvent, d: Mdata): void => {
   e.stopPropagation()
   selectGNode(d)
 }
+
+export const onBoxClick = debounce((_e: MouseEvent, d: Mdata): void => {
+  openCardWin(d)
+}, 300)

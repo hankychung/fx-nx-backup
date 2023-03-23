@@ -33,8 +33,8 @@ export interface ObjectiveData {
 
   relation_total: number
 
-  up_objective?: ObjectiveData[]
-  down_object?: ObjectiveData[]
+  up_list?: ObjectiveData[]
+  down_list?: ObjectiveData[]
 }
 
 export enum TargetStatus {

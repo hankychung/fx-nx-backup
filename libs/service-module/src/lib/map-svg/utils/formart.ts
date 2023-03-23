@@ -91,7 +91,7 @@ export const formatObjectiveData = (
 }
 
 export const formatMdata = (data: Data, isSuperiors?: boolean) => {
-  const { up_objective, down_objective } = data
+  const { up_list, down_list } = data
 
   const formatData = {
     title: '',
@@ -99,15 +99,15 @@ export const formatMdata = (data: Data, isSuperiors?: boolean) => {
     superiors: [] as Data[]
   }
 
-  if (up_objective && up_objective.length) {
-    for (const c of up_objective) {
+  if (down_list && down_list.length) {
+    for (const c of down_list) {
       formatData.children.push(formatMdata(c))
     }
   }
 
-  if (down_objective && down_objective.length) {
-    for (const s of down_objective) {
-      formatData.superiors.push(formatMdata(s))
+  if (up_list && up_list.length) {
+    for (const s of up_list) {
+      formatData.superiors.push(formatMdata(s, true))
     }
   }
 

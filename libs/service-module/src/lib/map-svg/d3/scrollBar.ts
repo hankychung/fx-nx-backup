@@ -310,7 +310,7 @@ export const onMountedFn = (key: string): void => {
   svgEle.addEventListener('mouseup', () => vMouseUp(key))
   svgEle.addEventListener('mousemove', (e) => hMouseMove(e, key))
   svgEle.addEventListener('mousemove', (e) => vMouseMove(e, key))
-  svgEle.addEventListener('resize', winResizeMap[key])
+  window.addEventListener('resize', winResizeMap[key])
 }
 export const onBeforeUnmountFn = (key: string): void => {
   // window.removeEventListener('mouseup', hMouseUp)

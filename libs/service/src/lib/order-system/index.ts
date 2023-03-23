@@ -37,6 +37,24 @@ class OrderSystem {
   }
 
   /**
+   * 刷新token
+   */
+  async refreshToken() {
+    return await service.post({
+      url: `${this.prefix}/token/refresh`
+    })
+  }
+
+  /**
+   * 后台用户信息
+   */
+  async getAdminInfo() {
+    return await service.get<OrderSystemType.IUser>({
+      url: `${this.prefix}/admin/info`
+    })
+  }
+
+  /**
    * 订单统计
    */
   async getIndentAnalysis(): Promise<
@@ -65,6 +83,18 @@ class OrderSystem {
   async getIndentDetail(indent_id: string) {
     return await service.get({
       url: `${this.prefix}/indent/${indent_id}`
+    })
+  }
+
+  /**
+   * 获取发票列表
+   */
+  async getInvoiceList(
+    params?: OrderSystemType.IInvoiceListParams
+  ): Promise<CommonListResponse<OrderSystemType.IInvoiceList[]>> {
+    return await service.get({
+      url: `${this.prefix}/invoice/list`,
+      params
     })
   }
 }

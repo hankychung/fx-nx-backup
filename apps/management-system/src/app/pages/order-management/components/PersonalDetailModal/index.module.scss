@@ -1,0 +1,62 @@
+.modalRoot {
+  .topBox {
+    .userName {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 22px;
+      color: #262626;
+      margin-bottom: 4px;
+    }
+    .descBox {
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+      font-size: 11px;
+      color: #6A6A6A;
+      .time {
+        color: #B4B4B4;
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #EDEDED;
+    margin: 12px 0;
+  }
+
+  .content {
+    .row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      .rowLeft {
+        width: 75px;
+        font-weight: 500;
+        font-size: 12px;
+        color: #8F8F8F;
+        text-align: left;
+        margin-right: 12px;
+      }
+      .rowRight {
+        font-weight: 500;
+        font-size: 12px;
+        color: #262626;
+      }
+
+      .greyText {
+        color: #B4B4B4;
+      }
+    }
+  }
+
+  .footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+}

@@ -1,0 +1,26 @@
+.nameBox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  .taxNumberBox {
+    display: flex;
+    align-items: center;
+
+    .iconBox {
+      width: 10px;
+      height: 10px;
+      margin-left: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+}
+
+.blueText {
+  color: #4B5F8B;
+}

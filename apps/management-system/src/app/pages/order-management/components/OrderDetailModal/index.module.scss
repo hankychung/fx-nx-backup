@@ -1,0 +1,55 @@
+.modalRoot {
+  padding-top: 10px;
+  padding-right: 20px;
+  .topBox {
+    width: 100%;
+    .topRow {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+
+      .nameBox {
+        font-weight: 400;
+        font-size: 11px;
+        color: #6A6A6A;
+
+        .name {
+          text-decoration-line: underline;
+          margin-right: 2px;
+          cursor: pointer;
+        }
+      }
+
+      .orderNo {
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 15px;
+        text-align: right;
+        color: #B4B4B4;
+      }
+
+      .memberState {
+        font-weight: 500;
+        font-size: 16px;
+        color: #262626;
+      }
+
+      .moneyBox {
+        font-weight: 500;
+        font-size: 18px;
+        color: #262626;
+
+        .moneyUnit {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  .contentBox{
+    background: #F8F8F8;
+    border-radius: 8px;
+    margin-top: 8px;
+    padding: 16px;
+  }
+}

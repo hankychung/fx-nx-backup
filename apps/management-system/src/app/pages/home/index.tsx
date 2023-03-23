@@ -3,6 +3,7 @@ import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { routePath } from '../../routes'
 import { PageNav } from '../../components/pageNav'
 import { useUserStore } from '../../store/user'
+import { service } from '@flyele-nx/service'
 
 export const HomePage = () => {
   const [defaultTab, setDefaultTab] = useState('')
@@ -20,10 +21,20 @@ export const HomePage = () => {
   }
 
   useEffect(() => {
-    if (!localStorage.getItem('Authorization')) {
+    service.tokenInvalid = () => {
+      loginOut()
+    }
+
+    const localToken = localStorage.getItem('Authorization')
+    if (!localToken) {
       navigate(routePath.login)
-    } else if (location.pathname === '/') {
-      navigate(routePath.order)
+    } else {
+      if (service.getToken() === '') {
+        service.updateToken(localToken)
+      }
+      if (location.pathname === '/') {
+        navigate(routePath.order)
+      }
     }
 
     if (location.pathname) {

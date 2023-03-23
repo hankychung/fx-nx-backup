@@ -9,15 +9,9 @@ import { FilterValue, ColumnFilterItem } from 'antd/es/table/interface'
 import { useMount } from 'ahooks'
 import { ReactComponent as TableFilter } from '../../../assets/tableFilter.svg'
 import {
-  IIndentAnalysis,
-  IIndentList,
-  IIndentListParams,
-  IndentMemberType,
-  IndentTimeType,
   OrderSystemApi,
-  IndentStateLabel,
-  OrderMethodLabel,
-  IndentState
+  OrderSystemType,
+  OrderSystemConst
 } from '@flyele-nx/service'
 
 const pageSize = 20
@@ -61,11 +55,11 @@ export const OrderManagement = () => {
       title: '查找订单'
     }
   ]
-  const columns: ColumnsType<IIndentList> = useMemo(() => {
+  const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
     const stateFilter = () => {
       const arr: ColumnFilterItem[] = []
-      for (const key in IndentStateLabel) {
-        const item = IndentStateLabel[key]
+      for (const key in OrderSystemConst.IndentStateLabel) {
+        const item = OrderSystemConst.IndentStateLabel[key]
         arr.push({
           text: item,
           value: key
@@ -111,8 +105,8 @@ export const OrderManagement = () => {
         title: '支付方式',
         dataIndex: 'order_method',
         render: (text, record) =>
-          record.state === IndentState.SUCCESS ? (
-            <span>{OrderMethodLabel[text]}</span>
+          record.state === OrderSystemConst.IndentState.SUCCESS ? (
+            <span>{OrderSystemConst.OrderMethodLabel[text]}</span>
           ) : (
             <span />
           )
@@ -121,7 +115,9 @@ export const OrderManagement = () => {
         width: 120,
         title: '支付状态',
         dataIndex: 'state',
-        render: (text) => <span>{IndentStateLabel[text]}</span>,
+        render: (text) => (
+          <span>{OrderSystemConst.IndentStateLabel[text]}</span>
+        ),
         filters: stateFilter(),
         filterIcon: (filtered) => {
           return <TableFilter color={filtered ? '#1dd2c1' : '#ACB0B4'} />
@@ -145,45 +141,46 @@ export const OrderManagement = () => {
   }, [])
 
   const [activeTab, setActiveTab] = useState<string>('all')
-  const [tableData, setTableData] = useState<IIndentList[]>([])
+  const [tableData, setTableData] = useState<OrderSystemType.IIndentList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
-  const [indentAnalysis, setIndentAnalysis] = useState<IIndentAnalysis>({
-    today_indent: {
-      amount: 0,
-      count: 0
-    },
-    total_indent: {
-      amount: 0,
-      count: 0
-    },
-    month_indent: {
-      amount: 0,
-      count: 0
-    },
-    member: {
-      personal_count: 0,
-      team_count: 0
-    }
-  })
+  const [indentAnalysis, setIndentAnalysis] =
+    useState<OrderSystemType.IIndentAnalysis>({
+      today_indent: {
+        amount: 0,
+        count: 0
+      },
+      total_indent: {
+        amount: 0,
+        count: 0
+      },
+      month_indent: {
+        amount: 0,
+        count: 0
+      },
+      member: {
+        personal_count: 0,
+        team_count: 0
+      }
+    })
 
   /**
    * 切换tab
    */
   const onChangeTab = async (key: string) => {
     setActiveTab(key)
-    const params: IIndentListParams = {}
+    const params: OrderSystemType.IIndentListParams = {}
     switch (key) {
       case 'today':
-        params.time_type = IndentTimeType.TODAY
+        params.time_type = OrderSystemConst.IndentTimeType.TODAY
         break
       case 'month':
-        params.time_type = IndentTimeType.MONTH
+        params.time_type = OrderSystemConst.IndentTimeType.MONTH
         break
       case 'personal':
-        params.indent_member_type = IndentMemberType.PERSONAL
+        params.indent_member_type = OrderSystemConst.IndentMemberType.PERSONAL
         break
       case 'corp':
-        params.indent_member_type = IndentMemberType.CORP
+        params.indent_member_type = OrderSystemConst.IndentMemberType.CORP
         break
       default:
         console.log('没匹配')
@@ -211,11 +208,13 @@ export const OrderManagement = () => {
   /**
    * 请求订单列表
    */
-  const fetchIndentList = async (options?: IIndentListParams) => {
+  const fetchIndentList = async (
+    options?: OrderSystemType.IIndentListParams
+  ) => {
     const requestParams = options || { page_number: 1, page_record: pageSize }
 
     try {
-      const params: IIndentListParams = {
+      const params: OrderSystemType.IIndentListParams = {
         ...requestParams
       }
       const { code, data, total } = await OrderSystemApi.getIndentList(params)
@@ -240,7 +239,7 @@ export const OrderManagement = () => {
   ) => {
     const { current } = pagination
     const { state } = filter
-    const params: IIndentListParams = { page_number: current }
+    const params: OrderSystemType.IIndentListParams = { page_number: current }
 
     if (state && state.length) {
       params.state = state.join(',')
@@ -254,7 +253,7 @@ export const OrderManagement = () => {
   const onSearch = async (key: string, value: string) => {
     if (!value) return
 
-    const params: IIndentListParams = {}
+    const params: OrderSystemType.IIndentListParams = {}
     switch (key) {
       case 'user':
         params.user_keyword = value

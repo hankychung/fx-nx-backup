@@ -1,13 +1,13 @@
 import { create } from 'zustand'
-import { IUser } from '@flyele-nx/service'
+import { OrderSystemType } from '@flyele-nx/service'
 
 interface IUserState {
-  userInfo: IUser
-  updateUserInfo: (info: IUser) => void
+  userInfo: OrderSystemType.IUser
+  updateUserInfo: (info: OrderSystemType.IUser) => void
   reset: () => void
 }
 
-const initUserInfo: IUser = {
+const initUserInfo: OrderSystemType.IUser = {
   id: '',
   nick_name: '', // 昵称
   telephone: '' // 手机号

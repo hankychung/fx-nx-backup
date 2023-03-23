@@ -1,5 +1,9 @@
 $seleColor: #1dd2c1;
 
+:root {
+  --shadow-key: url(#shadow);
+}
+
 .selectNow,
 .g-task-status,
 .g-flow-step,
@@ -138,7 +142,8 @@ $seleColor: #1dd2c1;
   display: block;
   width: 100%;
   height: 100%;
-  background-color: #f8f7f7;
+  background-color: transparent;
+
   cursor: grab;
   .none-fill {
     fill: none;
@@ -221,10 +226,11 @@ $seleColor: #1dd2c1;
     opacity: 1;
     fill: $seleColor;
   }
-  .hovered > rect {
-    opacity: 1;
-    fill: url('#shadow') !important;
-  }
+
+  // .hovered > rect {
+  //   opacity: 1;
+  //   fill: url('#shadow') !important;
+  // }
 
   .isToday > .content > .g-box > rect {
     stroke: url('#heightlightBorder');
@@ -266,6 +272,8 @@ $seleColor: #1dd2c1;
   .content > .g-box > rect {
     opacity: 1;
     fill: #fff;
+    filter: var(--shadow-key);
+    // height: calc(var(--shadow-key) + 1px);
   }
 
   .g-check > path {

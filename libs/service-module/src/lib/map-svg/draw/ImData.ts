@@ -271,6 +271,8 @@ const renewXY = (data: Mdata, plugins: Processer[]) => {
 
 class ImData {
   data: Mdata[]
+  expandLock: { [key: string]: boolean } = {}
+
   private getSize: GetSize
   private MdataDefaultValue = {
     x: 0,
@@ -308,7 +310,7 @@ class ImData {
     this.renew()
   }
 
-  private createMdataFromData(
+  createMdataFromData(
     rawData: Data,
     id: string,
     parent: IsMdata = null
@@ -316,8 +318,8 @@ class ImData {
     const {
       title,
       takers,
-      child_total,
-      superior_total,
+      children_total,
+      superiors_total,
       collapse,
       superior_collapse,
       children: rawChildren,
@@ -383,10 +385,10 @@ class ImData {
 
       cache: {},
 
-      child_total,
+      children_total,
       collapse: collapse as boolean,
 
-      superior_total,
+      superiors_total,
       superior_collapse: superior_collapse
     })
 
@@ -407,6 +409,10 @@ class ImData {
           data._children.push(_c)
         }
       })
+
+      if (data.children.length || data._children.length) {
+        delete data.children_total
+      }
     }
 
     // 上级
@@ -419,6 +425,10 @@ class ImData {
           data._superiors.push(_c)
         }
       })
+
+      if (data._superiors.length || data.superiors.length) {
+        delete data.superiors_total
+      }
     }
 
     return data

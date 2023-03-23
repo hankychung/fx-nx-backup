@@ -14,6 +14,7 @@ import styles from './index.module.scss'
 import { ReactComponent as CopyIcon } from '../../../assets/copyIcon.svg'
 import ClipboardJS from 'clipboard'
 import cs from 'classnames'
+import { OpenTaxModal } from './components/OpenTaxModal'
 
 const pageSize = 20
 
@@ -23,6 +24,10 @@ export const InvoiceManagement = () => {
   const [activeTab, setActiveTab] = useState<string>('pending')
   const [tableData, setTableData] = useState<OrderSystemType.IInvoiceList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
+
+  const [openModal, setOpenModal] = useState(false)
+  const [modalData, setModalData] =
+    useState<OrderSystemType.IInvoiceList | null>(null)
 
   /**
    * 请求发票列表
@@ -82,14 +87,24 @@ export const InvoiceManagement = () => {
    * 复制
    */
   const onCopyTax = async (tax: string) => {
-    console.log('onCopyTax', tax)
     const clipboard = new ClipboardJS('.copyIcon', {
       text: () => tax
     })
     clipboard.on('success', (e) => {
-      console.log('复制成功')
+      messageApi.open({
+        type: 'success',
+        content: '复制成功'
+      })
       clipboard.destroy()
     })
+  }
+
+  /**
+   * 开票
+   */
+  const openTax = async (item: OrderSystemType.IInvoiceList) => {
+    setModalData(item)
+    setOpenModal(true)
   }
 
   const tabs: IFlyTabs[] = useMemo(() => {
@@ -168,7 +183,14 @@ export const InvoiceManagement = () => {
         title: '操作',
         dataIndex: '',
         key: 'action',
-        render: () => <div className={tableStyles.tableActionBtn}>确认开票</div>
+        render: (text, record) => (
+          <div
+            className={tableStyles.tableActionBtn}
+            onClick={() => openTax(record)}
+          >
+            确认开票
+          </div>
+        )
       }
     ]
   }, [])
@@ -206,6 +228,12 @@ export const InvoiceManagement = () => {
           onChange={(pagination) => onChangePage(pagination)}
         />
       </div>
+
+      <OpenTaxModal
+        open={openModal}
+        data={modalData}
+        onClose={() => setOpenModal(false)}
+      />
     </PageContainer>
   )
 }

@@ -1,5 +1,9 @@
 import { service } from '../service'
-import { CommonListResponse, CommonResponse } from '../typings'
+import {
+  CommonListResponse,
+  CommonResponse,
+  IExternalListResponse
+} from '../typings'
 import { OrderSystemType } from '../../index'
 
 class OrderSystem {
@@ -39,10 +43,8 @@ class OrderSystem {
   /**
    * 订单统计
    */
-  async getIndentAnalysis(): Promise<
-    CommonResponse<OrderSystemType.IIndentAnalysis>
-  > {
-    return await service.get({
+  async getIndentAnalysis() {
+    return await service.get<OrderSystemType.IIndentAnalysis, IExternalListResponse>({
       url: `${this.prefix}/indent/analysis`
     })
   }

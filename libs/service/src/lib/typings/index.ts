@@ -20,6 +20,11 @@ export interface CommonListResponse<T> extends CommonResponse<T> {
   complete_total?: number
 }
 
+export interface IExternalListResponse {
+  total?: number
+  complete_total?: number
+}
+
 type ENV = 'normal' | 'dev' | 'test' | 'prod' | 'pre_prod' | 'pre_release'
 
 export interface IErrorResponse {
@@ -28,7 +33,7 @@ export interface IErrorResponse {
   message: string
 }
 
-export type IResponse<T> = CommonListResponse<T> | CommonResponse<T>
+export type IResponse<T, M = Record<string, never>> =  CommonResponse<T> & M
 
 export type RequestConfig = import('axios').AxiosRequestConfig & { url: string }
 

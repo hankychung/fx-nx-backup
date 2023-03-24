@@ -16,6 +16,7 @@ import {
 import styles from './index.module.scss'
 import { PersonalDetailModal } from './components/PersonalDetailModal'
 import { OrderDetailModal } from './components/OrderDetailModal'
+import dayjs from 'dayjs'
 
 const pageSize = 20
 
@@ -169,7 +170,6 @@ export const OrderManagement = () => {
    * 打开个人详情弹窗
    */
   const openPersonalDetails = (item: OrderSystemType.IIndentList) => {
-    console.log('openPersonalDetails', item)
     setOpenModalData(item)
     setOpenPersonalModal(true)
   }
@@ -178,7 +178,7 @@ export const OrderManagement = () => {
    * 打开订单详情弹窗
    */
   const showOrderModal = (item: OrderSystemType.IIndentList) => {
-    console.log('showOrderModal', item)
+    setOpenModalData(item)
     setOpenOrderModal(true)
   }
 
@@ -279,9 +279,14 @@ export const OrderManagement = () => {
         }
       },
       {
-        width: 110,
+        width: 130,
         title: '支付时间',
-        dataIndex: 'payment_at'
+        dataIndex: 'payment_at',
+        render: (text) => (
+          <span>
+            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 hh:mm:ss') : ''}
+          </span>
+        )
       },
       {
         width: 100,
@@ -341,6 +346,7 @@ export const OrderManagement = () => {
 
       <OrderDetailModal
         open={openOrderModal}
+        data={openModalData}
         onClickName={() => console.log('搜索人')}
         onClose={() => setOpenOrderModal(false)}
       />

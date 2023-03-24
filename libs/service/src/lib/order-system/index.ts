@@ -83,7 +83,7 @@ class OrderSystem {
    * 获取订单详情
    */
   async getIndentDetail(indent_id: string) {
-    return await service.get({
+    return await service.get<OrderSystemType.IIndentDetails>({
       url: `${this.prefix}/indent/${indent_id}`
     })
   }

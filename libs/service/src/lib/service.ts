@@ -15,6 +15,14 @@ class Service {
 
   token = ''
 
+  /**
+   * token失效
+   */
+  tokenInvalid() {
+    // tokenInvalid失效，使用到的就在自己项目里面覆盖它
+    console.log('token失效')
+  }
+
   private requestInterceptors() {
     this.axios.interceptors.request.use(
       (config) => {
@@ -56,7 +64,7 @@ class Service {
         }
 
         if (response?.status === 401) {
-          // TODO: token失效
+          this.tokenInvalid && this.tokenInvalid()
         }
 
         return Promise.reject(err)
@@ -67,6 +75,10 @@ class Service {
   updateToken(token: string) {
     console.log('token changing', token)
     this.token = token
+  }
+
+  getToken(): string {
+    return this.token
   }
 
   async put<T>(config: RequestConfig) {

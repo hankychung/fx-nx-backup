@@ -6,7 +6,9 @@ import {
   IndentListMemberType,
   IndentType,
   OrderMethod,
-  IndentState
+  IndentState,
+  InvoiceState,
+  InvoiceType
 } from './const'
 
 export interface ILoginParams {
@@ -18,6 +20,9 @@ export interface IUser {
   id: string
   nick_name: string // 昵称
   telephone: string // 手机号
+  avatar?: string // 头像
+  created_at?: string // 创建时间
+  updated_at?: string // 更新时间
 }
 
 export interface ILoginUser extends IUser {
@@ -51,7 +56,7 @@ export interface IIndentListParams extends IRequestList {
   corp_keyword?: string // 企业关键字
   indent_num?: string // 订单编号
   time_type?: IndentTimeType // 时间类型
-  indent_member_type?: IndentMemberType // 订单属性
+  indent_member_type?: IndentMemberType // 订单成员属性
   state?: string // 状态，多个用，拼接
 }
 
@@ -86,5 +91,33 @@ export interface IIndentList {
   state: IndentState // 订单状态
   total_price: number // 实付总价，单位：分
   update_at: number // 更新时间
-  users: IIndentUser // 充值用户信息数据
+  users: IIndentUser[] // 充值用户信息数据
+}
+
+/**
+ * 请求发票列表
+ */
+export interface IInvoiceListParams extends IRequestList {
+  state?: InvoiceState // 发票状态
+}
+
+/**
+ * 发票列表
+ */
+export interface IInvoiceList {
+  company_tax_number: string //公司税号
+  create_at: number // 创建时间
+  creator: IIndentUser // 创建人信息
+  email: string // 邮箱
+  finish_at: number // 完成时间
+  id: string
+  indent_content: string // 订单内容 格式：个人版：会员类型-时长-人数 企业版： 企业版-时长-类型（开通or新增）-席位数量
+  indent_id: string // 关联订单id
+  indent_num: string // 订单编号
+  name: string // 名称 公司名称或个人抬头
+  number: number // 序号
+  state: InvoiceState // 发票状态
+  total_price: number // 实付总价，单位：分
+  type: InvoiceType // 发票类型
+  update_at: number // 更新时间
 }

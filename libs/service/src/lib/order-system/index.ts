@@ -1,9 +1,5 @@
 import { service } from '../service'
-import {
-  CommonListResponse,
-  CommonResponse,
-  IExternalListResponse
-} from '../typings'
+import { CommonResponse, IExternalListResponse } from '../typings'
 import { OrderSystemType } from '../../index'
 
 class OrderSystem {
@@ -73,10 +69,11 @@ class OrderSystem {
   /**
    * 订单列表
    */
-  async getIndentList(
-    params: OrderSystemType.IIndentListParams
-  ): Promise<CommonListResponse<OrderSystemType.IIndentList[]>> {
-    return await service.get({
+  async getIndentList(params: OrderSystemType.IIndentListParams) {
+    return await service.get<
+      OrderSystemType.IIndentList[],
+      IExternalListResponse
+    >({
       url: `${this.prefix}/indent/list`,
       params
     })
@@ -94,10 +91,11 @@ class OrderSystem {
   /**
    * 获取发票列表
    */
-  async getInvoiceList(
-    params?: OrderSystemType.IInvoiceListParams
-  ): Promise<CommonListResponse<OrderSystemType.IInvoiceList[]>> {
-    return await service.get({
+  async getInvoiceList(params?: OrderSystemType.IInvoiceListParams) {
+    return await service.get<
+      OrderSystemType.IInvoiceList[],
+      IExternalListResponse
+    >({
       url: `${this.prefix}/invoice/list`,
       params
     })

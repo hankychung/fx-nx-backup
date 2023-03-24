@@ -15,11 +15,6 @@ export interface CommonResponse<T> {
   data: T
 }
 
-export interface CommonListResponse<T> extends CommonResponse<T> {
-  total?: number
-  complete_total?: number
-}
-
 export interface IExternalListResponse {
   total?: number
   complete_total?: number

@@ -17,6 +17,7 @@ export interface LureModalProps {
   title: string
   freeTxt?: string
   vipTxt?: string
+  isEmptyContent?: boolean
   imgType?: 'venation' | 'application' | 'cycle'
 }
 
@@ -35,7 +36,8 @@ function _LureModal({
   freeTxt,
   vipTxt,
   highlight,
-  imgType
+  imgType,
+  isEmptyContent
 }: LureModalProps) {
   return (
     <Modal
@@ -50,13 +52,13 @@ function _LureModal({
       <div
         className={classNames(styles.title, { [styles['title-img']]: imgType })}
       >
-        <div>{title}</div>
+        <div>{isEmptyContent ? '' : title}</div>
         <CloseIcon onClick={handleClose} />
       </div>
 
       {imgType ? (
         <img src={dict[imgType]} alt="" width={396} />
-      ) : (
+      ) : isEmptyContent ? (
         <div
           className={classNames(styles.content, {
             [styles['content-notip']]: !tip
@@ -72,6 +74,8 @@ function _LureModal({
             <div className={styles.sub}>个人会员</div>
           </div>
         </div>
+      ) : (
+        <div className={styles.empty}>仅会员才可使用该功能</div>
       )}
 
       <div className={styles.footer}>

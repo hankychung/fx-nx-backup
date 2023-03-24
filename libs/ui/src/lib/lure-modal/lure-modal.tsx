@@ -52,7 +52,7 @@ function _LureModal({
       <div
         className={classNames(styles.title, { [styles['title-img']]: imgType })}
       >
-        <div>{isEmptyContent ? '' : title}</div>
+        <div>{isEmptyContent ? title : ''}</div>
         <CloseIcon onClick={handleClose} />
       </div>
 

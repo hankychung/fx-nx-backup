@@ -15,10 +15,13 @@ import { ReactComponent as CopyIcon } from '../../../assets/copyIcon.svg'
 import ClipboardJS from 'clipboard'
 import cs from 'classnames'
 import { OpenTaxModal } from './components/OpenTaxModal'
+import dayjs from 'dayjs'
+import { useInvoiceStore } from '../../store/invoice'
 
 const pageSize = 20
 
 export const InvoiceManagement = () => {
+  const invoiceStore = useInvoiceStore()
   const [messageApi, contextHolder] = message.useMessage()
 
   const [activeTab, setActiveTab] = useState<string>('pending')
@@ -44,7 +47,12 @@ export const InvoiceManagement = () => {
       const { code, data, total } = await OrderSystemApi.getInvoiceList(params)
       if (code === 0 && data) {
         setTableData(data)
-        if (total) setTableTotal(total)
+        if (total) {
+          setTableTotal(total)
+          if (requestParams.state === OrderSystemConst.InvoiceState.NOT_OPEN) {
+            invoiceStore.updateNotOpenTotal(total)
+          }
+        }
       } else {
         setTableData([])
         setTableTotal(0)
@@ -55,6 +63,19 @@ export const InvoiceManagement = () => {
         content: '获取发票列表失败'
       })
     }
+  }
+
+  /**
+   * init
+   */
+  const initList = async () => {
+    await fetchInvoiceList({
+      page_number: 1,
+      state:
+        activeTab === 'pending'
+          ? OrderSystemConst.InvoiceState.NOT_OPEN
+          : OrderSystemConst.InvoiceState.OPEN
+    })
   }
 
   const onChangePage = async (pagination: TablePaginationConfig) => {
@@ -100,11 +121,19 @@ export const InvoiceManagement = () => {
   }
 
   /**
-   * 开票
+   * 打开开具发票弹窗
    */
   const openTax = async (item: OrderSystemType.IInvoiceList) => {
     setModalData(item)
     setOpenModal(true)
+  }
+
+  /**
+   * 开具发票成功后
+   */
+  const onFinish = async () => {
+    setOpenModal(false)
+    await initList()
   }
 
   const tabs: IFlyTabs[] = useMemo(() => {
@@ -125,18 +154,21 @@ export const InvoiceManagement = () => {
       {
         width: 148,
         title: 'NO.',
-        dataIndex: 'number'
+        dataIndex: 'number',
+        align: 'center'
       },
       {
         width: 108,
         title: '订单金额',
         dataIndex: 'total_price',
+        align: 'center',
         render: (text) => <span className={styles.blueText}>{`¥${text}`}</span>
       },
       {
         width: 168,
         title: '公司税号名称',
         dataIndex: 'name',
+        align: 'center',
         render: (text, record) => (
           <div className={cs(styles.nameBox, styles.blueText)}>
             <div>{text}</div>
@@ -155,54 +187,63 @@ export const InvoiceManagement = () => {
       {
         width: 188,
         title: '订单内容',
-        dataIndex: 'indent_content'
+        dataIndex: 'indent_content',
+        align: 'center'
       },
       {
         width: 188,
         title: '接收邮箱',
-        dataIndex: 'email'
+        dataIndex: 'email',
+        align: 'center'
       },
       {
         width: 116,
         title: '开票用户',
         dataIndex: 'creator',
+        align: 'center',
         render: (text, record) => (
           <div className={styles.nameBox}>
-            <div>{text}</div>
-            <div>{record.company_tax_number}</div>
+            <div>{record.creator.user_name}</div>
+            <div>{record.creator.telephone}</div>
           </div>
         )
       },
       {
         width: 168,
         title: '订单号',
-        dataIndex: 'indent_num'
+        dataIndex: 'indent_num',
+        align: 'center'
       },
       {
-        width: 116,
+        width: 208,
         title: '操作',
         dataIndex: '',
         key: 'action',
-        render: (text, record) => (
-          <div
-            className={tableStyles.tableActionBtn}
-            onClick={() => openTax(record)}
-          >
-            确认开票
-          </div>
-        )
+        align: 'center',
+        render: (text, record) => {
+          if (record.state === OrderSystemConst.InvoiceState.NOT_OPEN) {
+            return (
+              <div
+                className={tableStyles.tableActionBtn}
+                onClick={() => openTax(record)}
+              >
+                确认开票
+              </div>
+            )
+          } else {
+            return (
+              <div className={styles.finishTime}>{`${dayjs
+                .unix(record.finish_at)
+                .format('YYYY年M月D日 hh:mm')} 已开票`}</div>
+            )
+          }
+        }
       }
     ]
   }, [])
 
   useMount(async () => {
-    await fetchInvoiceList({
-      page_number: 1,
-      state:
-        activeTab === 'pending'
-          ? OrderSystemConst.InvoiceState.NOT_OPEN
-          : OrderSystemConst.InvoiceState.OPEN
-    })
+    await initList()
   })
 
   return (
@@ -224,7 +265,7 @@ export const InvoiceManagement = () => {
             showQuickJumper: true,
             showSizeChanger: false
           }}
-          scroll={{ y: '55vh', x: true }}
+          scroll={{ y: '27vw', x: 'max-content' }}
           onChange={(pagination) => onChangePage(pagination)}
         />
       </div>
@@ -232,6 +273,7 @@ export const InvoiceManagement = () => {
       <OpenTaxModal
         open={openModal}
         data={modalData}
+        onFinish={onFinish}
         onClose={() => setOpenModal(false)}
       />
     </PageContainer>

@@ -79,8 +79,13 @@ class Service {
     throw new Error(`error: ${config.url}`)
   }
 
-  async get<T, M = Record<string, never>>(config: RequestConfig): Promise<IResponse<T, M>> {
-    const { data } = await this.axios.get<IResponse<T, M>>(`${config.url}`, config)
+  async get<T, M = Record<string, never>>(
+    config: RequestConfig
+  ): Promise<IResponse<T, M>> {
+    const { data } = await this.axios.get<IResponse<T, M>>(
+      `${config.url}`,
+      config
+    )
 
     if (!data.code) {
       return data

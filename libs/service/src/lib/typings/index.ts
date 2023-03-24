@@ -33,7 +33,7 @@ export interface IErrorResponse {
   message: string
 }
 
-export type IResponse<T, M = Record<string, never>> =  CommonResponse<T> & M
+export type IResponse<T, M = Record<string, never>> = CommonResponse<T> & M
 
 export type RequestConfig = import('axios').AxiosRequestConfig & { url: string }
 

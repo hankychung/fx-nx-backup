@@ -44,7 +44,10 @@ class OrderSystem {
    * 订单统计
    */
   async getIndentAnalysis() {
-    return await service.get<OrderSystemType.IIndentAnalysis, IExternalListResponse>({
+    return await service.get<
+      OrderSystemType.IIndentAnalysis,
+      IExternalListResponse
+    >({
       url: `${this.prefix}/indent/analysis`
     })
   }

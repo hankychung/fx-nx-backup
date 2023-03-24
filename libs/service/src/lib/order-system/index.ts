@@ -100,6 +100,15 @@ class OrderSystem {
       params
     })
   }
+
+  /**
+   * 开具发票
+   */
+  async finishInvoice(id: string) {
+    return await service.post({
+      url: `${this.prefix}/invoice/finish/${id}`
+    })
+  }
 }
 
 export const OrderSystemApi = new OrderSystem()

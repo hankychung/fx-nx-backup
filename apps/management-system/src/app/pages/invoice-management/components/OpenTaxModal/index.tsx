@@ -1,6 +1,6 @@
 import React from 'react'
 import { message, Modal } from 'antd'
-import { OrderSystemType } from '@flyele-nx/service'
+import { OrderSystemApi, OrderSystemType } from '@flyele-nx/service'
 import styles from './index.module.scss'
 import { FlyButton } from '@flyele/flyele-components'
 import cs from 'classnames'
@@ -10,16 +10,27 @@ import ClipboardJS from 'clipboard'
 export const OpenTaxModal = ({
   open,
   data,
+  onFinish,
   onClose
 }: {
   open: boolean
   data: OrderSystemType.IInvoiceList | null
+  onFinish: () => void
   onClose: () => void
 }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
-  const onClickBtn = () => {
-    console.log('确认已开票')
+  const onClickBtn = async () => {
+    if (data) {
+      try {
+        const { code } = await OrderSystemApi.finishInvoice(data.id)
+        if (code === 0) {
+          onFinish()
+        }
+      } catch (e) {
+        console.log('开具发票失败')
+      }
+    }
   }
 
   /**

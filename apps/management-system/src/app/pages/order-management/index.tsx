@@ -232,14 +232,18 @@ export const OrderManagement = () => {
         width: 168,
         title: '充值对象',
         dataIndex: 'users',
-        render: (text, record) => (
-          <span
-            className={styles.tableLink}
-            onClick={() => openPersonalDetails(record)}
-          >
-            {/*{record.users[0].user_name}*/}1
-          </span>
-        )
+        render: (text, record) => {
+          const nameArr = record.users.map((user) => user.user_name)
+          const nameStr = nameArr.join('，')
+          return (
+            <span
+              className={styles.tableLink}
+              onClick={() => openPersonalDetails(record)}
+            >
+              {nameStr}
+            </span>
+          )
+        }
       },
       {
         width: 148,
@@ -247,7 +251,7 @@ export const OrderManagement = () => {
         dataIndex: 'indent_num'
       },
       {
-        width: 92,
+        width: 100,
         title: '订单渠道',
         dataIndex: 'origin_route'
       },
@@ -323,7 +327,7 @@ export const OrderManagement = () => {
             showQuickJumper: true,
             showSizeChanger: false
           }}
-          scroll={{ y: '55vh', x: true }}
+          scroll={{ y: '27vw', x: 'max-content' }}
           onChange={(pagination, filters) => onChangePage(pagination, filters)}
         />
       </div>

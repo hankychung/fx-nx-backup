@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { routePath } from '../../routes'
-import { PageNav } from '../../components/pageNav'
+import { PageNav } from '../../components/page-nav'
 import { useUserStore } from '../../store/user'
 import { OrderSystemApi, service } from '@flyele-nx/service'
 import { useMemoizedFn, useMount } from 'ahooks'

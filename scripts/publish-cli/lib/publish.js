@@ -103,7 +103,7 @@ const publish = (lib, output) => {
   console.log(chalk.green('成功发布至npm！'))
 
   cp.execSync(
-    `git add . && git commit -m "chore: 发布${lib}: ${output}" && git tag ${lib}-${output}`
+    `git add . && git commit -m "chore: 发布${lib}: ${output}" && git tag ${lib}-${output} && git push --tags`
   )
 
   console.log(chalk.green('新版本commit生成成功，且已生成tag推送至git'))

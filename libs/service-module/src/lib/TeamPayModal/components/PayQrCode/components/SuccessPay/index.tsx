@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { useMemoizedFn } from 'ahooks'
 import React, { useContext, useEffect, useState } from 'react'
 import close from '../../../../../../assets/payImg/close.svg'
 import pay_success from '../../../../../../assets/payImg/pay_success.svg'
@@ -16,16 +17,20 @@ const SuccessPay = () => {
   const service = useContext(SelectMemberContext)
   const [time, setTime] = useState<number>(5)
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const initFn = useMemoizedFn(() => {
+    return setInterval(() => {
       if (time === 1) {
         service.showPay({ show: false })
       }
       setTime(time - 1)
     }, 1000)
+  })
 
-    return () => clearInterval(interval)
-  }, [time])
+  useEffect(() => {
+    const timer = initFn()
+
+    return () => clearInterval(timer)
+  }, [initFn])
 
   return (
     <div className={style.successPay}>

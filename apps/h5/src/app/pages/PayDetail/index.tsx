@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useMemoizedFn } from 'ahooks'
 import styles from './index.module.scss'
 import { ReactComponent as Completed } from '../../../assets/payImg/completed.svg'
 import { ReactComponent as Expired } from '../../../assets/payImg/expired.svg'
@@ -28,16 +29,13 @@ const PayDetail = () => {
     description: string
     out_trade_no: string
   }>()
-  useEffect(() => {
-    document.title = '支付订单'
-    getCode()
-  }, [])
+
   const statusText = {
     processing: '处理中',
     expired: '已失效',
     completed: '您已完成支付，订单已完成'
   }
-  const getCode = () => {
+  const getCode = useMemoizedFn(() => {
     const local = window.location.href
     const code = getParam('code')
     const params = getParam('params')
@@ -59,7 +57,13 @@ const PayDetail = () => {
         encodeURIComponent(local) +
         '&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
     }
-  }
+  })
+
+  useEffect(() => {
+    document.title = '支付订单'
+    getCode()
+  }, [getCode])
+
   const createOrder = (code: string) => {
     const params = getParam('params')
 

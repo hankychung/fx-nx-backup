@@ -20,6 +20,7 @@ import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import * as dayjs from 'dayjs'
 import { IFlyeleAvatarItem } from '../../../../../PayModal'
+import { useMemoizedFn } from 'ahooks'
 const RightBlock = ({ vipMealType }: { vipMealType: VipMealType }) => {
   const service = useContext(SelectMemberContext)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
@@ -42,16 +43,11 @@ const RightBlock = ({ vipMealType }: { vipMealType: VipMealType }) => {
       service.dispose()
     }
   }, [service])
-  //获取套餐
-  useEffect(() => {
-    if (vipMealType === VipMealType.TEAM) {
-      getMealList()
-    }
-  }, [vipMealType])
+
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
-  const getMealList = async () => {
+  const getMealList = useMemoizedFn(async () => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
       paymentApi.getPrice({ good_type: 'team' }).then((res) => {
         if (res.code === 0) {
@@ -67,7 +63,13 @@ const RightBlock = ({ vipMealType }: { vipMealType: VipMealType }) => {
         }
       })
     })
-  }
+  })
+  //获取套餐
+  useEffect(() => {
+    if (vipMealType === VipMealType.TEAM) {
+      getMealList()
+    }
+  }, [vipMealType, getMealList])
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])

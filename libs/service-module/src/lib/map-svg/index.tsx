@@ -81,11 +81,11 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
         console.log(target_id)
       }
     }
-  }, [])
+  }, [openTargetCard])
 
   useEffect(() => {
     init()
-  }, [])
+  }, [init])
 
   useImperativeHandle(
     ref,
@@ -94,7 +94,7 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
         refresh: init
       }
     },
-    []
+    [init]
   )
 
   return useMemo(() => {
@@ -154,7 +154,7 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
         </div>
       </div>
     )
-  }, [])
+  }, [initKey])
 }
 
 export const MapSvg = forwardRef(MapSvgRender)

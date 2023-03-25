@@ -69,7 +69,7 @@ const VipPackage = (props: Iprops) => {
 
       setTabs(newTab)
     }
-  }, [vipMealType])
+  }, [vipMealType, tabsList])
 
   // 背景图
   const bgUrl =

@@ -83,16 +83,20 @@ export const OrderDetailModal = ({
         {
           key: 'before_pay_end_at',
           title: '支付前到期时间',
-          value: `${
-            memberTypeLabel[indentDetail.indent_member_type]
-          }·${getDateLabel(indentDetail.users[0].before_pay_end_at)}`
+          value: `${memberTypeLabel[indentDetail.indent_member_type]}·${
+            indentDetail.users[0]
+              ? getDateLabel(indentDetail.users[0].before_pay_end_at)
+              : ''
+          }`
         },
         {
           key: 'after_pay_end_at',
           title: '支付后到期时间',
-          value: `${
-            memberTypeLabel[indentDetail.indent_member_type]
-          }·${getDateLabel(indentDetail.users[0].after_pay_end_at)}`
+          value: `${memberTypeLabel[indentDetail.indent_member_type]}·${
+            indentDetail.users[0]
+              ? getDateLabel(indentDetail.users[0].after_pay_end_at)
+              : ''
+          }`
         }
       ]
     }
@@ -200,6 +204,7 @@ export const OrderDetailModal = ({
       case OrderSystemConst.IndentListMemberType.CORP:
         break
       default:
+        console.log('订单属性匹配不上')
         break
     }
 

@@ -4,7 +4,7 @@ import { routePath } from '../../routes'
 import { PageNav } from '../../components/pageNav'
 import { useUserStore } from '../../store/user'
 import { OrderSystemApi, service } from '@flyele-nx/service'
-import { useMount } from 'ahooks'
+import { useMemoizedFn, useMount } from 'ahooks'
 import { useInvoiceStore } from '../../store/invoice'
 
 export const HomePage = () => {
@@ -26,13 +26,13 @@ export const HomePage = () => {
   /**
    * 退出登录
    */
-  const loginOut = async () => {
+  const loginOut = useMemoizedFn(async () => {
     try {
       await OrderSystemApi.logout()
     } finally {
       goBackLogin()
     }
-  }
+  })
 
   /**
    * 请求用户信息

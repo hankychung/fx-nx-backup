@@ -1,21 +1,25 @@
+import { useMemoizedFn } from 'ahooks'
 import { useEffect, useState } from 'react'
 
 export const useCurrentTime = () => {
   const [nowScecond, setNowScecond] = useState<number>(
     new Date().getTime() / 1000
   )
-  const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
-  useEffect(() => {
-    const id: NodeJS.Timer = setInterval(() => {
+
+  const initFn = useMemoizedFn(() => {
+    return setInterval(() => {
       const num_second = new Date().getTime() / 1000
       setNowScecond(num_second)
     }, 1000)
-    setIntervalId(id)
+  })
+
+  useEffect(() => {
+    const timer = initFn()
 
     return () => {
-      clearInterval(intervalId)
+      clearInterval(timer)
     }
-  }, [])
+  }, [initFn])
 
   return {
     nowScecond

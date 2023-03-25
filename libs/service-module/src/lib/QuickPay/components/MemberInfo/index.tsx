@@ -6,7 +6,7 @@
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
   FlyAvatar,
   FlyBasePopper,
@@ -25,6 +25,7 @@ import { IFlyeleAvatarItem } from '../../../PayModal'
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { getResidueTime, regFenToYuan } from '../../utils'
 import { useCurrentTime } from '../../hoooks/useCurrentTime'
+import { useMemoizedFn } from 'ahooks'
 
 const MemberInfo = ({
   memberList,
@@ -39,14 +40,11 @@ const MemberInfo = ({
 }) => {
   const Controller = useController(new FlyBasePopperCtrl())
   const { nowScecond } = useCurrentTime()
-  //获取套餐
-  useEffect(() => {
-    getMealList()
-  }, [])
+
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
-  const getMealList = async () => {
+  const getMealList = useMemoizedFn(async () => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
       paymentApi.getPrice({ good_type: 'team' }).then((res) => {
         if (res.code === 0) {
@@ -62,7 +60,11 @@ const MemberInfo = ({
         }
       })
     })
-  }
+  })
+  //获取套餐
+  useEffect(() => {
+    getMealList()
+  }, [getMealList])
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])

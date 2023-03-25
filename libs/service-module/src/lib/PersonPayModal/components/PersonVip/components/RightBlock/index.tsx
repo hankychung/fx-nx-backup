@@ -10,18 +10,17 @@ import { getResidueTime, regFenToYuan } from '../../../../utils'
 import * as dayjs from 'dayjs'
 import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import { SelectMemberContext } from '../../../../context/context'
+import { useMemoizedFn } from 'ahooks'
 const RightBlock = () => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
   const { nowScecond } = useCurrentTime()
-  useEffect(() => {
-    getMealList()
-  }, [])
 
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
-  const getMealList = async () => {
+
+  const getMealList = useMemoizedFn(async () => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
       paymentApi.getPrice({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
@@ -58,7 +57,10 @@ const RightBlock = () => {
         }
       })
     })
-  }
+  })
+  useEffect(() => {
+    getMealList()
+  }, [getMealList])
   //选择套餐
   const mealSelect = (_: IActiveGoods) => {
     const new_arr = vipMealList.map((item) => {

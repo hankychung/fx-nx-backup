@@ -10,7 +10,7 @@ import {
   useController
 } from '@flyele/flyele-components'
 import CustomerServicesModal from '../CustomerServicesModal'
-import { BaseUserInfoType } from 'libs/ui/src/lib/user-base-info'
+import { BaseUserInfoType } from '@flyele-nx/ui'
 
 type IProps = {
   open: boolean

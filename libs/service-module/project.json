@@ -30,6 +30,9 @@
     },
     "tslint": {
       "command": "tsc --project ./libs/service-module/tsconfig.lib.json"
+    },
+    "publish": {
+      "command": "release-it"
     }
   }
 }

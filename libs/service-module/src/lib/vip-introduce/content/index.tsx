@@ -3,15 +3,8 @@ import { ReactComponent as VectorIcon } from '../../../assets/vip-introduce/vect
 import { Button } from 'antd'
 import classNames from 'classnames'
 import css from './index.module.scss'
-import { IInfoType, memberPowerStaticData } from './packages_const'
-
-export interface VipIntroduceContentProps {
-  isVip: boolean
-  isTeamVip: boolean
-  personVipBtnClick?: (isVip?: boolean) => void
-  teamVipBtnClick?: (isTeamVip?: boolean) => void
-  customBtnClick?: () => void
-}
+import { memberPowerStaticData } from './packages_const'
+import { IInfoType, VipIntroduceContentProps } from '../types'
 
 export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
   const {
@@ -40,7 +33,6 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
 
   const fillterBtnText = useCallback(
     (item: IInfoType) => {
-      let text = item.btnText
       // 是团队会员，并且当前是个人会员列
       if (isTeamVip && item.key === 'personal') {
         return ''
@@ -53,7 +45,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       ) {
         return '续费使用'
       }
-      return text
+      return item.btnText
     },
     [isVip, isTeamVip]
   )

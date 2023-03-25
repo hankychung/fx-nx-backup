@@ -10,7 +10,8 @@
     "prepare": "husky install",
     "lint": "yarn nx format:write --all && nx run-many --target=lint && nx run-many --target=tslint",
     "login-npm": "node scripts/npm-login.js",
-    "install-last-fly": "yarn add @flyele/flyele-components@last"
+    "install-last-fly": "yarn add @flyele/flyele-components@last",
+    "deploy": "node scripts/publish-cli/index.js publish"
   },
   "private": true,
   "dependencies": {
@@ -89,6 +90,7 @@
     "@vitejs/plugin-react": "^3.0.0",
     "@vitest/ui": "^0.25.8",
     "babel-jest": "^29.4.1",
+    "chalk": "4.1.2",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "cypress": "^12.2.0",

@@ -89,6 +89,16 @@ class OrderSystem {
   }
 
   /**
+   * 导出订单列表
+   */
+  async exportIndentList(params: OrderSystemType.IExportIndentList) {
+    return await service.get<string>({
+      url: `${this.prefix}/indent/export`,
+      params
+    })
+  }
+
+  /**
    * 获取发票列表
    */
   async getInvoiceList(params?: OrderSystemType.IInvoiceListParams) {

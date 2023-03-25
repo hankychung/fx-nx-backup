@@ -107,6 +107,11 @@ export const IndentStateLabel: {
 }
 
 /**
+ * 时间类型
+ */
+export type ExportTime = 'today' | 'month' | 'custom'
+
+/**
  * 发票状态
  */
 export enum InvoiceState {

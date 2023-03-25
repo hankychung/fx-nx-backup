@@ -125,30 +125,39 @@ export const OrderDetailModal = ({
       data: []
     }
 
+    let orderData = [
+      {
+        key: 'indent_num',
+        title: '订单ID',
+        value: indentDetail.indent_num
+      },
+      {
+        key: 'indent_member_attr',
+        title: '订单类型',
+        value:
+          OrderSystemConst.IndentMemberAttrLabel[
+            indentDetail.indent_member_attr
+          ]
+      },
+      {
+        key: 'origin_route',
+        title: '订单渠道',
+        value: indentDetail.origin_route
+      }
+    ]
+
+    if (
+      indentDetail.indent_member_type ===
+      OrderSystemConst.IndentListMemberType.TEAM
+    ) {
+      orderData = orderData.filter((data) => data.key === 'indent_member_attr')
+    }
+
     const orderInfo = {
       key: 'orderInfo',
       title: '订单相关',
       haveBorder: indentDetail.state === OrderSystemConst.IndentState.SUCCESS,
-      data: [
-        {
-          key: 'indent_num',
-          title: '订单ID',
-          value: indentDetail.indent_num
-        },
-        {
-          key: 'indent_member_attr',
-          title: '订单类型',
-          value:
-            OrderSystemConst.IndentMemberAttrLabel[
-              indentDetail.indent_member_attr
-            ]
-        },
-        {
-          key: 'origin_route',
-          title: '订单渠道',
-          value: indentDetail.origin_route
-        }
-      ]
+      data: orderData
     }
 
     const payInfo = {
@@ -230,7 +239,7 @@ export const OrderDetailModal = ({
       centered
       destroyOnClose
       footer={null}
-      onCancel={() => onClose()}
+      onCancel={onClose}
     >
       <>
         {contextHolder}

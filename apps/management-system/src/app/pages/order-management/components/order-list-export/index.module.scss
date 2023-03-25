@@ -1,0 +1,31 @@
+.modalRoot {
+  width: 100%;
+  .modalTitle {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #262626;
+    margin-bottom: 24px;
+  }
+
+  .content {
+    margin-bottom: 30px;
+    .row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+
+      .title {
+        font-size: 14px;
+        color: #262626;
+        margin-right: 24px;
+      }
+    }
+  }
+
+  .footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

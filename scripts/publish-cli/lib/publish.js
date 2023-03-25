@@ -53,6 +53,8 @@ const publishFlow = async () => {
 }
 
 const build = (lib) => {
+  console.log(chalk.cyan('打包中，请稍后...'))
+
   cp.execSync(`yarn nx run ${lib}:build`)
 
   console.log(chalk.green(`${lib} 打包成功`))
@@ -98,13 +100,17 @@ const updateVersion = async function (lib) {
 }
 
 const publish = (lib, output) => {
+  console.log(chalk.cyan('发布至npm，请稍后...'))
+
   cp.execSync('npm publish', { cwd: `./dist/libs/${lib}` })
 
   console.log(chalk.green('成功发布至npm！'))
 
-  cp.execSync(
-    `git add . && git commit -m "chore: 发布${lib}: ${output}" && git tag ${lib}-${output} && git push --tags`
-  )
+  console.log(chalk.cyan('生成commit中，请稍后...'))
+
+  cp.execSync(`git add . && git commit -m "chore: 发布${lib}: ${output}"`)
+
+  cp.execSync(`git tag ${lib}-${output} && git push --tags`)
 
   console.log(chalk.green('新版本commit生成成功，且已生成tag推送至git'))
 }

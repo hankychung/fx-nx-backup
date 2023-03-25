@@ -1,7 +1,7 @@
 import { Button, Modal } from 'antd'
 import React, { memo, useMemo } from 'react'
 import { ReactComponent as CustomerIcon } from '../../assets/vip-introduce/customer_service.svg'
-import { VipIntroduceContent } from './Content'
+import { VipIntroduceContent, VipIntroduceContentProps } from './Content'
 import css from './index.module.scss'
 import { BaseUserInfo } from '@flyele-nx/ui'
 import {
@@ -15,17 +15,27 @@ import { BaseUserInfoType } from '@flyele-nx/ui'
 type IProps = {
   open: boolean
   onClose?: () => void
-} & BaseUserInfoType
+} & BaseUserInfoType &
+  Omit<VipIntroduceContentProps, 'customBtnClick'>
 
 const _VipIntroduce = (props: IProps) => {
-  const { open, onClose, isPersonVip, isTeamVip, name, avatar } = props
+  const {
+    open,
+    onClose,
+    isVip,
+    isTeamVip,
+    name,
+    avatar,
+    personVipBtnClick,
+    teamVipBtnClick
+  } = props
   const Controller = useController(new FlyBasePopperCtrl())
 
   const text = useMemo(() => {
     if (isTeamVip) return '你当前是团队会员'
-    else if (isPersonVip) return '你当前是个人会员'
+    else if (isVip) return '你当前是个人会员'
     else return '你当前是免费账户'
-  }, [isPersonVip, isTeamVip])
+  }, [isVip, isTeamVip])
 
   return (
     <Modal
@@ -40,7 +50,7 @@ const _VipIntroduce = (props: IProps) => {
     >
       <div className={css.header}>
         <BaseUserInfo
-          isPersonVip={isPersonVip}
+          isVip={isVip}
           isTeamVip={isTeamVip}
           name={name}
           avatar={avatar}
@@ -73,7 +83,15 @@ const _VipIntroduce = (props: IProps) => {
           </Button>
         </FlyBasePopper>
       </div>
-      <VipIntroduceContent />
+      <VipIntroduceContent
+        isTeamVip={!!isTeamVip}
+        isVip={!!isVip}
+        personVipBtnClick={personVipBtnClick}
+        teamVipBtnClick={teamVipBtnClick}
+        customBtnClick={() => {
+          Controller.show()
+        }}
+      />
     </Modal>
   )
 }

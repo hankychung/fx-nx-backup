@@ -15,6 +15,14 @@ class Service {
 
   token = ''
 
+  /**
+   * token失效
+   */
+  tokenInvalid() {
+    // tokenInvalid失效，使用到的就在自己项目里面覆盖它
+    console.log('token失效')
+  }
+
   private requestInterceptors() {
     this.axios.interceptors.request.use(
       (config) => {
@@ -56,7 +64,7 @@ class Service {
         }
 
         if (response?.status === 401) {
-          // TODO: token失效
+          this.tokenInvalid && this.tokenInvalid()
         }
 
         return Promise.reject(err)
@@ -69,21 +77,30 @@ class Service {
     this.token = token
   }
 
+  getToken(): string {
+    return this.token
+  }
+
   async put<T>(config: RequestConfig) {
     const { data } = await this.axios.put<IResponse<T>>(config.url, config.data)
 
     if (!data.code) {
-      return data.data
+      return data
     }
 
     throw new Error(`error: ${config.url}`)
   }
 
-  async get<T>(config: RequestConfig): Promise<T> {
-    const { data } = await this.axios.get<IResponse<T>>(`${config.url}`, config)
+  async get<T, M = Record<string, never>>(
+    config: RequestConfig
+  ): Promise<IResponse<T, M>> {
+    const { data } = await this.axios.get<IResponse<T, M>>(
+      `${config.url}`,
+      config
+    )
 
     if (!data.code) {
-      return data.data
+      return data
     }
 
     throw new Error(`error: ${config.url}`)

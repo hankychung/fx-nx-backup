@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
-
+import zhCN from 'antd/locale/zh_CN'
 import { AllRoutes } from './app/routes'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
@@ -10,10 +10,10 @@ root.render(
   // <StrictMode>
   <ConfigProvider
     locale={{
-      locale: 'zh-cn',
+      ...zhCN,
       Pagination: {
-        jump_to: '前往',
-        page: '页'
+        ...zhCN.Pagination,
+        jump_to: '前往'
       }
     }}
   >

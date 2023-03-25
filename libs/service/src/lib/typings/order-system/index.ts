@@ -1,100 +1,15 @@
 import { IRequestList } from '../index'
-
-/**
- * 时间类型 today:今日 month:本月
- */
-export enum IndentTimeType {
-  TODAY = 'today', // 今日
-  MONTH = 'month' // 本月
-}
-
-/**
- * 订单属性 personal:个人 corp: 企业
- */
-export enum IndentMemberType {
-  PERSONAL = 'personal', // 个人
-  CORP = 'corp' // 企业
-}
-
-/**
- * 订单成员类型
- * 1：首次开通 2：未到期续费 3：已到期续费 4：新增席位
- */
-export enum IndentMemberAttr {
-  FIRST = 1, // 首次开通
-  RENEW, // 未到期续费
-  DELAYED_RENEW, // 已到期续费
-  NEW // 新增席位
-}
-
-/**
- * 订单属性
- */
-export enum IndentListMemberType {
-  PERSONAL = 1, // 个人
-  TEAM, // 团队
-  CORP // 企业
-}
-
-/**
- * 订单类型
- */
-export enum IndentType {
-  FOR_SELF = 1, // 为自己支付
-  FOR_OTHER // 为他人支付
-}
-
-/**
- * 订单类型
- */
-export enum OrderMethod {
-  WECHAT = 1, // 微信APP支付
-  MINI_PROGRAM, // 小程序支付
-  JSAPI, // JSAPI支付
-  NATIVE, // Native支付
-  H5, // H5支付
-  ALIPAY // 支付宝支付
-}
-
-/**
- * 订单状态 中文
- */
-export const OrderMethodLabel: {
-  [key: number]: string
-} = {
-  [OrderMethod.WECHAT]: '微信',
-  [OrderMethod.MINI_PROGRAM]: '小程序',
-  [OrderMethod.JSAPI]: 'JSAPI',
-  [OrderMethod.NATIVE]: 'Native',
-  [OrderMethod.H5]: 'H5',
-  [OrderMethod.ALIPAY]: '支付宝'
-}
-
-/**
- * 订单状态
- */
-export enum IndentState {
-  PENDING = 12000, // 待支付
-  SUCCESS, // 支付成功
-  REFUND, // 退款成功
-  CANCEL, // 取消
-  CLOSE, // 关闭
-  REFUND_ERROR // 退款异常
-}
-
-/**
- * 订单状态 中文
- */
-export const IndentStateLabel: {
-  [key: number]: string
-} = {
-  [IndentState.PENDING]: '待支付',
-  [IndentState.SUCCESS]: '支付成功',
-  [IndentState.REFUND]: '退款成功',
-  [IndentState.CANCEL]: '取消',
-  [IndentState.CLOSE]: '关闭',
-  [IndentState.REFUND_ERROR]: '退款异常'
-}
+import {
+  IndentTimeType,
+  IndentMemberType,
+  IndentMemberAttr,
+  IndentListMemberType,
+  IndentType,
+  OrderMethod,
+  IndentState,
+  InvoiceState,
+  InvoiceType
+} from './const'
 
 export interface ILoginParams {
   telephone: string // 账号
@@ -105,6 +20,9 @@ export interface IUser {
   id: string
   nick_name: string // 昵称
   telephone: string // 手机号
+  avatar?: string // 头像
+  created_at?: string // 创建时间
+  updated_at?: string // 更新时间
 }
 
 export interface ILoginUser extends IUser {
@@ -138,7 +56,8 @@ export interface IIndentListParams extends IRequestList {
   corp_keyword?: string // 企业关键字
   indent_num?: string // 订单编号
   time_type?: IndentTimeType // 时间类型
-  indent_member_type?: IndentMemberType // 订单属性
+  indent_member_type?: IndentMemberType // 订单成员属性
+  state?: string // 状态，多个用，拼接
 }
 
 /**
@@ -148,6 +67,11 @@ export interface IIndentUser {
   telephone: string
   user_id: string
   user_name: string
+}
+
+export interface IIndentDetailsUser extends IIndentUser {
+  before_pay_end_at: number // 会员到期时间，订单支付之前 0 就是未开通
+  after_pay_end_at: number // 会员到期时间，订单支付之后 0 就是未开通
 }
 
 /**
@@ -172,5 +96,41 @@ export interface IIndentList {
   state: IndentState // 订单状态
   total_price: number // 实付总价，单位：分
   update_at: number // 更新时间
-  users: IIndentUser // 充值用户信息数据
+  users: IIndentUser[] // 充值用户信息数据
+}
+/**
+ * 订单详情
+ */
+export interface IIndentDetails extends IIndentList {
+  transaction_id: string // 第三支付平台订单号
+  discount_id: string // 优惠Id
+  users: IIndentDetailsUser[]
+}
+
+/**
+ * 请求发票列表
+ */
+export interface IInvoiceListParams extends IRequestList {
+  state?: InvoiceState // 发票状态
+}
+
+/**
+ * 发票列表
+ */
+export interface IInvoiceList {
+  company_tax_number: string //公司税号
+  create_at: number // 创建时间
+  creator: IIndentUser // 创建人信息
+  email: string // 邮箱
+  finish_at: number // 完成时间
+  id: string
+  indent_content: string // 订单内容 格式：个人版：会员类型-时长-人数 企业版： 企业版-时长-类型（开通or新增）-席位数量
+  indent_id: string // 关联订单id
+  indent_num: string // 订单编号
+  name: string // 名称 公司名称或个人抬头
+  number: number // 序号
+  state: InvoiceState // 发票状态
+  total_price: number // 实付总价，单位：分
+  type: InvoiceType // 发票类型
+  update_at: number // 更新时间
 }

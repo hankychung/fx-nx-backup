@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks'
 import { debounce } from 'lodash'
 import { useEffect } from 'react'
 import { useMemo } from 'react'
@@ -22,13 +23,16 @@ export const ZoomToast = (props: ZoomToastProps) => {
   const [show, setShow] = useState(false)
 
   const close = useMemo(() => debounce(() => setShow(false), 1500), [])
-
-  useEffect(() => {
+  const showZoomToast = useMemoizedFn(() => {
     if (!show) {
       setShow(true)
     }
     close()
-  }, [zoomSize])
+  })
+
+  useEffect(() => {
+    showZoomToast()
+  }, [zoomSize, showZoomToast])
 
   return (
     <div>

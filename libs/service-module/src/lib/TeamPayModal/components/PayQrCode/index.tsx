@@ -31,9 +31,7 @@ const PayQrCode = ({
   const service = useContext(SelectMemberContext)
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [qrCode, setQrCode] = useState('')
-  useEffect(() => {
-    qrCodeFunction()
-  }, [])
+
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
     const params = {
@@ -55,6 +53,9 @@ const PayQrCode = ({
       console.log('00')
     }
   })
+  useEffect(() => {
+    qrCodeFunction()
+  }, [qrCodeFunction])
   return (
     <Modal
       open

@@ -19,6 +19,7 @@ import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import * as dayjs from 'dayjs'
 import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { message } from 'antd'
+import { useMemoizedFn } from 'ahooks'
 
 const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
   const service = useContext(SelectMemberContext)
@@ -43,14 +44,11 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
       service.dispose()
     }
   }, [service])
-  //获取套餐
-  useEffect(() => {
-    getMealList()
-  }, [])
+
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
-  const getMealList = async () => {
+  const getMealList = useMemoizedFn(async () => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
       paymentApi.getPrice({ good_type: 'team' }).then((res) => {
         if (res.code === 0) {
@@ -66,7 +64,11 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
         }
       })
     })
-  }
+  })
+  //获取套餐
+  useEffect(() => {
+    getMealList()
+  }, [getMealList])
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])

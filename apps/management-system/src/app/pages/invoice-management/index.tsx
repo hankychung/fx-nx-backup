@@ -1,85 +1,139 @@
 import React, { useMemo, useState } from 'react'
-import { IDataShow, PageContainer } from '../../components/pageContainer'
+import { PageContainer } from '../../components/pageContainer'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
-import { Table } from 'antd'
-import { ColumnsType } from 'antd/es/table'
+import { message, Table } from 'antd'
+import { ColumnsType, TablePaginationConfig } from 'antd/es/table'
+import {
+  OrderSystemApi,
+  OrderSystemConst,
+  OrderSystemType
+} from '@flyele-nx/service'
+import { useMount } from 'ahooks'
+import styles from './index.module.scss'
+import { ReactComponent as CopyIcon } from '../../../assets/copyIcon.svg'
+import ClipboardJS from 'clipboard'
+import cs from 'classnames'
+import { OpenTaxModal } from './components/OpenTaxModal'
+import dayjs from 'dayjs'
+import { useInvoiceStore } from '../../store/invoice'
 
-interface DataType {
-  key: React.Key
-  name: string
-  age: number
-  address: string
-}
+const pageSize = 20
 
 export const InvoiceManagement = () => {
-  const columns: ColumnsType<DataType> = [
-    {
-      width: 148,
-      title: 'NO.',
-      dataIndex: 'name'
-    },
-    {
-      width: 108,
-      title: '订单金额',
-      dataIndex: 'age'
-    },
-    {
-      width: 168,
-      title: '公司税号名称',
-      dataIndex: 'people'
-    },
-    {
-      width: 188,
-      title: '订单内容',
-      dataIndex: 'aaa'
-    },
-    {
-      width: 188,
-      title: '接收邮箱',
-      dataIndex: 'order'
-    },
-    {
-      width: 116,
-      title: '开票用户',
-      dataIndex: 'address'
-    },
-    {
-      width: 168,
-      title: '订单号',
-      dataIndex: 'type'
-    },
-    {
-      width: 116,
-      title: '操作',
-      dataIndex: '',
-      key: 'action',
-      render: () => <div className={tableStyles.tableActionBtn}>确认开票</div>
-    }
-  ]
+  const invoiceStore = useInvoiceStore()
+  const [messageApi, contextHolder] = message.useMessage()
 
   const [activeTab, setActiveTab] = useState<string>('pending')
-  const [tableData, setTableData] = useState<DataType[]>([
-    {
-      key: '122',
-      name: '111',
-      age: 1,
-      address: '2222'
-    },
-    {
-      key: '233',
-      name: '222',
-      age: 2,
-      address: '3333'
+  const [tableData, setTableData] = useState<OrderSystemType.IInvoiceList[]>([])
+  const [tableTotal, setTableTotal] = useState<number>(0)
+
+  const [openModal, setOpenModal] = useState(false)
+  const [modalData, setModalData] =
+    useState<OrderSystemType.IInvoiceList | null>(null)
+
+  /**
+   * 请求发票列表
+   */
+  const fetchInvoiceList = async (
+    options?: OrderSystemType.IInvoiceListParams
+  ) => {
+    const requestParams = options || { page_number: 1, page_record: pageSize }
+
+    try {
+      const params: OrderSystemType.IInvoiceListParams = {
+        ...requestParams
+      }
+      const { code, data, total } = await OrderSystemApi.getInvoiceList(params)
+      if (code === 0 && data) {
+        setTableData(data)
+        if (total) {
+          setTableTotal(total)
+          if (requestParams.state === OrderSystemConst.InvoiceState.NOT_OPEN) {
+            invoiceStore.updateNotOpenTotal(total)
+          }
+        }
+      } else {
+        setTableData([])
+        setTableTotal(0)
+      }
+    } catch (e) {
+      messageApi.open({
+        type: 'error',
+        content: '获取发票列表失败'
+      })
     }
-  ])
+  }
+
+  /**
+   * init
+   */
+  const initList = async () => {
+    await fetchInvoiceList({
+      page_number: 1,
+      state:
+        activeTab === 'pending'
+          ? OrderSystemConst.InvoiceState.NOT_OPEN
+          : OrderSystemConst.InvoiceState.OPEN
+    })
+  }
+
+  const onChangePage = async (pagination: TablePaginationConfig) => {
+    const { current } = pagination
+    const params: OrderSystemType.IInvoiceListParams = { page_number: current }
+
+    await fetchInvoiceList(params)
+  }
 
   /**
    * 切换tab
    */
-  const onChangeTab = (key: string) => {
+  const onChangeTab = async (key: string) => {
     setActiveTab(key)
-    // TODO 请求列表
+    const params: OrderSystemType.IInvoiceListParams = { page_number: 1 }
+    switch (key) {
+      case 'pending':
+        params.state = OrderSystemConst.InvoiceState.NOT_OPEN
+        break
+      case 'processed':
+        params.state = OrderSystemConst.InvoiceState.OPEN
+        break
+      default:
+        console.log('未能匹配')
+    }
+    await fetchInvoiceList(params)
+  }
+
+  /**
+   * 复制
+   */
+  const onCopyTax = async (tax: string) => {
+    const clipboard = new ClipboardJS('.copyIcon', {
+      text: () => tax
+    })
+    clipboard.on('success', (e) => {
+      messageApi.open({
+        type: 'success',
+        content: '复制成功'
+      })
+      clipboard.destroy()
+    })
+  }
+
+  /**
+   * 打开开具发票弹窗
+   */
+  const openTax = async (item: OrderSystemType.IInvoiceList) => {
+    setModalData(item)
+    setOpenModal(true)
+  }
+
+  /**
+   * 开具发票成功后
+   */
+  const onFinish = async () => {
+    setOpenModal(false)
+    await initList()
   }
 
   const tabs: IFlyTabs[] = useMemo(() => {
@@ -95,46 +149,106 @@ export const InvoiceManagement = () => {
     ]
   }, [])
 
-  const dataArray: IDataShow[] = useMemo(() => {
+  const columns: ColumnsType<OrderSystemType.IInvoiceList> = useMemo(() => {
     return [
       {
-        key: 'today',
-        title: '今日订单',
-        value: '2840',
-        subTitle: '14个',
-        unitType: 'money'
+        width: 148,
+        title: 'NO.',
+        dataIndex: 'number',
+        align: 'center'
       },
       {
-        key: 'month',
-        title: '本月订单',
-        value: '425069',
-        subTitle: '307个',
-        unitType: 'money'
+        width: 108,
+        title: '订单金额',
+        dataIndex: 'total_price',
+        align: 'center',
+        render: (text) => <span className={styles.blueText}>{`¥${text}`}</span>
       },
       {
-        key: 'all',
-        title: '累计订单',
-        value: '4250690',
-        subTitle: '3075个',
-        unitType: 'money'
+        width: 168,
+        title: '公司税号名称',
+        dataIndex: 'name',
+        align: 'center',
+        render: (text, record) => (
+          <div className={cs(styles.nameBox, styles.blueText)}>
+            <div>{text}</div>
+            <div className={styles.taxNumberBox}>
+              {record.company_tax_number}
+              <div
+                className={cs('copyIcon', styles.iconBox)}
+                onClick={() => onCopyTax(record.company_tax_number)}
+              >
+                <CopyIcon width={10} height={10} />
+              </div>
+            </div>
+          </div>
+        )
       },
       {
-        key: 'personal',
-        title: '个人会员数量',
-        value: '425069',
-        unitType: 'person'
+        width: 188,
+        title: '订单内容',
+        dataIndex: 'indent_content',
+        align: 'center'
       },
       {
-        key: 'team',
-        title: '团队会员数量',
-        value: '425069',
-        unitType: 'person'
+        width: 188,
+        title: '接收邮箱',
+        dataIndex: 'email',
+        align: 'center'
+      },
+      {
+        width: 116,
+        title: '开票用户',
+        dataIndex: 'creator',
+        align: 'center',
+        render: (text, record) => (
+          <div className={styles.nameBox}>
+            <div>{record.creator.user_name}</div>
+            <div>{record.creator.telephone}</div>
+          </div>
+        )
+      },
+      {
+        width: 168,
+        title: '订单号',
+        dataIndex: 'indent_num',
+        align: 'center'
+      },
+      {
+        width: 208,
+        title: '操作',
+        dataIndex: '',
+        key: 'action',
+        align: 'center',
+        render: (text, record) => {
+          if (record.state === OrderSystemConst.InvoiceState.NOT_OPEN) {
+            return (
+              <div
+                className={tableStyles.tableActionBtn}
+                onClick={() => openTax(record)}
+              >
+                确认开票
+              </div>
+            )
+          } else {
+            return (
+              <div className={styles.finishTime}>{`${dayjs
+                .unix(record.finish_at)
+                .format('YYYY年M月D日 hh:mm')} 已开票`}</div>
+            )
+          }
+        }
       }
     ]
   }, [])
 
+  useMount(async () => {
+    await initList()
+  })
+
   return (
-    <PageContainer dataArray={dataArray}>
+    <PageContainer>
+      {contextHolder}
       <div className={tableStyles.antdTable}>
         <div className={tableStyles.tableTabRow}>
           <div className={tableStyles.tabBox}>
@@ -142,11 +256,26 @@ export const InvoiceManagement = () => {
           </div>
         </div>
         <Table
+          rowKey="id"
           columns={columns}
           dataSource={tableData}
-          pagination={{ pageSize: 15, showQuickJumper: true }}
+          pagination={{
+            pageSize: pageSize,
+            total: tableTotal,
+            showQuickJumper: true,
+            showSizeChanger: false
+          }}
+          scroll={{ y: '27vw', x: 'max-content' }}
+          onChange={(pagination) => onChangePage(pagination)}
         />
       </div>
+
+      <OpenTaxModal
+        open={openModal}
+        data={modalData}
+        onFinish={onFinish}
+        onClose={() => setOpenModal(false)}
+      />
     </PageContainer>
   )
 }

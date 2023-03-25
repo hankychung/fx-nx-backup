@@ -9,13 +9,13 @@ export type GetObjKeyOfType<T, K extends keyof T> = Required<
   ? U
   : never
 
-export interface CommonResponse<T = any> {
+export interface CommonResponse<T> {
   code?: number
   message?: string
   data: T
 }
 
-export interface CommonListResponse<T> extends CommonResponse<T> {
+export interface IExternalListResponse {
   total?: number
   complete_total?: number
 }
@@ -28,10 +28,7 @@ export interface IErrorResponse {
   message: string
 }
 
-export type IResponse<T> = {
-  data: T
-  code: number
-}
+export type IResponse<T, M = Record<string, never>> = CommonResponse<T> & M
 
 export type RequestConfig = import('axios').AxiosRequestConfig & { url: string }
 

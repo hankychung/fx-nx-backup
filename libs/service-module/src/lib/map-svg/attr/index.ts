@@ -94,10 +94,10 @@ export const attrLine = (
     .attr('y2', (d) => d.typeSize.height / 2)
     .attr('display', (d) => {
       if (d.isSuperiors) {
-        return d.superiors.length || d.superior_total ? 'block' : 'none'
+        return d.superiors.length || d.superiors_total ? 'block' : 'none'
       }
 
-      return d.children.length || d.child_total ? 'block' : 'none'
+      return d.children.length || d.children_total ? 'block' : 'none'
     })
 }
 
@@ -108,7 +108,7 @@ export const attrSExpandBtn = (g: SelectionG) => {
       if (!d.isRoot && !d.isSuperiors) {
         return 'none'
       }
-      return d.superior_total || d.superiors.length || d._superiors.length
+      return d.superiors_total || d.superiors.length || d._superiors.length
         ? 'block'
         : 'none'
     }
@@ -117,7 +117,7 @@ export const attrSExpandBtn = (g: SelectionG) => {
   g.select(':scope > text').text((d) =>
     !d.superior_collapse && d.superiors.length
       ? '—'
-      : String(d._superiors.length || d.superior_total)
+      : String(d._superiors.length || d.superiors_total)
   )
 }
 
@@ -129,7 +129,7 @@ export const attrExpandBtn = (g: SelectionG, trp: number): void => {
         return 'none'
       }
 
-      return d.children.length || d._children.length || d.child_total
+      return d.children.length || d._children.length || d.children_total
         ? 'block'
         : 'none'
     }
@@ -138,7 +138,7 @@ export const attrExpandBtn = (g: SelectionG, trp: number): void => {
   g.select(':scope > text').text((d) =>
     !d.collapse && d.children.length
       ? '—'
-      : String(d._children.length || d.child_total)
+      : String(d._children.length || d.children_total)
   )
 }
 

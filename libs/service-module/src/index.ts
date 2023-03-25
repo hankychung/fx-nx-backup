@@ -10,6 +10,7 @@ import { MapSvg } from './lib/map-svg/index'
 import { VipIntroduce } from './lib/vip-introduce/index'
 import { VipIntroduceContent } from './lib/vip-introduce/content'
 import { init, objectiveApi as NxObjectiveApi } from '@flyele-nx/api' //客服弹窗
+import { AvatarEdit } from './lib/avatar-edit' //头像编辑
 export * from './lib/service-module'
 
 export {
@@ -23,7 +24,8 @@ export {
   PayModal,
   CustomerServicesModal,
   VipIntroduce,
-  VipIntroduceContent
+  VipIntroduceContent,
+  AvatarEdit
 }
 
 export * from './lib/map-svg/type/props'

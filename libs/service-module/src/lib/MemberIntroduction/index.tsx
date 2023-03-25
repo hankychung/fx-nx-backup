@@ -5,7 +5,7 @@ import { memberPowerStaticData } from '@flyele-nx/constant'
 import PayModal from '../PayModal'
 import { Modal } from 'antd'
 import CustomerServicesModal from '../CustomerServicesModal'
-import QrCodeLogin from '../qrcode-login'
+import QrCodeLogin from '../qrcode-login1'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
 import { UsercApi, IContactsAndStatus } from '@flyele-nx/service'
 

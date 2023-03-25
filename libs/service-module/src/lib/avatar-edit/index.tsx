@@ -5,9 +5,6 @@ import { Slider, Modal, Button } from 'antd'
 import { ReactComponent as ResetIcon } from '../../assets/icons/avatar_reset.svg'
 import { ReactComponent as RotateIcon } from '../../assets/icons/avatar_rotate.svg'
 import css from './index.module.scss'
-import '../../assets/app-overide-antd-no-mask.global.css'
-import '../../assets/app-overide-antd.global.css'
-import '../../assets/app.global.scss'
 
 interface Iprops {
   src: string

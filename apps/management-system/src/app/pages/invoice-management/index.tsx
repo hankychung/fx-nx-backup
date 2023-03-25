@@ -9,7 +9,7 @@ import {
   OrderSystemConst,
   OrderSystemType
 } from '@flyele-nx/service'
-import { useMount } from 'ahooks'
+import { useMemoizedFn, useMount } from 'ahooks'
 import styles from './index.module.scss'
 import { ReactComponent as CopyIcon } from '../../../assets/copyIcon.svg'
 import ClipboardJS from 'clipboard'
@@ -107,7 +107,7 @@ export const InvoiceManagement = () => {
   /**
    * 复制
    */
-  const onCopyTax = async (tax: string) => {
+  const onCopyTax = useMemoizedFn(async (tax: string) => {
     const clipboard = new ClipboardJS('.copyIcon', {
       text: () => tax
     })
@@ -118,7 +118,7 @@ export const InvoiceManagement = () => {
       })
       clipboard.destroy()
     })
-  }
+  })
 
   /**
    * 打开开具发票弹窗
@@ -240,7 +240,7 @@ export const InvoiceManagement = () => {
         }
       }
     ]
-  }, [])
+  }, [onCopyTax])
 
   useMount(async () => {
     await initList()

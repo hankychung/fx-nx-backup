@@ -1,14 +1,59 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { ReactComponent as VectorIcon } from '../../../assets/vip-introduce/vector.svg'
 import { Button } from 'antd'
 import classNames from 'classnames'
 import css from './index.module.scss'
 import { memberPowerStaticData } from './packages_const'
+import { IInfoType, VipIntroduceContentProps } from '../types'
 
-export const VipIntroduceContent = () => {
+export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
+  const {
+    personVipBtnClick,
+    teamVipBtnClick,
+    customBtnClick,
+    isVip,
+    isTeamVip
+  } = props
+
+  const handleBtnClick = (key: string) => {
+    switch (key) {
+      case 'free':
+        break
+      case 'personal':
+        personVipBtnClick?.(isVip)
+        break
+      case 'team':
+        teamVipBtnClick?.(isTeamVip)
+        break
+      case 'custom':
+        customBtnClick?.()
+        break
+    }
+  }
+
+  const fillterBtnText = useCallback(
+    (item: IInfoType) => {
+      // 是团队会员，并且当前是个人会员列
+      if (isTeamVip && item.key === 'personal') {
+        return ''
+      }
+
+      // 已经开通了团队会员或者个人会员
+      if (
+        (item.key === 'personal' && isVip) ||
+        (item.key === 'team' && isTeamVip)
+      ) {
+        return '续费使用'
+      }
+      return item.btnText
+    },
+    [isVip, isTeamVip]
+  )
+
   return (
     <div className={css.container}>
       {memberPowerStaticData.map((item) => {
+        const btnText = fillterBtnText(item)
         return (
           <div className={css.card} key={item.key}>
             <div className={css.top} style={{ backgroundColor: item.bgColor }}>
@@ -46,9 +91,12 @@ export const VipIntroduceContent = () => {
                     {item.oldPrice}
                   </span>
                 </p>
-                {item.btnText && (
-                  <Button style={{ background: item.btnBgColor }}>
-                    {item.btnText}
+                {btnText && (
+                  <Button
+                    style={{ background: item.btnBgColor }}
+                    onClick={() => handleBtnClick(item.key)}
+                  >
+                    {btnText}
                   </Button>
                 )}
               </div>

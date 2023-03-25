@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { PageContainer } from '../../components/pageContainer'
+import { PageContainer } from '../../components/page-container'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { message, Table } from 'antd'
@@ -9,12 +9,12 @@ import {
   OrderSystemConst,
   OrderSystemType
 } from '@flyele-nx/service'
-import { useMount } from 'ahooks'
+import { useMemoizedFn, useMount } from 'ahooks'
 import styles from './index.module.scss'
 import { ReactComponent as CopyIcon } from '../../../assets/copyIcon.svg'
 import ClipboardJS from 'clipboard'
 import cs from 'classnames'
-import { OpenTaxModal } from './components/OpenTaxModal'
+import { OpenTaxModal } from './components/open-tax-modal'
 import dayjs from 'dayjs'
 import { useInvoiceStore } from '../../store/invoice'
 
@@ -107,7 +107,7 @@ export const InvoiceManagement = () => {
   /**
    * 复制
    */
-  const onCopyTax = async (tax: string) => {
+  const onCopyTax = useMemoizedFn(async (tax: string) => {
     const clipboard = new ClipboardJS('.copyIcon', {
       text: () => tax
     })
@@ -118,7 +118,7 @@ export const InvoiceManagement = () => {
       })
       clipboard.destroy()
     })
-  }
+  })
 
   /**
    * 打开开具发票弹窗
@@ -240,7 +240,7 @@ export const InvoiceManagement = () => {
         }
       }
     ]
-  }, [])
+  }, [onCopyTax])
 
   useMount(async () => {
     await initList()

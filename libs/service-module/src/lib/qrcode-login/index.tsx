@@ -10,7 +10,7 @@ import { debounce } from 'lodash'
 import loginRefreshIcon from '../../assets/login/loginRefresh.svg'
 import loadingGif from '../../assets/login/loading3.gif'
 import cs from 'classnames'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useMount, useUnmount } from 'ahooks'
 import util from './utils'
 import style from './index.module.scss'
 
@@ -46,40 +46,6 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
 
   onSuccessRef.current = onSuccess
 
-  useEffect(() => {
-    let text = ''
-    const totalSec = countDown / 1000
-
-    if (totalSec > 59) {
-      const min = parseInt(String(totalSec / 60), 10)
-      const sec = totalSec - min * 60
-
-      text = `${min > 9 ? min : `0${min}`}:${sec > 9 ? `${sec}` : `0${sec}`}`
-    } else {
-      text = `00:${totalSec > 9 ? totalSec : `0${totalSec}`}`
-    }
-
-    if (countDown === 0) {
-      if (autoRefreshCounter.current >= MAX_COUNTER) {
-        clearInterval(refreshTimeOutId)
-        setWatchTimeOut(true)
-        return
-      }
-
-      autoRefreshCounter.current += 1
-
-      refreshQrCode(false)
-
-      if (sseRef.current) {
-        sseRef.current?.source.close()
-      }
-    }
-
-    if (countDown < 0) return
-
-    setCountDownText(text)
-  }, [countDown])
-
   const getLoginKey = useMemoizedFn(async () => {
     const params = await util.getLoginKeyParams(loginKey, deviceParams)
 
@@ -107,7 +73,7 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
     return Qc.toDataURL(url)
   }, [])
 
-  const generateQrCode = async () => {
+  const generateQrCode = useMemoizedFn(async () => {
     const loginKey = await getLoginKey()
     const qrCode = await getQrCode(loginKey)
 
@@ -126,9 +92,9 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
     refreshTimeOutId = setInterval(() => {
       setCountDown((item) => item - 1000)
     }, 1000)
-  }
+  })
 
-  const refreshQrCode = (isResetCounter = true) => {
+  const refreshQrCode = useMemoizedFn((isResetCounter = true) => {
     if (isResetCounter) {
       autoRefreshCounter.current = 1
     }
@@ -140,12 +106,12 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
       .catch(() => {
         setException(true)
       })
-  }
+  })
 
   /**
    * 连接sse
    */
-  const connectSse = (loginKey: string) => {
+  const connectSse = useMemoizedFn((loginKey: string) => {
     const sse = new SSe('stream', { identity: loginKey }, true)
 
     sseRef.current = sse
@@ -208,28 +174,41 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
         }
       }
     )
-  }
+  })
 
   useEffect(() => {
-    if (lockScanned.current && loginKey && sseRef.current?.getCloseState()) {
-      connectSse(loginKey)
+    let text = ''
+    const totalSec = countDown / 1000
+
+    if (totalSec > 59) {
+      const min = parseInt(String(totalSec / 60), 10)
+      const sec = totalSec - min * 60
+
+      text = `${min > 9 ? min : `0${min}`}:${sec > 9 ? `${sec}` : `0${sec}`}`
+    } else {
+      text = `00:${totalSec > 9 ? totalSec : `0${totalSec}`}`
     }
-  }, [loginKey])
 
-  useEffect(() => {
-    // 离开后
-    sseRef.current?.close()
-    watchTimeoutId && clearTimeout(watchTimeoutId)
-    refreshTimeOutId && clearInterval(refreshTimeOutId)
-  }, [])
+    if (countDown === 0) {
+      if (autoRefreshCounter.current >= MAX_COUNTER) {
+        clearInterval(refreshTimeOutId)
+        setWatchTimeOut(true)
+        return
+      }
 
-  useEffect(() => {
-    // 首次进入初始
-    setTimeout(() => {
-      autoRefreshCounter.current = 1
-      generateQrCode().catch(() => setException(true))
-    }, 50)
-  }, [])
+      autoRefreshCounter.current += 1
+
+      refreshQrCode(false)
+
+      if (sseRef.current) {
+        sseRef.current?.source.close()
+      }
+    }
+
+    if (countDown < 0) return
+
+    setCountDownText(text)
+  }, [countDown, refreshQrCode])
 
   useEffect(() => {
     if (loginKey) {
@@ -239,7 +218,21 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
       refreshTimeOutId && clearInterval(refreshTimeOutId)
       sseRef.current?.close()
     }
-  }, [loginKey])
+  }, [connectSse, loginKey])
+
+  useMount(() => {
+    // 首次进入初始
+    setTimeout(() => {
+      autoRefreshCounter.current = 1
+      generateQrCode().catch(() => setException(true))
+    }, 50)
+  })
+
+  useUnmount(() => {
+    sseRef.current?.close()
+    watchTimeoutId && clearTimeout(watchTimeoutId)
+    refreshTimeOutId && clearInterval(refreshTimeOutId)
+  })
 
   return (
     <div className={style.wrap}>

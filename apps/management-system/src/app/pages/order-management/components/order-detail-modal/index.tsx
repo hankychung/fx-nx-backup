@@ -8,6 +8,7 @@ import {
 } from '@flyele-nx/service'
 import dayjs from 'dayjs'
 import cs from 'classnames'
+import { useMemoizedFn } from 'ahooks'
 
 export const OrderDetailModal = ({
   open,
@@ -28,7 +29,7 @@ export const OrderDetailModal = ({
   /**
    * 获取订单详情
    */
-  const getOrderDetails = async (id: string) => {
+  const getOrderDetails = useMemoizedFn(async (id: string) => {
     try {
       const { code, data } = await OrderSystemApi.getIndentDetail(id)
 
@@ -41,7 +42,7 @@ export const OrderDetailModal = ({
         content: '获取订单详情失败'
       })
     }
-  }
+  })
 
   const formList: Array<{
     key: string
@@ -220,7 +221,7 @@ export const OrderDetailModal = ({
       const { id } = data
       getOrderDetails(id)
     }
-  }, [data])
+  }, [data, getOrderDetails])
 
   return (
     <Modal

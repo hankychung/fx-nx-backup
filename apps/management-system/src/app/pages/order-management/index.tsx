@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { PageContainer } from '../../components/pageContainer'
-import { PageSearch } from '../../components/pageSearch'
+import { PageContainer } from '../../components/page-container'
+import { PageSearch } from '../../components/page-search'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyButton, FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { Table, message } from 'antd'
@@ -14,8 +14,8 @@ import {
   OrderSystemConst
 } from '@flyele-nx/service'
 import styles from './index.module.scss'
-import { PersonalDetailModal } from './components/PersonalDetailModal'
-import { OrderDetailModal } from './components/OrderDetailModal'
+import { PersonalDetailModal } from './components/personal-detail-modal'
+import { OrderDetailModal } from './components/order-detail-modal'
 import dayjs from 'dayjs'
 
 const pageSize = 20

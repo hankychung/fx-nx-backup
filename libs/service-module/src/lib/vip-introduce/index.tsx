@@ -1,7 +1,7 @@
 import { Button, Modal } from 'antd'
 import React, { memo, useMemo } from 'react'
 import { ReactComponent as CustomerIcon } from '../../assets/vip-introduce/customer_service.svg'
-import { VipIntroduceContent, VipIntroduceContentProps } from './Content'
+import { VipIntroduceContent, VipIntroduceContentProps } from './content'
 import css from './index.module.scss'
 import { BaseUserInfo } from '@flyele-nx/ui'
 import {

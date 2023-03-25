@@ -6,6 +6,7 @@ import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { routePath } from '../../routes'
 import { useNavigate } from 'react-router-dom'
 import { useUserStore } from '../../store/user'
+import { useInvoiceStore } from '../../store/invoice'
 
 const _PageNav = ({
   defaultTab,
@@ -15,6 +16,7 @@ const _PageNav = ({
   loginOut: () => void
 }) => {
   const userStore = useUserStore()
+  const invoiceStore = useInvoiceStore()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('')
 
@@ -43,10 +45,10 @@ const _PageNav = ({
       },
       {
         key: 'invoice',
-        title: '发票管理'
+        title: `发票管理 ${invoiceStore.notOpenTotal}`
       }
     ]
-  }, [])
+  }, [invoiceStore.notOpenTotal])
 
   useEffect(() => {
     if (defaultTab) setActiveTab(defaultTab)

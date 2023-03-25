@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { IDataShow, PageContainer } from '../../components/pageContainer'
+import { PageContainer } from '../../components/pageContainer'
 import { PageSearch } from '../../components/pageSearch'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyButton, FlyTabs, IFlyTabs } from '@flyele/flyele-components'
@@ -13,6 +13,10 @@ import {
   OrderSystemType,
   OrderSystemConst
 } from '@flyele-nx/service'
+import styles from './index.module.scss'
+import { PersonalDetailModal } from './components/PersonalDetailModal'
+import { OrderDetailModal } from './components/OrderDetailModal'
+import dayjs from 'dayjs'
 
 const pageSize = 20
 
@@ -55,113 +59,15 @@ export const OrderManagement = () => {
       title: '查找订单'
     }
   ]
-  const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
-    const stateFilter = () => {
-      const arr: ColumnFilterItem[] = []
-      for (const key in OrderSystemConst.IndentStateLabel) {
-        const item = OrderSystemConst.IndentStateLabel[key]
-        arr.push({
-          text: item,
-          value: key
-        })
-      }
-      return arr
-    }
-    return [
-      {
-        width: 192,
-        title: '订单内容',
-        dataIndex: 'indent_content'
-      },
-      {
-        width: 100,
-        title: '订单金额',
-        dataIndex: 'total_price'
-      },
-      {
-        width: 108,
-        title: '付款人',
-        dataIndex: 'creator',
-        render: (text, record) => <span>{record.creator.user_name}</span>
-      },
-      {
-        width: 168,
-        title: '充值对象',
-        dataIndex: 'users',
-        render: (text, record) => <span>{record.users.user_name}</span>
-      },
-      {
-        width: 148,
-        title: '订单号',
-        dataIndex: 'indent_num'
-      },
-      {
-        width: 92,
-        title: '订单渠道',
-        dataIndex: 'origin_route'
-      },
-      {
-        width: 102,
-        title: '支付方式',
-        dataIndex: 'order_method',
-        render: (text, record) =>
-          record.state === OrderSystemConst.IndentState.SUCCESS ? (
-            <span>{OrderSystemConst.OrderMethodLabel[text]}</span>
-          ) : (
-            <span />
-          )
-      },
-      {
-        width: 120,
-        title: '支付状态',
-        dataIndex: 'state',
-        render: (text) => (
-          <span>{OrderSystemConst.IndentStateLabel[text]}</span>
-        ),
-        filters: stateFilter(),
-        filterIcon: (filtered) => {
-          return <TableFilter color={filtered ? '#1dd2c1' : '#ACB0B4'} />
-        }
-      },
-      {
-        width: 110,
-        title: '支付时间',
-        dataIndex: 'payment_at'
-      },
-      {
-        width: 100,
-        title: '操作',
-        dataIndex: '',
-        key: 'action',
-        render: () => (
-          <span className={tableStyles.tableActionText}>订单详情</span>
-        )
-      }
-    ]
-  }, [])
 
   const [activeTab, setActiveTab] = useState<string>('all')
   const [tableData, setTableData] = useState<OrderSystemType.IIndentList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
-  const [indentAnalysis, setIndentAnalysis] =
-    useState<OrderSystemType.IIndentAnalysis>({
-      today_indent: {
-        amount: 0,
-        count: 0
-      },
-      total_indent: {
-        amount: 0,
-        count: 0
-      },
-      month_indent: {
-        amount: 0,
-        count: 0
-      },
-      member: {
-        personal_count: 0,
-        team_count: 0
-      }
-    })
+
+  const [openPersonalModal, setOpenPersonalModal] = useState(false)
+  const [openOrderModal, setOpenOrderModal] = useState(false)
+  const [openModalData, setOpenModalData] =
+    useState<OrderSystemType.IIndentList | null>(null)
 
   /**
    * 切换tab
@@ -186,23 +92,6 @@ export const OrderManagement = () => {
         console.log('没匹配')
     }
     await fetchIndentList({ page_number: 1, ...params })
-  }
-
-  /**
-   * 请求订单统计数据
-   */
-  const fetchIndentAnalysis = async () => {
-    try {
-      const { code, data } = await OrderSystemApi.getIndentAnalysis()
-      if (code === 0) {
-        setIndentAnalysis(data)
-      }
-    } catch (e) {
-      messageApi.open({
-        type: 'error',
-        content: '获取订单统计数据失败'
-      })
-    }
   }
 
   /**
@@ -277,52 +166,151 @@ export const OrderManagement = () => {
     console.log('导出')
   }
 
-  const dataArray: IDataShow[] = useMemo(() => {
-    const { today_indent, month_indent, total_indent, member } = indentAnalysis
+  /**
+   * 打开个人详情弹窗
+   */
+  const openPersonalDetails = (item: OrderSystemType.IIndentList) => {
+    setOpenModalData(item)
+    setOpenPersonalModal(true)
+  }
+
+  /**
+   * 打开订单详情弹窗
+   */
+  const showOrderModal = (item: OrderSystemType.IIndentList) => {
+    setOpenModalData(item)
+    setOpenOrderModal(true)
+  }
+
+  /**
+   * 个人打开订单详情
+   */
+  const gotoOrderDetails = (item: OrderSystemType.IIndentList | null) => {
+    if (item) {
+      setOpenPersonalModal(false)
+      showOrderModal(item)
+    }
+  }
+
+  const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
+    const stateFilter = () => {
+      const arr: ColumnFilterItem[] = []
+      for (const key in OrderSystemConst.IndentStateLabel) {
+        const item = OrderSystemConst.IndentStateLabel[key]
+        arr.push({
+          text: item,
+          value: key
+        })
+      }
+      return arr
+    }
     return [
       {
-        key: 'today',
-        title: '今日订单',
-        value: today_indent.amount,
-        subTitle: `${today_indent.count}个`,
-        unitType: 'money'
+        width: 192,
+        title: '订单内容',
+        dataIndex: 'indent_content'
       },
       {
-        key: 'month',
-        title: '本月订单',
-        value: month_indent.amount,
-        subTitle: `${month_indent.count}个`,
-        unitType: 'money'
+        width: 100,
+        title: '订单金额',
+        dataIndex: 'total_price'
       },
       {
-        key: 'all',
-        title: '累计订单',
-        value: total_indent.amount,
-        subTitle: `${total_indent.count}个`,
-        unitType: 'money'
+        width: 108,
+        title: '付款人',
+        dataIndex: 'creator',
+        render: (text, record) => (
+          <span
+            className={styles.tableLink}
+            onClick={() => openPersonalDetails(record)}
+          >
+            {record.creator.user_name}
+          </span>
+        )
       },
       {
-        key: 'personal',
-        title: '个人会员数量',
-        value: member.personal_count,
-        unitType: 'person'
+        width: 168,
+        title: '充值对象',
+        dataIndex: 'users',
+        render: (text, record) => {
+          const nameArr = record.users.map((user) => user.user_name)
+          const nameStr = nameArr.join('，')
+          return (
+            <span
+              className={styles.tableLink}
+              onClick={() => openPersonalDetails(record)}
+            >
+              {nameStr}
+            </span>
+          )
+        }
       },
       {
-        key: 'team',
-        title: '团队会员数量',
-        value: member.team_count,
-        unitType: 'person'
+        width: 148,
+        title: '订单号',
+        dataIndex: 'indent_num'
+      },
+      {
+        width: 100,
+        title: '订单渠道',
+        dataIndex: 'origin_route'
+      },
+      {
+        width: 102,
+        title: '支付方式',
+        dataIndex: 'order_method',
+        render: (text, record) =>
+          record.state === OrderSystemConst.IndentState.SUCCESS ? (
+            <span>{OrderSystemConst.OrderMethodLabel[text]}</span>
+          ) : (
+            <span />
+          )
+      },
+      {
+        width: 120,
+        title: '支付状态',
+        dataIndex: 'state',
+        render: (text) => (
+          <span>{OrderSystemConst.IndentStateLabel[text]}</span>
+        ),
+        filters: stateFilter(),
+        filterIcon: (filtered) => {
+          return <TableFilter color={filtered ? '#1dd2c1' : '#ACB0B4'} />
+        }
+      },
+      {
+        width: 130,
+        title: '支付时间',
+        dataIndex: 'payment_at',
+        render: (text) => (
+          <span>
+            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 hh:mm:ss') : ''}
+          </span>
+        )
+      },
+      {
+        width: 100,
+        title: '操作',
+        dataIndex: '',
+        key: 'action',
+        render: (text, record) => (
+          <span
+            className={tableStyles.tableActionText}
+            onClick={() => showOrderModal(record)}
+          >
+            订单详情
+          </span>
+        )
       }
     ]
-  }, [indentAnalysis])
+  }, [])
 
   useMount(async () => {
-    await fetchIndentAnalysis()
     await fetchIndentList({ page_number: 1 })
   })
 
   return (
-    <PageContainer dataArray={dataArray}>
+    <PageContainer>
       {contextHolder}
       <div className={tableStyles.antdTable}>
         <PageSearch searchItems={searchItems} onSearch={onSearch} />
@@ -344,10 +332,24 @@ export const OrderManagement = () => {
             showQuickJumper: true,
             showSizeChanger: false
           }}
-          scroll={{ y: '55vh', x: true }}
+          scroll={{ y: '27vw', x: 'max-content' }}
           onChange={(pagination, filters) => onChangePage(pagination, filters)}
         />
       </div>
+
+      <PersonalDetailModal
+        open={openPersonalModal}
+        data={openModalData}
+        showOrder={(data) => gotoOrderDetails(data)}
+        onClose={() => setOpenPersonalModal(false)}
+      />
+
+      <OrderDetailModal
+        open={openOrderModal}
+        data={openModalData}
+        onClickName={() => console.log('搜索人')}
+        onClose={() => setOpenOrderModal(false)}
+      />
     </PageContainer>
   )
 }

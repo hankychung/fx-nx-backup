@@ -7,7 +7,7 @@ export enum IndentTimeType {
 }
 
 /**
- * 订单属性 personal:个人 corp: 企业
+ * 订单成员属性 personal:个人 corp: 企业 （列表请求时候）
  */
 export enum IndentMemberType {
   PERSONAL = 'personal', // 个人
@@ -26,7 +26,19 @@ export enum IndentMemberAttr {
 }
 
 /**
- * 订单属性
+ * 订单成员类型 中文
+ */
+export const IndentMemberAttrLabel: {
+  [key: number]: string
+} = {
+  [IndentMemberAttr.FIRST]: '首次开通',
+  [IndentMemberAttr.RENEW]: '未到期续费',
+  [IndentMemberAttr.DELAYED_RENEW]: '已到期续费',
+  [IndentMemberAttr.NEW]: '新增席位'
+}
+
+/**
+ * 订单成员属性 列表数据
  */
 export enum IndentListMemberType {
   PERSONAL = 1, // 个人
@@ -92,4 +104,20 @@ export const IndentStateLabel: {
   [IndentState.CANCEL]: '取消',
   [IndentState.CLOSE]: '关闭',
   [IndentState.REFUND_ERROR]: '退款异常'
+}
+
+/**
+ * 发票状态
+ */
+export enum InvoiceState {
+  NOT_OPEN = 1, // 未开
+  OPEN // 已开
+}
+
+/**
+ * 发票类型
+ */
+export enum InvoiceType {
+  CORP = 1, // 企业
+  PERSONAL // 个人
 }

@@ -44,7 +44,7 @@ export const PersonalDetailModal = ({
       centered
       destroyOnClose
       footer={null}
-      onCancel={() => onClose()}
+      onCancel={onClose}
     >
       <div className={styles.modalRoot}>
         <div className={styles.topBox}>

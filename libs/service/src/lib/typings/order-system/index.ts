@@ -8,7 +8,8 @@ import {
   OrderMethod,
   IndentState,
   InvoiceState,
-  InvoiceType
+  InvoiceType,
+  ExportTime
 } from './const'
 
 export interface ILoginParams {
@@ -105,6 +106,15 @@ export interface IIndentDetails extends IIndentList {
   transaction_id: string // 第三支付平台订单号
   discount_id: string // 优惠Id
   users: IIndentDetailsUser[]
+}
+
+/**
+ * 导出订单列表参数
+ */
+export interface IExportIndentList {
+  time_type: ExportTime
+  start_time?: number // 开始日期 custom 必传
+  end_time?: number // 结束日期 custom 必传
 }
 
 /**

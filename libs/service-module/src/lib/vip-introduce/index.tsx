@@ -1,7 +1,7 @@
 import { Button, Modal } from 'antd'
 import React, { memo, useMemo } from 'react'
 import { ReactComponent as CustomerIcon } from '../../assets/vip-introduce/customer_service.svg'
-import { VipIntroduceContent, VipIntroduceContentProps } from './content'
+import { VipIntroduceContent } from './content'
 import css from './index.module.scss'
 import { BaseUserInfo } from '@flyele-nx/ui'
 import {
@@ -11,6 +11,7 @@ import {
 } from '@flyele/flyele-components'
 import CustomerServicesModal from '../CustomerServicesModal'
 import { BaseUserInfoType } from '@flyele-nx/ui'
+import { VipIntroduceContentProps } from './types'
 
 type IProps = {
   open: boolean

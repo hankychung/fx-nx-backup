@@ -12,7 +12,7 @@ export interface IInfoType {
   btnTextColor?: string
   btnBgColor?: string
   btnBorderColor?: string
-  money: number
+  money: number | string
   unit: '' | '月' | '年'
   moneyText?: string
   powerList: IPower[]

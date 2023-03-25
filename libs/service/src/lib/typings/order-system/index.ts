@@ -69,6 +69,11 @@ export interface IIndentUser {
   user_name: string
 }
 
+export interface IIndentDetailsUser extends IIndentUser {
+  before_pay_end_at: number // 会员到期时间，订单支付之前 0 就是未开通
+  after_pay_end_at: number // 会员到期时间，订单支付之后 0 就是未开通
+}
+
 /**
  * 订单列表
  */
@@ -92,6 +97,14 @@ export interface IIndentList {
   total_price: number // 实付总价，单位：分
   update_at: number // 更新时间
   users: IIndentUser[] // 充值用户信息数据
+}
+/**
+ * 订单详情
+ */
+export interface IIndentDetails extends IIndentList {
+  transaction_id: string // 第三支付平台订单号
+  discount_id: string // 优惠Id
+  users: IIndentDetailsUser[]
 }
 
 /**

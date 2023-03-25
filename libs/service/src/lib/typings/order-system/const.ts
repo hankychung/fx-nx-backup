@@ -26,6 +26,18 @@ export enum IndentMemberAttr {
 }
 
 /**
+ * 订单成员类型 中文
+ */
+export const IndentMemberAttrLabel: {
+  [key: number]: string
+} = {
+  [IndentMemberAttr.FIRST]: '首次开通',
+  [IndentMemberAttr.RENEW]: '未到期续费',
+  [IndentMemberAttr.DELAYED_RENEW]: '已到期续费',
+  [IndentMemberAttr.NEW]: '新增席位'
+}
+
+/**
  * 订单成员属性 列表数据
  */
 export enum IndentListMemberType {

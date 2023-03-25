@@ -16,6 +16,7 @@ import {
 import styles from './index.module.scss'
 import { PersonalDetailModal } from './components/PersonalDetailModal'
 import { OrderDetailModal } from './components/OrderDetailModal'
+import dayjs from 'dayjs'
 
 const pageSize = 20
 
@@ -169,7 +170,6 @@ export const OrderManagement = () => {
    * 打开个人详情弹窗
    */
   const openPersonalDetails = (item: OrderSystemType.IIndentList) => {
-    console.log('openPersonalDetails', item)
     setOpenModalData(item)
     setOpenPersonalModal(true)
   }
@@ -178,7 +178,7 @@ export const OrderManagement = () => {
    * 打开订单详情弹窗
    */
   const showOrderModal = (item: OrderSystemType.IIndentList) => {
-    console.log('showOrderModal', item)
+    setOpenModalData(item)
     setOpenOrderModal(true)
   }
 
@@ -232,14 +232,18 @@ export const OrderManagement = () => {
         width: 168,
         title: '充值对象',
         dataIndex: 'users',
-        render: (text, record) => (
-          <span
-            className={styles.tableLink}
-            onClick={() => openPersonalDetails(record)}
-          >
-            {/*{record.users[0].user_name}*/}1
-          </span>
-        )
+        render: (text, record) => {
+          const nameArr = record.users.map((user) => user.user_name)
+          const nameStr = nameArr.join('，')
+          return (
+            <span
+              className={styles.tableLink}
+              onClick={() => openPersonalDetails(record)}
+            >
+              {nameStr}
+            </span>
+          )
+        }
       },
       {
         width: 148,
@@ -247,7 +251,7 @@ export const OrderManagement = () => {
         dataIndex: 'indent_num'
       },
       {
-        width: 92,
+        width: 100,
         title: '订单渠道',
         dataIndex: 'origin_route'
       },
@@ -275,9 +279,14 @@ export const OrderManagement = () => {
         }
       },
       {
-        width: 110,
+        width: 130,
         title: '支付时间',
-        dataIndex: 'payment_at'
+        dataIndex: 'payment_at',
+        render: (text) => (
+          <span>
+            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 hh:mm:ss') : ''}
+          </span>
+        )
       },
       {
         width: 100,
@@ -323,7 +332,7 @@ export const OrderManagement = () => {
             showQuickJumper: true,
             showSizeChanger: false
           }}
-          scroll={{ y: '55vh', x: true }}
+          scroll={{ y: '27vw', x: 'max-content' }}
           onChange={(pagination, filters) => onChangePage(pagination, filters)}
         />
       </div>
@@ -337,6 +346,7 @@ export const OrderManagement = () => {
 
       <OrderDetailModal
         open={openOrderModal}
+        data={openModalData}
         onClickName={() => console.log('搜索人')}
         onClose={() => setOpenOrderModal(false)}
       />

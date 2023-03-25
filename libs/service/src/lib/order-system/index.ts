@@ -83,7 +83,7 @@ class OrderSystem {
    * 获取订单详情
    */
   async getIndentDetail(indent_id: string) {
-    return await service.get({
+    return await service.get<OrderSystemType.IIndentDetails>({
       url: `${this.prefix}/indent/${indent_id}`
     })
   }
@@ -98,6 +98,15 @@ class OrderSystem {
     >({
       url: `${this.prefix}/invoice/list`,
       params
+    })
+  }
+
+  /**
+   * 开具发票
+   */
+  async finishInvoice(id: string) {
+    return await service.post({
+      url: `${this.prefix}/invoice/finish/${id}`
     })
   }
 }

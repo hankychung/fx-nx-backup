@@ -1,12 +1,17 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { PageContainer } from '../../components/page-container'
 import { PageSearch } from '../../components/page-search'
 import tableStyles from '../../styles/index.module.scss'
-import { FlyButton, FlyTabs, IFlyTabs } from '@flyele/flyele-components'
+import {
+  FlyButton,
+  FlyTabs,
+  IFlyTabs,
+  FlyStringHighLight
+} from '@flyele/flyele-components'
 import { Table, message } from 'antd'
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 import { FilterValue, ColumnFilterItem } from 'antd/es/table/interface'
-import { useMount } from 'ahooks'
+import { useMemoizedFn, useMount } from 'ahooks'
 import { ReactComponent as TableFilter } from '../../../assets/tableFilter.svg'
 import {
   OrderSystemApi,
@@ -17,6 +22,8 @@ import styles from './index.module.scss'
 import { PersonalDetailModal } from './components/personal-detail-modal'
 import { OrderDetailModal } from './components/order-detail-modal'
 import dayjs from 'dayjs'
+import { OrderListExport } from './components/order-list-export'
+import { downloadUrl } from '@flyele-nx/utils'
 
 const pageSize = 20
 
@@ -60,12 +67,17 @@ export const OrderManagement = () => {
     }
   ]
 
+  const afterSearch = useRef(false)
+
   const [activeTab, setActiveTab] = useState<string>('all')
   const [tableData, setTableData] = useState<OrderSystemType.IIndentList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
 
+  const [searchName, setSearchName] = useState<string>('')
+
   const [openPersonalModal, setOpenPersonalModal] = useState(false)
   const [openOrderModal, setOpenOrderModal] = useState(false)
+  const [openExportModal, setOpenExportModal] = useState(false)
   const [openModalData, setOpenModalData] =
     useState<OrderSystemType.IIndentList | null>(null)
 
@@ -89,7 +101,7 @@ export const OrderManagement = () => {
         params.indent_member_type = OrderSystemConst.IndentMemberType.CORP
         break
       default:
-        console.log('没匹配')
+      // console.log('all')
     }
     await fetchIndentList({ page_number: 1, ...params })
   }
@@ -137,34 +149,110 @@ export const OrderManagement = () => {
   }
 
   /**
+   * 根据订单号 搜索一条信息
+   * 并打开对应详情
+   */
+  const fetchIndentAndOpen = async (id: string) => {
+    try {
+      const { code, data } = await OrderSystemApi.getIndentList({
+        page_number: 1,
+        indent_num: id
+      })
+
+      if (code === 0 && data.length) {
+        showOrderModal(data[0])
+      } else {
+        messageApi.open({
+          type: 'error',
+          content: '未找到订单'
+        })
+      }
+    } catch (e) {
+      messageApi.open({
+        type: 'error',
+        content: '未找到订单'
+      })
+    }
+  }
+
+  /**
    * 搜索表格
    */
-  const onSearch = async (key: string, value: string) => {
-    if (!value) return
+  const onSearch = useMemoizedFn(async (key: string, value: string) => {
+    if (!value) {
+      if (afterSearch.current) {
+        switch (key) {
+          case 'order':
+            break
+          default:
+            setSearchName('')
+            await fetchIndentList({ page_number: 1 })
+        }
+        afterSearch.current = false
+      }
+      return
+    }
 
     const params: OrderSystemType.IIndentListParams = {}
+    afterSearch.current = true
+
     switch (key) {
       case 'user':
         params.user_keyword = value
+        setSearchName(value)
+        await fetchIndentList({ page_number: 1, ...params })
         break
       case 'corp':
         params.corp_keyword = value
+        setSearchName(value)
+        await fetchIndentList({ page_number: 1, ...params })
         break
       case 'order':
-        params.indent_num = value
+        await fetchIndentAndOpen(value)
         break
       default:
         break
     }
-    await fetchIndentList({ page_number: 1, ...params })
-  }
+  })
 
   /**
-   * 导出订单
+   * 导出订单列表
    */
-  const exportOrder = () => {
-    console.log('导出')
-  }
+  const onExport = useMemoizedFn(
+    async (
+      type: OrderSystemConst.ExportTime,
+      timeData?: { startDate: number; endDate: number }
+    ) => {
+      const params: OrderSystemType.IExportIndentList = {
+        time_type: type
+      }
+      if (type === 'custom' && timeData) {
+        params.start_time = timeData.startDate
+        params.end_time = timeData.endDate
+      }
+
+      const { code, data } = await OrderSystemApi.exportIndentList(params)
+      if (code === 0) {
+        downloadUrl(data)
+      } else {
+        messageApi.open({
+          type: 'error',
+          content: '导出错误'
+        })
+      }
+    }
+  )
+
+  /**
+   * 打开导出订单弹窗
+   */
+  const exportOrder = useMemoizedFn(async () => {
+    if (activeTab === 'today' || activeTab === 'month') {
+      await onExport(activeTab)
+    } else {
+      setOpenExportModal(true)
+    }
+  })
 
   /**
    * 打开个人详情弹窗
@@ -220,12 +308,15 @@ export const OrderManagement = () => {
         title: '付款人',
         dataIndex: 'creator',
         render: (text, record) => (
-          <span
+          <div
             className={styles.tableLink}
             onClick={() => openPersonalDetails(record)}
           >
-            {record.creator.user_name}
-          </span>
+            <FlyStringHighLight
+              keyword={searchName || ''}
+              text={record.creator.user_name}
+            />
+          </div>
         )
       },
       {
@@ -236,12 +327,12 @@ export const OrderManagement = () => {
           const nameArr = record.users.map((user) => user.user_name)
           const nameStr = nameArr.join('，')
           return (
-            <span
+            <div
               className={styles.tableLink}
               onClick={() => openPersonalDetails(record)}
             >
-              {nameStr}
-            </span>
+              <FlyStringHighLight keyword={searchName || ''} text={nameStr} />
+            </div>
           )
         }
       },
@@ -303,7 +394,7 @@ export const OrderManagement = () => {
         )
       }
     ]
-  }, [])
+  }, [searchName])
 
   useMount(async () => {
     await fetchIndentList({ page_number: 1 })
@@ -349,6 +440,14 @@ export const OrderManagement = () => {
         data={openModalData}
         onClickName={() => console.log('搜索人')}
         onClose={() => setOpenOrderModal(false)}
+      />
+
+      <OrderListExport
+        open={openExportModal}
+        onExport={(startDate, endDate) =>
+          onExport('custom', { startDate: startDate, endDate: endDate })
+        }
+        onClose={() => setOpenExportModal(false)}
       />
     </PageContainer>
   )

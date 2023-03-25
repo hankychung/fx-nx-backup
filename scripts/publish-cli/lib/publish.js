@@ -110,7 +110,9 @@ const publish = (lib, output) => {
 
   cp.execSync(`git add . && git commit -m "chore: 发布${lib}: ${output}"`)
 
-  cp.execSync(`git tag ${lib}-${output} && git push --tags`)
+  cp.execSync(`git tag ${lib}-${output}`)
+
+  cp.execSync('git push --tags')
 
   console.log(chalk.green('新版本commit生成成功，且已生成tag推送至git'))
 }

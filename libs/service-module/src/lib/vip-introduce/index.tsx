@@ -9,7 +9,7 @@ import {
   FlyBasePopperCtrl,
   useController
 } from '@flyele/flyele-components'
-import CustomerServicesModal from '../CustomerServicesModal'
+import CustomerServicesModal from '../customer-services-modal'
 import { BaseUserInfoType } from '@flyele-nx/ui'
 import { VipIntroduceContentProps } from './types'
 

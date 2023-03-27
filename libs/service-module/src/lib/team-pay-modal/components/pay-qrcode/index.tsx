@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-25 12:20:07
+ * @LastEditTime: 2023-03-27 15:44:56
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,10 +23,12 @@ import { IFlyeleAvatarItem } from '../../../pay-modal'
 
 const PayQrCode = ({
   payInfo,
-  userInfo
+  userInfo,
+  spaceId
 }: {
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
+  spaceId?: string
 }) => {
   const service = useContext(SelectMemberContext)
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -42,7 +44,8 @@ const PayQrCode = ({
       origin_route: 'PC客户端',
       total_price: (payInfo?.now_price || 0) * userInfo.length,
       // total_price: 1,
-      users_id: userInfo.map((item) => item.userId)
+      users_id: userInfo.map((item) => item.userId),
+      workspace_id: spaceId
     }
     try {
       const res = await QRCode.toDataURL(

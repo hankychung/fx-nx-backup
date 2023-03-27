@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-18 15:01:09
+ * @LastEditTime: 2023-03-27 15:52:31
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,7 +21,15 @@ import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { message } from 'antd'
 import { useMemoizedFn } from 'ahooks'
 
-const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
+const RightBlock = ({
+  vipType,
+  mineInfo,
+  upSpace
+}: {
+  vipType: VipPayType
+  mineInfo?: IFlyeleAvatarItem
+  upSpace?: () => void
+}) => {
   const service = useContext(SelectMemberContext)
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
@@ -73,7 +81,15 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
   const payClick = () => {
-    if (resultArr.length === 0) {
+    if (
+      resultArr.length === 0 &&
+      VipPayType.UPSPACE === vipType &&
+      mineInfo?.isTeamVip
+    ) {
+      upSpace && upSpace()
+      return
+    }
+    if (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) {
       message.info({
         content: '请选择协作人'
       })
@@ -134,6 +150,8 @@ const RightBlock = ({ vipType }: { vipType: VipPayType }) => {
           payClick={payClick}
           resultArr={resultArr}
           activeGood={vipMeal ? [vipMeal] : []}
+          vipType={vipType}
+          mineInfo={mineInfo}
         />
       </div>
     </div>

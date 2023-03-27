@@ -71,4 +71,9 @@
     color: #fff;
     background: linear-gradient(90deg, #7b5eef 0%, #6248ed 100%);
   }
+  .noMember {
+    background: linear-gradient(90deg, #7b5eef 0%, #6248ed 100%) !important;
+    opacity: 0.4 !important;
+    pointer-events: none !important;
+  }
 }

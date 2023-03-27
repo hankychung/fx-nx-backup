@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-21 14:49:40
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-25 17:57:23
+ * @LastEditTime: 2023-03-27 11:08:30
  * @FilePath: /fx-nx/libs/service-module/src/lib/person-pay-modal/components/team-vip/components/left-block/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -78,7 +78,7 @@ const LeftBlock = ({
       <div className={style.interests_list}>
         {obj.list.map((_) => {
           return (
-            <div className={style.interests_item} key={_.icon}>
+            <div className={style.interests_item} key={_.title}>
               <img src={_.icon} alt="tabs" />
               <div className={style.interests_info}>
                 <span>{_.title}</span>

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-25 12:14:23
+ * @LastEditTime: 2023-03-27 11:34:34
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,6 +16,7 @@ import { SelectMemberContext } from '../../context/context'
 import PayQrCode from '../pay-qr-code'
 import { IActiveGoods } from '@flyele-nx/api'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
+import { useMemoizedFn } from '@flyele/flyele-components'
 const url = `https://cdn.flyele.net/resources/PC/`
 interface Iprops {
   memberList: IFlyeleAvatarItem[]
@@ -51,26 +52,30 @@ const VipPackage = (props: Iprops) => {
       service.dispose()
     }
   }, [service])
+
+  //判断会员类型
+  const vipTypeFun = useMemoizedFn(() => {
+    const newTab = tabsList.map((item) => {
+      if (item.type === vipMealType) {
+        return {
+          ...item,
+          active: true
+        }
+      }
+      return {
+        ...item,
+        active: false
+      }
+    })
+
+    setTabs(newTab)
+  })
   //进入判断会员类型
   useEffect(() => {
     if (vipMealType) {
-      const newTab = tabsList.map((item) => {
-        if (item.type === vipMealType) {
-          return {
-            ...item,
-            active: true
-          }
-        }
-        return {
-          ...item,
-          active: false
-        }
-      })
-
-      setTabs(newTab)
+      vipTypeFun()
     }
-  }, [vipMealType, tabsList])
-
+  }, [vipMealType, vipTypeFun])
   // 背景图
   const bgUrl =
     vipMealType === VipMealType.PERSON

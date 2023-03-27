@@ -8,6 +8,8 @@ interface Iprops {
   memberList: IFlyeleAvatarItem[]
   vipType: VipPayType
   mineId: string
+  spaceId?: string
+  upSpace?: () => void
 }
 const VipPackage = (props: Iprops) => {
   //进入判断会员类型

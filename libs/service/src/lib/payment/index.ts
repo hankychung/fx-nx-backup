@@ -1,6 +1,7 @@
+
 import { IGetCouponParams, IGetPriceParams, init } from '@flyele-nx/api'
 import { service } from '../service'
-import { ICreateOrderParams } from '../typings'
+import { ICreateOrderParams, IGetPayParams } from '../typings'
 
 class Payment {
   /**
@@ -33,7 +34,7 @@ class Payment {
   /**
    * 获取支付信息
    */
-  async prePay(params: any) {
+  async prePay(params: IGetPayParams) {
     return service.post({
       url: `payment/v2/payment/prepay`,
       data: params

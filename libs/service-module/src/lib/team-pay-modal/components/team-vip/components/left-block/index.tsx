@@ -42,7 +42,7 @@ const LeftBlock = (props: Iprops) => {
   const setMemberSet = useMemoizedFn(() => {
     if (vipType !== VipPayType.NOVIPCREATE) {
       setResultArr([...memberList])
-      service.selectMember({list:[...memberList]})
+      service.selectMember({ list: [...memberList] })
     }
   })
   useEffect(() => {

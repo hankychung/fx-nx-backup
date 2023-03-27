@@ -7,29 +7,15 @@ import { Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
-import { UsercApi, IContactsAndStatus } from '@flyele-nx/service'
+import { UsercApi } from '@flyele-nx/service'
 
 export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCustomerModal, setShowCustomerModal] = useState(false)
-  const [taker, setTaker] = useState<IContactsAndStatus[]>([])
-  //我的协作人信息
-  const memberList: IFlyeleAvatarItem[] = useMemo(() => {
-    const list = taker.map((item) => {
-      return {
-        userId: item.user_id,
-        name: item.nick_name,
-        pinyin: item.pinyin,
-        avatar: item.avatar,
-        telephone: item.telephone || '',
-        isVip: true,
-        isTeamVip: true
-      }
-    })
-    return list
-  }, [taker])
+  const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
+
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
@@ -45,7 +31,31 @@ export const MemberIntroduction = () => {
    */
   const fetchTakerList = async () => {
     const { data } = await UsercApi.getContacts()
-    setTaker(data)
+    const { data: selfUserInfo } = await UsercApi.getLoginUserInfo()
+
+    const list = data.map((item) => {
+      return {
+        userId: item.user_id,
+        name: item.nick_name,
+        pinyin: item.pinyin,
+        avatar: item.avatar,
+        telephone: item.telephone || '',
+        isVip: true,
+        isTeamVip: true
+      }
+    })
+
+    list.push({
+      userId: selfUserInfo.user_id,
+      name: selfUserInfo.nick_name,
+      pinyin: selfUserInfo.pinyin,
+      avatar: selfUserInfo.avatar,
+      telephone: selfUserInfo.telephone || '',
+      isVip: true,
+      isTeamVip: true
+    })
+
+    setMemberList(list)
   }
 
   const onLoginSuccess = async () => {

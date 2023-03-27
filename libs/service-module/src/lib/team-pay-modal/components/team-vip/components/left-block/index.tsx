@@ -2,13 +2,13 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-21 09:51:22
+ * @LastEditTime: 2023-03-27 16:03:48
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
-import { useClickAway } from 'ahooks'
+import { useClickAway, useMemoizedFn } from 'ahooks'
 import { FlyAvatar } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import { ReactComponent as MemberPersonVip } from '../../../../../../assets/payImg/member_person_vip.svg'
@@ -39,7 +39,11 @@ const LeftBlock = (props: Iprops) => {
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>(
     memberList.filter((item) => item.userId === mineId)
   )
-
+  const setMemberSet = useMemoizedFn(() => {
+    if (vipType !== VipPayType.NOVIPCREATE) {
+      setResultArr([...memberList])
+    }
+  })
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
@@ -60,11 +64,12 @@ const LeftBlock = (props: Iprops) => {
         default:
       }
     })
-
+    //设置状态
+    setMemberSet()
     return () => {
       service.dispose()
     }
-  }, [service])
+  }, [service, setMemberSet])
   useClickAway(() => {
     if (openAddModal) {
       service.close()

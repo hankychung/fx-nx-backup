@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-25 17:57:20
+ * @LastEditTime: 2023-03-27 15:43:42
  */
 
 import React, { useMemo } from 'react'
@@ -26,10 +26,12 @@ export declare type IFlyeleAvatarItem = {
 interface Iprops {
   visible: boolean
   mineId: string
+  spaceId?: string
   payType?: VipMealType //个人支付类型 1个人 2团队
   teamVipType?: VipPayType
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   onClose: () => void
+  upSpace?: () => void
   memberList: IFlyeleAvatarItem[]
 }
 
@@ -41,6 +43,8 @@ export default function PayModal(props: Iprops) {
     onClose,
     memberList,
     mineId,
+    spaceId,
+    upSpace,
     teamVipType = 1
   } = props
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
@@ -92,10 +96,12 @@ export default function PayModal(props: Iprops) {
       case 'team':
         return (
           <TeamPayModal
+            spaceId={spaceId}
             vipType={teamVipType}
             onClose={onClose}
             memberList={sortMemberList}
             mineId={mineId}
+            upSpace={upSpace}
           />
         )
       default:

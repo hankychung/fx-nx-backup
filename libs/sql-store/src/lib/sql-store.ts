@@ -3,6 +3,8 @@ const initSql = require('sql.js')
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
+// eslint-disable-next-line
+import { set, get } from 'idb-keyval'
 
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
@@ -22,6 +24,16 @@ class SqlStore {
       locateFile: () => wasmUrl
     })
 
+    const storeDB = await get('database-fly')
+
+    if (storeDB) {
+      this.db = new SQL.Database(storeDB)
+
+      console.log('exsit db', this.getTable())
+
+      return
+    }
+
     const db = new SQL.Database()
 
     this.db = db
@@ -30,7 +42,7 @@ class SqlStore {
 
     await this.fetchZip(userInfo)
 
-    await this.readGuideAndInsertInfo()
+    await this.initTable()
 
     this.getTable()
   }
@@ -39,6 +51,8 @@ class SqlStore {
     const stmt = this.db.exec('SELECT * FROM tag_bind')
 
     console.log(stmt)
+
+    return stmt
   }
 
   private async fetchZip(url: string) {
@@ -49,7 +63,8 @@ class SqlStore {
     return JSON.parse(await this.zipObj.file(filename).async('string'))
   }
 
-  private async readGuideAndInsertInfo() {
+  private async initTable() {
+    console.log('begin')
     const guide = await this.parseFile('guide')
 
     for (const [table, info] of Object.entries(guide)) {
@@ -77,9 +92,15 @@ class SqlStore {
         this.db.run(sqlStr)
       }
     }
+
+    console.log('done')
+
+    set('database-fly', this.db.export()).then(() => {
+      console.log('output -->')
+    })
   }
 
-  private getInsertSql(item: Record<any, any>, table: string) {
+  private getInsertSql(item: Record<string, any>, table: string) {
     const singleSql = `INSERT INTO ${table} (${Object.keys(item).join(
       ' ,'
     )}) VALUES (${Object.values(item)

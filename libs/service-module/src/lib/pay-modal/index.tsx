@@ -24,7 +24,6 @@ export declare type IFlyeleAvatarItem = {
   level?: number
   next_end_time?: number
   end_time?: number
-
 }
 
 interface Iprops {

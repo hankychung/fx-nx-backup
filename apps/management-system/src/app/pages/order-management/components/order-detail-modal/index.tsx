@@ -226,11 +226,11 @@ export const OrderDetailModal = ({
   }, [indentDetail])
 
   useEffect(() => {
-    if (data) {
+    if (data && open) {
       const { id } = data
       getOrderDetails(id)
     }
-  }, [data, getOrderDetails])
+  }, [open, data, getOrderDetails])
 
   return (
     <Modal

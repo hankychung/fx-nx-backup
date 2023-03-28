@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "serve": "node scripts/serve.js",
-    "dev": "nx serve web",
     "build:web": "yarn nx build web",
     "build": "yarn nx run-many --target=build",
     "prepare": "husky install",

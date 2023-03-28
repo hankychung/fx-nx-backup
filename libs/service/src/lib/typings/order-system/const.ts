@@ -126,3 +126,11 @@ export enum InvoiceType {
   CORP = 1, // 企业
   PERSONAL // 个人
 }
+
+/**
+ * 用户类型
+ */
+export enum UserType {
+  NORMAL, //  普通
+  CORP // 企业用户
+}

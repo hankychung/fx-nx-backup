@@ -102,7 +102,9 @@ const updateVersion = async function (lib) {
 const publish = (lib, output) => {
   console.log(chalk.cyan('发布至npm，请稍后...'))
 
-  cp.execSync('npm publish', { cwd: `./dist/libs/${lib}` })
+  cp.execSync('npm publish --registry https://npm.flyele.vip/', {
+    cwd: `./dist/libs/${lib}`
+  })
 
   console.log(chalk.green('成功发布至npm！'))
 

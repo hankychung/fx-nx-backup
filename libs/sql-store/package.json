@@ -1,5 +1,8 @@
 {
   "name": "@flyele-nx/sql-store",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "sql.js": "^1.8.0"
+  }
 }

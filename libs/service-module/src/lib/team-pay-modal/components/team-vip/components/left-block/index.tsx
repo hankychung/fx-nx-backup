@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-27 16:03:48
+ * @LastEditTime: 2023-03-27 18:20:36
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,6 +42,9 @@ const LeftBlock = (props: Iprops) => {
   const setMemberSet = useMemoizedFn(() => {
     if (vipType !== VipPayType.NOVIPCREATE) {
       setResultArr([...memberList])
+      setTimeout(() => {
+        service.selectMember({ list: [...memberList] })
+      }, 100)
     }
   })
   useEffect(() => {
@@ -92,8 +95,14 @@ const LeftBlock = (props: Iprops) => {
         <div
           className={style.clear}
           onClick={() => {
+            if (vipType === VipPayType.NOVIPCREATE) {
+              service.selectMember({
+                list: resultArr.filter((item) => item.userId === mineId)
+              })
+              return
+            }
             service.selectMember({
-              list: resultArr.filter((item) => item.userId !== mineId)
+              list: []
             })
           }}
         >

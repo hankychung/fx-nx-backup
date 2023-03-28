@@ -15,7 +15,7 @@ export const MemberIntroduction = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCustomerModal, setShowCustomerModal] = useState(false)
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
-
+  const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
@@ -45,7 +45,7 @@ export const MemberIntroduction = () => {
       }
     })
 
-    list.push({
+    const selfData = {
       userId: selfUserInfo.user_id,
       name: selfUserInfo.nick_name,
       pinyin: selfUserInfo.pinyin,
@@ -53,9 +53,9 @@ export const MemberIntroduction = () => {
       telephone: selfUserInfo.telephone || '',
       isVip: true,
       isTeamVip: true
-    })
-
-    setMemberList(list)
+    }
+    setSelfUserInfo(selfData)
+    setMemberList([selfData, ...list])
   }
 
   const onLoginSuccess = async () => {
@@ -82,7 +82,7 @@ export const MemberIntroduction = () => {
 
       <PayModal
         visible={show}
-        mineId=""
+        mineId={selfUserInfo?.userId || ''}
         modalType="person"
         payType={payType}
         memberList={memberList}

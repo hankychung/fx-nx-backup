@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-27 15:43:42
+ * @LastEditTime: 2023-03-27 18:14:06
  */
 
 import React, { useMemo } from 'react'
@@ -69,9 +69,10 @@ export default function PayModal(props: Iprops) {
     sortList.sort((item1, item2) => {
       return item1.sort - item2.sort
     })
-
-    return sortList
-  }, [memberList])
+    const arr = sortList.filter((item) => item.userId !== mineId)
+    const self = sortList.filter((item) => item.userId === mineId)
+    return [...self, ...arr]
+  }, [memberList, mineId])
   const buildPayModal = () => {
     if (!modalType) return null
 

@@ -119,6 +119,15 @@ class OrderSystem {
       url: `${this.prefix}/invoice/finish/${id}`
     })
   }
+
+  /**
+   * 用户信息
+   */
+  async getUserInfo(userId: string) {
+    return await service.get<OrderSystemType.IUserInfo>({
+      url: `${this.prefix}/user/info/${userId}`
+    })
+  }
 }
 
 export const OrderSystemApi = new OrderSystem()

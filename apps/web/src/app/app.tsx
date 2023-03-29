@@ -4,7 +4,9 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 
-import { sqlStore } from '@flyele-nx/sql-store'
+import { sqlStore, registerServiceWorker } from '@flyele-nx/sql-store'
+
+registerServiceWorker()
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())

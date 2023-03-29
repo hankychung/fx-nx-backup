@@ -4,7 +4,6 @@ import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
 // eslint-disable-next-line
-//@ts-ignore
 import { set, get } from 'idb-keyval'
 import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'

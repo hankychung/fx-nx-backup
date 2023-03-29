@@ -32,7 +32,9 @@ class SqlStore {
       locateFile: () => wasmUrl
     })
 
-    const data = await (await fetch('https://api.feixiang.cn/userc/v2/system/now')).json()
+    const data = await (
+      await fetch('https://api.feixiang.cn/userc/v2/system/now')
+    ).json()
 
     if (data.data) {
       this.timeDiff = Math.floor(Date.now() / 1000) - data.data

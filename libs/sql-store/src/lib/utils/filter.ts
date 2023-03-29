@@ -1,8 +1,11 @@
 import { BaseQuerySql } from '../sql/query'
 import { Direction, FilterParamsProps } from '../type/filter'
 
-export const getFilterSql = (params: FilterParamsProps & { timestamp: number }) => {
-  const { user_id, page_number, parent_id, page_record, timestamp, direction } = params
+export const getFilterSql = (
+  params: FilterParamsProps & { timestamp: number }
+) => {
+  const { user_id, page_number, parent_id, page_record, timestamp, direction } =
+    params
 
   const LIMIT = `LIMIT ${(page_number - 1) * page_record}, ${page_record}`
 
@@ -14,8 +17,10 @@ export const getFilterSql = (params: FilterParamsProps & { timestamp: number }) 
     WHERES.push(`parent_id IN (${parent_id})`)
   }
 
-  if (typeof timestamp === "number") {
-    WHERES.push(`timestamp ${direction === Direction.up ? '<' : '>='} ${timestamp}`)
+  if (typeof timestamp === 'number') {
+    WHERES.push(
+      `timestamp ${direction === Direction.up ? '<' : '>='} ${timestamp}`
+    )
   }
 
   if (direction) {

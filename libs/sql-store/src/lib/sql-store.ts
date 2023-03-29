@@ -6,6 +6,7 @@ import { defaultInfo } from './const/defaultInfo'
 // eslint-disable-next-line
 //@ts-ignore
 import { set, get } from 'idb-keyval'
+import * as dayjs from 'dayjs'
 import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'
 import { getFilterSql } from './utils/filter'
@@ -24,17 +25,23 @@ class SqlStore {
 
   private zipObj: any = null
 
+  private timeDiff = 0
+
   async initDB() {
     const SQL = await initSql({
       locateFile: () => wasmUrl
     })
 
+    const data = await (await fetch('https://api.feixiang.cn/userc/v2/system/now')).json()
+
+    if (data.data) {
+      this.timeDiff = Math.floor(Date.now() / 1000) - data.data
+    }
+
     const storeDB = await get('database-fly')
 
     if (storeDB) {
       this.db = new SQL.Database(storeDB)
-
-      // console.log('exsit db', this.getTable())
 
       return
     }
@@ -61,14 +68,17 @@ class SqlStore {
   }) {
     const keyAndI = Object.entries(columns)
 
-    const data = new Array(values.length).fill({}).map((v, mapI) => {
+    const data = new Array(values.length).fill('').map((v, mapI) => {
+      //TODO 切换正常类型
+      const obj: { [key: string]: any } = {}
+
       for (const [keyI, key] of keyAndI) {
         const value = values[mapI][Number(keyI)]
 
         if (jsonKey.includes(key)) {
-          v[key] = JSON.parse(value)
+          obj[key] = JSON.parse(value)
         } else {
-          v[key] = /^(id)$|_id$/.test(key)
+          obj[key] = /^(id)$|_id$/.test(key)
             ? value
               ? String(value)
               : ''
@@ -76,14 +86,16 @@ class SqlStore {
         }
       }
 
-      return v
+      return obj
     })
 
     return data
   }
 
   query(params: FilterParamsProps) {
-    const sql = getFilterSql(params)
+    const timestamp = dayjs().startOf('day').unix() - this.timeDiff
+
+    const sql = getFilterSql({ ...params, timestamp })
 
     const stmt = this.db.exec(sql)
 

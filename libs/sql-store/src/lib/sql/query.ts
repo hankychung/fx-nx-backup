@@ -1,10 +1,12 @@
 export const BaseQuerySql = ({
   limit,
   where,
+  order,
   user_id
 }: {
   limit: string
   where?: string
+  order: string
   user_id: string
 }) => {
   return `SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
@@ -136,6 +138,6 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                 GROUP BY tc.id, tfs.id) z
     ON a.id = z.id
 ${where || ''} 
-ORDER BY timestamp ASC, a.repeat_id ASC, a.id DESC 
+${order}
 ${limit} `
 }

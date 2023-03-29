@@ -4,7 +4,7 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 
-import { sqlStore } from '@flyele-nx/sql-store'
+import { Direction, sqlStore } from '@flyele-nx/sql-store'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -18,7 +18,8 @@ export function App() {
     const data = sqlStore.query({
       page_number: 1,
       page_record: 100,
-      user_id: '1097162630889616'
+      user_id: '1097162630889616',
+      direction: Direction.down
     })
 
     console.log(data)

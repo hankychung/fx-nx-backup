@@ -1,5 +1,5 @@
-import { BaseQuerySql } from "../sql/query";
-import { FilterParamsProps } from "../type/filter";
+import { BaseQuerySql } from '../sql/query'
+import { FilterParamsProps } from '../type/filter'
 
 export const getFilterSql = (params: FilterParamsProps) => {
   const { user_id, page_number, parent_id, page_record } = params

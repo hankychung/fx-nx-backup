@@ -52,7 +52,13 @@ class SqlStore {
     this.getTable()
   }
 
-  formatSelectValue({ columns, values }: { columns: string[], values: any[][] }) {
+  formatSelectValue({
+    columns,
+    values
+  }: {
+    columns: string[]
+    values: any[][]
+  }) {
     const keyAndI = Object.entries(columns)
 
     const data = new Array(values.length).fill({}).map((v, mapI) => {
@@ -62,7 +68,11 @@ class SqlStore {
         if (jsonKey.includes(key)) {
           v[key] = JSON.parse(value)
         } else {
-          v[key] = /^(id)$|_id$/.test(key) ? (value ? String(value) : '') : value
+          v[key] = /^(id)$|_id$/.test(key)
+            ? value
+              ? String(value)
+              : ''
+            : value
         }
       }
 

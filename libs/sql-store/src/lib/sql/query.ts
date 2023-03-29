@@ -1,5 +1,13 @@
-export const BaseQuerySql = ({ limit, where, user_id }: { limit: string, where?: string, user_id: string }) => {
-     return `SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
+export const BaseQuerySql = ({
+  limit,
+  where,
+  user_id
+}: {
+  limit: string
+  where?: string
+  user_id: string
+}) => {
+  return `SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
 IFNULL(f.content, '') AS conclusion, a.creator_id, IFNULL(i.create_at, 0) AS update_at, a.complete_at,
@@ -127,7 +135,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
 
                 GROUP BY tc.id, tfs.id) z
     ON a.id = z.id
-${where || ""} 
+${where || ''} 
 ORDER BY timestamp ASC, a.repeat_id ASC, a.id DESC 
 ${limit} `
 }

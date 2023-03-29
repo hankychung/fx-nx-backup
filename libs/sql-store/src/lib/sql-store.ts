@@ -10,7 +10,7 @@ import * as dayjs from 'dayjs'
 import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'
 import { getFilterSql } from './utils/filter'
-import { FilterParamsProps } from './type/filter'
+import { Direction, FilterParamsProps } from './type/filter'
 
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
@@ -101,7 +101,13 @@ class SqlStore {
 
     const stmt = this.db.exec(sql)
 
-    return stmt[0] ? this.formatSelectValue(stmt[0]) : []
+    const data = stmt[0] ? this.formatSelectValue(stmt[0]) : []
+
+    if (params.direction === Direction.up) {
+      return data.reverse()
+    }
+
+    return data
   }
 
   getTable() {

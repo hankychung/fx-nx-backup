@@ -4,7 +4,12 @@ import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
 // eslint-disable-next-line
+//@ts-ignore
 import { set, get } from 'idb-keyval'
+import { BaseQuerySql } from './sql/query'
+import { jsonKey } from './const'
+import { getFilterSql } from './utils/filter'
+import { FilterParamsProps } from './type/filter'
 
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
@@ -29,7 +34,7 @@ class SqlStore {
     if (storeDB) {
       this.db = new SQL.Database(storeDB)
 
-      console.log('exsit db', this.getTable())
+      // console.log('exsit db', this.getTable())
 
       return
     }
@@ -47,10 +52,46 @@ class SqlStore {
     this.getTable()
   }
 
+  formatSelectValue({
+    columns,
+    values
+  }: {
+    columns: string[]
+    values: any[][]
+  }) {
+    const keyAndI = Object.entries(columns)
+
+    const data = new Array(values.length).fill({}).map((v, mapI) => {
+      for (const [keyI, key] of keyAndI) {
+        const value = values[mapI][Number(keyI)]
+
+        if (jsonKey.includes(key)) {
+          v[key] = JSON.parse(value)
+        } else {
+          v[key] = /^(id)$|_id$/.test(key)
+            ? value
+              ? String(value)
+              : ''
+            : value
+        }
+      }
+
+      return v
+    })
+
+    return data
+  }
+
+  query(params: FilterParamsProps) {
+    const sql = getFilterSql(params)
+
+    const stmt = this.db.exec(sql)
+
+    return stmt[0] ? this.formatSelectValue(stmt[0]) : []
+  }
+
   getTable() {
     const stmt = this.db.exec('SELECT * FROM tag_bind')
-
-    console.log(stmt)
 
     return stmt
   }
@@ -126,5 +167,3 @@ class SqlStore {
 }
 
 export const sqlStore = new SqlStore()
-
-sqlStore.initDB()

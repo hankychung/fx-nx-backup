@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-28 19:28:57
+ * @LastEditTime: 2023-03-29 19:16:40
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -41,20 +41,24 @@ const Header = (props: Iprops) => {
       if (info.end_time) {
         txt = '您的个人会员过期，请续费后使用'
       }
+      
     }
     if (info.level === 1) {
       if (info.end_time === 9999999999) {
         txt = `您已开通终身版个人会员，可无限期使用`
         return
       }
-      if (info.end_time) { 
-        txt = `您已开通团队会员，${dayjs.unix(info.end_time).format('YYYY年MM月DD日')}到期`
+      if (info.end_time) {
+        txt = `您已开通个人会员，${dayjs
+          .unix(info.end_time)
+          .format('YYYY年MM月DD日')}到期`
         return
       }
+      
     }
     if (info.level === 2) {
       if (info.end_time) {
-        txt = `${dayjs.unix(info.end_time).format('YYYY-MM-DD')}`
+        txt = `您已开通团队会员，${dayjs.unix(info.end_time).format('YYYY-MM-DD')}`
       }
     }
     return txt

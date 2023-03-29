@@ -1,1 +1,1 @@
-const jsonKey = ['widget', 'remind_at']
+export const jsonKey = ['widget', 'remind_at', 'tags', 'files']

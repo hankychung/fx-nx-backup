@@ -3,8 +3,11 @@ import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
 import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
-
-import { sqlStore, registerServiceWorker } from '@flyele-nx/sql-store'
+import {
+  Direction,
+  sqlStore,
+  registerServiceWorker
+} from '@flyele-nx/sql-store'
 
 registerServiceWorker('/sw.js')
 
@@ -20,7 +23,8 @@ export function App() {
     const data = sqlStore.query({
       page_number: 1,
       page_record: 100,
-      user_id: '1097162630889616'
+      user_id: '1097162630889616',
+      direction: Direction.down
     })
 
     console.log(data)

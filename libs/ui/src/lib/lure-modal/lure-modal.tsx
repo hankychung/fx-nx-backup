@@ -19,6 +19,7 @@ export interface LureModalProps {
   vipTxt?: string
   isEmptyContent?: boolean
   imgType?: 'venation' | 'application' | 'cycle'
+  confirmBtnText?: string
 }
 
 const dict = {
@@ -37,7 +38,8 @@ function _LureModal({
   vipTxt,
   highlight,
   imgType,
-  isEmptyContent
+  isEmptyContent,
+  confirmBtnText = '开通会员'
 }: LureModalProps) {
   return (
     <Modal
@@ -90,7 +92,7 @@ function _LureModal({
           </div>
         )}
         <div className={classNames(styles.btn)} onClick={handleConfirm}>
-          开通会员
+          {confirmBtnText}
         </div>
       </div>
     </Modal>

@@ -2,13 +2,30 @@
 import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
 import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+
+import { sqlStore } from '@flyele-nx/sql-store'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
   const refresh = () => {
     mapSvgRef.current.refresh()
   }
+
+  const init = async () => {
+    await sqlStore.initDB()
+
+    const data = sqlStore.query({
+      page_number: 1,
+      page_record: 100,
+      user_id: '1097162630889616'
+    })
+
+    console.log(data)
+  }
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <>

@@ -1,8 +1,6 @@
 import { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
 
-import '@flyele-nx/sql-store'
-
 import App from './app/app'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

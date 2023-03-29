@@ -1,16 +1,13 @@
-const registerServiceWorker = async () => {
+const registerServiceWorker = async (url: string) => {
   if (!('serviceWorker' in navigator)) {
     console.error('serviceWorker is not supported')
     return
   }
 
   try {
-    const registration = await navigator.serviceWorker.register(
-      '../worker.ts',
-      {
-        scope: '/'
-      }
-    )
+    const registration = await navigator.serviceWorker.register(url, {
+      scope: '/'
+    })
     if (registration.installing) {
       console.log('正在安装 Service worker')
     } else if (registration.waiting) {

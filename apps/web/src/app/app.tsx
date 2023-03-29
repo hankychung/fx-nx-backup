@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 
 import { sqlStore, registerServiceWorker } from '@flyele-nx/sql-store'
 
-registerServiceWorker()
+registerServiceWorker('test')
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())

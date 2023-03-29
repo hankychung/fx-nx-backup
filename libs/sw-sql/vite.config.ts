@@ -6,7 +6,7 @@ import dts from 'vite-plugin-dts'
 import { join } from 'path'
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/sql-store',
+  cacheDir: '../../node_modules/.vite/sw-sql',
 
   plugins: [
     dts({
@@ -35,7 +35,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      name: 'sql-store',
+      name: 'sw-sql',
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forgot to update your package.json as well.
@@ -44,7 +44,6 @@ export default defineConfig({
     rollupOptions: {
       // External packages that should not be bundled into your library.
       external: []
-    },
-    minify: 'terser'
+    }
   }
 })

@@ -3,8 +3,13 @@ import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
 import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
+import {
+  Direction,
+  sqlStore,
+  registerServiceWorker
+} from '@flyele-nx/sql-store'
 
-import { Direction, sqlStore } from '@flyele-nx/sql-store'
+registerServiceWorker('/sw.js')
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())

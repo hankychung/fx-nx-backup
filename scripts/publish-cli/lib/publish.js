@@ -1,6 +1,7 @@
 const inquirer = require('inquirer')
 const cp = require('child_process')
 const chalk = require('chalk')
+const { reloadLibs } = require('./reload-libs')
 
 const versionList = [
   {
@@ -17,14 +18,7 @@ const versionList = [
   }
 ]
 
-const libs = [
-  'service-module',
-  'service',
-  'api',
-  'ui',
-  'utils',
-  'constant'
-].map((i) => ({
+const libs = reloadLibs().map((i) => ({
   name: i,
   value: i
 }))

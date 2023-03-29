@@ -339,8 +339,16 @@ export const OrderManagement = () => {
         title: '充值对象',
         dataIndex: 'users',
         render: (text, record) => {
+          const isCorp =
+            record.indent_member_type ===
+            OrderSystemConst.IndentListMemberType.CORP
           const nameArr = record.users.map((user) => user.user_name)
-          const nameStr = nameArr.join('，')
+          let nameStr = nameArr.join('，')
+
+          if (isCorp && record.corporation) {
+            nameStr = record.corporation.corporation_name || ''
+          }
+
           return (
             <div
               className={styles.tableLink}

@@ -41,7 +41,6 @@ const Header = (props: Iprops) => {
       if (info.end_time) {
         txt = '您的个人会员过期，请续费后使用'
       }
-      
     }
     if (info.level === 1) {
       if (info.end_time === 9999999999) {
@@ -54,11 +53,12 @@ const Header = (props: Iprops) => {
           .format('YYYY年MM月DD日')}到期`
         return
       }
-      
     }
     if (info.level === 2) {
       if (info.end_time) {
-        txt = `您已开通团队会员，${dayjs.unix(info.end_time).format('YYYY-MM-DD')}`
+        txt = `您已开通团队会员，${dayjs
+          .unix(info.end_time)
+          .format('YYYY-MM-DD')}`
       }
     }
     return txt

@@ -1,4 +1,6 @@
-import * as initSql from 'sql.js'
+import initSql from 'sql.js'
+// eslint-disable-next-line
+// const initSql = require('sql.js')
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'

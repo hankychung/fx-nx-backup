@@ -1,3 +1,11 @@
+export const QueryTaskTakersSQL = (task_id: string) => {
+  return `SELECT taker_id, is_admin, finish_time
+   FROM task_dispatch
+   WHERE ref_task_id = ${task_id} AND is_valid = 1
+   AND identity NOT IN (10804, 10811)
+   AND operate_state = 0`
+}
+
 export const BaseQuerySql = ({
   limit,
   where,
@@ -9,12 +17,12 @@ export const BaseQuerySql = ({
   order: string
   user_id: string
 }) => {
-  return `SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
+  return `SELECT * FROM (SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
 IFNULL(f.content, '') AS conclusion, a.creator_id, IFNULL(i.create_at, 0) AS update_at, a.complete_at,
-a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 2 END AS is_follow,
-CASE WHEN a.delete_at > 0 THEN 2 ELSE 1 END AS schedule_hide,
+a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS is_follow,
+CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide,
 CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', 'now') OR cycle_date > DATE('now')) THEN 1
      WHEN a.complete_at = 0 AND (a.end_time = 0 OR a.end_time > STRFTIME('%s', 'now')) THEN 2
      WHEN a.complete_at = 0 AND (a.end_time > 0 OR a.end_time < STRFTIME('%s', 'now')) THEN 3
@@ -26,7 +34,7 @@ IFNULL(k.child_total, 0) AS child_total, IFNULL(k.comment_total, 0) AS comment_t
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
-z.user_id, step_user_count, IFNULL(i.create_at, 0) AS update_at, date,
+z.user_id, step_user_count, date, timestamp,
 CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '1' THEN '周一'
      WHEN STRFTIME('%w', date) == '2' THEN '周二'
@@ -87,9 +95,8 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a
-    LEFT JOIN (SELECT object_id AS task_id, '[' ||
-                                            GROUP_CONCAT('{"tag_id:"' || CAST(tag_id AS text) || '"name":' ||
-                                                         name || '"color":' || color || '}') || ']' AS tags
+    LEFT JOIN (SELECT object_id AS task_id, 
+          '[' || GROUP_CONCAT('{"tag_id:"' || CAST(tag_id AS text) || '"name":' ||  name || '"color":' || color || '}') || ']' AS tags
                  FROM tag ft
                           JOIN tag_bind ftb
                           ON ft.id = ftb.tag_id
@@ -128,15 +135,14 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                       IFNULL(tfsr.complete_at, 0) AS flow_step_complete_at, IFNULL(tfsr.user_id, '') AS user_id,
                       CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS step_user_count
                  FROM task_config AS tc
-                          LEFT JOIN task_flow_step tfs
-                          ON tfs.id = tc.flow_step_id
-                          LEFT JOIN task_flow_step_relation AS tfsr
-                          ON tfsr.step_id = tfs.id AND tfsr.delete_at = 0 AND tfsr.user_id = ${user_id}
-                          LEFT JOIN task_flow_step_relation AS r
-                          ON r.step_id = tfs.id AND r.delete_at = 0
-
+                      LEFT JOIN task_flow_step tfs
+                      ON tfs.id = tc.flow_step_id
+                      LEFT JOIN task_flow_step_relation AS tfsr
+                      ON tfsr.step_id = tfs.id AND tfsr.delete_at = 0 AND tfsr.user_id = ${user_id}
+                      LEFT JOIN task_flow_step_relation AS r
+                      ON r.step_id = tfs.id AND r.delete_at = 0
                 GROUP BY tc.id, tfs.id) z
-    ON a.id = z.id
+    ON a.id = z.id)
 ${where || ''} 
 ${order}
 ${limit} `

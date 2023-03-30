@@ -6,10 +6,10 @@ import { defaultInfo } from './const/defaultInfo'
 // eslint-disable-next-line
 import { set, get } from 'idb-keyval'
 import * as dayjs from 'dayjs'
-import { BaseQuerySql } from './sql/query'
-import { jsonKey } from './const'
+import { boolKey, jsonKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
+import { QueryTaskTakersSQL } from './sql/query'
 
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
@@ -78,6 +78,8 @@ class SqlStore {
 
         if (jsonKey.includes(key)) {
           obj[key] = JSON.parse(value)
+        } else if (boolKey.includes(key)) {
+          obj[key] = Boolean(value)
         } else {
           obj[key] = /^(id)$|_id$/.test(key)
             ? value
@@ -96,11 +98,15 @@ class SqlStore {
   query(params: FilterParamsProps) {
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
-    const sql = getFilterSql({ ...params, timestamp })
+    const sqlTasks = this.db.exec(getFilterSql({ ...params, timestamp }))
 
-    const stmt = this.db.exec(sql)
+    const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 
-    const data = stmt[0] ? this.formatSelectValue(stmt[0]) : []
+    for (const line of data) {
+      const sqlTakers = this.db.exec(QueryTaskTakersSQL(line['task_id']))
+
+      line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
+    }
 
     if (params.direction === Direction.up) {
       return data.reverse()

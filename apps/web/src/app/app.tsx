@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
-import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
+import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import {
   Direction,
@@ -20,12 +20,19 @@ export function App() {
   const init = async () => {
     await sqlStore.initDB()
 
+    const page_record = 1000
+
+    console.time(`${page_record}条查询`)
     const data = sqlStore.query({
       page_number: 1,
-      page_record: 100,
+      page_record: page_record,
       user_id: '1097162630889616',
-      direction: Direction.down
+      direction: Direction.up,
+      filter: {
+        taker_ids: ['999999999']
+      }
     })
+    console.timeEnd(`${page_record}条查询`)
 
     console.log(data)
   }

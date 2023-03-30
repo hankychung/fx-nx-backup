@@ -1,9 +1,7 @@
-// eslint-disable-next-line
-const initSql = require('sql.js')
+import * as initSql from 'sql.js'
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
-// eslint-disable-next-line
 import { set, get } from 'idb-keyval'
 import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'
@@ -35,7 +33,7 @@ class SqlStore {
 
       // console.log('exsit db', this.getTable())
 
-      return
+      return this.getTable()
     }
 
     const db = new SQL.Database()
@@ -48,7 +46,7 @@ class SqlStore {
 
     await this.initTable()
 
-    this.getTable()
+    return this.getTable()
   }
 
   formatSelectValue({

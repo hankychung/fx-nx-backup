@@ -77,10 +77,21 @@ export interface IIndentDetailsUser extends IIndentUser {
 }
 
 /**
+ * 订单列表的企业信息
+ */
+export interface IIndentCorpInfo {
+  corporation_id: string // 企业订单关联企业id
+  corporation_name?: string // 企业名称
+  app_status?: string
+  before_pay_end_at?: number // 会员到期时间，订单支付之前 0 就是未开通
+  after_pay_end_at?: number // 会员到期时间，订单支付之后 0 就是未开通
+}
+
+/**
  * 订单列表
  */
 export interface IIndentList {
-  corporation_id: string // 企业订单关联企业id
+  corporation?: IIndentCorpInfo
   create_at: number // 创建时间
   creator: IIndentUser // 创建人信息
   good_id: number // 产品ID

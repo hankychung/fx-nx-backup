@@ -6,9 +6,11 @@ import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
 import { set, get } from 'idb-keyval'
 // import { BaseQuerySql } from './sql/query'
+import dayjs from 'dayjs'
+import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'
 import { getFilterSql } from './utils/filter'
-import { FilterParamsProps } from './type/filter'
+import { Direction, FilterParamsProps } from './type/filter'
 
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
@@ -20,10 +22,20 @@ class SqlStore {
 
   private zipObj: any = null
 
+  private timeDiff = 0
+
   async initDB() {
     const SQL = await initSql({
       locateFile: () => wasmUrl
     })
+
+    const data = await (
+      await fetch('https://api.feixiang.cn/userc/v2/system/now')
+    ).json()
+
+    if (data.data) {
+      this.timeDiff = Math.floor(Date.now() / 1000) - data.data
+    }
 
     const storeDB = await get('database-fly')
 
@@ -57,14 +69,17 @@ class SqlStore {
   }) {
     const keyAndI = Object.entries(columns)
 
-    const data = new Array(values.length).fill({}).map((v, mapI) => {
+    const data = new Array(values.length).fill('').map((v, mapI) => {
+      //TODO 切换正常类型
+      const obj: { [key: string]: any } = {}
+
       for (const [keyI, key] of keyAndI) {
         const value = values[mapI][Number(keyI)]
 
         if (jsonKey.includes(key)) {
-          v[key] = JSON.parse(value)
+          obj[key] = JSON.parse(value)
         } else {
-          v[key] = /^(id)$|_id$/.test(key)
+          obj[key] = /^(id)$|_id$/.test(key)
             ? value
               ? String(value)
               : ''
@@ -72,18 +87,26 @@ class SqlStore {
         }
       }
 
-      return v
+      return obj
     })
 
     return data
   }
 
   query(params: FilterParamsProps) {
-    const sql = getFilterSql(params)
+    const timestamp = dayjs().startOf('day').unix() - this.timeDiff
+
+    const sql = getFilterSql({ ...params, timestamp })
 
     const stmt = this.db.exec(sql)
 
-    return stmt[0] ? this.formatSelectValue(stmt[0]) : []
+    const data = stmt[0] ? this.formatSelectValue(stmt[0]) : []
+
+    if (params.direction === Direction.up) {
+      return data.reverse()
+    }
+
+    return data
   }
 
   getTable() {

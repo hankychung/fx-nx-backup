@@ -3,11 +3,8 @@ import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
 import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
-import {
-  Direction,
-  sqlStore,
-  registerServiceWorker
-} from '@flyele-nx/sql-store'
+import { Direction, sqlStore } from '@flyele-nx/sql-store'
+import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
 
 registerServiceWorker('/sw.js')
 

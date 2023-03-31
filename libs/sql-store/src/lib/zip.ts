@@ -1,5 +1,5 @@
-// eslint-disable-next-line
-const JSZip = require('jszip')
+import JSZip from 'jszip'
+
 const zip = new JSZip()
 
 class ZipUtils {

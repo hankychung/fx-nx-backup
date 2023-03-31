@@ -24,6 +24,7 @@
       "@flyele-nx/service-worker": ["libs/service-worker/src/index.ts"],
       "@flyele-nx/sql-store": ["libs/sql-store/src/index.ts"],
       "@flyele-nx/sw-sql": ["libs/sw-sql/src/index.ts"],
+      "@flyele-nx/sw-sql-client": ["libs/sw-sql-client/src/index.ts"],
       "@flyele-nx/ui": ["libs/ui/src/index.ts"],
       "@flyele-nx/utils": ["libs/utils/src/index.ts"]
     }

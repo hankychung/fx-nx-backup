@@ -130,7 +130,7 @@ export const getFilterSql = (
   }
 
   /**
-   * 协作人筛选
+   * 责任人筛选
    */
   if (admins_ids?.length) {
     WHERES.push(
@@ -155,6 +155,5 @@ export const getFilterSql = (
 
   const sql = BaseQuerySql({ limit: LIMIT, user_id, where, order })
 
-  console.log(sql)
   return sql
 }

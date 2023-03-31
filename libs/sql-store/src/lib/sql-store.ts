@@ -5,7 +5,7 @@ import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
 import { set, get } from 'idb-keyval'
-import { BaseQuerySql } from './sql/query'
+// import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { FilterParamsProps } from './type/filter'
@@ -13,10 +13,7 @@ import { FilterParamsProps } from './type/filter'
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
 
-const wasmUrl =
-  process.env['NODE_ENV'] === 'dev'
-    ? 'https://sql.js.org/dist/sql-wasm.wasm'
-    : 'https://cdn.flyele.net/wasm/sql-wasm.wasm'
+const wasmUrl = '/sql-wasm.wasm'
 
 class SqlStore {
   private db: any = null
@@ -166,3 +163,5 @@ class SqlStore {
 }
 
 export const sqlStore = new SqlStore()
+
+export type ISqlStore = SqlStore

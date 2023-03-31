@@ -1,13 +1,36 @@
+import { ISqlStore } from '@flyele-nx/sql-store'
 import { sqlStore } from '@flyele-nx/sql-store'
 
-self.postMessage('init ws ok')
+class DBHandler {
+  private sqlStore: ISqlStore | null = null
 
-sqlStore.initDB().then((res) => {
-  console.log('init from sw', res)
+  constructor() {
+    self.onmessage = ({ data }: any) => {
+      console.log('from client', data)
 
-  self.postMessage({ initData: res })
-})
+      if (data.initSql) {
+        const sqlStore = data.initSql as ISqlStore
 
-self.onmessage = (msg) => {
-  console.log('get event from client', msg)
+        console.log('check this', this)
+
+        this.initDB(sqlStore)
+
+        this.sqlStore = sqlStore
+      }
+    }
+
+    sqlStore.initDB().then((res) => {
+      console.log('data from worker!!', res)
+    })
+  }
+
+  initDB(sqlStore: ISqlStore) {
+    console.log('check store', sqlStore)
+
+    sqlStore.initDB().then((res) => {
+      self.postMessage({ initData: res })
+    })
+  }
 }
+
+new DBHandler()

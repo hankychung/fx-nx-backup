@@ -6,28 +6,13 @@ const registerServiceWorker = async (url: string) => {
 
   const serviceWorker = new Worker(url)
 
-  serviceWorker.addEventListener('message', (data) => {
-    console.log('on msg from sw', data)
+  serviceWorker.addEventListener('message', (data: any) => {
+    console.log('client get ->', data)
+
+    if (data.initData) {
+      console.log('on msg from sw', data)
+    }
   })
-
-  // try {
-  //   const registration = await navigator.serviceWorker.register(url, {
-  //     scope: '/'
-  //   })
-  //   if (registration.installing) {
-  //     console.log('正在安装 Service worker')
-  //   } else if (registration.waiting) {
-  //     console.log('已安装 Service worker installed')
-  //   } else if (registration.active) {
-  //     console.log('激活 Service worker')
-  //   }
-
-  //   navigator.serviceWorker.ready.then((registration) => {
-  //     registration.active?.postMessage('init ok')
-  //   })
-  // } catch (error) {
-  //   console.error(`注册失败：${error}`)
-  // }
 }
 
 export { registerServiceWorker }

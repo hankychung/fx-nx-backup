@@ -1,10 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
-import { InitMapSvgRef, MapSvg, MapSvgRef } from '@flyele-nx/service-module'
+import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, sqlStore } from '@flyele-nx/sql-store'
-import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
+// import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 
 envStore.initEnv(process.env.NODE_ENV as string)
@@ -12,7 +12,7 @@ envStore.initEnv(process.env.NODE_ENV as string)
 // registerServiceWorker('/sw.js')
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAyNjMyMjYsImlhdCI6MTY4MDI1NTQ2MCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzkxNTQ2OTU0MTU0MDgwIiwiRGV2aWNlSUQiOiI1Y2Y5MThiYi04ZjRkLTQxZGQtYjMyMy03MzgzMzZkODMwYzYiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.o1F-Vaub0ufnoCVaz1iB8PVAcDkM_sicXQjbQITRMWE'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAyNjg0ODAsImlhdCI6MTY4MDI2MDgxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDIzMjExNTAyNjM1MDQiLCJEZXZpY2VJRCI6IjVjZjkxOGJiLThmNGQtNDFkZC1iMzIzLTczODMzNmQ4MzBjNiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.NSxAT58vSm6pVoYBs-ILmNrxou2Y0S30SM5l3uRNx4U'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -20,11 +20,13 @@ export function App() {
     mapSvgRef.current.refresh()
   }
 
+  const isInit = useRef(false)
+
   const init = async () => {
     await sqlStore.initDB({
       host: envStore.getHost(),
       token,
-      dbId: '1391546954154080'
+      dbId: '542321150263504'
     })
 
     const data = sqlStore.query({
@@ -36,8 +38,13 @@ export function App() {
 
     console.log(data)
   }
+
   useEffect(() => {
+    if (isInit.current) return
+
     init()
+
+    isInit.current = true
   }, [])
 
   return (

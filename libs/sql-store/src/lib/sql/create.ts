@@ -88,7 +88,8 @@ CREATE TABLE IF NOT EXISTS task
         cancel_at int UNSIGNED DEFAULT '0' NOT NULL,
         create_at int UNSIGNED DEFAULT '0' NOT NULL,
         update_at int UNSIGNED DEFAULT '0' NOT NULL,
-        cancel_from tinyint UNSIGNED DEFAULT 0 NOT NULL
+        cancel_from tinyint UNSIGNED DEFAULT 0 NOT NULL,
+        priority_level tinyint  UNSIGNED DEFAULT 1 NOT NULL
     );
 CREATE INDEX IF NOT EXISTS create_at ON task (create_at);
 CREATE INDEX IF NOT EXISTS end_repeat_at ON task (end_repeat_at);

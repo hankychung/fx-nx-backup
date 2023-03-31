@@ -11,11 +11,18 @@ import { BaseQuerySql } from './sql/query'
 import { jsonKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
+import { PackInfo } from './type/service/datapandora'
 
 const userInfo =
   'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
 
 const wasmUrl = '/sql-wasm.wasm'
+
+interface IUserParams {
+  token: string
+  dbId: string
+  host: string
+}
 
 class SqlStore {
   private db: any = null
@@ -24,40 +31,67 @@ class SqlStore {
 
   private timeDiff = 0
 
-  async initDB() {
+  private host = 'https://api.flyele.vip'
+
+  async initDB(p: IUserParams) {
+    const dbId = 'fake'
+
+    const { dataUrl } = await this.getUserData(p)
+
+    this.host = p.host
+
     const SQL = await initSql({
       locateFile: () => wasmUrl
     })
 
-    const data = await (
-      await fetch('https://api.feixiang.cn/userc/v2/system/now')
-    ).json()
+    const data = await (await fetch(`${this.host}/userc/v2/system/now`)).json()
 
     if (data.data) {
       this.timeDiff = Math.floor(Date.now() / 1000) - data.data
     }
 
-    const storeDB = await get('database-fly')
+    const storeDB = await get(dbId)
 
+    // 存在用户数据库
     if (storeDB) {
       this.db = new SQL.Database(storeDB)
-
-      // console.log('exsit db', this.getTable())
 
       return this.getTable()
     }
 
+    // 新建用户数据库
     const db = new SQL.Database()
 
     this.db = db
 
     db.run(createSql)
 
-    await this.fetchZip(userInfo)
+    await this.fetchZip(dataUrl)
 
-    await this.initTable()
+    await this.initTable(dbId)
 
     return this.getTable()
+  }
+
+  private async getUserData(info: IUserParams) {
+    const lastId = 0
+
+    const data = (await (
+      await fetch(
+        `${this.host}/datapandora/v1/packinfo/get?last_id=${lastId}`,
+        {
+          headers: {
+            Authorization: info.token
+          }
+        }
+      )
+    ).json()) as PackInfo
+
+    const { attach_info, id, sign_url } = data.data[0]
+
+    return {
+      dataUrl: sign_url
+    }
   }
 
   formatSelectValue({
@@ -123,7 +157,7 @@ class SqlStore {
     return JSON.parse(await this.zipObj.file(filename).async('string'))
   }
 
-  private async initTable() {
+  private async initTable(dbId: string) {
     console.log('begin')
     const guide = await this.parseFile('guide')
 
@@ -155,7 +189,7 @@ class SqlStore {
 
     console.log('done')
 
-    set('database-fly', this.db.export()).then(() => {
+    set(dbId, this.db.export()).then(() => {
       console.log('output -->')
     })
   }

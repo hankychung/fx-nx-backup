@@ -19,7 +19,8 @@ export const defaultInfo: any = {
     cancel_at: 0,
     create_at: 0,
     update_at: 0,
-    cancel_from: 0
+    cancel_from: 0,
+    priority_level: 0
   },
   task_dispatch: {
     id: '',

@@ -6,16 +6,12 @@ class DBHandler {
     self.onmessage = ({ data }: any) => {
       console.log('from client', data)
 
-      if (data === INIT_DB) {
-        this.initDB()
+      if (INIT_DB in data) {
+        sqlStore.initDB(data[INIT_DB]).then((res) => {
+          self.postMessage({ initData: res })
+        })
       }
     }
-  }
-
-  initDB() {
-    sqlStore.initDB().then((res) => {
-      self.postMessage({ initData: res })
-    })
   }
 }
 

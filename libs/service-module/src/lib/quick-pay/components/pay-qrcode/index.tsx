@@ -41,7 +41,7 @@ const PayQrCode = ({
       total_price: vipMeal?.now_price || 0,
       // total_price: 1,
       users_id: memberList.map((item) => item.userId),
-      indent_member_type:2
+      indent_member_type: 2
     }
     try {
       const res = await QRCode.toDataURL(

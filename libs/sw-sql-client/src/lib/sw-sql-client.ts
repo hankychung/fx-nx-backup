@@ -1,3 +1,5 @@
+import { INIT_DB } from './const'
+
 const registerServiceWorker = async (url: string) => {
   if (!('serviceWorker' in navigator)) {
     console.error('serviceWorker is not supported')
@@ -5,6 +7,8 @@ const registerServiceWorker = async (url: string) => {
   }
 
   const serviceWorker = new Worker(url)
+
+  serviceWorker.postMessage(INIT_DB)
 
   serviceWorker.addEventListener('message', (data: any) => {
     console.log('client get ->', data)

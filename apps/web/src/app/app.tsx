@@ -23,6 +23,7 @@ export function App() {
     const data = sqlStore.query({
       page_number: 1,
       page_record: page_record,
+      show_model: 2,
       user_id: '1097162630889616',
       direction: Direction.up,
       filter: {

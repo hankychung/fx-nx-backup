@@ -34,7 +34,7 @@ IFNULL(k.child_total, 0) AS child_total, IFNULL(k.comment_total, 0) AS comment_t
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
-z.user_id, step_user_count, date, timestamp,
+z.user_id, step_user_count, date, timestamp, application_id,
 CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '1' THEN '周一'
      WHEN STRFTIME('%w', date) == '2' THEN '周二'
@@ -95,8 +95,8 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a
-    LEFT JOIN (SELECT object_id AS task_id, 
-          '[' || GROUP_CONCAT('{"tag_id:"' || CAST(tag_id AS text) || '"name":' ||  name || '"color":' || color || '}') || ']' AS tags
+    LEFT JOIN (SELECT object_id AS task_id, GROUP_CONCAT('CAST(tag_id AS text) || ","') as tag_ids,
+          '[' || GROUP_CONCAT('{"tag_id:"' || CAST(tag_id AS text) || '", "name":"' ||  name || '", "color":"' || color || '}') || ']' AS tags
                  FROM tag ft
                           JOIN tag_bind ftb
                           ON ft.id = ftb.tag_id

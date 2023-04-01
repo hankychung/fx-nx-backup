@@ -1,6 +1,7 @@
 const inquirer = require('inquirer')
 const cp = require('child_process')
 const chalk = require('chalk')
+const { reloadLibs } = require('./reload-libs')
 
 const versionList = [
   {
@@ -17,14 +18,7 @@ const versionList = [
   }
 ]
 
-const libs = [
-  'service-module',
-  'service',
-  'api',
-  'ui',
-  'utils',
-  'constant'
-].map((i) => ({
+const libs = reloadLibs().map((i) => ({
   name: i,
   value: i
 }))
@@ -102,7 +96,9 @@ const updateVersion = async function (lib) {
 const publish = (lib, output) => {
   console.log(chalk.cyan('发布至npm，请稍后...'))
 
-  cp.execSync('npm publish', { cwd: `./dist/libs/${lib}` })
+  cp.execSync('npm publish --registry https://npm.flyele.vip/', {
+    cwd: `./dist/libs/${lib}`
+  })
 
   console.log(chalk.green('成功发布至npm！'))
 

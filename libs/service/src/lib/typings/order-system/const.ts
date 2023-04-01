@@ -63,7 +63,8 @@ export enum OrderMethod {
   JSAPI, // JSAPI支付
   NATIVE, // Native支付
   H5, // H5支付
-  ALIPAY // 支付宝支付
+  ALIPAY, // 支付宝支付
+  CORP_WECHAT // 企业微信
 }
 
 /**
@@ -77,7 +78,8 @@ export const OrderMethodLabel: {
   [OrderMethod.JSAPI]: 'JSAPI',
   [OrderMethod.NATIVE]: 'Native',
   [OrderMethod.H5]: 'H5',
-  [OrderMethod.ALIPAY]: '支付宝'
+  [OrderMethod.ALIPAY]: '支付宝',
+  [OrderMethod.CORP_WECHAT]: '企业微信'
 }
 
 /**
@@ -125,4 +127,12 @@ export enum InvoiceState {
 export enum InvoiceType {
   CORP = 1, // 企业
   PERSONAL // 个人
+}
+
+/**
+ * 用户类型
+ */
+export enum UserType {
+  NORMAL, //  普通
+  CORP // 企业用户
 }

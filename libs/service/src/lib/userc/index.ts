@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
 import { IUserInfo, ILoginKeyParams } from '../typings'

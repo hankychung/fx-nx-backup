@@ -78,6 +78,7 @@ export const OrderManagement = () => {
   const [openPersonalModal, setOpenPersonalModal] = useState(false)
   const [openOrderModal, setOpenOrderModal] = useState(false)
   const [openExportModal, setOpenExportModal] = useState(false)
+  const [openUserId, setOpenUserId] = useState<string>('')
   const [openModalData, setOpenModalData] =
     useState<OrderSystemType.IIndentList | null>(null)
 
@@ -257,8 +258,12 @@ export const OrderManagement = () => {
   /**
    * 打开个人详情弹窗
    */
-  const openPersonalDetails = (item: OrderSystemType.IIndentList) => {
+  const openPersonalDetails = (
+    item: OrderSystemType.IIndentList,
+    userId: string
+  ) => {
     setOpenModalData(item)
+    setOpenUserId(userId)
     setOpenPersonalModal(true)
   }
 
@@ -279,6 +284,16 @@ export const OrderManagement = () => {
       showOrderModal(item)
     }
   }
+
+  /**
+   * 关闭弹窗并搜索
+   */
+  const closeAndSearch = useMemoizedFn(async () => {
+    setOpenOrderModal(false)
+    if (openModalData) {
+      await onSearch('user', openModalData.creator.user_name)
+    }
+  })
 
   const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
     const stateFilter = () => {
@@ -310,7 +325,7 @@ export const OrderManagement = () => {
         render: (text, record) => (
           <div
             className={styles.tableLink}
-            onClick={() => openPersonalDetails(record)}
+            onClick={() => openPersonalDetails(record, record.creator.user_id)}
           >
             <FlyStringHighLight
               keyword={searchName || ''}
@@ -324,12 +339,26 @@ export const OrderManagement = () => {
         title: '充值对象',
         dataIndex: 'users',
         render: (text, record) => {
+          const isCorp =
+            record.indent_member_type ===
+            OrderSystemConst.IndentListMemberType.CORP
           const nameArr = record.users.map((user) => user.user_name)
-          const nameStr = nameArr.join('，')
+          let nameStr = nameArr.join('，')
+
+          if (isCorp && record.corporation) {
+            nameStr = record.corporation.corporation_name || ''
+          }
+
           return (
             <div
               className={styles.tableLink}
-              onClick={() => openPersonalDetails(record)}
+              onClick={() => {
+                if (record.users.length === 1) {
+                  openPersonalDetails(record, record.users[0].user_id)
+                } else {
+                  showOrderModal(record)
+                }
+              }}
             >
               <FlyStringHighLight keyword={searchName || ''} text={nameStr} />
             </div>
@@ -431,6 +460,7 @@ export const OrderManagement = () => {
       <PersonalDetailModal
         open={openPersonalModal}
         data={openModalData}
+        userId={openUserId}
         showOrder={(data) => gotoOrderDetails(data)}
         onClose={() => setOpenPersonalModal(false)}
       />
@@ -438,7 +468,7 @@ export const OrderManagement = () => {
       <OrderDetailModal
         open={openOrderModal}
         data={openModalData}
-        onClickName={() => console.log('搜索人')}
+        onClickName={closeAndSearch}
         onClose={() => setOpenOrderModal(false)}
       />
 

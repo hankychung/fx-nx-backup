@@ -13,13 +13,18 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "@flyele-nx/api": ["libs/api/src/index.ts"],
       "@flyele-nx/constant": ["libs/constant/src/index.ts"],
       "@flyele-nx/service": ["libs/service/src/index.ts"],
       "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],
+      "@flyele-nx/service-worker": ["libs/service-worker/src/index.ts"],
       "@flyele-nx/sql-store": ["libs/sql-store/src/index.ts"],
+      "@flyele-nx/sw-sql": ["libs/sw-sql/src/index.ts"],
+      "@flyele-nx/sw-sql-client": ["libs/sw-sql-client/src/index.ts"],
       "@flyele-nx/ui": ["libs/ui/src/index.ts"],
       "@flyele-nx/utils": ["libs/utils/src/index.ts"]
     }

@@ -6,6 +6,7 @@ import { ReactComponent as ConvertIcon } from './img/convert.svg'
 import venationImg from './img/venation.png'
 import cycleImg from './img/cycle.png'
 import applicationImg from './img/application.png'
+import tableExportImg from './img/tableExport.png'
 import classNames from 'classnames'
 
 export interface LureModalProps {
@@ -18,13 +19,15 @@ export interface LureModalProps {
   freeTxt?: string
   vipTxt?: string
   isEmptyContent?: boolean
-  imgType?: 'venation' | 'application' | 'cycle'
+  imgType?: 'venation' | 'application' | 'cycle' | 'tableExport'
+  confirmBtnText?: string
 }
 
 const dict = {
   venation: venationImg,
   application: applicationImg,
-  cycle: cycleImg
+  cycle: cycleImg,
+  tableExport: tableExportImg
 }
 
 function _LureModal({
@@ -37,7 +40,8 @@ function _LureModal({
   vipTxt,
   highlight,
   imgType,
-  isEmptyContent
+  isEmptyContent,
+  confirmBtnText = '开通会员'
 }: LureModalProps) {
   return (
     <Modal
@@ -57,7 +61,12 @@ function _LureModal({
       </div>
 
       {imgType ? (
-        <img src={dict[imgType]} alt="" width={396} />
+        <img
+          src={dict[imgType]}
+          alt=""
+          width={396}
+          className={styles.content_img}
+        />
       ) : isEmptyContent ? (
         <div
           className={classNames(styles.content, {
@@ -90,7 +99,7 @@ function _LureModal({
           </div>
         )}
         <div className={classNames(styles.btn)} onClick={handleConfirm}>
-          开通会员
+          {confirmBtnText}
         </div>
       </div>
     </Modal>

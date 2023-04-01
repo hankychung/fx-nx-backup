@@ -102,6 +102,34 @@ export const OrderDetailModal = ({
       ]
     }
 
+    const corpState = {
+      key: 'corpState',
+      title: '企业状态变化',
+      haveBorder: true,
+      data: [
+        {
+          key: 'before_pay_end_at',
+          title: '支付前',
+          value: `${memberTypeLabel[indentDetail.indent_member_type]}·${
+            indentDetail.corporation &&
+            indentDetail.corporation.before_pay_end_at
+              ? getDateLabel(indentDetail.corporation.before_pay_end_at)
+              : ''
+          }`
+        },
+        {
+          key: 'after_pay_end_at',
+          title: '支付后',
+          value: `${memberTypeLabel[indentDetail.indent_member_type]}·${
+            indentDetail.corporation &&
+            indentDetail.corporation.after_pay_end_at
+              ? getDateLabel(indentDetail.corporation.after_pay_end_at)
+              : ''
+          }`
+        }
+      ]
+    }
+
     const teamState = {
       key: 'teamState',
       title: '会员状态变化',
@@ -123,6 +151,24 @@ export const OrderDetailModal = ({
         }
       }),
       data: []
+    }
+
+    const corpInfo = {
+      key: 'corpInfo',
+      title: '企业信息',
+      haveBorder: true,
+      data: [
+        {
+          key: 'info',
+          title: '',
+          value: `${indentDetail?.corporation?.corporation_name}（来自${indentDetail?.origin_route}）`
+        },
+        {
+          key: 'corpId',
+          title: indentDetail?.corporation?.corporation_id || '',
+          value: ''
+        }
+      ]
     }
 
     let orderData = [
@@ -212,6 +258,7 @@ export const OrderDetailModal = ({
         resArray.push(teamState, orderInfo)
         break
       case OrderSystemConst.IndentListMemberType.CORP:
+        resArray.push(corpInfo, corpState)
         break
       default:
         console.log('订单属性匹配不上')
@@ -226,11 +273,11 @@ export const OrderDetailModal = ({
   }, [indentDetail])
 
   useEffect(() => {
-    if (data) {
+    if (data && open) {
       const { id } = data
       getOrderDetails(id)
     }
-  }, [data, getOrderDetails])
+  }, [open, data, getOrderDetails])
 
   return (
     <Modal
@@ -323,12 +370,16 @@ export const OrderDetailModal = ({
                               key={item.key}
                               className={styles.normalItemRow}
                             >
-                              <div className={styles.itemTitle}>
-                                {item.title}
-                              </div>
-                              <div className={styles.itemValue}>
-                                {item.value}
-                              </div>
+                              {item.title && (
+                                <div className={styles.itemTitle}>
+                                  {item.title}
+                                </div>
+                              )}
+                              {item.value && (
+                                <div className={styles.itemValue}>
+                                  {item.value}
+                                </div>
+                              )}
                             </div>
                           )
                         })

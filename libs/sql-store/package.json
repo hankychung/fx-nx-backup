@@ -1,5 +1,13 @@
 {
   "name": "@flyele-nx/sql-store",
-  "version": "0.0.1",
-  "type": "commonjs"
+  "version": "0.0.6",
+  "type": "commonjs",
+  "dependencies": {
+    "idb-keyval": "^6.2.0",
+    "jszip": "^3.10.1",
+    "sql.js": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/sql.js": "^1.4.4"
+  }
 }

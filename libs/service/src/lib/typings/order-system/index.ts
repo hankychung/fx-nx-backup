@@ -9,7 +9,8 @@ import {
   IndentState,
   InvoiceState,
   InvoiceType,
-  ExportTime
+  ExportTime,
+  UserType
 } from './const'
 
 export interface ILoginParams {
@@ -76,10 +77,21 @@ export interface IIndentDetailsUser extends IIndentUser {
 }
 
 /**
+ * 订单列表的企业信息
+ */
+export interface IIndentCorpInfo {
+  corporation_id: string // 企业订单关联企业id
+  corporation_name?: string // 企业名称
+  app_status?: string
+  before_pay_end_at?: number // 会员到期时间，订单支付之前 0 就是未开通
+  after_pay_end_at?: number // 会员到期时间，订单支付之后 0 就是未开通
+}
+
+/**
  * 订单列表
  */
 export interface IIndentList {
-  corporation_id: string // 企业订单关联企业id
+  corporation?: IIndentCorpInfo
   create_at: number // 创建时间
   creator: IIndentUser // 创建人信息
   good_id: number // 产品ID
@@ -143,4 +155,26 @@ export interface IInvoiceList {
   total_price: number // 实付总价，单位：分
   type: InvoiceType // 发票类型
   update_at: number // 更新时间
+}
+
+/**
+ * 用户企业信息
+ */
+export interface IUserCorpInfo {
+  app_status: number // 企业状态
+  corp_id: string // 企业ID
+  corp_name: string // 企业名称
+  user_limit: number // 企业用户规模
+  version: string // 企业版本
+}
+
+/**
+ * 用户信息
+ */
+export interface IUserInfo extends IIndentDetailsUser {
+  create_at: number // 注册时间
+  personal_end_at: number // 个人过期时间
+  team_end_at: number // 团队过期时间
+  user_corp_detail: IUserCorpInfo
+  user_type: UserType // 用户类型
 }

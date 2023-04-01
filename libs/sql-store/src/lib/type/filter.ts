@@ -50,6 +50,11 @@ export interface FilterParamsProps {
   show_model: 1 | 2 // 1 平铺 2 收合
   direction: Direction
 
+  order_by?: {
+    order_by_key: string
+    sort: 'DESC' | 'ASC'
+  }
+
   filter?: {
     keyword?: string
     query_type?: FilterQueryType

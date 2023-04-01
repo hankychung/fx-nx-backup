@@ -35,4 +35,4 @@ interface LastId {
   id: string
 }
 
-export { PackInfo, Attachinfo }
+export { PackInfo, Attachinfo, LastId }

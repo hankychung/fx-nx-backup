@@ -9,7 +9,7 @@ import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskTakersSQL } from './sql/query'
-import { PackInfo, Attachinfo } from './type/service/datapandora'
+import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
 
 const wasmUrl = '/sql-wasm.wasm'
 
@@ -113,10 +113,14 @@ class SqlStore {
   }
 
   // 获取需要更新的表数据
-  private updateDiff(info: Attachinfo) {
-    const query = Object.entries(info).map(([k, v]) => {
-      console.log('key', k)
-    })
+  private updateDiff(info: { [k: string]: LastId }) {
+    const query = Object.entries(info)
+      .map(([k, v]) => {
+        console.log('key', k, v)
+
+        return `${k}=${v.id}`
+      })
+      .join('&')
   }
 
   private updateDiffData(p: DiffPackList) {

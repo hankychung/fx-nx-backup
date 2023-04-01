@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-27 18:14:06
+ * @LastEditTime: 2023-03-28 19:11:59
  */
 
 import React, { useMemo } from 'react'
@@ -21,6 +21,9 @@ export declare type IFlyeleAvatarItem = {
   telephone: string
   isVip: boolean
   isTeamVip: boolean
+  level?: number
+  next_end_time?: number
+  end_time?: number
 }
 
 interface Iprops {

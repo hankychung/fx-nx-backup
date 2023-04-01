@@ -40,6 +40,7 @@ export const getFilterSql = (
     page_record,
     show_model,
 
+    order_by,
     filter
   } = params
 
@@ -71,6 +72,8 @@ export const getFilterSql = (
     finish_time,
     complete_at
   } = filter || {}
+
+  const { order_by_key, sort } = order_by || {}
 
   const LIMIT = `LIMIT ${(page_number - 1) * page_record}, ${page_record}`
 
@@ -128,37 +131,55 @@ export const getFilterSql = (
   /**
    * 分区规则
    */
-  if (group_by) {
-    switch (group_by) {
-      /** 按项目分区 */
-      case FullGroupBy.project: {
-        ORDERS.push(`project_id DESC`)
-        break
+  switch (group_by) {
+    /** 按项目分区 */
+    case FullGroupBy.project: {
+      ORDERS.unshift(`project_id DESC, timestamp !=0`)
+
+      if (order_by_key && sort) {
+        ORDERS.push(`${order_by_key} ${sort}`)
       }
-      /** 按事项时间分区 */
-      case FullGroupBy.time: {
-        /**
-         * 今日
-         */
-        if (typeof timestamp === 'number') {
-          WHERES.push(
-            `timestamp ${direction === Direction.up ? '<' : '>='} ${timestamp}`
-          )
-        }
-        /**
-         * 往上或者往下获取
-         */
-        if (direction) {
-          if (direction === Direction.up) {
-            ORDERS.push('timestamp DESC')
-          } else {
-            ORDERS.push('timestamp !=0, timestamp ASC')
-          }
-        }
-        break
+
+      break
+    }
+    /** 按事项时间分区 */
+    case FullGroupBy.time: {
+      /**
+       * 今日
+       */
+      if (typeof timestamp === 'number') {
+        WHERES.push(
+          `timestamp ${direction === Direction.up ? '<' : '>='} ${timestamp}`
+        )
       }
-      default:
-        break
+      /**
+       * 往上或者往下获取
+       */
+      if (direction) {
+        let up = 'DESC'
+        let down = 'ASC'
+
+        if (order_by_key === 'timestamp' && sort === 'DESC') {
+          up = 'ASC'
+          down = 'DESC'
+        }
+
+        if (direction === Direction.up) {
+          ORDERS.unshift(`timestamp ${up}`)
+        } else {
+          ORDERS.unshift(`timestamp !=0, timestamp ${down}`)
+        }
+      }
+      break
+    }
+    /** 不分区 */
+    default: {
+      if (!order_by_key) {
+        ORDERS.unshift(`timestamp DESC`)
+      } else {
+        ORDERS.unshift(`${order_by_key} ${sort}`)
+      }
+      break
     }
   }
 
@@ -348,6 +369,6 @@ export const getFilterSql = (
   const order = ORDERS.length ? `ORDER BY ${ORDERS.join(', ')}` : ''
 
   const sql = BaseQuerySql({ limit: LIMIT, user_id, where, order })
-
+  // 不直接返回 隔断一句 方面后面查看sql 避免冲突
   return sql
 }

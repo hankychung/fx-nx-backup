@@ -59,8 +59,6 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
       data.push(formatMdata(d))
     }
 
-    console.log(data)
-
     if (data.length === 0 && emptyBox) {
       if (emptyBox) emptyBox.style.opacity = 'block'
       if (wrapperBox) wrapperBox.style.opacity = 'none'

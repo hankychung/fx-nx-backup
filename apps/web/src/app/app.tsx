@@ -29,12 +29,20 @@ export function App() {
       dbId: '542321150263504'
     })
 
+    const page_record = 1000
+
+    console.time(`${page_record}条查询`)
     const data = sqlStore.query({
       page_number: 1,
-      page_record: 100,
+      page_record: page_record,
+      show_model: 2,
       user_id: '1097162630889616',
-      direction: Direction.down
+      direction: Direction.up,
+      filter: {
+        taker_ids: ['999999999']
+      }
     })
+    console.timeEnd(`${page_record}条查询`)
 
     console.log(data)
   }

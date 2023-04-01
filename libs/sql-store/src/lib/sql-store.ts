@@ -5,12 +5,12 @@ import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
 import { set, get } from 'idb-keyval'
-// import { BaseQuerySql } from './sql/query'
 import dayjs from 'dayjs'
 import { BaseQuerySql } from './sql/query'
-import { jsonKey } from './const'
+import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
+import { QueryTaskTakersSQL } from './sql/query'
 import { PackInfo } from './type/service/datapandora'
 
 const userInfo =
@@ -112,6 +112,8 @@ class SqlStore {
 
         if (jsonKey.includes(key)) {
           obj[key] = JSON.parse(value)
+        } else if (boolKey.includes(key)) {
+          obj[key] = Boolean(value)
         } else {
           obj[key] = /^(id)$|_id$/.test(key)
             ? value
@@ -130,11 +132,15 @@ class SqlStore {
   query(params: FilterParamsProps) {
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
-    const sql = getFilterSql({ ...params, timestamp })
+    const sqlTasks = this.db.exec(getFilterSql({ ...params, timestamp }))
 
-    const stmt = this.db.exec(sql)
+    const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 
-    const data = stmt[0] ? this.formatSelectValue(stmt[0]) : []
+    for (const line of data) {
+      const sqlTakers = this.db.exec(QueryTaskTakersSQL(line['task_id']))
+
+      line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
+    }
 
     if (params.direction === Direction.up) {
       return data.reverse()

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-25 12:20:30
+ * @LastEditTime: 2023-03-30 18:01:25
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -40,7 +40,8 @@ const PayQrCode = ({
       origin_route: 'PC客户端',
       total_price: vipMeal?.now_price || 0,
       // total_price: 1,
-      users_id: memberList.map((item) => item.userId)
+      users_id: memberList.map((item) => item.userId),
+      indent_member_type: 2
     }
     try {
       const res = await QRCode.toDataURL(

@@ -138,7 +138,13 @@ const MemberInfo = ({
           </div>
           {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
             <div className={style.time}>
-              <span> {getResidueTime(num - nowScecond, ((vipMeal?.now_price / vipMeal?.original_price).toFixed(2)))}</span>
+              <span>
+                {' '}
+                {getResidueTime(
+                  num - nowScecond,
+                  (vipMeal?.now_price / vipMeal?.original_price).toFixed(2)
+                )}
+              </span>
               <MealTime className={style.mealTime}></MealTime>
             </div>
           )}

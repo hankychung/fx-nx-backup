@@ -130,7 +130,7 @@ const RightBlock = ({
                   <span>
                     {getResidueTime(
                       num - nowScecond,
-                      ((vipMeal?.now_price / vipMeal?.original_price).toFixed(2))
+                      (vipMeal?.now_price / vipMeal?.original_price).toFixed(2)
                     )}
                   </span>
                   <MealTime className={style.mealTime}></MealTime>

@@ -10,19 +10,39 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@flyele-nx/api": ["libs/api/src/index.ts"],
-      "@flyele-nx/constant": ["libs/constant/src/index.ts"],
-      "@flyele-nx/service": ["libs/service/src/index.ts"],
-      "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],
-      "@flyele-nx/sql-store": ["libs/sql-store/src/index.ts"],
-      "@flyele-nx/ui": ["libs/ui/src/index.ts"],
-      "@flyele-nx/utils": ["libs/utils/src/index.ts"]
+      "@flyele-nx/api": [
+        "libs/api/src/index.ts"
+      ],
+      "@flyele-nx/constant": [
+        "libs/constant/src/index.ts"
+      ],
+      "@flyele-nx/service": [
+        "libs/service/src/index.ts"
+      ],
+      "@flyele-nx/service-module": [
+        "libs/service-module/src/index.ts"
+      ],
+      "@flyele-nx/sql-store": [
+        "libs/sql-store/src/index.ts"
+      ],
+      "@flyele-nx/ui": [
+        "libs/ui/src/index.ts"
+      ],
+      "@flyele-nx/utils": [
+        "libs/utils/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

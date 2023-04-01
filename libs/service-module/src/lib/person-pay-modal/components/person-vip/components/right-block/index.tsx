@@ -122,7 +122,12 @@ const RightBlock = () => {
                   </div>
                   {_.end_at && getResidueTime(num - nowScecond) !== '0' && (
                     <div className={style.time}>
-                      <span>{getResidueTime(num - nowScecond,  ((_?.now_price / _?.original_price).toFixed(2)))}</span>
+                      <span>
+                        {getResidueTime(
+                          num - nowScecond,
+                          (_?.now_price / _?.original_price).toFixed(2)
+                        )}
+                      </span>
                       <MealTime className={style.mealTime}></MealTime>
                     </div>
                   )}

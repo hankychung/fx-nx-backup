@@ -6,6 +6,29 @@ import {
   FullGroupBy
 } from '../type/filter'
 
+export const getNullOrNoNullIds = (ids: string[], sqlKey: string) => {
+  const hasNull = ids.includes('-1')
+
+  const isNullStr = hasNull ? `${sqlKey} = 0` : `${sqlKey} != 0`
+
+  // 实际要筛选的id
+  const filterIds = ids.filter((i) => i !== '-1')
+
+  const hasFilterId = !!filterIds.length
+
+  let link = ''
+
+  if (hasNull && hasFilterId) {
+    link = 'OR'
+  } else if (hasFilterId && !hasNull) {
+    link = 'AND'
+  }
+
+  const inStr = filterIds.length ? `${sqlKey} IN (${filterIds.join(',')})` : ''
+
+  return `(${isNullStr} ${link} ${inStr})`
+}
+
 export const getFilterSql = (
   params: FilterParamsProps & { timestamp: number }
 ) => {
@@ -32,6 +55,9 @@ export const getFilterSql = (
     conclusion,
 
     tags,
+
+    priority_levels,
+    matter_states,
 
     taker_ids,
     application_ids,
@@ -88,6 +114,9 @@ export const getFilterSql = (
     WHERES.push(`schedule_hide = ${Number(schedule_hide === 1)}`)
   }
 
+  /**
+   * 是否有总结
+   */
   if (conclusion) {
     if (conclusion === 1) {
       WHERES.push(`conclusion != ''`)
@@ -131,31 +160,6 @@ export const getFilterSql = (
       default:
         break
     }
-  }
-
-  if (application_ids?.length) {
-    const hasNo = application_ids.includes('-1')
-
-    const isNullStr = hasNo ? 'application_id = 0' : 'application_id != 0'
-
-    // 实际要筛选的id
-    const applicationIds = application_ids.filter((i) => i !== '-1')
-
-    const hasAppId = !!application_ids.length
-
-    let link = ''
-
-    if (hasNo && hasAppId) {
-      link = 'OR'
-    } else if (hasAppId && !hasNo) {
-      link = 'AND'
-    }
-
-    const inStr = applicationIds.length
-      ? `application_id IN (${applicationIds.join(',')})`
-      : ''
-
-    WHERES.push(`(${isNullStr} ${link} ${inStr}`)
   }
 
   /**
@@ -255,17 +259,38 @@ export const getFilterSql = (
   }
 
   /**
+   * 事项状态
+   */
+  if (matter_states?.length) {
+    WHERES.push(`matter_state IN (${matter_states.join(',')})`)
+  }
+
+  /**
+   * 优先级
+   */
+  if (priority_levels?.length) {
+    WHERES.push(`priority_level IN (${priority_levels.join(',')})`)
+  }
+
+  /**
+   * 所属应用
+   */
+  if (application_ids?.length) {
+    WHERES.push(getNullOrNoNullIds(application_ids, 'application_id'))
+  }
+
+  /**
    * 空间筛选
    */
   if (workspace_ids?.length) {
-    WHERES.push(`workspace_id in (${workspace_ids.join(',')})`)
+    WHERES.push(getNullOrNoNullIds(workspace_ids, 'workspace_id'))
   }
 
   /**
    * 按项目筛选
    */
   if (project_ids) {
-    WHERES.push(`project_id in (${project_ids.join(',')})`)
+    WHERES.push(getNullOrNoNullIds(project_ids, 'project_id'))
   }
 
   /**

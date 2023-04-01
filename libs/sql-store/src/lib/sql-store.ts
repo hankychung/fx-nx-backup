@@ -1,6 +1,4 @@
 import initSql from 'sql.js'
-// eslint-disable-next-line
-// const initSql = require('sql.js')
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
@@ -13,19 +11,17 @@ import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskTakersSQL } from './sql/query'
 import { PackInfo } from './type/service/datapandora'
 
-const userInfo =
-  'http://flyele-dev.oss-cn-shenzhen.aliyuncs.com/middlestation%2F1097162630889616%2F1487318895218688.zip?Expires=1680157153&OSSAccessKeyId=LTAI5tNRFh75VpujzNxcSMxq&Signature=drhJj8F0LoIDe7I%2Fo8rnimBMBYw%3D'
-
 const wasmUrl = '/sql-wasm.wasm'
 
 interface IUserParams {
   token: string
-  dbId: string
   host: string
+  env: string
+  userId: string
 }
 
 class SqlStore {
-  private db: any = null
+  private db: initSql.Database | null = null
 
   private zipObj: any = null
 
@@ -33,8 +29,17 @@ class SqlStore {
 
   private host = 'https://api.flyele.vip'
 
+  private userId = ''
+
   async initDB(p: IUserParams) {
-    const dbId = 'fake'
+    this.userId = p.userId
+
+    if (this.db) {
+      this.db.close()
+      this.db = null
+    }
+
+    const dbId = `${p.env}-${p.userId}`
 
     const { dataUrl } = await this.getUserData(p)
 
@@ -132,12 +137,12 @@ class SqlStore {
   query(params: FilterParamsProps) {
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
-    const sqlTasks = this.db.exec(getFilterSql({ ...params, timestamp }))
+    const sqlTasks = this.db!.exec(getFilterSql({ ...params, timestamp }))
 
     const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 
     for (const line of data) {
-      const sqlTakers = this.db.exec(QueryTaskTakersSQL(line['task_id']))
+      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(line['task_id']))
 
       line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
     }
@@ -150,7 +155,7 @@ class SqlStore {
   }
 
   getTable() {
-    const stmt = this.db.exec('SELECT * FROM tag_bind')
+    const stmt = this.db!.exec('SELECT * FROM workspace_bind')
 
     return stmt
   }
@@ -189,13 +194,13 @@ class SqlStore {
           sqlStr += this.getInsertSql(item, table) + ';'
         })
 
-        this.db.run(sqlStr)
+        this.db!.run(sqlStr)
       }
     }
 
     console.log('done')
 
-    set(dbId, this.db.export()).then(() => {
+    set(dbId, this.db!.export()).then(() => {
       console.log('output -->')
     })
   }

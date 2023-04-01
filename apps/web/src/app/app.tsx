@@ -7,12 +7,14 @@ import { Direction, sqlStore } from '@flyele-nx/sql-store'
 // import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 
-envStore.initEnv(process.env.NODE_ENV as string)
+const env = process.env.NODE_ENV as string
+
+envStore.initEnv(env)
 
 // registerServiceWorker('/sw.js')
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAyNjg0ODAsImlhdCI6MTY4MDI2MDgxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDIzMjExNTAyNjM1MDQiLCJEZXZpY2VJRCI6IjVjZjkxOGJiLThmNGQtNDFkZC1iMzIzLTczODMzNmQ4MzBjNiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.NSxAT58vSm6pVoYBs-ILmNrxou2Y0S30SM5l3uRNx4U'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAzMjc5MzEsImlhdCI6MTY4MDMxOTg3OSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImFkOGY0N2I4LWIxMzQtNGIxZS04MjI4LWU0MTJiN2FjMjQxYiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.QqlC296s92VI_e6eJXmiWhcpnagIoYU_ZaKgdmYMHpQ'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -26,7 +28,8 @@ export function App() {
     await sqlStore.initDB({
       host: envStore.getHost(),
       token,
-      dbId: '542321150263504'
+      env,
+      userId: '542408421671185'
     })
 
     const page_record = 1000
@@ -36,11 +39,11 @@ export function App() {
       page_number: 1,
       page_record: page_record,
       show_model: 2,
-      user_id: '1097162630889616',
-      direction: Direction.up,
-      filter: {
-        taker_ids: ['999999999']
-      }
+      user_id: '542408421671185',
+      direction: Direction.up
+      // filter: {
+      //   taker_ids: ['999999999']
+      // }
     })
     console.timeEnd(`${page_record}条查询`)
 

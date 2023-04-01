@@ -2,7 +2,7 @@ import initSql from 'sql.js'
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
-import { set, get } from 'idb-keyval'
+import { set, get, del } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { BaseQuerySql } from './sql/query'
 import { jsonKey, boolKey } from './const'
@@ -20,6 +20,10 @@ interface IUserParams {
   userId: string
 }
 
+type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
+
+type DiffPackList = PackInfo['data']
+
 class SqlStore {
   private db: initSql.Database | null = null
 
@@ -31,17 +35,24 @@ class SqlStore {
 
   private userId = ''
 
+  private recordInfo: RecordInfo | null = null
+
+  private dbId = ''
+
+  private recordKey = ''
+
   async initDB(p: IUserParams) {
     this.userId = p.userId
 
+    // 已存在打开的数据库（切换用户）
     if (this.db) {
       this.db.close()
       this.db = null
     }
 
-    const dbId = `${p.env}-${p.userId}`
+    this.dbId = `${p.env}-${p.userId}`
 
-    const { dataUrl } = await this.getUserData(p)
+    this.recordKey = `${this.dbId}-record`
 
     this.host = p.host
 
@@ -55,31 +66,54 @@ class SqlStore {
       this.timeDiff = Math.floor(Date.now() / 1000) - data.data
     }
 
-    const storeDB = await get(dbId)
+    // 从indexeddb获取数据库
+    const storeDB = await get(this.dbId)
 
-    // 存在用户数据库
-    if (storeDB) {
-      this.db = new SQL.Database(storeDB)
+    // 从indexeddb获取更新信息
+    this.recordInfo = (await get(this.recordKey)) as RecordInfo | null
 
-      return this.getTable()
+    // 获取用户的初始化数据
+    const list = await this.getUserData(p)
+
+    const firstData = list[0]
+
+    if (firstData && firstData.type === 1) {
+      // 存在全量包, 需要重新建表
+      const db = new SQL.Database()
+
+      this.db = db
+
+      db.run(createSql)
+
+      const { sign_url, id, attach_info } = firstData
+
+      await this.fetchZip(sign_url)
+
+      this.recordInfo = { id, attach_info }
+
+      await this.initTable()
+    } else {
+      if (storeDB) {
+        // 存在用户数据库
+        this.db = new SQL.Database(storeDB)
+      } else {
+        // 不存在用户数据库, 从indexeddb清除recordKey重新请求
+        await del(this.recordKey)
+        await this.initDB(p)
+        return
+      }
     }
 
-    // 新建用户数据库
-    const db = new SQL.Database()
+    // 更新差异包
+    this.updateDiffData(list.filter(({ type }) => type === 2))
+  }
 
-    this.db = db
-
-    db.run(createSql)
-
-    await this.fetchZip(dataUrl)
-
-    await this.initTable(dbId)
-
-    return this.getTable()
+  private updateDiffData(p: DiffPackList) {
+    console.log('diff packs', p)
   }
 
   private async getUserData(info: IUserParams) {
-    const lastId = 0
+    const lastId = this.recordInfo?.id || 0
 
     const data = (await (
       await fetch(
@@ -92,11 +126,7 @@ class SqlStore {
       )
     ).json()) as PackInfo
 
-    const { attach_info, id, sign_url } = data.data[0]
-
-    return {
-      dataUrl: sign_url
-    }
+    return data.data
   }
 
   formatSelectValue({
@@ -154,12 +184,6 @@ class SqlStore {
     return data
   }
 
-  getTable() {
-    const stmt = this.db!.exec('SELECT * FROM workspace_bind')
-
-    return stmt
-  }
-
   private async fetchZip(url: string) {
     this.zipObj = await ZipUtils.init(url)
   }
@@ -168,8 +192,7 @@ class SqlStore {
     return JSON.parse(await this.zipObj.file(filename).async('string'))
   }
 
-  private async initTable(dbId: string) {
-    console.log('begin')
+  private async initTable() {
     const guide = await this.parseFile('guide')
 
     for (const [table, info] of Object.entries(guide)) {
@@ -198,10 +221,15 @@ class SqlStore {
       }
     }
 
-    console.log('done')
+    this.updateDB()
+  }
 
-    set(dbId, this.db!.export()).then(() => {
+  private updateDB() {
+    set(this.dbId, this.db!.export()).then(() => {
       console.log('output -->')
+
+      // record the timestamp
+      set(this.recordKey, this.recordInfo)
     })
   }
 

@@ -5,7 +5,8 @@ interface PackInfo {
 
 interface Datum {
   id: string
-  type: number
+  // 1 -> 全量包, 2 -> 差异包
+  type: 1 | 2
   sign_url: string
   attach_info: Attachinfo
 }

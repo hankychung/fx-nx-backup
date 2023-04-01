@@ -95,8 +95,8 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a
-    LEFT JOIN (SELECT object_id AS task_id, GROUP_CONCAT('CAST(tag_id AS text) || ","') as tag_ids,
-          '[' || GROUP_CONCAT('{"tag_id:"' || CAST(tag_id AS text) || '", "name":"' ||  name || '", "color":"' || color || '}') || ']' AS tags
+    LEFT JOIN (SELECT object_id AS task_id, GROUP_CONCAT(tag_id) AS tag_str,
+            '[' || GROUP_CONCAT('{"tag_id":"' || CAST(tag_id AS text) || '","name":"' || name || '","color":"' || color || '"}') || ']' AS tags
                  FROM tag ft
                           JOIN tag_bind ftb
                           ON ft.id = ftb.tag_id

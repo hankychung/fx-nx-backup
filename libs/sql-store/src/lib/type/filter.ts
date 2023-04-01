@@ -28,6 +28,21 @@ export enum FullGroupBy {
   default = 'default'
 }
 
+export enum FilterQuadrantValue {
+  no_important_no_urgent = 1,
+  urgent_no_important,
+  important_no_urgent,
+  important_urgent
+}
+
+export enum MatterState {
+  TO_START = 1,
+  EXECUTION,
+  DELAY,
+  COMPLETE_ON_TIME,
+  COMPLETE_DELAY
+}
+
 export interface FilterParamsProps {
   page_number: number
   page_record: number
@@ -44,6 +59,7 @@ export interface FilterParamsProps {
     schedule_hide?: 1 | 2 // 1 已隐藏  2 未显示
     conclusion?: 1 | 2 // 1 有总结 2 无总结
 
+    task_at?: TimerData
     create_at?: TimerData
     update_at?: TimerData
     finish_time?: TimerData
@@ -54,6 +70,8 @@ export interface FilterParamsProps {
     parent_id?: string
 
     application_ids?: string[]
+    matter_states?: MatterState[]
+    priority_levels?: FilterQuadrantValue[]
     taker_ids?: string[]
     creator_ids?: string[]
     admins_ids?: string[]

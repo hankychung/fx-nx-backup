@@ -10,17 +10,19 @@ export const BaseQuerySql = ({
   limit,
   where,
   order,
-  user_id
+  user_id,
+  LeftJoinRepeatAnd
 }: {
   limit: string
   where?: string
   order: string
   user_id: string
+  LeftJoinRepeatAnd: string // 平铺和非平铺模式下 循环事项的判断
 }) => {
   return `SELECT * FROM (SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
-IFNULL(f.content, '') AS conclusion, a.creator_id, IFNULL(i.create_at, 0) AS update_at, a.complete_at,
+IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, IFNULL(i.create_at, 0) AS update_at, a.complete_at,
 a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS is_follow,
 CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide,
 CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', 'now') OR cycle_date > DATE('now')) THEN 1
@@ -30,7 +32,9 @@ CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', 'now') OR cycle_d
      WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
 w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
 IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
-IFNULL(k.child_total, 0) AS child_total, IFNULL(k.comment_total, 0) AS comment_total,
+IFNULL(k.child_total, 0) AS child_total,
+CASE WHEN k.child_total > 0 THEN 1 ELSE 0 END AS has_child,
+IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
@@ -43,7 +47,7 @@ CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '5' THEN '周五'
      WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
-        b.matter_type, b.title, b.detail, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
+        b.matter_type, b.title, b.detail, b.priority_level, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
         b.creator_id, b.create_at, c.category,
         CASE WHEN c.project_id > 0 THEN c.project_id ELSE 0 END AS project_id,
@@ -87,7 +91,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
             LEFT JOIN task_config AS c
             ON b.id = c.id
             LEFT JOIN task_repeat AS d
-            ON c.id = d.task_id AND b.repeat_type > 0
+            ON c.id = d.task_id AND b.repeat_type > 0 AND ${LeftJoinRepeatAnd}
             LEFT JOIN task_repeat_finish AS e
             ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}
             LEFT JOIN task b1

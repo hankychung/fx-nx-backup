@@ -14,7 +14,7 @@ envStore.initEnv(env)
 // registerServiceWorker('/sw.js')
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAzNDA3MzUsImlhdCI6MTY4MDMzMjA2MywiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImFkOGY0N2I4LWIxMzQtNGIxZS04MjI4LWU0MTJiN2FjMjQxYiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.ypLWGBGluf5I2T7_MvEZFa1k-qFxeU7fkLM-6311mhs'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAzNTE0ODAsImlhdCI6MTY4MDM0MzAwMSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImFkOGY0N2I4LWIxMzQtNGIxZS04MjI4LWU0MTJiN2FjMjQxYiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.Sk_GZHVIPbOkW_iMW3Qr_bhytcJzbZw7PKoeVWt-i90'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -39,7 +39,6 @@ export function App() {
       page_number: 1,
       page_record: page_record,
       show_model: 2,
-      user_id: '542408421671185',
       direction: Direction.up
       // filter: {
       //   taker_ids: ['999999999']

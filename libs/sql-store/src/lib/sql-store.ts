@@ -4,12 +4,11 @@ import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
 import { set, get, del } from 'idb-keyval'
 import dayjs from 'dayjs'
-import { BaseQuerySql } from './sql/query'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskTakersSQL } from './sql/query'
-import { PackInfo } from './type/service/datapandora'
+import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
 
 const wasmUrl = '/sql-wasm.wasm'
 
@@ -41,6 +40,8 @@ class SqlStore {
 
   private recordKey = ''
 
+  private token = ''
+
   async initDB(p: IUserParams) {
     this.userId = p.userId
 
@@ -55,6 +56,8 @@ class SqlStore {
     this.recordKey = `${this.dbId}-record`
 
     this.host = p.host
+
+    this.token = p.token
 
     const SQL = await initSql({
       locateFile: () => wasmUrl
@@ -73,7 +76,7 @@ class SqlStore {
     this.recordInfo = (await get(this.recordKey)) as RecordInfo | null
 
     // 获取用户的初始化数据
-    const list = await this.getUserData(p)
+    const list = await this.getUserData()
 
     const firstData = list[0]
 
@@ -108,23 +111,39 @@ class SqlStore {
     this.updateDiffData(list.filter(({ type }) => type === 2))
   }
 
+  // 获取需要更新的表数据
+  private updateDiff(info: { [k: string]: LastId }) {
+    const query = Object.entries(info)
+      .map(([k, v]) => {
+        console.log('key', k, v)
+
+        return `${k}=${v.id}`
+      })
+      .join('&')
+  }
+
   private updateDiffData(p: DiffPackList) {
     console.log('diff packs', p)
   }
 
-  private async getUserData(info: IUserParams) {
+  private async request(url: string) {
+    const data = await (
+      await fetch(`${this.host}/${url}`, {
+        headers: {
+          Authorization: this.token
+        }
+      })
+    ).json()
+
+    return data
+  }
+
+  private async getUserData() {
     const lastId = this.recordInfo?.id || 0
 
-    const data = (await (
-      await fetch(
-        `${this.host}/datapandora/v1/packinfo/get?last_id=${lastId}`,
-        {
-          headers: {
-            Authorization: info.token
-          }
-        }
-      )
-    ).json()) as PackInfo
+    const data = (await this.request(
+      `datapandora/v1/packinfo/get?last_id=${lastId}`
+    )) as PackInfo
 
     return data.data
   }
@@ -167,7 +186,9 @@ class SqlStore {
   query(params: FilterParamsProps) {
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
-    const sqlTasks = this.db!.exec(getFilterSql({ ...params, timestamp }))
+    const sqlTasks = this.db!.exec(
+      getFilterSql({ ...params, timestamp, user_id: this.userId })
+    )
 
     const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 

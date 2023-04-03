@@ -46,9 +46,13 @@ export enum MatterState {
 export interface FilterParamsProps {
   page_number: number
   page_record: number
-  user_id: string
   show_model: 1 | 2 // 1 平铺 2 收合
   direction: Direction
+
+  order_by?: {
+    order_by_key: string
+    sort: 'DESC' | 'ASC'
+  }
 
   filter?: {
     keyword?: string

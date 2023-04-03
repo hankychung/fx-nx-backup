@@ -285,25 +285,43 @@ export const getFilterSql = (
     const hasNull = taker_ids.includes('-1')
     const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
-    const nStr = hasNull ? `taker_total = 0 ` : ''
-    const tStr = `exists(
-      SELECT 1 FROM task_dispatch t WHERE t.ref_task_id = task_id AND t.taker_id IN (${tTakerIds.join(
-        ','
-      )}) LIMIT 1)`
+    const nStr = hasNull ? `(takers IS NULL)` : ''
+    const tStr = tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')
 
-    WHERES.push(`(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`)
+    WHERES.push(
+      `(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} (${tStr}))`
+    )
+    // const hasNull = taker_ids.includes('-1')
+    // const tTakerIds = taker_ids.filter((v) => v !== '-1')
+
+    // const nStr = hasNull ? `taker_total = 0 ` : ''
+    // const tStr = `exists(
+    //   SELECT 1 FROM task_dispatch t WHERE t.ref_task_id = task_id AND t.taker_id IN (${tTakerIds.join(
+    //     ','
+    //   )}) LIMIT 1)`
+
+    // WHERES.push(`(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`)
   }
 
   /**
    * 责任人筛选
    */
   if (admins_ids?.length) {
+    const hasNull = admins_ids.includes('-1')
+    const tAdminIds = admins_ids.filter((v) => v !== '-1')
+
+    const nStr = hasNull ? `(admins IS NULL)` : ''
+    const tStr = tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')
+
     WHERES.push(
-      `exists(
-          SELECT 1 FROM task_dispatch t WHERE t.ref_task_id = task_id AND is_admin > 0 AND t.taker_id IN (${admins_ids.join(
-            ','
-          )}))`
+      `(${nStr} ${hasNull && tAdminIds.length ? 'OR' : ''} (${tStr}))`
     )
+    // WHERES.push(
+    //   `exists(
+    //       SELECT 1 FROM task_dispatch t WHERE t.ref_task_id = task_id AND is_admin > 0 AND t.taker_id IN (${admins_ids.join(
+    //         ','
+    //       )}))`
+    // )
   }
 
   /**
@@ -366,12 +384,16 @@ export const getFilterSql = (
       WHERES.push(`creator_id != ${user_id}`)
       break
     }
-    //TODO 协作事项
+    // 协作事项
     case FilterQueryType.cooperation: {
+      WHERES.unshift(`takers != ${user_id}`)
+      // WHERES.push(`(taker_total > 1 OR (takers != ${user_id} ))`)
       break
     }
-    // TODO 个人事项
+    // 个人事项
     case FilterQueryType.personal: {
+      WHERES.unshift(`takers = ${user_id}`)
+      // WHERES.push(`taker_total = 1 AND takers = ${user_id}`)
       break
     }
     //我进行中

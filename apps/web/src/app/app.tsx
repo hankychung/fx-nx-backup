@@ -15,22 +15,22 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MjM1NTEsImlhdCI6MTY4MDUxNjE0OSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzIxMzc3NTQyMTc2OTcxIiwiRGV2aWNlSUQiOiIwNmMxZTRmOC0xMzgwLTQ1OTctODg5MC0xNWRjZWU5NTRkMjMiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.KVZipR3UZ3kut4qfEOT5KmOcoW8erSNKAlklu-4H_lU'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1Mjk0NzAsImlhdCI6MTY4MDUyMTEwNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzkxNTQ2OTU0MTU0MDgwIiwiRGV2aWNlSUQiOiIwNmMxZTRmOC0xMzgwLTQ1OTctODg5MC0xNWRjZWU5NTRkMjMiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.DMu0IBIlmXkcRwIebMhFWu9MkdxNr031Sl_FpYSwcAY'
 
-registerServiceWorker('/sw.js', {
-  host: envStore.getHost(),
-  token,
-  env,
-  userId: '1321377542176971'
-}).then(async () => {
-  const data = await queryFullViewList({
-    page_number: 1,
-    page_record: 300,
-    show_mode: 2
-  })
+// registerServiceWorker('/sw.js', {
+//   host: envStore.getHost(),
+//   token,
+//   env,
+//   userId: '1321377542176971'
+// }).then(async () => {
+//   const data = await queryFullViewList({
+//     page_number: 1,
+//     page_record: 300,
+//     show_mode: 2
+//   })
 
-  console.log(data)
-})
+//   console.log(data)
+// })
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -41,25 +41,25 @@ export function App() {
   const isInit = useRef(false)
 
   const init = async () => {
-    // await sqlStore.initDB({
-    //   host: envStore.getHost(),
-    //   token,
-    //   env,
-    //   userId: '542408421671185'
-    // })
-    // const page_record = 1000
-    // console.time(`${page_record}条查询`)
-    // const data = sqlStore.query({
-    //   page_number: 1,
-    //   page_record: page_record,
-    //   show_model: 2,
-    //   direction: Direction.up
-    //   // filter: {
-    //   //   taker_ids: ['999999999']
-    //   // }
-    // })
-    // console.timeEnd(`${page_record}条查询`)
-    // console.log(data)
+    await sqlStore.initDB({
+      host: envStore.getHost(),
+      token,
+      env,
+      userId: '1391546954154080'
+    })
+    const page_record = 1000
+    console.time(`${page_record}条查询`)
+    const data = sqlStore.query({
+      page_number: 1,
+      page_record: page_record,
+      show_model: 2,
+      direction: Direction.down
+      // filter: {
+      //   taker_ids: ['999999999']
+      // }
+    })
+    console.timeEnd(`${page_record}条查询`)
+    console.log(data)
   }
 
   useEffect(() => {

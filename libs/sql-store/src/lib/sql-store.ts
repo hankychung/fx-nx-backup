@@ -240,6 +240,10 @@ class SqlStore {
       }
     }
 
+    const data = this.db?.exec('select * from task_dispatch')
+
+    console.log(data)
+
     this.updateDB()
   }
 

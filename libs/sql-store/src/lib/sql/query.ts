@@ -38,16 +38,16 @@ IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
-tag_str,  application_id, application_json,
+tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
-z.user_id, step_user_count, date, timestamp, application_id,
+z.user_id, step_user_count, date, timestamp, application_id, admins, takers,
 CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '1' THEN '周一'
      WHEN STRFTIME('%w', date) == '2' THEN '周二'
      WHEN STRFTIME('%w', date) == '3' THEN '周三'
      WHEN STRFTIME('%w', date) == '4' THEN '周四'
      WHEN STRFTIME('%w', date) == '5' THEN '周五'
-     WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday,
+     WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday 
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
@@ -55,7 +55,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
         CASE WHEN c.project_id > 0 THEN c.project_id ELSE 0 END AS project_id,
         CASE WHEN c.flow_step_id > 0 THEN c.flow_step_id ELSE 0 END AS flow_step_id,
         CASE WHEN c.application_id > 0 THEN c.application_id ELSE 0 END AS application_id,
-        CASE WHEN JSON_VALID(c.application_json) == 1 THEN c.application_json ->> '$.name' ELSE '' END AS application_name
+        CASE WHEN JSON_VALID(c.application_json) == 1 THEN c.application_json ->> '$.name' ELSE '' END AS application_name,
         IFNULL(d.repeat_id, '') AS repeat_id, 
         IFNULL(d.cycle, 0) AS cycle,
         CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date) ELSE '' END AS cycle_date, 
@@ -103,6 +103,22 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a
+
+    LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id
+                                FROM task_dispatch
+                               WHERE is_valid = 1
+                                 AND personal_state IN (0, 10409, 10604, 10611)
+                                 AND operate_state = 0
+                               GROUP BY ref_task_id) aa ON a.id = aa.ref_task_id
+
+    LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS admins, ref_task_id
+                                FROM task_dispatch
+                               WHERE is_valid = 1
+                                 AND is_admin = 1
+                                 AND personal_state IN (0, 10409, 10604, 10611)
+                                 AND operate_state = 0
+                               GROUP BY ref_task_id) ab ON a.id = ab.ref_task_id
+
     LEFT JOIN (SELECT object_id AS task_id, GROUP_CONCAT(tag_id) AS tag_str,
             '[' || GROUP_CONCAT('{"tag_id":"' || CAST(tag_id AS text) || '","name":"' || name || '","color":"' || color || '"}') || ']' AS tags
                  FROM tag ft
@@ -127,15 +143,16 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                       IFNULL(fwb.workspace_id, 0) AS workspace_id, IFNULL(fw.name, '') AS workspace_name,
                       IFNULL(fw.ws_type, 0) AS ws_type,
                       CASE WHEN fwm.member_type = 2 THEN 1 ELSE 0 END AS is_external_member
-                 FROM task_config c
-                          LEFT JOIN project AS fp
-                          ON c.project_id = fp.id
-                          LEFT JOIN workspace_bind fwb
-                          ON c.application_id = fwb.id
-                          LEFT JOIN workspace AS fw
-                          ON fwb.workspace_id = fw.id
-                          LEFT JOIN workspace_member AS fwm
-                          ON fw.id = fwm.workspace_id AND fwm.user_id = ${user_id} AND fwm.state = 10902) w
+               FROM task_config c
+                    LEFT JOIN project AS fp
+                    ON c.project_id = fp.id
+                    LEFT JOIN workspace_bind fwb
+                    ON c.project_id = fwb.project_id
+                    LEFT JOIN workspace AS fw
+                    ON fwb.workspace_id = fw.id
+                    LEFT JOIN workspace_member AS fwm
+                    ON fw.id = fwm.workspace_id AND fwm.user_id = ${user_id} AND
+                    fwm.state = 10902) w
     ON a.id = w.id
     LEFT JOIN task_relation AS k
     ON a.id = k.task_id AND k.user_id = ${user_id}

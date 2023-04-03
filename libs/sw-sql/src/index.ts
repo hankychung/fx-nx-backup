@@ -12,6 +12,13 @@ class DBHandler {
           sqlStore.initDB(data.data as any).then(() => {
             self.postMessage({ uid: data.uid })
           })
+          break
+        }
+        case ServiceWorkerKey.QUERY_FULL_VIEW_LIST: {
+          const d = sqlStore.query(data.data as any)
+
+          self.postMessage({ uid: data.uid, data: d })
+          break
         }
       }
     }

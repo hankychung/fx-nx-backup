@@ -43,7 +43,7 @@ function promiseWorkerMessage<
 
       serviceWorker?.removeEventListener('message', callBack)
 
-      if (!code) {
+      if (code) {
         console.error('Error, PromiseWorkerMessage back error', res)
 
         return reject(res)

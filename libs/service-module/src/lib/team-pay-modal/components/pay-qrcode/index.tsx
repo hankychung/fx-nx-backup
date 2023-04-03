@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-30 18:05:18
+ * @LastEditTime: 2023-04-03 11:56:43
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,11 +25,13 @@ import { VipMealType } from '../../../person-pay-modal/components/controller'
 const PayQrCode = ({
   payInfo,
   userInfo,
-  spaceId
+  spaceId,
+  senConfirm
 }: {
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
   spaceId?: string
+  senConfirm?: () => void
 }) => {
   const service = useContext(SelectMemberContext)
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -60,7 +62,8 @@ const PayQrCode = ({
   })
   useEffect(() => {
     qrCodeFunction()
-  }, [qrCodeFunction])
+    senConfirm && senConfirm()
+  }, [qrCodeFunction, senConfirm])
   return (
     <Modal
       open

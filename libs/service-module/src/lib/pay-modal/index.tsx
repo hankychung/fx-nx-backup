@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-28 19:11:59
+ * @LastEditTime: 2023-04-03 11:53:17
  */
 
 import React, { useMemo } from 'react'
@@ -35,6 +35,7 @@ interface Iprops {
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   onClose: () => void
   upSpace?: () => void
+  senConfirm?: () => void
   memberList: IFlyeleAvatarItem[]
 }
 
@@ -48,6 +49,7 @@ export default function PayModal(props: Iprops) {
     mineId,
     spaceId,
     upSpace,
+    senConfirm,
     teamVipType = 1
   } = props
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
@@ -95,6 +97,7 @@ export default function PayModal(props: Iprops) {
             onClose={onClose}
             memberList={sortMemberList}
             mineId={mineId}
+            senConfirm={senConfirm}
           />
         )
       case 'team':
@@ -106,6 +109,7 @@ export default function PayModal(props: Iprops) {
             memberList={sortMemberList}
             mineId={mineId}
             upSpace={upSpace}
+            senConfirm={senConfirm}
           />
         )
       default:

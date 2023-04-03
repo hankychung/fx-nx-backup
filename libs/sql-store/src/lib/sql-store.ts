@@ -186,7 +186,7 @@ class SqlStore {
   query(params: FilterParamsProps) {
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
-    const sqlTasks = this.db!.exec(getFilterSql({ ...params, timestamp }))
+    const sqlTasks = this.db!.exec(getFilterSql({ ...params, timestamp, user_id: this.userId }))
 
     const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 

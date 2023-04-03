@@ -1,3 +1,4 @@
+import { FullViewParams } from './full-view-type'
 import {
   NotParamsWorkerKey,
   ServiceWorkerData,
@@ -5,6 +6,13 @@ import {
   ServiceWorkerParams,
   WorkerBack
 } from './type'
+
+import {
+  Direction,
+  FilterParamsFilter,
+  FilterParamsProps
+} from '@flyele-nx/sql-store'
+import { SqlFilterTimerkeys } from './const'
 
 let serviceWorker: Worker | undefined
 
@@ -73,7 +81,43 @@ const registerServiceWorker = async (url: string) => {
  * @param params any //TODO 需要替换成实际类型
  * @returns
  */
-const queryFullViewList = (data: any) => {
+const queryFullViewList = (data: FullViewParams) => {
+  const params: Partial<FilterParamsProps> = {
+    page_number: data.page_number,
+    page_record: data.page_number,
+    show_model: data.show_mode
+  }
+
+  const filter: FilterParamsProps['filter'] = {}
+
+  if (data.date_type === 1) {
+    params.direction = Direction.up
+  } else {
+    params.direction = Direction.down
+  }
+
+  for (const tO of SqlFilterTimerkeys) {
+    const [start, end] = tO.keys
+    const start_time = data[start as unknown as keyof FullViewParams] as number
+    const end_time = data[end as unknown as keyof FullViewParams] as number
+
+    if (start_time && end_time) {
+      filter[tO.filter_key as unknown as keyof FilterParamsProps['filter']] = {
+        start_time,
+        end_time
+      } as never
+    }
+  }
+
+  if (data.start_time && data.end_time) {
+    filter['task_at'] = {
+      start_time: data.start_time,
+      end_time: data.end_time
+    }
+  }
+
+  params.filter = filter
+
   return promiseWorkerMessage(ServiceWorkerKey.QUERY_FULL_VIEW_LIST, {
     page_number: 1
   })

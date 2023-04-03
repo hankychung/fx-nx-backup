@@ -143,6 +143,9 @@ export const getFilterSql = (
   switch (group_by) {
     /** 按项目分区 */
     case FullGroupBy.project: {
+      // 过滤无项目的事项
+      WHERES.unshift(`project_id > 0`)
+
       ORDERS.unshift(`project_id DESC, timestamp !=0`)
 
       if (order_by_key && sort) {
@@ -221,12 +224,15 @@ export const getFilterSql = (
     WHERES.push(`(${tagIsNullStr} ${link} (${inTagStr}))`)
   }
 
+  /**
+   * 事项时间
+   */
   if (task_at?.end_time && task_at.start_time) {
     const { start_time, end_time } = task_at
 
     WHERES.push(`((start_time BETWEEN ${start_time} AND ${end_time}) OR (end_time BETWEEN ${start_time} AND ${end_time})) OR
     (start_time > 0 AND start_time < ${start_time} AND end_time > ${end_time}) OR
-    (flow_step_id > 0 AND create_at BETWEEN ${start_time} ${end_time}))`)
+    (flow_step_id > 0 AND create_at BETWEEN ${start_time} AND ${end_time}))`)
   }
 
   /**

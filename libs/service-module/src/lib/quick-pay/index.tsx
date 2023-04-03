@@ -52,6 +52,7 @@ const QuickPay = (props: Iprops) => {
               memberList={memberList}
               vipMeal={vipMeal}
               isPaySuccess={isPaySuccess}
+              onClose={onClose}
             />
           </div>
         </div>

@@ -19,12 +19,14 @@ const PayQrCode = ({
   userInfo,
   vipMealType,
   senConfirm,
-  isPaySuccess
+  isPaySuccess,
+  onClose
 }: {
   vipMealType: VipMealType
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
   isPaySuccess: boolean
+  onClose: () => void
   senConfirm?: () => void
 }) => {
   const service = useContext(SelectMemberContext)
@@ -117,7 +119,7 @@ const PayQrCode = ({
         {/* 支付成功  */}
         {isPaySuccess && (
           <div>
-            <SuccessPay />
+            <SuccessPay onClose={onClose} />
           </div>
         )}
       </div>

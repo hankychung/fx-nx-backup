@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 15:51:17
+ * @LastEditTime: 2023-04-03 17:25:35
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -20,11 +20,13 @@ import { IFlyeleAvatarItem } from '../../../pay-modal'
 const PayQrCode = ({
   isPaySuccess,
   vipMeal,
-  memberList
+  memberList,
+  onClose
 }: {
   isPaySuccess: boolean
   vipMeal?: IActiveGoods
   memberList: IFlyeleAvatarItem[]
+  onClose?: () => void
 }) => {
   const [qrCode, setQrCode] = useState('')
 
@@ -89,7 +91,7 @@ const PayQrCode = ({
       {/* 支付成功  */}
       {isPaySuccess && (
         <div>
-          <SuccessPay />
+          <SuccessPay onClose={onClose} />
         </div>
       )}
     </div>

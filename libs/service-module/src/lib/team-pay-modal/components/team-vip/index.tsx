@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-27 15:45:51
+ * @LastEditTime: 2023-04-03 11:56:18
  */
 import { IActiveGoods } from '@flyele-nx/api'
 import { useCreation } from 'ahooks'
@@ -23,9 +23,10 @@ interface Iprops {
   mineId: string
   spaceId?: string
   upSpace?: () => void
+  senConfirm?: () => void
 }
 const TeamVip = (props: Iprops) => {
-  const { vipType, memberList, mineId, spaceId, upSpace } = props
+  const { vipType, memberList, mineId, spaceId, upSpace, senConfirm } = props
 
   const [showPay, setShowPay] = useState<boolean>(false)
   const [payInfo, setPayInfo] = useState<IActiveGoods>()
@@ -75,6 +76,7 @@ const TeamVip = (props: Iprops) => {
           <PayQrCode
             payInfo={payInfo}
             spaceId={spaceId}
+            senConfirm={senConfirm}
             userInfo={
               userInfo
                 ? userInfo

@@ -88,7 +88,9 @@ const queryFullViewList = (data: FullViewParams) => {
     show_model: data.show_mode
   }
 
-  const filter: FilterParamsProps['filter'] = {}
+  const filter: FilterParamsProps['filter'] = {
+    ...data
+  }
 
   if (data.date_type === 1) {
     params.direction = Direction.up
@@ -106,13 +108,6 @@ const queryFullViewList = (data: FullViewParams) => {
         start_time,
         end_time
       } as never
-    }
-  }
-
-  if (data.start_time && data.end_time) {
-    filter['task_at'] = {
-      start_time: data.start_time,
-      end_time: data.end_time
     }
   }
 

@@ -45,7 +45,7 @@ export enum MatterState {
 
 export interface FilterParamsFilter {
   keyword?: string
-  query_type?: FilterQueryType
+  query_type?: FilterQueryType | ''
   group_by?: FullGroupBy
 
   is_follow?: 1 | 2 // 1 已关注 2 未关注

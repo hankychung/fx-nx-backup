@@ -67,6 +67,7 @@ export const getFilterSql = (
     project_ids,
     workspace_ids,
 
+    task_at,
     create_at,
     update_at,
     finish_time,
@@ -83,6 +84,9 @@ export const getFilterSql = (
 
   const ORDERS: string[] = ['repeat_id ASC', 'task_id DESC']
 
+  // 平铺模式下 查询所有小于等于今天的
+  let LeftJoinRepeatAnd = `d.cycle_date <= STRFTIME('%s', 'now')`
+
   /**
    * 标题/背景信息
    */
@@ -94,6 +98,11 @@ export const getFilterSql = (
   // 如果是收合模式默认查询顶级事项
   if (queryModel === 2 && !parent_id) {
     WHERES.push(`parent_id IN (${0})`)
+  }
+
+  // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
+  if (queryModel === 2) {
+    LeftJoinRepeatAnd = `(d.cycle_date <= STRFTIME('%s', 'now') OR d.cycle = 1)`
   }
 
   /**
@@ -210,6 +219,14 @@ export const getFilterSql = (
     const inTagStr = tagIds.map((v) => `INSTR(tag_str, ${v})`).join(' or ')
 
     WHERES.push(`(${tagIsNullStr} ${link} (${inTagStr}))`)
+  }
+
+  if (task_at?.end_time && task_at.start_time) {
+    const { start_time, end_time } = task_at
+
+    WHERES.push(`((start_time BETWEEN ${start_time} AND ${end_time}) OR (end_time BETWEEN ${start_time} AND ${end_time})) OR
+    (start_time > 0 AND start_time < ${start_time} AND end_time > ${end_time}) OR
+    (flow_step_id > 0 AND create_at BETWEEN ${start_time} ${end_time}))`)
   }
 
   /**
@@ -368,7 +385,13 @@ export const getFilterSql = (
   const where = WHERES.length ? `WHERE ${WHERES.join(' AND ')}` : ''
   const order = ORDERS.length ? `ORDER BY ${ORDERS.join(', ')}` : ''
 
-  const sql = BaseQuerySql({ limit: LIMIT, user_id, where, order })
+  const sql = BaseQuerySql({
+    limit: LIMIT,
+    user_id,
+    where,
+    order,
+    LeftJoinRepeatAnd
+  })
   // 不直接返回 隔断一句 方面后面查看sql 避免冲突
   return sql
 }

@@ -12,14 +12,14 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MTA1NzAsImlhdCI6MTY4MDUwMjcxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImY4ZTVhNzczLTE0M2YtNGFmNy1hZTA1LTAwZDgwNDQ2YzRhYyIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.UYJr8TB2DQ1zqDW9OgkTxlNmC7bTdHnQa5RTOxaA2M8'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MTg0MTAsImlhdCI6MTY4MDUxMDg4NCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImRjNjQ3YjFjLWE3Y2UtNDUxZi04MDc5LTc0NTg3YjZmNjhlMSIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.c7TN5f4lVJEaNJ7xG5TSNW0fpoORLgWHZspSnfkpMv8'
 
-registerServiceWorker('/sw.js', {
-  host: envStore.getHost(),
-  token,
-  env,
-  userId: '542408421671185'
-})
+// registerServiceWorker('/sw.js', {
+//   host: envStore.getHost(),
+//   token,
+//   env,
+//   userId: '542408421671185'
+// })
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())

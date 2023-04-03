@@ -39,7 +39,6 @@ export function App() {
       page_number: 1,
       page_record: page_record,
       show_model: 2,
-      user_id: '542408421671185',
       direction: Direction.up
       // filter: {
       //   taker_ids: ['999999999']

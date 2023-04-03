@@ -30,7 +30,7 @@ export const getNullOrNoNullIds = (ids: string[], sqlKey: string) => {
 }
 
 export const getFilterSql = (
-  params: FilterParamsProps & { timestamp: number }
+  params: FilterParamsProps & { timestamp: number; user_id: string }
 ) => {
   const {
     user_id,

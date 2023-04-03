@@ -16,10 +16,10 @@ interface Iprops {
   onClose: () => void
   mineId: string
   memberList: IFlyeleAvatarItem[]
+  isPaySuccess: boolean
 }
 const QuickPay = (props: Iprops) => {
-  const { onClose, memberList, mineId } = props
-  const [showSuccess, setShowSuccess] = useState<boolean>(false)
+  const { onClose, memberList, mineId, isPaySuccess } = props
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   return (
     <div>
@@ -38,7 +38,7 @@ const QuickPay = (props: Iprops) => {
           {/* 头部信息 */}
           <div className={style.topBlock}>
             <Header onClose={onClose} />
-            {!showSuccess && (
+            {!isPaySuccess && (
               <MemberInfo
                 memberList={memberList}
                 mineId={mineId}
@@ -51,8 +51,7 @@ const QuickPay = (props: Iprops) => {
             <PayQrCode
               memberList={memberList}
               vipMeal={vipMeal}
-              setShowSuccess={setShowSuccess}
-              showSuccess={showSuccess}
+              isPaySuccess={isPaySuccess}
             />
           </div>
         </div>

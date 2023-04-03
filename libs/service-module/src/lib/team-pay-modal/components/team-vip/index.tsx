@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 11:56:18
+ * @LastEditTime: 2023-04-03 15:55:54
  */
 import { IActiveGoods } from '@flyele-nx/api'
 import { useCreation } from 'ahooks'
@@ -22,11 +22,20 @@ interface Iprops {
   vipType: VipPayType
   mineId: string
   spaceId?: string
+  isPaySuccess: boolean
   upSpace?: () => void
   senConfirm?: () => void
 }
 const TeamVip = (props: Iprops) => {
-  const { vipType, memberList, mineId, spaceId, upSpace, senConfirm } = props
+  const {
+    vipType,
+    memberList,
+    mineId,
+    spaceId,
+    upSpace,
+    senConfirm,
+    isPaySuccess
+  } = props
 
   const [showPay, setShowPay] = useState<boolean>(false)
   const [payInfo, setPayInfo] = useState<IActiveGoods>()
@@ -77,6 +86,7 @@ const TeamVip = (props: Iprops) => {
             payInfo={payInfo}
             spaceId={spaceId}
             senConfirm={senConfirm}
+            isPaySuccess={isPaySuccess}
             userInfo={
               userInfo
                 ? userInfo

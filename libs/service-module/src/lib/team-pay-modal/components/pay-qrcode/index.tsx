@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 11:56:43
+ * @LastEditTime: 2023-04-03 15:56:33
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,15 +26,17 @@ const PayQrCode = ({
   payInfo,
   userInfo,
   spaceId,
-  senConfirm
+  senConfirm,
+  isPaySuccess
 }: {
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
   spaceId?: string
+  isPaySuccess: boolean
   senConfirm?: () => void
 }) => {
   const service = useContext(SelectMemberContext)
-  const [showSuccess, setShowSuccess] = useState<boolean>(false)
+  // const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [qrCode, setQrCode] = useState('')
 
   //获取二维码
@@ -53,7 +55,7 @@ const PayQrCode = ({
     }
     try {
       const res = await QRCode.toDataURL(
-        `http://127.0.0.1:4200/payDetail?params=${JSON.stringify(params)}`
+        `http://10.255.0.68:4200/payDetail?params=${JSON.stringify(params)}`
       )
       setQrCode(res)
     } catch {
@@ -77,12 +79,12 @@ const PayQrCode = ({
       maskStyle={{ opacity: '0.4', background: '#000000', animation: 'none' }}
     >
       <div>
-        {!showSuccess && (
+        {!isPaySuccess && (
           <div className={style.payQrCode}>
             <div className={style.head}>
               <div className={style.lable_pay}>
                 <span>扫码支付</span>
-                <div className={style.telephone}>对公支付联系: 12345678901</div>
+                <div className={style.telephone}>对公支付联系: 15002007797</div>
               </div>
               <Close
                 className={style.close}
@@ -100,12 +102,7 @@ const PayQrCode = ({
                   )}
                 </span>
               </div>
-              <div
-                className={style.code}
-                onClick={() => {
-                  setShowSuccess(true)
-                }}
-              >
+              <div className={style.code}>
                 <img alt="qrcode" src={qrCode} className={style.qrcode} />
               </div>
               <div className={style.payIcon}>
@@ -120,7 +117,7 @@ const PayQrCode = ({
           </div>
         )}
         {/* 支付成功  */}
-        {showSuccess && (
+        {isPaySuccess && (
           <div>
             <SuccessPay />
           </div>

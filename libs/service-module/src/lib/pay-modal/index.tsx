@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 11:53:17
+ * @LastEditTime: 2023-04-03 15:55:13
  */
 
 import React, { useMemo } from 'react'
@@ -28,6 +28,7 @@ export declare type IFlyeleAvatarItem = {
 
 interface Iprops {
   visible: boolean
+  isPaySuccess: boolean
   mineId: string
   spaceId?: string
   payType?: VipMealType //个人支付类型 1个人 2团队
@@ -50,6 +51,7 @@ export default function PayModal(props: Iprops) {
     spaceId,
     upSpace,
     senConfirm,
+    isPaySuccess = false,
     teamVipType = 1
   } = props
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
@@ -88,6 +90,7 @@ export default function PayModal(props: Iprops) {
             onClose={onClose}
             memberList={sortMemberList}
             mineId={mineId}
+            isPaySuccess={isPaySuccess}
           />
         )
       case 'person':
@@ -98,6 +101,7 @@ export default function PayModal(props: Iprops) {
             memberList={sortMemberList}
             mineId={mineId}
             senConfirm={senConfirm}
+            isPaySuccess={isPaySuccess}
           />
         )
       case 'team':
@@ -110,6 +114,7 @@ export default function PayModal(props: Iprops) {
             mineId={mineId}
             upSpace={upSpace}
             senConfirm={senConfirm}
+            isPaySuccess={isPaySuccess}
           />
         )
       default:

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-30 18:01:25
+ * @LastEditTime: 2023-04-03 15:51:17
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,14 +18,12 @@ import QRCode from 'qrcode'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 
 const PayQrCode = ({
-  setShowSuccess,
-  showSuccess,
+  isPaySuccess,
   vipMeal,
   memberList
 }: {
-  showSuccess: boolean
+  isPaySuccess: boolean
   vipMeal?: IActiveGoods
-  setShowSuccess: (_: boolean) => void
   memberList: IFlyeleAvatarItem[]
 }) => {
   const [qrCode, setQrCode] = useState('')
@@ -45,7 +43,7 @@ const PayQrCode = ({
     }
     try {
       const res = await QRCode.toDataURL(
-        `http://127.0.0.1:4200/payDetail?params=${JSON.stringify(params)}`
+        `http://10.255.0.68:4200/payDetail?params=${JSON.stringify(params)}`
       )
       setQrCode(res)
     } catch {
@@ -57,7 +55,7 @@ const PayQrCode = ({
   }, [qrCodeFunction])
   return (
     <div>
-      {!showSuccess && (
+      {!isPaySuccess && (
         <div className={style.payQrCode}>
           <div className={style.payInfo}>
             <div className={style.price}>
@@ -69,12 +67,7 @@ const PayQrCode = ({
                 )}`}</span>
               )}
             </div>
-            <div
-              className={style.code}
-              onClick={() => {
-                setShowSuccess(true)
-              }}
-            >
+            <div className={style.code}>
               <img alt="qrcode" src={qrCode} className={style.qrcode} />
             </div>
             <div className={style.payIcon}>
@@ -94,7 +87,7 @@ const PayQrCode = ({
         </div>
       )}
       {/* 支付成功  */}
-      {showSuccess && (
+      {isPaySuccess && (
         <div>
           <SuccessPay />
         </div>

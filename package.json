@@ -11,7 +11,8 @@
     "login-npm": "node scripts/npm-login.js",
     "install-last-fly": "yarn add @flyele/flyele-components@last",
     "deploy": "node scripts/publish-cli/index.js publish",
-    "build:h5": "yarn && yarn nx build h5"
+    "build:h5": "yarn && yarn nx build h5",
+    "proxy-server": "node scripts/proxy-server/server/index.js"
   },
   "private": true,
   "dependencies": {

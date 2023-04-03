@@ -4,17 +4,22 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, sqlStore } from '@flyele-nx/sql-store'
-// import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
+import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 
 const env = process.env.NODE_ENV as string
 
 envStore.initEnv(env)
 
-// registerServiceWorker('/sw.js')
-
 const token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MTA1NzAsImlhdCI6MTY4MDUwMjcxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImY4ZTVhNzczLTE0M2YtNGFmNy1hZTA1LTAwZDgwNDQ2YzRhYyIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.UYJr8TB2DQ1zqDW9OgkTxlNmC7bTdHnQa5RTOxaA2M8'
+
+registerServiceWorker('/sw.js', {
+  host: envStore.getHost(),
+  token,
+  env,
+  userId: '542408421671185'
+})
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())

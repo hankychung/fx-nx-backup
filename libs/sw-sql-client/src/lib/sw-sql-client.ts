@@ -5,6 +5,7 @@ import {
   ServiceWorkerParams,
   WorkerBack
 } from './type'
+import { SqlStore } from '@flyele-nx/sql-store'
 
 let serviceWorker: Worker | undefined
 
@@ -38,7 +39,7 @@ function promiseWorkerMessage<
 
       serviceWorker?.removeEventListener('message', callBack)
 
-      if (code !== 0) {
+      if (!code) {
         console.error('Error, PromiseWorkerMessage back error', res)
 
         return reject(res)
@@ -57,7 +58,10 @@ function promiseWorkerMessage<
   })
 }
 
-const registerServiceWorker = async (url: string) => {
+const registerServiceWorker = async (
+  url: string,
+  userInfo: SqlStore.IUserParams
+) => {
   if (!('serviceWorker' in navigator)) {
     console.error('serviceWorker is not supported')
     return
@@ -65,7 +69,7 @@ const registerServiceWorker = async (url: string) => {
 
   serviceWorker = new Worker(url)
 
-  return promiseWorkerMessage(NotParamsWorkerKey.INIT_DB)
+  return promiseWorkerMessage(ServiceWorkerKey.INIT_DB, userInfo)
 }
 
 /**

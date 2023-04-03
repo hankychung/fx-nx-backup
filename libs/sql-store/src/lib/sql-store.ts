@@ -30,7 +30,8 @@ class SqlStore {
 
   private timeDiff = 0
 
-  private host = 'https://api.flyele.vip'
+  // private host = 'https://api.flyele.vip'
+  private host = 'http://localhost:8888/api'
 
   private userId = ''
 
@@ -55,7 +56,9 @@ class SqlStore {
 
     this.recordKey = `${this.dbId}-record`
 
-    this.host = p.host
+    if (p.host !== 'https://api.flyele.vip') {
+      this.host = p.host
+    }
 
     this.token = p.token
 

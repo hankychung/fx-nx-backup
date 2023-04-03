@@ -10,7 +10,8 @@
     "lint": "yarn nx format:write --all && nx run-many --target=lint && nx run-many --target=tslint",
     "login-npm": "node scripts/npm-login.js",
     "install-last-fly": "yarn add @flyele/flyele-components@last",
-    "deploy": "node scripts/publish-cli/index.js publish"
+    "deploy": "node scripts/publish-cli/index.js publish",
+    "build:h5": "yarn && yarn nx build h5"
   },
   "private": true,
   "dependencies": {

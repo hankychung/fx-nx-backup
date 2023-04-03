@@ -38,6 +38,8 @@ IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
+tag_str,  application_id, application_json,
+IFNULL(application_name, '') AS application_name,
 z.user_id, step_user_count, date, timestamp, application_id,
 CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '1' THEN '周一'
@@ -45,7 +47,7 @@ CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '3' THEN '周三'
      WHEN STRFTIME('%w', date) == '4' THEN '周四'
      WHEN STRFTIME('%w', date) == '5' THEN '周五'
-     WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday
+     WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday,
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
@@ -53,7 +55,9 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
         CASE WHEN c.project_id > 0 THEN c.project_id ELSE 0 END AS project_id,
         CASE WHEN c.flow_step_id > 0 THEN c.flow_step_id ELSE 0 END AS flow_step_id,
         CASE WHEN c.application_id > 0 THEN c.application_id ELSE 0 END AS application_id,
-        IFNULL(d.repeat_id, '') AS repeat_id, IFNULL(d.cycle, 0) AS cycle,
+        CASE WHEN JSON_VALID(c.application_json) == 1 THEN c.application_json ->> '$.name' ELSE '' END AS application_name
+        IFNULL(d.repeat_id, '') AS repeat_id, 
+        IFNULL(d.cycle, 0) AS cycle,
         CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date) ELSE '' END AS cycle_date, 
         IFNULL(d.start_time, b.start_time) AS start_time,
         IFNULL(d.start_time_full_day, b.start_time_full_day) AS start_time_full_day,

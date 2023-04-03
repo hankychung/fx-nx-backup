@@ -6,6 +6,7 @@ class DBHandler {
     self.onmessage = ({ data }: MessageEvent<PostData>) => {
       console.log('from client', data, data.data)
 
+      console.log('onmessage')
       switch (data.key) {
         case ServiceWorkerKey.INIT_DB: {
           sqlStore.initDB(data.data as any).then(() => {

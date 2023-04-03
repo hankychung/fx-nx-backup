@@ -282,12 +282,16 @@ export const getFilterSql = (
    * 协作人筛选
    */
   if (taker_ids?.length) {
-    WHERES.push(
-      `exists(
-        SELECT 1 FROM task_dispatch t WHERE t.ref_task_id = task_id AND t.taker_id IN (${taker_ids.join(
-          ','
-        )}))`
-    )
+    const hasNull = taker_ids.includes('-1')
+    const tTakerIds = taker_ids.filter((v) => v !== '-1')
+
+    const nStr = hasNull ? `taker_total = 0 ` : ''
+    const tStr = `exists(
+      SELECT 1 FROM task_dispatch t WHERE t.ref_task_id = task_id AND t.taker_id IN (${tTakerIds.join(
+        ','
+      )}) LIMIT 1)`
+
+    WHERES.push(`(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`)
   }
 
   /**

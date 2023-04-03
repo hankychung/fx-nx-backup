@@ -1,5 +1,7 @@
 import { SqlStore } from '@flyele-nx/sql-store'
 
+export type FilterKeys = keyof SqlStore.Filter.FilterParamsFilter
+
 export enum NotParamsWorkerKey {
   FAKE = 'FAKE'
 }
@@ -10,7 +12,7 @@ export enum ServiceWorkerKey {
 }
 
 export type ServiceWorkerParams = {
-  [ServiceWorkerKey.QUERY_FULL_VIEW_LIST]: { page_number: number }
+  [ServiceWorkerKey.QUERY_FULL_VIEW_LIST]: SqlStore.Filter.FilterParamsProps
   [ServiceWorkerKey.INIT_DB]: SqlStore.IUserParams
 }
 

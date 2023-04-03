@@ -99,7 +99,8 @@ class SqlStore {
       } else {
         // 不存在用户数据库, 从indexeddb清除recordKey重新请求
         await del(this.recordKey)
-        await this.initDB(p)
+        //TODO 当用户无数据的时 会死循环
+        // await this.initDB(p)
         return
       }
     }

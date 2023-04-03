@@ -8,12 +8,8 @@ import {
 } from './type'
 import { SqlStore } from '@flyele-nx/sql-store'
 
-import {
-  Direction,
-  FilterParamsFilter,
-  FilterParamsProps
-} from '@flyele-nx/sql-store'
-import { SqlFilterTimerkeys } from './const'
+import { Direction, FilterParamsProps } from '@flyele-nx/sql-store'
+import { SqlFilterSplitKeys, SqlFilterTimerkeys } from './const'
 
 let serviceWorker: Worker | undefined
 
@@ -102,24 +98,35 @@ const queryFullViewList = (data: FullViewParams) => {
     params.direction = Direction.down
   }
 
+  // 时间筛选
   for (const tO of SqlFilterTimerkeys) {
     const [start, end] = tO.keys
+
     const start_time = data[start as unknown as keyof FullViewParams] as number
     const end_time = data[end as unknown as keyof FullViewParams] as number
 
-    if (start_time && end_time) {
-      filter[tO.filter_key as unknown as keyof FilterParamsProps['filter']] = {
-        start_time,
-        end_time
-      } as never
-    }
+    if (!start_time || !end_time) continue
+
+    filter[tO.filter_key] = { start_time, end_time } as never
+  }
+
+  // ids之类的拼接字符串处理
+  for (const tS of SqlFilterSplitKeys) {
+    const { key, filter_key } = tS
+
+    const d = data[key as unknown as keyof FullViewParams] as string
+
+    if (!d) continue
+
+    filter[filter_key] = d.split(',') as never
   }
 
   params.filter = filter
 
-  return promiseWorkerMessage(ServiceWorkerKey.QUERY_FULL_VIEW_LIST, {
-    page_number: 1
-  })
+  return promiseWorkerMessage(
+    ServiceWorkerKey.QUERY_FULL_VIEW_LIST,
+    params as unknown as FilterParamsProps
+  )
 }
 
 export { registerServiceWorker, queryFullViewList }

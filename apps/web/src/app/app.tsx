@@ -4,7 +4,10 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, sqlStore } from '@flyele-nx/sql-store'
-import { registerServiceWorker } from '@flyele-nx/sw-sql-client'
+import {
+  registerServiceWorker,
+  queryFullViewList
+} from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 
 const env = process.env.NODE_ENV as string
@@ -12,13 +15,21 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MTA1NzAsImlhdCI6MTY4MDUwMjcxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImY4ZTVhNzczLTE0M2YtNGFmNy1hZTA1LTAwZDgwNDQ2YzRhYyIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.UYJr8TB2DQ1zqDW9OgkTxlNmC7bTdHnQa5RTOxaA2M8'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MjM1NTEsImlhdCI6MTY4MDUxNjE0OSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzIxMzc3NTQyMTc2OTcxIiwiRGV2aWNlSUQiOiIwNmMxZTRmOC0xMzgwLTQ1OTctODg5MC0xNWRjZWU5NTRkMjMiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.KVZipR3UZ3kut4qfEOT5KmOcoW8erSNKAlklu-4H_lU'
 
 registerServiceWorker('/sw.js', {
   host: envStore.getHost(),
   token,
   env,
-  userId: '542408421671185'
+  userId: '1321377542176971'
+}).then(async () => {
+  const data = await queryFullViewList({
+    page_number: 1,
+    page_record: 300,
+    show_mode: 2
+  })
+
+  console.log(data)
 })
 
 export function App() {
@@ -30,28 +41,25 @@ export function App() {
   const isInit = useRef(false)
 
   const init = async () => {
-    await sqlStore.initDB({
-      host: envStore.getHost(),
-      token,
-      env,
-      userId: '542408421671185'
-    })
-
-    const page_record = 1000
-
-    console.time(`${page_record}条查询`)
-    const data = sqlStore.query({
-      page_number: 1,
-      page_record: page_record,
-      show_model: 2,
-      direction: Direction.up
-      // filter: {
-      //   taker_ids: ['999999999']
-      // }
-    })
-    console.timeEnd(`${page_record}条查询`)
-
-    console.log(data)
+    // await sqlStore.initDB({
+    //   host: envStore.getHost(),
+    //   token,
+    //   env,
+    //   userId: '542408421671185'
+    // })
+    // const page_record = 1000
+    // console.time(`${page_record}条查询`)
+    // const data = sqlStore.query({
+    //   page_number: 1,
+    //   page_record: page_record,
+    //   show_model: 2,
+    //   direction: Direction.up
+    //   // filter: {
+    //   //   taker_ids: ['999999999']
+    //   // }
+    // })
+    // console.timeEnd(`${page_record}条查询`)
+    // console.log(data)
   }
 
   useEffect(() => {

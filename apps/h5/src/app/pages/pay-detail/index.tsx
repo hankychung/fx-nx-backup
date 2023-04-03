@@ -166,6 +166,16 @@ const PayDetail = () => {
         }
       })
   }
+  const getOrderState = useMemoizedFn(() => {
+    setTimeout(() => {
+      getOrderDetail()
+    }, 60000 * 30)
+  })
+  useEffect(() => {
+    if (orderInfo) {
+      getOrderState()
+    }
+  }, [orderInfo, getOrderState])
   const status = (key?: number) => {
     let str = statusText['processing']
     switch (key) {

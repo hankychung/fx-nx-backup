@@ -1,15 +1,17 @@
 import { sqlStore } from '@flyele-nx/sql-store'
-import { INIT_DB } from '@flyele-nx/sw-sql-client'
+import { PostData, ServiceWorkerKey } from '@flyele-nx/sw-sql-client'
 
 class DBHandler {
   constructor() {
-    self.onmessage = ({ data }: any) => {
-      console.log('from client', data)
+    self.onmessage = ({ data }: MessageEvent<PostData>) => {
+      console.log('from client', data, data.data)
 
-      if (INIT_DB in data) {
-        sqlStore.initDB(data[INIT_DB]).then((res) => {
-          self.postMessage({ initData: res })
-        })
+      switch (data.key) {
+        case ServiceWorkerKey.INIT_DB: {
+          sqlStore.initDB(data.data as any).then(() => {
+            self.postMessage({ uid: data.uid })
+          })
+        }
       }
     }
   }

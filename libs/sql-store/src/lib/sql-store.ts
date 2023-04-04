@@ -9,15 +9,9 @@ import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
+import { IUserParams } from './type'
 
 const wasmUrl = '/sql-wasm.wasm'
-
-interface IUserParams {
-  token: string
-  host: string
-  env: string
-  userId: string
-}
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 
@@ -30,7 +24,8 @@ class SqlStore {
 
   private timeDiff = 0
 
-  private host = 'https://api.flyele.vip'
+  // private host = 'https://api.flyele.vip'
+  private host = 'http://localhost:8888/api'
 
   private userId = ''
 
@@ -55,7 +50,9 @@ class SqlStore {
 
     this.recordKey = `${this.dbId}-record`
 
-    this.host = p.host
+    if (p.host !== 'https://api.flyele.vip') {
+      this.host = p.host
+    }
 
     this.token = p.token
 

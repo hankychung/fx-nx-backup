@@ -15,21 +15,13 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1Mjk0NzAsImlhdCI6MTY4MDUyMTEwNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzkxNTQ2OTU0MTU0MDgwIiwiRGV2aWNlSUQiOiIwNmMxZTRmOC0xMzgwLTQ1OTctODg5MC0xNWRjZWU5NTRkMjMiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.DMu0IBIlmXkcRwIebMhFWu9MkdxNr031Sl_FpYSwcAY'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA1MTg0MTAsImlhdCI6MTY4MDUxMDg4NCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImRjNjQ3YjFjLWE3Y2UtNDUxZi04MDc5LTc0NTg3YjZmNjhlMSIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.c7TN5f4lVJEaNJ7xG5TSNW0fpoORLgWHZspSnfkpMv8'
 
 // registerServiceWorker('/sw.js', {
 //   host: envStore.getHost(),
 //   token,
 //   env,
-//   userId: '1321377542176971'
-// }).then(async () => {
-//   const data = await queryFullViewList({
-//     page_number: 1,
-//     page_record: 300,
-//     show_mode: 2
-//   })
-
-//   console.log(data)
+//   userId: '542408421671185'
 // })
 
 export function App() {

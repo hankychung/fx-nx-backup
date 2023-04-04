@@ -6,9 +6,9 @@ import { ReactComponent as Expired } from '../../../assets/payImg/expired.svg'
 import { ReactComponent as Processing } from '../../../assets/payImg/processing.svg'
 import { paymentApi } from '@flyele-nx/service'
 import { regFenToYuan } from './utils'
-import { ICreateOrderParams } from '@flyele-nx/api'
 import { message } from 'antd'
 import { service } from '@flyele-nx/service'
+import ErrorPay from './components/error-pay'
 declare let WeixinJSBridge: any
 export interface Res {
   // 微信需要传入的数据，数据格式定义
@@ -23,11 +23,12 @@ export interface Res {
 const PayDetail = () => {
   const [payParams, setPayParam] = useState()
   const [state, setStatus] = useState(12000)
-  const [orderDetail, setOrderDetail] = useState<ICreateOrderParams>()
+  const [visible, setVisible] = useState(true)
   const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
   const [orderInfo, setOrderInfo] = useState<{
     description: string
     out_trade_no: string
+    total_price: number
   }>()
 
   const statusText = {
@@ -40,13 +41,13 @@ const PayDetail = () => {
     const code = getParam('code')
     const params = getParam('params')
     if (params) {
-      setOrderDetail(JSON.parse(params))
+      setOrderInfo(JSON.parse(params))
     }
     if (code) {
       const token = getParam('token')
       if (token) {
         service.updateToken(token)
-        createOrder(code)
+        getPayParams(code, JSON.parse(params || ''))
       } else {
         message.info({ content: '无token' })
       }
@@ -64,18 +65,18 @@ const PayDetail = () => {
     getCode()
   }, [getCode])
 
-  const createOrder = (code: string) => {
-    const params = getParam('params')
+  // const createOrder = (code: string) => {
+  //   const params = getParam('params')
 
-    if (params) {
-      paymentApi.createOrder(JSON.parse(params)).then((res) => {
-        if (res.code === 0) {
-          getPayParams(code, res.data)
-          setOrderInfo(res.data)
-        }
-      })
-    }
-  }
+  //   if (params) {
+  //     paymentApi.createOrder(JSON.parse(params)).then((res) => {
+  //       if (res.code === 0) {
+  //         getPayParams(code, res.data)
+  //         setOrderInfo(res.data)
+  //       }
+  //     })
+  //   }
+  // }
   const getParam = (paramName: string) => {
     const query = window.location.search.substring(1)
     const vars = query.split('&')
@@ -158,9 +159,7 @@ const PayDetail = () => {
       .then((res) => {
         if (res.code === 0) {
           if (res.data === 12000 && isPAY) {
-            message.info({
-              content: '订单未支付'
-            })
+            setVisible(true)
           }
           setStatus(res.data)
         }
@@ -206,7 +205,7 @@ const PayDetail = () => {
         </div>
         <div className={styles.order_price}>
           <span>订单金额</span>
-          <span>{`¥${regFenToYuan(orderDetail?.total_price || 0)}`}</span>
+          <span>{`¥${regFenToYuan(orderInfo?.total_price || 0)}`}</span>
         </div>
       </div>
       {state === 12000 && (
@@ -234,6 +233,13 @@ const PayDetail = () => {
             重新支付
           </div>
         </div>
+      )}
+      {visible && (
+        <ErrorPay
+          onClose={() => {
+            setVisible(false)
+          }}
+        ></ErrorPay>
       )}
     </div>
   )

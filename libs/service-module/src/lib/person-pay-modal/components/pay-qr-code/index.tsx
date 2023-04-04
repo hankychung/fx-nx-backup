@@ -50,12 +50,17 @@ const PayQrCode = ({
           : VipMealType.TEAM
     }
     try {
-      const res = await QRCode.toDataURL(
-        `http://10.255.0.68:4200/payDetail?params=${JSON.stringify(
-          params
-        )}&&token=${paymentApi.getToken()}`
-      )
-      setQrCode(res)
+      paymentApi.createOrder(params).then(async (_) => {
+        if (_.code === 0) {
+          const res = await QRCode.toDataURL(
+            `http://10.255.0.68:4200/payDetail?params=${JSON.stringify({
+              ..._.data,
+              total_price: (payInfo?.now_price || 0) * userInfo.length
+            })}&&token=${paymentApi.getToken()}`
+          )
+          setQrCode(res)
+        }
+      })
     } catch {
       console.log('00')
     }

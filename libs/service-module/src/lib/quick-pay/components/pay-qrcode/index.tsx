@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 17:25:35
+ * @LastEditTime: 2023-04-04 15:23:25
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,7 +11,7 @@ import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_i
 import style from './index.module.scss'
 import Protocol from './components/protocol'
 import SuccessPay from './components/success-pay'
-import { IActiveGoods } from '@flyele-nx/api'
+import { IActiveGoods, paymentApi } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
 import { useMemoizedFn } from 'ahooks'
 import QRCode from 'qrcode'
@@ -44,10 +44,17 @@ const PayQrCode = ({
       indent_member_type: 2
     }
     try {
-      const res = await QRCode.toDataURL(
-        `http://10.255.0.68:4200/payDetail?params=${JSON.stringify(params)}`
-      )
-      setQrCode(res)
+      paymentApi.createOrder(params).then(async (_) => {
+        if (_.code === 0) {
+          const res = await QRCode.toDataURL(
+            `http://10.255.0.68:4200/payDetail?params=${JSON.stringify({
+              ..._.data,
+              total_price: vipMeal?.now_price || 0
+            })}&&token=${paymentApi.getToken()}`
+          )
+          setQrCode(res)
+        }
+      })
     } catch {
       console.log('00')
     }

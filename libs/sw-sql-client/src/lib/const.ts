@@ -16,6 +16,7 @@ const SqlFilterSplitKeys: {
   filter_key: keyof SqlStore.Filter.FilterParamsFilter
   key: string
 }[] = [
+  { filter_key: 'parent_ids', key: 'parents_id' },
   {
     filter_key: 'application_ids',
     key: 'application_id'

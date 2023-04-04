@@ -66,6 +66,7 @@ export const getFilterSql = (
     admins_ids,
     project_ids,
     workspace_ids,
+    parent_ids,
 
     task_at,
     create_at,
@@ -76,7 +77,7 @@ export const getFilterSql = (
 
   const { order_by_key, sort } = order_by || {}
 
-  const LIMIT = `LIMIT ${(page_number - 1) * page_record}, ${page_record}`
+  let LIMIT = `LIMIT ${(page_number - 1) * page_record}, ${page_record}`
 
   let queryModel = show_model
 
@@ -97,7 +98,7 @@ export const getFilterSql = (
 
   // 如果是收合模式默认查询顶级事项
   if (queryModel === 2 && !parent_id) {
-    WHERES.push(`parent_id IN (${0})`)
+    WHERES.push(`parent_id = ''`)
   }
 
   // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
@@ -106,10 +107,27 @@ export const getFilterSql = (
   }
 
   /**
-   * 所属事项
+   * 查询目标子事项
    */
   if (parent_id) {
-    WHERES.push(`parent_id IN (${parent_id})`)
+    LIMIT = ''
+
+    WHERES.push(`parent_id = ${parent_id}`)
+  }
+
+  /**
+   * 查询所属事项
+   */
+  if (parent_ids) {
+    const hasNull = parent_ids.includes('-1')
+    const tParentIds = parent_ids.filter((v) => v !== '-1')
+
+    const nStr = hasNull ? `(parent_id = '')` : ''
+    const tStr = tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')
+
+    WHERES.push(
+      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} (${tStr}))`
+    )
   }
 
   /**
@@ -156,14 +174,33 @@ export const getFilterSql = (
     }
     /** 按事项时间分区 */
     case FullGroupBy.time: {
+      const orderIsTime = order_by_key === 'timestamp' && sort === 'DESC'
+
       /**
        * 今日
        */
-      if (typeof timestamp === 'number') {
-        WHERES.push(
-          `timestamp ${direction === Direction.up ? '<' : '>='} ${timestamp}`
-        )
+      if (typeof timestamp === 'number' && !parent_id) {
+        if (direction === Direction.up) {
+          let contrast = '<'
+
+          if (orderIsTime) {
+            contrast = '>='
+          }
+
+          // 往上翻的时候 绝对不查待安排
+          WHERES.push(`(timestamp ${contrast} ${timestamp} AND is_no_work = 0)`)
+        } else {
+          let contrast = '>='
+
+          if (orderIsTime) {
+            contrast = '<'
+          }
+
+          // 往下翻的时候 一定要把安排筛选出来
+          WHERES.push(`(timestamp ${contrast} ${timestamp} OR is_no_work = 1)`)
+        }
       }
+
       /**
        * 往上或者往下获取
        */
@@ -179,7 +216,7 @@ export const getFilterSql = (
         if (direction === Direction.up) {
           ORDERS.unshift(`timestamp ${up}`)
         } else {
-          ORDERS.unshift(`timestamp !=0, timestamp ${down}`)
+          ORDERS.unshift(`is_no_work ASC, timestamp ${down}`)
         }
       }
       break
@@ -424,6 +461,8 @@ export const getFilterSql = (
     order,
     LeftJoinRepeatAnd
   })
+
+  console.log(sql)
   // 不直接返回 隔断一句 方面后面查看sql 避免冲突
   return sql
 }

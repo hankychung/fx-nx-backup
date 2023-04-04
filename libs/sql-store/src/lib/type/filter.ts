@@ -60,7 +60,9 @@ export interface FilterParamsFilter {
 
   tags?: string[]
 
-  parent_id?: string
+  parent_id?: string // 查询目标子事项
+
+  parent_ids?: string[] // 所属事项
 
   application_ids?: string[]
   matter_states?: MatterState[]

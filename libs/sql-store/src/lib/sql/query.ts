@@ -6,6 +6,24 @@ export const QueryTaskTakersSQL = (task_id: string) => {
    AND operate_state = 0`
 }
 
+export const QueryTaskTreeTotal = (task_id: string) => {
+  return `SELECT count(*) as task_tree_total from task_dispatch d JOIN task_config c ON c.id = d.ref_task_id WHERE instr(c.parent_id, ${task_id}) GROUP BY ref_task_id`
+}
+
+export const QueryTaskTreeCompleteTotal = (task_id: string) => {
+  return `SELECT count(*) as task_tree_complete_total from task_dispatch d JOIN task_config c ON c.id = d.ref_task_id JOIN task t ON t.id = d.ref_task_id WHERE (complete_at != 0 or finish_time != 0 ) AND instr(c.parent_id, ${task_id})`
+}
+
+export const QueryTaskChildTotal = (task_id: string) => {
+  return `SELECT t.id, COUNT(*) AS task_tree_total, COUNT(CASE WHEN complete_at > 0 THEN t.id END) AS task_tree_complete_total
+  FROM task t
+  JOIN task_config tc
+  ON t.id = tc.id
+  WHERE t.state = 10201
+  AND t.matter_type IN (10701, 10702, 10705)
+  AND INSTR(tc.parent_id, ${task_id})`
+}
+
 export const BaseQuerySql = ({
   limit,
   where,
@@ -40,6 +58,7 @@ IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
 tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
+case WHEN start_time = 0 AND end_time = 0 AND repeat_type = 0 AND flow_step_id = 0 THEN 1 ELSE 0 END as is_no_work,
 z.user_id, step_user_count, date, timestamp, application_id, admins, takers,
 CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
      WHEN STRFTIME('%w', date) == '1' THEN '周一'
@@ -82,8 +101,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                                                     THEN STRFTIME('%Y-%m-%d', DATETIME(b.create_at, 'unixepoch'))
                                                 ELSE STRFTIME('%Y-%m-%d',
                                                               DATETIME(b.create_at + 1000000000, 'unixepoch')) END)
-             ELSE '' END AS date, CAST(SUBSTR(c.parent_id, 0, INSTR(c.parent_id, ',')) AS bigint) AS parent_id,
-        CASE WHEN b1.id > 0 THEN b1.title ELSE '' END AS parent_name
+             ELSE '' END AS date, parent_id, CASE WHEN b1.id > 0 THEN b1.title ELSE '' END AS parent_name
    FROM (SELECT ref_task_id, dispatch_id, identity, taker_id, state, personal_state, operate_state, delete_at,
                 finish_time
            FROM task_dispatch

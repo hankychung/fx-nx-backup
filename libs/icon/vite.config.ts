@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import dts from 'vite-plugin-dts'
+import svgr from 'vite-plugin-svgr'
 import { join } from 'path'
 
 export default defineConfig({
@@ -15,6 +16,7 @@ export default defineConfig({
       skipDiagnostics: true
     }),
     react(),
+    svgr(),
     viteTsConfigPaths({
       root: '../../'
     })

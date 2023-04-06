@@ -82,6 +82,7 @@ export const MemberIntroduction = () => {
 
       <PayModal
         visible={show}
+        isPaySuccess={false}
         mineId={selfUserInfo?.userId || ''}
         modalType="person"
         payType={payType}

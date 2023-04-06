@@ -4,10 +4,7 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
-import {
-  registerServiceWorker,
-  queryFullViewList
-} from '@flyele-nx/sw-sql-client'
+// import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 
 const env = process.env.NODE_ENV as string

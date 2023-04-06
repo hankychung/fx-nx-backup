@@ -2,6 +2,7 @@ branch=$1
 
 imageName="fx-nx"
 
+yarn
 
 echo "  --> 开始执行 yarn build..."
 

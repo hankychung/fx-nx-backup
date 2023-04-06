@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
-import { QueryTaskTakersSQL } from './sql/query'
+import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
 import { IUserParams } from './type'
 
@@ -99,7 +99,8 @@ class SqlStore {
       } else {
         // 不存在用户数据库, 从indexeddb清除recordKey重新请求
         await del(this.recordKey)
-        await this.initDB(p)
+        //TODO 当用户无数据的时 会死循环
+        // await this.initDB(p)
         return
       }
     }
@@ -194,7 +195,33 @@ class SqlStore {
     const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 
     for (const line of data) {
-      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(line['task_id']))
+      const task_id = line['task_id']
+
+      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id))
+
+      const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(task_id))
+
+      const totalBack = sqlChildTotal[0]
+        ? this.formatSelectValue(sqlChildTotal[0])[0]
+        : {}
+
+      Object.assign(line, {
+        task_tree_total: totalBack['task_tree_total'],
+        task_tree_complete_total: totalBack['task_tree_complete_total'],
+        interact_process: {
+          child_total: line['child_total'],
+          comment_total: line['comment_total'],
+          file_total: line['file_total'],
+          gadget_meeting_total: line['gadget_meeting_total'],
+          gadget_todo_total: line['gadget_todo_total'],
+          important_total: line['important_total'],
+          quote_total: line['quote_total']
+        }
+      })
+
+      if (line['task_tree_total'] > 0) {
+        console.log('task_tree_total', line['task_tree_total'], task_id)
+      }
 
       line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
     }
@@ -242,6 +269,10 @@ class SqlStore {
         this.db!.run(sqlStr)
       }
     }
+
+    const data = this.db?.exec('select * from task_dispatch')
+
+    console.log(data)
 
     this.updateDB()
   }

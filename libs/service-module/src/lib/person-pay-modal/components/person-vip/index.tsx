@@ -27,8 +27,7 @@ const PersonVip = ({
         <LeftBlock />
       </div>
       <div>
-        <RightBlock   memberList={memberList}
-          mineId={mineId}/>
+        <RightBlock memberList={memberList} mineId={mineId} />
       </div>
     </div>
   )

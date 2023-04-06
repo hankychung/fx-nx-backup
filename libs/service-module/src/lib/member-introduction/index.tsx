@@ -56,7 +56,7 @@ export const MemberIntroduction = () => {
     }, 2000)
   })
   useEffect(() => {
-    let timer:  NodeJS.Timer | undefined
+    let timer: NodeJS.Timer | undefined
     if (orderCode) {
       timer = initFn()
     }
@@ -158,7 +158,7 @@ export const MemberIntroduction = () => {
         onClose={() => {
           setShow(false)
         }}
-        getOrderCode={(code:string)=>{
+        getOrderCode={(code: string) => {
           setOrderCode(code)
         }}
       ></PayModal>

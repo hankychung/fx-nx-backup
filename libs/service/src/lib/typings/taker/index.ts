@@ -36,7 +36,7 @@ export interface IContacts {
 export enum VipTypeEnum {
   Poor = 0,
   Person = 1,
-  Team = 2,
+  Team = 2
 }
 export interface IContactsAndStatus extends IContacts {
   status: EConCheckStatus

@@ -26,7 +26,7 @@ interface Iprops {
   setVipMealType: (_: VipMealType) => void
   senConfirm?: () => void
   onClose: () => void
-  getOrderCode?: (str:string) => void
+  getOrderCode?: (str: string) => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -135,9 +135,7 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        <PersonVip         
-          memberList={memberList}
-          mineId={mineId}/>
+        <PersonVip memberList={memberList} mineId={mineId} />
       </div>
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
@@ -156,7 +154,7 @@ const VipPackage = (props: Iprops) => {
           vipMealType={vipMealType}
           senConfirm={senConfirm}
           isPaySuccess={isPaySuccess}
-          getOrderCode={  getOrderCode}
+          getOrderCode={getOrderCode}
           userInfo={
             userInfo
               ? userInfo

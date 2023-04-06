@@ -37,7 +37,7 @@ interface Iprops {
   onClose: () => void
   upSpace?: () => void
   senConfirm?: () => void
-  getOrderCode?: (str:string) => void
+  getOrderCode?: (str: string) => void
   memberList: IFlyeleAvatarItem[]
 }
 

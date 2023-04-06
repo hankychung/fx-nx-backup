@@ -85,7 +85,7 @@ export interface ILoginKeyParams {
  * 登录相关结束
  */
 
- interface Member {
+interface Member {
   end_time: number
   id: string
   invite_code: string

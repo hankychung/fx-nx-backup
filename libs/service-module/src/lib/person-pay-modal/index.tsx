@@ -30,11 +30,18 @@ interface Iprops {
   mineId: string
   isPaySuccess: boolean
   senConfirm?: () => void
-  getOrderCode?: (str:string) => void
+  getOrderCode?: (str: string) => void
 }
 const PersonPayModal = (props: Iprops) => {
-  const { payType, onClose, memberList, mineId, senConfirm, isPaySuccess, getOrderCode } =
-    props
+  const {
+    payType,
+    onClose,
+    memberList,
+    mineId,
+    senConfirm,
+    isPaySuccess,
+    getOrderCode
+  } = props
   const [vipMealType, setVipMealType] = useState<VipMealType>(1) // 切换tab
   useEffect(() => {
     if (payType) {

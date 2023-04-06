@@ -73,10 +73,10 @@ class Userc {
       timeout: 20000
     })
   }
-   // 获取当前用户信息
-   async getCombo() {
+  // 获取当前用户信息
+  async getCombo() {
     return await service.get<IVipMember>({
-      url: `${this.prefix}/member`,
+      url: `${this.prefix}/member`
     })
   }
 

@@ -1,7 +1,7 @@
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
-import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg'
+import { CloseIcon } from '@flyele-nx/icon'
 import { ReactComponent as ConvertIcon } from './img/convert.svg'
 import venationImg from './img/venation.png'
 import cycleImg from './img/cycle.png'

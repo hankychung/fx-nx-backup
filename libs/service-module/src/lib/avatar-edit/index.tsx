@@ -1,21 +1,70 @@
 import React, { ChangeEvent, memo, useEffect, useRef, useState } from 'react'
-import AvatarEditor from 'react-avatar-editor'
+import AvatarEditor, { AvatarEditorProps } from 'react-avatar-editor'
 import Dropzone from 'react-dropzone'
-import { Slider, Modal, Button } from 'antd'
+import { Slider, Modal, Button, ModalProps } from 'antd'
 import { ReactComponent as ResetIcon } from '../../assets/icons/avatar_reset.svg'
 import { ReactComponent as RotateIcon } from '../../assets/icons/avatar_rotate.svg'
 import css from './index.module.scss'
 
-interface Iprops {
+interface IProps {
   src: string
   open: boolean
+  loading?: boolean
+
+  /**
+   * 弹窗设置
+   */
+  modalSetting?: Omit<ModalProps, 'open' | 'onCancel'>
+
+  /**
+   * AvatarEditor编辑组件设置
+   */
+  editorSetting?: Omit<AvatarEditorProps, 'ref' | 'image'>
+
+  /**
+   * 转换后的文件名
+   * @default avatar.png
+   */
+  fileName?: string
+
+  /**
+   * 转换后的文件类型
+   * @default image/png
+   */
+  fileType?: string
+
   onCancel?: () => void
+
+  /**
+   * canvas转图片成功
+   */
   onSuccess?: (src: File) => void
+
+  /**
+   * 点击上传按钮
+   */
   handleUpload?: () => void
+
+  /**
+   * 点击确定按钮
+   */
+  handleConfirm?: () => void
 }
 
-const _AvatarEdit = (props: Iprops) => {
-  const { open, src, onCancel, onSuccess, handleUpload } = props
+const _AvatarEdit = (props: IProps) => {
+  const {
+    open,
+    src,
+    loading,
+    fileName = 'avatar.png',
+    fileType = 'image/png',
+    onCancel,
+    onSuccess,
+    handleUpload,
+    handleConfirm,
+    modalSetting,
+    editorSetting
+  } = props
   const editor = useRef<AvatarEditor>(null)
   const [image, setImage] = useState<string | File>('')
   const [position, setPosition] = useState({ x: 0.5, y: 0.5 })
@@ -37,10 +86,10 @@ const _AvatarEdit = (props: Iprops) => {
       ?.getImageScaledToCanvas()
       .toBlob(async (res: Blob | null) => {
         if (!res) return
-        const file = new window.File([res], 'avatar.png', { type: 'image/png' })
+        const file = new window.File([res], fileName, { type: fileType })
 
         onSuccess?.(file)
-      }, 'image/png')
+      }, fileType)
   }
 
   const handleScale = (val: number) => {
@@ -75,6 +124,7 @@ const _AvatarEdit = (props: Iprops) => {
       onCancel={onCancel}
       centered
       maskClosable={false}
+      {...modalSetting}
     >
       <div className={css['modal-body']}>
         <Dropzone
@@ -99,6 +149,7 @@ const _AvatarEdit = (props: Iprops) => {
                   image={image}
                   disableHiDPIScaling
                   border={[0, 0]}
+                  {...editorSetting}
                 />
                 <input
                   name="newImage"
@@ -168,9 +219,13 @@ const _AvatarEdit = (props: Iprops) => {
         </Button>
         <Button onClick={onCancel}>取消</Button>
         <Button
-          onClick={handleSave}
+          onClick={() => {
+            handleConfirm?.()
+            handleSave()
+          }}
           style={{ marginLeft: '10px' }}
           type="primary"
+          loading={loading}
         >
           确定
         </Button>

@@ -70,6 +70,8 @@ class ServiceWorkerUtils {
     }
 
     serviceWorker = new Worker(url)
+
+    return serviceWorker
   }
 
   static login(userInfo: SqlStore.IUserParams) {

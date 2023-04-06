@@ -47,3 +47,5 @@ npx nx build your-module
   ```
 
 - 样式中使用的背景图需要上 cdn，否则该 lib 独立打包将会把图片转化为 base64
+
+- fx-nx 中的 icon 统一通过 libs/icon 导出，需要新增 icon 前，先跑 icon-display 项目查看 icon 库中是否已经存在, 新增 icon 规范见 NOTION https://www.notion.so/33682717e14847fcb6ffed8ebf4bb89c?pvs=4 `svg 使用规范`

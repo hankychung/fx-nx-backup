@@ -26,7 +26,7 @@ const RightBlock = ({ vipMealType }: { vipMealType: VipMealType }) => {
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const { nowScecond } = useCurrentTime()
-  
+
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev

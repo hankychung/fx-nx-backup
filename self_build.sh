@@ -2,7 +2,7 @@ branch=$1
 
 imageName="fx-nx"
 
-nvm use 16
+asdf install
 
 yarn
 

@@ -46,12 +46,12 @@ export function App() {
     //   query_type: 0,
     //   show_mode: 2
     // })
-    // await sqlStore.initDB({
-    //   host: envStore.getHost(),
-    //   token,
-    //   env,
-    //   userId: '542409300902161'
-    // })
+    await sqlStore.initDB({
+      host: envStore.getHost(),
+      token,
+      env,
+      userId: '542409300902161'
+    })
     // const page_record = 3000
     // console.time(`${page_record}条查询`)
     // const data = sqlStore.query({

@@ -80,6 +80,8 @@ class SqlStore {
 
     const firstData = list[0]
 
+    console.log('get data', firstData)
+
     if (firstData && firstData.type === 1) {
       // 存在全量包, 需要重新建表
       const db = new SQL.Database()
@@ -111,6 +113,8 @@ class SqlStore {
     // 更新差异包
     this.updateDiffData(list.filter(({ type }) => type === 2))
 
+    console.log('check info', firstData)
+
     // 更新差异数据
     if (firstData?.attach_info) {
       this.updateDiff(firstData.attach_info)
@@ -131,6 +135,8 @@ class SqlStore {
 
   // 获取需要更新的表数据
   private async updateDiff(info: { [k: string]: LastId }) {
+    console.log('update diff')
+
     const query = Object.entries(info)
       .filter(([k]) => !['comment'].includes(k))
       .map(([k, v]) => {
@@ -142,7 +148,7 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    for (const key of list) {
+    for (const key of list.filter((k) => !['comment'].includes(k))) {
       const res = await this.getUpdates(key, info[key].id)
 
       if (!res.code && res.data) {
@@ -315,19 +321,19 @@ class SqlStore {
       for (const file of data) {
         const content = (await this.parseFile(file)) as any[]
 
-        const decentCtn = content.map((i) => {
-          const obj: any = {}
+        // const decentCtn = content.map((i) => {
+        //   const obj: any = {}
 
-          Object.keys(defaultInfo[table]).forEach((k) => {
-            obj[k] = i[k] || defaultInfo[table][k]
-          })
+        //   Object.keys(defaultInfo[table]).forEach((k) => {
+        //     obj[k] = i[k] || defaultInfo[table][k]
+        //   })
 
-          return obj
-        })
+        //   return obj
+        // })
 
         let sqlStr = ''
 
-        decentCtn.forEach((item) => {
+        content.forEach((item) => {
           sqlStr += this.getInsertSql(item, table) + ';'
         })
 
@@ -351,12 +357,26 @@ class SqlStore {
     })
   }
 
-  private getDecentItem(item: Record<string, any>, table: string) {
+  private getDecentItem(
+    item: Record<string, any>,
+    table: string,
+    options?: { isUpdate?: boolean }
+  ) {
     const obj: any = {}
 
-    Object.keys(defaultInfo[table]).forEach((k) => {
-      obj[k] = item[k] || defaultInfo[table][k]
-    })
+    console.log('check item', item, table)
+
+    if (options?.isUpdate) {
+      Object.keys(item).forEach((k) => {
+        if (k in defaultInfo[table]) {
+          obj[k] = item[k]
+        }
+      })
+    } else {
+      Object.keys(defaultInfo[table]).forEach((k) => {
+        obj[k] = item[k] || defaultInfo[table][k]
+      })
+    }
 
     return obj
   }

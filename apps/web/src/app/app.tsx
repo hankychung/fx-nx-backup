@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
 // import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
+// import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 
 const env = process.env.NODE_ENV as string
 

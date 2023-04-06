@@ -59,7 +59,7 @@ const PayQrCode = ({
       paymentApi.createOrder(params).then(async (_) => {
         if (_.code === 0) {
           const res = await QRCode.toDataURL(
-            `http://10.255.0.68:4200/payDetail?params=${JSON.stringify({
+            `https://pay-test.flyele.vip/payDetail?params=${JSON.stringify({
               ..._.data,
               total_price: (payInfo?.now_price || 0) * userInfo.length
             })}&&token=${paymentApi.getToken()}`

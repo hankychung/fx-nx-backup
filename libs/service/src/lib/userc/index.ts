@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
-import { IUserInfo, ILoginKeyParams } from '../typings'
+import { IUserInfo, ILoginKeyParams, IVipMember } from '../typings'
 import { IContactsAndStatus, EConCheckStatus } from '../typings/taker'
 import { AxiosRequestConfig } from 'axios'
 
@@ -71,6 +71,12 @@ class Userc {
     return await service.get<IUserInfo>({
       url: `${this.prefix}/user`,
       timeout: 20000
+    })
+  }
+  // 获取当前用户信息
+  async getCombo() {
+    return await service.get<IVipMember>({
+      url: `${this.prefix}/member`
     })
   }
 

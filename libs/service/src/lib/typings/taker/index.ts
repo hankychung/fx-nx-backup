@@ -30,10 +30,18 @@ export interface IContacts {
   member_type?: SpaceMemberType // 成员类型：1空间成员，2外部成员
   is_external_member?: boolean // 成员类型 是否为项目外部成员 true 为外部成员 false | void 内部成员
 }
-
+/**
+ * 0-非会员，1-个人会员，2-团队会员
+ */
+export enum VipTypeEnum {
+  Poor = 0,
+  Person = 1,
+  Team = 2
+}
 export interface IContactsAndStatus extends IContacts {
   status: EConCheckStatus
   key?: string
   addType?: AddContactsType
   count?: number
+  vip_type?: VipTypeEnum //0-非会员，1-个人会员，2-团队会员
 }

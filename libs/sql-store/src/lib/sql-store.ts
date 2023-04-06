@@ -109,14 +109,25 @@ class SqlStore {
 
     // 更新差异包
     this.updateDiffData(list.filter(({ type }) => type === 2))
+
+    // 更新差异数据
+    this.updateDiff(firstData.attach_info)
   }
 
   updateToken(token: string) {
     this.token = token
   }
 
+  private async getNeedUpdateTables(query: string) {
+    const data = await this.request(
+      `datasupport/v1/increment/check_update?${query}`
+    )
+
+    return data.data as string[]
+  }
+
   // 获取需要更新的表数据
-  private updateDiff(info: { [k: string]: LastId }) {
+  private async updateDiff(info: { [k: string]: LastId }) {
     const query = Object.entries(info)
       .map(([k, v]) => {
         console.log('key', k, v)
@@ -124,9 +135,25 @@ class SqlStore {
         return `${k}=${v.id}`
       })
       .join('&')
+
+    const list = await this.getNeedUpdateTables(query)
+
+    list.forEach((key) => {
+      // TODO:
+      this.getUpdates(key, info[key].id)
+    })
   }
 
-  private updateDiffData(p: DiffPackList) {
+  private async getUpdates(key: string, lastId: string) {
+    const data = await this.request(
+      `datasupport/v1/increment?last_id=${lastId}&type=${key}&page_size=20`
+    )
+
+    // TODO:
+    console.log('diffff', data)
+  }
+
+  private async updateDiffData(p: DiffPackList) {
     console.log('diff packs', p)
   }
 

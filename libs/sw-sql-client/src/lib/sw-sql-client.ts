@@ -74,6 +74,8 @@ class ServiceWorkerUtils {
     console.log('serviceWorker init')
 
     serviceWorker = new Worker(url)
+
+    return serviceWorker
   }
 
   static login(userInfo: SqlStore.IUserParams) {

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 15:55:13
+ * @LastEditTime: 2023-04-06 18:07:07
  */
 
 import React, { useMemo } from 'react'
@@ -37,6 +37,7 @@ interface Iprops {
   onClose: () => void
   upSpace?: () => void
   senConfirm?: () => void
+  getOrderCode?: (str: string) => void
   memberList: IFlyeleAvatarItem[]
 }
 
@@ -52,7 +53,8 @@ export default function PayModal(props: Iprops) {
     upSpace,
     senConfirm,
     isPaySuccess = false,
-    teamVipType = 1
+    teamVipType = 1,
+    getOrderCode
   } = props
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
     // 排序规则
@@ -102,6 +104,7 @@ export default function PayModal(props: Iprops) {
             mineId={mineId}
             senConfirm={senConfirm}
             isPaySuccess={isPaySuccess}
+            getOrderCode={getOrderCode}
           />
         )
       case 'team':

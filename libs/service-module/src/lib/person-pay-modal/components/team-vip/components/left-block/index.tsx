@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-21 14:49:40
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-27 11:08:30
+ * @LastEditTime: 2023-04-06 12:23:44
  * @FilePath: /fx-nx/libs/service-module/src/lib/person-pay-modal/components/team-vip/components/left-block/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 
 // import arrow_right from '../../../../../../../assets/payImg/arrow_right.svg'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
-import { useClickAway } from 'ahooks'
+import { useClickAway, useMemoizedFn } from 'ahooks'
 import style from './index.module.scss'
 import { createVipMealText, SectionType } from '../../../controller'
 import MemberList from './components/MemberList'
@@ -32,7 +32,13 @@ const LeftBlock = ({
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>(
     memberList.filter((item) => item.userId === mineId)
   )
-
+  const setMemberSet = useMemoizedFn(() => {
+    setTimeout(() => {
+      service.selectMember({
+        list: memberList.filter((item) => item.userId === mineId)
+      })
+    }, 100)
+  })
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
@@ -53,11 +59,11 @@ const LeftBlock = ({
         default:
       }
     })
-
+    setMemberSet()
     return () => {
       service.dispose()
     }
-  }, [service])
+  }, [service, setMemberSet])
   useClickAway(() => {
     if (openAddModal) {
       service.close()

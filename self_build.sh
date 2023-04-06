@@ -2,6 +2,8 @@ branch=$1
 
 imageName="fx-nx"
 
+nvm use 16
+
 yarn
 
 echo "  --> 开始执行 yarn build..."

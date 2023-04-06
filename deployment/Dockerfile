@@ -4,7 +4,7 @@ RUN echo -e 'server { \
 	listen 8080; \n\
 	# server_name _; \n\
 	\n\
-	root /usr/share/nginx/web/apps/h5; \
+	root /usr/share/nginx/web; \
 	index index.html index.htm index.php; \
 	\n\
 	location / { \n\
@@ -14,6 +14,6 @@ RUN echo -e 'server { \
 	' > /etc/nginx/conf.d/default.conf
 
 
-COPY ./dist /usr/share/nginx/web
+COPY ./dist/apps/h5 /usr/share/nginx/web
 
 EXPOSE 8080

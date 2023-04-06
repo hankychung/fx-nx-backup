@@ -9,6 +9,7 @@ import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
+import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 
 const wasmUrl = '/sql-wasm.wasm'
@@ -109,7 +110,9 @@ class SqlStore {
     this.updateDiffData(list.filter(({ type }) => type === 2))
 
     // 更新差异数据
-    this.updateDiff(firstData.attach_info)
+    if (firstData?.attach_info) {
+      this.updateDiff(firstData.attach_info)
+    }
   }
 
   updateToken(token: string) {
@@ -127,6 +130,7 @@ class SqlStore {
   // 获取需要更新的表数据
   private async updateDiff(info: { [k: string]: LastId }) {
     const query = Object.entries(info)
+      .filter(([k]) => !['comment'].includes(k))
       .map(([k, v]) => {
         console.log('key', k, v)
 
@@ -136,10 +140,43 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    list.forEach((key) => {
-      // TODO:
-      this.getUpdates(key, info[key].id)
-    })
+    for (const key of list) {
+      const res = await this.getUpdates(key, info[key].id)
+
+      if (!res.code && res.data) {
+        const { last_id, list } = res.data
+
+        let sql = ''
+
+        for (const item of list) {
+          const { type, keys, data } = item
+
+          if (type === 'insert') {
+            sql += this.getInsertSql(data, key) + ';'
+
+            continue
+          }
+
+          if (type === 'update') {
+            // TODO: 更新逻辑
+            continue
+          }
+
+          if (type === 'delete') {
+            // TODO: 删除逻辑
+          }
+        }
+
+        this.db!.run(sql)
+
+        // 更新last_id
+        if (this.recordInfo) {
+          this.recordInfo.attach_info[key] = { id: last_id }
+        }
+      }
+    }
+
+    this.updateDB()
   }
 
   private async getUpdates(key: string, lastId: string) {
@@ -147,8 +184,7 @@ class SqlStore {
       `datasupport/v1/increment?last_id=${lastId}&type=${key}&page_size=20`
     )
 
-    // TODO:
-    console.log('diffff', data)
+    return data as IDiffInfoResponse
   }
 
   private async updateDiffData(p: DiffPackList) {
@@ -313,10 +349,20 @@ class SqlStore {
     })
   }
 
+  private getDecentItem(item: Record<string, any>, table: string) {
+    const obj: any = {}
+
+    Object.keys(defaultInfo[table]).forEach((k) => {
+      obj[k] = item[k] || defaultInfo[table][k]
+    })
+
+    return obj
+  }
+
   private getInsertSql(item: Record<string, any>, table: string) {
-    const singleSql = `INSERT INTO ${table} (${Object.keys(item).join(
-      ' ,'
-    )}) VALUES (${Object.values(item)
+    const singleSql = `INSERT OR REPLACE INTO ${table} (${Object.keys(
+      item
+    ).join(' ,')}) VALUES (${Object.values(item)
       .map((i) => {
         if (typeof i === 'number') {
           return i

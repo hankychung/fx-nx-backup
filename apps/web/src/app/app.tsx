@@ -22,7 +22,6 @@ const token =
 //   userId: '542408421671185'
 // })
 
-
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
   const refresh = () => {

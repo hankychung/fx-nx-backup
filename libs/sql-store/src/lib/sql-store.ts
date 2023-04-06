@@ -38,7 +38,9 @@ class SqlStore {
   private token = ''
 
   async initDB(p: IUserParams) {
+    console.log('initDB')
     this.userId = p.userId
+    const loadWasmUrl = p.wasmUrl || wasmUrl
 
     // 已存在打开的数据库（切换用户）
     if (this.db) {
@@ -57,7 +59,7 @@ class SqlStore {
     this.token = p.token
 
     const SQL = await initSql({
-      locateFile: () => wasmUrl
+      locateFile: () => loadWasmUrl
     })
 
     const data = await (await fetch(`${this.host}/userc/v2/system/now`)).json()

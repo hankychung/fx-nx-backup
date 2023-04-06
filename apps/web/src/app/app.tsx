@@ -4,7 +4,7 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
-// import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
+import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 
 const env = process.env.NODE_ENV as string
@@ -12,14 +12,7 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2MTA2NDgsImlhdCI6MTY4MDYwMjA2NywiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzkxNTQ2OTU0MTU0MDgwIiwiRGV2aWNlSUQiOiJkMTdkODg3Yy04ZGUwLTQxNmMtOGQ4Mi02YjYxMzA3OTFlZjciLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.rZ5fKJp3PsyY26N5VGOgs289NS00xZXrjMJzNVcpibg'
-
-// registerServiceWorker('/sw.js', {
-//   host: envStore.getHost(),
-//   token,
-//   env,
-//   userId: '542408421671185'
-// })
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3NzcyOTYsImlhdCI6MTY4MDc2OTgxNCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDkzMDA5MDIxNjEiLCJEZXZpY2VJRCI6IjIxOTk5OTgyLWZiMmYtNDc0YS1iMDc3LWNiZTE0NjU3ZDVhZCIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.qbpSydkWENFqvYTPeASHRN8pgQpXIFxx7rkRAhZzYD4'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -30,31 +23,44 @@ export function App() {
   const isInit = useRef(false)
 
   const init = async () => {
-    await sqlStore.initDB({
-      host: envStore.getHost(),
-      token,
-      env,
-      userId: '1391546954154080'
-    })
-    const page_record = 3000
+    // await ServiceWorkerUtils.registerServiceWorker('/sw.js')
 
-    console.time(`${page_record}条查询`)
-    const data = sqlStore.query({
-      page_number: 1,
-      page_record: page_record,
-      show_model: 2,
-      direction: Direction.down,
-      filter: {
-        group_by: FullGroupBy.time,
-        query_type: 0
-      },
-      order_by: {
-        order_by_key: 'timestamp',
-        sort: 'DESC'
-      }
-    })
-    console.timeEnd(`${page_record}条查询`)
-    console.log(data)
+    // await ServiceWorkerUtils.login({
+    //   host: envStore.getHost(),
+    //   token,
+    //   env,
+    //   userId: '542409300902161'
+    // })
+
+    // await ServiceWorkerUtils.queryFullViewList({
+    //   date_type: 1,
+    //   group_by: 'time' as unknown as any,
+    //   page_number: 1,
+    //   page_record: 300,
+    //   query_type: 0,
+    //   show_mode: 2
+    // })
+    // await sqlStore.initDB({
+    //   host: envStore.getHost(),
+    //   token,
+    //   env,
+    //   userId: '542409300902161'
+    // })
+    // const page_record = 3000
+
+    // console.time(`${page_record}条查询`)
+    // const data = sqlStore.query({
+    //   page_number: 1,
+    //   page_record: page_record,
+    //   show_model: 2,
+    //   direction: Direction.up,
+    //   filter: {
+    //     group_by: FullGroupBy.time,
+    //     query_type: 0
+    //   }
+    // })
+    // console.timeEnd(`${page_record}条查询`)
+    // console.log(data)
   }
 
   useEffect(() => {

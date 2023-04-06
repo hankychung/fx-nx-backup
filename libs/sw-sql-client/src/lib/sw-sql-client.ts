@@ -58,29 +58,29 @@ function promiseWorkerMessage<
   })
 }
 
-const registerServiceWorker = async (
-  url: string,
-  userInfo: SqlStore.IUserParams
-) => {
-  if (!('serviceWorker' in navigator)) {
-    console.error('serviceWorker is not supported')
-    return
+class ServiceWorkerUtils {
+  static queryFullViewList(data: any) {
+    return promiseWorkerMessage(ServiceWorkerKey.QUERY_FULL_VIEW_LIST, {
+      page_number: 1
+    })
   }
 
-  serviceWorker = new Worker(url)
+  static async registerServiceWorker(url: string) {
+    if (!('serviceWorker' in navigator)) {
+      console.error('serviceWorker is not supported')
+      return
+    }
 
-  return promiseWorkerMessage(ServiceWorkerKey.INIT_DB, userInfo)
+    serviceWorker = new Worker(url)
+  }
+
+  login(userInfo: SqlStore.IUserParams) {
+    return promiseWorkerMessage(ServiceWorkerKey.INIT_DB, userInfo)
+  }
+
+  updateToken(token: string) {
+    return promiseWorkerMessage(ServiceWorkerKey.UPDATE_TOKEN, token)
+  }
 }
 
-/**
- * 查询全量列表
- * @param params any //TODO 需要替换成实际类型
- * @returns
- */
-const queryFullViewList = (data: any) => {
-  return promiseWorkerMessage(ServiceWorkerKey.QUERY_FULL_VIEW_LIST, {
-    page_number: 1
-  })
-}
-
-export { registerServiceWorker, queryFullViewList }
+export { ServiceWorkerUtils }

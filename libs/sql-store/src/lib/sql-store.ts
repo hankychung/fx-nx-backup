@@ -108,6 +108,10 @@ class SqlStore {
     this.updateDiffData(list.filter(({ type }) => type === 2))
   }
 
+  updateToken(token: string) {
+    this.token = token
+  }
+
   // 获取需要更新的表数据
   private updateDiff(info: { [k: string]: LastId }) {
     const query = Object.entries(info)

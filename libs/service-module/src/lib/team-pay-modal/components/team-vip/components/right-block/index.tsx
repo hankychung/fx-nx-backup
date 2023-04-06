@@ -63,10 +63,9 @@ const RightBlock = ({
           const new_arr = res.data.map((item) => {
             const arr = getItem(item.id, _.data || [])
             return {
-            
               ...arr[0],
               ...item,
-              active: false,
+              active: false
             }
           })
           setVipMeal(new_arr[0])

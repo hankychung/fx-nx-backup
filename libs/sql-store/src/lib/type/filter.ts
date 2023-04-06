@@ -43,6 +43,37 @@ export enum MatterState {
   COMPLETE_DELAY
 }
 
+export interface FilterParamsFilter {
+  keyword?: string
+  query_type?: FilterQueryType | ''
+  group_by?: FullGroupBy
+
+  is_follow?: 1 | 2 // 1 已关注 2 未关注
+  schedule_hide?: 1 | 2 // 1 已隐藏  2 未显示
+  conclusion?: 1 | 2 // 1 有总结 2 无总结
+
+  task_at?: TimerData
+  create_at?: TimerData
+  update_at?: TimerData
+  finish_time?: TimerData
+  complete_at?: TimerData
+
+  tags?: string[]
+
+  parent_id?: string // 查询目标子事项
+
+  parent_ids?: string[] // 所属事项
+
+  application_ids?: string[]
+  matter_states?: MatterState[]
+  priority_levels?: FilterQuadrantValue[]
+  taker_ids?: string[]
+  creator_ids?: string[]
+  admins_ids?: string[]
+  project_ids?: string[]
+  workspace_ids?: string[]
+}
+
 export interface FilterParamsProps {
   page_number: number
   page_record: number
@@ -54,32 +85,5 @@ export interface FilterParamsProps {
     sort: 'DESC' | 'ASC'
   }
 
-  filter?: {
-    keyword?: string
-    query_type?: FilterQueryType
-    group_by?: FullGroupBy
-
-    is_follow?: 1 | 2 // 1 已关注 2 未关注
-    schedule_hide?: 1 | 2 // 1 已隐藏  2 未显示
-    conclusion?: 1 | 2 // 1 有总结 2 无总结
-
-    task_at?: TimerData
-    create_at?: TimerData
-    update_at?: TimerData
-    finish_time?: TimerData
-    complete_at?: TimerData
-
-    tags?: string[]
-
-    parent_id?: string
-
-    application_ids?: string[]
-    matter_states?: MatterState[]
-    priority_levels?: FilterQuadrantValue[]
-    taker_ids?: string[]
-    creator_ids?: string[]
-    admins_ids?: string[]
-    project_ids?: string[]
-    workspace_ids?: string[]
-  }
+  filter?: FilterParamsFilter
 }

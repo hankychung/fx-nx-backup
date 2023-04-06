@@ -29,6 +29,7 @@ interface Attachinfo {
   workspace: LastId
   workspace_bind: LastId
   workspace_member: LastId
+  [k: string]: LastId
 }
 
 interface LastId {

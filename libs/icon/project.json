@@ -27,6 +27,9 @@
           "mode": "production"
         }
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./libs/icon/tsconfig.lib.json"
     }
   }
 }

@@ -94,6 +94,9 @@
           "codeCoverage": true
         }
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./apps/icon-display/tsconfig.app.json"
     }
   },
   "tags": []

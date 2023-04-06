@@ -2,7 +2,7 @@ import initSql from 'sql.js'
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
-import { set, get, del } from 'idb-keyval'
+import { set, get, del, values } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
@@ -38,7 +38,9 @@ class SqlStore {
   private token = ''
 
   async initDB(p: IUserParams) {
+    console.log('initDB')
     this.userId = p.userId
+    const loadWasmUrl = p.wasmUrl || wasmUrl
 
     // 已存在打开的数据库（切换用户）
     if (this.db) {
@@ -57,7 +59,7 @@ class SqlStore {
     this.token = p.token
 
     const SQL = await initSql({
-      locateFile: () => wasmUrl
+      locateFile: () => loadWasmUrl
     })
 
     const data = await (await fetch(`${this.host}/userc/v2/system/now`)).json()
@@ -311,6 +313,43 @@ class SqlStore {
       // record the timestamp
       set(this.recordKey, this.recordInfo)
     })
+  }
+
+  private getSqlValue(v: any) {
+    if (typeof v === 'number') {
+      return v
+    }
+
+    if (typeof v === 'string') {
+      return `'${(v as string).replace(/'/g, `''`)}'`
+    }
+
+    if (v && typeof v === 'object') {
+      return `'${JSON.stringify(v)}'`
+    }
+
+    return v || 'null'
+  }
+
+  private getKeyLinkValue([key, value]: [string, any]) {
+    return '`' + key + '`' + '=' + this.getSqlValue(value)
+  }
+
+  private getDelSql(keys: Record<string, any>, table: string) {
+    const where = Object.entries(keys).map((item) => this.getKeyLinkValue(item))
+
+    return `DELETE FROM ${table} WHERE ${where.join(',')}`
+  }
+
+  private getUpdateSql(
+    item: { keys: Record<string, any>; data: Record<string, any> },
+    table: string
+  ) {
+    const set = Object.entries(item.data).map((v) => this.getKeyLinkValue(v))
+
+    const where = Object.entries(item.keys).map((v) => this.getKeyLinkValue(v))
+
+    return `UPDATE ${table} SET ${set.join(',')} WHERE ${where.join(',')}`
   }
 
   private getInsertSql(item: Record<string, any>, table: string) {

@@ -20,7 +20,8 @@ const PayQrCode = ({
   vipMealType,
   senConfirm,
   isPaySuccess,
-  onClose
+  onClose,
+  getOrderCode
 }: {
   vipMealType: VipMealType
   payInfo?: IActiveGoods
@@ -28,6 +29,7 @@ const PayQrCode = ({
   isPaySuccess: boolean
   onClose: () => void
   senConfirm?: () => void
+  getOrderCode?: (str: string) => void
 }) => {
   const service = useContext(SelectMemberContext)
   // const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -52,8 +54,9 @@ const PayQrCode = ({
     try {
       paymentApi.createOrder(params).then(async (_) => {
         if (_.code === 0) {
+          getOrderCode && getOrderCode(_.data.out_trade_no)
           const res = await QRCode.toDataURL(
-            `http://10.255.0.68:4200/payDetail?params=${JSON.stringify({
+            `https://pay-test.flyele.vip/payDetail?params=${JSON.stringify({
               ..._.data,
               total_price: (payInfo?.now_price || 0) * userInfo.length
             })}&&token=${paymentApi.getToken()}`

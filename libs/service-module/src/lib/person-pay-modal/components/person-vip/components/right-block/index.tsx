@@ -11,11 +11,24 @@ import * as dayjs from 'dayjs'
 import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import { SelectMemberContext } from '../../../../context/context'
 import { useMemoizedFn } from 'ahooks'
-const RightBlock = () => {
+import { IFlyeleAvatarItem } from '../../../../../pay-modal'
+const RightBlock = ({
+  memberList,
+  mineId
+}: {
+  memberList: IFlyeleAvatarItem[]
+  mineId: string
+}) => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
   const { nowScecond } = useCurrentTime()
-
+  const isLifeLong = useMemo(() => {
+    const info = memberList.filter((item) => item.userId === mineId)[0]
+    if (info.end_time === 9999999999) {
+      return true
+    }
+    return false
+  }, [mineId, memberList])
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
@@ -87,7 +100,7 @@ const RightBlock = () => {
 
   return (
     <div className={style.rightBlock}>
-      {
+      {!isLifeLong && (
         <div className={style.mealBlock}>
           <div className={style.title}>套餐选择</div>
           <div className={style.mealList}>
@@ -136,9 +149,9 @@ const RightBlock = () => {
             })}
           </div>
         </div>
-      }
+      )}
       {/* 支付按钮 */}
-      {
+      {!isLifeLong && (
         <div>
           <PayButton
             vipMealType={VipMealType.PERSON}
@@ -146,8 +159,8 @@ const RightBlock = () => {
             payClick={payClick}
           />
         </div>
-      }
-      {false && (
+      )}
+      {isLifeLong && (
         <div>
           <PersonVipEmpty></PersonVipEmpty>
         </div>

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 16:58:48
+ * @LastEditTime: 2023-04-06 18:09:38
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,6 +26,7 @@ interface Iprops {
   setVipMealType: (_: VipMealType) => void
   senConfirm?: () => void
   onClose: () => void
+  getOrderCode?: (str:string) => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -36,7 +37,8 @@ const VipPackage = (props: Iprops) => {
     mineId,
     senConfirm,
     isPaySuccess,
-    onClose
+    onClose,
+    getOrderCode
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -133,7 +135,9 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        <PersonVip />
+        <PersonVip         
+          memberList={memberList}
+          mineId={mineId}/>
       </div>
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
@@ -152,6 +156,7 @@ const VipPackage = (props: Iprops) => {
           vipMealType={vipMealType}
           senConfirm={senConfirm}
           isPaySuccess={isPaySuccess}
+          getOrderCode={  getOrderCode}
           userInfo={
             userInfo
               ? userInfo

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from './index.module.scss'
 import { IntroductionBox } from './components/introduction-box'
 import { memberPowerStaticData } from '@flyele-nx/constant'
@@ -8,12 +8,24 @@ import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
 import { UsercApi } from '@flyele-nx/service'
+import { useMemoizedFn } from 'ahooks'
+import { paymentApi } from '@flyele-nx/service'
+/**
+ * 0-非会员，1-个人会员，2-团队会员
+ */
+export enum VipTypeEnum {
+  Poor = 0,
+  Person = 1,
+  Team = 2
+}
 
 export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCustomerModal, setShowCustomerModal] = useState(false)
+  const [isShowPay, setIsShowPay] = useState(false)
+  const [orderCode, setOrderCode] = useState('')
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
   const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
   const onClickBtn = (key: string) => {
@@ -25,34 +37,90 @@ export const MemberIntroduction = () => {
       setShowCustomerModal(true)
     }
   }
+  const getOrderDetail = () => {
+    paymentApi
+      .getOrderDetail({
+        out_trade_no: orderCode
+      })
+      .then((res) => {
+        if (res.code === 0) {
+          if (res.data === 12001) {
+            setIsShowPay(true)
+          }
+        }
+      })
+  }
+  const initFn = useMemoizedFn(() => {
+    return setInterval(() => {
+      getOrderDetail()
+    }, 2000)
+  })
+  useEffect(() => {
+    let timer:  NodeJS.Timer | undefined
+    if (orderCode) {
+      timer = initFn()
+    }
+    return () => {
+      clearInterval(timer)
+    }
+  }, [orderCode, initFn])
+  const checkVipType = (
+    vip_type?: VipTypeEnum,
+    vip_next_expired_at?: number
+  ) => {
+    if (vip_next_expired_at) {
+      return {
+        isVip: true,
+        isTeamVip: true
+      }
+    }
 
+    const isVip = vip_type === VipTypeEnum.Person
+    const isTeamVip = vip_type === VipTypeEnum.Team
+
+    return {
+      isVip,
+      isTeamVip
+    }
+  }
   /**
    * 请求协作人列表
    */
   const fetchTakerList = async () => {
     const { data } = await UsercApi.getContacts()
     const { data: selfUserInfo } = await UsercApi.getLoginUserInfo()
+    const { data: vip } = await UsercApi.getCombo()
+
+    console.log(vip, 'vip')
 
     const list = data.map((item) => {
+      const { isTeamVip, isVip } = checkVipType(item.vip_type)
       return {
         userId: item.user_id,
         name: item.nick_name,
         pinyin: item.pinyin,
         avatar: item.avatar,
-        telephone: item.telephone || '',
-        isVip: true,
-        isTeamVip: true
+        telephone: (item.telephone || '').replace(
+          /^(\d{3})\d{4}(\d+)/,
+          '$1****$2'
+        ),
+        isVip,
+        isTeamVip
       }
     })
-
+    const { member } = vip
+    const { isTeamVip, isVip } = checkVipType(member.state)
     const selfData = {
       userId: selfUserInfo.user_id,
       name: selfUserInfo.nick_name,
       pinyin: selfUserInfo.pinyin,
       avatar: selfUserInfo.avatar,
       telephone: selfUserInfo.telephone || '',
-      isVip: true,
-      isTeamVip: true
+      isVip,
+      isTeamVip,
+      level: member.state,
+      next_end_time: member.next_end_time,
+      end_time: member.end_time
     }
     setSelfUserInfo(selfData)
     setMemberList([selfData, ...list])
@@ -82,13 +150,16 @@ export const MemberIntroduction = () => {
 
       <PayModal
         visible={show}
-        isPaySuccess={false}
+        isPaySuccess={isShowPay}
         mineId={selfUserInfo?.userId || ''}
         modalType="person"
         payType={payType}
         memberList={memberList}
         onClose={() => {
           setShow(false)
+        }}
+        getOrderCode={(code:string)=>{
+          setOrderCode(code)
         }}
       ></PayModal>
 

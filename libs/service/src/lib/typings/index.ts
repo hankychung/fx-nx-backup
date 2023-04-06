@@ -84,3 +84,16 @@ export interface ILoginKeyParams {
 /**
  * 登录相关结束
  */
+
+ interface Member {
+  end_time: number
+  id: string
+  invite_code: string
+  start_time: number
+  state: 0 | 1 | 2
+  user_id: string
+  next_end_time?: number //不为空表示他还有个人会员的过期时间
+}
+export interface IVipMember {
+  member: Member
+}

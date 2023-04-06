@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 16:58:50
+ * @LastEditTime: 2023-04-06 18:09:25
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -30,9 +30,10 @@ interface Iprops {
   mineId: string
   isPaySuccess: boolean
   senConfirm?: () => void
+  getOrderCode?: (str:string) => void
 }
 const PersonPayModal = (props: Iprops) => {
-  const { payType, onClose, memberList, mineId, senConfirm, isPaySuccess } =
+  const { payType, onClose, memberList, mineId, senConfirm, isPaySuccess, getOrderCode } =
     props
   const [vipMealType, setVipMealType] = useState<VipMealType>(1) // 切换tab
   useEffect(() => {
@@ -80,6 +81,7 @@ const PersonPayModal = (props: Iprops) => {
               mineId={mineId}
               senConfirm={senConfirm}
               isPaySuccess={isPaySuccess}
+              getOrderCode={getOrderCode}
             />
           </div>
         </SelectMemberContext.Provider>

@@ -4,7 +4,7 @@ RUN echo -e 'server { \
 	listen 8080; \n\
 	# server_name _; \n\
 	\n\
-	root /usr/share/nginx/web; \
+	root /usr/share/nginx/web/apps/h5; \
 	index index.html index.htm index.php; \
 	\n\
 	location / { \n\

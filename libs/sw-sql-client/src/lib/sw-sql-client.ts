@@ -32,6 +32,8 @@ function promiseWorkerMessage<
       return reject('ERROR, serviceWorker is not init')
     }
 
+    console.log('promiseWorkerMessage', serviceWorker)
+
     const postUid = `${key}-${String(Math.floor(Math.random() * 100000000))}`
 
     const callBack = ({ data: res }: MessageEvent<WorkerBack<res>>) => {
@@ -69,12 +71,15 @@ class ServiceWorkerUtils {
       return
     }
 
+    console.log('serviceWorker init')
+
     serviceWorker = new Worker(url)
 
     return serviceWorker
   }
 
   static login(userInfo: SqlStore.IUserParams) {
+    console.log('ServiceWorkerUtils login')
     return promiseWorkerMessage(ServiceWorkerKey.INIT_DB, userInfo)
   }
 
@@ -90,7 +95,7 @@ class ServiceWorkerUtils {
   static queryFullViewList = (data: FullViewParams) => {
     const params: Partial<FilterParamsProps> = {
       page_number: data.page_number,
-      page_record: data.page_number,
+      page_record: data.page_record,
       show_model: data.show_mode
     }
 
@@ -130,6 +135,8 @@ class ServiceWorkerUtils {
     }
 
     params.filter = filter
+
+    console.log('queryFullViewList', params)
 
     return promiseWorkerMessage(
       ServiceWorkerKey.QUERY_FULL_VIEW_LIST,

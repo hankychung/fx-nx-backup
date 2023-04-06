@@ -45,7 +45,7 @@ export const getFilterSql = (
   } = params
 
   const {
-    keyword,
+    keywords,
     parent_id,
 
     query_type,
@@ -91,9 +91,9 @@ export const getFilterSql = (
   /**
    * 标题/背景信息
    */
-  if (keyword) {
+  if (keywords) {
     queryModel = 1
-    WHERES.push(`(title LIKE '%${keyword}%' OR detail LIKE '%${keyword}%')`)
+    WHERES.push(`(title LIKE '%${keywords}%' OR detail LIKE '%${keywords}%')`)
   }
 
   // 如果是收合模式默认查询顶级事项

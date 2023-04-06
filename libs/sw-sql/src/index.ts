@@ -10,9 +10,7 @@ class DBHandler {
       console.log('onmessage')
       switch (data.key) {
         case ServiceWorkerKey.INIT_DB: {
-          sqlStore.initDB(data.data as any).then(() => {
-            self.postMessage({ uid: data.uid })
-          })
+          await sqlStore.initDB(data.data as any)
           break
         }
         case ServiceWorkerKey.QUERY_FULL_VIEW_LIST: {

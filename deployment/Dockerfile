@@ -14,6 +14,6 @@ RUN echo -e 'server { \
 	' > /etc/nginx/conf.d/default.conf
 
 
-COPY ./dist /usr/share/nginx/web
+COPY ./dist/apps/h5 /usr/share/nginx/web
 
 EXPOSE 8080

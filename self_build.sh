@@ -2,12 +2,14 @@ branch=$1
 
 imageName="fx-nx"
 
+asdf install
+
 yarn
 
 echo "  --> 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then
-  yarn build
+  yarn build:h5
   imageName="fx-nx-dev"
 else
   echo "  --> "$branch"不构建..."

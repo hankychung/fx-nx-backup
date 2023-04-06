@@ -5,6 +5,7 @@ interface IUserParams {
   host: string
   env: string
   userId: string
+  wasmUrl?: string
 }
 
 export { IUserParams, Filter }

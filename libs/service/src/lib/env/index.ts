@@ -4,7 +4,7 @@ class EnvStore {
   private info: { [k: string]: { host: string } } = {
     dev: { host: 'https://api.flyele.vip' },
     test: { host: 'https://api-test.flyele.vip' },
-    prod: { host: 'https://api.flyele.net' }
+    prod: { host: 'https://api-test.flyele.vip' }
   }
 
   initEnv(env: string) {

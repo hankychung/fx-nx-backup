@@ -4,7 +4,7 @@ import styles from './app.module.scss'
 import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
-// import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
+import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
 // import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 
@@ -31,31 +31,41 @@ export function App() {
   const isInit = useRef(false)
 
   const init = async () => {
-    await sqlStore.initDB({
-      host: envStore.getHost(),
-      token,
-      env,
-      userId: '1391546954154080'
-    })
-    const page_record = 3000
-
-    console.time(`${page_record}条查询`)
-    const data = sqlStore.query({
-      page_number: 1,
-      page_record: page_record,
-      show_model: 2,
-      direction: Direction.down,
-      filter: {
-        group_by: FullGroupBy.time,
-        query_type: 0
-      },
-      order_by: {
-        order_by_key: 'timestamp',
-        sort: 'DESC'
-      }
-    })
-    console.timeEnd(`${page_record}条查询`)
-    console.log(data)
+    // await ServiceWorkerUtils.registerServiceWorker('/sw.js')
+    // await ServiceWorkerUtils.login({
+    //   host: envStore.getHost(),
+    //   token,
+    //   env,
+    //   userId: '542409300902161'
+    // })
+    // await ServiceWorkerUtils.queryFullViewList({
+    //   date_type: 1,
+    //   group_by: 'time' as unknown as any,
+    //   page_number: 1,
+    //   page_record: 300,
+    //   query_type: 0,
+    //   show_mode: 2
+    // })
+    // await sqlStore.initDB({
+    //   host: envStore.getHost(),
+    //   token,
+    //   env,
+    //   userId: '542409300902161'
+    // })
+    // const page_record = 3000
+    // console.time(`${page_record}条查询`)
+    // const data = sqlStore.query({
+    //   page_number: 1,
+    //   page_record: page_record,
+    //   show_model: 2,
+    //   direction: Direction.up,
+    //   filter: {
+    //     group_by: FullGroupBy.time,
+    //     query_type: 0
+    //   }
+    // })
+    // console.timeEnd(`${page_record}条查询`)
+    // console.log(data)
   }
 
   useEffect(() => {

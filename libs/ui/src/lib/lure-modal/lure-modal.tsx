@@ -1,7 +1,7 @@
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
-import { CloseIcon } from '@flyele-nx/icon'
+import { Close } from '@flyele-nx/icon'
 import { ReactComponent as ConvertIcon } from './img/convert.svg'
 import venationImg from './img/venation.png'
 import cycleImg from './img/cycle.png'
@@ -57,7 +57,7 @@ function _LureModal({
         className={classNames(styles.title, { [styles['title-img']]: imgType })}
       >
         <div>{isEmptyContent ? title : ''}</div>
-        <CloseIcon onClick={handleClose} />
+        <Close onClick={handleClose} />
       </div>
 
       {imgType ? (

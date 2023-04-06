@@ -24,14 +24,12 @@ export function App() {
 
   const init = async () => {
     // await ServiceWorkerUtils.registerServiceWorker('/sw.js')
-
     // await ServiceWorkerUtils.login({
     //   host: envStore.getHost(),
     //   token,
     //   env,
     //   userId: '542409300902161'
     // })
-
     // await ServiceWorkerUtils.queryFullViewList({
     //   date_type: 1,
     //   group_by: 'time' as unknown as any,
@@ -47,7 +45,6 @@ export function App() {
     //   userId: '542409300902161'
     // })
     // const page_record = 3000
-
     // console.time(`${page_record}条查询`)
     // const data = sqlStore.query({
     //   page_number: 1,

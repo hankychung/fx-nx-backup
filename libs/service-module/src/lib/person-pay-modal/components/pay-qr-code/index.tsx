@@ -61,7 +61,9 @@ const PayQrCode = ({
 
         const b = JSON.stringify(a)
         const res = await QRCode.toDataURL(
-          `https://pay-test.flyele.vip/payDetail?params=${decodeURIComponent(b)}&&token=${paymentApi.getToken()}`
+          `https://pay-test.flyele.vip/payDetail?params=${decodeURIComponent(
+            b
+          )}&&token=${paymentApi.getToken()}`
         )
         setQrCode(res)
       })

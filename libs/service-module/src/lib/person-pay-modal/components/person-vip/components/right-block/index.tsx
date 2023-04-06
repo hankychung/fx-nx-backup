@@ -29,9 +29,9 @@ const RightBlock = () => {
             if (index === 0) {
               if (arr.length > 0) {
                 return {
+                  ...arr[0],
                   ...item,
-                  active: true,
-                  ...arr[0]
+                  active: true
                 }
               } else {
                 return {
@@ -42,9 +42,9 @@ const RightBlock = () => {
             }
             if (arr.length > 0) {
               return {
+                ...arr[0],
                 ...item,
-                active: false,
-                ...arr[0]
+                active: false
               }
             } else {
               return {

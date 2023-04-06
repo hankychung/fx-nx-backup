@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-30 18:01:25
+ * @LastEditTime: 2023-04-04 15:23:25
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,22 +11,22 @@ import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_i
 import style from './index.module.scss'
 import Protocol from './components/protocol'
 import SuccessPay from './components/success-pay'
-import { IActiveGoods } from '@flyele-nx/api'
+import { IActiveGoods, paymentApi } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
 import { useMemoizedFn } from 'ahooks'
 import QRCode from 'qrcode'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 
 const PayQrCode = ({
-  setShowSuccess,
-  showSuccess,
+  isPaySuccess,
   vipMeal,
-  memberList
+  memberList,
+  onClose
 }: {
-  showSuccess: boolean
+  isPaySuccess: boolean
   vipMeal?: IActiveGoods
-  setShowSuccess: (_: boolean) => void
   memberList: IFlyeleAvatarItem[]
+  onClose?: () => void
 }) => {
   const [qrCode, setQrCode] = useState('')
 
@@ -44,10 +44,17 @@ const PayQrCode = ({
       indent_member_type: 2
     }
     try {
-      const res = await QRCode.toDataURL(
-        `http://127.0.0.1:4200/payDetail?params=${JSON.stringify(params)}`
-      )
-      setQrCode(res)
+      paymentApi.createOrder(params).then(async (_) => {
+        if (_.code === 0) {
+          const res = await QRCode.toDataURL(
+            `http://10.255.0.68:4200/payDetail?params=${JSON.stringify({
+              ..._.data,
+              total_price: vipMeal?.now_price || 0
+            })}&&token=${paymentApi.getToken()}`
+          )
+          setQrCode(res)
+        }
+      })
     } catch {
       console.log('00')
     }
@@ -57,7 +64,7 @@ const PayQrCode = ({
   }, [qrCodeFunction])
   return (
     <div>
-      {!showSuccess && (
+      {!isPaySuccess && (
         <div className={style.payQrCode}>
           <div className={style.payInfo}>
             <div className={style.price}>
@@ -69,12 +76,7 @@ const PayQrCode = ({
                 )}`}</span>
               )}
             </div>
-            <div
-              className={style.code}
-              onClick={() => {
-                setShowSuccess(true)
-              }}
-            >
+            <div className={style.code}>
               <img alt="qrcode" src={qrCode} className={style.qrcode} />
             </div>
             <div className={style.payIcon}>
@@ -94,9 +96,9 @@ const PayQrCode = ({
         </div>
       )}
       {/* 支付成功  */}
-      {showSuccess && (
+      {isPaySuccess && (
         <div>
-          <SuccessPay />
+          <SuccessPay onClose={onClose} />
         </div>
       )}
     </div>

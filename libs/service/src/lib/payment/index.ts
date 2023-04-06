@@ -48,6 +48,11 @@ class Payment {
       data: params
     })
   }
+  async getIndent(indent_id: string) {
+    return service.get({
+      url: `payment/indent/${indent_id}`
+    })
+  }
   getToken() {
     return service.token
   }

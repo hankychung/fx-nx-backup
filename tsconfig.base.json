@@ -19,6 +19,7 @@
     "paths": {
       "@flyele-nx/api": ["libs/api/src/index.ts"],
       "@flyele-nx/constant": ["libs/constant/src/index.ts"],
+      "@flyele-nx/icon": ["libs/icon/src/index.ts"],
       "@flyele-nx/service": ["libs/service/src/index.ts"],
       "@flyele-nx/service-module": ["libs/service-module/src/index.ts"],
       "@flyele-nx/service-worker": ["libs/service-worker/src/index.ts"],

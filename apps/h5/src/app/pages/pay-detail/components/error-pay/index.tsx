@@ -38,10 +38,12 @@ const ErrorPay = ({ onClose }: { onClose: () => void }) => {
             尚未查询到支付成功，
             <p>请确认后重试</p>
           </div>
-          <div className={style.confim_block}   
+          <div
+            className={style.confim_block}
             onClick={() => {
-                onClose()
-              }}>
+              onClose()
+            }}
+          >
             <div className={style.confim}>确认</div>
           </div>
         </div>

@@ -98,7 +98,7 @@ const PayDetail = () => {
       out_trade_no: string
     }
   ) => {
-    localStorage.setItem("orderCode",info.out_trade_no)
+    localStorage.setItem('orderCode', info.out_trade_no)
     paymentApi
       .prePay({
         code,
@@ -157,10 +157,10 @@ const PayDetail = () => {
     onBridgeReady(params)
   }
   const getOrderDetail = (isPAY = false) => {
-    const orderCode =localStorage.getItem("orderCode")
+    const orderCode = localStorage.getItem('orderCode')
     paymentApi
       .getOrderDetail({
-        out_trade_no: orderCode||''
+        out_trade_no: orderCode || ''
       })
       .then((res) => {
         if (res.code === 0) {

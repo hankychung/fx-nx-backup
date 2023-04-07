@@ -55,7 +55,7 @@ const PayQrCode = ({
       paymentApi.createOrder(params).then(async (_) => {
         getOrderCode && getOrderCode(_.data.out_trade_no)
         const a = {
-          ..._.data,
+          ..._.data.data,
           total_price: payInfo?.now_price || 0
         }
 

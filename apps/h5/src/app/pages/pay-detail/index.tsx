@@ -98,6 +98,7 @@ const PayDetail = () => {
       out_trade_no: string
     }
   ) => {
+    localStorage.setItem("orderCode",info.out_trade_no)
     paymentApi
       .prePay({
         code,
@@ -136,7 +137,7 @@ const PayDetail = () => {
             if (state === 12001) {
               clearInterval(intervalId)
             }
-          }, 1000)
+          }, 2000)
           setIntervalId(interval)
         }
         // if (res.err_msg === 'get_brand_wcpay_request:cancel') {
@@ -156,9 +157,10 @@ const PayDetail = () => {
     onBridgeReady(params)
   }
   const getOrderDetail = (isPAY = false) => {
+    const orderCode =localStorage.getItem("orderCode")
     paymentApi
       .getOrderDetail({
-        out_trade_no: orderInfo?.out_trade_no || ''
+        out_trade_no: orderCode||''
       })
       .then((res) => {
         if (res.code === 0) {

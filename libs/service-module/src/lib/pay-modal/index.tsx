@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-06 18:07:07
+ * @LastEditTime: 2023-04-07 16:17:31
  */
 
 import React, { useMemo } from 'react'
@@ -39,6 +39,7 @@ interface Iprops {
   senConfirm?: () => void
   getOrderCode?: (str: string) => void
   memberList: IFlyeleAvatarItem[]
+  goProtocol: () => void
 }
 
 export default function PayModal(props: Iprops) {
@@ -54,7 +55,8 @@ export default function PayModal(props: Iprops) {
     senConfirm,
     isPaySuccess = false,
     teamVipType = 1,
-    getOrderCode
+    getOrderCode,
+    goProtocol
   } = props
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
     // 排序规则
@@ -93,6 +95,7 @@ export default function PayModal(props: Iprops) {
             memberList={sortMemberList}
             mineId={mineId}
             isPaySuccess={isPaySuccess}
+            goProtocol={goProtocol}
           />
         )
       case 'person':
@@ -105,6 +108,7 @@ export default function PayModal(props: Iprops) {
             senConfirm={senConfirm}
             isPaySuccess={isPaySuccess}
             getOrderCode={getOrderCode}
+            goProtocol={goProtocol}
           />
         )
       case 'team':
@@ -118,6 +122,7 @@ export default function PayModal(props: Iprops) {
             upSpace={upSpace}
             senConfirm={senConfirm}
             isPaySuccess={isPaySuccess}
+            goProtocol={goProtocol}
           />
         )
       default:

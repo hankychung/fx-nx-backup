@@ -161,6 +161,11 @@ export const MemberIntroduction = () => {
         getOrderCode={(code: string) => {
           setOrderCode(code)
         }}
+        goProtocol={() => {
+          window.open(
+            'https://cdn.flyele.net/agreements/service-agreement.html'
+          )
+        }}
       ></PayModal>
 
       <Modal

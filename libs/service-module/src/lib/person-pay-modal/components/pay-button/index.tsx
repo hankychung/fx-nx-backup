@@ -11,9 +11,16 @@ interface Iprops {
   activeGood?: IActiveGoods[]
   resultArr?: IFlyeleAvatarItem[]
   payClick: () => void
+  goProtocol?: () => void
 }
 const PayButton = (props: Iprops) => {
-  const { vipMealType = 1, activeGood = [], payClick, resultArr = [] } = props
+  const {
+    vipMealType = 1,
+    activeGood = [],
+    payClick,
+    resultArr = [],
+    goProtocol
+  } = props
 
   const activeItem = activeGood[0]
 
@@ -62,8 +69,7 @@ const PayButton = (props: Iprops) => {
             [style.teamColor]: vipMealType === VipMealType.TEAM
           })}
           onClick={() => {
-            window.location.href =
-              'https://cdn.flyele.net/agreements/service-agreement.html'
+            goProtocol && goProtocol()
           }}
         >
           《飞项会员协议》

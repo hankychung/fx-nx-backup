@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-06 19:46:40
+ * @LastEditTime: 2023-04-07 16:26:08
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -24,11 +24,13 @@ import { useMemoizedFn } from 'ahooks'
 const RightBlock = ({
   vipType,
   mineInfo,
-  upSpace
+  upSpace,
+  goProtocol
 }: {
   vipType: VipPayType
   mineInfo?: IFlyeleAvatarItem
   upSpace?: () => void
+  goProtocol: () => void
 }) => {
   const service = useContext(SelectMemberContext)
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
@@ -157,6 +159,7 @@ const RightBlock = ({
           activeGood={vipMeal ? [vipMeal] : []}
           vipType={vipType}
           mineInfo={mineInfo}
+          goProtocol={goProtocol}
         />
       </div>
     </div>

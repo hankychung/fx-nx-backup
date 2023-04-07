@@ -136,7 +136,7 @@ class ServiceWorkerUtils {
 
     params.filter = filter
 
-    console.log('queryFullViewList', params)
+    console.log('queryFullViewList', params, JSON.stringify(params))
 
     return promiseWorkerMessage(
       ServiceWorkerKey.QUERY_FULL_VIEW_LIST,

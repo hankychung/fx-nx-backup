@@ -23,19 +23,20 @@ const SqlFilterSplitKeys: {
   },
   {
     filter_key: 'matter_states',
-    key: 'matter_state'
+    key: 'matter_states'
   },
   {
     filter_key: 'priority_levels',
     key: 'priority_level'
   },
+  { filter_key: 'tags', key: 'tags_id' },
   {
     filter_key: 'taker_ids',
-    key: 'taker_id'
+    key: 'takers_id'
   },
   {
     filter_key: 'creator_ids',
-    key: 'creator_id'
+    key: 'creators_id'
   },
   {
     filter_key: 'admins_ids',
@@ -43,12 +44,12 @@ const SqlFilterSplitKeys: {
   },
   {
     filter_key: 'project_ids',
-    key: 'project_id'
+    key: 'projects_id'
   },
 
   {
     filter_key: 'workspace_ids',
-    key: 'workspace_id'
+    key: 'workspaces_id'
   }
 ]
 

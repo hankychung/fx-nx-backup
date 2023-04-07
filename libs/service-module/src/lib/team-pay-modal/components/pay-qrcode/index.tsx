@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-04 15:24:04
+ * @LastEditTime: 2023-04-07 09:31:02
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -57,15 +57,15 @@ const PayQrCode = ({
     }
     try {
       paymentApi.createOrder(params).then(async (_) => {
-        if (_.code === 0) {
-          const res = await QRCode.toDataURL(
-            `https://pay-test.flyele.vip/payDetail?params=${JSON.stringify({
-              ..._.data,
-              total_price: (payInfo?.now_price || 0) * userInfo.length
-            })}&&token=${paymentApi.getToken()}`
-          )
-          setQrCode(res)
+        const a = {
+          ..._.data.data,
+          total_price: (payInfo?.now_price || 0) * userInfo.length
         }
+        const b = JSON.stringify(a)
+        const res = await QRCode.toDataURL(
+          `https://pay-test.flyele.vip/payDetail?params=${b}&&token=${paymentApi.getToken()}`
+        )
+        setQrCode(res)
       })
     } catch {
       console.log('00')

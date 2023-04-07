@@ -23,7 +23,7 @@ export interface Res {
 const PayDetail = () => {
   const [payParams, setPayParam] = useState()
   const [state, setStatus] = useState(12000)
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
   const [orderInfo, setOrderInfo] = useState<{
     description: string
@@ -83,7 +83,9 @@ const PayDetail = () => {
     for (let i = 0; i < vars.length; i++) {
       const pair = vars[i].split('=')
       if (pair[0] === paramName) {
-        return pair[1]
+        console.log(pair[1], decodeURIComponent(pair[1]))
+
+        return decodeURIComponent(pair[1])
       }
     }
     return false

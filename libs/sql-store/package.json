@@ -1,6 +1,6 @@
 {
   "name": "@flyele-nx/sql-store",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "commonjs",
   "dependencies": {
     "idb-keyval": "^6.2.0",

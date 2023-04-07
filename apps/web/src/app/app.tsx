@@ -13,14 +13,7 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3ODg4MzIsImlhdCI6MTY4MDc4MTM3MiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6IjhjZTc5MThiLWU4NzMtNGFkYy05NmYzLWMxZDhmNTQ5MDQ0NiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.LqltnP1DtoH7F8NuyYiTxdnnxTmVvegG1XkhtdXsGuo'
-
-// registerServiceWorker('/sw.js', {
-//   host: envStore.getHost(),
-//   token,
-//   env,
-//   userId: '542408421671185'
-// })
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA4NjQ3OTcsImlhdCI6MTY4MDg1NzAyNSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzMxMzYzMzU0NTA5NDgyIiwiRGV2aWNlSUQiOiJkZDE3Yzg5Yi1kYWIyLTRiN2QtYmQ4Yi02Mjc4NmMxM2Y2ZDUiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9._E6j7fSJhxMhZY2OUJh2TlDF_Dm8H8yh9zLlpPIyH1s'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -50,22 +43,26 @@ export function App() {
       host: envStore.getHost(),
       token,
       env,
-      userId: '542409300902161'
+      userId: '1331363354509482'
     })
-    // const page_record = 3000
-    // console.time(`${page_record}条查询`)
-    // const data = sqlStore.query({
-    //   page_number: 1,
-    //   page_record: page_record,
-    //   show_model: 2,
-    //   direction: Direction.up,
-    //   filter: {
-    //     group_by: FullGroupBy.time,
-    //     query_type: 0
-    //   }
-    // })
-    // console.timeEnd(`${page_record}条查询`)
-    // console.log(data)
+    const page_record = 200
+    console.time(`${page_record}条查询`)
+    const data = sqlStore.query({
+      direction: 'down',
+      filter: {
+        date_type: 2,
+        group_by: 'time',
+        page_number: 2,
+        page_record: 100,
+        query_type: 6,
+        show_mode: 2
+      },
+      page_number: 2,
+      page_record: 100,
+      show_model: 2
+    } as unknown as any)
+    console.timeEnd(`${page_record}条查询`)
+    console.log(data)
   }
 
   useEffect(() => {

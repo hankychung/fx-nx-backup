@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 17:03:34
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-01 17:29:03
+ * @LastEditTime: 2023-04-06 19:45:21
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
@@ -51,9 +51,9 @@ const MemberInfo = ({
           const new_arr = res.data.map((item) => {
             const arr = getItem(item.id, _.data || [])
             return {
+              ...arr[0],
               ...item,
-              active: false,
-              ...arr[0]
+              active: false
             }
           })
           setVipMeal(new_arr[0])

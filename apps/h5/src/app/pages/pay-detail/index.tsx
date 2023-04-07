@@ -137,7 +137,7 @@ const PayDetail = () => {
             if (state === 12001) {
               clearInterval(intervalId)
             }
-          }, 2000)
+          }, 1000)
           setIntervalId(interval)
         }
         // if (res.err_msg === 'get_brand_wcpay_request:cancel') {

@@ -139,10 +139,10 @@ const PayDetail = () => {
           }, 1000)
           setIntervalId(interval)
         }
-        if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-          getOrderDetail()
-          // 支付取消
-        }
+        // if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+        //   getOrderDetail()
+        //   // 支付取消
+        // }
 
         if (res.err_msg === 'get_brand_wcpay_request:fail') {
           // 支付失败
@@ -162,10 +162,15 @@ const PayDetail = () => {
       })
       .then((res) => {
         if (res.code === 0) {
-          if (res.data === 12000 && isPAY) {
+          if (res.data !== 12001 && isPAY) {
             setVisible(true)
           }
-          setStatus(res.data)
+          if (res.data === 12001) {
+            setStatus(res.data)
+          }
+          if (res.data === 12004) {
+            setStatus(res.data)
+          }
         }
       })
   }

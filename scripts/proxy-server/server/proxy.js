@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.flyele.vip'
+const baseUrl = 'https://api-test.flyele.vip'
 const axios = require('axios')
 
 module.exports = (server) => {

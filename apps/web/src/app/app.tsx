@@ -55,7 +55,7 @@ export function App() {
         page_number: 2,
         page_record: 100,
         query_type: 6,
-        show_mode: 2,
+        show_mode: 2
       },
       page_number: 2,
       page_record: 100,

@@ -7,10 +7,12 @@ compile-docker:
     - nodejs
     - mac
   stage: compile
+  
   rules:
     - if: $CI_COMMIT_BRANCH == 'master'
     - if: $CI_COMMIT_BRANCH == 'test'
     - if: $CI_COMMIT_BRANCH == 'dev'
+    - if: $CI_COMMIT_BRANCH == 'dev-hui'
   script:
     - chmod a+x ./self_build.sh
     - ./self_build.sh $CI_COMMIT_BRANCH

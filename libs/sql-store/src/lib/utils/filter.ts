@@ -112,7 +112,7 @@ export const getFilterSql = (
   if (parent_id) {
     LIMIT = ''
 
-    WHERES.push(`parent_id = ${parent_id}`)
+    WHERES.push(`parent_id = '${parent_id}'`)
   }
 
   /**
@@ -267,7 +267,7 @@ export const getFilterSql = (
   if (task_at?.end_time && task_at.start_time) {
     const { start_time, end_time } = task_at
 
-    WHERES.push(`((start_time BETWEEN ${start_time} AND ${end_time}) OR (end_time BETWEEN ${start_time} AND ${end_time})) OR
+    WHERES.push(`((start_time BETWEEN ${start_time} AND ${end_time}) OR (end_time BETWEEN ${start_time} AND ${end_time}) OR
     (start_time > 0 AND start_time < ${start_time} AND end_time > ${end_time}) OR
     (flow_step_id > 0 AND create_at BETWEEN ${start_time} AND ${end_time}))`)
   }
@@ -322,7 +322,7 @@ export const getFilterSql = (
     const hasNull = taker_ids.includes('-1')
     const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
-    const nStr = hasNull ? `(takers IS NULL)` : ''
+    const nStr = hasNull ? `(takers = '')` : ''
     const tStr = tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')
 
     WHERES.push(
@@ -423,13 +423,13 @@ export const getFilterSql = (
     }
     // 协作事项
     case FilterQueryType.cooperation: {
-      WHERES.unshift(`takers != ${user_id}`)
+      WHERES.unshift(`takers != '${user_id}'`)
       // WHERES.push(`(taker_total > 1 OR (takers != ${user_id} ))`)
       break
     }
     // 个人事项
     case FilterQueryType.personal: {
-      WHERES.unshift(`takers = ${user_id}`)
+      WHERES.unshift(`takers = '${user_id}'`)
       // WHERES.push(`taker_total = 1 AND takers = ${user_id}`)
       break
     }

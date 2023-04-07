@@ -52,9 +52,9 @@ class SqlStore {
 
     this.recordKey = `${this.dbId}-record`
 
-    if (p.host !== 'https://api.flyele.vip') {
-      this.host = p.host
-    }
+    // if (p.host !== 'https://api.flyele.vip') {
+    // this.host = p.host
+    // }
 
     this.token = p.token
 
@@ -110,8 +110,10 @@ class SqlStore {
     // 更新差异包
     this.updateDiffData(list.filter(({ type }) => type === 2))
 
-    // 更新差异数据
-    this.updateDiff(firstData.attach_info)
+    if (firstData) {
+      // 更新差异数据
+      this.updateDiff(firstData.attach_info)
+    }
   }
 
   updateToken(token: string) {
@@ -247,10 +249,6 @@ class SqlStore {
           quote_total: line['quote_total']
         }
       })
-
-      if (line['task_tree_total'] > 0) {
-        console.log('task_tree_total', line['task_tree_total'], task_id)
-      }
 
       line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
     }

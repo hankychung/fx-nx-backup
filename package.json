@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "node scripts/serve.js",
     "build:web": "yarn nx build web",
+    "build:sql": "yarn nx build sw-sql && yarn nx build sw-sql-client && yarn nx build sql-store",
     "build": "yarn nx run-many --target=build",
     "prepare": "husky install",
     "lint": "yarn nx format:write --all && nx run-many --target=lint && nx run-many --target=tslint",

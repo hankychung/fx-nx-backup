@@ -7,7 +7,7 @@ compile-docker:
     - nodejs
     - mac
   stage: compile
-  
+
   rules:
     - if: $CI_COMMIT_BRANCH == 'master'
     - if: $CI_COMMIT_BRANCH == 'test'

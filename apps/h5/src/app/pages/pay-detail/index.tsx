@@ -23,7 +23,7 @@ export interface Res {
 const PayDetail = () => {
   const [payParams, setPayParam] = useState()
   const [state, setStatus] = useState(12000)
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
   const [orderInfo, setOrderInfo] = useState<{
     description: string

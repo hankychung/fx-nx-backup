@@ -8,7 +8,7 @@ yarn
 
 echo "  --> 开始执行 yarn build..."
 
-if [ $branch == "dev" ];then
+if [ $branch == "dev-hui" ];then
   yarn build:h5
   imageName="fx-nx-dev"
 else

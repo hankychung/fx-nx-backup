@@ -164,12 +164,14 @@ class SqlStore {
           }
 
           if (type === 'update') {
-            // TODO: 更新逻辑
+            // 更新逻辑
+            sql += this.getUpdateSql({ keys, data }, key) + ';'
             continue
           }
 
           if (type === 'delete') {
-            // TODO: 删除逻辑
+            // 删除逻辑
+            sql += this.getDelSql(keys, key) + ';'
           }
         }
 
@@ -357,8 +359,6 @@ class SqlStore {
     options?: { isUpdate?: boolean }
   ) {
     const obj: any = {}
-
-    console.log('check item', item, table)
 
     if (options?.isUpdate) {
       Object.keys(item).forEach((k) => {

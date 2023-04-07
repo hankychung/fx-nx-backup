@@ -216,7 +216,7 @@ const PayDetail = () => {
           <div>2. 如未打开微信app或未支付成功，请点击【重新支付】</div>
         </div>
       )}
-      {state === 12001 && (
+      {state === 12000 && (
         <div className={styles.btns}>
           <div
             className={styles.btn}

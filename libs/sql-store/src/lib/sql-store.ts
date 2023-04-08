@@ -11,12 +11,17 @@ import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
 import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
+import { defaultDiffStamp } from './const'
 
 const wasmUrl = '/sql-wasm.wasm'
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 
 type DiffPackList = PackInfo['data']
+
+function checkDecentTable(k: string) {
+  return !['comment'].includes(k)
+}
 
 class SqlStore {
   private db: initSql.Database | null = null
@@ -30,7 +35,10 @@ class SqlStore {
 
   private userId = ''
 
-  private recordInfo: RecordInfo | null = null
+  private recordInfo: RecordInfo = {
+    id: '0',
+    attach_info: defaultDiffStamp
+  }
 
   private dbId = ''
 
@@ -73,7 +81,7 @@ class SqlStore {
     const storeDB = await get(this.dbId)
 
     // 从indexeddb获取更新信息
-    this.recordInfo = (await get(this.recordKey)) as RecordInfo | null
+    this.recordInfo = (await get(this.recordKey)) || this.recordInfo
 
     // 获取用户的初始化数据
     const list = await this.getUserData()
@@ -136,7 +144,7 @@ class SqlStore {
     console.log('update diff')
 
     const query = Object.entries(info)
-      .filter(([k]) => !['comment'].includes(k))
+      .filter(([k]) => checkDecentTable(k))
       .map(([k, v]) => {
         console.log('key', k, v)
 
@@ -146,7 +154,7 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    for (const key of list.filter((k) => !['comment'].includes(k))) {
+    for (const key of list.filter(checkDecentTable)) {
       const res = await this.getUpdates(key, info[key].id)
 
       if (!res.code && res.data) {
@@ -185,6 +193,11 @@ class SqlStore {
     }
 
     this.updateDB()
+  }
+
+  // 增量更新数据回传客户端
+  async updateDiffForClient() {
+    await this.updateDiff(this.recordInfo.attach_info)
   }
 
   private async getUpdates(key: string, lastId: string) {

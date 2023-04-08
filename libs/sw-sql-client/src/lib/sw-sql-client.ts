@@ -143,6 +143,11 @@ class ServiceWorkerUtils {
       params as unknown as FilterParamsProps
     )
   }
+
+  // 增量数据更新
+  static updateDiff() {
+    return promiseWorkerMessage(NotParamsWorkerKey.UPDATE_DIFF)
+  }
 }
 
 export { ServiceWorkerUtils }

@@ -3,7 +3,7 @@ import { SqlStore } from '@flyele-nx/sql-store'
 export type FilterKeys = keyof SqlStore.Filter.FilterParamsFilter
 
 export enum NotParamsWorkerKey {
-  FAKE = 'FAKE'
+  UPDATE_DIFF = 'UPDATE_DIFF'
 }
 
 export enum ServiceWorkerKey {
@@ -19,9 +19,9 @@ export type ServiceWorkerParams = {
 }
 
 export type ServiceWorkerData = {
-  [ServiceWorkerKey.INIT_DB]: undefined
+  [ServiceWorkerKey.INIT_DB]: void
   [ServiceWorkerKey.QUERY_FULL_VIEW_LIST]: []
-  [NotParamsWorkerKey.FAKE]: undefined
+  [NotParamsWorkerKey.UPDATE_DIFF]: void
   [ServiceWorkerKey.UPDATE_TOKEN]: void
 }
 

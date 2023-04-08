@@ -10,6 +10,12 @@ import dayjs from 'dayjs'
 import cs from 'classnames'
 import { useMemoizedFn } from 'ahooks'
 
+interface listData {
+  key: string
+  title: string
+  value: string
+}
+
 export const OrderDetailModal = ({
   open,
   data,
@@ -48,11 +54,7 @@ export const OrderDetailModal = ({
     key: string
     title: string
     haveBorder: boolean
-    data: Array<{
-      key: string
-      title: string
-      value: string
-    }>
+    data: listData[]
     tableHeader?: {
       userInfo: string
       beforePayEndAt: string
@@ -171,6 +173,7 @@ export const OrderDetailModal = ({
       ]
     }
 
+    // 订单相关 开始
     let orderData = [
       {
         key: 'indent_num',
@@ -196,26 +199,27 @@ export const OrderDetailModal = ({
       indentDetail.indent_member_type ===
       OrderSystemConst.IndentListMemberType.TEAM
     ) {
-      orderData = orderData.filter((data) => data.key === 'indent_member_attr')
+      orderData = orderData.filter((data) => data.key !== 'indent_member_attr')
+      orderData.push({
+        key: 'workspace',
+        title: '关联空间',
+        value: '无'
+      })
     }
 
     const orderInfo = {
       key: 'orderInfo',
       title: '订单相关',
-      haveBorder: indentDetail.state === OrderSystemConst.IndentState.SUCCESS,
+      haveBorder: true,
       data: orderData
     }
+    // 订单相关 结束
 
-    const payInfo = {
-      key: 'payInfo',
-      title: '支付相关',
-      haveBorder: false,
-      data: [
-        {
-          key: 'state',
-          title: '支付状态',
-          value: OrderSystemConst.IndentStateLabel[indentDetail.state]
-        },
+    // 支付相关 开始
+    let payInfoData: listData[] = []
+
+    if (indentDetail.state === OrderSystemConst.IndentState.SUCCESS) {
+      payInfoData = [
         {
           key: 'total_price',
           title: '支付金额',
@@ -248,25 +252,36 @@ export const OrderDetailModal = ({
       ]
     }
 
+    const payInfo = {
+      key: 'payInfo',
+      title: '支付相关',
+      haveBorder: false,
+      data: [
+        {
+          key: 'state',
+          title: '支付状态',
+          value: OrderSystemConst.IndentStateLabel[indentDetail.state]
+        },
+        ...payInfoData
+      ]
+    }
+    // 支付相关 结束
+
     const resArray = []
 
     switch (indentDetail.indent_member_type) {
       case OrderSystemConst.IndentListMemberType.PERSONAL:
-        resArray.push(personalState, orderInfo)
+        resArray.push(personalState, orderInfo, payInfo)
         break
       case OrderSystemConst.IndentListMemberType.TEAM:
-        resArray.push(teamState, orderInfo)
+        resArray.push(teamState, orderInfo, payInfo)
         break
       case OrderSystemConst.IndentListMemberType.CORP:
-        resArray.push(corpInfo, corpState)
+        resArray.push(corpInfo, corpState, payInfo)
         break
       default:
         console.log('订单属性匹配不上')
         break
-    }
-
-    if (indentDetail.state === OrderSystemConst.IndentState.SUCCESS) {
-      resArray.push(payInfo)
     }
 
     return resArray
@@ -351,9 +366,9 @@ export const OrderDetailModal = ({
                                     className={styles.tableRow}
                                   >
                                     <div>
-                                      <div>11{td.user_name}</div>
+                                      <div>{td.user_name}</div>
                                       <div className={styles.greyText}>
-                                        22{td.telephone}
+                                        {td.telephone}
                                       </div>
                                     </div>
                                     <div>{td.beforePayEndAt}</div>

@@ -69,6 +69,8 @@ export const OrderManagement = () => {
 
   const afterSearch = useRef(false)
 
+  const tempParams = useRef<OrderSystemType.IIndentListParams | null>(null)
+
   const [activeTab, setActiveTab] = useState<string>('all')
   const [tableData, setTableData] = useState<OrderSystemType.IIndentList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
@@ -104,6 +106,7 @@ export const OrderManagement = () => {
       default:
       // console.log('all')
     }
+    tempParams.current = null
     await fetchIndentList({ page_number: 1, ...params })
   }
 
@@ -114,10 +117,14 @@ export const OrderManagement = () => {
     options?: OrderSystemType.IIndentListParams
   ) => {
     const requestParams = options || { page_number: 1, page_record: pageSize }
+    tempParams.current = {
+      ...tempParams.current,
+      ...requestParams
+    }
 
     try {
       const params: OrderSystemType.IIndentListParams = {
-        ...requestParams
+        ...tempParams.current
       }
       const { code, data, total } = await OrderSystemApi.getIndentList(params)
       if (code === 0 && data) {
@@ -187,6 +194,7 @@ export const OrderManagement = () => {
             break
           default:
             setSearchName('')
+            tempParams.current = null
             await fetchIndentList({ page_number: 1 })
         }
         afterSearch.current = false
@@ -199,11 +207,13 @@ export const OrderManagement = () => {
 
     switch (key) {
       case 'user':
+        tempParams.current = null
         params.user_keyword = value
         setSearchName(value)
         await fetchIndentList({ page_number: 1, ...params })
         break
       case 'corp':
+        tempParams.current = null
         params.corp_keyword = value
         setSearchName(value)
         await fetchIndentList({ page_number: 1, ...params })
@@ -224,6 +234,12 @@ export const OrderManagement = () => {
       type: OrderSystemConst.ExportTime,
       timeData?: { startDate: number; endDate: number }
     ) => {
+      messageApi.open({
+        type: 'loading',
+        content: '生成中，请稍后',
+        duration: 0
+      })
+
       const params: OrderSystemType.IExportIndentList = {
         time_type: type
       }
@@ -235,7 +251,9 @@ export const OrderManagement = () => {
       const { code, data } = await OrderSystemApi.exportIndentList(params)
       if (code === 0) {
         downloadUrl(data)
+        messageApi.destroy()
       } else {
+        messageApi.destroy()
         messageApi.open({
           type: 'error',
           content: '导出错误'
@@ -426,6 +444,7 @@ export const OrderManagement = () => {
   }, [searchName])
 
   useMount(async () => {
+    tempParams.current = null
     await fetchIndentList({ page_number: 1 })
   })
 

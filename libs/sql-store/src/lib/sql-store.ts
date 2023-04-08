@@ -61,9 +61,9 @@ class SqlStore {
 
     this.recordKey = `${this.dbId}-record`
 
-    // if (p.host !== 'https://api.flyele.vip') {
-    // this.host = p.host
-    // }
+    if (p.host !== 'https://api.flyele.vip') {
+      this.host = p.host
+    }
 
     this.token = p.token
 

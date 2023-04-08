@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-08 10:49:21
+ * @LastEditTime: 2023-04-08 11:09:37
  */
 
 import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
@@ -90,9 +90,13 @@ export default function PayModal(props: Iprops) {
     const self = sortList.filter((item) => item.userId === mineId)
     return [...self, ...arr]
   }, [memberList, mineId])
-  useImperativeHandle(successRef, () => ({
-    setIsPay
-  }))
+  useImperativeHandle(
+    successRef,
+    () => ({
+      setIsPay
+    }),
+    [setIsPay]
+  )
   const buildPayModal = () => {
     if (!modalType) return null
 

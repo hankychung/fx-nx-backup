@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-07 16:22:37
+ * @LastEditTime: 2023-04-08 11:54:46
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,7 +14,7 @@ import PersonVip from '../person-vip'
 import TeamVip from '../team-vip'
 import { SelectMemberContext } from '../../context/context'
 import PayQrCode from '../pay-qr-code'
-import { IActiveGoods } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { useMemoizedFn } from '@flyele/flyele-components'
 const url = `https://cdn.flyele.net/resources/PC/`
@@ -46,6 +46,7 @@ const VipPackage = (props: Iprops) => {
   const [showPay, setShowPay] = useState<boolean>(false)
   const [payInfo, setPayInfo] = useState<IActiveGoods>()
   const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
+  const [couponList, setCouponList] = useState<ICoupon[]>()
   const service = useContext(SelectMemberContext)
 
   useEffect(() => {
@@ -85,10 +86,18 @@ const VipPackage = (props: Iprops) => {
 
     setTabs(newTab)
   })
+  const getCou = () => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
+      if (_.data) {
+        setCouponList(_.data)
+      }
+    })
+  }
   //进入判断会员类型
   useEffect(() => {
     if (vipMealType) {
       vipTypeFun()
+      getCou()
     }
   }, [vipMealType, vipTypeFun])
   // 背景图
@@ -137,7 +146,11 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        <PersonVip memberList={memberList} mineId={mineId} />
+        <PersonVip
+          memberList={memberList}
+          mineId={mineId}
+          couponList={couponList}
+        />
       </div>
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
@@ -146,6 +159,7 @@ const VipPackage = (props: Iprops) => {
           goProtocol={goProtocol}
           memberList={memberList}
           mineId={mineId}
+          couponList={couponList}
           vipMealType={vipMealType}
         />
       </div>

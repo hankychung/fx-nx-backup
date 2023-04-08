@@ -9,6 +9,7 @@ import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
+import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 
 const wasmUrl = '/sql-wasm.wasm'
@@ -79,13 +80,18 @@ class SqlStore {
 
     const firstData = list[0]
 
-    if (firstData && firstData.type === 1) {
-      // 存在全量包, 需要重新建表
+    console.log('get data', firstData)
+
+    const createDB = () => {
       const db = new SQL.Database()
-
       this.db = db
-
       db.run(createSql)
+      this.recordInfo = { id: '', attach_info: {} }
+    }
+
+    if (firstData && firstData.type === 1) {
+      // 存在全量包, 需要根据全量包重新建表
+      createDB()
 
       const { sign_url, id, attach_info } = firstData
 
@@ -98,12 +104,9 @@ class SqlStore {
       if (storeDB) {
         // 存在用户数据库
         this.db = new SQL.Database(storeDB)
-      } else {
-        // 不存在用户数据库, 从indexeddb清除recordKey重新请求
-        await del(this.recordKey)
-        //TODO 当用户无数据的时 会死循环
-        // await this.initDB(p)
-        return
+      } else if (!firstData) {
+        // 不存在用户数据库且无全量数据, 建立空数据库
+        createDB()
       }
     }
 
@@ -130,7 +133,10 @@ class SqlStore {
 
   // 获取需要更新的表数据
   private async updateDiff(info: { [k: string]: LastId }) {
+    console.log('update diff')
+
     const query = Object.entries(info)
+      .filter(([k]) => !['comment'].includes(k))
       .map(([k, v]) => {
         console.log('key', k, v)
 
@@ -140,10 +146,45 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    list.forEach((key) => {
-      // TODO:
-      this.getUpdates(key, info[key].id)
-    })
+    for (const key of list.filter((k) => !['comment'].includes(k))) {
+      const res = await this.getUpdates(key, info[key].id)
+
+      if (!res.code && res.data) {
+        const { last_id, list } = res.data
+
+        let sql = ''
+
+        for (const item of list) {
+          const { type, keys, data } = item
+
+          if (type === 'insert') {
+            sql += this.getInsertSql(data, key) + ';'
+
+            continue
+          }
+
+          if (type === 'update') {
+            // 更新逻辑
+            sql += this.getUpdateSql({ keys, data }, key) + ';'
+            continue
+          }
+
+          if (type === 'delete') {
+            // 删除逻辑
+            sql += this.getDelSql(keys, key) + ';'
+          }
+        }
+
+        this.db!.run(sql)
+
+        // 更新last_id
+        if (this.recordInfo) {
+          this.recordInfo.attach_info[key] = { id: last_id }
+        }
+      }
+    }
+
+    this.updateDB()
   }
 
   private async getUpdates(key: string, lastId: string) {
@@ -151,8 +192,7 @@ class SqlStore {
       `datasupport/v1/increment?last_id=${lastId}&type=${key}&page_size=20`
     )
 
-    // TODO:
-    console.log('diffff', data)
+    return data as IDiffInfoResponse
   }
 
   private async updateDiffData(p: DiffPackList) {
@@ -268,6 +308,7 @@ class SqlStore {
     return JSON.parse(await this.zipObj.file(filename).async('string'))
   }
 
+  // 将全量包的内容写入数据库
   private async initTable() {
     const guide = await this.parseFile('guide')
 
@@ -277,19 +318,19 @@ class SqlStore {
       for (const file of data) {
         const content = (await this.parseFile(file)) as any[]
 
-        const decentCtn = content.map((i) => {
-          const obj: any = {}
+        // const decentCtn = content.map((i) => {
+        //   const obj: any = {}
 
-          Object.keys(defaultInfo[table]).forEach((k) => {
-            obj[k] = i[k] || defaultInfo[table][k]
-          })
+        //   Object.keys(defaultInfo[table]).forEach((k) => {
+        //     obj[k] = i[k] || defaultInfo[table][k]
+        //   })
 
-          return obj
-        })
+        //   return obj
+        // })
 
         let sqlStr = ''
 
-        decentCtn.forEach((item) => {
+        content.forEach((item) => {
           sqlStr += this.getInsertSql(item, table) + ';'
         })
 
@@ -297,9 +338,9 @@ class SqlStore {
       }
     }
 
-    const data = this.db?.exec('select * from task_dispatch')
+    // const data = this.db?.exec('select * from task_dispatch')
 
-    console.log(data)
+    // console.log(data)
 
     this.updateDB()
   }
@@ -311,6 +352,28 @@ class SqlStore {
       // record the timestamp
       set(this.recordKey, this.recordInfo)
     })
+  }
+
+  private getDecentItem(
+    item: Record<string, any>,
+    table: string,
+    options?: { isUpdate?: boolean }
+  ) {
+    const obj: any = {}
+
+    if (options?.isUpdate) {
+      Object.keys(item).forEach((k) => {
+        if (k in defaultInfo[table]) {
+          obj[k] = item[k]
+        }
+      })
+    } else {
+      Object.keys(defaultInfo[table]).forEach((k) => {
+        obj[k] = item[k] || defaultInfo[table][k]
+      })
+    }
+
+    return obj
   }
 
   private getSqlValue(v: any) {
@@ -343,17 +406,21 @@ class SqlStore {
     item: { keys: Record<string, any>; data: Record<string, any> },
     table: string
   ) {
-    const set = Object.entries(item.data).map((v) => this.getKeyLinkValue(v))
+    const data = this.getDecentItem(item.data, table, { isUpdate: true })
+
+    const set = Object.entries(data).map((v) => this.getKeyLinkValue(v))
 
     const where = Object.entries(item.keys).map((v) => this.getKeyLinkValue(v))
 
     return `UPDATE ${table} SET ${set.join(',')} WHERE ${where.join(',')}`
   }
 
-  private getInsertSql(item: Record<string, any>, table: string) {
-    const singleSql = `INSERT INTO ${table} (${Object.keys(item).join(
-      ' ,'
-    )}) VALUES (${Object.values(item)
+  private getInsertSql(_item: Record<string, any>, table: string) {
+    const item = this.getDecentItem(_item, table)
+
+    const singleSql = `INSERT OR REPLACE INTO ${table} (${Object.keys(
+      item
+    ).join(' ,')}) VALUES (${Object.values(item)
       .map((i) => {
         if (typeof i === 'number') {
           return i

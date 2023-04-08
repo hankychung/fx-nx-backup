@@ -82,13 +82,16 @@ class SqlStore {
 
     console.log('get data', firstData)
 
-    if (firstData && firstData.type === 1) {
-      // 存在全量包, 需要重新建表
+    const createDB = () => {
       const db = new SQL.Database()
-
       this.db = db
-
       db.run(createSql)
+      this.recordInfo = { id: '', attach_info: {} }
+    }
+
+    if (firstData && firstData.type === 1) {
+      // 存在全量包, 需要根据全量包重新建表
+      createDB()
 
       const { sign_url, id, attach_info } = firstData
 
@@ -101,12 +104,9 @@ class SqlStore {
       if (storeDB) {
         // 存在用户数据库
         this.db = new SQL.Database(storeDB)
-      } else {
-        // 不存在用户数据库, 从indexeddb清除recordKey重新请求
-        await del(this.recordKey)
-        //TODO 当用户无数据的时 会死循环
-        // await this.initDB(p)
-        return
+      } else if (!firstData) {
+        // 不存在用户数据库且无全量数据, 建立空数据库
+        createDB()
       }
     }
 
@@ -308,6 +308,7 @@ class SqlStore {
     return JSON.parse(await this.zipObj.file(filename).async('string'))
   }
 
+  // 将全量包的内容写入数据库
   private async initTable() {
     const guide = await this.parseFile('guide')
 
@@ -337,9 +338,9 @@ class SqlStore {
       }
     }
 
-    const data = this.db?.exec('select * from task_dispatch')
+    // const data = this.db?.exec('select * from task_dispatch')
 
-    console.log(data)
+    // console.log(data)
 
     this.updateDB()
   }
@@ -405,7 +406,9 @@ class SqlStore {
     item: { keys: Record<string, any>; data: Record<string, any> },
     table: string
   ) {
-    const set = Object.entries(item.data).map((v) => this.getKeyLinkValue(v))
+    const data = this.getDecentItem(item.data, table, { isUpdate: true })
+
+    const set = Object.entries(data).map((v) => this.getKeyLinkValue(v))
 
     const where = Object.entries(item.keys).map((v) => this.getKeyLinkValue(v))
 

@@ -62,6 +62,8 @@ export interface FilterParamsFilter {
 
   parent_id?: string // 查询目标子事项
 
+  task_ids?: string[]
+  repeat_ids?: string[]
   parent_ids?: string[] // 所属事项
 
   application_ids?: string[]
@@ -75,10 +77,10 @@ export interface FilterParamsFilter {
 }
 
 export interface FilterParamsProps {
-  page_number: number
-  page_record: number
-  show_model: 1 | 2 // 1 平铺 2 收合
-  direction: Direction
+  page_number?: number
+  page_record?: number
+  show_model?: 1 | 2 // 1 平铺 2 收合
+  direction?: Direction
 
   order_by?: {
     order_by_key: string

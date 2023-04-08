@@ -60,6 +60,8 @@ export const getFilterSql = (
     priority_levels,
     matter_states,
 
+    task_ids,
+    repeat_ids,
     taker_ids,
     application_ids,
     creator_ids,
@@ -77,7 +79,11 @@ export const getFilterSql = (
 
   const { order_by_key, sort } = order_by || {}
 
-  let LIMIT = `LIMIT ${(page_number - 1) * page_record}, ${page_record}`
+  let LIMIT = ''
+
+  if (page_number && page_record) {
+    LIMIT = `LIMIT ${(page_number - 1) * page_record}, ${page_record}`
+  }
 
   let queryModel = show_model
 
@@ -153,6 +159,20 @@ export const getFilterSql = (
     } else if (conclusion === 2) {
       WHERES.push(`conclusion = ''`)
     }
+  }
+
+  /**
+   * 筛选指定的task_id
+   */
+  if (task_ids?.length) {
+    WHERES.push(`task_id IN (${task_ids.join(',')})`)
+  }
+
+  /**
+   * 筛选指定的repeat_id
+   */
+  if (repeat_ids?.length) {
+    WHERES.push(`repeat_id IN (${repeat_ids.join(',')})`)
   }
 
   /**

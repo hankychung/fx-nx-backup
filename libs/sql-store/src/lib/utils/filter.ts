@@ -61,6 +61,7 @@ export const getFilterSql = (
     matter_states,
 
     task_ids,
+    dispatch_ids,
     repeat_ids,
     taker_ids,
     application_ids,
@@ -166,6 +167,10 @@ export const getFilterSql = (
    */
   if (task_ids?.length) {
     WHERES.push(`task_id IN (${task_ids.join(',')})`)
+  }
+
+  if (dispatch_ids?.length) {
+    WHERES.push(`dispatch_id IN (${dispatch_ids.join(',')})`)
   }
 
   /**

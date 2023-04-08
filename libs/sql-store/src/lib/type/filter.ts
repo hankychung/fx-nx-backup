@@ -63,6 +63,7 @@ export interface FilterParamsFilter {
   parent_id?: string // 查询目标子事项
 
   task_ids?: string[]
+  dispatch_ids?: string[]
   repeat_ids?: string[]
   parent_ids?: string[] // 所属事项
 

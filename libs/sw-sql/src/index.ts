@@ -1,5 +1,9 @@
 import { sqlStore } from '@flyele-nx/sql-store'
-import { PostData, ServiceWorkerKey } from '@flyele-nx/sw-sql-client'
+import {
+  PostData,
+  ServiceWorkerKey,
+  NotParamsWorkerKey
+} from '@flyele-nx/sw-sql-client'
 
 class DBHandler {
   constructor() {
@@ -20,6 +24,10 @@ class DBHandler {
         case ServiceWorkerKey.UPDATE_TOKEN: {
           sqlStore.updateToken(data.data as string)
           break
+        }
+        case NotParamsWorkerKey.UPDATE_DIFF: {
+          // sqlStore.updateDiffForClient()
+          responseData = await sqlStore.updateDiffForClient()
         }
       }
 

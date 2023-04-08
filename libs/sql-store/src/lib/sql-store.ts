@@ -122,8 +122,16 @@ class SqlStore {
     this.updateDiffData(list.filter(({ type }) => type === 2))
 
     if (firstData) {
+      this.recordInfo = {
+        ...this.recordInfo,
+        attach_info: {
+          ...this.recordInfo.attach_info,
+          ...firstData.attach_info
+        }
+      }
+
       // 更新差异数据
-      this.updateDiff(firstData.attach_info)
+      this.updateDiff()
     }
   }
 
@@ -140,8 +148,8 @@ class SqlStore {
   }
 
   // 获取需要更新的表数据
-  private async updateDiff(info: { [k: string]: LastId }) {
-    console.log('update diff')
+  private async updateDiff() {
+    const info = this.recordInfo.attach_info
 
     const query = Object.entries(info)
       .filter(([k]) => checkDecentTable(k))
@@ -152,12 +160,26 @@ class SqlStore {
       })
       .join('&')
 
+    const dispatchIds: string[] = []
+
+    const taskIds: string[] = []
+
     const list = await this.getNeedUpdateTables(query)
 
-    for (const key of list.filter(checkDecentTable)) {
+    const getTableUpdates = async (key: string) => {
+      const info = this.recordInfo.attach_info
+
       const res = await this.getUpdates(key, info[key].id)
 
       if (!res.code && res.data) {
+        if (key === 'task_dispatch') {
+          dispatchIds.push(...res.data.list.map((i) => i.keys['dispatch_id']))
+        }
+
+        if (key === 'task') {
+          taskIds.push(...res.data.list.map((i) => i.keys['id']))
+        }
+
         const { last_id, list } = res.data
 
         let sql = ''
@@ -165,8 +187,12 @@ class SqlStore {
         for (const item of list) {
           const { type, keys, data } = item
 
+          console.log('check item', item)
+
           if (type === 'insert') {
             sql += this.getInsertSql(data, key) + ';'
+
+            this.db!.run(this.getInsertSql(data, key) + ';')
 
             continue
           }
@@ -174,30 +200,51 @@ class SqlStore {
           if (type === 'update') {
             // 更新逻辑
             sql += this.getUpdateSql({ keys, data }, key) + ';'
+
+            console.log('sql', this.getUpdateSql({ keys, data }, key) + ';')
+
+            this.db!.run(this.getUpdateSql({ keys, data }, key) + ';')
             continue
           }
 
           if (type === 'delete') {
             // 删除逻辑
+
+            this.db!.run(this.getDelSql(keys, key) + ';')
             sql += this.getDelSql(keys, key) + ';'
           }
         }
 
-        this.db!.run(sql)
+        // this.db!.run(sql)
 
         // 更新last_id
-        if (this.recordInfo) {
-          this.recordInfo.attach_info[key] = { id: last_id }
+        this.recordInfo.attach_info[key] = { id: last_id }
+
+        if (list.length >= 20) {
+          await getTableUpdates(key)
         }
       }
     }
 
+    for (const key of list.filter(checkDecentTable)) {
+      await getTableUpdates(key)
+    }
+
     this.updateDB()
+
+    return {
+      dispatchIds,
+      taskIds
+    }
   }
 
   // 增量更新数据回传客户端
   async updateDiffForClient() {
-    await this.updateDiff(this.recordInfo.attach_info)
+    const info = await this.updateDiff()
+
+    return this.query({
+      filter: { task_ids: info.taskIds }
+    })
   }
 
   private async getUpdates(key: string, lastId: string) {
@@ -412,7 +459,7 @@ class SqlStore {
   private getDelSql(keys: Record<string, any>, table: string) {
     const where = Object.entries(keys).map((item) => this.getKeyLinkValue(item))
 
-    return `DELETE FROM ${table} WHERE ${where.join(',')}`
+    return `DELETE FROM ${table} WHERE ${where.join(' AND ')}`
   }
 
   private getUpdateSql(
@@ -425,7 +472,7 @@ class SqlStore {
 
     const where = Object.entries(item.keys).map((v) => this.getKeyLinkValue(v))
 
-    return `UPDATE ${table} SET ${set.join(',')} WHERE ${where.join(',')}`
+    return `UPDATE ${table} SET ${set.join(',')} WHERE ${where.join(' AND ')}`
   }
 
   private getInsertSql(_item: Record<string, any>, table: string) {

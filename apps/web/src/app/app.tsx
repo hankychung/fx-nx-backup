@@ -13,7 +13,7 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA5NDI3MjcsImlhdCI6MTY4MDkzNDI1NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6IjI3NGIwMzU2LTc4NjctNDJmMy04NWU3LTNkNTRjODhjNjYyNiIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.URJvwc8toxb5BqYwgVPCdMST2Up7AK_3jwuUudaPXns'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA5NTY5NjgsImlhdCI6MTY4MDk0ODA1MiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6IjU4NzYwZWFkLTZjYTgtNDIyNS1hN2VhLTY5MjFkMTY3YjdlNCIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.Xvvwb6KJ_bTqMD4l53zhHQpPwb8LFs_fQmZOwdbary4'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -43,7 +43,7 @@ export function App() {
       host: envStore.getHost(),
       token,
       env,
-      userId: '1331363354509482'
+      userId: '542408421671185'
     })
     const page_record = 200
     console.time(`${page_record}条查询`)

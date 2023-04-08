@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { PageContainer } from '../../components/page-container'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
@@ -24,6 +24,8 @@ export const InvoiceManagement = () => {
   const invoiceStore = useInvoiceStore()
   const [messageApi, contextHolder] = message.useMessage()
 
+  const tempParams = useRef<OrderSystemType.IInvoiceListParams | null>(null)
+
   const [activeTab, setActiveTab] = useState<string>('pending')
   const [tableData, setTableData] = useState<OrderSystemType.IInvoiceList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
@@ -39,17 +41,23 @@ export const InvoiceManagement = () => {
     options?: OrderSystemType.IInvoiceListParams
   ) => {
     const requestParams = options || { page_number: 1, page_record: pageSize }
+    tempParams.current = {
+      ...tempParams.current,
+      ...requestParams
+    }
 
     try {
       const params: OrderSystemType.IInvoiceListParams = {
-        ...requestParams
+        ...tempParams.current
       }
       const { code, data, total } = await OrderSystemApi.getInvoiceList(params)
       if (code === 0 && data) {
         setTableData(data)
         if (total) {
           setTableTotal(total)
-          if (requestParams.state === OrderSystemConst.InvoiceState.NOT_OPEN) {
+          if (
+            tempParams.current.state === OrderSystemConst.InvoiceState.NOT_OPEN
+          ) {
             invoiceStore.updateNotOpenTotal(total)
           }
         }
@@ -69,6 +77,7 @@ export const InvoiceManagement = () => {
    * init
    */
   const initList = async () => {
+    tempParams.current = null
     await fetchInvoiceList({
       page_number: 1,
       state:
@@ -90,6 +99,7 @@ export const InvoiceManagement = () => {
    */
   const onChangeTab = async (key: string) => {
     setActiveTab(key)
+    tempParams.current = null
     const params: OrderSystemType.IInvoiceListParams = { page_number: 1 }
     switch (key) {
       case 'pending':

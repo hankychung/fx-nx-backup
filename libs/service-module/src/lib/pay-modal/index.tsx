@@ -2,10 +2,10 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-07 16:17:31
+ * @LastEditTime: 2023-04-08 10:49:21
  */
 
-import React, { useMemo } from 'react'
+import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
 import { QuickPay } from '../quick-pay/index' //快捷支付弹窗
 import PersonPayModal from '../person-pay-modal/index' //个人支付弹窗
 import TeamPayModal from '../team-pay-modal/index' //团队支付
@@ -25,15 +25,19 @@ export declare type IFlyeleAvatarItem = {
   next_end_time?: number
   end_time?: number
 }
+interface fun {
+  setIsPay: (_: boolean) => void
+}
 
 interface Iprops {
   visible: boolean
-  isPaySuccess: boolean
+  isPaySuccess?: boolean
   mineId: string
   spaceId?: string
   payType?: VipMealType //个人支付类型 1个人 2团队
   teamVipType?: VipPayType
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
+  successRef: RefObject<fun>
   onClose: () => void
   upSpace?: () => void
   senConfirm?: () => void
@@ -53,11 +57,13 @@ export default function PayModal(props: Iprops) {
     spaceId,
     upSpace,
     senConfirm,
-    isPaySuccess = false,
     teamVipType = 1,
     getOrderCode,
-    goProtocol
+    goProtocol,
+    successRef
   } = props
+  const [isPaySuccess, setIsPay] = useState<boolean>(false)
+
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
     // 排序规则
     const sortList = memberList.map((t) => {
@@ -84,6 +90,9 @@ export default function PayModal(props: Iprops) {
     const self = sortList.filter((item) => item.userId === mineId)
     return [...self, ...arr]
   }, [memberList, mineId])
+  useImperativeHandle(successRef, () => ({
+    setIsPay
+  }))
   const buildPayModal = () => {
     if (!modalType) return null
 

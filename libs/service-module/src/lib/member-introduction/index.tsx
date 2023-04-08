@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { IntroductionBox } from './components/introduction-box'
 import { memberPowerStaticData } from '@flyele-nx/constant'
@@ -28,6 +28,7 @@ export const MemberIntroduction = () => {
   const [orderCode, setOrderCode] = useState('')
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
   const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
+  const ChildRef = useRef(null)
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
@@ -149,6 +150,7 @@ export const MemberIntroduction = () => {
       })}
 
       <PayModal
+        successRef={ChildRef}
         visible={show}
         isPaySuccess={isShowPay}
         mineId={selfUserInfo?.userId || ''}

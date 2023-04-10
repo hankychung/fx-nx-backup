@@ -244,7 +244,7 @@ export const InvoiceManagement = () => {
             return (
               <div className={styles.finishTime}>{`${dayjs
                 .unix(record.finish_at)
-                .format('YYYY年M月D日 hh:mm')} 已开票`}</div>
+                .format('YYYY年M月D日 HH:mm')} 已开票`}</div>
             )
           }
         }

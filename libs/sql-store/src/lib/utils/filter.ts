@@ -93,7 +93,7 @@ export const getFilterSql = (
   const ORDERS: string[] = ['repeat_id ASC', 'task_id DESC']
 
   // 平铺模式下 查询所有小于等于今天的
-  let LeftJoinRepeatAnd = `d.cycle_date <= STRFTIME('%s', 'now')`
+  let LeftJoinRepeatAnd = `cycle_date <= DATETIME('now', 'localtime')`
 
   /**
    * 标题/背景信息
@@ -110,7 +110,7 @@ export const getFilterSql = (
 
   // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
   if (queryModel === 2) {
-    LeftJoinRepeatAnd = `(d.cycle_date <= STRFTIME('%s', 'now') OR d.cycle = 1)`
+    LeftJoinRepeatAnd = `(cycle_date <= DATETIME('now', 'localtime') OR d.cycle = 1)`
   }
 
   /**
@@ -461,14 +461,14 @@ export const getFilterSql = (
     //我进行中
     case FilterQueryType.in_progress: {
       WHERES.push(
-        `finish_time = 0 AND (a.start_time <= strftime('%s','now') OR a.cycle_date <= strftime('%Y-%m-%d','now')) AND (a.end_time = 0 OR a.end_time > strftime('%s','now'))`
+        `finish_time = 0 AND (start_time <= STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') OR cycle_date <= DATETIME('now', 'localtime')) AND (end_time = 0 OR end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime'))`
       )
       break
     }
     //我延期中
     case FilterQueryType.delay: {
       WHERES.push(
-        `finish_time = 0 AND end_time > 0 AND end_time < strftime('%s','now')`
+        `finish_time = 0 AND end_time > 0 AND end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')`
       )
       break
     }

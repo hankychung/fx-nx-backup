@@ -200,11 +200,6 @@ export const OrderDetailModal = ({
       OrderSystemConst.IndentListMemberType.TEAM
     ) {
       orderData = orderData.filter((data) => data.key !== 'indent_member_attr')
-      orderData.push({
-        key: 'workspace',
-        title: '关联空间',
-        value: '无'
-      })
     }
 
     const orderInfo = {
@@ -247,7 +242,7 @@ export const OrderDetailModal = ({
           title: '支付时间',
           value: dayjs
             .unix(indentDetail.payment_at)
-            .format('YYYY年M月D日 hh:mm:ss')
+            .format('YYYY年M月D日 HH:mm:ss')
         }
       ]
     }

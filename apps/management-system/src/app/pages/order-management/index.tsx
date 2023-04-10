@@ -6,13 +6,15 @@ import {
   FlyButton,
   FlyTabs,
   IFlyTabs,
-  FlyStringHighLight
+  FlyStringHighLight,
+  FlyTextTooltip
 } from '@flyele/flyele-components'
 import { Table, message } from 'antd'
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 import { FilterValue, ColumnFilterItem } from 'antd/es/table/interface'
 import { useMemoizedFn, useMount } from 'ahooks'
 import { ReactComponent as TableFilter } from '../../../assets/tableFilter.svg'
+import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg'
 import {
   OrderSystemApi,
   OrderSystemType,
@@ -227,6 +229,16 @@ export const OrderManagement = () => {
   })
 
   /**
+   * 清空搜索
+   */
+  const clearSearch = async () => {
+    setSearchName('')
+    tempParams.current = null
+    afterSearch.current = false
+    await fetchIndentList({ page_number: 1 })
+  }
+
+  /**
    * 导出订单列表
    */
   const onExport = useMemoizedFn(
@@ -294,12 +306,27 @@ export const OrderManagement = () => {
   }
 
   /**
-   * 个人打开订单详情
+   * 根据对应的人id/企业id查询列表
    */
-  const gotoOrderDetails = (item: OrderSystemType.IIndentList | null) => {
+  const getMemberOrderList = async (
+    item: OrderSystemType.IIndentList | null
+  ) => {
     if (item) {
       setOpenPersonalModal(false)
-      showOrderModal(item)
+      if (
+        item.indent_member_type === OrderSystemConst.IndentListMemberType.CORP
+      ) {
+        if (item.corporation) {
+          await onSearch('corp', item.corporation.corporation_id)
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: '缺少企业id'
+          })
+        }
+      } else {
+        await onSearch('user', item.creator.user_id)
+      }
     }
   }
 
@@ -309,9 +336,13 @@ export const OrderManagement = () => {
   const closeAndSearch = useMemoizedFn(async () => {
     setOpenOrderModal(false)
     if (openModalData) {
-      await onSearch('user', openModalData.creator.user_name)
+      await onSearch('user', openModalData.creator.user_id)
     }
   })
+
+  const isSearch = useMemo(() => {
+    return !!searchName
+  }, [searchName])
 
   const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
     const stateFilter = () => {
@@ -345,9 +376,16 @@ export const OrderManagement = () => {
             className={styles.tableLink}
             onClick={() => openPersonalDetails(record, record.creator.user_id)}
           >
-            <FlyStringHighLight
-              keyword={searchName || ''}
-              text={record.creator.user_name}
+            <FlyTextTooltip
+              isDynamic
+              text={() => {
+                return (
+                  <FlyStringHighLight
+                    keyword={searchName || ''}
+                    text={record.creator.user_name}
+                  />
+                )
+              }}
             />
           </div>
         )
@@ -369,6 +407,7 @@ export const OrderManagement = () => {
 
           return (
             <div
+              style={{ width: '168px' }}
               className={styles.tableLink}
               onClick={() => {
                 if (record.users.length === 1) {
@@ -378,7 +417,17 @@ export const OrderManagement = () => {
                 }
               }}
             >
-              <FlyStringHighLight keyword={searchName || ''} text={nameStr} />
+              <FlyTextTooltip
+                isDynamic
+                text={() => {
+                  return (
+                    <FlyStringHighLight
+                      keyword={searchName || ''}
+                      text={nameStr}
+                    />
+                  )
+                }}
+              />
             </div>
           )
         }
@@ -422,7 +471,7 @@ export const OrderManagement = () => {
         dataIndex: 'payment_at',
         render: (text) => (
           <span>
-            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 hh:mm:ss') : ''}
+            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 HH:mm:ss') : ''}
           </span>
         )
       },
@@ -455,7 +504,14 @@ export const OrderManagement = () => {
         <PageSearch searchItems={searchItems} onSearch={onSearch} />
         <div className={tableStyles.tableTabRow}>
           <div className={tableStyles.tabBox}>
-            <FlyTabs tabs={tabs} active={activeTab} onChange={onChangeTab} />
+            {isSearch ? (
+              <div className={styles.backBox} onClick={clearSearch}>
+                <ArrowLeft width={16} height={16} color="#060606" />
+                <span>返回</span>
+              </div>
+            ) : (
+              <FlyTabs tabs={tabs} active={activeTab} onChange={onChangeTab} />
+            )}
           </div>
           <FlyButton theme="primary" onClick={exportOrder}>
             导出订单
@@ -480,7 +536,7 @@ export const OrderManagement = () => {
         open={openPersonalModal}
         data={openModalData}
         userId={openUserId}
-        showOrder={(data) => gotoOrderDetails(data)}
+        showOrder={(data) => getMemberOrderList(data)}
         onClose={() => setOpenPersonalModal(false)}
       />
 

@@ -14,10 +14,12 @@ import { useMemoizedFn } from 'ahooks'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 const RightBlock = ({
   memberList,
-  mineId
+  mineId,
+  couponList
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
+  couponList?: ICoupon[]
 }) => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
@@ -34,41 +36,39 @@ const RightBlock = ({
   }
 
   const getMealList = useMemoizedFn(async () => {
-    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
-      paymentApi.getPrice({ good_type: 'person' }).then((res) => {
-        if (res.code === 0) {
-          const new_arr = res.data.map((item, index) => {
-            const arr = getItem(item.id, _.data || [])
-            if (index === 0) {
-              if (arr.length > 0) {
-                return {
-                  ...arr[0],
-                  ...item,
-                  active: true
-                }
-              } else {
-                return {
-                  ...item,
-                  active: true
-                }
-              }
-            }
+    paymentApi.getPrice({ good_type: 'person' }).then((res) => {
+      if (res.code === 0) {
+        const new_arr = res.data.map((item, index) => {
+          const arr = getItem(item.id, couponList || [])
+          if (index === 0) {
             if (arr.length > 0) {
               return {
                 ...arr[0],
                 ...item,
-                active: false
+                active: true
               }
             } else {
               return {
                 ...item,
-                active: false
+                active: true
               }
             }
-          })
-          setVipMealList(new_arr)
-        }
-      })
+          }
+          if (arr.length > 0) {
+            return {
+              ...arr[0],
+              ...item,
+              active: false
+            }
+          } else {
+            return {
+              ...item,
+              active: false
+            }
+          }
+        })
+        setVipMealList(new_arr)
+      }
     })
   })
   useEffect(() => {

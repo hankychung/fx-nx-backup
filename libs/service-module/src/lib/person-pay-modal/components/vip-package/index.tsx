@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-06 18:09:38
+ * @LastEditTime: 2023-04-08 13:26:37
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,7 +14,7 @@ import PersonVip from '../person-vip'
 import TeamVip from '../team-vip'
 import { SelectMemberContext } from '../../context/context'
 import PayQrCode from '../pay-qr-code'
-import { IActiveGoods } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { useMemoizedFn } from '@flyele/flyele-components'
 const url = `https://cdn.flyele.net/resources/PC/`
@@ -27,6 +27,7 @@ interface Iprops {
   senConfirm?: () => void
   onClose: () => void
   getOrderCode?: (str: string) => void
+  goProtocol: () => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -38,12 +39,14 @@ const VipPackage = (props: Iprops) => {
     senConfirm,
     isPaySuccess,
     onClose,
-    getOrderCode
+    getOrderCode,
+    goProtocol
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
   const [payInfo, setPayInfo] = useState<IActiveGoods>()
   const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
+  const [couponList, setCouponList] = useState<ICoupon[]>()
   const service = useContext(SelectMemberContext)
 
   useEffect(() => {
@@ -83,12 +86,20 @@ const VipPackage = (props: Iprops) => {
 
     setTabs(newTab)
   })
+  const getCou = useMemoizedFn(() => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
+      if (_.data) {
+        setCouponList(_.data)
+      }
+    })
+  })
   //进入判断会员类型
   useEffect(() => {
     if (vipMealType) {
       vipTypeFun()
+      getCou()
     }
-  }, [vipMealType, vipTypeFun])
+  }, [vipMealType, vipTypeFun, getCou])
   // 背景图
   const bgUrl =
     vipMealType === VipMealType.PERSON
@@ -135,14 +146,20 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        <PersonVip memberList={memberList} mineId={mineId} />
+        <PersonVip
+          memberList={memberList}
+          mineId={mineId}
+          couponList={couponList}
+        />
       </div>
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}
       >
         <TeamVip
+          goProtocol={goProtocol}
           memberList={memberList}
           mineId={mineId}
+          couponList={couponList}
           vipMealType={vipMealType}
         />
       </div>
@@ -155,6 +172,7 @@ const VipPackage = (props: Iprops) => {
           senConfirm={senConfirm}
           isPaySuccess={isPaySuccess}
           getOrderCode={getOrderCode}
+          goProtocol={goProtocol}
           userInfo={
             userInfo
               ? userInfo

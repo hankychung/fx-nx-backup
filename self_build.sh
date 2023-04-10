@@ -49,9 +49,9 @@ version_number=harbor.flyele.vip/develop/$imageName:$version
 
 if [ $type == "h5" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/Dockerfile .
-elif [ $type == "compile-official-website" ];then
+elif [ $type == "official-website" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
-elif [ $type == "compile-management-system" ];then
+elif [ $type == "management-system" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
 else
   echo "  --> 不打镜像..."

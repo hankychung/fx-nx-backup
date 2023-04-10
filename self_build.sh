@@ -45,7 +45,19 @@ echo "   --> 开始编译docker镜像..."
 
 version=$(jenkins-build-tools gen -p $imageName | awk 'END {print$1}')
 version_number=harbor.flyele.vip/develop/$imageName:$version
-docker build --platform linux/amd64 -t $version_number -f deployment/Dockerfile .
+
+
+if [ $type == "h5" ];then
+  docker build --platform linux/amd64 -t $version_number -f deployment/Dockerfile .
+elif [ $branch == "compile-official-website" ];then
+  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
+elif [ $branch == "compile-management-system" ];then
+  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
+else
+  echo "  --> 不打镜像..."
+  exit 1
+fi
+
 if [ $? -ne 0 ];then
   echo "    --> docker build 失败..."
   exit 1

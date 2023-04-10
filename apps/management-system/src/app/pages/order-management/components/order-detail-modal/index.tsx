@@ -242,7 +242,7 @@ export const OrderDetailModal = ({
           title: '支付时间',
           value: dayjs
             .unix(indentDetail.payment_at)
-            .format('YYYY年M月D日 hh:mm:ss')
+            .format('YYYY年M月D日 HH:mm:ss')
         }
       ]
     }

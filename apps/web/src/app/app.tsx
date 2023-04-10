@@ -13,7 +13,7 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA5NTY5NjgsImlhdCI6MTY4MDk0ODA1MiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6IjU4NzYwZWFkLTZjYTgtNDIyNS1hN2VhLTY5MjFkMTY3YjdlNCIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.Xvvwb6KJ_bTqMD4l53zhHQpPwb8LFs_fQmZOwdbary4'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODExMjk1MzAsImlhdCI6MTY4MTEyMTM2NSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImE4N2NiNWNiLTQ1ZDYtNDcxZC04MWUxLWY2MDg4MWI2NzNlNSIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.bvuVrD6OKhh4MbR5m0DUzd8V5iUk2VcojMuYc5hFm0E'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -45,24 +45,27 @@ export function App() {
       env,
       userId: '542408421671185'
     })
-    const page_record = 200
-    console.time(`${page_record}条查询`)
-    const data = sqlStore.query({
-      direction: 'down',
-      filter: {
-        date_type: 2,
-        group_by: 'time',
-        page_number: 2,
-        page_record: 100,
-        query_type: 6,
-        show_mode: 2
-      },
-      page_number: 2,
-      page_record: 100,
-      show_model: 2
-    } as unknown as any)
-    console.timeEnd(`${page_record}条查询`)
-    console.log(data)
+
+    // window['update'] = sqlStore.updateDiffForClient()
+
+    // const page_record = 200
+    // console.time(`${page_record}条查询`)
+    // const data = sqlStore.query({
+    //   direction: 'down',
+    //   filter: {
+    //     date_type: 2,
+    //     group_by: 'time',
+    //     page_number: 2,
+    //     page_record: 100,
+    //     query_type: 6,
+    //     show_mode: 2
+    //   },
+    //   page_number: 2,
+    //   page_record: 100,
+    //   show_model: 2
+    // } as unknown as any)
+    // console.timeEnd(`${page_record}条查询`)
+    // console.log(data)
   }
 
   useEffect(() => {

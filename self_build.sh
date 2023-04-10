@@ -11,30 +11,15 @@ yarn
 echo "  --> 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then
-  # yarn build:$type
   yarn nx build $type
   imageName="fx-nx-dev"
+elif [ $branch == "master" ];then
+  yarn nx build $type
+  imageName="fx-nx-uat"
 else
   echo "  --> "$branch"不构建..."
   exit 1
 fi
-
-# if [ $branch == "release" ];then
-#   yarn build:test
-#   imageName="fx-nx-test"
-# elif [ $branch == "uat" ];then
-#   yarn build:uat
-#   imageName="fx-nx-uat"
-# elif [ $branch == "master" ];then
-#   yarn build:prod
-#   imageName="fx-nx-prod"
-# elif [ $branch == "develop" ];then
-#   yarn build:develop
-#   imageName="fx-nx-dev"
-# else
-#   echo "  --> "$branch"不构建..."
-#   exit 1
-# fi
 
 if [ $? -ne 0 ];then
   echo "  --> yarn build 失败..."
@@ -49,9 +34,9 @@ version_number=harbor.flyele.vip/develop/$imageName:$version
 
 if [ $type == "h5" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/Dockerfile .
-elif [ $branch == "compile-official-website" ];then
+elif [ $type == "official-website" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
-elif [ $branch == "compile-management-system" ];then
+elif [ $type == "management-system" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
 else
   echo "  --> 不打镜像..."

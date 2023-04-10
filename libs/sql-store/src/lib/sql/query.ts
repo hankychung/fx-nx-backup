@@ -37,15 +37,24 @@ export const BaseQuerySql = ({
   user_id: string
   LeftJoinRepeatAnd: string // 平铺和非平铺模式下 循环事项的判断
 }) => {
-  return `SELECT * FROM (SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
+  return `SELECT *,
+  CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
+       WHEN STRFTIME('%w', date) == '1' THEN '周一'
+       WHEN STRFTIME('%w', date) == '2' THEN '周二'
+       WHEN STRFTIME('%w', date) == '3' THEN '周三'
+       WHEN STRFTIME('%w', date) == '4' THEN '周四'
+       WHEN STRFTIME('%w', date) == '5' THEN '周五'
+       WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday
+FROM (SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
 IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, IFNULL(i.create_at, 0) AS update_at, a.complete_at,
 a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS is_follow,
 CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide,
-CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', 'now') OR cycle_date > DATE('now')) THEN 1
-     WHEN a.complete_at = 0 AND (a.end_time = 0 OR a.end_time > STRFTIME('%s', 'now')) THEN 2
-     WHEN a.complete_at = 0 AND (a.end_time > 0 OR a.end_time < STRFTIME('%s', 'now')) THEN 3
+CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') OR
+cycle_date > DATE('now', 'localtime')) THEN 1
+     WHEN a.complete_at = 0 AND (a.end_time = 0 OR a.end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 2
+     WHEN a.complete_at = 0 AND (a.end_time > 0 OR a.end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 3
      WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
      WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
 w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
@@ -59,14 +68,7 @@ IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name,
 tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN start_time = 0 AND end_time = 0 AND repeat_type = 0 AND flow_step_id = 0 THEN 1 ELSE 0 END as is_no_work,
-z.user_id, step_user_count, date, timestamp, application_id, admins, takers,
-CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
-     WHEN STRFTIME('%w', date) == '1' THEN '周一'
-     WHEN STRFTIME('%w', date) == '2' THEN '周二'
-     WHEN STRFTIME('%w', date) == '3' THEN '周三'
-     WHEN STRFTIME('%w', date) == '4' THEN '周四'
-     WHEN STRFTIME('%w', date) == '5' THEN '周五'
-     WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday 
+z.user_id, step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, timestamp, application_id, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
@@ -77,7 +79,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
         CASE WHEN JSON_VALID(c.application_json) == 1 THEN c.application_json ->> '$.name' ELSE '' END AS application_name,
         IFNULL(d.repeat_id, '') AS repeat_id, 
         IFNULL(d.cycle, 0) AS cycle,
-        CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date) ELSE '' END AS cycle_date, 
+        CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') ELSE '' END AS cycle_date, 
         IFNULL(d.start_time, b.start_time) AS start_time,
         IFNULL(d.start_time_full_day, b.start_time_full_day) AS start_time_full_day,
         IFNULL(d.end_time, b.end_time) AS end_time,
@@ -90,9 +92,9 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                                 THEN IFNULL(d.start_time, b.start_time) + 86399
                             ELSE IFNULL(d.start_time, b.start_time) END)
              WHEN IFNULL(d.end_time, b.end_time) > 0 THEN IFNULL(d.end_time, b.end_time)
-             ELSE (CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%s', d.cycle_date) + 86399.5
+             ELSE (CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%s', d.cycle_date,'localtime') + 86399.5
                         ELSE b.create_at + 1000000000 END) END AS timestamp,
-        CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date)
+        CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')
              WHEN d.start_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(d.start_time, 'unixepoch'))
              WHEN b.start_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(b.start_time, 'unixepoch'))
              WHEN d.end_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(d.end_time, 'unixepoch'))

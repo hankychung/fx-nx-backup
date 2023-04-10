@@ -6,7 +6,8 @@ import {
   FlyButton,
   FlyTabs,
   IFlyTabs,
-  FlyStringHighLight
+  FlyStringHighLight,
+  FlyTextTooltip
 } from '@flyele/flyele-components'
 import { Table, message } from 'antd'
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
@@ -296,10 +297,16 @@ export const OrderManagement = () => {
   /**
    * 个人打开订单详情
    */
-  const gotoOrderDetails = (item: OrderSystemType.IIndentList | null) => {
+  const gotoOrderDetails = async (item: OrderSystemType.IIndentList | null) => {
     if (item) {
       setOpenPersonalModal(false)
-      showOrderModal(item)
+      if (
+        item.indent_member_type === OrderSystemConst.IndentListMemberType.CORP
+      ) {
+        showOrderModal(item)
+      } else {
+        await onSearch('user', item.creator.user_id)
+      }
     }
   }
 
@@ -309,7 +316,7 @@ export const OrderManagement = () => {
   const closeAndSearch = useMemoizedFn(async () => {
     setOpenOrderModal(false)
     if (openModalData) {
-      await onSearch('user', openModalData.creator.user_name)
+      await onSearch('user', openModalData.creator.user_id)
     }
   })
 
@@ -345,9 +352,16 @@ export const OrderManagement = () => {
             className={styles.tableLink}
             onClick={() => openPersonalDetails(record, record.creator.user_id)}
           >
-            <FlyStringHighLight
-              keyword={searchName || ''}
-              text={record.creator.user_name}
+            <FlyTextTooltip
+              isDynamic
+              text={() => {
+                return (
+                  <FlyStringHighLight
+                    keyword={searchName || ''}
+                    text={record.creator.user_name}
+                  />
+                )
+              }}
             />
           </div>
         )
@@ -369,6 +383,7 @@ export const OrderManagement = () => {
 
           return (
             <div
+              style={{ width: '168px' }}
               className={styles.tableLink}
               onClick={() => {
                 if (record.users.length === 1) {
@@ -378,7 +393,17 @@ export const OrderManagement = () => {
                 }
               }}
             >
-              <FlyStringHighLight keyword={searchName || ''} text={nameStr} />
+              <FlyTextTooltip
+                isDynamic
+                text={() => {
+                  return (
+                    <FlyStringHighLight
+                      keyword={searchName || ''}
+                      text={nameStr}
+                    />
+                  )
+                }}
+              />
             </div>
           )
         }

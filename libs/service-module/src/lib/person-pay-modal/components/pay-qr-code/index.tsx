@@ -45,7 +45,9 @@ const PayQrCode = ({
       good_id: payInfo?.id || 0,
       // good_id: 8,
       origin_route: 'PC客户端',
-      total_price: (payInfo?.now_price || 0) * userInfo.length,
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
       // total_price: 1,
       users_id: userInfo.map((item) => item.userId),
       indent_member_type:
@@ -58,7 +60,9 @@ const PayQrCode = ({
         getOrderCode && getOrderCode(_.data.out_trade_no)
         const a = {
           ..._.data.data,
-          total_price: payInfo?.now_price || 0
+          total_price:
+            ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+            userInfo.length
         }
 
         const b = JSON.stringify(a)
@@ -109,7 +113,10 @@ const PayQrCode = ({
                 <span> ￥</span>
                 <span>
                   {regFenToYuan(
-                    (payInfo && payInfo.now_price * userInfo.length) || 0
+                    (payInfo &&
+                      (payInfo.now_price - (payInfo.price || 0)) *
+                        userInfo.length) ||
+                      0
                   )}
                 </span>
               </div>

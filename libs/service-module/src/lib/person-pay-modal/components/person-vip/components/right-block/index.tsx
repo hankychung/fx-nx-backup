@@ -15,11 +15,15 @@ import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 const RightBlock = ({
   memberList,
   mineId,
-  couponList
+  couponList,
+  goProtocol,
+  vipMealType
 }: {
+  goProtocol?: () => void
   memberList: IFlyeleAvatarItem[]
   mineId: string
   couponList?: ICoupon[]
+  vipMealType: VipMealType
 }) => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
@@ -72,8 +76,10 @@ const RightBlock = ({
     })
   })
   useEffect(() => {
-    getMealList()
-  }, [getMealList])
+    if (vipMealType === VipMealType.PERSON && couponList) {
+      getMealList()
+    }
+  }, [getMealList, couponList, vipMealType])
   //选择套餐
   const mealSelect = (_: IActiveGoods) => {
     const new_arr = vipMealList.map((item) => {
@@ -130,7 +136,7 @@ const RightBlock = ({
                     )}
                     <div>
                       <span>￥</span>
-                      {regFenToYuan(_.now_price)}
+                      {regFenToYuan(_.now_price - (_.price || 0))}
                     </div>
                   </div>
                   {_.end_at && getResidueTime(num - nowScecond) !== '0' && (
@@ -138,7 +144,10 @@ const RightBlock = ({
                       <span>
                         {getResidueTime(
                           num - nowScecond,
-                          (_?.now_price / _?.original_price).toFixed(2)
+                          (
+                            (_?.now_price - (_.price || 0)) /
+                            _?.original_price
+                          ).toFixed(2)
                         )}
                       </span>
                       <MealTime className={style.mealTime}></MealTime>
@@ -157,6 +166,7 @@ const RightBlock = ({
             vipMealType={VipMealType.PERSON}
             activeGood={activeGood}
             payClick={payClick}
+            goProtocol={goProtocol}
           />
         </div>
       )}

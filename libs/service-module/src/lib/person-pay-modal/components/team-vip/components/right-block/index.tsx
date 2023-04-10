@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-08 11:54:27
+ * @LastEditTime: 2023-04-10 17:09:54
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -73,10 +73,10 @@ const RightBlock = ({
   })
   //获取套餐
   useEffect(() => {
-    if (vipMealType === VipMealType.TEAM) {
+    if (vipMealType === VipMealType.TEAM && couponList) {
       getMealList()
     }
-  }, [vipMealType, getMealList])
+  }, [vipMealType, getMealList, couponList])
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
@@ -108,16 +108,20 @@ const RightBlock = ({
                 )}
                 <div>
                   <span>￥</span>
-                  {`${regFenToYuan(vipMeal?.now_price || 0)}/人/年`}
+                  {`${regFenToYuan(
+                    (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+                  )}/人/年`}
                 </div>
               </div>
               {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
                 <div className={style.time}>
                   <span>
-                    {' '}
                     {getResidueTime(
                       num - nowScecond,
-                      (vipMeal?.now_price / vipMeal?.original_price).toFixed(2)
+                      (
+                        (vipMeal?.now_price - (vipMeal.price || 0)) /
+                        vipMeal?.original_price
+                      ).toFixed(2)
                     )}
                   </span>
                   <MealTime className={style.mealTime}></MealTime>

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-07 16:26:35
+ * @LastEditTime: 2023-04-10 17:38:36
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -51,7 +51,9 @@ const PayQrCode = ({
       good_id: payInfo?.id || 0,
       // good_id: 8,
       origin_route: 'PC客户端',
-      total_price: (payInfo?.now_price || 0) * userInfo.length,
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
       // total_price: 1,
       users_id: userInfo.map((item) => item.userId),
       workspace_id: spaceId,
@@ -61,7 +63,9 @@ const PayQrCode = ({
       paymentApi.createOrder(params).then(async (_) => {
         const a = {
           ..._.data.data,
-          total_price: (payInfo?.now_price || 0) * userInfo.length
+          total_price:
+            ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+            userInfo.length
         }
         const b = JSON.stringify(a)
         const res = await QRCode.toDataURL(
@@ -109,7 +113,10 @@ const PayQrCode = ({
                 <span> ￥</span>
                 <span>
                   {regFenToYuan(
-                    (payInfo && payInfo.now_price * userInfo.length) || 0
+                    (payInfo &&
+                      (payInfo.now_price - (payInfo.price || 0)) *
+                        userInfo.length) ||
+                      0
                   )}
                 </span>
               </div>

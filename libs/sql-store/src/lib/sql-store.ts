@@ -131,8 +131,11 @@ class SqlStore {
       }
 
       // 更新差异数据
-      this.updateDiff()
+      // this.updateDiff()
     }
+
+    // 更新差异数据
+    this.updateDiff()
   }
 
   updateToken(token: string) {
@@ -238,11 +241,13 @@ class SqlStore {
 
   // 增量更新数据回传客户端
   async updateDiffForClient() {
-    const info = await this.updateDiff()
+    await this.updateDiff()
 
-    return this.query({
-      filter: { task_ids: info.taskIds }
-    })
+    return {}
+
+    // return this.query({
+    //   filter: { task_ids: info.taskIds }
+    // })
   }
 
   private async getUpdates(key: string, lastId: string, pageIdx: number) {

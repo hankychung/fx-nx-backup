@@ -13,7 +13,7 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODExMDYwODUsImlhdCI6MTY4MTA5ODI3NCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6IjQ1ODJjN2JiLTc2NmYtNDgxNC05NWEwLTVhYTE5YTBjZDVlOCIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.f5k0hynpYjT5AKdkF5XgiLmeWvB0pzgaH2FnsE95T7A'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODExMjk1MzAsImlhdCI6MTY4MTEyMTM2NSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImE4N2NiNWNiLTQ1ZDYtNDcxZC04MWUxLWY2MDg4MWI2NzNlNSIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.bvuVrD6OKhh4MbR5m0DUzd8V5iUk2VcojMuYc5hFm0E'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -45,6 +45,9 @@ export function App() {
       env,
       userId: '542408421671185'
     })
+
+    // window['update'] = sqlStore.updateDiffForClient()
+
     // const page_record = 200
     // console.time(`${page_record}条查询`)
     // const data = sqlStore.query({

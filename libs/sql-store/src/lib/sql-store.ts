@@ -166,10 +166,10 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    const getTableUpdates = async (key: string) => {
+    const getTableUpdates = async (key: string, pageIdx: number) => {
       const info = this.recordInfo.attach_info
 
-      const res = await this.getUpdates(key, info[key].id)
+      const res = await this.getUpdates(key, info[key].id, pageIdx)
 
       if (!res.code && res.data) {
         if (key === 'task_dispatch') {
@@ -217,17 +217,17 @@ class SqlStore {
 
         // this.db!.run(sql)
 
+        if (list.length >= 20) {
+          await getTableUpdates(key, pageIdx + 1)
+        }
+
         // 更新last_id
         this.recordInfo.attach_info[key] = { id: last_id }
-
-        if (list.length >= 20) {
-          await getTableUpdates(key)
-        }
       }
     }
 
     for (const key of list.filter(checkDecentTable)) {
-      await getTableUpdates(key)
+      await getTableUpdates(key, 1)
     }
 
     this.updateDB()
@@ -247,9 +247,9 @@ class SqlStore {
     })
   }
 
-  private async getUpdates(key: string, lastId: string) {
+  private async getUpdates(key: string, lastId: string, pageIdx: number) {
     const data = await this.request(
-      `datasupport/v1/increment?last_id=${lastId}&type=${key}&page_size=20`
+      `datasupport/v1/increment?last_id=${lastId}&type=${key}&page_size=20&page_index=${pageIdx}`
     )
 
     return data as IDiffInfoResponse

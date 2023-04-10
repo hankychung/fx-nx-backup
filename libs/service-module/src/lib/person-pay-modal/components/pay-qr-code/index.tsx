@@ -21,7 +21,8 @@ const PayQrCode = ({
   senConfirm,
   isPaySuccess,
   onClose,
-  getOrderCode
+  getOrderCode,
+  goProtocol
 }: {
   vipMealType: VipMealType
   payInfo?: IActiveGoods
@@ -30,6 +31,7 @@ const PayQrCode = ({
   onClose: () => void
   senConfirm?: () => void
   getOrderCode?: (str: string) => void
+  goProtocol: () => void
 }) => {
   const service = useContext(SelectMemberContext)
   // const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -122,7 +124,7 @@ const PayQrCode = ({
               </div>
             </div>
             {/* 协议 */}
-            <Protocol />
+            <Protocol goProtocol={goProtocol} />
           </div>
         )}
         {/* 支付成功  */}

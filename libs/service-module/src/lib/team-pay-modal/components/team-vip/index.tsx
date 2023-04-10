@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-03 17:21:19
+ * @LastEditTime: 2023-04-07 16:26:24
  */
 import { IActiveGoods } from '@flyele-nx/api'
 import { useCreation } from 'ahooks'
@@ -26,6 +26,7 @@ interface Iprops {
   upSpace?: () => void
   senConfirm?: () => void
   onClose?: () => void
+  goProtocol: () => void
 }
 const TeamVip = (props: Iprops) => {
   const {
@@ -36,7 +37,8 @@ const TeamVip = (props: Iprops) => {
     upSpace,
     senConfirm,
     isPaySuccess,
-    onClose
+    onClose,
+    goProtocol
   } = props
 
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -79,6 +81,7 @@ const TeamVip = (props: Iprops) => {
           <RightBlock
             vipType={vipType}
             upSpace={upSpace}
+            goProtocol={goProtocol}
             mineInfo={memberList.filter((item) => item.userId === mineId)[0]}
           />
         </div>
@@ -90,6 +93,7 @@ const TeamVip = (props: Iprops) => {
             senConfirm={senConfirm}
             isPaySuccess={isPaySuccess}
             onClose={onClose}
+            goProtocol={goProtocol}
             userInfo={
               userInfo
                 ? userInfo

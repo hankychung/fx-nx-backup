@@ -92,6 +92,7 @@ export const PersonalDetailModal = ({
       ) {
         setIsCorp(true)
       } else {
+        setIsCorp(false)
         fetchUsersInfo(userId)
       }
     }

@@ -93,7 +93,7 @@ export const getFilterSql = (
   const ORDERS: string[] = ['repeat_id ASC', 'task_id DESC']
 
   // 平铺模式下 查询所有小于等于今天的
-  let LeftJoinRepeatAnd = `cycle_date <= DATETIME('now', 'localtime')`
+  let LeftJoinRepeatAnd = `d.cycle_date <= DATETIME('now', 'localtime')`
 
   /**
    * 标题/背景信息
@@ -110,7 +110,7 @@ export const getFilterSql = (
 
   // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
   if (queryModel === 2) {
-    LeftJoinRepeatAnd = `(cycle_date <= DATETIME('now', 'localtime') OR d.cycle = 1)`
+    LeftJoinRepeatAnd = `(d.cycle_date <= DATETIME('now', 'localtime') OR d.cycle = 1)`
   }
 
   /**

@@ -11,7 +11,8 @@ yarn
 echo "  --> 开始执行 yarn build..."
 
 if [ $branch == "dev-hui" ];then
-  yarn build:$type
+  # yarn build:$type
+  yarn nx build $type
   imageName="fx-nx-dev"
 else
   echo "  --> "$branch"不构建..."

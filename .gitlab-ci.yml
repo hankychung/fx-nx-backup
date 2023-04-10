@@ -7,11 +7,6 @@ compile-h5:
     - nodejs
     - mac
   stage: compile
-  # rules:
-  #   - if: $CI_COMMIT_BRANCH == 'master'
-  #   - if: $CI_COMMIT_BRANCH == 'test'
-  #   - if: $CI_COMMIT_BRANCH == 'dev'
-  #   - if: $CI_COMMIT_BRANCH == 'dev-hui'
   script:
     - chmod a+x ./self_build.sh
     - ./self_build.sh $CI_COMMIT_BRANCH h5
@@ -21,28 +16,18 @@ compile-official-website:
     - nodejs
     - mac
   stage: compile
-  # rules:
-  #   - if: $CI_COMMIT_BRANCH == 'master'
-  #   - if: $CI_COMMIT_BRANCH == 'test'
-  #   - if: $CI_COMMIT_BRANCH == 'dev'
-  #   - if: $CI_COMMIT_BRANCH == 'dev-hui'
   script:
     - chmod a+x ./self_build.sh
-    - ./self_build.sh $CI_COMMIT_BRANCH website
+    - ./self_build.sh $CI_COMMIT_BRANCH official-website
   when: manual
 compile-management-system:
   tags:
     - nodejs
     - mac
   stage: compile
-  # rules:
-  #   - if: $CI_COMMIT_BRANCH == 'master'
-  #   - if: $CI_COMMIT_BRANCH == 'test'
-  #   - if: $CI_COMMIT_BRANCH == 'dev'
-  #   - if: $CI_COMMIT_BRANCH == 'dev-hui'
   script:
     - chmod a+x ./self_build.sh
-    - ./self_build.sh $CI_COMMIT_BRANCH management
+    - ./self_build.sh $CI_COMMIT_BRANCH management-system
   when: manual
 # 构建失败时的通知消息
 notifyFailWeChat:

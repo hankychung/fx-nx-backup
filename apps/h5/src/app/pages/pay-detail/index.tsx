@@ -98,6 +98,7 @@ const PayDetail = () => {
       out_trade_no: string
     }
   ) => {
+    localStorage.setItem('orderCode', info.out_trade_no)
     paymentApi
       .prePay({
         code,
@@ -125,6 +126,8 @@ const PayDetail = () => {
         paySign: params.pay_sign //微信签名
       },
       function (res: any) {
+        console.log(res, '测试')
+
         if (res.err_msg === 'get_brand_wcpay_request:ok') {
           // 使用以上方式判断前端返回,微信团队郑重提示：
           // res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -137,10 +140,10 @@ const PayDetail = () => {
           }, 1000)
           setIntervalId(interval)
         }
-        if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-          getOrderDetail()
-          // 支付取消
-        }
+        // if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+        //   getOrderDetail()
+        //   // 支付取消
+        // }
 
         if (res.err_msg === 'get_brand_wcpay_request:fail') {
           // 支付失败
@@ -154,16 +157,22 @@ const PayDetail = () => {
     onBridgeReady(params)
   }
   const getOrderDetail = (isPAY = false) => {
+    const orderCode = localStorage.getItem('orderCode')
     paymentApi
       .getOrderDetail({
-        out_trade_no: orderInfo?.out_trade_no || ''
+        out_trade_no: orderCode || ''
       })
       .then((res) => {
         if (res.code === 0) {
-          if (res.data === 12000 && isPAY) {
+          if (res.data !== 12001 && isPAY) {
             setVisible(true)
           }
-          setStatus(res.data)
+          if (res.data === 12001) {
+            setStatus(res.data)
+          }
+          if (res.data === 12004) {
+            setStatus(res.data)
+          }
         }
       })
   }
@@ -216,7 +225,7 @@ const PayDetail = () => {
           <div>2. 如未打开微信app或未支付成功，请点击【重新支付】</div>
         </div>
       )}
-      {state === 12001 && (
+      {state === 12000 && (
         <div className={styles.btns}>
           <div
             className={styles.btn}

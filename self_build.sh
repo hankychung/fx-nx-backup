@@ -10,7 +10,7 @@ yarn
 
 echo "  --> 开始执行 yarn build..."
 
-if [ $branch == "dev-hui" ];then
+if [ $branch == "dev" ];then
   # yarn build:$type
   yarn nx build $type
   imageName="fx-nx-dev"

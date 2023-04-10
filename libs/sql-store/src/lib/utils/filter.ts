@@ -214,7 +214,7 @@ export const getFilterSql = (
 
           // 往上翻的时候 绝对不查待安排
           WHERES.push(`(timestamp ${contrast} ${timestamp} AND is_no_work = 0)`)
-        } else {
+        } else if (direction === Direction.down) {
           let contrast = '>='
 
           if (orderIsTime) {

@@ -11,30 +11,15 @@ yarn
 echo "  --> 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then
-  # yarn build:$type
   yarn nx build $type
   imageName="fx-nx-dev"
+elif [ $branch == "master" ];then
+  yarn nx build $type
+  imageName="fx-nx-uat"
 else
   echo "  --> "$branch"不构建..."
   exit 1
 fi
-
-# if [ $branch == "release" ];then
-#   yarn build:test
-#   imageName="fx-nx-test"
-# elif [ $branch == "uat" ];then
-#   yarn build:uat
-#   imageName="fx-nx-uat"
-# elif [ $branch == "master" ];then
-#   yarn build:prod
-#   imageName="fx-nx-prod"
-# elif [ $branch == "develop" ];then
-#   yarn build:develop
-#   imageName="fx-nx-dev"
-# else
-#   echo "  --> "$branch"不构建..."
-#   exit 1
-# fi
 
 if [ $? -ne 0 ];then
   echo "  --> yarn build 失败..."

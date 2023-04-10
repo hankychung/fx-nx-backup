@@ -182,7 +182,7 @@ class SqlStore {
 
         const { last_id, list } = res.data
 
-        let sql = ''
+        // let sql = ''
 
         for (const item of list) {
           const { type, keys, data } = item
@@ -190,7 +190,7 @@ class SqlStore {
           console.log('check item', item)
 
           if (type === 'insert') {
-            sql += this.getInsertSql(data, key) + ';'
+            // sql += this.getInsertSql(data, key) + ';'
 
             this.db!.run(this.getInsertSql(data, key) + ';')
 
@@ -199,19 +199,17 @@ class SqlStore {
 
           if (type === 'update') {
             // 更新逻辑
-            sql += this.getUpdateSql({ keys, data }, key) + ';'
-
-            console.log('sql', this.getUpdateSql({ keys, data }, key) + ';')
-
-            this.db!.run(this.getUpdateSql({ keys, data }, key) + ';')
+            this.db!.run(this.getDelSql(keys, key) + ';')
+            // sql += this.getDelSql(keys, key) + ';'
+            // sql += this.getInsertSql(data, key) + ';'
+            this.db!.run(this.getInsertSql(data, key) + ';')
             continue
           }
 
           if (type === 'delete') {
             // 删除逻辑
-
             this.db!.run(this.getDelSql(keys, key) + ';')
-            sql += this.getDelSql(keys, key) + ';'
+            // sql += this.getDelSql(keys, key) + ';'
           }
         }
 

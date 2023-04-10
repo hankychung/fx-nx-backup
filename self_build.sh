@@ -12,10 +12,10 @@ echo "  --> 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then
   yarn nx build $type
-  imageName="fx-nx"$type"-dev"
+  imageName="fx-nx-"$type"-dev"
 elif [ $branch == "master" ];then
   yarn nx build $type
-  imageName="fx-nx"$type"-master"
+  imageName="fx-nx-"$type"-master"
 else
   echo "  --> "$branch"不构建..."
   exit 1

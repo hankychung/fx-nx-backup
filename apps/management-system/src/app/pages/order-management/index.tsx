@@ -447,7 +447,7 @@ export const OrderManagement = () => {
         dataIndex: 'payment_at',
         render: (text) => (
           <span>
-            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 hh:mm:ss') : ''}
+            {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 HH:mm:ss') : ''}
           </span>
         )
       },

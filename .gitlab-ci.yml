@@ -2,12 +2,11 @@ stages:
   - compile
   - notify
 
-compile-docker:
+compile-h5:
   tags:
     - nodejs
     - mac
   stage: compile
-
   rules:
     - if: $CI_COMMIT_BRANCH == 'master'
     - if: $CI_COMMIT_BRANCH == 'test'
@@ -15,8 +14,36 @@ compile-docker:
     - if: $CI_COMMIT_BRANCH == 'dev-hui'
   script:
     - chmod a+x ./self_build.sh
-    - ./self_build.sh $CI_COMMIT_BRANCH
-
+    - ./self_build.sh $CI_COMMIT_BRANCH h5
+  when: manual
+compile-official-website:
+  tags:
+    - nodejs
+    - mac
+  stage: compile
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+    - if: $CI_COMMIT_BRANCH == 'test'
+    - if: $CI_COMMIT_BRANCH == 'dev'
+    - if: $CI_COMMIT_BRANCH == 'dev-hui'
+  script:
+    - chmod a+x ./self_build.sh
+    - ./self_build.sh $CI_COMMIT_BRANCH website
+  when: manual
+compile-management-system:
+  tags:
+    - nodejs
+    - mac
+  stage: compile
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+    - if: $CI_COMMIT_BRANCH == 'test'
+    - if: $CI_COMMIT_BRANCH == 'dev'
+    - if: $CI_COMMIT_BRANCH == 'dev-hui'
+  script:
+    - chmod a+x ./self_build.sh
+    - ./self_build.sh $CI_COMMIT_BRANCH management
+  when: manual
 # 构建失败时的通知消息
 notifyFailWeChat:
   stage: notify

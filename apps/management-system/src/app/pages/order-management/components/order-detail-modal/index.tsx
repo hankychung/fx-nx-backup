@@ -200,11 +200,6 @@ export const OrderDetailModal = ({
       OrderSystemConst.IndentListMemberType.TEAM
     ) {
       orderData = orderData.filter((data) => data.key !== 'indent_member_attr')
-      orderData.push({
-        key: 'workspace',
-        title: '关联空间',
-        value: '无'
-      })
     }
 
     const orderInfo = {

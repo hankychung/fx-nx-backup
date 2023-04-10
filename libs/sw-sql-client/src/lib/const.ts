@@ -30,6 +30,7 @@ const SqlFilterSplitKeys: {
     key: 'priority_level'
   },
   { filter_key: 'tags', key: 'tags_id' },
+  { filter_key: 'task_ids', key: 'tasks_id' },
   {
     filter_key: 'taker_ids',
     key: 'takers_id'

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-06 18:31:04
+ * @LastEditTime: 2023-04-11 12:01:29
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -30,13 +30,14 @@ const Header = (props: Iprops) => {
   const userInfo = useMemo(() => {
     return memberList.filter((item) => item.userId === mineId)[0]
   }, [mineId, memberList])
+
   const vipText = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
+
     let txt = '未开通飞项会员'
     if (!info.level) {
       if (info.end_time && info.next_end_time) {
         txt = '您的团队会员已过期，请续费后使用'
-        return
       }
       if (info.end_time) {
         txt = '您的个人会员过期，请续费后使用'
@@ -45,13 +46,11 @@ const Header = (props: Iprops) => {
     if (info.level === 1) {
       if (info.end_time === 9999999999) {
         txt = `您已开通终身版个人会员，可无限期使用`
-        return
       }
       if (info.end_time) {
         txt = `您已开通个人会员，${dayjs
           .unix(info.end_time)
           .format('YYYY年MM月DD日')}到期`
-        return
       }
     }
     if (info.level === 2) {

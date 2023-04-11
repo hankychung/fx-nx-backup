@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-11 12:01:29
+ * @LastEditTime: 2023-04-11 17:40:08
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -36,10 +36,10 @@ const Header = (props: Iprops) => {
 
     let txt = '未开通飞项会员'
     if (!info.level) {
-      if (info.end_time && info.next_end_time) {
+      if (info.end_time && info.recently_type === 2) {
         txt = '您的团队会员已过期，请续费后使用'
       }
-      if (info.end_time) {
+      if (info.end_time && info.recently_type === 1) {
         txt = '您的个人会员过期，请续费后使用'
       }
     }

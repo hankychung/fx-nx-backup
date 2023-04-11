@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-10 17:16:15
+ * @LastEditTime: 2023-04-11 17:41:56
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -135,8 +135,8 @@ const RightBlock = ({
                     {getResidueTime(
                       num - nowScecond,
                       (
-                        vipMeal?.now_price -
-                        (vipMeal.price || 0) / vipMeal?.original_price
+                        (vipMeal?.now_price - (vipMeal.price || 0)) /
+                        vipMeal?.original_price
                       ).toFixed(2)
                     )}
                   </span>

@@ -105,7 +105,7 @@ class ServiceWorkerUtils {
 
     if (data.date_type === 1) {
       params.direction = Direction.up
-    } else {
+    } else if (data.date_type === 2) {
       params.direction = Direction.down
     }
 

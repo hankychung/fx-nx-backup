@@ -48,15 +48,15 @@ export const BaseQuerySql = ({
 FROM (SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
-IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, IFNULL(i.create_at, 0) AS update_at, a.complete_at,
+IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, a.update_at, a.complete_at,
 a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS is_follow,
 CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide,
 CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') OR
-cycle_date > DATE('now', 'localtime')) THEN 1
-     WHEN a.complete_at = 0 AND (a.end_time = 0 OR a.end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 2
-     WHEN a.complete_at = 0 AND (a.end_time > 0 OR a.end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 3
-     WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
-     WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
+    cycle_date > DATE('now', 'localtime')) THEN 1
+    WHEN a.complete_at = 0 AND (a.end_time = 0 OR a.end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 2
+    WHEN a.complete_at = 0 AND (a.end_time > 0 OR a.end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 3
+    WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
+    WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
 w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
 IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
 IFNULL(k.child_total, 0) AS child_total,
@@ -68,9 +68,10 @@ IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name,
 tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN start_time = 0 AND end_time = 0 AND repeat_type = 0 AND flow_step_id = 0 THEN 1 ELSE 0 END as is_no_work,
-z.user_id, step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, timestamp, application_id, admins, takers
+z.user_id, step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
+timestamp, application_id, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
-        b.matter_type, b.title, b.detail, b.priority_level, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
+        b.matter_type, b.title, b.detail, b.priority_level, b.update_at, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
         b.creator_id, b.create_at, c.category,
         CASE WHEN c.project_id > 0 THEN c.project_id ELSE 0 END AS project_id,
@@ -94,16 +95,14 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
              WHEN IFNULL(d.end_time, b.end_time) > 0 THEN IFNULL(d.end_time, b.end_time)
              ELSE (CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%s', d.cycle_date,'localtime') + 86399.5
                         ELSE b.create_at + 1000000000 END) END AS timestamp,
-        CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')
-             WHEN d.start_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(d.start_time, 'unixepoch'))
-             WHEN b.start_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(b.start_time, 'unixepoch'))
-             WHEN d.end_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(d.end_time, 'unixepoch'))
-             WHEN b.end_time > 0 THEN STRFTIME('%Y-%m-%d', DATETIME(b.end_time, 'unixepoch'))
-             WHEN c.flow_step_id > 0 THEN (CASE WHEN c.flow_step_id > 0
-                                                    THEN STRFTIME('%Y-%m-%d', DATETIME(b.create_at, 'unixepoch'))
-                                                ELSE STRFTIME('%Y-%m-%d',
-                                                              DATETIME(b.create_at + 1000000000, 'unixepoch')) END)
-             ELSE '' END AS date, parent_id, CASE WHEN b1.id > 0 THEN b1.title ELSE '' END AS parent_name
+            CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%s', d.cycle_date, 'localtime')
+              WHEN d.start_time > 0 THEN d.start_time
+              WHEN b.start_time > 0 THEN b.start_time
+              WHEN d.end_time > 0 THEN d.end_time
+              WHEN b.end_time > 0 THEN b.end_time
+              WHEN c.flow_step_id > 0 THEN (CASE WHEN c.flow_step_id > 0 THEN b.create_at
+                                                  ELSE b.create_at + 1000000000 END)
+              ELSE '' END AS date, parent_id, CASE WHEN b1.id > 0 THEN b1.title ELSE '' END AS parent_name
    FROM (SELECT ref_task_id, dispatch_id, identity, taker_id, state, personal_state, operate_state, delete_at,
                 finish_time
            FROM task_dispatch
@@ -150,12 +149,6 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
     ON a.id = ff2.task_id
     LEFT JOIN task_conclusion AS f
     ON a.id = f.task_id AND f.delete_at = 0
-    LEFT JOIN message_action AS g
-    ON a.id = g.ref_id AND g.user_id = ${user_id} AND g.delete_at = 0
-    LEFT JOIN message AS h
-    ON a.id = h.ref_id AND h.id = g.last_message_id
-    LEFT JOIN comment AS i
-    ON h.comment_id = i.id
     LEFT JOIN task_follow AS j
     ON j.user_id = ${user_id} AND j.task_id = a.id
     LEFT JOIN (SELECT c.id, IFNULL(fp.project_name, '') AS project_name,

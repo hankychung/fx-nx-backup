@@ -3,7 +3,7 @@ interface PackInfo {
   data: Datum[]
 }
 
-interface Datum {
+export interface Datum {
   id: string
   // 1 -> 全量包, 2 -> 差异包
   type: 1 | 2

@@ -13,7 +13,7 @@ const env = process.env.NODE_ENV as string
 envStore.initEnv(env)
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODExMjk1MzAsImlhdCI6MTY4MTEyMTM2NSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImE4N2NiNWNiLTQ1ZDYtNDcxZC04MWUxLWY2MDg4MWI2NzNlNSIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.bvuVrD6OKhh4MbR5m0DUzd8V5iUk2VcojMuYc5hFm0E'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODExOTIxNjcsImlhdCI6MTY4MTE4Mzk3OCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzMxMzYzMzU0NTA5NDgyIiwiRGV2aWNlSUQiOiI2YmFiYTBjYy05NTE0LTQwN2MtODE4OC1kMjBlYjc5NDMzMjQiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.8FKvk8X3BMh9zbMUl8-5aK7owrLT8tedmLmjRkMj8h4'
 
 export function App() {
   const mapSvgRef = useRef<MapSvgRef>(new InitMapSvgRef())
@@ -43,7 +43,7 @@ export function App() {
       host: envStore.getHost(),
       token,
       env,
-      userId: '542408421671185'
+      userId: '1331363354509482'
     })
 
     // window['update'] = sqlStore.updateDiffForClient()

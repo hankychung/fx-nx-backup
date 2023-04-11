@@ -8,7 +8,7 @@ import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
-import { PackInfo, Attachinfo, LastId } from './type/service/datapandora'
+import { PackInfo, Attachinfo, LastId, Datum } from './type/service/datapandora'
 import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 import { defaultDiffStamp } from './const'
@@ -101,13 +101,15 @@ class SqlStore {
       // 存在全量包, 需要根据全量包重新建表
       createDB()
 
-      const { sign_url, id, attach_info } = firstData
+      await this.updateBundle(firstData)
 
-      await this.fetchZip(sign_url)
+      // const { sign_url, id, attach_info } = firstData
 
-      this.recordInfo = { id, attach_info }
+      // await this.fetchZip(sign_url)
 
-      await this.initTable()
+      // this.recordInfo = { id, attach_info }
+
+      // await this.updateTable()
     } else {
       if (storeDB) {
         // 存在用户数据库
@@ -119,23 +121,25 @@ class SqlStore {
     }
 
     // 更新差异包
-    this.updateDiffData(list.filter(({ type }) => type === 2))
-
-    if (firstData) {
-      this.recordInfo = {
-        ...this.recordInfo,
-        attach_info: {
-          ...this.recordInfo.attach_info,
-          ...firstData.attach_info
-        }
-      }
-
-      // 更新差异数据
-      // this.updateDiff()
+    for (const data of list.filter(({ type }) => type === 2)) {
+      await this.updateBundle(data)
     }
 
+    // if (firstData) {
+    //   this.recordInfo = {
+    //     ...this.recordInfo,
+    //     attach_info: {
+    //       ...this.recordInfo.attach_info,
+    //       ...firstData.attach_info
+    //     }
+    //   }
+
+    //   // 更新差异数据
+    //   // this.updateDiff()
+    // }
+
     // 更新差异数据
-    this.updateDiff()
+    await this.updateDiff()
   }
 
   updateToken(token: string) {
@@ -241,13 +245,19 @@ class SqlStore {
 
   // 增量更新数据回传客户端
   async updateDiffForClient() {
-    await this.updateDiff()
+    const info = await this.updateDiff()
 
-    return {}
+    const { taskIds } = info
 
-    // return this.query({
-    //   filter: { task_ids: info.taskIds }
-    // })
+    if (!taskIds.length) return []
+
+    const res = this.query({
+      filter: { task_ids: info.taskIds }
+    })
+
+    console.log('@DIFF', info, res)
+
+    return res
   }
 
   private async getUpdates(key: string, lastId: string, pageIdx: number) {
@@ -258,8 +268,15 @@ class SqlStore {
     return data as IDiffInfoResponse
   }
 
-  private async updateDiffData(p: DiffPackList) {
-    console.log('diff packs', p)
+  // 更新增量包
+  private async updateBundle(data: Datum) {
+    const { sign_url, id, attach_info } = data
+
+    await this.fetchZip(sign_url)
+
+    this.recordInfo = { id, attach_info }
+
+    await this.updateTable()
   }
 
   private async request(url: string) {
@@ -372,7 +389,7 @@ class SqlStore {
   }
 
   // 将全量包的内容写入数据库
-  private async initTable() {
+  private async updateTable() {
     const guide = await this.parseFile('guide')
 
     for (const [table, info] of Object.entries(guide)) {
@@ -380,16 +397,6 @@ class SqlStore {
 
       for (const file of data) {
         const content = (await this.parseFile(file)) as any[]
-
-        // const decentCtn = content.map((i) => {
-        //   const obj: any = {}
-
-        //   Object.keys(defaultInfo[table]).forEach((k) => {
-        //     obj[k] = i[k] || defaultInfo[table][k]
-        //   })
-
-        //   return obj
-        // })
 
         let sqlStr = ''
 
@@ -400,10 +407,6 @@ class SqlStore {
         this.db!.run(sqlStr)
       }
     }
-
-    // const data = this.db?.exec('select * from task_dispatch')
-
-    // console.log(data)
 
     this.updateDB()
   }

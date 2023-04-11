@@ -82,9 +82,13 @@ const _AvatarEdit = (props: IProps) => {
   }
 
   const handleSave = () => {
+    console.log('check editor', editor)
+
     editor.current
       ?.getImageScaledToCanvas()
       .toBlob(async (res: Blob | null) => {
+        console.log('check editor res', res)
+
         if (!res) return
         const file = new window.File([res], fileName, { type: fileType })
 

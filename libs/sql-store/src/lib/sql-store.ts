@@ -245,9 +245,19 @@ class SqlStore {
 
   // 增量更新数据回传客户端
   async updateDiffForClient() {
-    await this.updateDiff()
+    const info = await this.updateDiff()
 
-    return {}
+    const { taskIds } = info
+
+    if (!taskIds.length) return []
+
+    const res = this.query({
+      filter: { task_ids: info.taskIds }
+    })
+
+    console.log('@DIFF', info, res)
+
+    return res
   }
 
   private async getUpdates(key: string, lastId: string, pageIdx: number) {

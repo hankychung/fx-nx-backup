@@ -1,18 +1,61 @@
 import React, { useState } from 'react'
-import { useNavigate, Outlet, useLocation } from 'react-router-dom'
+import {
+  useNavigate,
+  Outlet,
+  useLocation,
+  useOutletContext
+} from 'react-router-dom'
 import { routePath } from '../../routes'
 import { PageNav } from '../../components/page-nav'
 import { useUserStore } from '../../store/user'
 import { OrderSystemApi, service } from '@flyele-nx/service'
 import { useMemoizedFn, useMount } from 'ahooks'
 import { useInvoiceStore } from '../../store/invoice'
+import { PageContainer } from '../../components/page-container'
+
+type ContextType = {
+  searchType: string
+  setSearchType: React.Dispatch<React.SetStateAction<string>>
+}
 
 export const HomePage = () => {
   const [defaultTab, setDefaultTab] = useState('')
+  const [searchType, setSearchType] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
   const userStore = useUserStore()
   const invoiceStore = useInvoiceStore()
+
+  /**
+   * 根据路由切换tab
+   */
+  const changeTabOnUrl = () => {
+    if (location.pathname) {
+      switch (location.pathname) {
+        case routePath.order:
+          setDefaultTab('order')
+          break
+        case routePath.invoice:
+          setDefaultTab('invoice')
+          break
+        default:
+          break
+      }
+    }
+  }
+
+  /**
+   * 点击左侧Item
+   */
+  const onClickItem = useMemoizedFn((type: string) => {
+    if (type) {
+      if (location.pathname === routePath.invoice) {
+        navigate(routePath.order)
+        setDefaultTab('order')
+      }
+      setSearchType(type)
+    }
+  })
 
   /**
    * 返回登录页
@@ -82,24 +125,23 @@ export const HomePage = () => {
 
     await beforeRefreshPage()
 
-    if (location.pathname) {
-      switch (location.pathname) {
-        case routePath.order:
-          setDefaultTab('order')
-          break
-        case routePath.invoice:
-          setDefaultTab('invoice')
-          break
-        default:
-          break
-      }
-    }
+    changeTabOnUrl()
   })
 
   return (
     <div>
-      <PageNav defaultTab={defaultTab} loginOut={loginOut} />
-      <Outlet />
+      <PageNav
+        defaultTab={defaultTab}
+        loginOut={loginOut}
+        onChange={(key) => setDefaultTab(key)}
+      />
+      <PageContainer onClickItem={onClickItem}>
+        <Outlet context={{ searchType, setSearchType }} />
+      </PageContainer>
     </div>
   )
+}
+
+export function useSearchListType() {
+  return useOutletContext<ContextType>()
 }

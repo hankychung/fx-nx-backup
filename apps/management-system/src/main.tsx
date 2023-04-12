@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import { AllRoutes } from './app/routes'
+import { envStore } from '@flyele-nx/service'
+
+envStore.initEnv(process.env.NODE_ENV as string)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

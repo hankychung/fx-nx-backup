@@ -17,6 +17,7 @@
         margin-bottom: 22px;
         background: #ffffff;
         border-radius: 8px;
+        user-select: none;
 
         .dataTitleBox {
           display: flex;
@@ -46,6 +47,10 @@
             font-size: 18px;
           }
         }
+      }
+
+      .canClick {
+        cursor: pointer;
       }
     }
 

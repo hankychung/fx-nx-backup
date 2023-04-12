@@ -34,7 +34,7 @@ export const PhoneLogin = ({
   // 验证码相关
   const [code, setCode] = useState<string>('')
   const [codeStatus, setCodeStatus] = useState(CodeStatus.noPn)
-  const [isCallCodeIe, setIsCallCodeIe] = useState(true) // 是否已经调用短信接口, 调试模式改成true
+  const [isSendCode, setIsSendCode] = useState(false) // 是否已经发送过code
   const { timer, exeTimer } = useTimer()
 
   const onSubmit = () => {
@@ -75,14 +75,14 @@ export const PhoneLogin = ({
       try {
         const phone = phoneNum.replace(/\s*/g, '')
         await getVerifyCode(phone)
-        setIsCallCodeIe(true) // 已调用生成短信接口
         setCodeStatus(CodeStatus.timer)
+        setIsSendCode(true)
         exeTimer() // 启动定时器
       } catch (err) {
-        setIsCallCodeIe(true) // 调试用，记得清除
+        setIsSendCode(true)
         messageApi.open({
           type: 'error',
-          content: '获取验证码失败'
+          content: '发送验证码失败'
         })
       }
     }
@@ -113,8 +113,8 @@ export const PhoneLogin = ({
 
   useEffect(() => {
     const phone = phoneNum.replace(/\s*/g, '')
-    setDisabled(!(phoneReg.test(phone) && codeReg.test(code) && isCallCodeIe))
-  }, [phoneNum, code, isCallCodeIe])
+    setDisabled(!(phoneReg.test(phone) && codeReg.test(code)))
+  }, [phoneNum, code])
 
   useEffect(() => {
     if (timer === 0) {
@@ -126,7 +126,7 @@ export const PhoneLogin = ({
   const render = () => {
     const getText = () => {
       if (codeStatus === CodeStatus.noPn || codeStatus === CodeStatus.hasPn)
-        return '获取验证码'
+        return isSendCode ? '重新发送' : '发送验证码'
 
       return `${timer}s后重试`
     }

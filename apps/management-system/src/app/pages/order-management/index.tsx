@@ -1,5 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
-import { PageContainer } from '../../components/page-container'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { PageSearch } from '../../components/page-search'
 import tableStyles from '../../styles/index.module.scss'
 import {
@@ -26,11 +25,13 @@ import { OrderDetailModal } from './components/order-detail-modal'
 import dayjs from 'dayjs'
 import { OrderListExport } from './components/order-list-export'
 import { downloadUrl } from '@flyele-nx/utils'
+import { useSearchListType } from '../home'
 
 const pageSize = 20
 
-export const OrderManagement = () => {
+const _OrderManagement = () => {
   const [messageApi, contextHolder] = message.useMessage()
+  const { searchType, setSearchType } = useSearchListType()
 
   const tabs: IFlyTabs[] = [
     {
@@ -76,6 +77,7 @@ export const OrderManagement = () => {
   const [activeTab, setActiveTab] = useState<string>('all')
   const [tableData, setTableData] = useState<OrderSystemType.IIndentList[]>([])
   const [tableTotal, setTableTotal] = useState<number>(0)
+  const [filteredState, setFilteredState] = useState<string[] | null>(null)
 
   const [searchName, setSearchName] = useState<string>('')
 
@@ -89,28 +91,33 @@ export const OrderManagement = () => {
   /**
    * 切换tab
    */
-  const onChangeTab = async (key: string) => {
-    setActiveTab(key)
-    const params: OrderSystemType.IIndentListParams = {}
-    switch (key) {
-      case 'today':
-        params.time_type = OrderSystemConst.IndentTimeType.TODAY
-        break
-      case 'month':
-        params.time_type = OrderSystemConst.IndentTimeType.MONTH
-        break
-      case 'personal':
-        params.indent_member_type = OrderSystemConst.IndentMemberType.PERSONAL
-        break
-      case 'corp':
-        params.indent_member_type = OrderSystemConst.IndentMemberType.CORP
-        break
-      default:
-      // console.log('all')
+  const onChangeTab = useMemoizedFn(
+    async (
+      key: string,
+      otherParams?: OrderSystemType.IIndentListParams | null
+    ) => {
+      setActiveTab(key)
+      const params: OrderSystemType.IIndentListParams = {}
+      switch (key) {
+        case 'today':
+          params.time_type = OrderSystemConst.IndentTimeType.TODAY
+          break
+        case 'month':
+          params.time_type = OrderSystemConst.IndentTimeType.MONTH
+          break
+        case 'personal':
+          params.indent_member_type = OrderSystemConst.IndentMemberType.PERSONAL
+          break
+        case 'corp':
+          params.indent_member_type = OrderSystemConst.IndentMemberType.CORP
+          break
+        default:
+        // console.log('all')
+      }
+      tempParams.current = otherParams ? otherParams : null
+      await fetchIndentList({ page_number: 1, ...params })
     }
-    tempParams.current = null
-    await fetchIndentList({ page_number: 1, ...params })
-  }
+  )
 
   /**
    * 请求订单列表
@@ -154,6 +161,12 @@ export const OrderManagement = () => {
 
     if (state && state.length) {
       params.state = state.join(',')
+      setFilteredState(state as string[])
+    } else {
+      if (tempParams.current && tempParams.current.state) {
+        delete tempParams.current.state
+      }
+      setFilteredState(null)
     }
     await fetchIndentList(params)
   }
@@ -340,6 +353,18 @@ export const OrderManagement = () => {
     }
   })
 
+  /**
+   * 根据外部左侧的点击事件传入的类型请求接口
+   */
+  const fetchListOnType = useMemoizedFn(async (type: string) => {
+    setSearchName('')
+    tempParams.current = null
+    afterSearch.current = false
+    const state = OrderSystemConst.IndentState.SUCCESS.toString()
+    setFilteredState([state])
+    await onChangeTab(type, { state })
+  })
+
   const isSearch = useMemo(() => {
     return !!searchName
   }, [searchName])
@@ -356,6 +381,7 @@ export const OrderManagement = () => {
       }
       return arr
     }
+
     return [
       {
         width: 192,
@@ -461,6 +487,7 @@ export const OrderManagement = () => {
           <span>{OrderSystemConst.IndentStateLabel[text]}</span>
         ),
         filters: stateFilter(),
+        filteredValue: filteredState || null,
         filterIcon: (filtered) => {
           return <TableFilter color={filtered ? '#1dd2c1' : '#ACB0B4'} />
         }
@@ -490,15 +517,22 @@ export const OrderManagement = () => {
         )
       }
     ]
-  }, [searchName])
+  }, [searchName, filteredState])
 
   useMount(async () => {
     tempParams.current = null
     await fetchIndentList({ page_number: 1 })
   })
 
+  useEffect(() => {
+    if (searchType) {
+      fetchListOnType(searchType)
+      setSearchType('')
+    }
+  }, [fetchListOnType, searchType, setSearchType])
+
   return (
-    <PageContainer>
+    <div>
       {contextHolder}
       <div className={tableStyles.antdTable}>
         <PageSearch searchItems={searchItems} onSearch={onSearch} />
@@ -554,6 +588,8 @@ export const OrderManagement = () => {
         }
         onClose={() => setOpenExportModal(false)}
       />
-    </PageContainer>
+    </div>
   )
 }
+
+export const OrderManagement = React.memo(_OrderManagement)

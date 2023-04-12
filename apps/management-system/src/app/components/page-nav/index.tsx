@@ -10,10 +10,12 @@ import { useInvoiceStore } from '../../store/invoice'
 
 const _PageNav = ({
   defaultTab,
-  loginOut
+  loginOut,
+  onChange
 }: {
   defaultTab: string
   loginOut: () => void
+  onChange?: (key: string) => void
 }) => {
   const userStore = useUserStore()
   const invoiceStore = useInvoiceStore()
@@ -35,6 +37,7 @@ const _PageNav = ({
         break
     }
     navigate(path)
+    onChange && onChange(key)
   }
 
   const tabs: IFlyTabs[] = useMemo(() => {
@@ -51,8 +54,10 @@ const _PageNav = ({
   }, [invoiceStore.notOpenTotal])
 
   useEffect(() => {
-    if (defaultTab) setActiveTab(defaultTab)
-  }, [defaultTab])
+    if (defaultTab && defaultTab !== activeTab) {
+      setActiveTab(defaultTab)
+    }
+  }, [activeTab, defaultTab])
 
   return (
     <div className={styles.pageNavRoot}>

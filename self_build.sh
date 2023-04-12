@@ -8,17 +8,13 @@ asdf install
 
 yarn
 
-echo "  --> 修改环境变量 $branch"
-
-cross-env NODE_ENV=$branch
-
-echo "  --> 开始执行 yarn build..."
+echo "  --> 修改环境变量 $branch 并 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then
-  yarn nx build $type
+  yarn cross-env NODE_ENV=$branch nx build $type
   imageName="fx-nx-"$type"-dev"
 elif [ $branch == "master" ];then
-  yarn nx build $type
+  yarn cross-env NODE_ENV=$branch nx build $type
   imageName="fx-nx-"$type"-master"
 else
   echo "  --> "$branch"不构建..."

@@ -59,8 +59,7 @@ CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', DATETIME('now', '
     WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
 w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
 IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
-IFNULL(k.child_total, 0) AS child_total,
-CASE WHEN k.child_total > 0 THEN 1 ELSE 0 END AS has_child,
+IFNULL(k.child_total, 0) AS child_total, CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child,
 IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
@@ -180,7 +179,14 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                       LEFT JOIN task_flow_step_relation AS r
                       ON r.step_id = tfs.id AND r.delete_at = 0
                 GROUP BY tc.id, tfs.id) z
-    ON a.id = z.id)
+    ON a.id = z.id
+    LEFT JOIN (SELECT CAST(CASE WHEN INSTR(parent_id, ',') > 0
+                THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)
+                ELSE parent_id END AS bigint) AS task_id, COUNT(*) AS child_count
+                FROM task_config
+                WHERE category = 2
+                GROUP BY parent_id) AS zb
+    ON a.id = zb.task_id)
 ${where || ''} 
 ${order}
 ${limit} `

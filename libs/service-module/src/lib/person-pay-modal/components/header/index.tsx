@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-11 17:40:08
+ * @LastEditTime: 2023-04-12 11:00:29
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -57,7 +57,7 @@ const Header = (props: Iprops) => {
       if (info.end_time) {
         txt = `您已开通团队会员，${dayjs
           .unix(info.end_time)
-          .format('YYYY-MM-DD')}到期`
+          .format('YYYY年MM月DD日')}到期`
       }
     }
     return txt

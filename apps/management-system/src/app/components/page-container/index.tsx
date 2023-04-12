@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import styles from './index.module.scss'
 import { OrderSystemApi, OrderSystemType } from '@flyele-nx/service'
-import { useMount } from 'ahooks'
+import { useMount, useUnmount, useRequest } from 'ahooks'
 import { message } from 'antd'
+import cs from 'classnames'
 
 export interface IDataShow {
   key: string
@@ -10,14 +11,17 @@ export interface IDataShow {
   value: string | number
   subTitle?: string
   unitType?: 'money' | 'person'
+  clickFunc?: () => void
 }
 
 interface IProps {
   topHeight?: number // 距离顶部的高度
+  onClickItem?: (type: string) => void
 }
 
 const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
   topHeight = 80,
+  onClickItem,
   children
 }) => {
   const [messageApi, contextHolder] = message.useMessage()
@@ -59,6 +63,15 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
     }
   }
 
+  /**
+   * 轮询接口
+   */
+  const { run, cancel } = useRequest(fetchIndentAnalysis, {
+    pollingInterval: 1000 * 60,
+    manual: true,
+    pollingWhenHidden: false
+  })
+
   const dataArray: IDataShow[] = useMemo(() => {
     const { today_indent, month_indent, total_indent, member } = indentAnalysis
     return [
@@ -67,21 +80,30 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
         title: '今日订单',
         value: today_indent.amount,
         subTitle: `${today_indent.count}个`,
-        unitType: 'money'
+        unitType: 'money',
+        clickFunc: () => {
+          onClickItem && onClickItem('today')
+        }
       },
       {
         key: 'month',
         title: '本月订单',
         value: month_indent.amount,
         subTitle: `${month_indent.count}个`,
-        unitType: 'money'
+        unitType: 'money',
+        clickFunc: () => {
+          onClickItem && onClickItem('month')
+        }
       },
       {
         key: 'all',
         title: '累计订单',
         value: total_indent.amount,
         subTitle: `${total_indent.count}个`,
-        unitType: 'money'
+        unitType: 'money',
+        clickFunc: () => {
+          onClickItem && onClickItem('all')
+        }
       },
       {
         key: 'personal',
@@ -96,10 +118,14 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
         unitType: 'person'
       }
     ]
-  }, [indentAnalysis])
+  }, [indentAnalysis, onClickItem])
 
-  useMount(async () => {
-    await fetchIndentAnalysis()
+  useMount(() => {
+    run()
+  })
+
+  useUnmount(() => {
+    cancel()
   })
 
   return (
@@ -112,7 +138,13 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
         <div className={styles.contentLeft}>
           {dataArray.map((item) => {
             return (
-              <div key={item.key} className={styles.dataItem}>
+              <div
+                key={item.key}
+                className={cs(styles.dataItem, {
+                  [styles.canClick]: !!item.clickFunc
+                })}
+                onClick={item.clickFunc}
+              >
                 <div className={styles.dataTitleBox}>
                   <div className={styles.title}>{item.title}</div>
                   {item.subTitle && (

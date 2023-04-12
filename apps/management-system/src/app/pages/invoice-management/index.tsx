@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, useState } from 'react'
-import { PageContainer } from '../../components/page-container'
 import tableStyles from '../../styles/index.module.scss'
 import { FlyTabs, IFlyTabs } from '@flyele/flyele-components'
 import { message, Table } from 'antd'
@@ -257,7 +256,7 @@ export const InvoiceManagement = () => {
   })
 
   return (
-    <PageContainer>
+    <div>
       {contextHolder}
       <div className={tableStyles.antdTable}>
         <div className={tableStyles.tableTabRow}>
@@ -286,6 +285,6 @@ export const InvoiceManagement = () => {
         onFinish={onFinish}
         onClose={() => setOpenModal(false)}
       />
-    </PageContainer>
+    </div>
   )
 }

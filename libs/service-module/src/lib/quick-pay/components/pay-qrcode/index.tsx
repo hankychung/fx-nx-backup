@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-07 16:18:57
+ * @LastEditTime: 2023-04-10 17:32:28
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -40,7 +40,7 @@ const PayQrCode = ({
       good_id: vipMeal?.id || 0,
       // good_id: 8,
       origin_route: 'PC客户端',
-      total_price: vipMeal?.now_price || 0,
+      total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0,
       // total_price: 1,
       users_id: memberList.map((item) => item.userId),
       indent_member_type: 2
@@ -49,7 +49,7 @@ const PayQrCode = ({
       paymentApi.createOrder(params).then(async (_) => {
         const a = {
           ..._.data.data,
-          total_price: vipMeal?.now_price || 0
+          total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
         }
         const res = await QRCode.toDataURL(
           `https://pay-test.flyele.vip/payDetail?params=${JSON.stringify(
@@ -72,10 +72,16 @@ const PayQrCode = ({
           <div className={style.payInfo}>
             <div className={style.price}>
               <span> ￥</span>
-              <span>{regFenToYuan(vipMeal?.now_price || 0)}</span>
+              <span>
+                {regFenToYuan(
+                  (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+                )}
+              </span>
               {vipMeal?.original_price && (
                 <span>{`已省¥${regFenToYuan(
-                  vipMeal?.original_price - vipMeal?.now_price
+                  vipMeal?.original_price -
+                    vipMeal?.now_price -
+                    (vipMeal?.price || 0)
                 )}`}</span>
               )}
             </div>

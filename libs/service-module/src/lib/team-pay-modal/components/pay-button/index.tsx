@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 11:12:16
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-07 16:25:33
+ * @LastEditTime: 2023-04-10 17:29:47
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PayButton/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,14 +42,16 @@ const PayButton = (props: Iprops) => {
             {activeItem && activeItem.end_at && (
               <span>{`已省¥${
                 +regFenToYuan(
-                  activeItem.original_price - activeItem.now_price
+                  activeItem.original_price -
+                    (activeItem.now_price - (activeItem.price || 0))
                 ) * resultArr?.length
               }`}</span>
             )}
             <div>
               <span>¥</span>
               <span>
-                {+regFenToYuan(activeItem.now_price) * resultArr?.length}
+                {+regFenToYuan(activeItem.now_price - (activeItem.price || 0)) *
+                  resultArr?.length}
               </span>
             </div>
           </div>

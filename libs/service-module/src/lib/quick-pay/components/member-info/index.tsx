@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 17:03:34
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-06 19:45:21
+ * @LastEditTime: 2023-04-12 16:53:11
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
@@ -50,8 +50,21 @@ const MemberInfo = ({
         if (res.code === 0) {
           const new_arr = res.data.map((item) => {
             const arr = getItem(item.id, _.data || [])
+            if (arr.length > 0) {
+              const num = arr[0].end_at
+                ? dayjs.unix(arr[0].end_at).valueOf() / 1000
+                : 0 //结束时间
+              return {
+                ...arr[0],
+                ...item,
+                active: false,
+                price:
+                  arr[0].end_at && getResidueTime(num - nowScecond) === '0'
+                    ? 0
+                    : arr[0].price
+              }
+            }
             return {
-              ...arr[0],
               ...item,
               active: false
             }
@@ -68,6 +81,18 @@ const MemberInfo = ({
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
+
+  //修改优惠
+  useEffect(() => {
+    if (
+      vipMeal?.end_at &&
+      getResidueTime(num - nowScecond) === '0' &&
+      vipMeal.price
+    ) {
+      setVipMeal({ ...vipMeal, price: 0 })
+    }
+  }, [nowScecond, vipMeal, num, setVipMeal])
+
   return (
     <div className={style.memberInfo}>
       <div className={style.member}>
@@ -79,7 +104,7 @@ const MemberInfo = ({
               {mineId === memberList[0]?.userId && (
                 <div className={style.mine}>我</div>
               )}
-              {memberList[0]?.isVip && (
+              {memberList[0]?.isVip && !memberList[0]?.isTeamVip && (
                 <MemberPersonVip
                   className={style.member_person_vip}
                 ></MemberPersonVip>
@@ -133,16 +158,20 @@ const MemberInfo = ({
             )}
             <div>
               <span>￥</span>
-              {`${regFenToYuan(vipMeal?.now_price || 0)}/人/年`}
+              {`${regFenToYuan(
+                (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+              )}/人/年`}
             </div>
           </div>
           {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
             <div className={style.time}>
               <span>
-                {' '}
                 {getResidueTime(
                   num - nowScecond,
-                  (vipMeal?.now_price / vipMeal?.original_price).toFixed(2)
+                  (
+                    (vipMeal?.now_price - (vipMeal?.price || 0)) /
+                    vipMeal?.original_price
+                  ).toFixed(2)
                 )}
               </span>
               <MealTime className={style.mealTime}></MealTime>

@@ -272,7 +272,7 @@ export const OrderDetailModal = ({
         resArray.push(teamState, orderInfo, payInfo)
         break
       case OrderSystemConst.IndentListMemberType.CORP:
-        resArray.push(corpInfo, corpState, payInfo)
+        resArray.push(corpInfo, corpState, orderInfo, payInfo)
         break
       default:
         console.log('订单属性匹配不上')

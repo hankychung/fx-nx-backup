@@ -1,3 +1,11 @@
+/*
+ * @Author: wanghui wanghui@flyele.net
+ * @Date: 2023-04-06 16:13:15
+ * @LastEditors: wanghui wanghui@flyele.net
+ * @LastEditTime: 2023-04-12 16:36:43
+ * @FilePath: /fx-nx/libs/api/src/types/payment.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 export type IGetPriceParams = {
   good_type: 'person' | 'team'
   is_ios?: boolean
@@ -22,6 +30,7 @@ export interface ICoupon {
   end_at: number
   ref_goods_id: string
   coupon_id: number
+  price: number
 }
 export interface ICreateOrderParams {
   amount: number
@@ -36,6 +45,7 @@ export interface IActiveGoods extends IGoods {
   end_at: number
   ref_goods_id: string
   coupon_id: number
+  price: number
 }
 export type IGetPriceRes = {
   code: number

@@ -15,18 +15,22 @@ import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 const RightBlock = ({
   memberList,
   mineId,
-  couponList
+  couponList,
+  goProtocol,
+  vipMealType
 }: {
+  goProtocol?: () => void
   memberList: IFlyeleAvatarItem[]
   mineId: string
   couponList?: ICoupon[]
+  vipMealType: VipMealType
 }) => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
   const { nowScecond } = useCurrentTime()
   const isLifeLong = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
-    if (info.end_time === 9999999999) {
+    if (info.end_time === 9999999999 || info.end_time === 9999999999) {
       return true
     }
     return false
@@ -40,12 +44,20 @@ const RightBlock = ({
       if (res.code === 0) {
         const new_arr = res.data.map((item, index) => {
           const arr = getItem(item.id, couponList || [])
+
           if (index === 0) {
             if (arr.length > 0) {
+              const num = arr[0].end_at
+                ? dayjs.unix(arr[0].end_at).valueOf() / 1000
+                : 0 //结束时间
               return {
                 ...arr[0],
                 ...item,
-                active: true
+                active: true,
+                price:
+                  arr[0].end_at && getResidueTime(num - nowScecond) === '0'
+                    ? 0
+                    : arr[0].price
               }
             } else {
               return {
@@ -55,10 +67,17 @@ const RightBlock = ({
             }
           }
           if (arr.length > 0) {
+            const num = arr[0].end_at
+              ? dayjs.unix(arr[0].end_at).valueOf() / 1000
+              : 0 //结束时间
             return {
               ...arr[0],
               ...item,
-              active: false
+              active: false,
+              price:
+                arr[0].end_at && getResidueTime(num - nowScecond) === '0'
+                  ? 0
+                  : arr[0].price
             }
           } else {
             return {
@@ -72,8 +91,10 @@ const RightBlock = ({
     })
   })
   useEffect(() => {
-    getMealList()
-  }, [getMealList])
+    if (vipMealType === VipMealType.PERSON && couponList) {
+      getMealList()
+    }
+  }, [getMealList, couponList, vipMealType])
   //选择套餐
   const mealSelect = (_: IActiveGoods) => {
     const new_arr = vipMealList.map((item) => {
@@ -109,7 +130,24 @@ const RightBlock = ({
               if (_.end_at) {
                 num = dayjs.unix(_.end_at).valueOf() / 1000 //结束时间
               }
-
+              if (
+                _.end_at &&
+                getResidueTime(num - nowScecond) === '0' &&
+                _.price
+              ) {
+                const new_list = vipMealList.map((item) => {
+                  if (item.id === _.id) {
+                    return {
+                      ...item,
+                      price: 0
+                    }
+                  }
+                  return {
+                    ...item
+                  }
+                })
+                setVipMealList(new_list)
+              }
               return (
                 <div
                   className={cs(style.mealItem, {
@@ -130,7 +168,7 @@ const RightBlock = ({
                     )}
                     <div>
                       <span>￥</span>
-                      {regFenToYuan(_.now_price)}
+                      {regFenToYuan(_.now_price - (_.price || 0))}
                     </div>
                   </div>
                   {_.end_at && getResidueTime(num - nowScecond) !== '0' && (
@@ -138,7 +176,10 @@ const RightBlock = ({
                       <span>
                         {getResidueTime(
                           num - nowScecond,
-                          (_?.now_price / _?.original_price).toFixed(2)
+                          (
+                            (_?.now_price - (_.price || 0)) /
+                            _?.original_price
+                          ).toFixed(2)
                         )}
                       </span>
                       <MealTime className={style.mealTime}></MealTime>
@@ -157,6 +198,7 @@ const RightBlock = ({
             vipMealType={VipMealType.PERSON}
             activeGood={activeGood}
             payClick={payClick}
+            goProtocol={goProtocol}
           />
         </div>
       )}

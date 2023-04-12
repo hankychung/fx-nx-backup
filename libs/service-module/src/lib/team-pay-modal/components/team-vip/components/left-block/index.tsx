@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-04 10:44:29
+ * @LastEditTime: 2023-04-11 20:01:56
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -44,6 +44,14 @@ const LeftBlock = (props: Iprops) => {
       setResultArr([...memberList])
       setTimeout(() => {
         service.selectMember({ list: [...memberList] })
+      }, 100)
+    }
+    if (vipType === VipPayType.UPSPACE) {
+      setResultArr([...memberList].filter((item) => !item.isTeamVip))
+      setTimeout(() => {
+        service.selectMember({
+          list: [...memberList].filter((item) => !item.isTeamVip)
+        })
       }, 100)
     }
     if (vipType === VipPayType.NOVIPCREATE) {
@@ -156,7 +164,7 @@ const LeftBlock = (props: Iprops) => {
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}
-                          {_.isVip && (
+                          {_.isVip && !_.isTeamVip && (
                             <MemberPersonVip
                               className={style.member_person_vip}
                             ></MemberPersonVip>

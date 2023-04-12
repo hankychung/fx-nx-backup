@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-08 13:26:37
+ * @LastEditTime: 2023-04-10 16:24:16
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -95,11 +95,11 @@ const VipPackage = (props: Iprops) => {
   })
   //进入判断会员类型
   useEffect(() => {
-    if (vipMealType) {
+    if (vipTypeFun && getCou) {
       vipTypeFun()
       getCou()
     }
-  }, [vipMealType, vipTypeFun, getCou])
+  }, [vipTypeFun, getCou])
   // 背景图
   const bgUrl =
     vipMealType === VipMealType.PERSON
@@ -149,7 +149,9 @@ const VipPackage = (props: Iprops) => {
         <PersonVip
           memberList={memberList}
           mineId={mineId}
+          goProtocol={goProtocol}
           couponList={couponList}
+          vipMealType={vipMealType}
         />
       </div>
       <div

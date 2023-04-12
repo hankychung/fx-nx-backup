@@ -8,6 +8,10 @@ asdf install
 
 yarn
 
+echo "  --> 修改环境变量 $branch"
+
+cross-env NODE_ENV=$branch
+
 echo "  --> 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then

@@ -218,14 +218,17 @@ export const OrderDetailModal = ({
         {
           key: 'total_price',
           title: '支付金额',
-          value: `¥${indentDetail.total_price} （原价¥${indentDetail.should_price}）`
+          value: `¥${(indentDetail.total_price / 100).toFixed(2)} （原价¥${(
+            indentDetail.should_price / 100
+          ).toFixed(2)}）`
         },
         {
           key: 'price',
           title: '使用折扣',
-          value: `共减去¥${
-            indentDetail.should_price - indentDetail.total_price
-          }`
+          value: `共减去¥${(
+            (indentDetail.should_price - indentDetail.total_price) /
+            100
+          ).toFixed(2)}`
         },
         {
           key: 'order_method',

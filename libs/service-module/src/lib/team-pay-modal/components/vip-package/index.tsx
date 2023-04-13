@@ -22,6 +22,7 @@ interface Iprops {
   upSpace?: () => void
   senConfirm?: () => void
   goProtocol: () => void
+  showMsg?: () => void
 }
 const VipPackage = (props: Iprops) => {
   //进入判断会员类型

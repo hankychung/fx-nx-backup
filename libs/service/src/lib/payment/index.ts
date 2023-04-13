@@ -54,7 +54,7 @@ class Payment {
     })
   }
   getToken() {
-    return service.token
+    return service.getToken()
   }
 }
 

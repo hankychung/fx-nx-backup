@@ -245,6 +245,13 @@ export const OrderDetailModal = ({
             .format('YYYY年M月D日 HH:mm:ss')
         }
       ]
+
+      if (
+        indentDetail.indent_member_type ===
+        OrderSystemConst.IndentListMemberType.CORP
+      ) {
+        payInfoData.splice(1, 1)
+      }
     }
 
     const payInfo = {

@@ -1,6 +1,6 @@
 branch=$1
 
-type=$2
+app=$2
 
 imageName="fx-nx"
 
@@ -8,18 +8,17 @@ asdf install
 
 yarn
 
-echo "  --> 修改环境变量 $branch"
-
-cross-env NODE_ENV=$branch
-
-echo "  --> 开始执行 yarn build..."
+echo "  --> 修改环境变量 $branch 并 开始执行 yarn build..."
 
 if [ $branch == "dev" ];then
-  yarn nx build $type
-  imageName="fx-nx-"$type"-dev"
+  yarn cross-env NODE_ENV=dev nx build $app
+  imageName="fx-nx-"$app"-dev"
+elif [ $branch == "release" ];then
+  yarn cross-env NODE_ENV=test nx build $app
+  imageName="fx-nx-"$app"-test"
 elif [ $branch == "master" ];then
-  yarn nx build $type
-  imageName="fx-nx-"$type"-master"
+  yarn cross-env NODE_ENV=prod nx build $app
+  imageName="fx-nx-"$app"-prod"
 else
   echo "  --> "$branch"不构建..."
   exit 1
@@ -36,11 +35,11 @@ version=$(jenkins-build-tools gen -p $imageName | awk 'END {print$1}')
 version_number=harbor.flyele.vip/develop/$imageName:$version
 
 
-if [ $type == "h5" ];then
+if [ $app == "h5" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/Dockerfile .
-elif [ $type == "official-website" ];then
+elif [ $app == "official-website" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
-elif [ $type == "management-system" ];then
+elif [ $app == "management-system" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
 else
   echo "  --> 不打镜像..."

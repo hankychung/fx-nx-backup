@@ -29,6 +29,8 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
   const { deviceParams, onSuccess } = props
   const [messageApi, contextHolder] = message.useMessage()
 
+  const isInit = useRef(false)
+
   const [loginKey, setLoginKey] = useState('')
   const [qrCode, setQrCode] = useState('')
   const [isWatchTimeOut, setWatchTimeOut] = useState(false) // 扫码后超时未登录
@@ -221,11 +223,16 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
   }, [connectSse, loginKey])
 
   useMount(() => {
+    // 为了处理React18的严格模式下的 2次渲染问题
+    if (isInit.current) return
+
     // 首次进入初始
     setTimeout(() => {
       autoRefreshCounter.current = 1
       generateQrCode().catch(() => setException(true))
     }, 50)
+
+    isInit.current = true
   })
 
   useUnmount(() => {

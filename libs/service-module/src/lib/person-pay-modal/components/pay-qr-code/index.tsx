@@ -41,7 +41,7 @@ const PayQrCode = ({
   const qrCodeFunction = useMemoizedFn(async () => {
     const params = {
       amount: userInfo.length,
-      coupon_id: payInfo?.coupon_id || 0,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
       good_id: payInfo?.id || 0,
       // good_id: 8,
       origin_route: 'PC客户端',

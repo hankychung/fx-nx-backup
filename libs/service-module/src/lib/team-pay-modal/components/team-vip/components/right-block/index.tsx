@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-12 16:56:55
+ * @LastEditTime: 2023-04-13 10:35:39
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -104,9 +104,12 @@ const RightBlock = ({
       upSpace && upSpace()
       return
     }
-    if (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) {
+    if (
+      (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
+      (VipPayType.UPSPACE === vipType && !mineInfo?.isTeamVip)
+    ) {
       message.info({
-        content: '请选择协作人'
+        content: '请选择开通对象'
       })
       return
     }
@@ -120,7 +123,7 @@ const RightBlock = ({
       getResidueTime(num - nowScecond) === '0' &&
       vipMeal.price
     ) {
-      setVipMeal({ ...vipMeal, price: 0 })
+      setVipMeal({ ...vipMeal, price: 0, coupon_id: 0 })
     }
   }, [nowScecond, vipMeal, num, setVipMeal])
 

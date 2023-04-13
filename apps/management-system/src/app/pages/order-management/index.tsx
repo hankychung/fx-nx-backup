@@ -403,7 +403,10 @@ const _OrderManagement = () => {
       {
         width: 100,
         title: '订单金额',
-        dataIndex: 'total_price'
+        dataIndex: 'total_price',
+        render: (text) => {
+          return <span>{(text / 100).toFixed(2)}</span>
+        }
       },
       {
         width: 108,

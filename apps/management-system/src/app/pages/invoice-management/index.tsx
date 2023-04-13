@@ -181,15 +181,17 @@ export const InvoiceManagement = () => {
         render: (text, record) => (
           <div className={cs(styles.nameBox, styles.blueText)}>
             <div>{text}</div>
-            <div className={styles.taxNumberBox}>
-              {record.company_tax_number}
-              <div
-                className={cs('copyIcon', styles.iconBox)}
-                onClick={() => onCopyTax(record.company_tax_number)}
-              >
-                <CopyIcon width={10} height={10} />
+            {record.company_tax_number && (
+              <div className={styles.taxNumberBox}>
+                {record.company_tax_number}
+                <div
+                  className={cs('copyIcon', styles.iconBox)}
+                  onClick={() => onCopyTax(record.company_tax_number)}
+                >
+                  <CopyIcon width={10} height={10} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )
       },

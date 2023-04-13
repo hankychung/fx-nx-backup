@@ -87,7 +87,11 @@ const RightBlock = ({
   })
   //获取套餐
   useEffect(() => {
-    if (vipMealType === VipMealType.TEAM &&  couponList && couponList?.length > 0) {
+    if (
+      vipMealType === VipMealType.TEAM &&
+      couponList &&
+      couponList?.length > 0
+    ) {
       getMealList()
     }
     if (vipMealType === VipMealType.TEAM && couponList?.length === 0) {

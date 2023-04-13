@@ -90,7 +90,7 @@ const VipPackage = (props: Iprops) => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
       if (_.data) {
         setCouponList(_.data)
-      }else{
+      } else {
         setCouponList([])
       }
     })

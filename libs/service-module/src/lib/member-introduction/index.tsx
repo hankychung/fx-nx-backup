@@ -28,6 +28,7 @@ export const MemberIntroduction = () => {
   const [orderCode, setOrderCode] = useState('')
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
   const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
+  const isInit = useRef(false)
   const ChildRef = useRef(null)
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
@@ -57,10 +58,12 @@ export const MemberIntroduction = () => {
     }, 2000)
   })
   useEffect(() => {
+    if (isInit.current) return
     let timer: NodeJS.Timer | undefined
     if (orderCode) {
       timer = initFn()
     }
+    isInit.current = true
     return () => {
       clearInterval(timer)
     }

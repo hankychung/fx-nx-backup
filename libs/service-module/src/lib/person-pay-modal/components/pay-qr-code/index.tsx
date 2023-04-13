@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_icon.svg'
 // import { ReactComponent as AlipayIcon } from '../../../../assets/payImg/alipay_icon.svg'
 import { Modal } from 'antd'
@@ -36,12 +36,12 @@ const PayQrCode = ({
   const service = useContext(SelectMemberContext)
   // const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [qrCode, setQrCode] = useState('')
-
+  const isInit = useRef(false)
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
     const params = {
       amount: userInfo.length,
-      coupon_id: payInfo?.coupon_id || 0,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
       good_id: payInfo?.id || 0,
       // good_id: 8,
       origin_route: 'PC客户端',
@@ -77,8 +77,11 @@ const PayQrCode = ({
   })
 
   useEffect(() => {
+    if (isInit.current) return
+
     qrCodeFunction()
     senConfirm && senConfirm()
+    isInit.current = true
   }, [qrCodeFunction, senConfirm])
 
   return (

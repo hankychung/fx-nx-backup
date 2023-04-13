@@ -104,7 +104,7 @@ const RightBlock = ({
   }, [vipMeal])
   const payClick = () => {
     if (resultArr.length === 0) {
-      message.info('请选择开通对象');
+      message.info('请选择开通对象')
       return
     }
 

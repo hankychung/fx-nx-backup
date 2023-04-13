@@ -110,7 +110,7 @@ const RightBlock = ({
       (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
       (VipPayType.UPSPACE === vipType && !mineInfo?.isTeamVip)
     ) {
-      showMsg&& showMsg()
+      showMsg && showMsg()
       return
     }
     service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })

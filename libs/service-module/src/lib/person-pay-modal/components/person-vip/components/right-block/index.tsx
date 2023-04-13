@@ -91,10 +91,18 @@ const RightBlock = ({
     })
   })
   useEffect(() => {
-    if (vipMealType === VipMealType.PERSON && couponList) {
+    if (
+      vipMealType === VipMealType.PERSON &&
+      couponList &&
+      couponList?.length > 0
+    ) {
       getMealList()
     }
-  }, [getMealList, couponList, vipMealType])
+    if (vipMealType === VipMealType.PERSON && couponList?.length === 0) {
+      getMealList()
+    }
+  }, [getMealList, vipMealType, couponList])
+
   //选择套餐
   const mealSelect = (_: IActiveGoods) => {
     const new_arr = vipMealList.map((item) => {
@@ -113,10 +121,14 @@ const RightBlock = ({
     setVipMealList(new_arr)
   }
   const activeGood = useMemo(() => {
-    return vipMealList.filter((item) => item.active)
-  }, [vipMealList])
+    if (nowScecond) return vipMealList.filter((item) => item.active)
+  }, [vipMealList, nowScecond])
+
   const payClick = () => {
-    service.showPay({ show: true, payInfo: activeGood[0] })
+    service.showPay({
+      show: true,
+      payInfo: activeGood ? activeGood[0] : vipMealList[0]
+    })
   }
 
   return (
@@ -139,7 +151,8 @@ const RightBlock = ({
                   if (item.id === _.id) {
                     return {
                       ...item,
-                      price: 0
+                      price: 0,
+                      coupon_id: 0
                     }
                   }
                   return {

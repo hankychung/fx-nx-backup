@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-10 17:38:36
+ * @LastEditTime: 2023-04-13 11:55:59
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -47,7 +47,7 @@ const PayQrCode = ({
   const qrCodeFunction = useMemoizedFn(async () => {
     const params = {
       amount: userInfo.length,
-      coupon_id: payInfo?.coupon_id || 0,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
       good_id: payInfo?.id || 0,
       // good_id: 8,
       origin_route: 'PC客户端',

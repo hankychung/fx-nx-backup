@@ -58,13 +58,17 @@ export const MemberIntroduction = () => {
   })
   useEffect(() => {
     let timer: NodeJS.Timer | undefined
+    if (!show && timer) {
+      clearInterval(timer)
+    }
     if (orderCode) {
       timer = initFn()
     }
     return () => {
       clearInterval(timer)
     }
-  }, [orderCode, initFn])
+  }, [orderCode, initFn, show])
+
   const checkVipType = (
     vip_type?: VipTypeEnum,
     vip_next_expired_at?: number

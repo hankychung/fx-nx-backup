@@ -91,10 +91,18 @@ const RightBlock = ({
     })
   })
   useEffect(() => {
-    if (vipMealType === VipMealType.PERSON) {
+    if (
+      vipMealType === VipMealType.PERSON &&
+      couponList &&
+      couponList?.length > 0
+    ) {
       getMealList()
     }
-  }, [getMealList, vipMealType])
+    if (vipMealType === VipMealType.PERSON && couponList?.length === 0) {
+      getMealList()
+    }
+  }, [getMealList, vipMealType, couponList])
+
   //选择套餐
   const mealSelect = (_: IActiveGoods) => {
     const new_arr = vipMealList.map((item) => {

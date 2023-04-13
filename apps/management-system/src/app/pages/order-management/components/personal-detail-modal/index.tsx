@@ -24,7 +24,6 @@ export const PersonalDetailModal = ({
   onClose: () => void
   showOrder: (data: OrderSystemType.IIndentList | null) => void
 }) => {
-  const [isCorp, setIsCorp] = useState(false)
   const [messageApi, contextHolder] = message.useMessage()
 
   const [userInfo, setUserInfo] = useState<OrderSystemType.IUserInfo | null>(
@@ -46,55 +45,107 @@ export const PersonalDetailModal = ({
     }
   })
 
-  const formData = useMemo(() => {
-    return isCorp
-      ? [
-          {
-            key: 'appStatus',
-            title: '企业版本状态',
-            value: data && data.corporation ? data.corporation.app_status : ''
-          }
-        ]
-      : [
-          {
-            key: 'personalState',
-            title: '个人会员状态',
-            value: `${
-              userInfo?.personal_end_at
-                ? `已开通 · 有效期至${dayjs
-                    .unix(userInfo?.personal_end_at)
-                    .format('YYYY年M月D日')}`
-                : '未开通'
-            }`
-          },
-          {
-            key: 'teamState',
-            title: '团队会员状态',
-            value: userInfo?.team_end_at
-              ? `已开通 · 有效期至${dayjs
-                  .unix(userInfo?.team_end_at)
-                  .format('YYYY年M月D日')}`
-              : '未开通',
-            extendCls: styles.greyText
-          },
-          {
-            key: 'telephone',
-            title: '手机号',
-            value: userInfo?.telephone
-          }
-        ]
-  }, [data, isCorp, userInfo])
+  /**
+   * 是否企业微信用户
+   */
+  const isCorpUser = useMemo(() => {
+    return userInfo && userInfo?.user_type === OrderSystemConst.UserType.CORP
+  }, [userInfo])
+
+  /**
+   * 是否企业
+   * 注意区分上面的 是否企业微信用户
+   * 上面的企业微信用户 显示界面的优先级 高于 此是否企业
+   */
+  const isShowCorpMode = useMemo(() => {
+    const isCorp =
+      data &&
+      data.indent_member_type === OrderSystemConst.IndentListMemberType.CORP
+    return isCorp && !isCorpUser && userId === ''
+  }, [data, isCorpUser, userId])
+
+  const formData: Array<{
+    key: string
+    title: string
+    value: string
+    extendCls?: string
+  }> = useMemo(() => {
+    const normal = [
+      {
+        key: 'personalState',
+        title: '个人会员状态',
+        value: `${
+          userInfo?.personal_end_at
+            ? `已开通 · 有效期至${dayjs
+                .unix(userInfo?.personal_end_at)
+                .format('YYYY年M月D日')}`
+            : '未开通'
+        }`
+      },
+      {
+        key: 'teamState',
+        title: '团队会员状态',
+        value: userInfo?.team_end_at
+          ? `已开通 · 有效期至${dayjs
+              .unix(userInfo?.team_end_at)
+              .format('YYYY年M月D日')}`
+          : '未开通',
+        extendCls: styles.greyText
+      },
+      {
+        key: 'telephone',
+        title: '手机号',
+        value: userInfo?.telephone || ''
+      }
+    ]
+    const corp = [
+      {
+        key: 'appStatus',
+        title: '企业版本状态',
+        value: data?.corporation?.app_status || ''
+      }
+    ]
+    const corpUser = [
+      {
+        key: 'personalState',
+        title: '飞项状态',
+        value: `${userInfo?.unregister ? '未注册' : '已注册'}，${
+          userInfo?.user_corp_detail.is_join ? '已加入席位' : '未加入席位'
+        }`
+      },
+      {
+        key: 'telephone',
+        title: '手机号',
+        value: userInfo?.telephone || ''
+      },
+      {
+        key: 'corpInfoName',
+        title: '企业信息',
+        value:
+          `${userInfo?.user_corp_detail.corp_name}（来自${data?.origin_route}）` ||
+          ''
+      },
+      {
+        key: 'corpInfoId',
+        title: '',
+        value: userInfo?.user_corp_detail.corp_id || '',
+        extendCls: styles.greyText
+      },
+      {
+        key: 'appStatus',
+        title: '企业版本状态',
+        value: userInfo?.user_corp_detail.app_status || ''
+      }
+    ]
+
+    return isCorpUser ? corpUser : isShowCorpMode ? corp : normal
+  }, [data, isShowCorpMode, userInfo, isCorpUser])
 
   useEffect(() => {
     if (open && userId && data) {
-      if (
-        data.indent_member_type === OrderSystemConst.IndentListMemberType.CORP
-      ) {
-        setIsCorp(true)
-      } else {
-        setIsCorp(false)
-        fetchUsersInfo(userId)
-      }
+      fetchUsersInfo(userId)
+    } else {
+      setUserInfo(null)
     }
   }, [open, userId, fetchUsersInfo, data])
 
@@ -111,15 +162,17 @@ export const PersonalDetailModal = ({
         {contextHolder}
         <div className={styles.topBox}>
           <div className={styles.userName}>
-            {isCorp
+            {isShowCorpMode
               ? `${data?.corporation?.corporation_name}（来自${data?.origin_route}）`
-              : userInfo?.user_name}
+              : `${userInfo?.user_name}${isCorpUser ? '（企业用户）' : ''}`}
           </div>
           <div className={styles.descBox}>
             <div>
-              {isCorp ? data?.corporation?.corporation_id : userInfo?.user_id}
+              {isShowCorpMode
+                ? data?.corporation?.corporation_id
+                : userInfo?.user_id}
             </div>
-            {!isCorp && (
+            {!isShowCorpMode && (
               <div className={styles.time}>{`于${
                 userInfo?.create_at
                   ? dayjs.unix(userInfo.create_at).format('YYYY年M月D日')
@@ -143,7 +196,7 @@ export const PersonalDetailModal = ({
         </div>
         <div className={styles.footer}>
           <FlyButton theme="primary" onClick={() => showOrder(data)}>
-            {isCorp ? '查看企业订单' : '查看TA的订单'}
+            {isShowCorpMode ? '查看企业订单' : '查看TA的订单'}
           </FlyButton>
         </div>
       </div>

@@ -69,6 +69,7 @@ export interface IIndentUser {
   telephone: string
   user_id: string
   user_name: string
+  user_type: UserType // 用户类型
 }
 
 export interface IIndentDetailsUser extends IIndentUser {
@@ -161,11 +162,12 @@ export interface IInvoiceList {
  * 用户企业信息
  */
 export interface IUserCorpInfo {
-  app_status: number // 企业状态
+  app_status: string // 企业状态
   corp_id: string // 企业ID
   corp_name: string // 企业名称
   user_limit: number // 企业用户规模
   version: string // 企业版本
+  is_join?: boolean // 是否加入席位
 }
 
 /**
@@ -177,4 +179,5 @@ export interface IUserInfo extends IIndentDetailsUser {
   team_end_at: number // 团队过期时间
   user_corp_detail: IUserCorpInfo
   user_type: UserType // 用户类型
+  unregister: boolean // 未注册
 }

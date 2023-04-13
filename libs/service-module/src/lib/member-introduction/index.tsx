@@ -127,11 +127,11 @@ export const MemberIntroduction = () => {
     setMemberList([selfData, ...list])
   }
 
-  const onLoginSuccess = async () => {
+  const onLoginSuccess = useMemoizedFn(async () => {
     await fetchTakerList()
     setShowLoginModal(false)
     setShow(true)
-  }
+  })
 
   const payType = useMemo(() => {
     return vipType === 'personal' ? 1 : 2
@@ -185,6 +185,7 @@ export const MemberIntroduction = () => {
         open={showLoginModal}
         width={480}
         centered
+        destroyOnClose
         footer={null}
         maskClosable={false}
         onCancel={() => setShowLoginModal(false)}

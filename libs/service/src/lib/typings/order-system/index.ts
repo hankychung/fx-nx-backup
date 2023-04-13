@@ -69,6 +69,7 @@ export interface IIndentUser {
   telephone: string
   user_id: string
   user_name: string
+  user_type: UserType // 用户类型
 }
 
 export interface IIndentDetailsUser extends IIndentUser {

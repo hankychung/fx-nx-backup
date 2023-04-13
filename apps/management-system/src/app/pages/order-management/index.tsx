@@ -409,24 +409,33 @@ const _OrderManagement = () => {
         width: 108,
         title: '付款人',
         dataIndex: 'creator',
-        render: (text, record) => (
-          <div
-            className={styles.tableLink}
-            onClick={() => openPersonalDetails(record, record.creator.user_id)}
-          >
-            <FlyTextTooltip
-              isDynamic
-              text={() => {
-                return (
-                  <FlyStringHighLight
-                    keyword={searchHighlight || searchValue || ''}
-                    text={record.creator.user_name}
-                  />
-                )
-              }}
-            />
-          </div>
-        )
+        render: (text, record) => {
+          const name = `${record.creator.user_name}${
+            record.creator.user_type === OrderSystemConst.UserType.CORP
+              ? '（企）'
+              : ''
+          }`
+          return (
+            <div
+              className={styles.tableLink}
+              onClick={() =>
+                openPersonalDetails(record, record.creator.user_id)
+              }
+            >
+              <FlyTextTooltip
+                isDynamic
+                text={() => {
+                  return (
+                    <FlyStringHighLight
+                      keyword={searchHighlight || searchValue || ''}
+                      text={name}
+                    />
+                  )
+                }}
+              />
+            </div>
+          )
+        }
       },
       {
         width: 168,

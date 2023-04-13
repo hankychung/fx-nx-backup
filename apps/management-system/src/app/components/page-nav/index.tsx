@@ -48,7 +48,11 @@ const _PageNav = ({
       },
       {
         key: 'invoice',
-        title: `发票管理 ${invoiceStore.notOpenTotal}`
+        title: `发票管理${
+          invoiceStore.notOpenTotal === -1
+            ? ''
+            : ` ${invoiceStore.notOpenTotal}`
+        }`
       }
     ]
   }, [invoiceStore.notOpenTotal])

@@ -79,7 +79,8 @@ const _OrderManagement = () => {
   const [tableTotal, setTableTotal] = useState<number>(0)
   const [filteredState, setFilteredState] = useState<string[] | null>(null)
 
-  const [searchName, setSearchName] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchHighlight, setSearchHighlight] = useState<string>('')
 
   const [openPersonalModal, setOpenPersonalModal] = useState(false)
   const [openOrderModal, setOpenOrderModal] = useState(false)
@@ -139,6 +140,14 @@ const _OrderManagement = () => {
       if (code === 0 && data) {
         setTableData(data)
         if (total) setTableTotal(total)
+        if (params.user_keyword && data.length) {
+          const findUser = data.find(
+            (item) => item.creator.user_id === params.user_keyword
+          )
+          if (findUser) {
+            setSearchHighlight(findUser.creator.user_name)
+          }
+        }
       } else {
         setTableData([])
         setTableTotal(0)
@@ -208,7 +217,8 @@ const _OrderManagement = () => {
           case 'order':
             break
           default:
-            setSearchName('')
+            setSearchValue('')
+            setSearchHighlight('')
             tempParams.current = null
             await fetchIndentList({ page_number: 1 })
         }
@@ -224,13 +234,13 @@ const _OrderManagement = () => {
       case 'user':
         tempParams.current = null
         params.user_keyword = value
-        setSearchName(value)
+        setSearchValue(value)
         await fetchIndentList({ page_number: 1, ...params })
         break
       case 'corp':
         tempParams.current = null
         params.corp_keyword = value
-        setSearchName(value)
+        setSearchValue(value)
         await fetchIndentList({ page_number: 1, ...params })
         break
       case 'order':
@@ -245,10 +255,11 @@ const _OrderManagement = () => {
    * 清空搜索
    */
   const clearSearch = async () => {
-    setSearchName('')
+    setSearchValue('')
+    setSearchHighlight('')
     tempParams.current = null
     afterSearch.current = false
-    await fetchIndentList({ page_number: 1 })
+    await onChangeTab('all')
   }
 
   /**
@@ -357,7 +368,8 @@ const _OrderManagement = () => {
    * 根据外部左侧的点击事件传入的类型请求接口
    */
   const fetchListOnType = useMemoizedFn(async (type: string) => {
-    setSearchName('')
+    setSearchValue('')
+    setSearchHighlight('')
     tempParams.current = null
     afterSearch.current = false
     const state = OrderSystemConst.IndentState.SUCCESS.toString()
@@ -366,8 +378,8 @@ const _OrderManagement = () => {
   })
 
   const isSearch = useMemo(() => {
-    return !!searchName
-  }, [searchName])
+    return !!searchValue
+  }, [searchValue])
 
   const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
     const stateFilter = () => {
@@ -407,7 +419,7 @@ const _OrderManagement = () => {
               text={() => {
                 return (
                   <FlyStringHighLight
-                    keyword={searchName || ''}
+                    keyword={searchHighlight || searchValue || ''}
                     text={record.creator.user_name}
                   />
                 )
@@ -436,7 +448,10 @@ const _OrderManagement = () => {
               style={{ width: '168px' }}
               className={styles.tableLink}
               onClick={() => {
-                if (record.users.length === 1) {
+                const usersLength = record.users.length
+                if (usersLength === 0 && isCorp) {
+                  openPersonalDetails(record, '')
+                } else if (usersLength === 1) {
                   openPersonalDetails(record, record.users[0].user_id)
                 } else {
                   showOrderModal(record)
@@ -448,7 +463,7 @@ const _OrderManagement = () => {
                 text={() => {
                   return (
                     <FlyStringHighLight
-                      keyword={searchName || ''}
+                      keyword={searchHighlight || searchValue || ''}
                       text={nameStr}
                     />
                   )
@@ -517,7 +532,7 @@ const _OrderManagement = () => {
         )
       }
     ]
-  }, [searchName, filteredState])
+  }, [searchHighlight, searchValue, filteredState])
 
   useMount(async () => {
     tempParams.current = null

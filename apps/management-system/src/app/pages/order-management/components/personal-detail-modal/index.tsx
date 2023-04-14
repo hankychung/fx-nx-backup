@@ -80,7 +80,8 @@ export const PersonalDetailModal = ({
                 .unix(userInfo?.personal_end_at)
                 .format('YYYY年M月D日')}`
             : '未开通'
-        }`
+        }`,
+        extendCls: userInfo?.personal_end_at ? undefined : styles.greyText
       },
       {
         key: 'teamState',
@@ -90,7 +91,7 @@ export const PersonalDetailModal = ({
               .unix(userInfo?.team_end_at)
               .format('YYYY年M月D日')}`
           : '未开通',
-        extendCls: styles.greyText
+        extendCls: userInfo?.team_end_at ? undefined : styles.greyText
       },
       {
         key: 'telephone',

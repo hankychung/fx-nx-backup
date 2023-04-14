@@ -26,6 +26,10 @@ export const OpenTaxModal = ({
         const { code } = await OrderSystemApi.finishInvoice(data.id)
         if (code === 0) {
           onFinish()
+          messageApi.open({
+            type: 'success',
+            content: '已确认开票'
+          })
         }
       } catch (e) {
         console.log('开具发票失败')
@@ -75,13 +79,15 @@ export const OpenTaxModal = ({
           </div>
           <div className={styles.contentRight}>
             <div>{data.name}</div>
-            <div
-              className={cs('copyIcon', styles.iconBox)}
-              onClick={() => onCopyTax(data.company_tax_number)}
-            >
-              <span>{data.company_tax_number}</span>
-              <CopyIcon width={12} height={12} />
-            </div>
+            {data.company_tax_number && (
+              <div
+                className={cs('copyIcon', styles.iconBox)}
+                onClick={() => onCopyTax(data.company_tax_number)}
+              >
+                <span>{data.company_tax_number}</span>
+                <CopyIcon width={12} height={12} />
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.footer}>

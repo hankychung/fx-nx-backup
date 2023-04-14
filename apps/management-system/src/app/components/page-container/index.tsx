@@ -78,7 +78,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
       {
         key: 'today',
         title: '今日订单',
-        value: today_indent.amount,
+        value: (today_indent.amount / 100).toFixed(2),
         subTitle: `${today_indent.count}个`,
         unitType: 'money',
         clickFunc: () => {
@@ -88,7 +88,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
       {
         key: 'month',
         title: '本月订单',
-        value: month_indent.amount,
+        value: (month_indent.amount / 100).toFixed(2),
         subTitle: `${month_indent.count}个`,
         unitType: 'money',
         clickFunc: () => {
@@ -98,7 +98,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
       {
         key: 'all',
         title: '累计订单',
-        value: total_indent.amount,
+        value: (total_indent.amount / 100).toFixed(2),
         subTitle: `${total_indent.count}个`,
         unitType: 'money',
         clickFunc: () => {

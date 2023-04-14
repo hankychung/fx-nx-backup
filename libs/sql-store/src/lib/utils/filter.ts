@@ -187,9 +187,9 @@ export const getFilterSql = (
     /** 按项目分区 */
     case FullGroupBy.project: {
       // 过滤无项目的事项
-      WHERES.unshift(`project_id > 0`)
+      // WHERES.unshift(`project_id > 0`)
 
-      ORDERS.unshift(`project_id DESC, timestamp !=0`)
+      ORDERS.unshift(`is_no_project ASC, project_id DESC,  is_no_work ASC`)
 
       if (order_by_key && sort) {
         ORDERS.push(`${order_by_key} ${sort}`)

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-14 10:52:34
+ * @LastEditTime: 2023-04-14 14:39:52
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -63,9 +63,18 @@ const PayQrCode = ({
     }
   })
   useEffect(() => {
-    if (isInit.current) return
-    qrCodeFunction()
-    isInit.current = true
+    console.log(vipMeal,"vipMeal");
+    
+    if (isInit.current && vipMeal) return
+    if(vipMeal){
+      console.log(vipMeal,"vipMeal");
+      
+      qrCodeFunction()
+    }
+    if(vipMeal){
+      isInit.current = true
+    }
+   
   }, [qrCodeFunction, vipMeal])
   return (
     <div>

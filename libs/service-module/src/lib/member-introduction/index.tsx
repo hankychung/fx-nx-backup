@@ -29,6 +29,7 @@ export const MemberIntroduction = () => {
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
   const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
   const ChildRef = useRef(null)
+  const TimerRef = useRef<NodeJS.Timer | undefined>()
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
@@ -57,15 +58,12 @@ export const MemberIntroduction = () => {
     }, 2000)
   })
   useEffect(() => {
-    let timer: NodeJS.Timer | undefined
-    if (!show && timer) {
-      clearInterval(timer)
+    // let timer: NodeJS.Timer | undefined
+    if (!show) {
+      clearInterval(TimerRef.current)
     }
     if (orderCode) {
-      timer = initFn()
-    }
-    return () => {
-      clearInterval(timer)
+      TimerRef.current = initFn()
     }
   }, [orderCode, initFn, show])
 

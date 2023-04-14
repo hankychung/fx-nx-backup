@@ -63,18 +63,17 @@ const PayQrCode = ({
     }
   })
   useEffect(() => {
-    console.log(vipMeal,"vipMeal");
-    
+    console.log(vipMeal, 'vipMeal')
+
     if (isInit.current && vipMeal) return
-    if(vipMeal){
-      console.log(vipMeal,"vipMeal");
-      
+    if (vipMeal) {
+      console.log(vipMeal, 'vipMeal')
+
       qrCodeFunction()
     }
-    if(vipMeal){
+    if (vipMeal) {
       isInit.current = true
     }
-   
   }, [qrCodeFunction, vipMeal])
   return (
     <div>

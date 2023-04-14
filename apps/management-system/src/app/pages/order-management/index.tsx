@@ -26,6 +26,7 @@ import dayjs from 'dayjs'
 import { OrderListExport } from './components/order-list-export'
 import { downloadUrl } from '@flyele-nx/utils'
 import { useSearchListType } from '../home'
+import { pennyToYuan } from '../../utils'
 
 const pageSize = 20
 
@@ -405,7 +406,7 @@ const _OrderManagement = () => {
         title: '订单金额',
         dataIndex: 'total_price',
         render: (text) => {
-          return <span>{(text / 100).toFixed(2)}</span>
+          return <span>¥{pennyToYuan(text)}</span>
         }
       },
       {

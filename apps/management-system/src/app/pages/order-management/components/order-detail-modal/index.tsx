@@ -9,6 +9,7 @@ import {
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { useMemoizedFn } from 'ahooks'
+import { pennyToYuan } from '../../../../utils'
 
 interface listData {
   key: string
@@ -218,17 +219,16 @@ export const OrderDetailModal = ({
         {
           key: 'total_price',
           title: '支付金额',
-          value: `¥${(indentDetail.total_price / 100).toFixed(2)} （原价¥${(
-            indentDetail.should_price / 100
-          ).toFixed(2)}）`
+          value: `¥${pennyToYuan(
+            indentDetail.total_price
+          )} （原价¥${pennyToYuan(indentDetail.should_price)}）`
         },
         {
           key: 'price',
           title: '使用折扣',
-          value: `共减去¥${(
-            (indentDetail.should_price - indentDetail.total_price) /
-            100
-          ).toFixed(2)}`
+          value: `共减去¥${pennyToYuan(
+            indentDetail.should_price - indentDetail.total_price
+          )}`
         },
         {
           key: 'order_method',
@@ -330,7 +330,7 @@ export const OrderDetailModal = ({
                 >{`${indentDetail.indent_content}`}</div>
                 <div className={styles.moneyBox}>
                   <span className={styles.moneyUnit}>¥</span>
-                  <span>{indentDetail.total_price}</span>
+                  <span>{pennyToYuan(indentDetail.total_price)}</span>
                 </div>
               </div>
             </div>

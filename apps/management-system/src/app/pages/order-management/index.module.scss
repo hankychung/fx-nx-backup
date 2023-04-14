@@ -14,3 +14,27 @@
   color: #8f8f8f;
   cursor: pointer;
 }
+.oneRow {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.namePopover {
+  width: 153px;
+  max-height: 140px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  overflow-y: auto;
+  .nameItem {
+    width: 100%;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    text-align: center;
+  }
+}

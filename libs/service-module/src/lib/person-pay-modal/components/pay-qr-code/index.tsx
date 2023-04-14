@@ -58,12 +58,19 @@ const PayQrCode = ({
     try {
       paymentApi.createOrder(params).then(async (_) => {
         getOrderCode && getOrderCode(_.data.out_trade_no)
-        const a = {
-          ..._.data.data,
-          total_price:
-            ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
-            userInfo.length
-        }
+        const a = _.data.out_trade_no
+          ? {
+              ..._.data,
+              total_price:
+                ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+                userInfo.length
+            }
+          : {
+              ..._.data.data,
+              total_price:
+                ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+                userInfo.length
+            }
 
         const b = JSON.stringify(a)
         const res = await QRCode.toDataURL(

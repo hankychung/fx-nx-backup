@@ -51,10 +51,12 @@ a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_a
 IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, a.update_at, a.complete_at,
 a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS is_follow,
 CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide,
-CASE WHEN a.complete_at = 0 AND (a.start_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') OR
+CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime') OR
     cycle_date > DATE('now', 'localtime')) THEN 1
-    WHEN a.complete_at = 0 AND (a.end_time = 0 OR a.end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 2
-    WHEN a.complete_at = 0 AND (a.end_time > 0 OR a.end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')) THEN 3
+    WHEN a.complete_at = 0 AND (a.end_time = 0 OR DATETIME(a.end_time, 'unixepoch', 'localtime') >
+    DATETIME('now', 'localtime')) THEN 2
+    WHEN a.complete_at = 0 AND (a.end_time > 0 AND DATETIME(a.end_time, 'unixepoch', 'localtime') <
+    DATETIME('now', 'localtime')) THEN 3
     WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
     WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
 w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
@@ -67,6 +69,7 @@ IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name,
 tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN start_time = 0 AND end_time = 0 AND repeat_type = 0 AND flow_step_id = 0 THEN 1 ELSE 0 END as is_no_work,
+case WHEN a.project_id = '' OR a.project_id = 0 THEN 1 ELSE 0 END as is_no_project,
 z.user_id, step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
 timestamp, application_id, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
@@ -108,14 +111,22 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
           WHERE taker_id = ${user_id}
             AND is_valid = 1
             AND personal_state IN (0, 10409, 10604, 10611)
-            AND operate_state = 0) AS a,
-        task AS b
+            AND operate_state = 0) AS a
+            LEFT JOIN task AS b
+            ON a.ref_task_id = b.id
             LEFT JOIN task_config AS c
             ON b.id = c.id
-            LEFT JOIN task_repeat AS d
-            ON c.id = d.task_id AND b.repeat_type > 0 AND ${LeftJoinRepeatAnd}
-            LEFT JOIN task_repeat_finish AS e
-            ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}
+            LEFT JOIN(SELECT task_id, repeat_id, start_time, end_time, start_time_full_day,
+                      end_time_full_day, complete_at, cycle, MAX(cycle_date) AS cycle_date
+                      FROM task_repeat d
+                      WHERE ${LeftJoinRepeatAnd}
+                      GROUP BY d.task_id) AS d
+            ON c.id = d.task_id AND b.repeat_type > 0
+            LEFT JOIN (SELECT MAX(finish_time) AS finish_time, task_id
+                                        FROM task_repeat_finish
+                                        WHERE user_id = ${user_id}
+                                        GROUP BY task_id) AS e
+                                        ON a.ref_task_id = e.task_id 
             LEFT JOIN task b1
             ON c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id, ',')) = b1.id
   WHERE a.ref_task_id = b.id
@@ -150,22 +161,17 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
     ON a.id = f.task_id AND f.delete_at = 0
     LEFT JOIN task_follow AS j
     ON j.user_id = ${user_id} AND j.task_id = a.id
-    LEFT JOIN (SELECT c.id, IFNULL(fp.project_name, '') AS project_name,
-                      IFNULL(fp.creator_id, '') AS project_creator_id,
-                      IFNULL(fwb.workspace_id, 0) AS workspace_id, IFNULL(fw.name, '') AS workspace_name,
-                      IFNULL(fw.ws_type, 0) AS ws_type,
-                      CASE WHEN fwm.member_type = 2 THEN 1 ELSE 0 END AS is_external_member
-               FROM task_config c
-                    LEFT JOIN project AS fp
-                    ON c.project_id = fp.id
-                    LEFT JOIN workspace_bind fwb
-                    ON c.project_id = fwb.project_id
-                    LEFT JOIN workspace AS fw
-                    ON fwb.workspace_id = fw.id
-                    LEFT JOIN workspace_member AS fwm
-                    ON fw.id = fwm.workspace_id AND fwm.user_id = ${user_id} AND
-                    fwm.state = 10902) w
-    ON a.id = w.id
+    LEFT JOIN (SELECT fp.id AS project_id, project_name, fp.creator_id AS project_creator_id,
+              fw.id AS workspace_id, fw.name AS workspace_name, fwb.ws_type, CASE WHEN fwm.member_type = 2 THEN 1 ELSE 0 END AS is_external_member
+          FROM project AS fp
+          LEFT JOIN workspace_bind fwb
+          ON fp.id = fwb.project_id AND fwb.state = 1 AND (fwb.ws_type = 1 OR (fwb.ws_type = 2 AND fwb.creator_id = ${user_id} AND fp.state = 10201))
+          LEFT JOIN workspace AS fw
+          ON fwb.workspace_id = fw.id
+          LEFT JOIN workspace_member AS fwm
+          ON fw.id = fwm.workspace_id AND fwm.user_id = ${user_id} AND
+             fwm.state = 10902) w
+    ON a.project_id = w.project_id
     LEFT JOIN task_relation AS k
     ON a.id = k.task_id AND k.user_id = ${user_id}
     LEFT JOIN (SELECT tc.id, IFNULL(tfs.name, '') AS flow_step_name,

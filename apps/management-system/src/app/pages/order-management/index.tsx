@@ -6,7 +6,8 @@ import {
   FlyTabs,
   IFlyTabs,
   FlyStringHighLight,
-  FlyTextTooltip
+  FlyTextTooltip,
+  FlyBasePopper
 } from '@flyele/flyele-components'
 import { Table, message } from 'antd'
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
@@ -26,6 +27,8 @@ import dayjs from 'dayjs'
 import { OrderListExport } from './components/order-list-export'
 import { downloadUrl } from '@flyele-nx/utils'
 import { useSearchListType } from '../home'
+import { pennyToYuan } from '../../utils'
+import cs from 'classnames'
 
 const pageSize = 20
 
@@ -405,7 +408,7 @@ const _OrderManagement = () => {
         title: '订单金额',
         dataIndex: 'total_price',
         render: (text) => {
-          return <span>{(text / 100).toFixed(2)}</span>
+          return <span>¥{pennyToYuan(text)}</span>
         }
       },
       {
@@ -456,32 +459,46 @@ const _OrderManagement = () => {
           }
 
           return (
-            <div
-              style={{ width: '168px' }}
-              className={styles.tableLink}
-              onClick={() => {
-                const usersLength = record.users.length
-                if (usersLength === 0 && isCorp) {
-                  openPersonalDetails(record, '')
-                } else if (usersLength === 1) {
-                  openPersonalDetails(record, record.users[0].user_id)
-                } else {
-                  showOrderModal(record)
-                }
+            <FlyBasePopper
+              trigger="hover"
+              content={() => {
+                return (
+                  <div className={styles.namePopover}>
+                    {isCorp && record.corporation ? (
+                      <div className={styles.nameItem}>{nameStr}</div>
+                    ) : (
+                      <>
+                        {record.users.map((user) => (
+                          <div key={user.user_id} className={styles.nameItem}>
+                            {user.user_name}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                )
               }}
             >
-              <FlyTextTooltip
-                isDynamic
-                text={() => {
-                  return (
-                    <FlyStringHighLight
-                      keyword={searchHighlight || searchValue || ''}
-                      text={nameStr}
-                    />
-                  )
+              <div
+                style={{ width: '168px' }}
+                className={cs(styles.tableLink, styles.oneRow)}
+                onClick={() => {
+                  const usersLength = record.users.length
+                  if (usersLength === 0 && isCorp) {
+                    openPersonalDetails(record, '')
+                  } else if (usersLength === 1) {
+                    openPersonalDetails(record, record.users[0].user_id)
+                  } else {
+                    showOrderModal(record)
+                  }
                 }}
-              />
-            </div>
+              >
+                <FlyStringHighLight
+                  keyword={searchHighlight || searchValue || ''}
+                  text={nameStr}
+                />
+              </div>
+            </FlyBasePopper>
           )
         }
       },

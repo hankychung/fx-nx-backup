@@ -74,9 +74,7 @@ const LeftBlock = ({
     document.getElementById('member_info'),
     document.getElementById('check_box'),
     document.getElementById('search_block'),
-    document.getElementById('circleCheckBox'),
-    
-    
+    document.getElementById('circleCheckBox')
   ])
   return (
     <div className={style.leftBlock}>

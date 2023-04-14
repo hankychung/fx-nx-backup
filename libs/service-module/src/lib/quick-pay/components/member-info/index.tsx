@@ -41,7 +41,6 @@ const MemberInfo = ({
   const Controller = useController(new FlyBasePopperCtrl())
   const { nowScecond } = useCurrentTime()
 
-
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }

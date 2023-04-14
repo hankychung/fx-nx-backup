@@ -52,7 +52,6 @@ const Header = (props: Iprops) => {
       if (info.end_time === 9999999999) {
         txt = `您已开通终身版个人会员，可无限期使用`
       }
-
     }
     if (info.level === 2) {
       if (info.end_time) {

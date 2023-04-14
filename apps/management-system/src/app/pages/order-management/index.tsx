@@ -6,7 +6,8 @@ import {
   FlyTabs,
   IFlyTabs,
   FlyStringHighLight,
-  FlyTextTooltip
+  FlyTextTooltip,
+  FlyBasePopper
 } from '@flyele/flyele-components'
 import { Table, message } from 'antd'
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
@@ -26,6 +27,8 @@ import dayjs from 'dayjs'
 import { OrderListExport } from './components/order-list-export'
 import { downloadUrl } from '@flyele-nx/utils'
 import { useSearchListType } from '../home'
+import { pennyToYuan } from '../../utils'
+import cs from 'classnames'
 
 const pageSize = 20
 
@@ -79,7 +82,8 @@ const _OrderManagement = () => {
   const [tableTotal, setTableTotal] = useState<number>(0)
   const [filteredState, setFilteredState] = useState<string[] | null>(null)
 
-  const [searchName, setSearchName] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchHighlight, setSearchHighlight] = useState<string>('')
 
   const [openPersonalModal, setOpenPersonalModal] = useState(false)
   const [openOrderModal, setOpenOrderModal] = useState(false)
@@ -139,6 +143,14 @@ const _OrderManagement = () => {
       if (code === 0 && data) {
         setTableData(data)
         if (total) setTableTotal(total)
+        if (params.user_keyword && data.length) {
+          const findUser = data.find(
+            (item) => item.creator.user_id === params.user_keyword
+          )
+          if (findUser) {
+            setSearchHighlight(findUser.creator.user_name)
+          }
+        }
       } else {
         setTableData([])
         setTableTotal(0)
@@ -208,7 +220,8 @@ const _OrderManagement = () => {
           case 'order':
             break
           default:
-            setSearchName('')
+            setSearchValue('')
+            setSearchHighlight('')
             tempParams.current = null
             await fetchIndentList({ page_number: 1 })
         }
@@ -224,13 +237,13 @@ const _OrderManagement = () => {
       case 'user':
         tempParams.current = null
         params.user_keyword = value
-        setSearchName(value)
+        setSearchValue(value)
         await fetchIndentList({ page_number: 1, ...params })
         break
       case 'corp':
         tempParams.current = null
         params.corp_keyword = value
-        setSearchName(value)
+        setSearchValue(value)
         await fetchIndentList({ page_number: 1, ...params })
         break
       case 'order':
@@ -245,10 +258,11 @@ const _OrderManagement = () => {
    * 清空搜索
    */
   const clearSearch = async () => {
-    setSearchName('')
+    setSearchValue('')
+    setSearchHighlight('')
     tempParams.current = null
     afterSearch.current = false
-    await fetchIndentList({ page_number: 1 })
+    await onChangeTab('all')
   }
 
   /**
@@ -357,7 +371,8 @@ const _OrderManagement = () => {
    * 根据外部左侧的点击事件传入的类型请求接口
    */
   const fetchListOnType = useMemoizedFn(async (type: string) => {
-    setSearchName('')
+    setSearchValue('')
+    setSearchHighlight('')
     tempParams.current = null
     afterSearch.current = false
     const state = OrderSystemConst.IndentState.SUCCESS.toString()
@@ -366,8 +381,8 @@ const _OrderManagement = () => {
   })
 
   const isSearch = useMemo(() => {
-    return !!searchName
-  }, [searchName])
+    return !!searchValue
+  }, [searchValue])
 
   const columns: ColumnsType<OrderSystemType.IIndentList> = useMemo(() => {
     const stateFilter = () => {
@@ -391,30 +406,42 @@ const _OrderManagement = () => {
       {
         width: 100,
         title: '订单金额',
-        dataIndex: 'total_price'
+        dataIndex: 'total_price',
+        render: (text) => {
+          return <span>¥{pennyToYuan(text)}</span>
+        }
       },
       {
         width: 108,
         title: '付款人',
         dataIndex: 'creator',
-        render: (text, record) => (
-          <div
-            className={styles.tableLink}
-            onClick={() => openPersonalDetails(record, record.creator.user_id)}
-          >
-            <FlyTextTooltip
-              isDynamic
-              text={() => {
-                return (
-                  <FlyStringHighLight
-                    keyword={searchName || ''}
-                    text={record.creator.user_name}
-                  />
-                )
-              }}
-            />
-          </div>
-        )
+        render: (text, record) => {
+          const name = `${record.creator.user_name}${
+            record.creator.user_type === OrderSystemConst.UserType.CORP
+              ? '（企）'
+              : ''
+          }`
+          return (
+            <div
+              className={styles.tableLink}
+              onClick={() =>
+                openPersonalDetails(record, record.creator.user_id)
+              }
+            >
+              <FlyTextTooltip
+                isDynamic
+                text={() => {
+                  return (
+                    <FlyStringHighLight
+                      keyword={searchHighlight || searchValue || ''}
+                      text={name}
+                    />
+                  )
+                }}
+              />
+            </div>
+          )
+        }
       },
       {
         width: 168,
@@ -432,29 +459,46 @@ const _OrderManagement = () => {
           }
 
           return (
-            <div
-              style={{ width: '168px' }}
-              className={styles.tableLink}
-              onClick={() => {
-                if (record.users.length === 1) {
-                  openPersonalDetails(record, record.users[0].user_id)
-                } else {
-                  showOrderModal(record)
-                }
+            <FlyBasePopper
+              trigger="hover"
+              content={() => {
+                return (
+                  <div className={styles.namePopover}>
+                    {isCorp && record.corporation ? (
+                      <div className={styles.nameItem}>{nameStr}</div>
+                    ) : (
+                      <>
+                        {record.users.map((user) => (
+                          <div key={user.user_id} className={styles.nameItem}>
+                            {user.user_name}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                )
               }}
             >
-              <FlyTextTooltip
-                isDynamic
-                text={() => {
-                  return (
-                    <FlyStringHighLight
-                      keyword={searchName || ''}
-                      text={nameStr}
-                    />
-                  )
+              <div
+                style={{ width: '168px' }}
+                className={cs(styles.tableLink, styles.oneRow)}
+                onClick={() => {
+                  const usersLength = record.users.length
+                  if (usersLength === 0 && isCorp) {
+                    openPersonalDetails(record, '')
+                  } else if (usersLength === 1) {
+                    openPersonalDetails(record, record.users[0].user_id)
+                  } else {
+                    showOrderModal(record)
+                  }
                 }}
-              />
-            </div>
+              >
+                <FlyStringHighLight
+                  keyword={searchHighlight || searchValue || ''}
+                  text={nameStr}
+                />
+              </div>
+            </FlyBasePopper>
           )
         }
       },
@@ -517,7 +561,7 @@ const _OrderManagement = () => {
         )
       }
     ]
-  }, [searchName, filteredState])
+  }, [searchHighlight, searchValue, filteredState])
 
   useMount(async () => {
     tempParams.current = null

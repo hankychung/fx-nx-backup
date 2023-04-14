@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-11 17:39:09
+ * @LastEditTime: 2023-04-13 17:53:47
  */
 
 import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
@@ -45,6 +45,7 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   memberList: IFlyeleAvatarItem[]
   goProtocol: () => void
+  showMsg?: () => void
 }
 
 export default function PayModal(props: Iprops) {
@@ -61,7 +62,8 @@ export default function PayModal(props: Iprops) {
     teamVipType = 1,
     getOrderCode,
     goProtocol,
-    successRef
+    successRef,
+    showMsg
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
 
@@ -137,6 +139,7 @@ export default function PayModal(props: Iprops) {
             senConfirm={senConfirm}
             isPaySuccess={isPaySuccess}
             goProtocol={goProtocol}
+            showMsg={showMsg}
           />
         )
       default:

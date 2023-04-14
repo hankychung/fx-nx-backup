@@ -8,19 +8,23 @@ import { jsonKey, boolKey } from './const'
 import { getFilterSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
-import { PackInfo, Attachinfo, LastId, Datum } from './type/service/datapandora'
+import { PackInfo, Datum } from './type/service/datapandora'
 import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 import { defaultDiffStamp } from './const'
+import _ from 'lodash'
 
 const wasmUrl = '/sql-wasm.wasm'
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 
-type DiffPackList = PackInfo['data']
-
 function checkDecentTable(k: string) {
   return !['comment'].includes(k)
+}
+
+const defaultRecord = {
+  id: '0',
+  attach_info: defaultDiffStamp
 }
 
 class SqlStore {
@@ -35,10 +39,7 @@ class SqlStore {
 
   private userId = ''
 
-  private recordInfo: RecordInfo = {
-    id: '0',
-    attach_info: defaultDiffStamp
-  }
+  private recordInfo: RecordInfo = _.cloneDeep(defaultRecord)
 
   private dbId = ''
 
@@ -47,14 +48,14 @@ class SqlStore {
   private token = ''
 
   async initDB(p: IUserParams) {
-    console.log('initDB')
     this.userId = p.userId
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
-    // 已存在打开的数据库（切换用户）
+    // 已存在打开的数据库（切换用户）- 重置
     if (this.db) {
       this.db.close()
       this.db = null
+      this.recordInfo = _.cloneDeep(defaultRecord)
     }
 
     this.dbId = `${p.env}-${p.userId}`

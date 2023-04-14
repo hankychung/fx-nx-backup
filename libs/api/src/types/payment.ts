@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-04-06 16:13:15
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-12 16:36:43
+ * @LastEditTime: 2023-04-13 12:08:37
  * @FilePath: /fx-nx/libs/api/src/types/payment.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */

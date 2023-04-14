@@ -4,6 +4,7 @@ import { OrderSystemApi, OrderSystemType } from '@flyele-nx/service'
 import { useMount, useUnmount, useRequest } from 'ahooks'
 import { message } from 'antd'
 import cs from 'classnames'
+import { pennyToYuan } from '../../utils'
 
 export interface IDataShow {
   key: string
@@ -78,7 +79,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
       {
         key: 'today',
         title: '今日订单',
-        value: today_indent.amount,
+        value: pennyToYuan(today_indent.amount),
         subTitle: `${today_indent.count}个`,
         unitType: 'money',
         clickFunc: () => {
@@ -88,7 +89,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
       {
         key: 'month',
         title: '本月订单',
-        value: month_indent.amount,
+        value: pennyToYuan(month_indent.amount),
         subTitle: `${month_indent.count}个`,
         unitType: 'money',
         clickFunc: () => {
@@ -98,7 +99,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
       {
         key: 'all',
         title: '累计订单',
-        value: total_indent.amount,
+        value: pennyToYuan(total_indent.amount),
         subTitle: `${total_indent.count}个`,
         unitType: 'money',
         clickFunc: () => {

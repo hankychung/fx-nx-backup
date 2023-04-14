@@ -35,7 +35,7 @@ function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
       onClick={() => onClick(data)}
     >
       {children}
-      <div className={styles.check}>
+      <div className={styles.check} id="circleCheckBox">
         <CircleCheckBox size={16} state={state} colorType={colorType} />
       </div>
     </div>

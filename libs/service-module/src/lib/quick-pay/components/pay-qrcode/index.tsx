@@ -2,11 +2,11 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-13 11:55:27
+ * @LastEditTime: 2023-04-14 10:52:34
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_icon.svg'
 import style from './index.module.scss'
 import Protocol from './components/protocol'
@@ -31,7 +31,7 @@ const PayQrCode = ({
   goProtocol: () => void
 }) => {
   const [qrCode, setQrCode] = useState('')
-
+  const isInit = useRef(false)
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
     const params = {
@@ -63,7 +63,9 @@ const PayQrCode = ({
     }
   })
   useEffect(() => {
+    if (isInit.current) return
     qrCodeFunction()
+    isInit.current = true
   }, [qrCodeFunction, vipMeal])
   return (
     <div>

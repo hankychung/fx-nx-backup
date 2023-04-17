@@ -28,7 +28,8 @@ const _VipIntroduce = (props: IProps) => {
     name,
     avatar,
     personVipBtnClick,
-    teamVipBtnClick
+    teamVipBtnClick,
+    descBtnClick
   } = props
   const Controller = useController(new FlyBasePopperCtrl())
 
@@ -89,6 +90,7 @@ const _VipIntroduce = (props: IProps) => {
         isVip={!!isVip}
         personVipBtnClick={personVipBtnClick}
         teamVipBtnClick={teamVipBtnClick}
+        descBtnClick={descBtnClick}
         customBtnClick={() => {
           Controller.show()
         }}

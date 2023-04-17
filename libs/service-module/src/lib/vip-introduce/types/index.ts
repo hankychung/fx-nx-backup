@@ -4,6 +4,7 @@ export interface VipIntroduceContentProps {
   personVipBtnClick?: (isVip?: boolean) => void
   teamVipBtnClick?: (isTeamVip?: boolean) => void
   customBtnClick?: () => void
+  descBtnClick?: () => void
 }
 
 export interface IPower {

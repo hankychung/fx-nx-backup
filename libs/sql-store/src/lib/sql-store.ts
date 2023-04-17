@@ -95,7 +95,7 @@ class SqlStore {
       const db = new SQL.Database()
       this.db = db
       db.run(createSql)
-      this.recordInfo = { id: '', attach_info: {} }
+      this.recordInfo = _.cloneDeep(defaultRecord)
     }
 
     if (firstData && firstData.type === 1) {

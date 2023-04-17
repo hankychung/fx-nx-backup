@@ -2,7 +2,7 @@ import { d3 } from '.'
 import { SelectionG } from '../type'
 import { CreateMapProxy, CreateMapProxyValueGet } from '../type/bin'
 import { onMountedFn } from './scrollBar'
-import { g, svg } from './selection'
+import { asstSvg, g, svg } from './selection'
 
 export const svgEle = CreateMapProxy<SVGSVGElement | null>((nV, _, key) => {
   if (nV && key) svg[key] = d3.select(nV)
@@ -23,7 +23,9 @@ export const wrapperEle = CreateMapProxy<HTMLDivElement | null>(
 )
 export const wrapperEleGet = CreateMapProxyValueGet(wrapperEle)
 
-export const asstSvgEle = CreateMapProxy<SVGSVGElement | null>()
+export const asstSvgEle = CreateMapProxy<SVGSVGElement | null>((nV, _, key) => {
+  if (nV && key) asstSvg[key] = d3.select(nV)
+})
 export const asstSvgEleGet = CreateMapProxyValueGet(asstSvgEle)
 
 export const foreignEle = CreateMapProxy<SVGForeignObjectElement | null>()

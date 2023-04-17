@@ -38,7 +38,9 @@
         .name_icon {
           display: flex;
           align-items: center;
-
+          .name_active {
+            color: #1dd2c1;
+          }
           .mine {
             width: 22px;
             height: 14px;
@@ -73,7 +75,12 @@
       }
     }
   }
-
+  .empty_list {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 96px;
+    color: #8a8a8a;
+  }
   .search {
     padding: 0 16px;
     margin-top: 12px;

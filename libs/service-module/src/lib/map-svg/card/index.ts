@@ -21,11 +21,11 @@ export const makeTransition = (
     .transition<Mdata>()
     .duration(dura)
     .ease(easingFn) as unknown as d3.Transition<
-    d3.BaseType,
-    Mdata,
-    null,
-    undefined
-  >
+      d3.BaseType,
+      Mdata,
+      null,
+      undefined
+    >
 }
 
 export const appendPublic = (enterG: SelectionG) => {
@@ -172,7 +172,7 @@ export const formatTakerList = (g: GContent, d: Mdata) => {
       if (length > 2) {
         const text = `+${length - 2}`
         // 渲染数字
-        const width = getTextSize(text, 10).width
+        const width = getTextSize(text, d.componentKey, 10).width
 
         // 数字盒子
         const gTakerNumberBox = g.append('g')

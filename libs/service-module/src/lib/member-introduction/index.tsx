@@ -58,11 +58,9 @@ export const MemberIntroduction = () => {
     }, 2000)
   })
   useEffect(() => {
-    // let timer: NodeJS.Timer | undefined
-    if (!show) {
-      clearInterval(TimerRef.current)
-    }
-    if (orderCode) {
+    clearInterval(TimerRef.current)
+
+    if (orderCode && show) {
       TimerRef.current = initFn()
     }
   }, [orderCode, initFn, show])

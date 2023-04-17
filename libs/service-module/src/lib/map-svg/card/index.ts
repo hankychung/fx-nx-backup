@@ -21,11 +21,11 @@ export const makeTransition = (
     .transition<Mdata>()
     .duration(dura)
     .ease(easingFn) as unknown as d3.Transition<
-      d3.BaseType,
-      Mdata,
-      null,
-      undefined
-    >
+    d3.BaseType,
+    Mdata,
+    null,
+    undefined
+  >
 }
 
 export const appendPublic = (enterG: SelectionG) => {

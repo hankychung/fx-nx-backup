@@ -2,6 +2,14 @@ import dayjs from 'dayjs'
 import { Data } from '../type/data'
 import { BaseTimerData, isFullDay, MDataTypeEnum } from '../type/mdata'
 import { ObjectiveData } from '../type/target'
+import { CreateProxy } from '../type/bin'
+import { MapSvgGetAvatarProxyFunc } from '../type/system'
+
+export const getAvatarProxyMapSvg = CreateProxy<MapSvgGetAvatarProxyFunc>(
+  (_user_id: string) => {
+    return undefined
+  }
+)
 
 // 格式化事项时间
 export const FomratMainTimerStr = (d: BaseTimerData): string => {
@@ -82,7 +90,7 @@ export const formatObjectiveData = (
     children_total: !isSuperiors ? objective_data.relation_total : 0,
     takers: (objective_data?.objective_member || []).map((v) => {
       return {
-        avatar: v.avatar,
+        avatar: v.avatar || getAvatarProxyMapSvg.value(v.user_id),
         user_id: v.user_id
       }
     }),

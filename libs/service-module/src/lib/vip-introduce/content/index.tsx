@@ -11,6 +11,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     personVipBtnClick,
     teamVipBtnClick,
     customBtnClick,
+    descBtnClick,
     isVip,
     isTeamVip
   } = props
@@ -39,12 +40,9 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       }
 
       // 已经开通了团队会员或者个人会员
-      if (
-        (item.key === 'personal' && isVip) ||
-        (item.key === 'team' && isTeamVip)
-      ) {
-        return '续费使用'
-      }
+      if (item.key === 'personal' && isVip) return '续费使用'
+      if (item.key === 'team' && isVip) return '升级使用'
+      if (item.key === 'team' && isTeamVip) return '续费使用'
       return item.btnText
     },
     [isVip, isTeamVip]
@@ -74,7 +72,17 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                   style={{ borderBottom: `1px dashed ${item.borderColor}` }}
                 >
                   <h1>{item.title}</h1>
-                  <span>{item.desc}</span>
+                  {item.desc && (
+                    <span className={css.desc} onClick={descBtnClick}>
+                      <a
+                      // target="_blank"
+                      // href="https://official-website-test.flyele.vip/interests-introduction"
+                      >
+                        {item.desc}
+                      </a>
+                      <i>&gt;</i>
+                    </span>
+                  )}
                 </div>
               </div>
               <div className={css.content}>

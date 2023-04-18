@@ -172,7 +172,7 @@ export const formatTakerList = (g: GContent, d: Mdata) => {
       if (length > 2) {
         const text = `+${length - 2}`
         // 渲染数字
-        const width = getTextSize(text, 10).width
+        const width = getTextSize(text, d.componentKey, 10).width
 
         // 数字盒子
         const gTakerNumberBox = g.append('g')

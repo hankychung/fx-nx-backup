@@ -17,7 +17,7 @@ import { OpenTaxModal } from './components/open-tax-modal'
 import dayjs from 'dayjs'
 import { useInvoiceStore } from '../../store/invoice'
 
-const pageSize = 20
+const pageSize = 10
 
 export const InvoiceManagement = () => {
   const invoiceStore = useInvoiceStore()
@@ -41,6 +41,7 @@ export const InvoiceManagement = () => {
   ) => {
     const requestParams = options || { page_number: 1, page_record: pageSize }
     tempParams.current = {
+      page_record: pageSize,
       ...tempParams.current,
       ...requestParams
     }

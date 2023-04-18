@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 16:38:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-14 11:00:26
+ * @LastEditTime: 2023-04-17 11:29:25
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,6 +25,7 @@ import {
 import { SelectMemberService } from '../../../../../../context/service'
 import { useListPrevNext } from '../../../../../../hooks/useListPreNext'
 import { IFlyeleAvatarItem } from '../../../../../../../pay-modal'
+import { StringHighLight } from '../StringHighLight'
 
 const MemberList = ({
   resultArr,
@@ -104,14 +105,16 @@ const MemberList = ({
       const sKey = 'name'
       const reg = new RegExp(searchValue)
 
-      for (let i = 0; i < sKey.length; i++) {
-        const list = filter(showList, (item: IFlyeleAvatarItem) => {
-          if (!item[sKey]) return false
-          return item[sKey].match(reg)
-        }) as IFlyeleAvatarItem[]
-        resArr.push(...list)
-      }
+      // for (let i = 0; i < sKey.length; i++) {
+
+      // }
+      const list = filter(showList, (item: IFlyeleAvatarItem) => {
+        if (!item[sKey]) return false
+        return item[sKey].match(reg)
+      }) as IFlyeleAvatarItem[]
+      resArr.push(...list)
     }
+    console.log([...resArr], '[...resArr]')
 
     setSearchList([...resArr])
   }, [searchValue, showList])
@@ -233,7 +236,10 @@ const MemberList = ({
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
-                          <span>{_.name}</span>
+                          <StringHighLight
+                            keyword={searchValue || ''}
+                            text={_.name}
+                          />
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}
@@ -255,6 +261,9 @@ const MemberList = ({
                 </div>
               )
             })}
+          {searchList.length === 0 && (
+            <div className={style.empty_list}>未搜索到相关结果</div>
+          )}
         </div>
       )}
     </div>

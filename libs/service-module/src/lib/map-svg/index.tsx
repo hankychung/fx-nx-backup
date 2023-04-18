@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useRef } from 'react'
 import { objectiveApi } from '@flyele-nx/api'
 import { Scrollbar } from './components/scrollbar'
-import { formatMdata } from './utils/formart'
+import { formatMdata, getAvatarProxyMapSvg } from './utils/formart'
 import { asstSvgEle, foreignEle, gEle, svgEle, wrapperEle } from './d3/element'
 import { mmdata, mmdataGet } from './draw/const'
 import ImData from './draw/ImData'
@@ -27,7 +27,7 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
   props,
   ref
 ) => {
-  const { ref_id, type, openTargetCard } = props
+  const { ref_id, type, openTargetCard, getAvatar } = props
 
   const [initKey] = useState(
     String(Math.floor(Math.random() * 100000000000000))
@@ -73,13 +73,18 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
 
   useEffect(() => {
     openTargetCardProxy.value = openTargetCard
+    getAvatarProxyMapSvg.value = getAvatar
 
     return () => {
       openTargetCardProxy.value = (target_id: string) => {
         console.log(target_id)
       }
+
+      getAvatarProxyMapSvg.value = (_userId: string) => {
+        return undefined
+      }
     }
-  }, [openTargetCard])
+  }, [openTargetCard, getAvatar])
 
   useEffect(() => {
     init()

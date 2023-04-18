@@ -4,7 +4,7 @@ export const memberPowerStaticData: IInfoType[] = [
   {
     key: 'free',
     title: '免费账户',
-    desc: '简单的任务管理与协作',
+    desc: '查看完整权益',
     borderColor: '#BBC7E1',
     bgColor: '#BBC7E1',
     btnText: '',
@@ -77,10 +77,10 @@ export const memberPowerStaticData: IInfoType[] = [
   {
     key: 'personal',
     title: '个人会员',
-    desc: '更强大的个人事项管理权益',
+    desc: '查看完整权益',
     bgColor: '#FFBF5F',
     borderColor: '#FFBF5F',
-    btnText: '立即开通',
+    btnText: '开通使用',
     btnTextColor: '#FFFFFF',
     btnBgColor: 'linear-gradient(270.34deg, #FFB85E 2.92%, #FFD075 97.6%)',
     btnBorderColor: 'none',
@@ -146,10 +146,10 @@ export const memberPowerStaticData: IInfoType[] = [
   {
     key: 'team',
     title: '团队会员',
-    desc: '更全面更专业的团队空间权益',
+    desc: '查看完整权益',
     bgColor: '#755EEF',
     borderColor: '#755EEF',
-    btnText: '立即开通',
+    btnText: '开通使用',
     btnTextColor: '#fff',
     btnBgColor: 'linear-gradient(90deg, #7B5EEF 0%, #6248ED 100%)',
     btnBorderColor: 'none',
@@ -215,7 +215,7 @@ export const memberPowerStaticData: IInfoType[] = [
   {
     key: 'custom',
     title: '私有化版',
-    desc: '独家定制数据私有',
+    desc: '',
     bgColor: '#535179',
     borderColor: '#535179',
     btnText: '联系客服',

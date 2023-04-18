@@ -88,6 +88,15 @@ class ServiceWorkerUtils {
   }
 
   /**
+   * 查询全量统计
+   * @returns
+   */
+  static queryFullViewCount = () => {
+    console.log('queryFullViewCount')
+    return promiseWorkerMessage(NotParamsWorkerKey.QUERY_FULL_VIEW_COUNT)
+  }
+
+  /**
    * 查询全量列表
    * @param params any //TODO 需要替换成实际类型
    * @returns

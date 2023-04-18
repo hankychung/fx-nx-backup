@@ -5,7 +5,7 @@ import { defaultInfo } from './const/defaultInfo'
 import { set, get, del, values } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
-import { getFilterSql } from './utils/filter'
+import { getFilterSql, getFullDoseCountSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Datum } from './type/service/datapandora'
@@ -335,6 +335,26 @@ class SqlStore {
     })
 
     return data
+  }
+
+  queryFullDoseCount() {
+    const sqlCount = this.db!.exec(
+      getFullDoseCountSql({ user_id: this.userId })
+    )
+
+    const data = sqlCount[0] ? this.formatSelectValue(sqlCount[0]) : []
+
+    return data?.[0] || {
+      accepted_total: 0,
+      cooperation_total: 0,
+      delay_total: 0,
+      dispatch_total: 0,
+      finished_total: 0,
+      in_progress_total: 0,
+      personal_total: 0,
+      total: 0,
+      unfinished_total: 0
+    }
   }
 
   query(params: FilterParamsProps) {

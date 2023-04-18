@@ -25,6 +25,10 @@ class DBHandler {
           sqlStore.updateToken(data.data as string)
           break
         }
+        case NotParamsWorkerKey.QUERY_FULL_VIEW_COUNT: {
+          responseData = sqlStore.queryFullDoseCount()
+          break
+        }
         case NotParamsWorkerKey.UPDATE_DIFF: {
           // sqlStore.updateDiffForClient()
           responseData = await sqlStore.updateDiffForClient()

@@ -88,6 +88,15 @@ class ServiceWorkerUtils {
   }
 
   /**
+   * 查询全量统计
+   * @returns
+   */
+  static queryFullViewCount = () => {
+    console.log('queryFullViewCount')
+    return promiseWorkerMessage(NotParamsWorkerKey.QUERY_FULL_VIEW_COUNT)
+  }
+
+  /**
    * 查询全量列表
    * @param params any //TODO 需要替换成实际类型
    * @returns
@@ -135,6 +144,13 @@ class ServiceWorkerUtils {
     }
 
     params.filter = filter
+
+    if (data.order_by && data.sort) {
+      params.order_by = {
+        order_by_key: data.order_by,
+        sort: data.sort
+      }
+    }
 
     console.log('queryFullViewList', params, JSON.stringify(params))
 

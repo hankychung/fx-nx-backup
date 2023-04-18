@@ -64,6 +64,7 @@ export interface FullViewParams {
   not_projects_id?: string //  - 不包含项目id，多个用逗号隔开
   tasks_id?: string // - 事项id，多个用逗号隔开
   not_tasks_id?: string // - 不包含事项id，多个用逗号隔开
+  order_by?: string
   sort?: 'asc' | 'desc' | '' // - 排序，asc->正序，desc->倒序， 默认正序
   parent_id?: string
   page_number: number // - 查询页数

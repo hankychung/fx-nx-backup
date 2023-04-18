@@ -262,9 +262,9 @@ export const getFilterSql = (
     /** 不分区 */
     default: {
       if (!order_by_key) {
-        ORDERS.unshift(`timestamp DESC`)
+        ORDERS.unshift(`is_no_work ASC, timestamp DESC`)
       } else {
-        ORDERS.unshift(`${order_by_key} ${sort}`)
+        ORDERS.unshift(`is_no_work ASC, ${order_by_key} ${sort}`)
       }
       break
     }

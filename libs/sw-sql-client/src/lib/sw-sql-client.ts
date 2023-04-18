@@ -145,6 +145,13 @@ class ServiceWorkerUtils {
 
     params.filter = filter
 
+    if (data.order_by && data.sort) {
+      params.order_by = {
+        order_by_key: data.order_by,
+        sort: data.sort
+      }
+    }
+
     console.log('queryFullViewList', params, JSON.stringify(params))
 
     return promiseWorkerMessage(

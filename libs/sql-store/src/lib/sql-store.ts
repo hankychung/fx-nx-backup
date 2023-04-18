@@ -344,17 +344,19 @@ class SqlStore {
 
     const data = sqlCount[0] ? this.formatSelectValue(sqlCount[0]) : []
 
-    return data?.[0] || {
-      accepted_total: 0,
-      cooperation_total: 0,
-      delay_total: 0,
-      dispatch_total: 0,
-      finished_total: 0,
-      in_progress_total: 0,
-      personal_total: 0,
-      total: 0,
-      unfinished_total: 0
-    }
+    return (
+      data?.[0] || {
+        accepted_total: 0,
+        cooperation_total: 0,
+        delay_total: 0,
+        dispatch_total: 0,
+        finished_total: 0,
+        in_progress_total: 0,
+        personal_total: 0,
+        total: 0,
+        unfinished_total: 0
+      }
+    )
   }
 
   query(params: FilterParamsProps) {

@@ -13,7 +13,8 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     customBtnClick,
     descBtnClick,
     isVip,
-    isTeamVip
+    isTeamVip,
+    isForeverVip
   } = props
 
   const handleBtnClick = (key: string) => {
@@ -34,8 +35,8 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
 
   const fillterBtnText = useCallback(
     (item: IInfoType) => {
-      // 是团队会员，并且当前是个人会员列
-      if (isTeamVip && item.key === 'personal') {
+      // 是团队会员或者个人永久会员，并且当前是个人会员列
+      if ((isTeamVip || isForeverVip) && item.key === 'personal') {
         return ''
       }
 
@@ -45,7 +46,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       if (item.key === 'team' && isTeamVip) return '续费使用'
       return item.btnText
     },
-    [isVip, isTeamVip]
+    [isVip, isTeamVip, isForeverVip]
   )
 
   return (

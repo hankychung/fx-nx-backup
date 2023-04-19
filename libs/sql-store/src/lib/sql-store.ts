@@ -2,7 +2,7 @@ import initSql from 'sql.js'
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
-import { set, get, del, values } from 'idb-keyval'
+import { set, get } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql, getFullDoseCountSql } from './utils/filter'
@@ -34,6 +34,8 @@ class SqlStore {
 
   private timeDiff = 0
 
+  isReady = false
+
   // private host = 'https://api.flyele.vip'
   private host = 'http://localhost:8888/api'
 
@@ -48,6 +50,7 @@ class SqlStore {
   private token = ''
 
   async initDB(p: IUserParams) {
+    this.isReady = false
     this.userId = p.userId
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
@@ -89,8 +92,6 @@ class SqlStore {
 
     const firstData = list[0]
 
-    console.log('get data', firstData)
-
     const createDB = () => {
       const db = new SQL.Database()
       this.db = db
@@ -118,21 +119,10 @@ class SqlStore {
       await this.updateBundle(data)
     }
 
-    // if (firstData) {
-    //   this.recordInfo = {
-    //     ...this.recordInfo,
-    //     attach_info: {
-    //       ...this.recordInfo.attach_info,
-    //       ...firstData.attach_info
-    //     }
-    //   }
-
-    //   // 更新差异数据
-    //   // this.updateDiff()
-    // }
-
     // 更新差异数据
     await this.updateDiff()
+
+    this.isReady = true
   }
 
   updateToken(token: string) {
@@ -186,8 +176,6 @@ class SqlStore {
 
         for (const item of list) {
           const { type, keys, data } = item
-
-          console.log('check item', item)
 
           if (type === 'insert') {
             // sql += this.getInsertSql(data, key) + ';'

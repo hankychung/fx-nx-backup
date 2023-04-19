@@ -25,6 +25,7 @@ const _VipIntroduce = (props: IProps) => {
     onClose,
     isVip,
     isTeamVip,
+    isForeverVip,
     name,
     avatar,
     personVipBtnClick,
@@ -88,6 +89,7 @@ const _VipIntroduce = (props: IProps) => {
       <VipIntroduceContent
         isTeamVip={!!isTeamVip}
         isVip={!!isVip}
+        isForeverVip={isForeverVip}
         personVipBtnClick={personVipBtnClick}
         teamVipBtnClick={teamVipBtnClick}
         descBtnClick={descBtnClick}

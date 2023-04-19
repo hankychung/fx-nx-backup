@@ -103,14 +103,6 @@ class SqlStore {
       createDB()
 
       await this.updateBundle(firstData)
-
-      // const { sign_url, id, attach_info } = firstData
-
-      // await this.fetchZip(sign_url)
-
-      // this.recordInfo = { id, attach_info }
-
-      // await this.updateTable()
     } else {
       if (storeDB) {
         // 存在用户数据库
@@ -174,10 +166,12 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    const getTableUpdates = async (key: string, pageIdx: number) => {
-      const info = this.recordInfo.attach_info
-
-      const res = await this.getUpdates(key, info[key].id, pageIdx)
+    const getTableUpdates = async (
+      key: string,
+      pageIdx: number,
+      lastId: string
+    ) => {
+      const res = await this.getUpdates(key, lastId, pageIdx)
 
       if (!res.code && res.data) {
         if (key === 'task_dispatch') {
@@ -188,9 +182,7 @@ class SqlStore {
           taskIds.push(...res.data.list.map((i) => i.keys['id']))
         }
 
-        const { last_id, list } = res.data
-
-        // let sql = ''
+        const { list } = res.data
 
         for (const item of list) {
           const { type, keys, data } = item
@@ -221,19 +213,22 @@ class SqlStore {
           }
         }
 
-        // this.db!.run(sql)
+        if (list.length) {
+          const lastItem = list[list.length - 1]
 
-        if (list.length >= 20) {
-          await getTableUpdates(key, pageIdx + 1)
+          this.recordInfo.attach_info[key] = {
+            id: lastItem.id
+          }
         }
 
-        // 更新last_id
-        this.recordInfo.attach_info[key] = { id: last_id }
+        if (list.length >= 20) {
+          await getTableUpdates(key, pageIdx + 1, lastId)
+        }
       }
     }
 
     for (const key of list.filter(checkDecentTable)) {
-      await getTableUpdates(key, 1)
+      await getTableUpdates(key, 1, this.recordInfo.attach_info[key].id)
     }
 
     this.updateDB()
@@ -271,13 +266,13 @@ class SqlStore {
 
   // 更新增量包
   private async updateBundle(data: Datum) {
-    const { sign_url, id, attach_info } = data
+    const { sign_url, id, attach_info, type } = data
 
     await this.fetchZip(sign_url)
 
     this.recordInfo = { id, attach_info }
 
-    await this.updateTable()
+    await this.updateTable(type === 2)
   }
 
   private async request(url: string) {
@@ -412,7 +407,7 @@ class SqlStore {
   }
 
   // 将全量包的内容写入数据库
-  private async updateTable() {
+  private async updateTable(isDiff: boolean) {
     const guide = await this.parseFile('guide')
 
     for (const [table, info] of Object.entries(guide)) {
@@ -424,6 +419,18 @@ class SqlStore {
         let sqlStr = ''
 
         content.forEach((item) => {
+          if (isDiff) {
+            const { type, data } = item
+
+            if (type === 'delete') {
+              sqlStr += this.getDelSql(data, table) + ';'
+            } else {
+              sqlStr += this.getInsertSql(data, table) + ';'
+            }
+
+            return
+          }
+
           sqlStr += this.getInsertSql(item, table) + ';'
         })
 

@@ -110,7 +110,7 @@ export const getFilterSql = (
 
   // 如果是收合模式默认查询顶级事项
   if (queryModel === 2 && !parent_id) {
-    WHERES.push(`parent_id = ''`)
+    WHERES.push(`(parent_id = '' OR category = 1)`)
   }
 
   // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
@@ -474,14 +474,17 @@ export const getFilterSql = (
     //我进行中
     case FilterQueryType.in_progress: {
       WHERES.push(
-        `finish_time = 0 AND (start_time <= STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') OR cycle_date <= DATETIME('now', 'localtime')) AND (end_time = 0 OR end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime'))`
+        `finish_time = 0
+        AND (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
+             STRFTIME('%Y-%m-%d', cycle_date, 'localtime') <= DATETIME('now', 'localtime'))
+        AND (end_time = 0 OR DATETIME(end_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime'))`
       )
       break
     }
     //我延期中
     case FilterQueryType.delay: {
       WHERES.push(
-        `finish_time = 0 AND end_time > 0 AND end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')`
+        `finish_time = 0 AND end_time > 0 AND DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')`
       )
       break
     }

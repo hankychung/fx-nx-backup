@@ -107,7 +107,9 @@ CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime'
     DATETIME('now', 'localtime')) THEN 3
     WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
     WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
-w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
+w.project_name, project_creator_id, 
+CASE WHEN workspace_id IS NULL THEN 0 ELSE workspace_id END AS workspace_id, workspace_name, ws_type, 
+is_external_member,
 IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
 IFNULL(k.child_total, 0) AS child_total, CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child,
 IFNULL(k.comment_total, 0) AS comment_total,
@@ -165,8 +167,8 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
             LEFT JOIN task_config AS c
             ON b.id = c.id
             ${LeftJoinRepeatAnd}
-            LEFT JOIN task b1
-            ON c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id, ',')) = b1.id
+            LEFT JOIN task b1 
+            ON c.parent_id != '' AND c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a

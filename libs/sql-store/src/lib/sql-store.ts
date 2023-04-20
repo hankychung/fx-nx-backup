@@ -236,9 +236,15 @@ class SqlStore {
       filter: { task_ids: info.taskIds }
     })
 
-    console.log('@DIFF', info, res)
+    console.log('@DIFF', {
+      taskIds,
+      list: res
+    })
 
-    return res
+    return {
+      taskIds,
+      list: res
+    }
   }
 
   private async getUpdates(key: string, lastId: string, pageIdx: number) {

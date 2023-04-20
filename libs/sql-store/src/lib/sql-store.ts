@@ -2,10 +2,10 @@ import initSql from 'sql.js'
 import { createSql } from './sql/create'
 import { ZipUtils } from './zip'
 import { defaultInfo } from './const/defaultInfo'
-import { set, get, del, values } from 'idb-keyval'
+import { set, get } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
-import { getFilterSql } from './utils/filter'
+import { getFilterSql, getFullDoseCountSql } from './utils/filter'
 import { Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Datum } from './type/service/datapandora'
@@ -34,6 +34,8 @@ class SqlStore {
 
   private timeDiff = 0
 
+  isReady = false
+
   // private host = 'https://api.flyele.vip'
   private host = 'http://localhost:8888/api'
 
@@ -48,6 +50,7 @@ class SqlStore {
   private token = ''
 
   async initDB(p: IUserParams) {
+    this.isReady = false
     this.userId = p.userId
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
@@ -89,8 +92,6 @@ class SqlStore {
 
     const firstData = list[0]
 
-    console.log('get data', firstData)
-
     const createDB = () => {
       const db = new SQL.Database()
       this.db = db
@@ -103,14 +104,6 @@ class SqlStore {
       createDB()
 
       await this.updateBundle(firstData)
-
-      // const { sign_url, id, attach_info } = firstData
-
-      // await this.fetchZip(sign_url)
-
-      // this.recordInfo = { id, attach_info }
-
-      // await this.updateTable()
     } else {
       if (storeDB) {
         // 存在用户数据库
@@ -126,21 +119,10 @@ class SqlStore {
       await this.updateBundle(data)
     }
 
-    // if (firstData) {
-    //   this.recordInfo = {
-    //     ...this.recordInfo,
-    //     attach_info: {
-    //       ...this.recordInfo.attach_info,
-    //       ...firstData.attach_info
-    //     }
-    //   }
-
-    //   // 更新差异数据
-    //   // this.updateDiff()
-    // }
-
     // 更新差异数据
     await this.updateDiff()
+
+    this.isReady = true
   }
 
   updateToken(token: string) {
@@ -174,10 +156,12 @@ class SqlStore {
 
     const list = await this.getNeedUpdateTables(query)
 
-    const getTableUpdates = async (key: string, pageIdx: number) => {
-      const info = this.recordInfo.attach_info
-
-      const res = await this.getUpdates(key, info[key].id, pageIdx)
+    const getTableUpdates = async (
+      key: string,
+      pageIdx: number,
+      lastId: string
+    ) => {
+      const res = await this.getUpdates(key, lastId, pageIdx)
 
       if (!res.code && res.data) {
         if (key === 'task_dispatch') {
@@ -188,14 +172,10 @@ class SqlStore {
           taskIds.push(...res.data.list.map((i) => i.keys['id']))
         }
 
-        const { last_id, list } = res.data
-
-        // let sql = ''
+        const { list } = res.data
 
         for (const item of list) {
           const { type, keys, data } = item
-
-          console.log('check item', item)
 
           if (type === 'insert') {
             // sql += this.getInsertSql(data, key) + ';'
@@ -221,19 +201,22 @@ class SqlStore {
           }
         }
 
-        // this.db!.run(sql)
+        if (list.length) {
+          const lastItem = list[list.length - 1]
 
-        if (list.length >= 20) {
-          await getTableUpdates(key, pageIdx + 1)
+          this.recordInfo.attach_info[key] = {
+            id: lastItem.id
+          }
         }
 
-        // 更新last_id
-        this.recordInfo.attach_info[key] = { id: last_id }
+        if (list.length >= 20) {
+          await getTableUpdates(key, pageIdx + 1, lastId)
+        }
       }
     }
 
     for (const key of list.filter(checkDecentTable)) {
-      await getTableUpdates(key, 1)
+      await getTableUpdates(key, 1, this.recordInfo.attach_info[key].id)
     }
 
     this.updateDB()
@@ -271,13 +254,13 @@ class SqlStore {
 
   // 更新增量包
   private async updateBundle(data: Datum) {
-    const { sign_url, id, attach_info } = data
+    const { sign_url, id, attach_info, type } = data
 
     await this.fetchZip(sign_url)
 
     this.recordInfo = { id, attach_info }
 
-    await this.updateTable()
+    await this.updateTable(type === 2)
   }
 
   private async request(url: string) {
@@ -337,6 +320,28 @@ class SqlStore {
     return data
   }
 
+  queryFullDoseCount() {
+    const sqlCount = this.db!.exec(
+      getFullDoseCountSql({ user_id: this.userId })
+    )
+
+    const data = sqlCount[0] ? this.formatSelectValue(sqlCount[0]) : []
+
+    return (
+      data?.[0] || {
+        accepted_total: 0,
+        cooperation_total: 0,
+        delay_total: 0,
+        dispatch_total: 0,
+        finished_total: 0,
+        in_progress_total: 0,
+        personal_total: 0,
+        total: 0,
+        unfinished_total: 0
+      }
+    )
+  }
+
   query(params: FilterParamsProps) {
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
@@ -390,7 +395,7 @@ class SqlStore {
   }
 
   // 将全量包的内容写入数据库
-  private async updateTable() {
+  private async updateTable(isDiff: boolean) {
     const guide = await this.parseFile('guide')
 
     for (const [table, info] of Object.entries(guide)) {
@@ -402,6 +407,18 @@ class SqlStore {
         let sqlStr = ''
 
         content.forEach((item) => {
+          if (isDiff) {
+            const { type, data } = item
+
+            if (type === 'delete') {
+              sqlStr += this.getDelSql(data, table) + ';'
+            } else {
+              sqlStr += this.getInsertSql(data, table) + ';'
+            }
+
+            return
+          }
+
           sqlStr += this.getInsertSql(item, table) + ';'
         })
 

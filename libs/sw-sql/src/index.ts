@@ -18,11 +18,23 @@ class DBHandler {
           break
         }
         case ServiceWorkerKey.QUERY_FULL_VIEW_LIST: {
+          const checkIsReady = () => sqlStore.isReady
+
+          while (!checkIsReady()) {
+            await new Promise((resolve) => {
+              setTimeout(resolve, 1000)
+            })
+          }
+
           responseData = sqlStore.query(data.data as any)
           break
         }
         case ServiceWorkerKey.UPDATE_TOKEN: {
           sqlStore.updateToken(data.data as string)
+          break
+        }
+        case NotParamsWorkerKey.QUERY_FULL_VIEW_COUNT: {
+          responseData = sqlStore.queryFullDoseCount()
           break
         }
         case NotParamsWorkerKey.UPDATE_DIFF: {

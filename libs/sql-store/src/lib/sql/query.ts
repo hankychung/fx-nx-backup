@@ -24,6 +24,54 @@ export const QueryTaskChildTotal = (task_id: string) => {
   AND INSTR(tc.parent_id, ${task_id})`
 }
 
+export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
+  return `SELECT COUNT(*) AS total, COUNT(CASE WHEN finish_time = 0 THEN task_id END) AS unfinished_total,
+  COUNT(CASE WHEN finish_time > 0 THEN task_id END) AS finished_total,
+  COUNT(CASE WHEN creator_id = ${user_id} THEN task_id END) AS dispatch_total,
+  COUNT(CASE WHEN creator_id != taker_id THEN task_id END) AS accepted_total,
+  COUNT(CASE WHEN finish_time = 0 AND
+  (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
+  cycle_date <= DATE('now', 'localtime')) AND
+  (end_time = 0 OR DATETIME(end_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime'))
+  THEN task_id END) AS in_progress_total,
+  COUNT(CASE WHEN finish_time = 0 AND end_time > 0 AND
+  DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')
+  THEN task_id END) AS delay_total,
+  COUNT(CASE WHEN takers != CAST(${user_id} AS text) THEN task_id END) AS cooperation_total,
+  COUNT(CASE WHEN takers = CAST(${user_id} AS text) THEN task_id END) AS personal_total
+  FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time, a.creator_id, a.finish_time, takers
+  FROM (SELECT a.taker_id, b.id, b.creator_id,
+  CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')
+  ELSE '' END AS cycle_date, IFNULL(d.start_time, b.start_time) AS start_time,
+  IFNULL(d.end_time, b.end_time) AS end_time, IFNULL(e.finish_time, a.finish_time) AS finish_time
+  FROM (SELECT ref_task_id, taker_id, finish_time
+  FROM task_dispatch
+  WHERE taker_id = ${user_id}
+  AND is_valid = 1
+  AND personal_state IN (0, 10409, 10604, 10611)
+  AND operate_state = 0) AS a
+  LEFT JOIN task AS b
+  ON a.ref_task_id = b.id
+  LEFT JOIN task_config AS c
+  ON b.id = c.id
+  LEFT JOIN task_repeat AS d
+  ON c.id = d.task_id AND b.repeat_type > 0 AND STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+  LEFT JOIN task_repeat_finish AS e
+  ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}
+  LEFT JOIN task b1
+  ON c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id, ',')) = b1.id
+  WHERE a.ref_task_id = b.id
+  AND b.state = 10201
+  AND b.matter_type IN (10701, 10702, 10705)) AS a
+  LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id
+  FROM task_dispatch
+  WHERE is_valid = 1
+  AND personal_state IN (0, 10409, 10604, 10611)
+  AND operate_state = 0
+  GROUP BY ref_task_id) aa
+  ON a.id = aa.ref_task_id)`
+}
+
 export const BaseQuerySql = ({
   limit,
   where,
@@ -45,7 +93,7 @@ export const BaseQuerySql = ({
        WHEN STRFTIME('%w', date) == '4' THEN '周四'
        WHEN STRFTIME('%w', date) == '5' THEN '周五'
        WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday
-FROM (SELECT a.dispatch_id, a.identity, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
+FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
 IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, a.update_at, a.complete_at,
@@ -59,7 +107,9 @@ CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime'
     DATETIME('now', 'localtime')) THEN 3
     WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
     WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
-w.project_name, project_creator_id, workspace_id, workspace_name, ws_type, is_external_member,
+w.project_name, project_creator_id, 
+CASE WHEN workspace_id IS NULL THEN 0 ELSE workspace_id END AS workspace_id, workspace_name, ws_type, 
+is_external_member,
 IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
 IFNULL(k.child_total, 0) AS child_total, CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child,
 IFNULL(k.comment_total, 0) AS comment_total,
@@ -116,19 +166,9 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
             ON a.ref_task_id = b.id
             LEFT JOIN task_config AS c
             ON b.id = c.id
-            LEFT JOIN(SELECT task_id, repeat_id, start_time, end_time, start_time_full_day,
-                      end_time_full_day, complete_at, cycle, MAX(cycle_date) AS cycle_date
-                      FROM task_repeat d
-                      WHERE ${LeftJoinRepeatAnd}
-                      GROUP BY d.task_id) AS d
-            ON c.id = d.task_id AND b.repeat_type > 0
-            LEFT JOIN (SELECT MAX(finish_time) AS finish_time, task_id
-                                        FROM task_repeat_finish
-                                        WHERE user_id = ${user_id}
-                                        GROUP BY task_id) AS e
-                                        ON a.ref_task_id = e.task_id 
-            LEFT JOIN task b1
-            ON c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id, ',')) = b1.id
+            ${LeftJoinRepeatAnd}
+            LEFT JOIN task b1 
+            ON c.parent_id != '' AND c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a

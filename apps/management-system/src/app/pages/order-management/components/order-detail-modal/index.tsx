@@ -76,8 +76,15 @@ export const OrderDetailModal = ({
       [OrderSystemConst.IndentListMemberType.CORP]: '企业版'
     }
 
-    const getDateLabel = (date: number) =>
-      dayjs.unix(date).format('YYYY年M月D日')
+    const getDateLabel = (date: number) => {
+      if (!date) {
+        return '未开通'
+      }
+      if (date === 9999999999) {
+        return '终身会员'
+      }
+      return dayjs.unix(date).format('YYYY年M月D日')
+    }
 
     const personalState = {
       key: 'personalState',
@@ -124,6 +131,8 @@ export const OrderDetailModal = ({
           key: 'after_pay_end_at',
           title: '支付后',
           value: `${memberTypeLabel[indentDetail.indent_member_type]}·${
+            indentDetail.num ? `·扩容·${indentDetail.num}个席位·` : ''
+          }${
             indentDetail.corporation &&
             indentDetail.corporation.after_pay_end_at
               ? getDateLabel(indentDetail.corporation.after_pay_end_at)

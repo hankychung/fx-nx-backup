@@ -143,6 +143,10 @@ export const InvoiceManagement = () => {
    */
   const onFinish = async () => {
     setOpenModal(false)
+    messageApi.open({
+      type: 'success',
+      content: '已确认开票'
+    })
     await initList()
   }
 

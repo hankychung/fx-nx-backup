@@ -26,10 +26,6 @@ export const OpenTaxModal = ({
         const { code } = await OrderSystemApi.finishInvoice(data.id)
         if (code === 0) {
           onFinish()
-          messageApi.open({
-            type: 'success',
-            content: '已确认开票'
-          })
         }
       } catch (e) {
         console.log('开具发票失败')

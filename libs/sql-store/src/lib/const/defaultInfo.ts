@@ -76,7 +76,7 @@ export const defaultInfo: any = {
     last_active_at: 0,
     repeat_change_id: '',
     application_id: '',
-    flow_step_id: '',
+    flow_step_id: '0',
     application_json: null,
     operate_type: 0,
     creator_id: '',

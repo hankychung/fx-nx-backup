@@ -188,8 +188,6 @@ class SqlStore {
           if (type === 'update') {
             // 更新逻辑
             this.db!.run(this.getDelSql(keys, key) + ';')
-            // sql += this.getDelSql(keys, key) + ';'
-            // sql += this.getInsertSql(data, key) + ';'
             this.db!.run(this.getInsertSql(data, key) + ';')
             continue
           }
@@ -197,7 +195,6 @@ class SqlStore {
           if (type === 'delete') {
             // 删除逻辑
             this.db!.run(this.getDelSql(keys, key) + ';')
-            // sql += this.getDelSql(keys, key) + ';'
           }
         }
 
@@ -408,10 +405,12 @@ class SqlStore {
 
         content.forEach((item) => {
           if (isDiff) {
-            const { type, data } = item
+            const { type, data, keys } = item
 
             if (type === 'delete') {
-              sqlStr += this.getDelSql(data, table) + ';'
+              console.log('@del', data, table, keys)
+
+              sqlStr += this.getDelSql(keys, table) + ';'
             } else {
               sqlStr += this.getInsertSql(data, table) + ';'
             }

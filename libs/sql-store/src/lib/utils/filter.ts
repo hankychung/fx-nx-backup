@@ -271,13 +271,13 @@ export const getFilterSql = (
 
         if (direction === Direction.up) {
           ORDERS.unshift(
-            `date_idx ASC, date ${up}, time_idx ASC, create_at ${
+            `date_idx ASC, date ${up}, time_idx ${sort || 'ASC'}, create_at ${
               orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         } else {
           ORDERS.unshift(
-            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
+            `date_idx ASC, date ${down}, time_idx ${sort || 'ASC'}, create_at ${
               orderIsTime ? 'DESC' : 'ASC'
             }`
           )
@@ -290,7 +290,7 @@ export const getFilterSql = (
         ORDERS.unshift(`date_idx ASC, date ASC, time_idx ASC, create_at ASC`)
       }
 
-      ORDERS.concat([`task_id ${sort}`, `repeat_id ${sort}`])
+      ORDERS.concat([`task_id ${sort || 'ASC'}`, `repeat_id ${sort || 'ASC'}`])
 
       break
     }

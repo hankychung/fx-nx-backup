@@ -114,7 +114,6 @@ const MemberList = ({
       }) as IFlyeleAvatarItem[]
       resArr.push(...list)
     }
-  
 
     setSearchList([...resArr])
   }, [searchValue, showList])
@@ -140,7 +139,7 @@ const MemberList = ({
   }
 
   return (
-    <div className={style.memberList} >
+    <div className={style.memberList}>
       <div className={style.title}>
         <div>{`选择更多好友开通（${resultArr.length}）`}</div>
         <Close
@@ -169,9 +168,8 @@ const MemberList = ({
             showList.length > 0 &&
             showList.map((_) => {
               return (
-                <div key={_.userId} >
+                <div key={_.userId}>
                   <SingleCheckItemRow
-    
                     // key={item.id}
                     data={{}}
                     state={
@@ -188,7 +186,7 @@ const MemberList = ({
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
-                        <div className={style.name}>{_.name}</div>
+                          <div className={style.name}>{_.name}</div>
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}
@@ -237,12 +235,12 @@ const MemberList = ({
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
                           <div className={style.name}>
-                          <StringHighLight
-                            keyword={searchValue || ''}
-                            text={_.name}
-                          />
+                            <StringHighLight
+                              keyword={searchValue || ''}
+                              text={_.name}
+                            />
                           </div>
-                   
+
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}

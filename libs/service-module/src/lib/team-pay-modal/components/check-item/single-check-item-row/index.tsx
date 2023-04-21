@@ -38,7 +38,7 @@ function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
       }}
     >
       {children}
-      <div className={styles.check} >
+      <div className={styles.check}>
         <CircleCheckBox size={16} state={state} colorType={colorType} />
       </div>
     </div>

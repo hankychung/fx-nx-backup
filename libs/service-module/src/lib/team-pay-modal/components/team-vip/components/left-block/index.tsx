@@ -81,7 +81,6 @@ const LeftBlock = (props: Iprops) => {
     }
   }, [service, setMemberSet])
 
-
   return (
     <div className={style.leftBlock}>
       <div className={style.lableClear}>
@@ -117,7 +116,7 @@ const LeftBlock = (props: Iprops) => {
                 <div key={_.userId}>
                   <SingleCheckItemRow
                     // key={item.id}
-     
+
                     data={{}}
                     onClick={() => {
                       if (
@@ -146,7 +145,7 @@ const LeftBlock = (props: Iprops) => {
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
                           <div className={style.name}>{_.name}</div>
-                          
+
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}

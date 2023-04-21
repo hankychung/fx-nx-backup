@@ -64,21 +64,18 @@ const LeftBlock = ({
       service.dispose()
     }
   }, [service, setMemberSet])
-  useClickAway(
-    () => {
-      if (openAddModal) {
-        service.close()
-      }
-    },
-    [
-      createRef,
-      document.getElementById('invite_member'),
-      document.getElementById('member_info'),
-      // document.getElementById('check_box'),
-      // document.getElementById('search_block'),
-      // document.getElementById('circleCheckBox')
-    ],
-  )
+  useClickAway(() => {
+    if (openAddModal) {
+      service.close()
+    }
+  }, [
+    createRef,
+    document.getElementById('invite_member'),
+    document.getElementById('member_info')
+    // document.getElementById('check_box'),
+    // document.getElementById('search_block'),
+    // document.getElementById('circleCheckBox')
+  ])
   return (
     <div className={style.leftBlock}>
       <div className={style.person_desc}>{obj.desc}</div>
@@ -101,10 +98,8 @@ const LeftBlock = ({
         })}
       </div>
       <div ref={createRef}>
-        {
-         openAddModal&& <div
-            className={style.member_list}
-          >
+        {openAddModal && (
+          <div className={style.member_list}>
             <MemberList
               resultArr={resultArr}
               service={service}
@@ -112,7 +107,7 @@ const LeftBlock = ({
               mineId={mineId}
             />
           </div>
-        }
+        )}
       </div>
     </div>
   )

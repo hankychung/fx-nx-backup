@@ -1,4 +1,4 @@
-import { BaseQuerySql } from '../sql/query'
+import { BaseQuerySql, FullDoseCountSql } from '../sql/query'
 import {
   Direction,
   FilterParamsProps,
@@ -27,6 +27,10 @@ export const getNullOrNoNullIds = (ids: string[], sqlKey: string) => {
   const inStr = filterIds.length ? `${sqlKey} IN (${filterIds.join(',')})` : ''
 
   return `(${isNullStr} ${link} ${inStr})`
+}
+
+export const getFullDoseCountSql = ({ user_id }: { user_id: string }) => {
+  return FullDoseCountSql({ user_id })
 }
 
 export const getFilterSql = (
@@ -93,7 +97,8 @@ export const getFilterSql = (
   const ORDERS: string[] = ['repeat_id ASC', 'task_id DESC']
 
   // 平铺模式下 查询所有小于等于今天的
-  let LeftJoinRepeatAnd = `d.cycle_date <= DATETIME('now', 'localtime')`
+  let LeftJoinRepeatAnd = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 AND STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+  LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}`
 
   /**
    * 标题/背景信息
@@ -105,12 +110,20 @@ export const getFilterSql = (
 
   // 如果是收合模式默认查询顶级事项
   if (queryModel === 2 && !parent_id) {
-    WHERES.push(`parent_id = ''`)
+    WHERES.push(`(parent_id = '' OR category = 1)`)
   }
 
   // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
   if (queryModel === 2) {
-    LeftJoinRepeatAnd = `(d.cycle_date <= DATETIME('now', 'localtime') OR d.cycle = 1)`
+    LeftJoinRepeatAnd = `LEFT JOIN(SELECT task_id, repeat_id, start_time, end_time, start_time_full_day, 
+        end_time_full_day, complete_at, cycle, MAX(cycle_date) AS cycle_date
+      FROM task_repeat 
+      WHERE STRFTIME('%Y-%m-%d', cycle_date, 'localtime') <= DATETIME('now', 'localtime') OR cycle = 1
+      GROUP BY task_id) AS d ON c.id = d.task_id AND b.repeat_type > 0
+      LEFT JOIN (SELECT MAX(finish_time) AS finish_time, task_id
+        FROM task_repeat_finish
+      WHERE user_id = ${user_id}
+      GROUP BY task_id) AS e ON a.ref_task_id = e.task_id`
   }
 
   /**
@@ -249,9 +262,9 @@ export const getFilterSql = (
     /** 不分区 */
     default: {
       if (!order_by_key) {
-        ORDERS.unshift(`timestamp DESC`)
+        ORDERS.unshift(`is_no_work ASC, timestamp DESC`)
       } else {
-        ORDERS.unshift(`${order_by_key} ${sort}`)
+        ORDERS.unshift(`is_no_work ASC, ${order_by_key} ${sort}`)
       }
       break
     }
@@ -461,14 +474,17 @@ export const getFilterSql = (
     //我进行中
     case FilterQueryType.in_progress: {
       WHERES.push(
-        `finish_time = 0 AND (start_time <= STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') OR cycle_date <= DATETIME('now', 'localtime')) AND (end_time = 0 OR end_time > STRFTIME('%s', DATETIME('now', 'utc'), 'localtime'))`
+        `finish_time = 0
+        AND (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
+             STRFTIME('%Y-%m-%d', cycle_date, 'localtime') <= DATETIME('now', 'localtime'))
+        AND (end_time = 0 OR DATETIME(end_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime'))`
       )
       break
     }
     //我延期中
     case FilterQueryType.delay: {
       WHERES.push(
-        `finish_time = 0 AND end_time > 0 AND end_time < STRFTIME('%s', DATETIME('now', 'utc'), 'localtime')`
+        `finish_time = 0 AND end_time > 0 AND DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')`
       )
       break
     }

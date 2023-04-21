@@ -1,6 +1,6 @@
 import { MapSvgConfig } from '../config'
 import { linkHorizontal } from '../d3'
-import { asstSvg, selectionAsstSvg } from '../d3/selection'
+import { asstSvgGet } from '../d3/selection'
 import { EnterE } from '../type'
 import { TwoNumber } from '../type/data'
 import { Mdata, MdataTaker, MDataTypeEnum } from '../type/mdata'
@@ -153,12 +153,11 @@ export const getSiblingGClass = (d?: Mdata): string[] => {
 // 将文本根据宽度和字体大小切割
 export const getMultilineTexts = (
   text: string,
+  key: string,
   maxWidth = 214,
   fontSize = 12
 ) => {
-  const asst = Object.entries(asstSvg).filter(
-    ([key]) => key !== 'effect'
-  )?.[0]?.[1] as unknown as selectionAsstSvg
+  const asst = asstSvgGet(key)
 
   if (!asst) {
     throw new Error('asstSvg undefined')
@@ -198,15 +197,15 @@ export const getMultilineTexts = (
  */
 export const getTextSize = (
   text: string,
+  key: string,
   fontSize = 12
 ): { width: number; height: number } => {
-  const asst = Object.entries(asstSvg).filter(
-    ([key]) => key !== 'effect'
-  )?.[0]?.[1] as unknown as selectionAsstSvg
+  const asst = asstSvgGet(key)
 
   if (!asst) {
     throw new Error('asstSvg undefined')
   }
+
   const multiline = getMultiline(text)
   const t = asst.append('text')
 

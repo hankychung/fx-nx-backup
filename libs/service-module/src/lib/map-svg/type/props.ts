@@ -1,5 +1,5 @@
 import { ObjectiveSnapMapParams } from '@flyele-nx/api'
-import { OpenTargetCardFunc } from './system'
+import { MapSvgGetAvatarProxyFunc, OpenTargetCardFunc } from './system'
 
 export interface MapSvgRef {
   refresh: () => void
@@ -13,4 +13,5 @@ export class InitMapSvgRef {
 
 export interface MavpSvgProps extends ObjectiveSnapMapParams {
   openTargetCard: OpenTargetCardFunc
+  getAvatar: MapSvgGetAvatarProxyFunc
 }

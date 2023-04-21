@@ -85,7 +85,7 @@ export interface FilterParamsProps {
 
   order_by?: {
     order_by_key: string
-    sort: 'DESC' | 'ASC'
+    sort: 'DESC' | 'ASC' | 'asc' | 'desc'
   }
 
   filter?: FilterParamsFilter

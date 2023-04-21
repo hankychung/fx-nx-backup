@@ -43,7 +43,8 @@ const allPackages = ['apps'].reduce((acc, curr) => {
  * @param apiEnv 启动环境
  */
 const generateCommands = ({ apps, apiEnv } = {}) => {
-  console.log('apps', apps)
+  // 下面是多选的代码，目前是单选，因为nx的端口问题，启动多个的话 不会自动切换端口只有一个4200端口
+  // console.log('apps', apps)
   // let filterStr = ''
   // for (let i = 0; i < apps.length; i++) {
   //   const { name } = apps[i]

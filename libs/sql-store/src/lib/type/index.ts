@@ -8,4 +8,16 @@ interface IUserParams {
   wasmUrl?: string
 }
 
-export { IUserParams, Filter }
+interface IQueryFullViewCountRes {
+  accepted_total: number
+  cooperation_total: number
+  delay_total: number
+  dispatch_total: number
+  finished_total: number
+  in_progress_total: number
+  personal_total: number
+  total: number
+  unfinished_total: number
+}
+
+export { IUserParams, IQueryFullViewCountRes, Filter }

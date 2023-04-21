@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-21 14:49:40
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-14 11:20:36
+ * @LastEditTime: 2023-04-20 12:01:41
  * @FilePath: /fx-nx/libs/service-module/src/lib/person-pay-modal/components/team-vip/components/left-block/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -64,18 +64,21 @@ const LeftBlock = ({
       service.dispose()
     }
   }, [service, setMemberSet])
-  useClickAway(() => {
-    if (openAddModal) {
-      service.close()
-    }
-  }, [
-    createRef,
-    document.getElementById('invite_member'),
-    document.getElementById('member_info'),
-    document.getElementById('check_box'),
-    document.getElementById('search_block'),
-    document.getElementById('circleCheckBox')
-  ])
+  useClickAway(
+    () => {
+      if (openAddModal) {
+        service.close()
+      }
+    },
+    [
+      createRef,
+      document.getElementById('invite_member'),
+      document.getElementById('member_info'),
+      // document.getElementById('check_box'),
+      // document.getElementById('search_block'),
+      // document.getElementById('circleCheckBox')
+    ],
+  )
   return (
     <div className={style.leftBlock}>
       <div className={style.person_desc}>{obj.desc}</div>
@@ -97,16 +100,20 @@ const LeftBlock = ({
           )
         })}
       </div>
-      {openAddModal && (
-        <div className={style.member_list} ref={createRef}>
-          <MemberList
-            resultArr={resultArr}
-            service={service}
-            memberList={memberList}
-            mineId={mineId}
-          />
-        </div>
-      )}
+      <div ref={createRef}>
+        {
+         openAddModal&& <div
+            className={style.member_list}
+          >
+            <MemberList
+              resultArr={resultArr}
+              service={service}
+              memberList={memberList}
+              mineId={mineId}
+            />
+          </div>
+        }
+      </div>
     </div>
   )
 }

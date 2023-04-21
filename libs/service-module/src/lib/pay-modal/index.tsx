@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-13 17:53:47
+ * @LastEditTime: 2023-04-21 17:27:36
  */
 
 import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
@@ -25,6 +25,8 @@ export declare type IFlyeleAvatarItem = {
   next_end_time?: number
   end_time?: number
   recently_type?: number
+  is_interact?: number
+  corp_id?: string
 }
 interface fun {
   setIsPay: (_: boolean) => void

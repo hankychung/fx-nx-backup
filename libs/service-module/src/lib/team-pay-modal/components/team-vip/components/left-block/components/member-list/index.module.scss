@@ -64,10 +64,22 @@
           font-size: 12px;
           color: #8a8a8a;
         }
+  
 
         > div {
           font-size: 14px;
           color: #6a6a6a;
+        }
+        .name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 150px;
+          word-break: break-all;
+          white-space: nowrap;
+          text-align: center;
+          font-size: 12px;
+          color: #8a8a8a;
+          padding: 0px;
         }
       }
     }

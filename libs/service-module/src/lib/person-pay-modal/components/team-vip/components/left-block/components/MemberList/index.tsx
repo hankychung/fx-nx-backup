@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 16:38:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-17 11:29:25
+ * @LastEditTime: 2023-04-21 17:03:33
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -114,7 +114,7 @@ const MemberList = ({
       }) as IFlyeleAvatarItem[]
       resArr.push(...list)
     }
-    console.log([...resArr], '[...resArr]')
+  
 
     setSearchList([...resArr])
   }, [searchValue, showList])
@@ -140,7 +140,7 @@ const MemberList = ({
   }
 
   return (
-    <div className={style.memberList}>
+    <div className={style.memberList} >
       <div className={style.title}>
         <div>{`选择更多好友开通（${resultArr.length}）`}</div>
         <Close
@@ -169,9 +169,9 @@ const MemberList = ({
             showList.length > 0 &&
             showList.map((_) => {
               return (
-                <div key={_.userId}>
+                <div key={_.userId} >
                   <SingleCheckItemRow
-                    id="check_box"
+    
                     // key={item.id}
                     data={{}}
                     state={
@@ -188,7 +188,7 @@ const MemberList = ({
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
-                          <span>{_.name}</span>
+                        <div className={style.name}>{_.name}</div>
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}
@@ -236,10 +236,13 @@ const MemberList = ({
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
+                          <div className={style.name}>
                           <StringHighLight
                             keyword={searchValue || ''}
                             text={_.name}
                           />
+                          </div>
+                   
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}

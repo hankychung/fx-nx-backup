@@ -2,13 +2,13 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-11 20:01:56
+ * @LastEditTime: 2023-04-21 17:06:44
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
-import { useClickAway, useMemoizedFn } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import { FlyAvatar } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import { ReactComponent as MemberPersonVip } from '../../../../../../assets/payImg/member_person_vip.svg'
@@ -34,7 +34,7 @@ const LeftBlock = (props: Iprops) => {
   const { vipType, memberList, mineId } = props
   const service = useContext(SelectMemberContext)
   // 打开添加协作人
-  const [openAddModal, setOpenAddModal] = useState(false)
+  // const [openAddModal, setOpenAddModal] = useState(false)
   const createRef = useRef<HTMLDivElement>(null)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>(
     memberList.filter((item) => item.userId === mineId)
@@ -67,14 +67,6 @@ const LeftBlock = (props: Iprops) => {
       const { event } = ev
 
       switch (event) {
-        case 'show':
-          setOpenAddModal(true)
-
-          break
-        case 'close':
-          setOpenAddModal(false)
-
-          break
         case 'selectMember':
           setResultArr(service.getData('selectMember').list)
           break
@@ -88,15 +80,7 @@ const LeftBlock = (props: Iprops) => {
       service.dispose()
     }
   }, [service, setMemberSet])
-  useClickAway(() => {
-    if (openAddModal) {
-      service.close()
-    }
-  }, [
-    createRef,
-    document.getElementById('invite_member'),
-    document.getElementById('member_info')
-  ])
+
 
   return (
     <div className={style.leftBlock}>
@@ -133,6 +117,7 @@ const LeftBlock = (props: Iprops) => {
                 <div key={_.userId}>
                   <SingleCheckItemRow
                     // key={item.id}
+     
                     data={{}}
                     onClick={() => {
                       if (
@@ -160,7 +145,8 @@ const LeftBlock = (props: Iprops) => {
                       <FlyAvatar src={_.avatar} size={30} />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
-                          <span>{_.name}</span>
+                          <div className={style.name}>{_.name}</div>
+                          
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}

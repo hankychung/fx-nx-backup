@@ -51,6 +51,7 @@ export interface FilterParamsFilter {
   is_follow?: 1 | 2 | '' // 1 已关注 2 未关注
   schedule_hide?: 1 | 2 // 1 已隐藏  2 未显示
   conclusion?: 1 | 2 // 1 有总结 2 无总结
+  show_wait_arrange?: 1
 
   task_at?: TimerData
   create_at?: TimerData

@@ -387,8 +387,12 @@ class SqlStore {
 
       const back = data.reverse()
 
-      console.log("Reverse Before", old, 'Reverser After', JSON.parse(JSON.stringify(back)))
-
+      console.log(
+        'Reverse Before',
+        old,
+        'Reverser After',
+        JSON.parse(JSON.stringify(back))
+      )
 
       return back
     }

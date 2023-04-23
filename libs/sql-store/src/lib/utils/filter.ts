@@ -219,7 +219,7 @@ export const getFilterSql = (
         }
         theOrder.concat([`task_id ${sort}`, `repeat_id ${sort}`])
       } else {
-        theOrder.unshift(`date_idx ASC, create_at ASC`)
+        theOrder.push(`date_idx ASC, create_at ASC`)
       }
 
       ORDERS.push(...theOrder)

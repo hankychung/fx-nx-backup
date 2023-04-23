@@ -148,10 +148,10 @@ export const getFilterSql = (
     const tParentIds = parent_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(parent_id = '')` : ''
-    const tStr = tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')
+    const tStr = tParentIds.length ? `(${tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')})` : ''
 
     WHERES.push(
-      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} (${tStr}))`
+      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${tStr ? `(${tStr})` : ''} )`
     )
   }
 
@@ -275,16 +275,14 @@ export const getFilterSql = (
           // const upOrder = orderIsTime || !isOrderTime ? 'ASC' : 'DESC'
 
           ORDERS.unshift(
-            `date_idx ASC, date ${up}, time_idx DESC, create_at ${
-              orderIsTime ? 'DESC' : 'ASC'
+            `date_idx ASC, date ${up}, time_idx DESC, create_at ${orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         } else {
           // const downOrder = orderIsTime ? 'DESC' : 'ASC'
 
           ORDERS.unshift(
-            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
-              orderIsTime ? 'DESC' : 'ASC'
+            `date_idx ASC, date ${down}, time_idx ASC, create_at ${orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         }
@@ -411,10 +409,10 @@ export const getFilterSql = (
     const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(takers = '')` : ''
-    const tStr = tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')
+    const tStr = tTakerIds ? `(${tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')})` : ""
 
     WHERES.push(
-      `(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} (${tStr}))`
+      `(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`
     )
     // const hasNull = taker_ids.includes('-1')
     // const tTakerIds = taker_ids.filter((v) => v !== '-1')
@@ -436,7 +434,7 @@ export const getFilterSql = (
     const tAdminIds = admins_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(admins IS NULL)` : ''
-    const tStr = tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')
+    const tStr = tAdminIds.length ? `(${tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')})` : ''
 
     WHERES.push(
       `(${nStr} ${hasNull && tAdminIds.length ? 'OR' : ''} (${tStr}))`

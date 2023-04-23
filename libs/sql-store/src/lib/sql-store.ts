@@ -150,8 +150,6 @@ class SqlStore {
       })
       .join('&')
 
-    const dispatchIds: string[] = []
-
     const taskIds: string[] = []
 
     const list = await this.getNeedUpdateTables(query)
@@ -219,8 +217,7 @@ class SqlStore {
     this.updateDB()
 
     return {
-      dispatchIds,
-      taskIds
+      taskIds: [...new Set(taskIds)]
     }
   }
 

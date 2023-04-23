@@ -43,7 +43,7 @@ function _LureModal({
   imgType,
   isEmptyContent,
   confirmBtnText = '开通会员',
-  emptyTxt="仅会员才可使用该功能"
+  emptyTxt = '仅会员才可使用该功能'
 }: LureModalProps) {
   return (
     <Modal

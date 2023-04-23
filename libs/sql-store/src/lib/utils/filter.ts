@@ -230,7 +230,9 @@ export const getFilterSql = (
     }
     /** 按事项时间分区 */
     case FullGroupBy.time: {
-      const orderIsTime = order_by_key === 'timestamp' && sort === 'DESC'
+      const isOrderTime = order_by_key === 'timestamp'
+
+      const orderIsTime = isOrderTime && sort?.toUpperCase() === 'DESC'
 
       /**
        * 今日
@@ -264,25 +266,29 @@ export const getFilterSql = (
         let up = 'DESC'
         let down = 'ASC'
 
-        if (order_by_key === 'timestamp' && sort === 'DESC') {
+        if (orderIsTime) {
           up = 'ASC'
           down = 'DESC'
         }
 
         if (direction === Direction.up) {
+          // const upOrder = orderIsTime || !isOrderTime ? 'ASC' : 'DESC'
+
           ORDERS.unshift(
-            `date_idx ASC, date ${up}, time_idx ${sort || 'ASC'}, create_at ${
+            `date_idx ASC, date ${up}, time_idx DESC, create_at ${
               orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         } else {
+          // const downOrder = orderIsTime ? 'DESC' : 'ASC'
+
           ORDERS.unshift(
-            `date_idx ASC, date ${down}, time_idx ${sort || 'ASC'}, create_at ${
+            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
               orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         }
-      } else if (order_by_key === 'timestamp') {
+      } else if (isOrderTime) {
         ORDERS.unshift(
           `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort}`
         )

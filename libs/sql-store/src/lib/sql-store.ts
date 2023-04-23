@@ -383,7 +383,14 @@ class SqlStore {
     }
 
     if (params.direction === Direction.up) {
-      return data.reverse()
+      const old = JSON.parse(JSON.stringify(data))
+
+      const back = data.reverse()
+
+      console.log("Reverse Before", old, 'Reverser After', JSON.parse(JSON.stringify(back)))
+
+
+      return back
     }
 
     return data

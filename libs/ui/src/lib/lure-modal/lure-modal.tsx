@@ -21,6 +21,7 @@ export interface LureModalProps {
   isEmptyContent?: boolean
   imgType?: 'venation' | 'application' | 'cycle' | 'tableExport'
   confirmBtnText?: string
+  emptyTxt?: string
 }
 
 const dict = {
@@ -41,7 +42,8 @@ function _LureModal({
   highlight,
   imgType,
   isEmptyContent,
-  confirmBtnText = '开通会员'
+  confirmBtnText = '开通会员',
+  emptyTxt="仅会员才可使用该功能"
 }: LureModalProps) {
   return (
     <Modal
@@ -84,7 +86,7 @@ function _LureModal({
           </div>
         </div>
       ) : (
-        <div className={styles.empty}>仅会员才可使用该功能</div>
+        <div className={styles.empty}>{emptyTxt}</div>
       )}
 
       <div className={styles.footer}>

@@ -95,10 +95,6 @@ export const BaseQuerySql = ({
        WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday,
        CAST(CASE WHEN start_time > 0 AND start_time_full_day = 1 THEN start_time
         WHEN start_time = 0 AND end_time > 0 AND end_time_full_day = 1 THEN end_time
-        WHEN (start_time = 0 AND end_time = 0) THEN '9999999999'
-        WHEN start_time_full_day = 2 OR end_time_full_day = 2 THEN
-                STRFTIME('%s', 'now', 'start of day', 'utc') + 86400 +
-                (STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') - create_at)
         ELSE '9999999999' END AS int) AS time_idx
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,

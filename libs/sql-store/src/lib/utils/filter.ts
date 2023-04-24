@@ -153,7 +153,8 @@ export const getFilterSql = (
       : ''
 
     WHERES.push(
-      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${tStr ? `(${tStr})` : ''
+      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${
+        tStr ? `(${tStr})` : ''
       } )`
     )
   }
@@ -278,20 +279,24 @@ export const getFilterSql = (
           // const upOrder = orderIsTime || !isOrderTime ? 'ASC' : 'DESC'
 
           ORDERS.unshift(
-            `date_idx ASC, date ${up}, time_idx DESC, create_at ${orderIsTime ? 'DESC' : 'ASC'
+            `date_idx ASC, date ${up}, time_idx DESC, create_at ${
+              orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         } else {
           // const downOrder = orderIsTime ? 'DESC' : 'ASC'
 
           ORDERS.unshift(
-            `date_idx ASC, date ${down}, time_idx ASC, create_at ${orderIsTime ? 'ASC' : 'DESC'
+            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
+              orderIsTime ? 'ASC' : 'DESC'
             }`
           )
         }
       } else if (isOrderTime) {
         ORDERS.unshift(
-          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'}`
+          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${
+            sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
+          }`
         )
       } else {
         ORDERS.unshift(`date_idx ASC, date ASC, time_idx ASC, create_at DESC`)

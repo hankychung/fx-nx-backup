@@ -218,7 +218,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
     ON a.id = k.task_id AND k.user_id = ${user_id}
     LEFT JOIN (SELECT tc.id, IFNULL(tfs.name, '') AS flow_step_name,
                       IFNULL(tfsr.complete_at, 0) AS flow_step_complete_at, IFNULL(tfsr.user_id, '') AS user_id,
-                      CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS step_user_count
+                      CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS flow_step_user_count
                  FROM task_config AS tc
                       LEFT JOIN task_flow_step tfs
                       ON tfs.id = tc.flow_step_id

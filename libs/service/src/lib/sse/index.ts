@@ -166,7 +166,7 @@ class SSe {
   }
 
   private connect() {
-    const source = new EventSource(this.url, { withCredentials: true })
+    const source = new EventSource(this.url, { withCredentials: false })
 
     // this.openHandle()
     //

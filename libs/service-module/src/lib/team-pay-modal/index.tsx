@@ -62,7 +62,11 @@ const TeamPayModal = (props: Iprops) => {
         <div className={cs(style.team_block)}>
           {/* 头部信息 */}
           <div>
-            <Header vipType={vipType} onClose={onClose} goInterests={goInterests}/>
+            <Header
+              vipType={vipType}
+              onClose={onClose}
+              goInterests={goInterests}
+            />
           </div>
           {/* 套餐包信息 */}
           <VipPackage

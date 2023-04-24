@@ -34,7 +34,6 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
-
 }
 const PersonPayModal = (props: Iprops) => {
   const {

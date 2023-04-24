@@ -24,7 +24,7 @@ const LeftBlock = ({
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
-  goInterests: ()=>void
+  goInterests: () => void
 }) => {
   const obj: SectionType = createVipMealText().team
   const service = useContext(SelectMemberContext)

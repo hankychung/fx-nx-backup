@@ -34,7 +34,7 @@ const PersonVip = ({
   return (
     <div className={style.personVip}>
       <div>
-        <LeftBlock goInterests={goInterests}/>
+        <LeftBlock goInterests={goInterests} />
       </div>
       <div>
         <RightBlock

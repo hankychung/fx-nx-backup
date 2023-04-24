@@ -31,7 +31,11 @@ const TeamVip = ({
   return (
     <div className={style.teamVip}>
       <div>
-        <LeftBlock memberList={memberList} mineId={mineId} goInterests={goInterests}/>
+        <LeftBlock
+          memberList={memberList}
+          mineId={mineId}
+          goInterests={goInterests}
+        />
       </div>
       <div>
         <RightBlock

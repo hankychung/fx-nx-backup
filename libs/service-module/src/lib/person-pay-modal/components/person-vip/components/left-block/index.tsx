@@ -12,7 +12,7 @@ import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/ar
 import style from './index.module.scss'
 import { createVipMealText, SectionType } from '../../../controller'
 
-const LeftBlock = ({goInterests}:{goInterests:()=>void}) => {
+const LeftBlock = ({ goInterests }: { goInterests: () => void }) => {
   const obj: SectionType = createVipMealText().person
 
   return (

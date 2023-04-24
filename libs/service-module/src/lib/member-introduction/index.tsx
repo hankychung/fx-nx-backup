@@ -164,11 +164,9 @@ export const MemberIntroduction = () => {
         getOrderCode={(code: string) => {
           setOrderCode(code)
         }}
-        goInterests={
-          ()=>{
-            setShow(false)
-          }
-        }
+        goInterests={() => {
+          setShow(false)
+        }}
         goProtocol={() => {
           window.open(
             'https://cdn.flyele.net/agreements/service-agreement.html'

@@ -22,7 +22,15 @@ interface Iprops {
   goInterests: () => void
 }
 const QuickPay = (props: Iprops) => {
-  const { onClose, memberList, mineId, isPaySuccess, goProtocol, goInterests, domain } = props
+  const {
+    onClose,
+    memberList,
+    mineId,
+    isPaySuccess,
+    goProtocol,
+    goInterests,
+    domain
+  } = props
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   return (
     <div>
@@ -40,14 +48,13 @@ const QuickPay = (props: Iprops) => {
         <div className={cs(style.modal_block)}>
           {/* 头部信息 */}
           <div className={style.topBlock}>
-            <Header onClose={onClose} goInterests={goInterests}/>
+            <Header onClose={onClose} goInterests={goInterests} />
             {!isPaySuccess && (
               <MemberInfo
                 memberList={memberList}
                 mineId={mineId}
                 setVipMeal={setVipMeal}
                 vipMeal={vipMeal}
-
               />
             )}
           </div>

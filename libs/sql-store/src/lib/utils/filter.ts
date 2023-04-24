@@ -63,6 +63,7 @@ export const getFilterSql = (
 
     priority_levels,
     matter_states,
+    show_wait_arrange,
 
     task_ids,
     dispatch_ids,
@@ -94,11 +95,15 @@ export const getFilterSql = (
 
   const WHERES: string[] = []
 
-  const ORDERS: string[] = ['repeat_id ASC', 'task_id DESC']
+  const ORDERS: string[] = []
 
   // 平铺模式下 查询所有小于等于今天的
   let LeftJoinRepeatAnd = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 AND STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
   LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}`
+
+  if (show_wait_arrange) {
+    WHERES.push(`date_idx = 99`)
+  }
 
   /**
    * 标题/背景信息
@@ -143,10 +148,14 @@ export const getFilterSql = (
     const tParentIds = parent_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(parent_id = '')` : ''
-    const tStr = tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')
+    const tStr = tParentIds.length
+      ? `(${tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')})`
+      : ''
 
     WHERES.push(
-      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} (${tStr}))`
+      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${
+        tStr ? `(${tStr})` : ''
+      } )`
     )
   }
 
@@ -202,17 +211,32 @@ export const getFilterSql = (
       // 过滤无项目的事项
       // WHERES.unshift(`project_id > 0`)
 
-      ORDERS.unshift(`is_no_project ASC, project_id DESC,  is_no_work ASC`)
+      const theOrder = []
+
+      theOrder.push(`is_no_project ASC, project_id DESC`)
 
       if (order_by_key && sort) {
-        ORDERS.push(`${order_by_key} ${sort}`)
+        if (order_by_key === 'timestamp') {
+          theOrder.push(`date_idx ${sort}, ${order_by_key} ${sort}`)
+        } else {
+          theOrder.push(`${order_by_key} ${sort}`)
+        }
+        theOrder.concat([`task_id ${sort}`, `repeat_id ${sort}`])
+      } else {
+        theOrder.push(`date_idx ASC, create_at ASC`)
       }
+
+      ORDERS.push(...theOrder)
+
+      // ORDERS.unshift(`is_no_project ASC, project_id DESC, date_idx ASC`)
 
       break
     }
     /** 按事项时间分区 */
     case FullGroupBy.time: {
-      const orderIsTime = order_by_key === 'timestamp' && sort === 'DESC'
+      const isOrderTime = order_by_key === 'timestamp'
+
+      const orderIsTime = isOrderTime && sort?.toUpperCase() === 'DESC'
 
       /**
        * 今日
@@ -225,8 +249,8 @@ export const getFilterSql = (
             contrast = '>='
           }
 
-          // 往上翻的时候 绝对不查待安排
-          WHERES.push(`(timestamp ${contrast} ${timestamp} AND is_no_work = 0)`)
+          // 往上翻的时候
+          WHERES.push(`timestamp ${contrast} ${timestamp}`)
         } else if (direction === Direction.down) {
           let contrast = '>='
 
@@ -234,8 +258,8 @@ export const getFilterSql = (
             contrast = '<'
           }
 
-          // 往下翻的时候 一定要把安排筛选出来
-          WHERES.push(`(timestamp ${contrast} ${timestamp} OR is_no_work = 1)`)
+          // 往下翻的时候
+          WHERES.push(`timestamp ${contrast} ${timestamp}`)
         }
       }
 
@@ -246,26 +270,56 @@ export const getFilterSql = (
         let up = 'DESC'
         let down = 'ASC'
 
-        if (order_by_key === 'timestamp' && sort === 'DESC') {
+        if (orderIsTime) {
           up = 'ASC'
           down = 'DESC'
         }
 
         if (direction === Direction.up) {
-          ORDERS.unshift(`timestamp ${up}`)
+          // const upOrder = orderIsTime || !isOrderTime ? 'ASC' : 'DESC'
+
+          ORDERS.unshift(
+            `date_idx ASC, date ${up}, time_idx DESC, create_at ${
+              orderIsTime ? 'DESC' : 'ASC'
+            }`
+          )
         } else {
-          ORDERS.unshift(`is_no_work ASC, timestamp ${down}`)
+          // const downOrder = orderIsTime ? 'DESC' : 'ASC'
+
+          ORDERS.unshift(
+            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
+              orderIsTime ? 'DESC' : 'ASC'
+            }`
+          )
         }
+      } else if (isOrderTime) {
+        ORDERS.unshift(
+          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort}`
+        )
+      } else {
+        ORDERS.unshift(`date_idx ASC, date ASC, time_idx ASC, create_at ASC`)
       }
+
+      ORDERS.concat([`task_id ${sort || 'ASC'}`, `repeat_id ${sort || 'ASC'}`])
+
       break
     }
+
     /** 不分区 */
     default: {
       if (!order_by_key) {
-        ORDERS.unshift(`is_no_work ASC, timestamp DESC`)
+        ORDERS.unshift(`date_idx ASC, create_at ASC`)
+      } else if (order_by_key === 'timestamp') {
+        ORDERS.push(`date_idx ${sort}, ${order_by_key} ${sort}`)
+        ORDERS.concat([`task_id ${sort}`, `repeat_id ${sort}`])
       } else {
-        ORDERS.unshift(`is_no_work ASC, ${order_by_key} ${sort}`)
+        ORDERS.push(`${order_by_key} ${sort}`)
+        ORDERS.concat([`task_id ${sort}`, `repeat_id ${sort}`])
       }
+
+      // else {
+      //   ORDERS.unshift(`${order_by_key} ${sort}`)
+      // }
       break
     }
   }
@@ -361,11 +415,11 @@ export const getFilterSql = (
     const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(takers = '')` : ''
-    const tStr = tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')
+    const tStr = tTakerIds
+      ? `(${tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')})`
+      : ''
 
-    WHERES.push(
-      `(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} (${tStr}))`
-    )
+    WHERES.push(`(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`)
     // const hasNull = taker_ids.includes('-1')
     // const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
@@ -386,7 +440,9 @@ export const getFilterSql = (
     const tAdminIds = admins_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(admins IS NULL)` : ''
-    const tStr = tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')
+    const tStr = tAdminIds.length
+      ? `(${tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')})`
+      : ''
 
     WHERES.push(
       `(${nStr} ${hasNull && tAdminIds.length ? 'OR' : ''} (${tStr}))`

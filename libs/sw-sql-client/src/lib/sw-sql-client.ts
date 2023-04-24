@@ -28,39 +28,44 @@ function promiseWorkerMessage<
   res extends ServiceWorkerData[k]
 >(key: k, params?: p): Promise<res> {
   return new Promise<res>((resolve, reject) => {
-    if (!serviceWorker) {
-      return reject('ERROR, serviceWorker is not init')
-    }
-
-    console.log('promiseWorkerMessage', serviceWorker)
-
-    const postUid = `${key}-${String(Math.floor(Math.random() * 100000000))}`
-
-    const callBack = ({ data: res }: MessageEvent<WorkerBack<res>>) => {
-      const { code, uid, data } = res
-
-      if (uid !== postUid) return
-
-      console.log('client get ->', res)
-
-      serviceWorker?.removeEventListener('message', callBack)
-
-      if (code) {
-        console.error('Error, PromiseWorkerMessage back error', res)
-
-        return reject(res)
+    try {
+      if (!serviceWorker) {
+        return reject('ERROR, serviceWorker is not init')
       }
 
-      resolve(data)
+      console.log('promiseWorkerMessage', serviceWorker)
+
+      const postUid = `${key}-${String(Math.floor(Math.random() * 100000000))}`
+
+      const callBack = ({ data: res }: MessageEvent<WorkerBack<res>>) => {
+        const { code, uid, data } = res
+
+        if (uid !== postUid) return
+
+        console.log('client get ->', res)
+
+        serviceWorker?.removeEventListener('message', callBack)
+
+        if (code) {
+          console.error('Error, PromiseWorkerMessage back error', res)
+
+          return reject(res)
+        }
+
+        resolve(data)
+      }
+
+      serviceWorker.postMessage({
+        uid: postUid,
+        key,
+        data: params
+      })
+
+      serviceWorker.addEventListener('message', callBack)
+    } catch (e) {
+      console.error('promiseWorkerMessage', e)
+      reject(e)
     }
-
-    serviceWorker.postMessage({
-      uid: postUid,
-      key,
-      data: params
-    })
-
-    serviceWorker.addEventListener('message', callBack)
   })
 }
 

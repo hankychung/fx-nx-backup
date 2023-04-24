@@ -150,8 +150,6 @@ class SqlStore {
       })
       .join('&')
 
-    const dispatchIds: string[] = []
-
     const taskIds: string[] = []
 
     const list = await this.getNeedUpdateTables(query)
@@ -164,12 +162,12 @@ class SqlStore {
       const res = await this.getUpdates(key, lastId, pageIdx)
 
       if (!res.code && res.data) {
-        if (key === 'task_dispatch') {
-          dispatchIds.push(...res.data.list.map((i) => i.keys['dispatch_id']))
-        }
-
         if (key === 'task') {
           taskIds.push(...res.data.list.map((i) => i.keys['id']))
+        }
+
+        if (key === 'tag_bind') {
+          taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
         }
 
         const { list } = res.data
@@ -188,8 +186,6 @@ class SqlStore {
           if (type === 'update') {
             // 更新逻辑
             this.db!.run(this.getDelSql(keys, key) + ';')
-            // sql += this.getDelSql(keys, key) + ';'
-            // sql += this.getInsertSql(data, key) + ';'
             this.db!.run(this.getInsertSql(data, key) + ';')
             continue
           }
@@ -197,7 +193,6 @@ class SqlStore {
           if (type === 'delete') {
             // 删除逻辑
             this.db!.run(this.getDelSql(keys, key) + ';')
-            // sql += this.getDelSql(keys, key) + ';'
           }
         }
 
@@ -222,8 +217,7 @@ class SqlStore {
     this.updateDB()
 
     return {
-      dispatchIds,
-      taskIds
+      taskIds: [...new Set(taskIds)]
     }
   }
 
@@ -239,9 +233,15 @@ class SqlStore {
       filter: { task_ids: info.taskIds }
     })
 
-    console.log('@DIFF', info, res)
+    console.log('@DIFF', {
+      taskIds,
+      list: res
+    })
 
-    return res
+    return {
+      taskIds,
+      list: res
+    }
   }
 
   private async getUpdates(key: string, lastId: string, pageIdx: number) {
@@ -380,7 +380,18 @@ class SqlStore {
     }
 
     if (params.direction === Direction.up) {
-      return data.reverse()
+      const old = JSON.parse(JSON.stringify(data))
+
+      const back = data.reverse()
+
+      console.log(
+        'Reverse Before',
+        old,
+        'Reverser After',
+        JSON.parse(JSON.stringify(back))
+      )
+
+      return back
     }
 
     return data
@@ -408,10 +419,12 @@ class SqlStore {
 
         content.forEach((item) => {
           if (isDiff) {
-            const { type, data } = item
+            const { type, data, keys } = item
 
             if (type === 'delete') {
-              sqlStr += this.getDelSql(data, table) + ';'
+              console.log('@del', data, table, keys)
+
+              sqlStr += this.getDelSql(keys, table) + ';'
             } else {
               sqlStr += this.getInsertSql(data, table) + ';'
             }

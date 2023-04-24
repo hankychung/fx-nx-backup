@@ -11,7 +11,12 @@ import SSe from './lib/sse'
 import './lib/payment'
 
 // 全局类型
-import { ILoginKeyParams, IDevice, IErrorResponse } from './lib/typings'
+import {
+  ILoginKeyParams,
+  IDevice,
+  IErrorResponse,
+  IUserInfo
+} from './lib/typings'
 
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
@@ -29,5 +34,6 @@ export type {
   IDevice,
   IContactsAndStatus,
   IErrorResponse,
+  IUserInfo,
   OrderSystemType
 }

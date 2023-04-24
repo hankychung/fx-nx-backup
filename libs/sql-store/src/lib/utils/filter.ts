@@ -148,10 +148,14 @@ export const getFilterSql = (
     const tParentIds = parent_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(parent_id = '')` : ''
-    const tStr = tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')
+    const tStr = tParentIds.length
+      ? `(${tParentIds.map((id) => `INSTR(parent_id, ${id})`).join(' OR ')})`
+      : ''
 
     WHERES.push(
-      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} (${tStr}))`
+      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${
+        tStr ? `(${tStr})` : ''
+      } )`
     )
   }
 
@@ -230,7 +234,9 @@ export const getFilterSql = (
     }
     /** 按事项时间分区 */
     case FullGroupBy.time: {
-      const orderIsTime = order_by_key === 'timestamp' && sort === 'DESC'
+      const isOrderTime = order_by_key === 'timestamp'
+
+      const orderIsTime = isOrderTime && sort?.toUpperCase() === 'DESC'
 
       /**
        * 今日
@@ -264,25 +270,29 @@ export const getFilterSql = (
         let up = 'DESC'
         let down = 'ASC'
 
-        if (order_by_key === 'timestamp' && sort === 'DESC') {
+        if (orderIsTime) {
           up = 'ASC'
           down = 'DESC'
         }
 
         if (direction === Direction.up) {
+          // const upOrder = orderIsTime || !isOrderTime ? 'ASC' : 'DESC'
+
           ORDERS.unshift(
-            `date_idx ASC, date ${up}, time_idx ${sort || 'ASC'}, create_at ${
+            `date_idx ASC, date ${up}, time_idx DESC, create_at ${
               orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         } else {
+          // const downOrder = orderIsTime ? 'DESC' : 'ASC'
+
           ORDERS.unshift(
-            `date_idx ASC, date ${down}, time_idx ${sort || 'ASC'}, create_at ${
+            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
               orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         }
-      } else if (order_by_key === 'timestamp') {
+      } else if (isOrderTime) {
         ORDERS.unshift(
           `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort}`
         )
@@ -405,11 +415,11 @@ export const getFilterSql = (
     const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(takers = '')` : ''
-    const tStr = tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')
+    const tStr = tTakerIds
+      ? `(${tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')})`
+      : ''
 
-    WHERES.push(
-      `(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} (${tStr}))`
-    )
+    WHERES.push(`(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`)
     // const hasNull = taker_ids.includes('-1')
     // const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
@@ -430,7 +440,9 @@ export const getFilterSql = (
     const tAdminIds = admins_ids.filter((v) => v !== '-1')
 
     const nStr = hasNull ? `(admins IS NULL)` : ''
-    const tStr = tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')
+    const tStr = tAdminIds.length
+      ? `(${tAdminIds.map((id) => `INSTR(admins, ${id})`).join(' OR ')})`
+      : ''
 
     WHERES.push(
       `(${nStr} ${hasNull && tAdminIds.length ? 'OR' : ''} (${tStr}))`

@@ -93,15 +93,9 @@ export const BaseQuerySql = ({
        WHEN STRFTIME('%w', date) == '4' THEN '周四'
        WHEN STRFTIME('%w', date) == '5' THEN '周五'
        WHEN STRFTIME('%w', date) == '6' THEN '周六' END AS weekday,
-       CAST(CASE WHEN start_time > 0 AND start_time_full_day = 1 AND end_time > 0 AND end_time_full_day = 1
-        THEN start_time
-    WHEN end_time = 0 AND start_time > 0 AND start_time_full_day = 1 THEN start_time
-    WHEN start_time = 0 AND end_time > 0 AND end_time_full_day = 1 THEN end_time
-    WHEN (start_time = 0 AND end_time = 0) THEN '9999999999'
-    WHEN start_time_full_day = 2 OR end_time_full_day = 2 THEN
-            STRFTIME('%s', 'now', 'start of day', 'utc') + 86400 +
-            (STRFTIME('%s', DATETIME('now', 'utc'), 'localtime') - create_at)
-    ELSE '9999999999' END AS int) AS time_idx
+       CAST(CASE WHEN start_time > 0 AND start_time_full_day = 1 THEN start_time
+        WHEN start_time = 0 AND end_time > 0 AND end_time_full_day = 1 THEN end_time
+        ELSE '9999999999' END AS int) AS time_idx
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
 a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
 a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
@@ -128,7 +122,7 @@ IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name,
 tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN a.project_id = '' OR a.project_id = 0 THEN 1 ELSE 0 END as is_no_project,
-z.user_id, step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
+z.user_id, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
 timestamp, application_id, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, b.update_at, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,

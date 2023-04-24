@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-21 14:49:40
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-20 12:01:41
+ * @LastEditTime: 2023-04-24 10:16:30
  * @FilePath: /fx-nx/libs/service-module/src/lib/person-pay-modal/components/team-vip/components/left-block/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -19,10 +19,12 @@ import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 
 const LeftBlock = ({
   memberList,
-  mineId
+  mineId,
+  goInterests
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
+  goInterests: ()=>void
 }) => {
   const obj: SectionType = createVipMealText().team
   const service = useContext(SelectMemberContext)
@@ -79,7 +81,7 @@ const LeftBlock = ({
   return (
     <div className={style.leftBlock}>
       <div className={style.person_desc}>{obj.desc}</div>
-      <div className={style.interests}>
+      <div className={style.interests} onClick={goInterests}>
         <span>查看完整权益</span>
         <ArrowRight color="#6A67F4" />
         {/* // <img src={arrow_right} alt="tabs" /> */}

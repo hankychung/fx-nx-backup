@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-13 17:54:22
+ * @LastEditTime: 2023-04-24 10:35:47
  * @FilePath: /electron-client/app/components/TeamPayModal/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,11 +22,13 @@ interface Iprops {
   mineId: string
   isPaySuccess: boolean
   spaceId?: string
+  domain: string
   onClose: () => void
   upSpace?: () => void
   senConfirm?: () => void
   goProtocol: () => void
   showMsg?: () => void
+  goInterests: () => void
 }
 const TeamPayModal = (props: Iprops) => {
   const {
@@ -39,7 +41,9 @@ const TeamPayModal = (props: Iprops) => {
     senConfirm,
     isPaySuccess,
     goProtocol,
-    showMsg
+    showMsg,
+    goInterests,
+    domain
   } = props
 
   return (
@@ -58,7 +62,7 @@ const TeamPayModal = (props: Iprops) => {
         <div className={cs(style.team_block)}>
           {/* 头部信息 */}
           <div>
-            <Header vipType={vipType} onClose={onClose} />
+            <Header vipType={vipType} onClose={onClose} goInterests={goInterests}/>
           </div>
           {/* 套餐包信息 */}
           <VipPackage
@@ -72,6 +76,7 @@ const TeamPayModal = (props: Iprops) => {
             senConfirm={senConfirm}
             goProtocol={goProtocol}
             showMsg={showMsg}
+            domain={domain}
           />
         </div>
       </Modal>

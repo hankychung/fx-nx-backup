@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-13 16:26:16
+ * @LastEditTime: 2023-04-24 10:35:21
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,11 +23,13 @@ interface Iprops {
   mineId: string
   vipMealType: VipMealType
   isPaySuccess: boolean
+  domain: string
   setVipMealType: (_: VipMealType) => void
   senConfirm?: () => void
   onClose: () => void
   getOrderCode?: (str: string) => void
   goProtocol: () => void
+  goInterests: () => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -36,11 +38,13 @@ const VipPackage = (props: Iprops) => {
     setVipMealType,
     memberList,
     mineId,
+    domain,
     senConfirm,
     isPaySuccess,
     onClose,
     getOrderCode,
-    goProtocol
+    goProtocol,
+    goInterests
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -154,6 +158,7 @@ const VipPackage = (props: Iprops) => {
           goProtocol={goProtocol}
           couponList={couponList}
           vipMealType={vipMealType}
+          goInterests={goInterests}
         />
       </div>
       <div
@@ -165,6 +170,7 @@ const VipPackage = (props: Iprops) => {
           mineId={mineId}
           couponList={couponList}
           vipMealType={vipMealType}
+          goInterests={goInterests}
         />
       </div>
       {/* 支付弹窗 */}
@@ -177,6 +183,7 @@ const VipPackage = (props: Iprops) => {
           isPaySuccess={isPaySuccess}
           getOrderCode={getOrderCode}
           goProtocol={goProtocol}
+          domain={domain}
           userInfo={
             userInfo
               ? userInfo

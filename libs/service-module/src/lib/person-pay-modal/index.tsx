@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-07 16:20:34
+ * @LastEditTime: 2023-04-24 10:35:23
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -28,10 +28,13 @@ interface Iprops {
   payType?: VipMealType
   memberList: IFlyeleAvatarItem[]
   mineId: string
+  domain: string
   isPaySuccess: boolean
   senConfirm?: () => void
   getOrderCode?: (str: string) => void
   goProtocol: () => void
+  goInterests: () => void
+
 }
 const PersonPayModal = (props: Iprops) => {
   const {
@@ -39,10 +42,12 @@ const PersonPayModal = (props: Iprops) => {
     onClose,
     memberList,
     mineId,
+    domain,
     senConfirm,
     isPaySuccess,
     getOrderCode,
-    goProtocol
+    goProtocol,
+    goInterests
   } = props
   const [vipMealType, setVipMealType] = useState<VipMealType>(1) // 切换tab
   useEffect(() => {
@@ -92,6 +97,8 @@ const PersonPayModal = (props: Iprops) => {
               isPaySuccess={isPaySuccess}
               getOrderCode={getOrderCode}
               goProtocol={goProtocol}
+              goInterests={goInterests}
+              domain={domain}
             />
           </div>
         </SelectMemberContext.Provider>

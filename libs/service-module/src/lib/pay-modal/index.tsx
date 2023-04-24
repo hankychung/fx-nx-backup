@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-21 17:27:36
+ * @LastEditTime: 2023-04-24 10:35:33
  */
 
 import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
@@ -39,6 +39,7 @@ interface Iprops {
   spaceId?: string
   payType?: VipMealType //个人支付类型 1个人 2团队
   teamVipType?: VipPayType
+  domain: string //域名
   modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
   successRef: RefObject<fun>
   onClose: () => void
@@ -47,6 +48,7 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   memberList: IFlyeleAvatarItem[]
   goProtocol: () => void
+  goInterests: () => void
   showMsg?: () => void
 }
 
@@ -65,7 +67,9 @@ export default function PayModal(props: Iprops) {
     getOrderCode,
     goProtocol,
     successRef,
-    showMsg
+    showMsg,
+    goInterests,
+    domain
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
 
@@ -114,6 +118,8 @@ export default function PayModal(props: Iprops) {
             mineId={mineId}
             isPaySuccess={isPaySuccess}
             goProtocol={goProtocol}
+            goInterests={goInterests}
+            domain={domain}
           />
         )
       case 'person':
@@ -127,6 +133,8 @@ export default function PayModal(props: Iprops) {
             isPaySuccess={isPaySuccess}
             getOrderCode={getOrderCode}
             goProtocol={goProtocol}
+            goInterests={goInterests}
+            domain={domain}
           />
         )
       case 'team':
@@ -142,6 +150,8 @@ export default function PayModal(props: Iprops) {
             isPaySuccess={isPaySuccess}
             goProtocol={goProtocol}
             showMsg={showMsg}
+            goInterests={goInterests}
+            domain={domain}
           />
         )
       default:

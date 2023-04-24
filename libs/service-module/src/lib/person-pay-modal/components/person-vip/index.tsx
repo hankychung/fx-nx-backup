@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:18:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-13 11:50:51
+ * @LastEditTime: 2023-04-24 10:14:43
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,18 +21,20 @@ const PersonVip = ({
   mineId,
   couponList,
   goProtocol,
-  vipMealType
+  vipMealType,
+  goInterests
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
   couponList?: ICoupon[]
   vipMealType: VipMealType
   goProtocol?: () => void
+  goInterests: () => void
 }) => {
   return (
     <div className={style.personVip}>
       <div>
-        <LeftBlock />
+        <LeftBlock goInterests={goInterests}/>
       </div>
       <div>
         <RightBlock

@@ -4,16 +4,17 @@ import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_ri
 import style from './index.module.scss'
 interface Iprops {
   onClose: () => void
+  goInterests: () => void
 }
 const Header = (props: Iprops) => {
-  const { onClose } = props
+  const { onClose, goInterests } = props
   return (
     <div className={style.header}>
       <div className={style.userInfo}>
         <div className={style.left}>
           <div className={style.user_info}>
             <span>开通团队会员</span>
-            <div className={style.interests}>
+            <div className={style.interests} onClick={goInterests}>
               <span>查看完整权益</span>
               <ArrowRight color="#6A67F4" />
             </div>

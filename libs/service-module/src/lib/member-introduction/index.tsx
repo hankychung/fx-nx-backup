@@ -7,7 +7,7 @@ import { Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
-import { UsercApi } from '@flyele-nx/service'
+import { envStore, UsercApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
 /**
@@ -160,9 +160,15 @@ export const MemberIntroduction = () => {
         onClose={() => {
           setShow(false)
         }}
+        domain={envStore.getDoMain()}
         getOrderCode={(code: string) => {
           setOrderCode(code)
         }}
+        goInterests={
+          ()=>{
+            setShow(false)
+          }
+        }
         goProtocol={() => {
           window.open(
             'https://cdn.flyele.net/agreements/service-agreement.html'

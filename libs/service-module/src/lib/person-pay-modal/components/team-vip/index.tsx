@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-08 11:53:59
+ * @LastEditTime: 2023-04-24 10:16:34
  */
 import { ICoupon } from '@flyele-nx/api'
 import React from 'react'
@@ -18,18 +18,20 @@ const TeamVip = ({
   mineId,
   vipMealType,
   goProtocol,
-  couponList
+  couponList,
+  goInterests
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
   vipMealType: VipMealType
   couponList?: ICoupon[]
   goProtocol: () => void
+  goInterests: () => void
 }) => {
   return (
     <div className={style.teamVip}>
       <div>
-        <LeftBlock memberList={memberList} mineId={mineId} />
+        <LeftBlock memberList={memberList} mineId={mineId} goInterests={goInterests}/>
       </div>
       <div>
         <RightBlock

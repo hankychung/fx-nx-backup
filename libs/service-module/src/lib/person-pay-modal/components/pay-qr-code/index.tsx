@@ -22,12 +22,14 @@ const PayQrCode = ({
   isPaySuccess,
   onClose,
   getOrderCode,
-  goProtocol
+  goProtocol,
+  domain
 }: {
   vipMealType: VipMealType
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
   isPaySuccess: boolean
+  domain: string
   onClose: () => void
   senConfirm?: () => void
   getOrderCode?: (str: string) => void
@@ -74,7 +76,7 @@ const PayQrCode = ({
 
         const b = JSON.stringify(a)
         const res = await QRCode.toDataURL(
-          `https://pay-test.flyele.vip/payDetail?params=${b}&&token=${paymentApi.getToken()}`
+          `${domain}/payDetail?params=${b}&&token=${paymentApi.getToken()}`
         )
         setQrCode(res)
       })

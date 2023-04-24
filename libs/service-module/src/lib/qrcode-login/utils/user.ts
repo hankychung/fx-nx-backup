@@ -1,7 +1,7 @@
-import { UsercApi } from '@flyele-nx/service'
+import { UsercApi, IUserInfo } from '@flyele-nx/service'
 
 export const getUserInfo = (args: {
-  onSuccess?: () => void
+  onSuccess?: (data?: IUserInfo) => void
   onError?: () => void
 }) => {
   const { onSuccess, onError } = args
@@ -10,7 +10,7 @@ export const getUserInfo = (args: {
     .then(async (res) => {
       if (res) {
         try {
-          onSuccess && onSuccess()
+          onSuccess && onSuccess(res?.data)
         } catch (e) {
           console.log('user login logic error', e)
         }

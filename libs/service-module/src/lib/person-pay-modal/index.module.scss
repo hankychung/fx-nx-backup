@@ -3,12 +3,14 @@
     .ant-modal {
       width: auto !important;
       padding: 0;
+      border-radius: 8px;
       .ant-modal-content {
         padding: 0;
+        border-radius: 8px !important;
         .ant-modal-body {
           padding: 0;
           overflow: hidden;
-          border-radius: 5px;
+          border-radius: 8px;
         }
       }
     }

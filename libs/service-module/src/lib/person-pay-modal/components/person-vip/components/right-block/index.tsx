@@ -30,7 +30,7 @@ const RightBlock = ({
   const { nowScecond } = useCurrentTime()
   const isLifeLong = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
-    if (info.end_time === 9999999999 || info.end_time === 9999999999) {
+    if (info.end_time === 9999999999 || info.next_end_time === 9999999999) {
       return true
     }
     return false

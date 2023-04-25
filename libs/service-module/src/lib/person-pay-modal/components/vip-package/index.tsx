@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-24 10:35:21
+ * @LastEditTime: 2023-04-25 10:56:54
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -125,6 +125,20 @@ const VipPackage = (props: Iprops) => {
               className={cs(style.tabs_item, { [style.active]: _.active })}
               onClick={() => {
                 setVipMealType(_.type)
+                const newTab = tabsList.map((item) => {
+                  if (item.type === _.type) {
+                    return {
+                      ...item,
+                      active: true
+                    }
+                  }
+                  return {
+                    ...item,
+                    active: false
+                  }
+                })
+            
+                setTabs(newTab)
               }}
             >
               {_.active && (

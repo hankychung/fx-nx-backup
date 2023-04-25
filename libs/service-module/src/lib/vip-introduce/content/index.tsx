@@ -105,7 +105,10 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                     {['personal', 'team'].includes(item.key) && '/'}
                     {item.unit}
                   </span>
-                  <span className={classNames(css.gray, css.small)} style={{ marginLeft: 8, fontWeight: 'normal' }}>
+                  <span
+                    className={classNames(css.gray, css.small)}
+                    style={{ marginLeft: 8, fontWeight: 'normal' }}
+                  >
                     {item.oldPrice}
                   </span>
                 </p>

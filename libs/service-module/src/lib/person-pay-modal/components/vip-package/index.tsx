@@ -137,7 +137,7 @@ const VipPackage = (props: Iprops) => {
                     active: false
                   }
                 })
-            
+
                 setTabs(newTab)
               }}
             >

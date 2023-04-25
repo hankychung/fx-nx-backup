@@ -350,9 +350,11 @@ export const getFilterSql = (
     }
 
     // 生成要匹配指定id的
-    const inTagStr = tagIds.map((v) => `INSTR(tag_str, ${v})`).join(' or ')
+    const inTagStr = tagIds.length
+      ? `(${tagIds.map((v) => `INSTR(tag_str, ${v})`).join(' or ')})`
+      : ''
 
-    WHERES.push(`(${tagIsNullStr} ${link} (${inTagStr}))`)
+    WHERES.push(`(${tagIsNullStr} ${link} ${inTagStr})`)
   }
 
   /**
@@ -509,7 +511,9 @@ export const getFilterSql = (
     }
     //我派发
     case FilterQueryType.dispatch: {
-      WHERES.push(`creator_id = ${user_id}`)
+      WHERES.push(
+        `creator_id = ${user_id} AND takers != '' AND takers != '${user_id}'`
+      )
       break
     }
     //我接受

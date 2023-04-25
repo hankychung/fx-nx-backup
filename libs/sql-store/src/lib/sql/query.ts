@@ -27,7 +27,7 @@ export const QueryTaskChildTotal = (task_id: string) => {
 export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
   return `SELECT COUNT(*) AS total, COUNT(CASE WHEN finish_time = 0 THEN task_id END) AS unfinished_total,
   COUNT(CASE WHEN finish_time > 0 THEN task_id END) AS finished_total,
-  COUNT(CASE WHEN creator_id = ${user_id} THEN task_id END) AS dispatch_total,
+  COUNT(CASE WHEN creator_id = ${user_id} AND takers != '' AND takers != '${user_id}' THEN task_id END) AS dispatch_total,
   COUNT(CASE WHEN creator_id != taker_id THEN task_id END) AS accepted_total,
   COUNT(CASE WHEN finish_time = 0 AND
   (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR

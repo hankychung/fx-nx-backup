@@ -163,14 +163,14 @@ export const getFilterSql = (
    * 是否关注
    */
   if (is_follow) {
-    WHERES.push(`is_follow = ${Number(is_follow === 1)}`)
+    WHERES.push(`is_follow = ${Number(Number(is_follow) === 1)}`)
   }
 
   /**
    * 是否隐藏
    */
   if (schedule_hide) {
-    WHERES.push(`schedule_hide = ${Number(schedule_hide === 1)}`)
+    WHERES.push(`schedule_hide = ${Number(Number(schedule_hide) === 1)}`)
   }
 
   /**

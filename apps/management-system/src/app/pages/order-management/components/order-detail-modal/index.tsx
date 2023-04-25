@@ -380,7 +380,9 @@ export const OrderDetailModal = ({
                                     className={styles.tableRow}
                                   >
                                     <div>
-                                      <div>{td.user_name}</div>
+                                      <div className={styles.ellipsis}>
+                                        {td.user_name}
+                                      </div>
                                       <div className={styles.greyText}>
                                         {td.telephone}
                                       </div>

@@ -46,6 +46,10 @@ export interface IUserInfo {
   telephone: string
   user_id: string
   pinyin: string
+  corp_name?: string
+  corp_userid?: string
+  corpid?: string
+  token?: string
 }
 
 export interface ICreateOrderParams {

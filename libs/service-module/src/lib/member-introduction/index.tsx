@@ -7,9 +7,12 @@ import { Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
-import { envStore, UsercApi } from '@flyele-nx/service'
+import { envStore, UsercApi, IUserInfo } from '@flyele-nx/service'
+import { ReactComponent as OnlyPersonalImg } from '../../assets/login/onlyPersonal.svg'
 import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
+import { FlyButton } from '@flyele/flyele-components'
+
 /**
  * 0-非会员，1-个人会员，2-团队会员
  */
@@ -23,6 +26,7 @@ export const MemberIntroduction = () => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showCorpModal, setShowCorpModal] = useState(false)
   const [showCustomerModal, setShowCustomerModal] = useState(false)
   const [isShowPay, setIsShowPay] = useState(false)
   const [orderCode, setOrderCode] = useState('')
@@ -30,6 +34,7 @@ export const MemberIntroduction = () => {
   const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
   const ChildRef = useRef(null)
   const TimerRef = useRef<NodeJS.Timer | undefined>()
+
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
       setVipType(key)
@@ -39,6 +44,7 @@ export const MemberIntroduction = () => {
       setShowCustomerModal(true)
     }
   }
+
   const getOrderDetail = () => {
     paymentApi
       .getOrderDetail({
@@ -52,11 +58,13 @@ export const MemberIntroduction = () => {
         }
       })
   }
+
   const initFn = useMemoizedFn(() => {
     return setInterval(() => {
       getOrderDetail()
     }, 2000)
   })
+
   useEffect(() => {
     clearInterval(TimerRef.current)
 
@@ -125,9 +133,22 @@ export const MemberIntroduction = () => {
     setMemberList([selfData, ...list])
   }
 
-  const onLoginSuccess = useMemoizedFn(async () => {
-    await fetchTakerList()
+  /**
+   * 关闭登录弹窗
+   */
+  const onCloseLoginModal = () => {
+    setShowCorpModal(false)
     setShowLoginModal(false)
+  }
+
+  const onLoginSuccess = useMemoizedFn(async (data?: IUserInfo) => {
+    if (data?.corpid) {
+      setShowCorpModal(true)
+      return
+    }
+
+    await fetchTakerList()
+    onCloseLoginModal()
     setShow(true)
   })
 
@@ -191,25 +212,44 @@ export const MemberIntroduction = () => {
         destroyOnClose
         footer={null}
         maskClosable={false}
-        onCancel={() => setShowLoginModal(false)}
+        onCancel={onCloseLoginModal}
       >
-        <div>
-          <div className={styles.loginTitleBox}>
-            <div style={{ marginLeft: '-24px' }}>
-              <LoginTextBg />
+        {showCorpModal ? (
+          <div className={styles.corpModalRoot}>
+            <div className={styles.titleBox}>
+              <OnlyPersonalImg />
             </div>
-            <div className={styles.text}>未注册用户将自动注册</div>
+            <div className={styles.descBox}>
+              <div>您当前是企业微信账户，暂不支持开通使用；</div>
+              <div>
+                如需获取各项专属权益，请移步至企业微信后台管理应用内购买使用。
+              </div>
+            </div>
+            <div className={styles.btn}>
+              <FlyButton block theme="primary" onClick={onCloseLoginModal}>
+                好的
+              </FlyButton>
+            </div>
           </div>
-          <QrCodeLogin
-            deviceParams={{
-              client_version: '0.0.1',
-              os: 'html5',
-              platform: 'web',
-              device_name: 'browser'
-            }}
-            onSuccess={onLoginSuccess}
-          />
-        </div>
+        ) : (
+          <div>
+            <div className={styles.loginTitleBox}>
+              <div style={{ marginLeft: '-24px' }}>
+                <LoginTextBg />
+              </div>
+              <div className={styles.text}>未注册用户将自动注册</div>
+            </div>
+            <QrCodeLogin
+              deviceParams={{
+                client_version: '0.0.1',
+                os: 'html5',
+                platform: 'web',
+                device_name: 'browser'
+              }}
+              onSuccess={onLoginSuccess}
+            />
+          </div>
+        )}
       </Modal>
     </div>
   )

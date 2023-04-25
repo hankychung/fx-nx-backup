@@ -1,8 +1,7 @@
 .modalRoot {
   padding-top: 10px;
-  padding-right: 20px;
   .topBox {
-    width: 100%;
+    width: 96%;
     .topRow {
       width: 100%;
       display: flex;
@@ -71,10 +70,10 @@
           align-items: center;
           padding-bottom: 12px;
           .itemTitle {
+            width: 96px;
             font-weight: 400;
             font-size: 12px;
             color: #8f8f8f;
-            margin-right: 12px;
           }
           .itemValue {
             font-weight: 400;
@@ -92,22 +91,29 @@
             align-items: center;
             justify-content: center;
             column-gap: 23px;
-            text-align: center;
+            text-align: left;
+
+            .ellipsis {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
           }
           .tableHeader {
-            width: 100%;
             background: #ededed;
             border-radius: 4px;
             margin-bottom: 1px;
             font-size: 12px;
             color: #8f8f8f;
             grid-template-rows: 30px;
+            padding-left: 26px;
           }
           .tableContent {
             background: #ededed;
             border-radius: 4px;
             font-size: 12px;
             color: #262626;
+            padding-left: 26px;
           }
           .greyText {
             font-size: 11px;

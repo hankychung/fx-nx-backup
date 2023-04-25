@@ -12,6 +12,11 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   // <StrictMode>
   <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: '#1dd2c1'
+      }
+    }}
     locale={{
       ...zhCN,
       Pagination: {

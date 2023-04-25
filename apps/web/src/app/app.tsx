@@ -1,7 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
-import { InitMapSvgRef, MapSvgRef, VipIntroduce } from '@flyele-nx/service-module'
+import {
+  InitMapSvgRef,
+  MapSvgRef,
+  VipIntroduce
+} from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
@@ -87,7 +91,13 @@ export function App() {
           测试刷新
         </div>
 
-        <VipIntroduce open avatar={''} name={''} isTeamVip={false} isVip={false} />
+        <VipIntroduce
+          open
+          avatar={''}
+          name={''}
+          isTeamVip={false}
+          isVip={false}
+        />
       </div>
       {/* <Banner /> */}
       <div />

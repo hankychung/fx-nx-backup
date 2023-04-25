@@ -83,7 +83,9 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                         {item.desc}
                       </a>
                       {/* <i>&gt;</i> */}
-                      <ArrowIcon style={{ marginLeft: 4, width: 6, height: 8 }} />
+                      <ArrowIcon
+                        style={{ marginLeft: 4, width: 6, height: 8 }}
+                      />
                     </span>
                   )}
                 </div>
@@ -95,7 +97,9 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
               </div>
               <div className={css.footer}>
                 <p>
-                  {!['custom'].includes(item.key) && <span className={css.small}>¥</span>}
+                  {!['custom'].includes(item.key) && (
+                    <span className={css.small}>¥</span>
+                  )}
                   <span>{item.money}</span>
                   <span className={css.small}>
                     {['personal', 'team'].includes(item.key) && '/'}

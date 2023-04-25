@@ -91,13 +91,13 @@ export function App() {
           测试刷新
         </div>
 
-        <VipIntroduce
+        {/* <VipIntroduce
           open
           avatar={''}
           name={''}
           isTeamVip={false}
           isVip={false}
-        />
+        /> */}
       </div>
       {/* <Banner /> */}
       <div />

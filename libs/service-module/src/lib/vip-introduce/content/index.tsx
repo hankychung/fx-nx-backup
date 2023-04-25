@@ -92,7 +92,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
               </div>
               <div className={css.content}>
                 {item.powerList.map((power) => (
-                  <p key={power.title}>{power.title}</p>
+                  <div key={power.title}>{power.title}</div>
                 ))}
               </div>
               <div className={css.footer}>
@@ -105,7 +105,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                     {['personal', 'team'].includes(item.key) && '/'}
                     {item.unit}
                   </span>
-                  <span className={classNames(css.gray, css.small)}>
+                  <span className={classNames(css.gray, css.small)} style={{ marginLeft: 8, fontWeight: 'normal' }}>
                     {item.oldPrice}
                   </span>
                 </p>

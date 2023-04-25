@@ -1,5 +1,15 @@
 .memberList {
   padding: 16px 0;
+  .global_style_team_vip {
+    border: 2px solid transparent !important;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image: linear-gradient(135deg, #6171ff, #b0e3ff, #8053ff),
+      linear-gradient(135deg, #6171ff, #b0e3ff, #8053ff);
+  }
+  .global_style_person_vip {
+    border: 2px solid #ffe9c0 !important;
+  }
 
   .title {
     padding: 0 16px;

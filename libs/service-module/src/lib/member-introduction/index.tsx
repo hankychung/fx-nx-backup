@@ -47,7 +47,7 @@ export const MemberIntroduction = () => {
       .then((res) => {
         if (res.code === 0) {
           if (res.data === 12001) {
-            setIsShowPay(true)
+            setIsShowPay(false)
           }
         }
       })
@@ -91,8 +91,6 @@ export const MemberIntroduction = () => {
     const { data } = await UsercApi.getContacts()
     const { data: selfUserInfo } = await UsercApi.getLoginUserInfo()
     const { data: vip } = await UsercApi.getCombo()
-
-    console.log(vip, 'vip')
 
     const list = data.map((item) => {
       const { isTeamVip, isVip } = checkVipType(item.vip_type)
@@ -160,6 +158,7 @@ export const MemberIntroduction = () => {
         onClose={() => {
           setShow(false)
         }}
+        originRoute="官网"
         domain={envStore.getDoMain()}
         getOrderCode={(code: string) => {
           setOrderCode(code)

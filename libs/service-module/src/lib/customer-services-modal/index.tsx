@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-13 15:31:03
+ * @LastEditTime: 2023-04-25 15:32:19
  */
 import React from 'react'
 import { ReactComponent as CustomerModalBg } from '../../assets/payImg/customer_modal_bg.svg'
@@ -40,7 +40,8 @@ const CustomerServicesModal = (props: Iprops) => {
         </div>
         <div className={style.phone_num}>
           <PhoneNumIcon></PhoneNumIcon>
-          电话：珊珊 <span> 150-0200-7797</span>
+          <span>电话：珊珊</span>
+          <span> 150-0200-7797</span>
         </div>
       </div>
     </div>

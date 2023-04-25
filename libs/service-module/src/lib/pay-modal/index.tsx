@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-24 10:35:33
+ * @LastEditTime: 2023-04-25 17:41:11
  */
 
 import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
@@ -37,6 +37,7 @@ interface Iprops {
   isPaySuccess?: boolean
   mineId: string
   spaceId?: string
+  originRoute?: string
   payType?: VipMealType //个人支付类型 1个人 2团队
   teamVipType?: VipPayType
   domain: string //域名
@@ -69,7 +70,8 @@ export default function PayModal(props: Iprops) {
     successRef,
     showMsg,
     goInterests,
-    domain
+    domain,
+    originRoute
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
 
@@ -135,6 +137,7 @@ export default function PayModal(props: Iprops) {
             goProtocol={goProtocol}
             goInterests={goInterests}
             domain={domain}
+            originRoute={originRoute}
           />
         )
       case 'team':

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 17:03:34
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-21 17:05:13
+ * @LastEditTime: 2023-04-25 14:56:16
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
@@ -97,7 +97,7 @@ const MemberInfo = ({
     <div className={style.memberInfo}>
       <div className={style.member}>
         <div className={style.mem_info}>
-          <FlyAvatar src={''} size={30} />
+          <FlyAvatar src={memberList[0].avatar} size={30} />
           <div className={style.mem_name}>
             <div className={style.name_icon}>
               <div className={style.name}>{memberList[0]?.name}</div>

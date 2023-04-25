@@ -217,13 +217,17 @@ export const getFilterSql = (
 
       if (order_by_key && sort) {
         if (order_by_key === 'timestamp') {
-          theOrder.push(`date_idx ${sort}, ${order_by_key} ${sort}`)
+          theOrder.push(
+            `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${
+              sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
+            }`
+          )
         } else {
           theOrder.push(`${order_by_key} ${sort}`)
         }
         theOrder.concat([`task_id ${sort}`, `repeat_id ${sort}`])
       } else {
-        theOrder.push(`date_idx ASC, create_at ASC`)
+        theOrder.push(`date_idx ASC, create_at DESC`)
       }
 
       ORDERS.push(...theOrder)

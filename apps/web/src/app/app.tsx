@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
 // import NxWelcome from './nx-welcome'
-import { InitMapSvgRef, MapSvgRef } from '@flyele-nx/service-module'
+import { InitMapSvgRef, MapSvgRef, VipIntroduce } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
 import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
+import { LureModal } from '@flyele-nx/ui'
 // import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 
 const env = process.env.NODE_ENV as string
@@ -85,6 +86,8 @@ export function App() {
         <div className={styles.testRefresh} onClick={refresh}>
           测试刷新
         </div>
+
+        <VipIntroduce open avatar={''} name={''} isTeamVip={false} isVip={false} />
       </div>
       {/* <Banner /> */}
       <div />
@@ -92,12 +95,10 @@ export function App() {
         open={true}
         handleClose={() => {}}
         handleConfirm={() => {}}
-        title="增加文sd件大小"
-        tip="tipasdasdas"
-        freeTxt="30M"
-        vipTxt="50M"
-        highlight="在思维导图中结构化创建事项"
-        imgType="application"
+        isEmptyContent
+        title='增加表头数量'
+        freeTxt='5'
+        vipTxt='无限'
       /> */}
     </>
   )

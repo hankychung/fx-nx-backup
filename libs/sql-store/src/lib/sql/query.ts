@@ -27,7 +27,7 @@ export const QueryTaskChildTotal = (task_id: string) => {
 export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
   return `SELECT COUNT(*) AS total, COUNT(CASE WHEN finish_time = 0 THEN task_id END) AS unfinished_total,
   COUNT(CASE WHEN finish_time > 0 THEN task_id END) AS finished_total,
-  COUNT(CASE WHEN creator_id = ${user_id} THEN task_id END) AS dispatch_total,
+  COUNT(CASE WHEN creator_id = ${user_id} AND takers != '' AND takers != '${user_id}' THEN task_id END) AS dispatch_total,
   COUNT(CASE WHEN creator_id != taker_id THEN task_id END) AS accepted_total,
   COUNT(CASE WHEN finish_time = 0 AND
   (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
@@ -218,7 +218,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
     ON a.id = k.task_id AND k.user_id = ${user_id}
     LEFT JOIN (SELECT tc.id, IFNULL(tfs.name, '') AS flow_step_name,
                       IFNULL(tfsr.complete_at, 0) AS flow_step_complete_at, IFNULL(tfsr.user_id, '') AS user_id,
-                      CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS step_user_count
+                      CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS flow_step_user_count
                  FROM task_config AS tc
                       LEFT JOIN task_flow_step tfs
                       ON tfs.id = tc.flow_step_id

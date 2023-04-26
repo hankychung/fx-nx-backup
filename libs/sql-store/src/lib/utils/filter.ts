@@ -163,14 +163,14 @@ export const getFilterSql = (
    * 是否关注
    */
   if (is_follow) {
-    WHERES.push(`is_follow = ${Number(is_follow === 1)}`)
+    WHERES.push(`is_follow = ${Number(Number(is_follow) === 1)}`)
   }
 
   /**
    * 是否隐藏
    */
   if (schedule_hide) {
-    WHERES.push(`schedule_hide = ${Number(schedule_hide === 1)}`)
+    WHERES.push(`schedule_hide = ${Number(Number(schedule_hide) === 1)}`)
   }
 
   /**
@@ -217,13 +217,17 @@ export const getFilterSql = (
 
       if (order_by_key && sort) {
         if (order_by_key === 'timestamp') {
-          theOrder.push(`date_idx ${sort}, ${order_by_key} ${sort}`)
+          theOrder.push(
+            `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${
+              sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
+            }`
+          )
         } else {
           theOrder.push(`${order_by_key} ${sort}`)
         }
         theOrder.concat([`task_id ${sort}`, `repeat_id ${sort}`])
       } else {
-        theOrder.push(`date_idx ASC, create_at ASC`)
+        theOrder.push(`date_idx ASC, create_at DESC`)
       }
 
       ORDERS.push(...theOrder)
@@ -288,16 +292,18 @@ export const getFilterSql = (
 
           ORDERS.unshift(
             `date_idx ASC, date ${down}, time_idx ASC, create_at ${
-              orderIsTime ? 'DESC' : 'ASC'
+              orderIsTime ? 'ASC' : 'DESC'
             }`
           )
         }
       } else if (isOrderTime) {
         ORDERS.unshift(
-          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort}`
+          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${
+            sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
+          }`
         )
       } else {
-        ORDERS.unshift(`date_idx ASC, date ASC, time_idx ASC, create_at ASC`)
+        ORDERS.unshift(`date_idx ASC, date ASC, time_idx ASC, create_at DESC`)
       }
 
       ORDERS.concat([`task_id ${sort || 'ASC'}`, `repeat_id ${sort || 'ASC'}`])
@@ -348,9 +354,11 @@ export const getFilterSql = (
     }
 
     // 生成要匹配指定id的
-    const inTagStr = tagIds.map((v) => `INSTR(tag_str, ${v})`).join(' or ')
+    const inTagStr = tagIds.length
+      ? `(${tagIds.map((v) => `INSTR(tag_str, ${v})`).join(' or ')})`
+      : ''
 
-    WHERES.push(`(${tagIsNullStr} ${link} (${inTagStr}))`)
+    WHERES.push(`(${tagIsNullStr} ${link} ${inTagStr})`)
   }
 
   /**
@@ -507,7 +515,9 @@ export const getFilterSql = (
     }
     //我派发
     case FilterQueryType.dispatch: {
-      WHERES.push(`creator_id = ${user_id}`)
+      WHERES.push(
+        `creator_id = ${user_id} AND takers != '' AND takers != '${user_id}'`
+      )
       break
     }
     //我接受

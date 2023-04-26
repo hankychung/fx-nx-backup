@@ -2,13 +2,13 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-11 20:01:56
+ * @LastEditTime: 2023-04-26 11:03:49
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useClickAway, useMemoizedFn } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import { FlyAvatar } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import { ReactComponent as MemberPersonVip } from '../../../../../../assets/payImg/member_person_vip.svg'
@@ -23,6 +23,8 @@ import {
 } from '../../../check-item/single-circle-check-box'
 import { VipPayType } from '../../../controller'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
+import cs from 'classnames'
+import { sortMap } from '../../../../../person-pay-modal/utils'
 
 interface Iprops {
   vipType: VipPayType
@@ -34,7 +36,7 @@ const LeftBlock = (props: Iprops) => {
   const { vipType, memberList, mineId } = props
   const service = useContext(SelectMemberContext)
   // 打开添加协作人
-  const [openAddModal, setOpenAddModal] = useState(false)
+  // const [openAddModal, setOpenAddModal] = useState(false)
   const createRef = useRef<HTMLDivElement>(null)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>(
     memberList.filter((item) => item.userId === mineId)
@@ -67,14 +69,6 @@ const LeftBlock = (props: Iprops) => {
       const { event } = ev
 
       switch (event) {
-        case 'show':
-          setOpenAddModal(true)
-
-          break
-        case 'close':
-          setOpenAddModal(false)
-
-          break
         case 'selectMember':
           setResultArr(service.getData('selectMember').list)
           break
@@ -88,16 +82,60 @@ const LeftBlock = (props: Iprops) => {
       service.dispose()
     }
   }, [service, setMemberSet])
-  useClickAway(() => {
-    if (openAddModal) {
-      service.close()
-    }
-  }, [
-    createRef,
-    document.getElementById('invite_member'),
-    document.getElementById('member_info')
-  ])
+  //非会员和自己
+  const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
+    // 排序规则
+    const noVipList = memberList
+      .filter((_) => !_.isVip && !_.isTeamVip)
+      .map((t) => {
+        // 初始化排序
+        const item = { ...t, sort: 0 }
+        const { pinyin = '' } = item
 
+        // 没有拼音情况下
+        if (!item.pinyin) {
+          item.sort = sortMap.other
+        } else {
+          // 拼音首字母排序
+          const sort = sortMap[pinyin[0].toLowerCase()]
+          item.sort = typeof sort === 'number' ? sort : sortMap.other
+        }
+
+        return { ...item }
+      })
+
+    noVipList.sort((item1, item2) => {
+      return item1.sort - item2.sort
+    })
+    //会员
+    const vipList = memberList
+      .filter((_) => _.isVip || _.isTeamVip)
+      .map((t) => {
+        // 初始化排序
+        const item = { ...t, sort: 0 }
+        const { pinyin = '' } = item
+
+        // 没有拼音情况下
+        if (!item.pinyin) {
+          item.sort = sortMap.other
+        } else {
+          // 拼音首字母排序
+          const sort = sortMap[pinyin[0].toLowerCase()]
+          item.sort = typeof sort === 'number' ? sort : sortMap.other
+        }
+
+        return { ...item }
+      })
+
+    vipList.sort((item1, item2) => {
+      return item1.sort - item2.sort
+    })
+
+    const vip_arr = vipList.filter((item) => item.userId !== mineId)
+    const arr = noVipList.filter((item) => item.userId !== mineId)
+    const self = memberList.filter((item) => item.userId === mineId)
+    return [...self, ...arr, ...vip_arr]
+  }, [memberList, mineId])
   return (
     <div className={style.leftBlock}>
       <div className={style.lableClear}>
@@ -107,22 +145,36 @@ const LeftBlock = (props: Iprops) => {
             <div className={style.tips}>同时邀请进入专业空间 </div>
           )}
         </div>
-        <div
-          className={style.clear}
-          onClick={() => {
-            if (vipType === VipPayType.NOVIPCREATE) {
+        {resultArr.length > 0 && (
+          <div
+            className={style.clear}
+            onClick={() => {
+              if (vipType === VipPayType.NOVIPCREATE) {
+                service.selectMember({
+                  list: resultArr.filter((item) => item.userId === mineId)
+                })
+                return
+              }
               service.selectMember({
-                list: resultArr.filter((item) => item.userId === mineId)
+                list: []
               })
-              return
-            }
-            service.selectMember({
-              list: []
-            })
-          }}
-        >
-          清空选择
-        </div>
+            }}
+          >
+            清空选择
+          </div>
+        )}
+        {!resultArr.length && (
+          <div
+            className={style.clear}
+            onClick={() => {
+              service.selectMember({
+                list: [...sortMemberList]
+              })
+            }}
+          >
+            全选
+          </div>
+        )}
       </div>
       {vipType === VipPayType.NOVIPCREATE && (
         <div className={style.itemList}>
@@ -133,6 +185,7 @@ const LeftBlock = (props: Iprops) => {
                 <div key={_.userId}>
                   <SingleCheckItemRow
                     // key={item.id}
+
                     data={{}}
                     onClick={() => {
                       if (
@@ -157,10 +210,21 @@ const LeftBlock = (props: Iprops) => {
                     // isClickIcon
                   >
                     <div className={style.mem_info}>
-                      <FlyAvatar src={_.avatar} size={30} />
+                      <FlyAvatar
+                        src={_.avatar}
+                        size={30}
+                        overlayClassName={cs(
+                          _.isTeamVip
+                            ? style.global_style_team_vip
+                            : _.isVip
+                            ? style.global_style_person_vip
+                            : ''
+                        )}
+                      />
                       <div className={style.mem_name}>
                         <div className={style.name_icon}>
-                          <span>{_.name}</span>
+                          <div className={style.name}>{_.name}</div>
+
                           {mineId === _.userId && (
                             <div className={style.mine}>我</div>
                           )}
@@ -189,7 +253,7 @@ const LeftBlock = (props: Iprops) => {
           resultArr={resultArr}
           service={service}
           vipType={vipType}
-          memberList={memberList}
+          memberList={sortMemberList}
           mineId={mineId}
         />
       </div>

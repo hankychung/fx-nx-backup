@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-14 14:39:52
+ * @LastEditTime: 2023-04-24 10:33:57
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,10 +22,12 @@ const PayQrCode = ({
   vipMeal,
   memberList,
   onClose,
-  goProtocol
+  goProtocol,
+  domain
 }: {
   isPaySuccess: boolean
   vipMeal?: IActiveGoods
+  domain: string
   memberList: IFlyeleAvatarItem[]
   onClose?: () => void
   goProtocol: () => void
@@ -52,7 +54,7 @@ const PayQrCode = ({
           total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
         }
         const res = await QRCode.toDataURL(
-          `https://pay-test.flyele.vip/payDetail?params=${JSON.stringify(
+          `${domain}/payDetail?params=${JSON.stringify(
             a
           )}&&token=${paymentApi.getToken()}`
         )

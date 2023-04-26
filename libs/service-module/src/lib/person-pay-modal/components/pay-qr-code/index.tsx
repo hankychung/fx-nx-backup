@@ -22,12 +22,16 @@ const PayQrCode = ({
   isPaySuccess,
   onClose,
   getOrderCode,
-  goProtocol
+  goProtocol,
+  domain,
+  originRoute
 }: {
   vipMealType: VipMealType
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
   isPaySuccess: boolean
+  domain: string
+  originRoute?: string
   onClose: () => void
   senConfirm?: () => void
   getOrderCode?: (str: string) => void
@@ -44,7 +48,7 @@ const PayQrCode = ({
       coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
       good_id: payInfo?.id || 0,
       // good_id: 8,
-      origin_route: 'PC客户端',
+      origin_route: originRoute ? originRoute : 'PC客户端',
       total_price:
         ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
         userInfo.length,
@@ -74,7 +78,7 @@ const PayQrCode = ({
 
         const b = JSON.stringify(a)
         const res = await QRCode.toDataURL(
-          `https://pay-test.flyele.vip/payDetail?params=${b}&&token=${paymentApi.getToken()}`
+          `${domain}/payDetail?params=${b}&&token=${paymentApi.getToken()}`
         )
         setQrCode(res)
       })
@@ -101,7 +105,7 @@ const PayQrCode = ({
       maskClosable={false}
       width={360}
       wrapClassName={style.custom_modal}
-      maskStyle={{ opacity: '0.4', background: '#000000', animation: 'none' }}
+      maskStyle={{ opacity: '0.7', background: '#000000', animation: 'none' }}
     >
       <div>
         {!isPaySuccess && (

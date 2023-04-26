@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-10 15:49:02
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-03-25 12:29:44
+ * @LastEditTime: 2023-04-24 16:27:25
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/CheckItem/SingleCheckItemRow/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -40,7 +40,10 @@ function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
       className={classNames(styles.listItem, className, {
         [styles.listItemActive]: active
       })}
-      onClick={() => onClick(data)}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick(data)
+      }}
     >
       {children}
       <div className={styles.check}>

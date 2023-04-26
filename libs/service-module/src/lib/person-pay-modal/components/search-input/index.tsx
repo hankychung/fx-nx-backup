@@ -149,7 +149,10 @@ const SearchInput = (props: ISearchInputProps) => {
             overlayAllClassName,
             overlayStaticClassName
           )}
-          onClick={activeInput}
+          onClick={(e) => {
+            e.stopPropagation()
+            activeInput()
+          }}
         >
           <SearchIconBox />
           <div className={styles.staticText}>{defaultText}</div>

@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-13 17:44:01
+ * @LastEditTime: 2023-04-26 10:01:34
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,14 +21,15 @@ import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import * as dayjs from 'dayjs'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 import { useMemoizedFn } from 'ahooks'
-import { message } from 'antd'
 const RightBlock = ({
   vipMealType,
   goProtocol,
-  couponList
+  couponList,
+  showMsg
 }: {
   vipMealType: VipMealType
   goProtocol: () => void
+  showMsg?: () => void
   couponList?: ICoupon[]
 }) => {
   const service = useContext(SelectMemberContext)
@@ -103,11 +104,10 @@ const RightBlock = ({
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
   const payClick = () => {
-    if (resultArr.length === 0) {
-      message.info('请选择开通对象')
+    if (!resultArr.length) {
+      showMsg && showMsg()
       return
     }
-
     service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
   }
   //修改优惠
@@ -185,6 +185,8 @@ const RightBlock = ({
                       iconPos="topRight"
                       icon="delete"
                       src={_.avatar}
+                      size={30}
+                      border={true}
                       iconCursor="pointer"
                       onClickIcon={() => {
                         service.selectMember({
@@ -196,7 +198,7 @@ const RightBlock = ({
                     />
                   </div>
                   <div className={style.hide}>
-                    <FlyAvatar src={_.avatar} />
+                    <FlyAvatar src={_.avatar} size={30} border={true} />
                   </div>
                   <p className={style.name}>{_.name}</p>
                 </div>

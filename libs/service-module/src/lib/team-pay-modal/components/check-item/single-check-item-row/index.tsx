@@ -32,10 +32,13 @@ function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
       className={classNames(styles.listItem, className, {
         [styles.listItemActive]: active
       })}
-      onClick={() => onClick(data)}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick(data)
+      }}
     >
       {children}
-      <div className={styles.check} id="circleCheckBox">
+      <div className={styles.check}>
         <CircleCheckBox size={16} state={state} colorType={colorType} />
       </div>
     </div>

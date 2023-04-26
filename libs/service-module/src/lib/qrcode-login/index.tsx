@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { service, UsercApi, SSe, IDevice, envStore } from '@flyele-nx/service'
+import {
+  service,
+  UsercApi,
+  SSe,
+  IDevice,
+  envStore,
+  IUserInfo
+} from '@flyele-nx/service'
 import Qc from 'qrcode'
 import { uid } from '@flyele-nx/utils'
 import { message } from 'antd'
@@ -16,7 +23,7 @@ import style from './index.module.scss'
 
 interface Props {
   deviceParams: Omit<IDevice, 'device_id'>
-  onSuccess?(): void
+  onSuccess?: (data?: IUserInfo) => void
 }
 let watchTimeoutId: NodeJS.Timeout
 let refreshTimeOutId: NodeJS.Timeout
@@ -153,8 +160,8 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
               service.updateToken(data.token)
 
               getUserInfo({
-                onSuccess() {
-                  onSuccessRef.current && onSuccessRef.current()
+                onSuccess(data) {
+                  onSuccessRef.current && onSuccessRef.current(data)
                 },
                 onError() {
                   messageApi.open({

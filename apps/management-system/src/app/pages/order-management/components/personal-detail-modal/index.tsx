@@ -69,6 +69,7 @@ export const PersonalDetailModal = ({
     title: string
     value: string
     extendCls?: string
+    extendRowCls?: string
   }> = useMemo(() => {
     const normal = [
       {
@@ -124,7 +125,8 @@ export const PersonalDetailModal = ({
         title: '企业信息',
         value:
           `${userInfo?.user_corp_detail.corp_name}（来自${data?.origin_route}）` ||
-          ''
+          '',
+        extendRowCls: styles.mb4
       },
       {
         key: 'corpInfoId',
@@ -186,7 +188,7 @@ export const PersonalDetailModal = ({
         <div className={styles.content}>
           {formData.map((item) => {
             return (
-              <div key={item.key} className={styles.row}>
+              <div key={item.key} className={cs(styles.row, item.extendRowCls)}>
                 <div className={styles.rowLeft}>{item.title}</div>
                 <div className={cs(styles.rowRight, item.extendCls)}>
                   {item.value}

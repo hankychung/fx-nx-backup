@@ -150,8 +150,6 @@ class SqlStore {
       })
       .join('&')
 
-    const dispatchIds: string[] = []
-
     const taskIds: string[] = []
 
     const list = await this.getNeedUpdateTables(query)
@@ -164,12 +162,12 @@ class SqlStore {
       const res = await this.getUpdates(key, lastId, pageIdx)
 
       if (!res.code && res.data) {
-        if (key === 'task_dispatch') {
-          dispatchIds.push(...res.data.list.map((i) => i.keys['dispatch_id']))
-        }
-
         if (key === 'task') {
           taskIds.push(...res.data.list.map((i) => i.keys['id']))
+        }
+
+        if (key === 'tag_bind') {
+          taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
         }
 
         const { list } = res.data
@@ -219,8 +217,7 @@ class SqlStore {
     this.updateDB()
 
     return {
-      dispatchIds,
-      taskIds
+      taskIds: [...new Set(taskIds)]
     }
   }
 

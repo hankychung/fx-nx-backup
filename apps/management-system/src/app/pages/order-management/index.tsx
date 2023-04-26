@@ -528,7 +528,9 @@ const _OrderManagement = () => {
         title: '支付状态',
         dataIndex: 'state',
         render: (text) => (
-          <span>{OrderSystemConst.IndentStateLabel[text]}</span>
+          <span style={{ color: '#8f8f8f' }}>
+            {OrderSystemConst.IndentStateLabel[text]}
+          </span>
         ),
         filters: stateFilter(),
         filteredValue: filteredState || null,
@@ -541,7 +543,7 @@ const _OrderManagement = () => {
         title: '支付时间',
         dataIndex: 'payment_at',
         render: (text) => (
-          <span>
+          <span style={{ color: '#8f8f8f' }}>
             {text !== 0 ? dayjs.unix(text).format('YYYY年M月D日 HH:mm:ss') : ''}
           </span>
         )

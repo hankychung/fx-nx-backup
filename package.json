@@ -17,7 +17,7 @@
   },
   "private": true,
   "dependencies": {
-    "@flyele/flyele-components": "^2.12.1",
+    "@flyele/flyele-components": "^2.15.1",
     "@swc/helpers": "~0.4.11",
     "ahooks": "^3.7.5",
     "antd": "^5.3.0",

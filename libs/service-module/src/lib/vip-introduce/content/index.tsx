@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { ReactComponent as VectorIcon } from '../../../assets/vip-introduce/vector.svg'
+import { ReactComponent as ArrowIcon } from '../../../assets/vip-introduce/arrow.svg'
 import { Button } from 'antd'
 import classNames from 'classnames'
 import css from './index.module.scss'
@@ -58,7 +59,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
             <div className={css.top} style={{ backgroundColor: item.bgColor }}>
               {item.topText && (
                 <>
-                  <VectorIcon />
+                  <VectorIcon style={{ marginRight: 2 }} />
                   热门推荐
                 </>
               )}
@@ -81,28 +82,39 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                       >
                         {item.desc}
                       </a>
-                      <i>&gt;</i>
+                      {/* <i>&gt;</i> */}
+                      <ArrowIcon
+                        style={{ marginLeft: 4, width: 6, height: 8 }}
+                      />
                     </span>
                   )}
                 </div>
               </div>
               <div className={css.content}>
                 {item.powerList.map((power) => (
-                  <p key={power.title}>{power.title}</p>
+                  <div key={power.title}>{power.title}</div>
                 ))}
               </div>
               <div className={css.footer}>
                 <p>
-                  <span className={css.small}>¥</span>
+                  {!['custom'].includes(item.key) && (
+                    <span className={css.small}>¥</span>
+                  )}
                   <span>{item.money}</span>
-                  <span className={css.small}>{item.unit}</span>
-                  <span className={classNames(css.gray, css.small)}>
+                  <span className={css.small}>
+                    {['personal', 'team'].includes(item.key) && '/'}
+                    {item.unit}
+                  </span>
+                  <span
+                    className={classNames(css.gray, css.small)}
+                    style={{ marginLeft: 8, fontWeight: 'normal' }}
+                  >
                     {item.oldPrice}
                   </span>
                 </p>
                 {btnText && (
                   <Button
-                    style={{ background: item.btnBgColor }}
+                    style={{ background: item.btnBgColor, height: 36 }}
                     onClick={() => handleBtnClick(item.key)}
                   >
                     {btnText}

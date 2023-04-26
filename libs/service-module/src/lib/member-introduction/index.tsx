@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { IntroductionBox } from './components/introduction-box'
 import { memberPowerStaticData } from '@flyele-nx/constant'
 import PayModal, { IFlyeleAvatarItem } from '../pay-modal'
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
@@ -34,6 +34,7 @@ export const MemberIntroduction = () => {
   const [selfUserInfo, setSelfUserInfo] = useState<IFlyeleAvatarItem>()
   const ChildRef = useRef(null)
   const TimerRef = useRef<NodeJS.Timer | undefined>()
+  const [messageApi, contextHolder] = message.useMessage()
 
   const onClickBtn = (key: string) => {
     if (key === 'personal' || key === 'team') {
@@ -158,6 +159,7 @@ export const MemberIntroduction = () => {
 
   return (
     <div className={styles.memberIntroduction}>
+      {contextHolder}
       {memberPowerStaticData.map((item) => {
         return (
           <IntroductionBox
@@ -178,6 +180,12 @@ export const MemberIntroduction = () => {
         memberList={memberList}
         onClose={() => {
           setShow(false)
+        }}
+        showMsg={() => {
+          messageApi.open({
+            type: 'error',
+            content: '请选择开通对象'
+          })
         }}
         originRoute="官网"
         domain={envStore.getDoMain()}

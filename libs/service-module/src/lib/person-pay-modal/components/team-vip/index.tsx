@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:20:24
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-24 10:16:34
+ * @LastEditTime: 2023-04-26 10:00:48
  */
 import { ICoupon } from '@flyele-nx/api'
 import React from 'react'
@@ -19,12 +19,14 @@ const TeamVip = ({
   vipMealType,
   goProtocol,
   couponList,
-  goInterests
+  goInterests,
+  showMsg
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
   vipMealType: VipMealType
   couponList?: ICoupon[]
+  showMsg?: () => void
   goProtocol: () => void
   goInterests: () => void
 }) => {
@@ -42,6 +44,7 @@ const TeamVip = ({
           vipMealType={vipMealType}
           goProtocol={goProtocol}
           couponList={couponList}
+          showMsg={showMsg}
         />
       </div>
     </div>

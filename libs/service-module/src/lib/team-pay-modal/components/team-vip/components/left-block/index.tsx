@@ -2,11 +2,11 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-25 14:54:43
+ * @LastEditTime: 2023-04-26 11:03:49
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useMemoizedFn } from 'ahooks'
 import { FlyAvatar } from '@flyele/flyele-components'
@@ -24,6 +24,8 @@ import {
 import { VipPayType } from '../../../controller'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 import cs from 'classnames'
+import { sortMap } from '../../../../../person-pay-modal/utils'
+
 interface Iprops {
   vipType: VipPayType
   memberList: IFlyeleAvatarItem[]
@@ -80,7 +82,60 @@ const LeftBlock = (props: Iprops) => {
       service.dispose()
     }
   }, [service, setMemberSet])
+  //非会员和自己
+  const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
+    // 排序规则
+    const noVipList = memberList
+      .filter((_) => !_.isVip && !_.isTeamVip)
+      .map((t) => {
+        // 初始化排序
+        const item = { ...t, sort: 0 }
+        const { pinyin = '' } = item
 
+        // 没有拼音情况下
+        if (!item.pinyin) {
+          item.sort = sortMap.other
+        } else {
+          // 拼音首字母排序
+          const sort = sortMap[pinyin[0].toLowerCase()]
+          item.sort = typeof sort === 'number' ? sort : sortMap.other
+        }
+
+        return { ...item }
+      })
+
+    noVipList.sort((item1, item2) => {
+      return item1.sort - item2.sort
+    })
+    //会员
+    const vipList = memberList
+      .filter((_) => _.isVip || _.isTeamVip)
+      .map((t) => {
+        // 初始化排序
+        const item = { ...t, sort: 0 }
+        const { pinyin = '' } = item
+
+        // 没有拼音情况下
+        if (!item.pinyin) {
+          item.sort = sortMap.other
+        } else {
+          // 拼音首字母排序
+          const sort = sortMap[pinyin[0].toLowerCase()]
+          item.sort = typeof sort === 'number' ? sort : sortMap.other
+        }
+
+        return { ...item }
+      })
+
+    vipList.sort((item1, item2) => {
+      return item1.sort - item2.sort
+    })
+
+    const vip_arr = vipList.filter((item) => item.userId !== mineId)
+    const arr = noVipList.filter((item) => item.userId !== mineId)
+    const self = memberList.filter((item) => item.userId === mineId)
+    return [...self, ...arr, ...vip_arr]
+  }, [memberList, mineId])
   return (
     <div className={style.leftBlock}>
       <div className={style.lableClear}>
@@ -90,22 +145,36 @@ const LeftBlock = (props: Iprops) => {
             <div className={style.tips}>同时邀请进入专业空间 </div>
           )}
         </div>
-        <div
-          className={style.clear}
-          onClick={() => {
-            if (vipType === VipPayType.NOVIPCREATE) {
+        {resultArr.length > 0 && (
+          <div
+            className={style.clear}
+            onClick={() => {
+              if (vipType === VipPayType.NOVIPCREATE) {
+                service.selectMember({
+                  list: resultArr.filter((item) => item.userId === mineId)
+                })
+                return
+              }
               service.selectMember({
-                list: resultArr.filter((item) => item.userId === mineId)
+                list: []
               })
-              return
-            }
-            service.selectMember({
-              list: []
-            })
-          }}
-        >
-          清空选择
-        </div>
+            }}
+          >
+            清空选择
+          </div>
+        )}
+        {!resultArr.length && (
+          <div
+            className={style.clear}
+            onClick={() => {
+              service.selectMember({
+                list: [...sortMemberList]
+              })
+            }}
+          >
+            全选
+          </div>
+        )}
       </div>
       {vipType === VipPayType.NOVIPCREATE && (
         <div className={style.itemList}>
@@ -184,7 +253,7 @@ const LeftBlock = (props: Iprops) => {
           resultArr={resultArr}
           service={service}
           vipType={vipType}
-          memberList={memberList}
+          memberList={sortMemberList}
           mineId={mineId}
         />
       </div>

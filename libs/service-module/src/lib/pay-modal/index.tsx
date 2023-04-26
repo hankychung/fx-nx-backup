@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-25 17:41:11
+ * @LastEditTime: 2023-04-26 09:59:44
  */
 
 import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
@@ -137,6 +137,7 @@ export default function PayModal(props: Iprops) {
             goProtocol={goProtocol}
             goInterests={goInterests}
             domain={domain}
+            showMsg={showMsg}
             originRoute={originRoute}
           />
         )

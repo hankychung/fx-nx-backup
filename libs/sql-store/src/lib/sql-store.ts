@@ -415,7 +415,7 @@ class SqlStore {
       for (const file of data) {
         const content = (await this.parseFile(file)) as any[]
 
-        let sqlStr = ''
+        // let sqlStr = ''
 
         content.forEach((item) => {
           if (isDiff) {
@@ -423,19 +423,23 @@ class SqlStore {
 
             if (type === 'delete') {
               console.log('@del', data, table, keys)
+              this.db!.run(this.getDelSql(keys, table) + ';')
 
-              sqlStr += this.getDelSql(keys, table) + ';'
+              // sqlStr += this.getDelSql(keys, table) + ';'
             } else {
-              sqlStr += this.getInsertSql(data, table) + ';'
+              // sqlStr += this.getInsertSql(data, table) + ';'
+              this.db!.run(this.getInsertSql(data, table) + ';')
             }
 
             return
           }
 
-          sqlStr += this.getInsertSql(item, table) + ';'
+          // sqlStr += this.getInsertSql(item, table) + ';'
+
+          this.db!.run(this.getInsertSql(item, table) + ';')
         })
 
-        this.db!.run(sqlStr)
+        // this.db!.run(sqlStr)
       }
     }
 

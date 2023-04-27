@@ -1,5 +1,5 @@
 .pageContainerRoot {
-  padding: 0 9% 0 12%;
+  padding: 0 12%;
   background: #f3f5f7;
   position: relative;
 
@@ -55,7 +55,7 @@
     }
 
     .contentRight {
-      width: 100%;
+      width: calc(100% - 180px);
     }
   }
 

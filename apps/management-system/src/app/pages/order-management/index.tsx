@@ -61,15 +61,18 @@ const _OrderManagement = () => {
   const searchItems = [
     {
       key: 'user',
-      title: '查找用户'
+      title: '查找用户',
+      placeholder: '请输入手机号/UID'
     },
     {
       key: 'corp',
-      title: '查找公司（企业）'
+      title: '查找公司（企业）',
+      placeholder: '请输入公司名称/EID'
     },
     {
       key: 'order',
-      title: '查找订单'
+      title: '查找订单',
+      placeholder: '请输入订单号'
     }
   ]
 
@@ -412,7 +415,7 @@ const _OrderManagement = () => {
         }
       },
       {
-        width: 108,
+        width: 110,
         title: '付款人',
         dataIndex: 'creator',
         render: (text, record) => {
@@ -444,7 +447,7 @@ const _OrderManagement = () => {
         }
       },
       {
-        width: 168,
+        width: 175,
         title: '充值对象',
         dataIndex: 'users',
         render: (text, record) => {
@@ -503,7 +506,7 @@ const _OrderManagement = () => {
         }
       },
       {
-        width: 148,
+        width: 180,
         title: '订单号',
         dataIndex: 'indent_num'
       },
@@ -539,7 +542,7 @@ const _OrderManagement = () => {
         }
       },
       {
-        width: 130,
+        width: 200,
         title: '支付时间',
         dataIndex: 'payment_at',
         render: (text) => (
@@ -553,6 +556,7 @@ const _OrderManagement = () => {
         title: '操作',
         dataIndex: '',
         key: 'action',
+        fixed: 'right',
         render: (text, record) => (
           <span
             className={tableStyles.tableActionText}
@@ -607,7 +611,7 @@ const _OrderManagement = () => {
             showQuickJumper: true,
             showSizeChanger: false
           }}
-          scroll={{ y: '27vw', x: 'max-content' }}
+          scroll={{ y: '27vw', x: '100%' }}
           onChange={(pagination, filters) => onChangePage(pagination, filters)}
         />
       </div>

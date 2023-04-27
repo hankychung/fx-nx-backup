@@ -1,5 +1,5 @@
 export const QueryTaskTakersSQL = (task_id: string) => {
-  return `SELECT taker_id, dispatch_id, is_admin, finish_time
+  return `SELECT taker_id, dispatch_id, is_admin, finish_time, is_view
    FROM task_dispatch
    WHERE ref_task_id = ${task_id} AND is_valid = 1
    AND identity NOT IN (10804, 10811)

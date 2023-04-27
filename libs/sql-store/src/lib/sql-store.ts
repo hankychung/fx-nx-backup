@@ -353,8 +353,9 @@ class SqlStore {
 
     for (const line of data) {
       const task_id = line['task_id']
+      const repeat_id = line['repeat_id']
 
-      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id))
+      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id, repeat_id))
 
       const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(task_id))
 

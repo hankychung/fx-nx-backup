@@ -7,6 +7,7 @@ interface ISearchItem {
   key: string
   title: string
   searchType?: 'text' | 'number' // 搜索类型，目前只有 text文本的需求
+  placeholder?: string
 }
 
 interface IPageSearch {
@@ -29,7 +30,10 @@ const _PageSearch = ({ searchItems, onSearch }: IPageSearch) => {
             <div className={styles.searchTitle}>{item.title}</div>
             <div className={styles.search}>
               <div style={{ width: '210px' }}>
-                <FlySearchInput onChange={onInput} />
+                <FlySearchInput
+                  placeholder={item.placeholder}
+                  onChange={onInput}
+                />
               </div>
               <FlyButton
                 theme="primary"

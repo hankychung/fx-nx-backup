@@ -6,6 +6,7 @@ import { FlyButton } from '@flyele/flyele-components'
 import cs from 'classnames'
 import { ReactComponent as CopyIcon } from '../../../../../assets/copyIcon.svg'
 import ClipboardJS from 'clipboard'
+import { pennyToYuan } from '../../../../utils'
 
 export const OpenTaxModal = ({
   open,
@@ -71,7 +72,7 @@ export const OpenTaxModal = ({
         <div className={styles.content}>
           <div className={styles.contentLeft}>
             <div style={{ fontSize: '28px' }}>¥</div>
-            <div>{data.total_price}</div>
+            <div>{pennyToYuan(data.total_price)}</div>
           </div>
           <div className={styles.contentRight}>
             <div>{data.name}</div>

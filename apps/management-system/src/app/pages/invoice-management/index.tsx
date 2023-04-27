@@ -16,6 +16,7 @@ import cs from 'classnames'
 import { OpenTaxModal } from './components/open-tax-modal'
 import dayjs from 'dayjs'
 import { useInvoiceStore } from '../../store/invoice'
+import { pennyToYuan } from '../../utils'
 
 const pageSize = 10
 
@@ -176,7 +177,9 @@ export const InvoiceManagement = () => {
         title: '订单金额',
         dataIndex: 'total_price',
         align: 'center',
-        render: (text) => <span className={styles.blueText}>{`¥${text}`}</span>
+        render: (text) => (
+          <span className={styles.blueText}>{`¥${pennyToYuan(text)}`}</span>
+        )
       },
       {
         width: 168,
@@ -207,7 +210,7 @@ export const InvoiceManagement = () => {
         align: 'center'
       },
       {
-        width: 188,
+        width: 194,
         title: '接收邮箱',
         dataIndex: 'email',
         align: 'center'
@@ -219,8 +222,8 @@ export const InvoiceManagement = () => {
         align: 'center',
         render: (text, record) => (
           <div className={styles.nameBox}>
-            <div>{record.creator.user_name}</div>
-            <div>{record.creator.telephone}</div>
+            <div className={styles.name}>{record.creator.user_name}</div>
+            <div className={styles.phone}>{record.creator.telephone}</div>
           </div>
         )
       },
@@ -228,7 +231,8 @@ export const InvoiceManagement = () => {
         width: 168,
         title: '订单号',
         dataIndex: 'indent_num',
-        align: 'center'
+        align: 'center',
+        render: (text) => <span style={{ color: '#6a6a6a' }}>{text}</span>
       },
       {
         width: 208,
@@ -236,6 +240,7 @@ export const InvoiceManagement = () => {
         dataIndex: '',
         key: 'action',
         align: 'center',
+        fixed: 'right',
         render: (text, record) => {
           if (record.state === OrderSystemConst.InvoiceState.NOT_OPEN) {
             return (
@@ -281,7 +286,7 @@ export const InvoiceManagement = () => {
             showQuickJumper: true,
             showSizeChanger: false
           }}
-          scroll={{ y: '27vw', x: 'max-content' }}
+          scroll={{ y: '27vw', x: '100%' }}
           onChange={(pagination) => onChangePage(pagination)}
         />
       </div>

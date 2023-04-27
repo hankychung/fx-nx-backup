@@ -16,6 +16,7 @@ import cs from 'classnames'
 import { OpenTaxModal } from './components/open-tax-modal'
 import dayjs from 'dayjs'
 import { useInvoiceStore } from '../../store/invoice'
+import { pennyToYuan } from '../../utils'
 
 const pageSize = 10
 
@@ -176,7 +177,9 @@ export const InvoiceManagement = () => {
         title: '订单金额',
         dataIndex: 'total_price',
         align: 'center',
-        render: (text) => <span className={styles.blueText}>{`¥${text}`}</span>
+        render: (text) => (
+          <span className={styles.blueText}>{`¥${pennyToYuan(text)}`}</span>
+        )
       },
       {
         width: 168,

@@ -153,7 +153,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
         IFNULL(d.end_time, b.end_time) AS end_time,
         IFNULL(d.end_time_full_day, b.end_time_full_day) AS end_time_full_day,
         IFNULL(d.complete_at, b.complete_at) AS complete_at, IFNULL(e.finish_time, a.finish_time) AS finish_time,
-        CASE WHEN c.flow_step_id > 0 AND b.start_time = 0 AND b.end_time = 0 THEN b.create_at + 86399
+        CASE WHEN c.flow_step_id > 0 AND b.start_time = 0 AND b.end_time = 0 THEN b.create_at + 86399,
                  THEN STRFTIME('%Y-%m-%d', DATETIME(b.create_at, 'unixepoch')) + 86399
              WHEN IFNULL(d.start_time, b.start_time) > 0
                  THEN (CASE WHEN IFNULL(d.start_time_full_day, b.start_time_full_day) = 2

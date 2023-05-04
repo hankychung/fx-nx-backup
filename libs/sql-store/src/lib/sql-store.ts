@@ -166,6 +166,10 @@ class SqlStore {
           taskIds.push(...res.data.list.map((i) => i.keys['id']))
         }
 
+        if (key === 'task_dispatch') {
+          taskIds.push(...res.data.list.map((i) => i.keys['ref_task_id']))
+        }
+
         if (key === 'tag_bind') {
           taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
         }

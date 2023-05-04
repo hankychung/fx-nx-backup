@@ -107,7 +107,9 @@ const RightBlock = ({
     }
     if (
       (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
-      (VipPayType.UPSPACE === vipType && !mineInfo?.isTeamVip && resultArr.length === 0)
+      (VipPayType.UPSPACE === vipType &&
+        !mineInfo?.isTeamVip &&
+        resultArr.length === 0)
     ) {
       showMsg && showMsg()
       return

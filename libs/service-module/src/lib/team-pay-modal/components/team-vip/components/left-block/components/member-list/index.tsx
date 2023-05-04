@@ -169,8 +169,8 @@ const MemberList = ({
           {showList &&
             showList.length > 0 &&
             showList.map((_) => {
-              console.log(resultArr);
-              
+              console.log(resultArr)
+
               return (
                 <div key={_.userId}>
                   <SingleCheckItemRow
@@ -232,8 +232,8 @@ const MemberList = ({
           {searchList &&
             searchList.length > 0 &&
             searchList.map((_) => {
-              console.log(resultArr);
-              
+              console.log(resultArr)
+
               return (
                 <div key={_.userId}>
                   <SingleCheckItemRow

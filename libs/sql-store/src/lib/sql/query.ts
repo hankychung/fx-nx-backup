@@ -1,9 +1,22 @@
-export const QueryTaskTakersSQL = (task_id: string) => {
-  return `SELECT taker_id, dispatch_id, is_admin, finish_time, is_view
-   FROM task_dispatch
-   WHERE ref_task_id = ${task_id} AND is_valid = 1
-   AND identity NOT IN (10804, 10811)
-   AND operate_state = 0`
+export const QueryTaskTakersSQL = (task_id: string, repeat_id: string) => {
+  return `SELECT a.ref_task_id AS task_id, a.dispatch_id, a.ref_task_id, a.creator_id, a.taker_id, a.invite_id, a.invite_type,
+  a.identity, a.state, a.operate_state, a.personal_state, a.reason, a.is_admin, a.is_dispatch, a.execute_at,
+  a.personal_remind_at, a.accept_at, a.finish_time, a.cancel_at, a.revoke_at, a.exit_at, a.set_admin_at,
+  a.topmost_at, a.create_at, a.update_at, a.delete_at, a.is_view, a.status, a.is_valid, 
+  ${repeat_id ? `e.finish_time` : 'a.finish_time'},
+  CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view
+FROM task_dispatch a
+      ${
+        repeat_id
+          ? `LEFT JOIN task_repeat_finish e ON e.repeat_id = ${repeat_id} AND a.taker_id = e.user_id`
+          : ''
+      } 
+WHERE ref_task_id IN (${task_id})
+AND is_valid = 1
+AND status = 1
+AND delete_at = 0
+AND identity NOT IN (10804, 10811)
+AND operate_state = 0;`
 }
 
 export const QueryTaskTreeTotal = (task_id: string) => {
@@ -122,7 +135,7 @@ IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name,
 tag_str,  application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN a.project_id = '' OR a.project_id = 0 THEN 1 ELSE 0 END as is_no_project,
-z.user_id, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
+CASE WHEN z.user_id != '' THEN 1 ELSE 0 END AS flow_step_join, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
 timestamp, application_id, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, b.update_at, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,

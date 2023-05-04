@@ -6,10 +6,11 @@ export const QueryTaskTakersSQL = (task_id: string, repeat_id: string) => {
   ${repeat_id ? `e.finish_time` : 'a.finish_time'},
   CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view
 FROM task_dispatch a
-      ${repeat_id
-      ? `LEFT JOIN task_repeat_finish e ON e.repeat_id = ${repeat_id} AND a.taker_id = e.user_id`
-      : ''
-    } 
+      ${
+        repeat_id
+          ? `LEFT JOIN task_repeat_finish e ON e.repeat_id = ${repeat_id} AND a.taker_id = e.user_id`
+          : ''
+      } 
 WHERE ref_task_id IN (${task_id})
 AND is_valid = 1
 AND status = 1

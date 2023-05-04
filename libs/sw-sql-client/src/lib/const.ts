@@ -16,42 +16,45 @@ const SqlFilterSplitKeys: {
   filter_key: keyof SqlStore.Filter.FilterParamsFilter
   key: string
 }[] = [
-  { filter_key: 'parent_ids', key: 'parents_id' },
-  {
-    filter_key: 'application_ids',
-    key: 'application_id'
-  },
-  {
-    filter_key: 'matter_states',
-    key: 'matter_states'
-  },
-  {
-    filter_key: 'priority_levels',
-    key: 'priority_level'
-  },
-  { filter_key: 'tags', key: 'tags_id' },
-  { filter_key: 'task_ids', key: 'tasks_id' },
-  {
-    filter_key: 'taker_ids',
-    key: 'takers_id'
-  },
-  {
-    filter_key: 'creator_ids',
-    key: 'creators_id'
-  },
-  {
-    filter_key: 'admins_ids',
-    key: 'admins_id'
-  },
-  {
-    filter_key: 'project_ids',
-    key: 'projects_id'
-  },
-
-  {
-    filter_key: 'workspace_ids',
-    key: 'workspaces_id'
-  }
-]
+    { filter_key: 'parent_ids', key: 'parents_id' },
+    {
+      filter_key: 'application_ids',
+      key: 'application_id'
+    },
+    {
+      filter_key: 'matter_states',
+      key: 'matter_states'
+    },
+    {
+      filter_key: 'priority_levels',
+      key: 'priority_level'
+    },
+    { filter_key: 'tags', key: 'tags_id' },
+    { filter_key: 'task_ids', key: 'tasks_id' },
+    {
+      filter_key: 'taker_ids',
+      key: 'takers_id'
+    },
+    {
+      filter_key: 'creator_ids',
+      key: 'creators_id'
+    },
+    {
+      filter_key: 'admins_ids',
+      key: 'admins_id'
+    },
+    {
+      filter_key: 'project_ids',
+      key: 'projects_id'
+    },
+    {
+      filter_key: 'flow_step_ids',
+      key: 'flow_steps_id'
+    },
+    {
+      filter_key: 'workspace_ids',
+      key: 'workspaces_id'
+    }
+  ]
 
 export { INIT_DB, SqlFilterTimerkeys, SqlFilterSplitKeys }

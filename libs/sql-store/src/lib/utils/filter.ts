@@ -75,6 +75,7 @@ export const getFilterSql = (
     project_ids,
     workspace_ids,
     parent_ids,
+    flow_step_ids,
 
     task_at,
     create_at,
@@ -153,8 +154,7 @@ export const getFilterSql = (
       : ''
 
     WHERES.push(
-      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${
-        tStr ? `(${tStr})` : ''
+      `(${nStr} ${hasNull && tParentIds.length ? 'OR' : ''} ${tStr ? `(${tStr})` : ''
       } )`
     )
   }
@@ -218,8 +218,7 @@ export const getFilterSql = (
       if (order_by_key && sort) {
         if (order_by_key === 'timestamp') {
           theOrder.push(
-            `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${
-              sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
+            `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
             }`
           )
         } else {
@@ -283,23 +282,20 @@ export const getFilterSql = (
           // const upOrder = orderIsTime || !isOrderTime ? 'ASC' : 'DESC'
 
           ORDERS.unshift(
-            `date_idx ASC, date ${up}, time_idx DESC, create_at ${
-              orderIsTime ? 'DESC' : 'ASC'
+            `date_idx ASC, date ${up}, time_idx DESC, create_at ${orderIsTime ? 'DESC' : 'ASC'
             }`
           )
         } else {
           // const downOrder = orderIsTime ? 'DESC' : 'ASC'
 
           ORDERS.unshift(
-            `date_idx ASC, date ${down}, time_idx ASC, create_at ${
-              orderIsTime ? 'ASC' : 'DESC'
+            `date_idx ASC, date ${down}, time_idx ASC, create_at ${orderIsTime ? 'ASC' : 'DESC'
             }`
           )
         }
       } else if (isOrderTime) {
         ORDERS.unshift(
-          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${
-            sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
+          `date_idx ${sort}, date ${sort}, time_idx ${sort}, create_at ${sort?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
           }`
         )
       } else {
@@ -440,6 +436,21 @@ export const getFilterSql = (
     // WHERES.push(`(${nStr} ${hasNull && tTakerIds.length ? 'OR' : ''} ${tStr})`)
   }
 
+  // 工作流
+  if (flow_step_ids?.length) {
+    const hasCompate = flow_step_ids.includes('-2')
+
+    const completeStr = 'OR (flow_step_id > 0 AND complete_at > 0))'
+
+    const nullIndex = flow_step_ids.findIndex(v => v === '-1')
+
+    if (nullIndex !== -1) {
+      flow_step_ids[nullIndex] = '-1'
+    }
+
+    WHERES.push(`(flow_step_id IN (${flow_step_ids.join(',')}) ${hasCompate ? completeStr : ''})`)
+  }
+
   /**
    * 责任人筛选
    */
@@ -533,7 +544,7 @@ export const getFilterSql = (
     }
     // 个人事项
     case FilterQueryType.personal: {
-      WHERES.unshift(`takers = '${user_id}'`)
+      WHERES.unshift(`(takers = CAST(${user_id} AS text) OR (takers = '' AND creator_id = ${user_id}))`)
       // WHERES.push(`taker_total = 1 AND takers = ${user_id}`)
       break
     }

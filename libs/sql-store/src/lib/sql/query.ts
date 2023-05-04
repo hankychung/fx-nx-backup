@@ -132,11 +132,11 @@ IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
-tag_str,  application_id,
+tag_str, application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN a.project_id = '' OR a.project_id = 0 THEN 1 ELSE 0 END as is_no_project,
 CASE WHEN z.user_id != '' THEN 1 ELSE 0 END AS flow_step_join, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
-timestamp, application_id, admins, takers
+timestamp, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, b.update_at, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
@@ -153,7 +153,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
         IFNULL(d.end_time, b.end_time) AS end_time,
         IFNULL(d.end_time_full_day, b.end_time_full_day) AS end_time_full_day,
         IFNULL(d.complete_at, b.complete_at) AS complete_at, IFNULL(e.finish_time, a.finish_time) AS finish_time,
-        CASE WHEN c.flow_step_id > 0 AND b.start_time = 0 AND b.end_time = 0
+        CASE WHEN c.flow_step_id > 0 AND b.start_time = 0 AND b.end_time = 0 THEN b.create_at + 86399
                  THEN STRFTIME('%Y-%m-%d', DATETIME(b.create_at, 'unixepoch')) + 86399
              WHEN IFNULL(d.start_time, b.start_time) > 0
                  THEN (CASE WHEN IFNULL(d.start_time_full_day, b.start_time_full_day) = 2

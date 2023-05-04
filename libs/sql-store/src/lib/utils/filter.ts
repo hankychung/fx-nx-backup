@@ -445,12 +445,12 @@ export const getFilterSql = (
   if (flow_step_ids?.length) {
     const hasCompate = flow_step_ids.includes('-2')
 
-    const completeStr = 'OR (flow_step_id > 0 AND complete_at > 0))'
+    const completeStr = 'OR (flow_step_id > 0 AND complete_at > 0)'
 
     const nullIndex = flow_step_ids.findIndex((v) => v === '-1')
 
     if (nullIndex !== -1) {
-      flow_step_ids[nullIndex] = '-1'
+      flow_step_ids[nullIndex] = '0'
     }
 
     WHERES.push(

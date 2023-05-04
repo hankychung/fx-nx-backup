@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 16:38:39
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-25 14:55:50
+ * @LastEditTime: 2023-05-04 11:04:20
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -106,13 +106,13 @@ const MemberList = ({
     const resArr: IFlyeleAvatarItem[] = []
 
     if (searchValue && showList && showList.length) {
-      const sKey = 'name'
+      const sKey = ['name']
       const reg = new RegExp(searchValue)
 
       for (let i = 0; i < sKey.length; i++) {
         const list = filter(showList, (item: IFlyeleAvatarItem) => {
-          if (!item[sKey]) return false
-          return item[sKey].match(reg)
+          if (!item.name) return false
+          return item.name.match(reg)
         }) as IFlyeleAvatarItem[]
         resArr.push(...list)
       }
@@ -169,6 +169,8 @@ const MemberList = ({
           {showList &&
             showList.length > 0 &&
             showList.map((_) => {
+              console.log(resultArr);
+              
               return (
                 <div key={_.userId}>
                   <SingleCheckItemRow
@@ -230,6 +232,8 @@ const MemberList = ({
           {searchList &&
             searchList.length > 0 &&
             searchList.map((_) => {
+              console.log(resultArr);
+              
               return (
                 <div key={_.userId}>
                   <SingleCheckItemRow

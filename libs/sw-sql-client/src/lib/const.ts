@@ -47,7 +47,10 @@ const SqlFilterSplitKeys: {
     filter_key: 'project_ids',
     key: 'projects_id'
   },
-
+  {
+    filter_key: 'flow_step_ids',
+    key: 'flow_steps_id'
+  },
   {
     filter_key: 'workspace_ids',
     key: 'workspaces_id'

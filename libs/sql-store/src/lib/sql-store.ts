@@ -174,6 +174,15 @@ class SqlStore {
           taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
         }
 
+        // 更新父事项收合数据
+        if (key === 'task_config') {
+          res.data.list.forEach((i) => {
+            const parentId = i.data['parent_id']
+
+            parentId && taskIds.push(parentId)
+          })
+        }
+
         const { list } = res.data
 
         for (const item of list) {

@@ -226,12 +226,19 @@ class SqlStore {
   }
 
   // 增量更新数据回传客户端
-  async updateDiffForClient() {
+  async updateDiffForClient(): Promise<{
+    taskIds: string[]
+    list: any[]
+  }> {
     const info = await this.updateDiff()
 
     const { taskIds } = info
 
-    if (!taskIds.length) return []
+    if (!taskIds.length)
+      return {
+        taskIds: [],
+        list: []
+      }
 
     const res = this.query({
       filter: { task_ids: info.taskIds }

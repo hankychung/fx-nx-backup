@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 20:52:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-26 11:03:49
+ * @LastEditTime: 2023-05-04 16:15:19
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -48,7 +48,7 @@ const LeftBlock = (props: Iprops) => {
         service.selectMember({ list: [...memberList] })
       }, 100)
     }
-    if (vipType === VipPayType.UPSPACE) {
+    if (vipType === VipPayType.UPSPACE || vipType === VipPayType.RENEWVIP) {
       setResultArr([...memberList].filter((item) => !item.isTeamVip))
       setTimeout(() => {
         service.selectMember({
@@ -84,9 +84,12 @@ const LeftBlock = (props: Iprops) => {
   }, [service, setMemberSet])
   //非会员和自己
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
+    if (vipType === VipPayType.NOVIPCREATE) {
+      return memberList
+    }
     // 排序规则
     const noVipList = memberList
-      .filter((_) => !_.isVip && !_.isTeamVip)
+      .filter((_) => !_.isTeamVip)
       .map((t) => {
         // 初始化排序
         const item = { ...t, sort: 0 }
@@ -109,7 +112,7 @@ const LeftBlock = (props: Iprops) => {
     })
     //会员
     const vipList = memberList
-      .filter((_) => _.isVip || _.isTeamVip)
+      .filter((_) => _.isTeamVip)
       .map((t) => {
         // 初始化排序
         const item = { ...t, sort: 0 }
@@ -134,8 +137,12 @@ const LeftBlock = (props: Iprops) => {
     const vip_arr = vipList.filter((item) => item.userId !== mineId)
     const arr = noVipList.filter((item) => item.userId !== mineId)
     const self = memberList.filter((item) => item.userId === mineId)
-    return [...self, ...arr, ...vip_arr]
-  }, [memberList, mineId])
+    if (self[0].isTeamVip) {
+      return [...arr, ...self, ...vip_arr]
+    } else {
+      return [...self, ...arr, ...vip_arr]
+    }
+  }, [memberList, mineId, vipType])
   return (
     <div className={style.leftBlock}>
       <div className={style.lableClear}>

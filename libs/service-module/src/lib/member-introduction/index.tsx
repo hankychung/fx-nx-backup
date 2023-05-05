@@ -52,9 +52,11 @@ export const MemberIntroduction = () => {
         out_trade_no: orderCode
       })
       .then((res) => {
+        console.log(res)
+
         if (res.code === 0) {
           if (res.data === 12001) {
-            setIsShowPay(false)
+            setIsShowPay(true)
           }
         }
       })
@@ -173,7 +175,7 @@ export const MemberIntroduction = () => {
       <PayModal
         successRef={ChildRef}
         visible={show}
-        isPaySuccess={isShowPay}
+        isPay={isShowPay}
         mineId={selfUserInfo?.userId || ''}
         modalType="person"
         payType={payType}

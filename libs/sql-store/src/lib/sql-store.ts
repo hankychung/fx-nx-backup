@@ -166,8 +166,21 @@ class SqlStore {
           taskIds.push(...res.data.list.map((i) => i.keys['id']))
         }
 
+        if (key === 'task_dispatch') {
+          taskIds.push(...res.data.list.map((i) => i.keys['ref_task_id']))
+        }
+
         if (key === 'tag_bind') {
           taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
+        }
+
+        // 更新父事项收合数据
+        if (key === 'task_config') {
+          res.data.list.forEach((i) => {
+            const parentId = i.data['parent_id']
+
+            parentId && taskIds.push(parentId)
+          })
         }
 
         const { list } = res.data
@@ -222,12 +235,19 @@ class SqlStore {
   }
 
   // 增量更新数据回传客户端
-  async updateDiffForClient() {
+  async updateDiffForClient(): Promise<{
+    taskIds: string[]
+    list: any[]
+  }> {
     const info = await this.updateDiff()
 
     const { taskIds } = info
 
-    if (!taskIds.length) return []
+    if (!taskIds.length)
+      return {
+        taskIds: [],
+        list: []
+      }
 
     const res = this.query({
       filter: { task_ids: info.taskIds }
@@ -353,8 +373,9 @@ class SqlStore {
 
     for (const line of data) {
       const task_id = line['task_id']
+      const repeat_id = line['repeat_id']
 
-      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id))
+      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id, repeat_id))
 
       const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(task_id))
 

@@ -67,6 +67,7 @@ export interface FilterParamsFilter {
   dispatch_ids?: string[]
   repeat_ids?: string[]
   parent_ids?: string[] // 所属事项
+  flow_step_ids?: string[]
 
   application_ids?: string[]
   matter_states?: MatterState[]

@@ -1,9 +1,22 @@
-export const QueryTaskTakersSQL = (task_id: string) => {
-  return `SELECT taker_id, dispatch_id, is_admin, finish_time, is_view
-   FROM task_dispatch
-   WHERE ref_task_id = ${task_id} AND is_valid = 1
-   AND identity NOT IN (10804, 10811)
-   AND operate_state = 0`
+export const QueryTaskTakersSQL = (task_id: string, repeat_id: string) => {
+  return `SELECT a.ref_task_id AS task_id, a.dispatch_id, a.ref_task_id, a.creator_id, a.taker_id, a.invite_id, a.invite_type,
+  a.identity, a.state, a.operate_state, a.personal_state, a.reason, a.is_admin, a.is_dispatch, a.execute_at,
+  a.personal_remind_at, a.accept_at, a.finish_time, a.cancel_at, a.revoke_at, a.exit_at, a.set_admin_at,
+  a.topmost_at, a.create_at, a.update_at, a.delete_at, a.is_view, a.status, a.is_valid, 
+  ${repeat_id ? `e.finish_time` : 'a.finish_time'},
+  CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view
+FROM task_dispatch a
+      ${
+        repeat_id
+          ? `LEFT JOIN task_repeat_finish e ON e.repeat_id = ${repeat_id} AND a.taker_id = e.user_id`
+          : ''
+      } 
+WHERE ref_task_id IN (${task_id})
+AND is_valid = 1
+AND status = 1
+AND delete_at = 0
+AND identity NOT IN (10804, 10811)
+AND operate_state = 0;`
 }
 
 export const QueryTaskTreeTotal = (task_id: string) => {
@@ -27,49 +40,50 @@ export const QueryTaskChildTotal = (task_id: string) => {
 export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
   return `SELECT COUNT(*) AS total, COUNT(CASE WHEN finish_time = 0 THEN task_id END) AS unfinished_total,
   COUNT(CASE WHEN finish_time > 0 THEN task_id END) AS finished_total,
-  COUNT(CASE WHEN creator_id = ${user_id} AND takers != '' AND takers != '${user_id}' THEN task_id END) AS dispatch_total,
+  COUNT(CASE WHEN creator_id = ${user_id} AND takers != '' AND takers != '${user_id}'
+                 THEN task_id END) AS dispatch_total,
   COUNT(CASE WHEN creator_id != taker_id THEN task_id END) AS accepted_total,
   COUNT(CASE WHEN finish_time = 0 AND
-  (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
-  cycle_date <= DATE('now', 'localtime')) AND
-  (end_time = 0 OR DATETIME(end_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime'))
-  THEN task_id END) AS in_progress_total,
+                  (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
+                   cycle_date <= DATE('now', 'localtime')) AND
+                  (end_time = 0 OR DATETIME(end_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime'))
+                 THEN task_id END) AS in_progress_total,
   COUNT(CASE WHEN finish_time = 0 AND end_time > 0 AND
-  DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')
-  THEN task_id END) AS delay_total,
+                  DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')
+                 THEN task_id END) AS delay_total,
   COUNT(CASE WHEN takers != CAST(${user_id} AS text) THEN task_id END) AS cooperation_total,
-  COUNT(CASE WHEN takers = CAST(${user_id} AS text) THEN task_id END) AS personal_total
-  FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time, a.creator_id, a.finish_time, takers
-  FROM (SELECT a.taker_id, b.id, b.creator_id,
-  CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')
-  ELSE '' END AS cycle_date, IFNULL(d.start_time, b.start_time) AS start_time,
-  IFNULL(d.end_time, b.end_time) AS end_time, IFNULL(e.finish_time, a.finish_time) AS finish_time
-  FROM (SELECT ref_task_id, taker_id, finish_time
-  FROM task_dispatch
-  WHERE taker_id = ${user_id}
-  AND is_valid = 1
-  AND personal_state IN (0, 10409, 10604, 10611)
-  AND operate_state = 0) AS a
-  LEFT JOIN task AS b
-  ON a.ref_task_id = b.id
-  LEFT JOIN task_config AS c
-  ON b.id = c.id
-  LEFT JOIN task_repeat AS d
-  ON c.id = d.task_id AND b.repeat_type > 0 AND STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
-  LEFT JOIN task_repeat_finish AS e
-  ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}
-  LEFT JOIN task b1
-  ON c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id, ',')) = b1.id
-  WHERE a.ref_task_id = b.id
-  AND b.state = 10201
-  AND b.matter_type IN (10701, 10702, 10705)) AS a
-  LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id
-  FROM task_dispatch
-  WHERE is_valid = 1
-  AND personal_state IN (0, 10409, 10604, 10611)
-  AND operate_state = 0
-  GROUP BY ref_task_id) aa
-  ON a.id = aa.ref_task_id)`
+  COUNT(CASE WHEN takers = CAST(${user_id} AS text) OR (takers = '' AND creator_id = ${user_id})
+                 THEN task_id END) AS personal_total
+FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time, a.creator_id, a.finish_time, takers
+     FROM (SELECT a.taker_id, b.id, b.creator_id,
+                  CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')
+                       ELSE '' END AS cycle_date, IFNULL(d.start_time, b.start_time) AS start_time,
+                  IFNULL(d.end_time, b.end_time) AS end_time, IFNULL(e.finish_time, a.finish_time) AS finish_time
+             FROM (SELECT ref_task_id, taker_id, finish_time
+                     FROM task_dispatch
+                    WHERE taker_id = ${user_id}
+                      AND is_valid = 1
+                      AND personal_state IN (0, 10409, 10604, 10611)
+                      AND operate_state = 0) AS a
+                      LEFT JOIN task AS b
+                      ON a.ref_task_id = b.id
+                      LEFT JOIN task_config AS c
+                      ON b.id = c.id
+                      LEFT JOIN task_repeat AS d
+                      ON c.id = d.task_id AND b.repeat_type > 0 AND
+                         STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+                      LEFT JOIN task_repeat_finish AS e
+                      ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}
+            WHERE a.ref_task_id = b.id
+              AND b.state = 10201
+              AND b.matter_type IN (10701, 10702, 10705)) AS a
+              LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id
+                           FROM task_dispatch
+                          WHERE is_valid = 1
+                            AND personal_state IN (0, 10409, 10604, 10611)
+                            AND operate_state = 0
+                          GROUP BY ref_task_id) aa
+              ON a.id = aa.ref_task_id);`
 }
 
 export const BaseQuerySql = ({
@@ -119,11 +133,11 @@ IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
 IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
-tag_str,  application_id,
+tag_str, application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN a.project_id = '' OR a.project_id = 0 THEN 1 ELSE 0 END as is_no_project,
-z.user_id, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
-timestamp, application_id, admins, takers
+CASE WHEN z.user_id != '' THEN 1 ELSE 0 END AS flow_step_join, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 
+timestamp, admins, takers
 FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.delete_at, b.id,
         b.matter_type, b.title, b.detail, b.priority_level, b.update_at, CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files,
         IFNULL(b.remind_at, '{}') AS remind_at, IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at,
@@ -140,8 +154,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
         IFNULL(d.end_time, b.end_time) AS end_time,
         IFNULL(d.end_time_full_day, b.end_time_full_day) AS end_time_full_day,
         IFNULL(d.complete_at, b.complete_at) AS complete_at, IFNULL(e.finish_time, a.finish_time) AS finish_time,
-        CASE WHEN c.flow_step_id > 0 AND b.start_time = 0 AND b.end_time = 0
-                 THEN STRFTIME('%Y-%m-%d', DATETIME(b.create_at, 'unixepoch')) + 86399
+        CASE WHEN c.flow_step_id > 0 AND b.start_time = 0 AND b.end_time = 0 THEN b.create_at + 86399
              WHEN IFNULL(d.start_time, b.start_time) > 0
                  THEN (CASE WHEN IFNULL(d.start_time_full_day, b.start_time_full_day) = 2
                                 THEN IFNULL(d.start_time, b.start_time) + 86399

@@ -51,7 +51,8 @@ export const defaultInfo: any = {
     delete_at: 0,
     is_view: 0,
     status: 0,
-    is_valid: 0
+    is_valid: 0,
+    creator_id: ''
   },
   task_follow: {
     id: '',

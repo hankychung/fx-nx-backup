@@ -2,10 +2,16 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-26 09:59:44
+ * @LastEditTime: 2023-05-05 17:14:25
  */
 
-import React, { RefObject, useImperativeHandle, useMemo, useState } from 'react'
+import React, {
+  RefObject,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState
+} from 'react'
 import { QuickPay } from '../quick-pay/index' //快捷支付弹窗
 import PersonPayModal from '../person-pay-modal/index' //个人支付弹窗
 import TeamPayModal from '../team-pay-modal/index' //团队支付
@@ -34,7 +40,7 @@ interface fun {
 
 interface Iprops {
   visible: boolean
-  isPaySuccess?: boolean
+  isPay?: boolean
   mineId: string
   spaceId?: string
   originRoute?: string
@@ -71,10 +77,15 @@ export default function PayModal(props: Iprops) {
     showMsg,
     goInterests,
     domain,
-    originRoute
+    originRoute,
+    isPay
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
-
+  useEffect(() => {
+    if (isPay) {
+      setIsPay(true)
+    }
+  }, [isPay])
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
     // 排序规则
     const sortList = memberList.map((t) => {

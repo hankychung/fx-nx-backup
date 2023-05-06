@@ -46,7 +46,8 @@ export const MemberIntroduction = () => {
     }
   }
 
-  const getOrderDetail = () => {
+  const getOrderDetail = useMemoizedFn(() => {
+    if (!orderCode) return
     paymentApi
       .getOrderDetail({
         out_trade_no: orderCode
@@ -60,7 +61,7 @@ export const MemberIntroduction = () => {
           }
         }
       })
-  }
+  })
 
   const initFn = useMemoizedFn(() => {
     return setInterval(() => {
@@ -73,6 +74,10 @@ export const MemberIntroduction = () => {
 
     if (orderCode && show) {
       TimerRef.current = initFn()
+    }
+    if (!show) {
+      setOrderCode('')
+      setIsShowPay(false)
     }
   }, [orderCode, initFn, show])
 
@@ -182,6 +187,7 @@ export const MemberIntroduction = () => {
         memberList={memberList}
         onClose={() => {
           setShow(false)
+          setIsShowPay(false)
         }}
         showMsg={() => {
           messageApi.open({

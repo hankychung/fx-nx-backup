@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-01-10 17:56:57
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-05-05 17:14:25
+ * @LastEditTime: 2023-05-06 17:37:56
  */
 
 import React, {
@@ -84,6 +84,8 @@ export default function PayModal(props: Iprops) {
   useEffect(() => {
     if (isPay) {
       setIsPay(true)
+    } else {
+      setIsPay(false)
     }
   }, [isPay])
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {

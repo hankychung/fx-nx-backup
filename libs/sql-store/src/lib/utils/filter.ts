@@ -99,7 +99,7 @@ export const getFilterSql = (
   const ORDERS: string[] = []
 
   // 平铺模式下 查询所有小于等于今天的
-  let LeftJoinRepeatAnd = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 AND STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+  let LeftJoinRepeatAnd = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 
   LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}`
 
   if (show_wait_arrange) {

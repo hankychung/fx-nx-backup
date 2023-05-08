@@ -152,6 +152,8 @@ class SqlStore {
 
     const taskIds: string[] = []
 
+    const parentIds: string[] = []
+
     const list = await this.getNeedUpdateTables(query)
 
     const getTableUpdates = async (
@@ -179,7 +181,10 @@ class SqlStore {
           res.data.list.forEach((i) => {
             const parentId = i.data['parent_id']
 
-            parentId && taskIds.push(parentId)
+            if (parentId) {
+              taskIds.push(parentId)
+              parentIds.push(parentId)
+            }
           })
         }
 
@@ -230,23 +235,26 @@ class SqlStore {
     this.updateDB()
 
     return {
-      taskIds: [...new Set(taskIds)]
+      taskIds: [...new Set(taskIds)],
+      parentIds: [...new Set(parentIds)]
     }
   }
 
   // 增量更新数据回传客户端
   async updateDiffForClient(): Promise<{
     taskIds: string[]
+    parentIds: string[]
     list: any[]
   }> {
     const info = await this.updateDiff()
 
-    const { taskIds } = info
+    const { taskIds, parentIds } = info
 
     if (!taskIds.length)
       return {
         taskIds: [],
-        list: []
+        list: [],
+        parentIds: []
       }
 
     const res = this.query({
@@ -260,6 +268,7 @@ class SqlStore {
 
     return {
       taskIds,
+      parentIds,
       list: res
     }
   }

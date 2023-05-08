@@ -52,7 +52,7 @@ export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
                   DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')
                  THEN task_id END) AS delay_total,
   COUNT(CASE WHEN takers != CAST(${user_id} AS text) THEN task_id END) AS cooperation_total,
-  COUNT(CASE WHEN takers = CAST(1097162535731344 AS text) OR (takers ISNULL AND creator_id = ${user_id})
+  COUNT(CASE WHEN takers = CAST(${user_id} AS text) OR (takers ISNULL AND creator_id = ${user_id})
                       THEN task_id END) AS personal_total
 FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time, a.creator_id, a.finish_time, takers
      FROM (SELECT a.taker_id, b.id, b.creator_id,
@@ -187,7 +187,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
             ON b.id = c.id
             ${LeftJoinRepeatAnd}
             LEFT JOIN task b1 
-            ON c.parent_id != '' AND c.category IN (0, 2) AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id
+            ON c.parent_id != '' AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id
   WHERE a.ref_task_id = b.id
     AND b.state = 10201
     AND b.matter_type IN (10701, 10702, 10705)) AS a

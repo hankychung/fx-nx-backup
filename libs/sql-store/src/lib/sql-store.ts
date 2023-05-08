@@ -179,9 +179,11 @@ class SqlStore {
         // 更新父事项收合数据
         if (key === 'task_config') {
           res.data.list.forEach((i) => {
-            const parentId = i.data['parent_id']
+            const _parentIds = i.data['parent_id'] as string | undefined
 
-            if (parentId) {
+            if (_parentIds) {
+              const parentId = _parentIds.split(',').pop()!
+
               taskIds.push(parentId)
               parentIds.push(parentId)
             }
@@ -235,8 +237,8 @@ class SqlStore {
     this.updateDB()
 
     return {
-      taskIds: [...new Set(taskIds)],
-      parentIds: [...new Set(parentIds)]
+      taskIds: [...new Set(taskIds.map((i) => i + ''))],
+      parentIds: [...new Set(parentIds.map((i) => i + ''))]
     }
   }
 
@@ -263,7 +265,8 @@ class SqlStore {
 
     console.log('@DIFF', {
       taskIds,
-      list: res
+      list: res,
+      parentIds
     })
 
     return {

@@ -8,11 +8,13 @@ interface props {
 
 export const StringHighLight = ({
   keyword,
-  text,
+  text = '',
   highColor = '#1dd2c1'
 }: props) => {
   return useMemo(() => {
-    const strs = text.split(keyword)
+    console.log(text, keyword)
+
+    const strs = text.split(keyword || '')
 
     const last = strs.pop()
 

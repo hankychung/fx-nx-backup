@@ -13,11 +13,12 @@ import {
 } from '../type'
 import { TargetMdata } from '../type/target'
 import { styleName } from '../card/css'
+import { formatGetDomStrText } from '../utils/formart'
 
 export const attrTargetText = (text: SelectionText) => {
   text
     .text((d) => {
-      return d.title
+      return formatGetDomStrText(d.title)
     })
     .each(function () {
       textNameSlice(d3.select(this), 184)

@@ -19,7 +19,7 @@ const SqlFilterSplitKeys: {
   { filter_key: 'parent_ids', key: 'parents_id' },
   {
     filter_key: 'application_ids',
-    key: 'application_id'
+    key: 'applications_id'
   },
   {
     filter_key: 'matter_states',

@@ -52,8 +52,8 @@ export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
                   DATETIME(end_time, 'unixepoch', 'localtime') < DATETIME('now', 'localtime')
                  THEN task_id END) AS delay_total,
   COUNT(CASE WHEN takers != CAST(${user_id} AS text) THEN task_id END) AS cooperation_total,
-  COUNT(CASE WHEN takers = CAST(${user_id} AS text) OR (takers = '' AND creator_id = ${user_id})
-                 THEN task_id END) AS personal_total
+  COUNT(CASE WHEN takers = CAST(1097162535731344 AS text) OR (takers ISNULL AND creator_id = ${user_id})
+                      THEN task_id END) AS personal_total
 FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time, a.creator_id, a.finish_time, takers
      FROM (SELECT a.taker_id, b.id, b.creator_id,
                   CASE WHEN d.cycle_date IS NOT NULL THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')
@@ -63,6 +63,8 @@ FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time
                      FROM task_dispatch
                     WHERE taker_id = ${user_id}
                       AND is_valid = 1
+                      AND status = 1
+                      AND delete_at = 0
                       AND personal_state IN (0, 10409, 10604, 10611)
                       AND operate_state = 0) AS a
                       LEFT JOIN task AS b
@@ -80,6 +82,8 @@ FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time
               LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id
                            FROM task_dispatch
                           WHERE is_valid = 1
+                            AND status = 1
+                            AND delete_at = 0
                             AND personal_state IN (0, 10409, 10604, 10611)
                             AND operate_state = 0
                           GROUP BY ref_task_id) aa
@@ -191,17 +195,22 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
     LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id
                                 FROM task_dispatch
                                WHERE is_valid = 1
-                                 AND personal_state IN (0, 10409, 10604, 10611)
-                                 AND operate_state = 0
+                                  AND status = 1
+                                  AND delete_at = 0
+                                  AND personal_state IN (0, 10409, 10604, 10611)
+                                  AND operate_state = 0
                                GROUP BY ref_task_id) aa ON a.id = aa.ref_task_id
 
     LEFT JOIN (SELECT GROUP_CONCAT(taker_id) AS admins, ref_task_id
-                                FROM task_dispatch
-                               WHERE is_valid = 1
-                                 AND is_admin = 1
-                                 AND personal_state IN (0, 10409, 10604, 10611)
-                                 AND operate_state = 0
-                               GROUP BY ref_task_id) ab ON a.id = ab.ref_task_id
+          FROM task_dispatch
+          WHERE is_valid = 1
+                AND status = 1
+                AND delete_at = 0
+                AND is_admin = 1
+                AND personal_state IN (0, 10409, 10604, 10611)
+                AND operate_state = 0
+          GROUP BY ref_task_id) ab
+          ON a.id = ab.ref_task_id
 
     LEFT JOIN (SELECT object_id AS task_id, GROUP_CONCAT(tag_id) AS tag_str,
             '[' || GROUP_CONCAT('{"tag_id":"' || CAST(tag_id AS text) || '","name":"' || name || '","color":"' || color || '"}') || ']' AS tags
@@ -220,7 +229,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
               fw.id AS workspace_id, fw.name AS workspace_name, fwb.ws_type, CASE WHEN fwm.member_type = 2 THEN 1 ELSE 0 END AS is_external_member
           FROM project AS fp
           LEFT JOIN workspace_bind fwb
-          ON fp.id = fwb.project_id AND fwb.state = 1 AND (fwb.ws_type = 1 OR (fwb.ws_type = 2 AND fwb.creator_id = ${user_id} AND fp.state = 10201))
+          ON fp.id = fwb.project_id AND fwb.state = 1 AND fwb.accept_at > 0 AND (fwb.ws_type = 1 OR (fwb.ws_type = 2 AND fwb.creator_id = ${user_id} AND fp.state = 10201))
           LEFT JOIN workspace AS fw
           ON fwb.workspace_id = fw.id
           LEFT JOIN workspace_member AS fwm

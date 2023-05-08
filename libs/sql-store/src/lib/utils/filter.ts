@@ -99,7 +99,7 @@ export const getFilterSql = (
   const ORDERS: string[] = []
 
   // 平铺模式下 查询所有小于等于今天的
-  let LeftJoinRepeatAnd = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 AND STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+  let LeftJoinRepeatAnd = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 
   LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}`
 
   if (show_wait_arrange) {
@@ -423,7 +423,7 @@ export const getFilterSql = (
     const hasNull = taker_ids.includes('-1')
     const tTakerIds = taker_ids.filter((v) => v !== '-1')
 
-    const nStr = hasNull ? `(takers = '')` : ''
+    const nStr = hasNull ? `(takers IS NULL)` : ''
     const tStr = tTakerIds
       ? `(${tTakerIds.map((id) => `INSTR(takers, ${id})`).join(' OR ')})`
       : ''
@@ -554,7 +554,7 @@ export const getFilterSql = (
     // 个人事项
     case FilterQueryType.personal: {
       WHERES.unshift(
-        `(takers = CAST(${user_id} AS text) OR (takers = '' AND creator_id = ${user_id}))`
+        `(takers = CAST(${user_id} AS text) OR (takers ISNULL AND creator_id = ${user_id}))`
       )
       // WHERES.push(`taker_total = 1 AND takers = ${user_id}`)
       break

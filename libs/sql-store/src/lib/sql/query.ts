@@ -72,8 +72,7 @@ FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time
                       LEFT JOIN task_config AS c
                       ON b.id = c.id
                       LEFT JOIN task_repeat AS d
-                      ON c.id = d.task_id AND b.repeat_type > 0 AND
-                         STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+                      ON c.id = d.task_id AND b.repeat_type > 0
                       LEFT JOIN task_repeat_finish AS e
                       ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}
             WHERE a.ref_task_id = b.id

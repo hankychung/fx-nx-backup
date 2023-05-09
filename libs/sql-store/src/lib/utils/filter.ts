@@ -30,7 +30,11 @@ export const getNullOrNoNullIds = (ids: string[], sqlKey: string) => {
 }
 
 export const getFullDoseCountSql = ({ user_id }: { user_id: string }) => {
-  return FullDoseCountSql({ user_id })
+  const countSql = FullDoseCountSql({ user_id })
+
+  console.log('getFullDoseCountSql', countSql)
+
+  return countSql
 }
 
 export const getFilterSql = (

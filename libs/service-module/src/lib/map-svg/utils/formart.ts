@@ -126,3 +126,15 @@ export const formatMdata = (data: Data, isSuperiors?: boolean) => {
 
   return formatData
 }
+
+export const formatGetDomStrText = (str: string) => {
+  const span = document.createElement('span')
+
+  span.innerHTML = str
+
+  const text = span.textContent
+
+  span.remove()
+
+  return text
+}

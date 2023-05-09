@@ -152,6 +152,8 @@ class SqlStore {
 
     const taskIds: string[] = []
 
+    const parentIds: string[] = []
+
     const list = await this.getNeedUpdateTables(query)
 
     const getTableUpdates = async (
@@ -177,9 +179,14 @@ class SqlStore {
         // 更新父事项收合数据
         if (key === 'task_config') {
           res.data.list.forEach((i) => {
-            const parentId = i.data['parent_id']
+            const _parentIds = i.data['parent_id'] as string | undefined
 
-            parentId && taskIds.push(parentId)
+            if (_parentIds) {
+              const parentId = _parentIds.split(',').pop()!
+
+              taskIds.push(parentId)
+              parentIds.push(parentId)
+            }
           })
         }
 
@@ -230,23 +237,26 @@ class SqlStore {
     this.updateDB()
 
     return {
-      taskIds: [...new Set(taskIds)]
+      taskIds: [...new Set(taskIds.map((i) => i + ''))],
+      parentIds: [...new Set(parentIds.map((i) => i + ''))]
     }
   }
 
   // 增量更新数据回传客户端
   async updateDiffForClient(): Promise<{
     taskIds: string[]
+    parentIds: string[]
     list: any[]
   }> {
     const info = await this.updateDiff()
 
-    const { taskIds } = info
+    const { taskIds, parentIds } = info
 
     if (!taskIds.length)
       return {
         taskIds: [],
-        list: []
+        list: [],
+        parentIds: []
       }
 
     const res = this.query({
@@ -255,11 +265,13 @@ class SqlStore {
 
     console.log('@DIFF', {
       taskIds,
-      list: res
+      list: res,
+      parentIds
     })
 
     return {
       taskIds,
+      parentIds,
       list: res
     }
   }

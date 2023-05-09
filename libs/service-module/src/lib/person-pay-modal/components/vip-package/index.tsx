@@ -109,7 +109,7 @@ const VipPackage = (props: Iprops) => {
       vipTypeFun()
       getCou()
     }
-  }, [vipTypeFun, getCou,vipMealType])
+  }, [vipTypeFun, getCou, vipMealType])
   // 背景图
   const bgUrl =
     vipMealType === VipMealType.PERSON

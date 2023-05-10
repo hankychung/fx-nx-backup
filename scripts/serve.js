@@ -14,6 +14,10 @@ const envChoices = [
     value: 'test'
   },
   {
+    name: 'PREPROD环境',
+    value: 'pre_prod'
+  },
+  {
     name: 'PROD环境',
     value: 'prod'
   }

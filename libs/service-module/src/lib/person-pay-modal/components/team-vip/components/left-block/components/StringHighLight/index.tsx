@@ -12,8 +12,6 @@ export const StringHighLight = ({
   highColor = '#1dd2c1'
 }: props) => {
   return useMemo(() => {
-    console.log(text, keyword)
-
     const strs = text.split(keyword || '')
 
     const last = strs.pop()

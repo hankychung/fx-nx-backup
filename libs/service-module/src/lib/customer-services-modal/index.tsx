@@ -35,7 +35,10 @@ const CustomerServicesModal = (props: Iprops) => {
         </div>
 
         <div className={style.qrcode}>
-          <CustomerServicesQrcode></CustomerServicesQrcode>
+          <img
+            src="https://cdn.flyele.net/resources/customer_service_qr_img.png"
+            alt="客服"
+          />
           <div>请使用微信/企业微信扫码</div>
         </div>
         <div className={style.phone_num}>

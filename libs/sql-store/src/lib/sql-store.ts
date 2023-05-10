@@ -195,24 +195,12 @@ class SqlStore {
         for (const item of list) {
           const { type, keys, data } = item
 
-          if (type === 'insert') {
-            // sql += this.getInsertSql(data, key) + ';'
+          // 删除逻辑
+          this.db!.run(this.getDelSql(keys, key) + ';')
 
+          // 重新插入数据
+          if (type === 'insert' || type === 'update') {
             this.db!.run(this.getInsertSql(data, key) + ';')
-
-            continue
-          }
-
-          if (type === 'update') {
-            // 更新逻辑
-            this.db!.run(this.getDelSql(keys, key) + ';')
-            this.db!.run(this.getInsertSql(data, key) + ';')
-            continue
-          }
-
-          if (type === 'delete') {
-            // 删除逻辑
-            this.db!.run(this.getDelSql(keys, key) + ';')
           }
         }
 

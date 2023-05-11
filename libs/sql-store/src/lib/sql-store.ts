@@ -231,7 +231,7 @@ class SqlStore {
   }
 
   // 增量更新数据回传客户端
-  async updateDiffForClient(): Promise<{
+  async updateDiffForClient(mode: 1 | 2): Promise<{
     taskIds: string[]
     parentIds: string[]
     list: any[]
@@ -248,7 +248,8 @@ class SqlStore {
       }
 
     const res = this.query({
-      filter: { task_ids: info.taskIds }
+      filter: { task_ids: info.taskIds },
+      show_model: mode
     })
 
     console.log('@DIFF', {

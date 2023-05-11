@@ -166,8 +166,8 @@ class ServiceWorkerUtils {
   }
 
   // 增量数据更新
-  static updateDiff() {
-    return promiseWorkerMessage(NotParamsWorkerKey.UPDATE_DIFF)
+  static updateDiff(mode: 1 | 2) {
+    return promiseWorkerMessage(ServiceWorkerKey.UPDATE_DIFF, { mode })
   }
 }
 

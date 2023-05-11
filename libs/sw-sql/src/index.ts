@@ -12,11 +12,13 @@ class DBHandler {
       let responseData: any = null
 
       console.log('onmessage')
+
       switch (data.key) {
         case ServiceWorkerKey.INIT_DB: {
           await sqlStore.initDB(data.data as any)
           break
         }
+
         case ServiceWorkerKey.QUERY_FULL_VIEW_LIST: {
           const checkIsReady = () => sqlStore.isReady
 
@@ -29,17 +31,20 @@ class DBHandler {
           responseData = sqlStore.query(data.data as any)
           break
         }
+
         case ServiceWorkerKey.UPDATE_TOKEN: {
           sqlStore.updateToken(data.data as string)
           break
         }
+
+        case ServiceWorkerKey.UPDATE_DIFF: {
+          responseData = await sqlStore.updateDiffForClient(data.data as any)
+          break
+        }
+
         case NotParamsWorkerKey.QUERY_FULL_VIEW_COUNT: {
           responseData = sqlStore.queryFullDoseCount()
           break
-        }
-        case NotParamsWorkerKey.UPDATE_DIFF: {
-          // sqlStore.updateDiffForClient()
-          responseData = await sqlStore.updateDiffForClient()
         }
       }
 

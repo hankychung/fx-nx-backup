@@ -11,7 +11,7 @@ class EnvStore {
     dev: { host: 'https://pay-test.flyele.vip' },
     test: { host: 'https://pay-test.flyele.vip' },
     pre_prod: { host: 'https://pay.pre.flyele.vip' },
-    prod: { host: 'https://pay.flyele.vip' }
+    prod: { host: 'https://pay.flyele.net' }
   }
 
   initEnv(env: string) {

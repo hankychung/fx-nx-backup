@@ -14,7 +14,7 @@ const envChoices = [
     value: 'test'
   },
   {
-    name: 'PREPROD环境',
+    name: 'PRE_PROD环境',
     value: 'pre_prod'
   },
   {

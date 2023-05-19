@@ -22,7 +22,7 @@ export enum VipTypeEnum {
   Team = 2
 }
 
-export const MemberIntroduction = () => {
+export const MemberIntroduction = ({ widthStyle }: { widthStyle: string }) => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -165,7 +165,7 @@ export const MemberIntroduction = () => {
   }, [vipType])
 
   return (
-    <div className={styles.memberIntroduction}>
+    <div className={styles.memberIntroduction} style={{ width: widthStyle }}>
       {contextHolder}
       {memberPowerStaticData.map((item) => {
         return (

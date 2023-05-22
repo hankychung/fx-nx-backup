@@ -1,5 +1,5 @@
 export const QueryTaskTakersSQL = (task_id: string, repeat_id: string) => {
-  return `SELECT a.ref_task_id AS task_id, a.dispatch_id, a.ref_task_id, a.creator_id, a.taker_id, a.invite_id, a.invite_type,
+  return `SELECT CAST(a.ref_task_id AS text) AS task_id, CAST(a.dispatch_id AS text) AS dispatch_id, CAST(a.ref_task_id AS text) AS ref_task_id, CAST(a.creator_id AS text) AS creator_id, CAST(a.taker_id AS text) AS taker_id, CAST(a.invite_id AS text) AS invite_id, a.invite_type,
   a.identity, a.state, a.operate_state, a.personal_state, a.reason, a.is_admin, a.is_dispatch, a.execute_at,
   a.personal_remind_at, a.accept_at, a.finish_time, a.cancel_at, a.revoke_at, a.exit_at, a.set_admin_at,
   a.topmost_at, a.create_at, a.update_at, a.delete_at, a.is_view, a.status, a.is_valid, 
@@ -113,10 +113,10 @@ export const BaseQuerySql = ({
        CAST(CASE WHEN start_time > 0 AND start_time_full_day = 1 THEN start_time
         WHEN start_time = 0 AND end_time > 0 AND end_time_full_day = 1 THEN end_time
         ELSE '9999999999' END AS int) AS time_idx
-FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.operate_state, a.id AS task_id, a.matter_type, a.repeat_type,
-a.end_repeat_at, a.create_at, a.category, a.repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
-a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, a.project_id,
-IFNULL(f.content, '') AS conclusion, a.creator_id, a.priority_level, a.update_at, a.complete_at,
+FROM (SELECT CAST(a.dispatch_id AS text) AS dispatch_id, a.identity, CAST(a.taker_id AS text) AS taker_id, a.state, a.personal_state, a.operate_state, CAST(a.id AS text) AS task_id, a.matter_type, a.repeat_type,
+a.end_repeat_at, a.create_at, a.category, CAST(a.repeat_id AS text) AS repeat_id, a.cycle, a.cycle_date, a.title, a.detail, a.files,
+a.start_time, a.start_time_full_day, a.end_time, a.end_time_full_day, a.remind_at, a.widget, CAST(a.project_id AS text) AS project_id,
+IFNULL(f.content, '') AS conclusion, CAST(a.creator_id AS text) AS creator_id, a.priority_level, a.update_at, a.complete_at,
 a.finish_time, CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS is_follow,
 CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide,
 CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime') OR
@@ -127,16 +127,16 @@ CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime'
     DATETIME('now', 'localtime')) THEN 3
     WHEN a.complete_at > 0 AND (a.complete_at <= a.end_time OR a.end_time = 0) THEN 4
     WHEN a.complete_at > 0 AND a.end_time > 0 AND a.complete_at > a.end_time THEN 5 END AS matter_state,
-w.project_name, project_creator_id, 
-CASE WHEN workspace_id IS NULL THEN 0 ELSE workspace_id END AS workspace_id, workspace_name, ws_type, 
+w.project_name, CAST(project_creator_id AS text) AS project_creator_id, 
+CASE WHEN workspace_id IS NULL THEN 0 ELSE CAST(workspace_id AS text) END AS workspace_id, workspace_name, ws_type, 
 is_external_member,
 IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
 IFNULL(k.child_total, 0) AS child_total, CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child,
 IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
 IFNULL(k.file_total, 0) AS file_total, IFNULL(gadget_meeting_total, 0) AS gadget_meeting_total,
-IFNULL(gadget_todo_total, 0) AS gadget_todo_total, flow_step_id, flow_step_name, flow_step_complete_at,
-tag_str, application_id,
+IFNULL(gadget_todo_total, 0) AS gadget_todo_total, CAST(flow_step_id AS text) AS flow_step_id, flow_step_name, flow_step_complete_at,
+tag_str, CAST(application_id AS text) AS application_id,
 IFNULL(application_name, '') AS application_name,
 case WHEN a.project_id = '' OR a.project_id = 0 THEN 1 ELSE 0 END as is_no_project,
 CASE WHEN z.user_id != '' THEN 1 ELSE 0 END AS flow_step_join, flow_step_user_count, STRFTIME('%Y-%m-%d', DATETIME(date, 'unixepoch', 'localtime')) AS date, 

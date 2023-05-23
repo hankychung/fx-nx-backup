@@ -7,6 +7,7 @@ import operation from '../../../assets/payImg/operation.svg'
 import member from '../../../assets/payImg/member.svg'
 import takers from '../../../assets/payImg/takers.svg'
 import target from '../../../assets/payImg/target.svg'
+import application from '../../../assets/payImg/application.svg'
 import space from '../../../assets/payImg/space.svg'
 import data from '../../../assets/payImg/data.svg'
 import space_view from '../../../assets/payImg/space_view.svg'
@@ -131,7 +132,7 @@ export const createVipMealText = (): TemIProps => {
         {
           title: '应用库',
           desc: '搭建事项模板、业务流程，提高协作效率',
-          icon: target
+          icon: application
         }
       ]
     }

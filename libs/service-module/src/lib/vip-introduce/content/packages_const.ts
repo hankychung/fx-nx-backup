@@ -110,7 +110,7 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '个人文件容量50G',
+        title: '个人文件容量20G',
         active: true
       },
       {

@@ -86,7 +86,7 @@ export const createVipMealText = (): TemIProps => {
         },
         {
           title: '更大附件、更大储存量',
-          desc: '单个文件上限300M，个人文件容量50G',
+          desc: '单个文件上限300M，个人文件容量20G',
           icon: files
         },
         {

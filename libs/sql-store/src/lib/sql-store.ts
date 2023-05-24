@@ -372,16 +372,7 @@ class SqlStore {
       getFilterSql({ ...params, timestamp, user_id: this.userId })
     )
 
-    const data = (sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []).map(
-      (i) =>
-        ({
-          ...i,
-          application_id:
-            i['application_id'] === '0' ? null : i['application_id'],
-          flow_step_id: i['flow_step_id'] === '0' ? null : i['flow_step_id'],
-          project_id: i['project_id'] === '0' ? null : i['project_id']
-        } as any)
-    )
+    const data = sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []
 
     for (const line of data) {
       const task_id = line['task_id']

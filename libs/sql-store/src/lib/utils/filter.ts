@@ -61,7 +61,7 @@ export const getFilterSql = (
 
     is_follow,
     schedule_hide,
-    conclusion,
+    conclusion: _conclusion,
 
     tags,
 
@@ -181,7 +181,10 @@ export const getFilterSql = (
   /**
    * 是否有总结
    */
-  if (conclusion) {
+  if (_conclusion) {
+    const conclusion =
+      typeof _conclusion === 'number' ? _conclusion : parseInt(_conclusion)
+
     if (conclusion === 1) {
       WHERES.push(`conclusion != ''`)
     } else if (conclusion === 2) {

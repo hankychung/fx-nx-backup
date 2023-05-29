@@ -13,6 +13,7 @@ import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 import { defaultDiffStamp } from './const'
 import _ from 'lodash'
+import { yieldConsole } from './utils/console'
 
 const wasmUrl = '/sql-wasm.wasm'
 
@@ -93,10 +94,17 @@ class SqlStore {
     const firstData = list[0]
 
     const createDB = () => {
+      yieldConsole({
+        type: 'createDB-start'
+      })
+
       const db = new SQL.Database()
       this.db = db
       db.run(createSql)
       this.recordInfo = _.cloneDeep(defaultRecord)
+      yieldConsole({
+        type: 'createDB-end'
+      })
     }
 
     if (firstData && firstData.type === 1) {
@@ -164,56 +172,70 @@ class SqlStore {
       const res = await this.getUpdates(key, lastId, pageIdx)
 
       if (!res.code && res.data) {
-        if (key === 'task') {
-          taskIds.push(...res.data.list.map((i) => i.keys['id']))
-        }
+        try {
+          if (key === 'task') {
+            taskIds.push(...res.data.list.map((i) => i.keys['id']))
+          }
 
-        if (key === 'task_dispatch') {
-          taskIds.push(...res.data.list.map((i) => i.keys['ref_task_id']))
-        }
+          if (key === 'task_dispatch') {
+            taskIds.push(...res.data.list.map((i) => i.keys['ref_task_id']))
+          }
 
-        if (key === 'tag_bind') {
-          taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
-        }
+          if (key === 'tag_bind') {
+            taskIds.push(...res.data.list.map((i) => i.keys['object_id']))
+          }
 
-        // 更新父事项收合数据
-        if (key === 'task_config') {
-          res.data.list.forEach((i) => {
-            const _parentIds = i.data['parent_id'] as string | undefined
+          // 更新父事项收合数据
+          if (key === 'task_config') {
+            res.data.list.forEach((i) => {
+              const _parentIds = i.data['parent_id'] as string | undefined
 
-            if (_parentIds) {
-              const parentId = _parentIds.split(',').pop()!
+              if (_parentIds) {
+                const parentId = _parentIds.split(',').pop()!
 
-              taskIds.push(parentId)
-              parentIds.push(parentId)
+                taskIds.push(parentId)
+                parentIds.push(parentId)
+              }
+            })
+          }
+
+          const { list } = res.data
+
+          for (const item of list) {
+            const { type, keys, data } = item
+
+            // 删除逻辑
+            this.db!.run(this.getDelSql(keys, key) + ';')
+
+            // 重新插入数据
+            if (type === 'insert' || type === 'update') {
+              this.db!.run(this.getInsertSql(data, key) + ';')
+            }
+          }
+
+          if (list.length) {
+            const lastItem = list[list.length - 1]
+
+            this.recordInfo.attach_info[key] = {
+              id: lastItem.id
+            }
+          }
+
+          if (list.length >= 20) {
+            await getTableUpdates(key, pageIdx + 1, lastId)
+          }
+        } catch (e) {
+          yieldConsole({
+            type: 'error',
+            data: {
+              type: 'writting',
+              info: {
+                key,
+                e,
+                res
+              }
             }
           })
-        }
-
-        const { list } = res.data
-
-        for (const item of list) {
-          const { type, keys, data } = item
-
-          // 删除逻辑
-          this.db!.run(this.getDelSql(keys, key) + ';')
-
-          // 重新插入数据
-          if (type === 'insert' || type === 'update') {
-            this.db!.run(this.getInsertSql(data, key) + ';')
-          }
-        }
-
-        if (list.length) {
-          const lastItem = list[list.length - 1]
-
-          this.recordInfo.attach_info[key] = {
-            id: lastItem.id
-          }
-        }
-
-        if (list.length >= 20) {
-          await getTableUpdates(key, pageIdx + 1, lastId)
         }
       }
     }
@@ -277,7 +299,17 @@ class SqlStore {
   private async updateBundle(data: Datum) {
     const { sign_url, id, attach_info, type } = data
 
+    yieldConsole({
+      type: 'unzip-start',
+      data
+    })
+
     await this.fetchZip(sign_url)
+
+    yieldConsole({
+      type: 'unzip-end',
+      data
+    })
 
     this.recordInfo = { id, attach_info }
 
@@ -285,13 +317,19 @@ class SqlStore {
   }
 
   private async request(url: string) {
+    const requestUrl = `${this.host}/${url}`
+
+    yieldConsole({ type: 'api-start', url: requestUrl })
+
     const data = await (
-      await fetch(`${this.host}/${url}`, {
+      await fetch(requestUrl, {
         headers: {
           Authorization: this.token
         }
       })
     ).json()
+
+    yieldConsole({ type: 'api-end', url: requestUrl })
 
     return data
   }
@@ -366,6 +404,8 @@ class SqlStore {
   query(params: FilterParamsProps) {
     console.log('@query', params)
 
+    yieldConsole({ type: 'query-start', data: params })
+
     const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
     const sqlTasks = this.db!.exec(
@@ -412,6 +452,8 @@ class SqlStore {
       line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
     }
 
+    yieldConsole({ type: 'query-end', data: params })
+
     if (params.direction === Direction.up) {
       const old = JSON.parse(JSON.stringify(data))
 
@@ -440,6 +482,10 @@ class SqlStore {
 
   // 将全量包的内容写入数据库
   private async updateTable(isDiff: boolean) {
+    yieldConsole({
+      type: 'update-table-start'
+    })
+
     const guide = await this.parseFile('guide')
 
     for (const [table, info] of Object.entries(guide)) {
@@ -451,25 +497,37 @@ class SqlStore {
         // let sqlStr = ''
 
         content.forEach((item) => {
-          if (isDiff) {
-            const { type, data, keys } = item
+          try {
+            if (isDiff) {
+              const { type, data, keys } = item
 
-            if (type === 'delete') {
-              console.log('@del', data, table, keys)
-              this.db!.run(this.getDelSql(keys, table) + ';')
+              if (type === 'delete') {
+                console.log('@del', data, table, keys)
+                this.db!.run(this.getDelSql(keys, table) + ';')
 
-              // sqlStr += this.getDelSql(keys, table) + ';'
-            } else {
-              // sqlStr += this.getInsertSql(data, table) + ';'
-              this.db!.run(this.getInsertSql(data, table) + ';')
+                // sqlStr += this.getDelSql(keys, table) + ';'
+              } else {
+                // sqlStr += this.getInsertSql(data, table) + ';'
+                this.db!.run(this.getInsertSql(data, table) + ';')
+              }
+
+              return
             }
 
-            return
+            // sqlStr += this.getInsertSql(item, table) + ';'
+
+            this.db!.run(this.getInsertSql(item, table) + ';')
+          } catch (e) {
+            yieldConsole({
+              type: 'error',
+              data: {
+                e,
+                item,
+                table,
+                type: 'writting-diff-update'
+              }
+            })
           }
-
-          // sqlStr += this.getInsertSql(item, table) + ';'
-
-          this.db!.run(this.getInsertSql(item, table) + ';')
         })
 
         // this.db!.run(sqlStr)
@@ -477,6 +535,8 @@ class SqlStore {
     }
 
     this.updateDB()
+
+    yieldConsole({ type: 'update-table-end' })
   }
 
   private updateDB() {

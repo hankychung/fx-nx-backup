@@ -3,7 +3,8 @@ import { SqlStore } from '@flyele-nx/sql-store'
 export type FilterKeys = keyof SqlStore.Filter.FilterParamsFilter
 
 export enum NotParamsWorkerKey {
-  QUERY_FULL_VIEW_COUNT = 'QUERY_FULL_VIEW_COUNT'
+  QUERY_FULL_VIEW_COUNT = 'QUERY_FULL_VIEW_COUNT',
+  CONSOLE = 'CONSOLE'
 }
 
 export enum ServiceWorkerKey {
@@ -31,6 +32,10 @@ export type ServiceWorkerData = {
     taskIds: string[]
     parentIds: string[]
     list: any[]
+  }
+  [NotParamsWorkerKey.CONSOLE]: {
+    type: string
+    data: any
   }
 }
 

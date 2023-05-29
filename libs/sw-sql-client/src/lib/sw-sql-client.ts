@@ -70,7 +70,12 @@ function promiseWorkerMessage<
 }
 
 class ServiceWorkerUtils {
-  static async registerServiceWorker(url: string) {
+  static async registerServiceWorker(
+    url: string,
+    options?: {
+      consoleCollector?: (info: any) => void
+    }
+  ) {
     if (!('serviceWorker' in navigator)) {
       console.error('serviceWorker is not supported')
       return
@@ -79,6 +84,15 @@ class ServiceWorkerUtils {
     console.log('serviceWorker init')
 
     serviceWorker = new Worker(url)
+
+    serviceWorker.addEventListener('message', ({ data: { key, info } }) => {
+      if (key === 'console') {
+        console.log('@console', info)
+        if (options?.consoleCollector) {
+          options.consoleCollector(info)
+        }
+      }
+    })
 
     return serviceWorker
   }

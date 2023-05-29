@@ -36,7 +36,10 @@ function yieldConsole(info: {
 }) {
   self.postMessage({
     key: 'console',
-    info,
+    info: {
+      ...info,
+      timestamp: new Date().valueOf()
+    },
     date: new Date().valueOf()
   })
 }

@@ -64,7 +64,6 @@ FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time
                     WHERE taker_id = ${user_id}
                       AND is_valid = 1
                       AND status = 1
-                      AND delete_at = 0
                       AND personal_state IN (0, 10409, 10604, 10611)
                       AND operate_state = 0) AS a
                       LEFT JOIN task AS b

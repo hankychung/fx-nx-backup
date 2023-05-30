@@ -319,19 +319,30 @@ class SqlStore {
   private async request(url: string) {
     const requestUrl = `${this.host}/${url}`
 
-    yieldConsole({ type: 'api-start', url: requestUrl })
+    try {
+      yieldConsole({ type: 'api-start', url: requestUrl })
 
-    const data = await (
-      await fetch(requestUrl, {
-        headers: {
-          Authorization: this.token
+      const data = await (
+        await fetch(requestUrl, {
+          headers: {
+            Authorization: this.token
+          }
+        })
+      ).json()
+
+      yieldConsole({ type: 'api-end', url: requestUrl })
+
+      return data
+    } catch (e) {
+      yieldConsole({
+        type: 'error',
+        data: {
+          type: 'api-error',
+          url: requestUrl,
+          e
         }
       })
-    ).json()
-
-    yieldConsole({ type: 'api-end', url: requestUrl })
-
-    return data
+    }
   }
 
   private async getUserData() {

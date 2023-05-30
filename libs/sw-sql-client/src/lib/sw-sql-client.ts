@@ -91,7 +91,6 @@ class ServiceWorkerUtils {
 
     serviceWorker.addEventListener('message', ({ data: { key, info } }) => {
       if (key === 'console') {
-        console.log('@console', info)
         if (options?.consoleCollector) {
           options.consoleCollector(info)
         }

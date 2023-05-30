@@ -11,7 +11,7 @@ import { VipIntroduce } from './lib/vip-introduce/index'
 import { VipIntroduceContent } from './lib/vip-introduce/content'
 import { init, objectiveApi as NxObjectiveApi } from '@flyele-nx/api' //客服弹窗
 import { AvatarEdit } from './lib/avatar-edit' //头像编辑
-export * from './lib/service-module'
+export * from './lib/schedule-list/schedule-list' // 日程列表
 
 export {
   MapSvg,

@@ -24,7 +24,11 @@ export const getNullOrNoNullIds = (ids: string[], sqlKey: string) => {
     link = 'AND'
   }
 
-  const inStr = filterIds.length ? `${sqlKey} IN (${filterIds.join(',')})` : ''
+  const inStr = filterIds.length
+    ? `${sqlKey} IN (${filterIds
+        .map((i) => (i.length > 10 ? `"${i}"` : i))
+        .join(',')})`
+    : ''
 
   return `(${isNullStr} ${link} ${inStr})`
 }

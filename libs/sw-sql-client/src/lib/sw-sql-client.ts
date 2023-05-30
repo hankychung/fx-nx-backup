@@ -73,7 +73,11 @@ class ServiceWorkerUtils {
   static async registerServiceWorker(
     url: string,
     options?: {
-      consoleCollector?: (info: any) => void
+      consoleCollector?: (info: {
+        type: string
+        timestamp: number
+        data?: object
+      }) => void
     }
   ) {
     if (!('serviceWorker' in navigator)) {

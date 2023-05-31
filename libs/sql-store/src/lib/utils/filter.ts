@@ -129,15 +129,18 @@ export const getFilterSql = (
 
   // 如果是收合模式只查询循环时间小于等于今天的 或者循环次数仅等于一的
   if (queryModel === 2) {
-    LeftJoinRepeatAnd = `LEFT JOIN(SELECT task_id, repeat_id, start_time, end_time, start_time_full_day, 
-        end_time_full_day, complete_at, cycle, MAX(cycle_date) AS cycle_date
-      FROM task_repeat 
-      WHERE STRFTIME('%Y-%m-%d', cycle_date, 'localtime') <= DATETIME('now', 'localtime') OR cycle = 1
-      GROUP BY task_id) AS d ON c.id = d.task_id AND b.repeat_type > 0
-      LEFT JOIN (SELECT MAX(finish_time) AS finish_time, task_id
-        FROM task_repeat_finish
-      WHERE user_id = ${user_id}
-      GROUP BY task_id) AS e ON a.ref_task_id = e.task_id`
+    LeftJoinRepeatAnd = `LEFT JOIN(SELECT task_id, start_time, end_time, start_time_full_day, end_time_full_day,
+            complete_at, repeat_id, cycle,
+            MAX(cycle_date) AS cycle_date
+      FROM (select task_id, start_time, end_time, start_time_full_day, end_time_full_day,
+                  complete_at, repeat_id, cycle, cycle_date,
+                  max(create_at)
+          from task_repeat
+          group by task_id, cycle)
+      WHERE datetime(cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+      GROUP BY task_id) AS d
+      ON c.id = d.task_id AND b.repeat_type > 0
+      LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}`
   }
 
   /**

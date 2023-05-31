@@ -10,6 +10,8 @@ import { service } from './lib/service'
 import SSe from './lib/sse'
 import './lib/payment'
 
+export * from './lib/biz'
+
 // 全局类型
 import {
   ILoginKeyParams,

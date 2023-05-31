@@ -103,15 +103,17 @@ class Service {
       return data
     }
 
-    throw new Error(`error: ${config.url}`)
+    throw new Error(`error get: ${config.url}`)
   }
 
-  async post(config: RequestConfig): Promise<any> {
+  async post<T = any>(config: RequestConfig): Promise<T> {
     const { data } = await this.axios.post(`${config.url}`, config.data)
 
-    return data
+    if (!data.code) {
+      return data
+    }
 
-    throw new Error(`error: ${config.url}`)
+    throw new Error(`error post: ${config.url}`)
   }
 }
 

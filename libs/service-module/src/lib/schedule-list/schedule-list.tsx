@@ -1,14 +1,36 @@
+import { BizApi } from '@flyele-nx/service'
+import { useEffect } from 'react'
 import styles from './schedule-list.module.scss'
+import { useMemoizedFn } from 'ahooks'
+import { useScheduleStore } from './utils/useScheduleStore'
 
-/* eslint-disable-next-line */
-export interface ScheduleListProps {}
+interface ScheduleListProps {
+  date: string
+}
 
-export function ScheduleList(props: ScheduleListProps) {
+export function ScheduleList({ date }: ScheduleListProps) {
+  const initDate = useScheduleStore((state) => state.initDate)
+  const list = useScheduleStore((state) => state.schedule[date])
+
+  const initList = useMemoizedFn(() => {
+    BizApi.getScheduleList({ type: 'today', day: date }).then((res) => {
+      console.log('bizres', res)
+      const list = res.data?.schedule || []
+
+      initDate({ date, list })
+    })
+  })
+
   return (
-    <div className={styles['container']}>
-      <h1>Welcome to ScheduleList!</h1>
+    <div className={styles['container']} onClick={initList}>
+      <span>init</span>
+      <span>{date}</span>
+
+      <div>
+        {(list || []).map((i) => (
+          <div>{i.title}</div>
+        ))}
+      </div>
     </div>
   )
 }
-
-export default ScheduleList

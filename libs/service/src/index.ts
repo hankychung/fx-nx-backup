@@ -20,6 +20,8 @@ import {
   IUserInfo
 } from './lib/typings'
 
+import { ISchedule } from './lib/typings/biz/dayView'
+
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
 
@@ -37,5 +39,6 @@ export type {
   IContactsAndStatus,
   IErrorResponse,
   IUserInfo,
-  OrderSystemType
+  OrderSystemType,
+  ISchedule
 }

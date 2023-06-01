@@ -28,7 +28,7 @@ export interface IDayView {
   /**
    * 日程列表
    */
-  schedule?: Schedule[]
+  schedule?: ISchedule[]
   /**
    * 日程列表已完成的总数
    */
@@ -352,7 +352,7 @@ export interface ProtoDayViewGetDayViewReplyCustomDashboardLabel {
 /**
  * .Schedule，日程列表
  */
-export interface Schedule {
+export interface ISchedule {
   application_id?: string
   application_name?: string
   biz?: Biz

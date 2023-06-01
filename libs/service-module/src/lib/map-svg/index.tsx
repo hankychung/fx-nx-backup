@@ -127,8 +127,8 @@ const MapSvgRender: ForwardRefRenderFunction<MapSvgRef, MavpSvgProps> = (
                     dx="0"
                     dy="0"
                     stdDeviation="3"
-                    flood-color="#000"
-                    flood-opacity="0.1"
+                    floodColor="#000"
+                    floodOpacity="0.1"
                   />
                 </filter>
               </defs>

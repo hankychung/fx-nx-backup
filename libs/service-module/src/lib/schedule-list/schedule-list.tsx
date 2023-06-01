@@ -1,5 +1,4 @@
 import { BizApi } from '@flyele-nx/service'
-import { useEffect } from 'react'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from './utils/useScheduleStore'
@@ -28,7 +27,7 @@ export function ScheduleList({ date }: ScheduleListProps) {
 
       <div>
         {(list || []).map((i) => (
-          <div>{i.title}</div>
+          <div key={i.ref_task_id + (i.repeat_id || '')}>{i.title}</div>
         ))}
       </div>
     </div>

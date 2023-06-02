@@ -55,80 +55,86 @@ class SqlStore {
     this.userId = p.userId
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
-    // 已存在打开的数据库（切换用户）- 重置
-    if (this.db) {
-      this.db.close()
-      this.db = null
-      this.recordInfo = _.cloneDeep(defaultRecord)
-    }
-
-    this.dbId = `${p.env}-${p.userId}`
-
-    this.recordKey = `${this.dbId}-record`
-
-    if (p.host !== 'https://api.flyele.vip') {
-      this.host = p.host
-    }
-
-    this.token = p.token
-
-    const SQL = await initSql({
-      locateFile: () => loadWasmUrl
-    })
-
-    const data = await (await fetch(`${this.host}/userc/v2/system/now`)).json()
-
-    if (data.data) {
-      this.timeDiff = Math.floor(Date.now() / 1000) - data.data
-    }
-
-    // 从indexeddb获取数据库
-    const storeDB = await get(this.dbId)
-
-    // 从indexeddb获取更新信息
-    this.recordInfo = (await get(this.recordKey)) || this.recordInfo
-
-    // 获取用户的初始化数据
-    const list = await this.getUserData()
-
-    const firstData = list[0]
-
-    const createDB = () => {
-      yieldConsole({
-        type: 'createDB-start'
-      })
-
-      const db = new SQL.Database()
-      this.db = db
-      db.run(createSql)
-      this.recordInfo = _.cloneDeep(defaultRecord)
-      yieldConsole({
-        type: 'createDB-end'
-      })
-    }
-
-    if (firstData && firstData.type === 1) {
-      // 存在全量包, 需要根据全量包重新建表
-      createDB()
-
-      await this.updateBundle(firstData)
-    } else {
-      if (storeDB) {
-        // 存在用户数据库
-        this.db = new SQL.Database(storeDB)
-      } else if (!firstData) {
-        // 不存在用户数据库且无全量数据, 建立空数据库
-        createDB()
+    try {
+      // 已存在打开的数据库（切换用户）- 重置
+      if (this.db) {
+        this.db.close()
+        this.db = null
+        this.recordInfo = _.cloneDeep(defaultRecord)
       }
-    }
 
-    // 更新差异包
-    for (const data of list.filter(({ type }) => type === 2)) {
-      await this.updateBundle(data)
-    }
+      this.dbId = `${p.env}-${p.userId}`
 
-    // 更新差异数据
-    await this.updateDiff()
+      this.recordKey = `${this.dbId}-record`
+
+      if (p.host !== 'https://api.flyele.vip') {
+        this.host = p.host
+      }
+
+      this.token = p.token
+
+      const SQL = await initSql({
+        locateFile: () => loadWasmUrl
+      })
+
+      const data = await (
+        await fetch(`${this.host}/userc/v2/system/now`)
+      ).json()
+
+      if (data.data) {
+        this.timeDiff = Math.floor(Date.now() / 1000) - data.data
+      }
+
+      // 从indexeddb获取数据库
+      const storeDB = await get(this.dbId)
+
+      // 从indexeddb获取更新信息
+      this.recordInfo = (await get(this.recordKey)) || this.recordInfo
+
+      // 获取用户的初始化数据
+      const list = await this.getUserData()
+
+      const firstData = list[0]
+
+      const createDB = () => {
+        yieldConsole({
+          type: 'createDB-start'
+        })
+
+        const db = new SQL.Database()
+        this.db = db
+        db.run(createSql)
+        this.recordInfo = _.cloneDeep(defaultRecord)
+        yieldConsole({
+          type: 'createDB-end'
+        })
+      }
+
+      if (firstData && firstData.type === 1) {
+        // 存在全量包, 需要根据全量包重新建表
+        createDB()
+
+        await this.updateBundle(firstData)
+      } else {
+        if (storeDB) {
+          // 存在用户数据库
+          this.db = new SQL.Database(storeDB)
+        } else if (!firstData) {
+          // 不存在用户数据库且无全量数据, 建立空数据库
+          createDB()
+        }
+      }
+
+      // 更新差异包
+      for (const data of list.filter(({ type }) => type === 2)) {
+        await this.updateBundle(data)
+      }
+
+      // 更新差异数据
+      await this.updateDiff()
+    } catch (e) {
+      console.error('initDB error', e)
+    }
 
     this.isReady = true
   }

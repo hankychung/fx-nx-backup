@@ -1,39 +1,39 @@
-import { BizApi, IScheduleTask } from '@flyele-nx/service'
+import React from 'react'
+import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from './utils/useScheduleStore'
+import { ScheduleTask } from './components/schedule-task'
+import { getKey } from './utils'
 
 interface ScheduleListProps {
   date: string
 }
 
-function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
-  return `${i.ref_task_id}-${i.repeat_id || ''}`
-}
-
-export function ScheduleList({ date }: ScheduleListProps) {
+const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   const initDate = useScheduleStore((state) => state.initDate)
   const list = useScheduleStore((state) => state.schedule[date])
 
   const initList = useMemoizedFn(() => {
     BizApi.getScheduleList({ type: 'today', day: date }).then((res) => {
       console.log('bizres', res)
-      const list = res.data?.schedule || []
 
-      initDate({ date, list })
+      initDate({ date, list: res.data?.schedule || [] })
     })
   })
 
   return (
-    <div className={styles['container']} onClick={initList}>
-      <span>init</span>
+    <div className={styles['container']}>
+      <span onClick={initList}>init</span>
       <span>{date}</span>
 
       <div>
         {(list || []).map((i) => (
-          <div key={getKey(i)}>{i.title}</div>
+          <ScheduleTask data={i} date={date} key={getKey(i)} />
         ))}
       </div>
     </div>
   )
 }
+
+export const ScheduleList = React.memo(_ScheduleList)

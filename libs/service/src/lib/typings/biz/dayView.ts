@@ -28,7 +28,7 @@ export interface IDayView {
   /**
    * 日程列表
    */
-  schedule?: ISchedule[]
+  schedule?: IScheduleTask[]
   /**
    * 日程列表已完成的总数
    */
@@ -352,7 +352,7 @@ export interface ProtoDayViewGetDayViewReplyCustomDashboardLabel {
 /**
  * .Schedule，日程列表
  */
-export interface ISchedule {
+export interface IScheduleTask {
   application_id?: string
   application_name?: string
   biz?: Biz
@@ -391,18 +391,18 @@ export interface ISchedule {
   project_name?: string
   ref_note_total?: number
   ref_record_total?: number
-  ref_task_id?: string
+  ref_task_id: string
   remind_at?: RemindAt
   repeat_delay_total?: number
   repeat_id?: string
   repeat_type?: number
   start_time?: number
   start_time_full_day?: number
-  state?: number
+  state: number
   tags?: ScheduleTag[]
   taker_id?: string
   takers?: Taker[]
-  title?: string
+  title: string
   topmost_at?: number
   widget?: Widget
   workspace_id?: string

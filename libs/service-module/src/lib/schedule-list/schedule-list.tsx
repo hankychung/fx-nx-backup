@@ -1,10 +1,14 @@
-import { BizApi } from '@flyele-nx/service'
+import { BizApi, IScheduleTask } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from './utils/useScheduleStore'
 
 interface ScheduleListProps {
   date: string
+}
+
+function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
+  return `${i.ref_task_id}-${i.repeat_id || ''}`
 }
 
 export function ScheduleList({ date }: ScheduleListProps) {
@@ -27,7 +31,7 @@ export function ScheduleList({ date }: ScheduleListProps) {
 
       <div>
         {(list || []).map((i) => (
-          <div key={i.ref_task_id + (i.repeat_id || '')}>{i.title}</div>
+          <div key={getKey(i)}>{i.title}</div>
         ))}
       </div>
     </div>

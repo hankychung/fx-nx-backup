@@ -1,14 +1,14 @@
 import { create } from 'zustand'
-import { ISchedule } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 
 interface IState {
-  schedule: { [k: string]: ISchedule[] }
+  schedule: { [k: string]: IScheduleTask[] }
 }
 
 const useScheduleStore = create<
   IState & {
-    initDate: (options: { date: string; list: ISchedule[] }) => void
+    initDate: (options: { date: string; list: IScheduleTask[] }) => void
   }
 >((set) => {
   return {

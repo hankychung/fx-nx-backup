@@ -1,5 +1,5 @@
 import { service } from '../service'
-import { IDayViewResponse } from '../typings/biz/dayView'
+import { IDayViewResponse } from '../typings/schedule'
 
 type TaskListType = 'history' | 'today' | 'future' | 'invite'
 
@@ -16,7 +16,7 @@ class Biz {
   }) {
     const {
       type,
-      pageRecord = 10,
+      pageRecord = 20,
       pageNumber = 1,
       queryType,
       day,

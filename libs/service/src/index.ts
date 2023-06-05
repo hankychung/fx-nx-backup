@@ -10,8 +10,6 @@ import { service } from './lib/service'
 import SSe from './lib/sse'
 import './lib/payment'
 
-export * from './lib/biz'
-
 // 全局类型
 import {
   ILoginKeyParams,
@@ -20,7 +18,7 @@ import {
   IUserInfo
 } from './lib/typings'
 
-import { IScheduleTask } from './lib/typings/biz/dayView'
+import { IScheduleTask } from './lib/typings/schedule'
 
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
@@ -31,8 +29,11 @@ import * as OrderSystemConst from './lib/typings/order-system/const'
 
 export * from './lib/service'
 export * from './lib/env'
+export * from './lib/biz'
+export * from './lib/task'
 
 export { service, SSe, UsercApi, paymentApi, OrderSystemApi, OrderSystemConst }
+
 export type {
   ILoginKeyParams,
   IDevice,

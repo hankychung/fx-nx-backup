@@ -16,7 +16,11 @@ interface IState {
 }
 
 interface IMutation {
-  initList: (options: { date: string; list: string[] }) => void
+  updateList: (options: {
+    date: string
+    list: string[]
+    isInit?: boolean
+  }) => void
   updateTask: (info: { key: string; task: IScheduleTask }) => void
   updateExpandedDict: (info: {
     date: string
@@ -38,7 +42,9 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      */
     childrenDict: {},
     /**
-     * 事项字典, key为事项id或事项id+repeadId, value为事项信息
+     * 事项字典
+     * key为taskId -> 普通事项/未完成的循环事项
+     * key为taskId + repeatId -> 已完成的循环事项
      */
     taskDict: {},
     /**
@@ -46,9 +52,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      */
     expandedDict: {},
     /**
-     * 初始化/重置事项列表
+     * 初始化/更新事项列表
      */
-    initList({ date, list }) {
+    updateList({ date, list, isInit }) {
+      // TODO: 判断重置/更新
       set(
         produce((state: IState) => {
           state.schedule[date] = list

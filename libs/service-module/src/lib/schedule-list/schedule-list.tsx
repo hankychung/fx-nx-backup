@@ -20,17 +20,20 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
 
   const updateList = useScheduleStore((state) => state.updateList)
   const updateTask = useScheduleStore((state) => state.updateTask)
+
   const reload = useMemoizedFn(() => {
     pageRef.current = 1
     finishPageRef.current = 1
     fetchList()
     fetchList({ finish: true })
   })
+
   const fetchList = useMemoizedFn(async (options?: { finish?: boolean }) => {
     const res = await BizApi.getScheduleList({
       type: 'today',
       day: date,
-      pageNumber: pageRef.current
+      pageNumber: pageRef.current,
+      queryType: options?.finish ? 3 : 1
     })
 
     const list = res.data?.schedule || []
@@ -49,11 +52,16 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
       keys.push(key)
     })
 
-    if (options?.finish) {
-      updateList({ date, list: keys, isInit: pageRef.current === 1 })
-    }
+    const pRef = options?.finish ? finishPageRef : pageRef
 
-    pageRef.current += 1
+    updateList({
+      date,
+      list: keys,
+      isInit: pRef.current === 1,
+      isFinished: options?.finish
+    })
+
+    pRef.current += 1
   })
 
   useEffect(() => {
@@ -65,38 +73,42 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   }, [reload])
 
   return (
-    <div className={styles['container']}>
-      <span>{date}</span>
+    <>
+      <div className={styles['container']}>
+        <span>{date}</span>
 
-      <InfiniteScroll
-        loadMore={() => {
-          fetchList()
-        }}
-        useWindow={false}
-        hasMore
-        initialLoad={false}
-        className={styles.scroller}
-      >
-        {(list || []).map((i) => (
-          <ScheduleTask date={date} key={i} taskKey={i} />
-        ))}
-      </InfiniteScroll>
+        <InfiniteScroll
+          loadMore={() => {
+            fetchList()
+          }}
+          useWindow={false}
+          hasMore
+          initialLoad={false}
+          className={styles.scroller}
+        >
+          {(list || []).map((i) => (
+            <ScheduleTask date={date} key={i} taskKey={i} />
+          ))}
+        </InfiniteScroll>
+      </div>
 
-      <div>已完成</div>
-      <InfiniteScroll
-        loadMore={() => {
-          fetchList({ finish: true })
-        }}
-        useWindow={false}
-        hasMore
-        initialLoad={false}
-        className={styles.scroller}
-      >
-        {(finishList || []).map((i) => (
-          <ScheduleTask date={date} key={i} taskKey={i} />
-        ))}
-      </InfiniteScroll>
-    </div>
+      <div className={styles['container']}>
+        <div>已完成</div>
+        <InfiniteScroll
+          loadMore={() => {
+            fetchList({ finish: true })
+          }}
+          useWindow={false}
+          hasMore
+          initialLoad={false}
+          className={styles.scroller}
+        >
+          {(finishList || []).map((i) => (
+            <ScheduleTask date={date} key={i} taskKey={i} />
+          ))}
+        </InfiniteScroll>
+      </div>
+    </>
   )
 }
 

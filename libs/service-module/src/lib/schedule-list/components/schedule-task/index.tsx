@@ -4,6 +4,7 @@ import { TaskApi } from '@flyele-nx/service'
 import { useScheduleStore } from '../../utils/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import style from './index.module.scss'
+import { StatusBox } from '../../../status-box'
 import { useMemoizedFn } from 'ahooks'
 import cs from 'classnames'
 import { TaskHandler } from '../../utils/taskHandler'
@@ -73,6 +74,7 @@ const _ScheduleTask: FC<IProps> = ({ taskKey, date }) => {
   return (
     <div className={cs(style['schedule-task'])}>
       <div className={style.title}>
+        <StatusBox task={data} />
         <div>{data.title}</div>
         <div
           onClick={() => {

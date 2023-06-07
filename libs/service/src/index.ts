@@ -18,7 +18,7 @@ import {
   IUserInfo
 } from './lib/typings'
 
-import { IScheduleTask } from './lib/typings/schedule'
+import { IScheduleTask, MatterType } from './lib/typings/schedule'
 
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
@@ -32,7 +32,15 @@ export * from './lib/env'
 export * from './lib/biz'
 export * from './lib/task'
 
-export { service, SSe, UsercApi, paymentApi, OrderSystemApi, OrderSystemConst }
+export {
+  service,
+  SSe,
+  UsercApi,
+  paymentApi,
+  OrderSystemApi,
+  OrderSystemConst,
+  MatterType
+}
 
 export type {
   ILoginKeyParams,

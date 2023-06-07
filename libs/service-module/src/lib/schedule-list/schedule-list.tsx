@@ -55,7 +55,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
       keys.push(key)
     })
 
-    updateList({ date, list: keys })
+    updateList({ date, list: keys, isInit: pageRef.current === 1 })
 
     pageRef.current += 1
   })

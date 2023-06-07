@@ -55,10 +55,13 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      * 初始化/更新事项列表
      */
     updateList({ date, list, isInit }) {
-      // TODO: 判断重置/更新
       set(
         produce((state: IState) => {
-          state.schedule[date] = list
+          if (isInit) {
+            state.schedule[date] = list
+          } else {
+            state.schedule[date] = [...state.schedule[date], ...list]
+          }
         })
       )
     },

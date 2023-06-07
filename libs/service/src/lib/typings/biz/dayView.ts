@@ -699,6 +699,18 @@ export interface ProtoDayViewGetDayViewReplyWeather {
   wind_describe?: string
 }
 
+export enum MatterType {
+  '事项' = 10701,
+  '会议' = 10702,
+  '时间征集' = 10703,
+  '公告' = 10704,
+  '待办' = 10705,
+  '时间提醒' = 10706,
+  '日历导入' = 10707,
+  '项目' = 10708,
+  '目标' = 10001
+}
+
 /**
  * .ApiError，接口请求错误时的错误信息
  */

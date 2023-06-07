@@ -20,7 +20,7 @@ import {
   IUserInfo
 } from './lib/typings'
 
-import { IScheduleTask } from './lib/typings/biz/dayView'
+import { IScheduleTask, MatterType } from './lib/typings/biz/dayView'
 
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
@@ -32,7 +32,15 @@ import * as OrderSystemConst from './lib/typings/order-system/const'
 export * from './lib/service'
 export * from './lib/env'
 
-export { service, SSe, UsercApi, paymentApi, OrderSystemApi, OrderSystemConst }
+export {
+  service,
+  SSe,
+  UsercApi,
+  paymentApi,
+  OrderSystemApi,
+  OrderSystemConst,
+  MatterType
+}
 export type {
   ILoginKeyParams,
   IDevice,

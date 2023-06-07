@@ -70,6 +70,7 @@ export interface IIndentUser {
   user_id: string
   user_name: string
   user_type: UserType // 用户类型
+  create_at: number
 }
 
 export interface IIndentDetailsUser extends IIndentUser {

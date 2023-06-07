@@ -1,5 +1,5 @@
 import { FC, memo, useMemo, useState } from 'react'
-import { IScheduleTask, MatterType } from '@flyele-nx/service'
+import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import styles from './index.module.scss'
 import {
   CheckIcon,
@@ -32,7 +32,12 @@ const _StatusBox: FC<IProps> = ({ task }) => {
 
   const buildIcon = useMemoizedFn(() => {
     const { matter_type: matterType = 0, finish_time: finishTime } = task
-    if ([MatterType.事项, MatterType.待办].includes(matterType)) {
+    if (
+      [
+        ScheduleTaskConst.MatterType.matter,
+        ScheduleTaskConst.MatterType.todo
+      ].includes(matterType)
+    ) {
       // 非我执行
       if (nonSelfExecution) return <DisabledIcon />
       // 完成动画
@@ -48,17 +53,17 @@ const _StatusBox: FC<IProps> = ({ task }) => {
       return task.finish_time ? <CheckIcon /> : <UncheckIcon />
     }
 
-    if (MatterType.会议 === matterType) {
+    if (ScheduleTaskConst.MatterType.meeting === matterType) {
       const icon = !finishTime ? meetingIcon : meetingFinishedIcon
 
       return <img className={styles.icon} src={icon} alt="" />
     }
 
-    if (MatterType.时间征集 === matterType) {
+    if (ScheduleTaskConst.MatterType.timeCollect === matterType) {
       return !finishTime ? <TimeCollectIcon /> : <TimeCollectFinishIcon />
     }
 
-    if (MatterType.日历导入 === matterType) {
+    if (ScheduleTaskConst.MatterType.calendar === matterType) {
       return !finishTime ? <CalendarIcon /> : <CalendarFinish />
     }
   })

@@ -1,8 +1,199 @@
-.schedule-task {
+.scheduleTaskRoot {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   .title {
-    width: 300px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    padding: 0 5px;
+    z-index: 2;
+    height: 100%;
+    min-width: 30px; //最少给一个字的宽度？ 7098
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .titleDarkMode {
+    color: #fff;
+
+    .titleText {
+      color: #fff;
+    }
+
+    &.title {
+      &:hover::after {
+        background-color: #3e4d5b;
+      }
+    }
+  }
+  .topHover {
+    border-radius: 8px;
+
+    &.darkModeHover {
+      &:hover {
+        background-image: linear-gradient(to bottom, #3e4d5b, #3b3e4b);
+      }
+    }
+
+    &:hover {
+      background-image: linear-gradient(to bottom, #eefffd, #fff);
+      position: relative;
+    }
+  }
+  .iconTop {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+  .scheduleInfo {
     display: flex;
-    justify-content: space-between;
-    height: 50px;
+    margin: 0 2px;
+
+    .wrapper {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .loop_icon {
+      margin-left: 4px;
+    }
+
+    .head {
+      display: flex;
+      height: 20px;
+      line-height: 20px;
+      align-items: center;
+      overflow: hidden;
+
+      .headLeft,
+      .headRight {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        height: 100%;
+      }
+
+      .headLeft {
+        overflow: hidden;
+        margin-right: 5px;
+      }
+
+      .headRight {
+        flex: none;
+        margin-left: auto;
+      }
+    }
+
+    .info {
+      display: flex;
+      margin-top: 4px;
+
+      .infoMain {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-right: 5px;
+        overflow: hidden;
+        justify-content: center;
+      }
+
+      .singleLine {
+        overflow: hidden;
+        align-items: center;
+        flex: 1;
+        display: flex;
+        flex-wrap: nowrap;
+      }
+    }
   }
 }
+
+// 今日看板的卡片
+.boardSchedule {
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.boardSchedulePadding {
+  padding: 14px 10px 12px 10px;
+}
+
+// 优先级
+.priorityLevel {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 2px;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    background: transparent;
+  }
+
+  &.ImportantUrgent {
+    &::before {
+      background: #f28a9d;
+    }
+  }
+
+  &.ImportantNoUrgent {
+    &::before {
+      background: #ffd698;
+    }
+  }
+
+  &.UrgentNoImportant {
+    &::before {
+      background: #a4a4f9;
+    }
+  }
+}
+
+// 完成
+.finish {
+  opacity: 0.5;
+}
+
+// 暗黑模式
+.darkMode {
+  .side {
+    &.topSide::after {
+      content: '';
+      border-color: #545c72;
+    }
+
+    .checkBox {
+      background-color: #3b3e4b;
+    }
+  }
+
+  .indent {
+    &.corner::after,
+    &.vertical::after,
+    &.horizontal::after {
+      border-color: #545c72;
+    }
+  }
+
+  .needLine {
+    &::before {
+      background-color: #545c72;
+    }
+  }
+
+  .needLine1 {
+    &::before {
+      background-color: #545c72;
+    }
+  }
+}
+

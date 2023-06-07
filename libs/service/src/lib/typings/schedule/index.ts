@@ -1,3 +1,5 @@
+import { QuadrantValue, MatterType } from './const'
+
 /**
  * proto.day_view.GetDayViewReply
  */
@@ -112,7 +114,7 @@ export interface ProtoDayViewGetDayViewReplyCustomDashboard {
   /**
    * 事项类型
    */
-  matter_type?: number
+  matter_type?: MatterType
   /**
    * 操作状态
    */
@@ -375,11 +377,12 @@ export interface IScheduleTask {
   flow_step_user_count?: number
   has_child?: boolean
   has_follow?: boolean
+  is_follow?: boolean // 这个和 has_follow 其实需要统一一个，估计是不同的事项列表接口返回的字段不同
   identity?: number
   invite_id?: string
   invite_name?: string
   is_admin?: boolean
-  matter_type?: number
+  matter_type?: MatterType
   operate_state?: number
   original_end_time?: number
   original_start_time?: number
@@ -407,6 +410,7 @@ export interface IScheduleTask {
   widget?: Widget
   workspace_id?: string
   workspace_info?: WorkspaceInfo
+  priority_level?: QuadrantValue
 }
 
 /**
@@ -626,7 +630,7 @@ export interface ProtoDayViewGetDayViewReplySystemDashboard {
   identity?: number
   is_admin?: number
   last_active_at?: number
-  matter_type?: number
+  matter_type?: MatterType
   project_id?: string
   remind_at?: RemindAt
   repeat_id?: string
@@ -697,18 +701,6 @@ export interface ProtoDayViewGetDayViewReplyWeather {
    * 风向级别描述文字
    */
   wind_describe?: string
-}
-
-export enum MatterType {
-  '事项' = 10701,
-  '会议' = 10702,
-  '时间征集' = 10703,
-  '公告' = 10704,
-  '待办' = 10705,
-  '时间提醒' = 10706,
-  '日历导入' = 10707,
-  '项目' = 10708,
-  '目标' = 10001
 }
 
 /**

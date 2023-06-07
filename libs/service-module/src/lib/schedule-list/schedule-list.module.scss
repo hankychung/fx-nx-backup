@@ -1,4 +1,15 @@
 .container {
+  width: 420px;
   height: 300px;
   overflow: auto;
+  background-color: #f4f4f4;
+}
+.scroller {
+  width: 100%;
+  display: flex;
+  row-gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow-x: hidden;
 }

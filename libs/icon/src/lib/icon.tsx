@@ -6,3 +6,5 @@ export { ReactComponent as TimeCollectFinishIcon } from './assets/timeCollect-fi
 export { ReactComponent as TimeCollectIcon } from './assets/timeCollect.svg'
 export { ReactComponent as CalendarFinish } from './assets/calendar-finish.svg'
 export { ReactComponent as CalendarIcon } from './assets/calendar.svg'
+export { ReactComponent as MeetingFinishedIcon } from './assets/meetingFinishedIcon.svg'
+export { ReactComponent as MeetingIcon } from './assets/meetingIcon.svg'

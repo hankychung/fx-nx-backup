@@ -8,7 +8,9 @@ import {
   TimeCollectFinishIcon,
   TimeCollectIcon,
   CalendarIcon,
-  CalendarFinish
+  CalendarFinish,
+  MeetingIcon,
+  MeetingFinishedIcon
 } from '@flyele-nx/icon'
 import checkingIcon from '../../assets/schedule/checking.gif'
 import meetingFinishedIcon from '../../assets/schedule/meeting-finished.png'
@@ -17,7 +19,9 @@ import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 
 interface IProps {
-  task: IScheduleTask
+  task: Pick<IScheduleTask, 'matter_type' | 'identity' | 'finish_time'>
+  changeStatus?: () => void
+  resetStatus?: () => void
 }
 
 const ANIMATION_DURATION = 900
@@ -49,9 +53,7 @@ const _StatusBox: FC<IProps> = ({ task }) => {
     }
 
     if (MatterType.会议 === matterType) {
-      const icon = !finishTime ? meetingIcon : meetingFinishedIcon
-
-      return <img className={styles.icon} src={icon} alt="" />
+      return !finishTime ? <MeetingIcon /> : <MeetingFinishedIcon />
     }
 
     if (MatterType.时间征集 === matterType) {

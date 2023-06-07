@@ -6,6 +6,7 @@ import { getChildrenDict } from '../../utils'
 import style from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import cs from 'classnames'
+import { TaskHandler } from '../../utils/taskHandler'
 
 interface IProps {
   taskKey: string
@@ -73,6 +74,18 @@ const _ScheduleTask: FC<IProps> = ({ taskKey, date }) => {
     <div className={cs(style['schedule-task'])}>
       <div className={style.title}>
         <div>{data.title}</div>
+        <div
+          onClick={() => {
+            TaskHandler.modify({
+              key: data.ref_task_id,
+              diff: {
+                title: 'changing'
+              }
+            })
+          }}
+        >
+          modify
+        </div>
         {data.has_child && (
           <div onClick={toggleOpen}>{isExpanded ? 'close' : 'open'}</div>
         )}

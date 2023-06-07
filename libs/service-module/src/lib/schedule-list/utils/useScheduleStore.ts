@@ -2,12 +2,13 @@ import { create } from 'zustand'
 import { IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 
-interface IState {
+export interface IState {
   // 以下所有日期共用
   taskDict: { [k: string]: IScheduleTask }
   childrenDict: { [k: string]: string[] }
   // 以下与日期相关, 每个日期独立维护
   schedule: { [k: string]: string[] }
+  finishSchedule: { [k: string]: string[] }
   expandedDict: {
     [k: string]: {
       [k: string]: boolean
@@ -20,6 +21,7 @@ interface IMutation {
     date: string
     list: string[]
     isInit?: boolean
+    isFinished?: boolean
   }) => void
   updateTask: (info: { key: string; task: IScheduleTask }) => void
   updateExpandedDict: (info: {
@@ -38,6 +40,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      */
     schedule: {},
     /**
+     * 日程已完成列表字典, key为日期, value为该日期下事项列表id数组(带排序)
+     */
+    finishSchedule: {},
+    /**
      * 子事项字典
      */
     childrenDict: {},
@@ -54,14 +60,28 @@ const useScheduleStore = create<IState & IMutation>((set) => {
     /**
      * 初始化/更新事项列表
      */
-    updateList({ date, list, isInit }) {
+    updateList({ date, list, isInit, isFinished }) {
       set(
         produce((state: IState) => {
           if (isInit) {
+            if (isFinished) {
+              state.finishSchedule[date] = list
+              return
+            }
+
             state.schedule[date] = list
-          } else {
-            state.schedule[date] = [...state.schedule[date], ...list]
+            return
           }
+
+          if (isFinished) {
+            state.finishSchedule[date] = [
+              ...state.finishSchedule[date],
+              ...list
+            ]
+            return
+          }
+
+          state.schedule[date] = [...state.schedule[date], ...list]
         })
       )
     },

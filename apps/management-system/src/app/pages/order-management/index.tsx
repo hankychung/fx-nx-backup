@@ -447,6 +447,21 @@ const _OrderManagement = () => {
         }
       },
       {
+        width: 200,
+        title: '注册时间',
+        dataIndex: 'creator_create_at',
+        render: (text, record) => {
+          const createAt = record.creator.create_at
+          return (
+            <span style={{ color: '#8f8f8f' }}>
+              {createAt && createAt !== 0
+                ? dayjs.unix(createAt).format('YYYY年M月D日 HH:mm:ss')
+                : ''}
+            </span>
+          )
+        }
+      },
+      {
         width: 175,
         title: '充值对象',
         dataIndex: 'users',

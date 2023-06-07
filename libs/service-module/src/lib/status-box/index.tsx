@@ -51,10 +51,10 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
 
     try {
-      if (task.repeat_id && !task.repeat_type && task.finish_time) {
-        message.warning({ content: '循环已取消, 不支持再次打开' })
-        return
-      }
+      //   if (task.repeat_id && !task.repeat_type && task.finish_time) {
+      //     message.warning({ content: '循环已取消, 不支持再次打开' })
+      //     return
+      //   }
 
       setUpdating(true)
 

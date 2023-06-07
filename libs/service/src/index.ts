@@ -7,6 +7,7 @@ import { UsercApi } from './lib/userc'
 import { paymentApi } from './lib/payment'
 import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
+import { TaskDispatchApi } from './lib/task-dispatch'
 import SSe from './lib/sse'
 import './lib/payment'
 
@@ -39,6 +40,7 @@ export {
   UsercApi,
   paymentApi,
   OrderSystemApi,
+  TaskDispatchApi,
   OrderSystemConst,
   ScheduleTaskConst
 }

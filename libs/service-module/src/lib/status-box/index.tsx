@@ -1,7 +1,7 @@
 import { FC, memo, useMemo, useState } from 'react'
 import {
   IScheduleTask,
-  MatterType,
+  ScheduleTaskConst,
   TaskApi,
   TaskDispatchApi
 } from '@flyele-nx/service'
@@ -76,7 +76,12 @@ const _StatusBox: FC<IProps> = (props) => {
 
   const buildIcon = useMemoizedFn(() => {
     const { matter_type: matterType = 0, finish_time: finishTime } = task
-    if ([MatterType.事项, MatterType.待办].includes(matterType)) {
+    if (
+      [
+        ScheduleTaskConst.MatterType.matter,
+        ScheduleTaskConst.MatterType.todo
+      ].includes(matterType)
+    ) {
       // 非我执行
       if (nonSelfExecution) return <DisabledIcon />
       // 完成动画
@@ -96,15 +101,15 @@ const _StatusBox: FC<IProps> = (props) => {
       )
     }
 
-    if (MatterType.会议 === matterType) {
+    if (ScheduleTaskConst.MatterType.meeting === matterType) {
       return !finishTime ? <MeetingIcon /> : <MeetingFinishedIcon />
     }
 
-    if (MatterType.时间征集 === matterType) {
+    if (ScheduleTaskConst.MatterType.timeCollect === matterType) {
       return !finishTime ? <TimeCollectIcon /> : <TimeCollectFinishIcon />
     }
 
-    if (MatterType.日历导入 === matterType) {
+    if (ScheduleTaskConst.MatterType.calendar === matterType) {
       return !finishTime ? <CalendarIcon /> : <CalendarFinish />
     }
   })

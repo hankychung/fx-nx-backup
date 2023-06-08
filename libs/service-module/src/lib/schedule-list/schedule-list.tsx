@@ -53,6 +53,8 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
       keys.push(key)
     })
 
+    console.log('list', list)
+
     const pRef = options?.finish ? finishPageRef : pageRef
 
     updateList({

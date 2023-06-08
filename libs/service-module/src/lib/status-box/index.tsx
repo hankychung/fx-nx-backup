@@ -2,7 +2,6 @@ import { FC, memo, useMemo, useState } from 'react'
 import {
   IScheduleTask,
   ScheduleTaskConst,
-  TaskApi,
   TaskDispatchApi
 } from '@flyele-nx/service'
 import styles from './index.module.scss'
@@ -18,12 +17,11 @@ import {
   MeetingFinishedIcon
 } from '@flyele-nx/icon'
 import checkingIcon from '../../assets/schedule/checking.gif'
-import meetingFinishedIcon from '../../assets/schedule/meeting-finished.png'
-import meetingIcon from '../../assets/schedule/meeting.png'
 import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
-import { message } from 'antd'
 import { changeCompleteState } from './utils'
+import AcceptOnceMany from '../accept-once-many'
+import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
 
 interface IProps {
   task: IScheduleTask
@@ -36,6 +34,14 @@ const ANIMATION_DURATION = 900
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus } = props
   const [updating, setUpdating] = useState(false)
+  const children = useScheduleStore(
+    (state) => state.childrenDict[task.ref_task_id]
+  )
+
+  console.log('children', children)
+
+  const [visible, setVisible] = useState(false)
+
   // 非我执行
   const nonSelfExecution = useMemo(
     () => task.identity === 10804 || task.identity === 10811,
@@ -74,9 +80,14 @@ const _StatusBox: FC<IProps> = (props) => {
     }
   }
 
+  const completeOnceMany = () => {
+    console.log('TODO ')
+  }
+
   const buildIcon = useMemoizedFn(() => {
-    const { matter_type: matterType = 0, finish_time: finishTime } = task
+    const { matter_type: matterType, finish_time: finishTime } = task
     if (
+      matterType &&
       [
         ScheduleTaskConst.MatterType.matter,
         ScheduleTaskConst.MatterType.todo
@@ -97,7 +108,16 @@ const _StatusBox: FC<IProps> = (props) => {
       return task.finish_time ? (
         <CheckIcon onClick={handleComplete} />
       ) : (
-        <UncheckIcon onClick={handleComplete} />
+        <UncheckIcon
+          onClick={(e) => {
+            e.stopPropagation()
+            if (task.has_child) {
+              setVisible(true)
+              return
+            }
+            handleComplete(e)
+          }}
+        />
       )
     }
 
@@ -114,7 +134,24 @@ const _StatusBox: FC<IProps> = (props) => {
     }
   })
 
-  return <div className={styles['status-box']}>{buildIcon()}</div>
+  return (
+    <div className={styles['status-box']}>
+      <AcceptOnceMany
+        visible={visible} // 气泡框显示状态
+        visibleChange={(v) => {
+          setVisible(v)
+        }} // 设置气泡框显隐
+        // 仅一个的操作
+        taskList={children}
+        handleClickOnlyOne={handleComplete}
+        // 批量操作
+        handleClickAll={completeOnceMany}
+        typeName="finish"
+      >
+        <div>{buildIcon()}</div>
+      </AcceptOnceMany>
+    </div>
+  )
 }
 
 export const StatusBox = memo(_StatusBox)

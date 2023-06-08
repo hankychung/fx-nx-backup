@@ -7,7 +7,7 @@ import style from './index.module.scss'
 import { StatusBox } from '../../../status-box'
 import { useMemoizedFn } from 'ahooks'
 import cs from 'classnames'
-import { TaskHandler } from '../../utils/taskHandler'
+import { ListHandler } from '../../utils/listHandler'
 
 interface IProps {
   taskKey: string
@@ -78,12 +78,7 @@ const _ScheduleTask: FC<IProps> = ({ taskKey, date }) => {
         <div>{data.title}</div>
         <div
           onClick={() => {
-            TaskHandler.modify({
-              key: data.ref_task_id,
-              diff: {
-                title: 'changing'
-              }
-            })
+            ListHandler.insertTask({ ...data, finish_time: 1686182400 })
           }}
         >
           modify

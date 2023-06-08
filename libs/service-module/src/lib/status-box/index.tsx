@@ -18,6 +18,8 @@ import { useMemoizedFn } from 'ahooks'
 
 interface IProps {
   task: IScheduleTask
+  changeStatus?: () => void
+  resetStatus?: () => void
 }
 
 const ANIMATION_DURATION = 900

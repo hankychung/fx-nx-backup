@@ -24,12 +24,10 @@ const PopoverAcceptOnceMany: React.FC<React.PropsWithChildren<Props>> = ({
   visibleChange,
   handleClickOnlyOne,
   handleClickAll,
-  checkIsFinishLoadChild = () => {},
   children,
   taskList = [],
   typeName = 'accept',
-  popoverPos = 'bottomLeft',
-  cycle
+  popoverPos = 'bottomLeft'
 }) => {
   const handleVisibleChange = (value: boolean) => {
     console.log('handleVisibleChange', value)

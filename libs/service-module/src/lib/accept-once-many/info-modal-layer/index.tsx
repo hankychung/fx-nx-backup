@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Tree } from 'antd'
 import styles from './index.module.scss'
-import { addKey, getAllKeys, getListToTree } from '../utils'
+import { addKey } from '../utils'
 import { useScheduleStore } from '../../schedule-list/utils/useScheduleStore'
 
 export enum charsType {
@@ -46,8 +46,8 @@ export const charsDict = {
 interface PropLayer {
   typeName: keyof typeof charsDict
   taskList: Array<string>
-  handleClickOnlyOne: (arg0?: string) => void
-  handleClickAll: (arg0?: string) => void
+  handleClickOnlyOne: () => void
+  handleClickAll: () => void
   cycle?: number
 }
 
@@ -70,8 +70,6 @@ const InfosModalLayer: React.FC<React.PropsWithChildren<PropLayer>> = ({
   const treeData = useMemo(() => addKey(taskListInside), [taskListInside])
 
   const title = `以下${taskList.length}个下级事项，${charsDict[typeName].title}`
-
-  console.log('treeData', treeData)
 
   return (
     <div className={styles.infos_modal_layer}>

@@ -19,9 +19,10 @@ import {
 import checkingIcon from '../../assets/schedule/checking.gif'
 import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
-import { changeCompleteState } from './utils'
+import { changeCompleteState, getValuesByKey } from './utils'
 import AcceptOnceMany from '../accept-once-many'
 import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
+import { message } from 'antd'
 
 interface IProps {
   task: IScheduleTask
@@ -34,11 +35,11 @@ const ANIMATION_DURATION = 900
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus } = props
   const [updating, setUpdating] = useState(false)
-  const children = useScheduleStore(
-    (state) => state.childrenDict[task.ref_task_id]
-  )
 
-  console.log('children', children)
+  const childrenDict = useScheduleStore((state) => state.childrenDict)
+  const children = useMemo(() => {
+    return getValuesByKey(childrenDict, task.ref_task_id)
+  }, [childrenDict, task])
 
   const [visible, setVisible] = useState(false)
 
@@ -50,17 +51,16 @@ const _StatusBox: FC<IProps> = (props) => {
 
   /**
    * 完成/重启事项
-   * @param e 点击事件
+   * @param isBatch 是否批量完成
    */
-  const handleComplete = async (e?: React.MouseEvent) => {
-    e?.stopPropagation()
+  const handleComplete = async (isBatch?: boolean) => {
     changeStatus?.()
-
+    setVisible(false)
     try {
-      //   if (task.repeat_id && !task.repeat_type && task.finish_time) {
-      //     message.warning({ content: '循环已取消, 不支持再次打开' })
-      //     return
-      //   }
+      if (task.repeat_id && !task.repeat_type && task.finish_time) {
+        message.warning({ content: '循环已取消, 不支持再次打开' })
+        return
+      }
 
       setUpdating(true)
 
@@ -72,16 +72,16 @@ const _StatusBox: FC<IProps> = (props) => {
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
       const state = changeCompleteState(task.state)
-      await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
-        state
-      })
+      isBatch
+        ? await TaskDispatchApi.setTaskDispatchStateBatch(task.dispatch_id, {
+            state
+          })
+        : await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
+            state
+          })
     } catch (error) {
       resetStatus?.()
     }
-  }
-
-  const completeOnceMany = () => {
-    console.log('TODO ')
   }
 
   const buildIcon = useMemoizedFn(() => {
@@ -106,7 +106,12 @@ const _StatusBox: FC<IProps> = (props) => {
         )
       // 完成状态
       return task.finish_time ? (
-        <CheckIcon onClick={handleComplete} />
+        <CheckIcon
+          onClick={(e) => {
+            e.stopPropagation()
+            handleComplete()
+          }}
+        />
       ) : (
         <UncheckIcon
           onClick={(e) => {
@@ -115,7 +120,7 @@ const _StatusBox: FC<IProps> = (props) => {
               setVisible(true)
               return
             }
-            handleComplete(e)
+            handleComplete()
           }}
         />
       )
@@ -141,11 +146,9 @@ const _StatusBox: FC<IProps> = (props) => {
         visibleChange={(v) => {
           setVisible(v)
         }} // 设置气泡框显隐
-        // 仅一个的操作
         taskList={children}
         handleClickOnlyOne={handleComplete}
-        // 批量操作
-        handleClickAll={completeOnceMany}
+        handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
         <div>{buildIcon()}</div>

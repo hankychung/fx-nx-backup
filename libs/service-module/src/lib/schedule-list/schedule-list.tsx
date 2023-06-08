@@ -5,6 +5,7 @@ import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from './utils/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
+import dayjs from 'dayjs'
 
 interface ScheduleListProps {
   date: string
@@ -87,7 +88,14 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
           className={styles.scroller}
         >
           {(list || []).map((i) => (
-            <ScheduleTask date={date} key={i} taskKey={i} />
+            // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+            <ScheduleTask
+              date={date}
+              key={i}
+              taskKey={i}
+              topId={i}
+              curTime={dayjs().unix()}
+            />
           ))}
         </InfiniteScroll>
       </div>
@@ -104,7 +112,13 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
           className={styles.scroller}
         >
           {(finishList || []).map((i) => (
-            <ScheduleTask date={date} key={i} taskKey={i} />
+            <ScheduleTask
+              date={date}
+              key={i}
+              taskKey={i}
+              topId={i}
+              curTime={dayjs().unix()}
+            />
           ))}
         </InfiniteScroll>
       </div>

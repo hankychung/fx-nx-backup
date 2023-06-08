@@ -7,6 +7,7 @@ import { UsercApi } from './lib/userc'
 import { paymentApi } from './lib/payment'
 import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
+import { TaskDispatchApi } from './lib/task-dispatch'
 import SSe from './lib/sse'
 import './lib/payment'
 
@@ -18,7 +19,8 @@ import {
   IUserInfo
 } from './lib/typings'
 
-import { IScheduleTask, MatterType } from './lib/typings/schedule'
+import { IScheduleTask } from './lib/typings/schedule'
+import * as ScheduleTaskConst from './lib/typings/schedule/const'
 
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
@@ -38,8 +40,9 @@ export {
   UsercApi,
   paymentApi,
   OrderSystemApi,
+  TaskDispatchApi,
   OrderSystemConst,
-  MatterType
+  ScheduleTaskConst
 }
 
 export type {

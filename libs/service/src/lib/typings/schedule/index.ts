@@ -1,4 +1,9 @@
-import { QuadrantValue, MatterType } from './const'
+import {
+  QuadrantValue,
+  MatterType,
+  RepeatConfigRepeatType,
+  HolidayState
+} from './const'
 
 /**
  * proto.day_view.GetDayViewReply
@@ -351,6 +356,13 @@ export interface ProtoDayViewGetDayViewReplyCustomDashboardLabel {
   title?: string
 }
 
+export interface IRepeatConfig {
+  ignore_holiday?: number // 1->跳过节假日
+  repeat_date?: number[] | string[] // 循环日期，repeat_type=1时忽略，每周一，二传[1, 2]，每月2号10号传[2, 10]，每年几月几号传["02-14", "05-18"]
+  repeat_interval?: number // 循环间隔
+  repeat_type?: RepeatConfigRepeatType // 循环类型
+}
+
 /**
  * .Schedule，日程列表
  */
@@ -398,6 +410,8 @@ export interface IScheduleTask {
   remind_at?: RemindAt
   repeat_delay_total?: number
   repeat_id?: string
+  repeat_list?: RepeatList[]
+  repeat_config?: IRepeatConfig
   repeat_type?: number
   start_time?: number
   start_time_full_day?: number
@@ -723,4 +737,12 @@ export interface ApiError {
    * 错误原因
    */
   reason?: string
+}
+
+/**
+ * 节假日
+ */
+export interface IHoliday {
+  date: string
+  state: HolidayState
 }

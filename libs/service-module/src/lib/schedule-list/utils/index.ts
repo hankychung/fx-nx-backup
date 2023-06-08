@@ -1,4 +1,6 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { getNowRepeatData, getRepeatTotal, isAlwaysRepeat } from './loopMatter'
+import dayjs from 'dayjs'
 
 function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
   return `${i.ref_task_id}-${i.repeat_id || ''}`
@@ -60,4 +62,36 @@ function getChildrenDict({
   return dict
 }
 
-export { getKey, getChildrenDict }
+const getRepeatTxt = async (task?: IScheduleTask) => {
+  const _obj = {
+    t_l: '',
+    t_r: ''
+  }
+
+  if (!task) return _obj
+
+  const { cycle, repeat_type, end_repeat_at } = task
+
+  if (repeat_type) {
+    _obj.t_l = `${ScheduleTaskConst.LOOP_MATTER_LABEL[repeat_type as number]}`
+
+    if (isAlwaysRepeat(end_repeat_at || 0)) {
+      _obj.t_l += '、一直循环'
+    } else {
+      const YYYY =
+        dayjs.unix(end_repeat_at || 0).format('YYYY') !== dayjs().format('YYYY')
+      const M_DD = dayjs.unix(end_repeat_at || 0).format('M月DD日')
+
+      _obj.t_l += `、${
+        YYYY ? dayjs.unix(end_repeat_at || 0).format('YYYY年') : ''
+      }${M_DD}截止`
+    }
+
+    _obj.t_r = `已循环（${
+      cycle || getNowRepeatData(task)?.cycle || 0
+    }/${await getRepeatTotal(task)}）`
+  }
+  return _obj
+}
+
+export { getKey, getChildrenDict, getRepeatTxt }

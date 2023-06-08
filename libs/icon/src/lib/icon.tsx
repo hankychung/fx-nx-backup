@@ -12,3 +12,5 @@ export { ReactComponent as CircleArrowUpIcon } from './assets/circle_arrow_up.sv
 export { ReactComponent as CircleArrowUpDarkIcon } from './assets/circle_arrow_up_dark.svg'
 export { ReactComponent as MeetingFinishedIcon } from './assets/meetingFinishedIcon.svg'
 export { ReactComponent as MeetingIcon } from './assets/meetingIcon.svg'
+export { ReactComponent as RepeatIcon } from './assets/repeat.svg'
+export { ReactComponent as WorkflowBlueIcon } from './assets/workflowBlue.svg'

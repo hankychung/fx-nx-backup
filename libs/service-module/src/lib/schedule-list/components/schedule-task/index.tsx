@@ -16,6 +16,8 @@ import { Follow } from './components/follow'
 import { ScheduleType } from './components/schedule-type'
 import { Expand } from './components/expand'
 import { Indent } from './components/indent'
+import { Workflow } from './components/workflow'
+import { ParentInfo } from './components/parentInfo'
 
 interface IProps {
   taskKey: string
@@ -157,9 +159,9 @@ const _ScheduleTask: FC<IProps> = ({
           </div>
         )}
 
-        {/*<Workflow taskId={taskId} />*/}
+        <Workflow taskId={taskKey} />
 
-        {/*<ParentInfo taskId={taskId} />*/}
+        <ParentInfo taskId={taskKey} isDarkMode />
 
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask} />

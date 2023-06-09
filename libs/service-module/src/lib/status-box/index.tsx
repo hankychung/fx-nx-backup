@@ -54,15 +54,20 @@ const _StatusBox: FC<IProps> = (props) => {
   // 分发
   const dispatchApi = useMemoizedFn(async (isBatch: boolean, isFinish) => {
     const isRepeat = !!task.repeat_id
-    const state = changeCompleteState(task.state)
-    if (isRepeat) {
-      const repeated_tasks = childrenIds.map((i) => ({
-        task_id: taskDict[i].ref_task_id,
-        repeat_id: taskDict[i]?.repeat_id || ''
-      }))
 
+    // 循环事项
+    if (isRepeat) {
       // 循环事项批量完成
       if (isBatch) {
+        const repeated_tasks = childrenIds.map((i) => ({
+          task_id: taskDict[i].ref_task_id,
+          repeat_id: taskDict[i]?.repeat_id || ''
+        }))
+        // 把当前也加进去
+        repeated_tasks.push({
+          task_id: task.ref_task_id,
+          repeat_id: task.repeat_id || ''
+        })
         return TaskApi.repeatFinishBatch({ repeated_tasks })
       }
       // 循环事项重启
@@ -78,6 +83,9 @@ const _StatusBox: FC<IProps> = (props) => {
         repeat_id: task.repeat_id || ''
       })
     }
+
+    // 普通事项
+    const state = changeCompleteState(task.state)
     return isBatch
       ? TaskDispatchApi.setTaskDispatchStateBatch(task.dispatch_id!, {
           state
@@ -95,10 +103,10 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-      if (task.repeat_id && !task.repeat_type && task.finish_time) {
-        message.warning({ content: '循环已取消, 不支持再次打开' })
-        return
-      }
+      // if (task.repeat_id && !task.repeat_type && task.finish_time) {
+      //   message.warning({ content: '循环已取消, 不支持再次打开' })
+      //   return
+      // }
 
       setUpdating(true)
 

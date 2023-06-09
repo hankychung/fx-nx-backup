@@ -34,47 +34,47 @@ class ListHandler {
     console.log('insertDates', insertDates)
   }
 
-  static batchComplete({
-    // 未完成列表中删除
-    taskIds,
-    // 已完成列表中加入
-    taskRepeatIds
-  }: {
-    taskIds: string[]
-    taskRepeatIds: string[]
-  }) {
-    const { schedule, finishSchedule, childrenDict, expandedDict, taskDict } =
-      useScheduleStore.getState()
-
+  static batchComplete(taskIds: string[]) {
+    // 从未完成列表移除已完成事项
     this.removeTasks(taskIds)
 
+    // 重置已完成事项的上下级关系
+    const needResetChildren = this.resetRelation(taskIds)
+
+    this.resetSuper(needResetChildren)
+
+    // 将已完成事项插入完成列表
+    this.insertCompleteTasks(taskIds)
+  }
+
+  private static resetRelation(taskIds: string[]) {
+    const { childrenDict } = useScheduleStore.getState()
     const needResetChildren: string[] = []
 
     useScheduleStore.setState(
       produce((state: IState) => {
         taskIds.forEach((taskId) => {
-          // 从children中移除该完成事项
+          // 找到该事项所属父事项字典, 脱离关系
           Object.entries(childrenDict).forEach(([key, children]) => {
-            console.log('key', key)
             if (children.includes(taskId)) {
               state.childrenDict[key] = children.filter((i) => i !== taskId)
             }
           })
 
-          console.log('out', childrenDict, taskId, childrenDict[taskId])
-
           if (childrenDict[taskId]) {
+            // 记录该事项下的子事项, 用于重新分配其上级
             needResetChildren.push(...childrenDict[taskId])
+            // 删除该事项下的子事项关系
             delete state.childrenDict[taskId]
           }
         })
       })
     )
 
-    this.batchInsertCompleteTask(taskIds)
-    this.resetChildren(needResetChildren)
+    return needResetChildren
   }
 
+  // 从未完成列表批量移除事项
   private static removeTasks(taskIds: string[]) {
     const { schedule } = useScheduleStore.getState()
 
@@ -87,7 +87,8 @@ class ListHandler {
     )
   }
 
-  private static batchInsertCompleteTask(ids: string[]) {
+  // 批量将事项插入已完成列表
+  private static insertCompleteTasks(ids: string[]) {
     const finishDate = dayjs().format('YYYY-MM-DD')
 
     const { finishSchedule, taskDict } = useScheduleStore.getState()
@@ -108,12 +109,10 @@ class ListHandler {
   }
 
   // 重新分配子事项的直属上级
-  private static resetChildren(_children: string[]) {
-    console.log('childre', _children)
-
+  private static resetSuper(ids: string[]) {
     const { childrenDict, taskDict } = useScheduleStore.getState()
 
-    const children = _children.map((k) => taskDict[k])
+    const children = ids.map((k) => taskDict[k])
 
     useScheduleStore.setState(
       produce((state: IState) => {

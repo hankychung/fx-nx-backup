@@ -34,7 +34,13 @@ const _ScheduleTask: FC<IProps> = ({
   isDarkMode,
   style
 }) => {
-  const data = useScheduleStore((state) => state.taskDict[taskKey])
+  const _data = useScheduleStore((state) => state.taskDict[taskKey])
+  const dataWithoutRepeatId = useScheduleStore(
+    (state) => state.taskDict[taskKey.split('-')[0]]
+  )
+
+  const data = _data || dataWithoutRepeatId
+
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
     const dict = state.expandedDict[date]

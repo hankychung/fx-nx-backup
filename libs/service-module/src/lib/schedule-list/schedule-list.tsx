@@ -6,6 +6,7 @@ import { useScheduleStore } from './utils/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
+import { getKey } from './utils'
 
 interface ScheduleListProps {
   date: string
@@ -45,8 +46,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
       const { ref_task_id, repeat_id, finish_time } = item
 
       // 循环事项且已经完成, 以taskId + repeatId为key
-      const key =
-        repeat_id && finish_time ? `${ref_task_id}-${repeat_id}` : ref_task_id
+      const key = repeat_id && finish_time ? getKey(item) : ref_task_id
 
       updateTask({ key, task: item })
 

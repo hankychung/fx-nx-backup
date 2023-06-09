@@ -24,6 +24,8 @@ import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { message } from 'antd'
 import { changeCompleteState } from './utils'
+import { TaskHandler } from '../schedule-list/utils/taskHandler'
+import dayjs from 'dayjs'
 
 interface IProps {
   task: IScheduleTask
@@ -65,7 +67,20 @@ const _StatusBox: FC<IProps> = (props) => {
       setUpdating(false)
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
+
       const state = changeCompleteState(task.state)
+
+      // TODO: for test
+      if (!task.finish_time) {
+        TaskHandler.batchModify({
+          keys: [task.ref_task_id],
+          diff: {
+            finish_time: dayjs().unix(),
+            state
+          }
+        })
+      }
+
       await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
         state
       })
@@ -75,7 +90,7 @@ const _StatusBox: FC<IProps> = (props) => {
   }
 
   const buildIcon = useMemoizedFn(() => {
-    const { matter_type: matterType = 0, finish_time: finishTime } = task
+    const { matter_type: matterType, finish_time: finishTime } = task
     if (
       [
         ScheduleTaskConst.MatterType.matter,

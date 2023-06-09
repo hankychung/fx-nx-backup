@@ -382,7 +382,7 @@ export interface IScheduleTask {
   invite_id?: string
   invite_name?: string
   is_admin?: boolean
-  matter_type?: MatterType
+  matter_type: MatterType
   operate_state?: number
   original_end_time?: number
   original_start_time?: number

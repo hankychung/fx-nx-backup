@@ -39,11 +39,12 @@ class ListHandler {
     this.removeTasks(taskIds)
 
     // 重置已完成事项的上下级关系
-    const { needResetChildren, clearChildrenIds } = this.resetRelation(taskIds)
+    const { needResetChildren } = this.resetRelation(taskIds)
 
     this.resetSuper(needResetChildren)
 
-    this.clearChildren(clearChildrenIds)
+    // 操作了子事项字典, 需要更新父事项的收合/是否有子信息
+    this.checkToClearChildren()
 
     // 将已完成事项插入完成列表
     this.insertCompleteTasks(taskIds)
@@ -52,7 +53,6 @@ class ListHandler {
   private static resetRelation(taskIds: string[]) {
     const { childrenDict } = useScheduleStore.getState()
     const needResetChildren: string[] = []
-    const clearChildrenIds: string[] = []
 
     useScheduleStore.setState(
       produce((state: IState) => {
@@ -61,12 +61,6 @@ class ListHandler {
           Object.entries(childrenDict).forEach(([key, children]) => {
             if (children.includes(taskId)) {
               state.childrenDict[key] = children.filter((i) => i !== taskId)
-
-              // 清除后无子事项需要更新父事项的收合状态
-              if (!state.childrenDict[key].length) {
-                delete state.childrenDict[key]
-                clearChildrenIds.push(key)
-              }
             }
           })
 
@@ -80,16 +74,23 @@ class ListHandler {
       })
     )
 
-    return { needResetChildren, clearChildrenIds }
+    return { needResetChildren }
   }
 
   // 父事项下的子事项已经全部不在, 更新父事项的has_child以及清除收合状态
-  private static clearChildren(ids: string[]) {
-    if (!ids.length) return
+  private static checkToClearChildren() {
+    const { childrenDict } = useScheduleStore.getState()
+
+    const ids = Object.keys(childrenDict)
 
     useScheduleStore.setState(
       produce((state: IState) => {
         ids.forEach((key) => {
+          // 先判断该父事项是否无子
+          if (childrenDict[key]?.length) return
+
+          delete state.childrenDict[key]
+
           state.taskDict[key].has_child = false
 
           Object.entries(state.expandedDict).forEach(([date, dict]) => {
@@ -151,7 +152,6 @@ class ListHandler {
           for (const parent of parent_id.split(',').reverse()) {
             if (childrenDict[parent]) {
               state.childrenDict[parent].push(ref_task_id)
-
               return
             }
           }

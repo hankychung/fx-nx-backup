@@ -7,6 +7,11 @@ interface IGetScheduleTreeParams {
   queryType?: number
 }
 
+interface IRepeatParams {
+  task_id: string
+  repeat_id: string
+}
+
 class Task {
   private prefix = 'flyele/v2/tasks'
 
@@ -20,6 +25,33 @@ class Task {
         query_type: params.queryType || 1,
         task_id: params.taskId
       }
+    })
+  }
+
+  // 完成循环事项
+  repeatFinish(data: IRepeatParams) {
+    const { task_id, repeat_id } = data
+    return service.post({
+      url: `flyele/v2/task/${task_id}/repeat/${repeat_id}/finish`,
+      data
+    })
+  }
+
+  // 重启循环事项
+  repeatRestart(data: IRepeatParams) {
+    const { task_id, repeat_id } = data
+
+    return service.post({
+      url: `flyele/v2/task/${task_id}/repeat/${repeat_id}/restart`,
+      data: { task_id, repeat_id }
+    })
+  }
+
+  // 批量完成循环事项
+  repeatFinishBatch(data: { repeated_tasks: IRepeatParams[] }) {
+    return service.post({
+      url: `batch/v1/tasks/finish`,
+      data
     })
   }
 }

@@ -2,6 +2,7 @@ import { FC, memo, useMemo, useState } from 'react'
 import {
   IScheduleTask,
   ScheduleTaskConst,
+  TaskApi,
   TaskDispatchApi
 } from '@flyele-nx/service'
 import styles from './index.module.scss'
@@ -35,9 +36,10 @@ const ANIMATION_DURATION = 900
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus } = props
   const [updating, setUpdating] = useState(false)
+  const taskDict = useScheduleStore((state) => state.taskDict)
 
   const childrenDict = useScheduleStore((state) => state.childrenDict)
-  const children = useMemo(() => {
+  const childrenIds = useMemo(() => {
     return getValuesByKey(childrenDict, task.ref_task_id)
   }, [childrenDict, task])
 
@@ -48,6 +50,42 @@ const _StatusBox: FC<IProps> = (props) => {
     () => task.identity === 10804 || task.identity === 10811,
     [task]
   )
+
+  // 分发
+  const dispatchApi = useMemoizedFn(async (isBatch: boolean, isFinish) => {
+    const isRepeat = !!task.repeat_id
+    const state = changeCompleteState(task.state)
+    if (isRepeat) {
+      const repeated_tasks = childrenIds.map((i) => ({
+        task_id: taskDict[i].ref_task_id,
+        repeat_id: taskDict[i]?.repeat_id || ''
+      }))
+
+      // 循环事项批量完成
+      if (isBatch) {
+        return TaskApi.repeatFinishBatch({ repeated_tasks })
+      }
+      // 循环事项重启
+      else if (isFinish) {
+        return TaskApi.repeatRestart({
+          task_id: task.ref_task_id,
+          repeat_id: task.repeat_id || ''
+        })
+      }
+      // 循环事项完成
+      return TaskApi.repeatFinish({
+        task_id: task.ref_task_id,
+        repeat_id: task.repeat_id || ''
+      })
+    }
+    return isBatch
+      ? TaskDispatchApi.setTaskDispatchStateBatch(task.dispatch_id!, {
+          state
+        })
+      : TaskDispatchApi.setTaskDispatchState(task.dispatch_id!, {
+          state
+        })
+  })
 
   /**
    * 完成/重启事项
@@ -71,14 +109,8 @@ const _StatusBox: FC<IProps> = (props) => {
       setUpdating(false)
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
-      const state = changeCompleteState(task.state)
-      isBatch
-        ? await TaskDispatchApi.setTaskDispatchStateBatch(task.dispatch_id, {
-            state
-          })
-        : await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
-            state
-          })
+
+      await dispatchApi(!!isBatch, !!task.finish_time)
     } catch (error) {
       resetStatus?.()
     }
@@ -146,7 +178,7 @@ const _StatusBox: FC<IProps> = (props) => {
         visibleChange={(v) => {
           setVisible(v)
         }} // 设置气泡框显隐
-        taskList={children}
+        taskList={childrenIds}
         handleClickOnlyOne={handleComplete}
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"

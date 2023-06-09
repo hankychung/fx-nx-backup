@@ -186,7 +186,7 @@ const _ScheduleTask: FC<IProps> = ({
                 </div>
                 <div className={styles.headRight}>
                   <ScheduleType matterType={data.matter_type} />
-                  {data.has_child ? (
+                  {data.has_child && !data.finish_time ? (
                     <Expand
                       task={data}
                       isExpanded={isExpanded}

@@ -19,7 +19,13 @@ import {
   IUserInfo
 } from './lib/typings'
 
-import { IScheduleTask, IRepeatConfig, IHoliday } from './lib/typings/schedule'
+import {
+  IScheduleTask,
+  IRepeatConfig,
+  IHoliday,
+  Taker,
+  RepeatList
+} from './lib/typings/schedule'
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
 
 // 协作人
@@ -54,5 +60,7 @@ export type {
   OrderSystemType,
   IScheduleTask,
   IRepeatConfig,
-  IHoliday
+  IHoliday,
+  Taker,
+  RepeatList
 }

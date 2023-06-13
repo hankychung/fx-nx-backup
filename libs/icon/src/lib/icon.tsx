@@ -14,3 +14,6 @@ export { ReactComponent as MeetingFinishedIcon } from './assets/meetingFinishedI
 export { ReactComponent as MeetingIcon } from './assets/meetingIcon.svg'
 export { ReactComponent as RepeatIcon } from './assets/repeat.svg'
 export { ReactComponent as WorkflowBlueIcon } from './assets/workflowBlue.svg'
+export { ReactComponent as RepeatDelayIcon } from './assets/repeatDelay.svg'
+export { ReactComponent as CycleCardIcon } from './assets/cycle_card.svg'
+export { ReactComponent as CycleCardDarkIcon } from './assets/cycle_card_dark.svg'

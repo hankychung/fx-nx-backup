@@ -18,14 +18,18 @@ import { Expand } from './components/expand'
 import { Indent } from './components/indent'
 import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
+import { Time } from './components/time'
+import { ChildrenTask } from './children-task'
 
-interface IProps {
+export interface IProps {
   taskKey: string
   date: string
   topId: string
   curTime: number // 当前时间, 今天的时间
+  userId: string
   isDarkMode?: boolean
   style?: CSSProperties
+  isSimple?: boolean
 }
 
 const _ScheduleTask: FC<IProps> = ({
@@ -33,8 +37,10 @@ const _ScheduleTask: FC<IProps> = ({
   date,
   topId,
   curTime,
+  userId,
   isDarkMode,
-  style
+  style,
+  isSimple = false
 }) => {
   const data = useScheduleStore((state) => state.taskDict[taskKey])
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
@@ -159,9 +165,9 @@ const _ScheduleTask: FC<IProps> = ({
           </div>
         )}
 
-        <Workflow taskId={taskKey} />
+        {!isSimple && <Workflow taskId={taskKey} />}
 
-        <ParentInfo taskId={taskKey} isDarkMode />
+        {!isSimple && <ParentInfo taskId={taskKey} isDarkMode />}
 
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask} />
@@ -195,15 +201,23 @@ const _ScheduleTask: FC<IProps> = ({
                 </div>
               </div>
 
-              <div className={styles.info}>
-                <div className={styles.infoMain}>
-                  <div className={styles.singleLine}>
-                    {/*<Time taskId={taskId} date={date} />*/}
-                    {/*<Takers taskId={taskId} />*/}
-                    {/*<Tags task={task} taskId={taskId} />*/}
+              {!isSimple && (
+                <div className={styles.info}>
+                  <div className={styles.infoMain}>
+                    <div className={styles.singleLine}>
+                      <Time
+                        taskId={taskKey}
+                        curTime={curTime}
+                        userId={userId}
+                        dateStr={date}
+                        isDarkMode={isDarkMode}
+                      />
+                      {/*<Takers taskId={taskId} />*/}
+                      {/*<Tags task={task} taskId={taskId} />*/}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -211,14 +225,15 @@ const _ScheduleTask: FC<IProps> = ({
       {children && isExpanded && (
         <div>
           {children.map((i) => (
-            <ScheduleTask
-              date={date}
+            <ChildrenTask
               key={i}
+              date={date}
               taskKey={i}
               topId={taskKey}
               curTime={curTime}
               isDarkMode={isDarkMode}
               style={style}
+              userId={userId}
             />
           ))}
         </div>

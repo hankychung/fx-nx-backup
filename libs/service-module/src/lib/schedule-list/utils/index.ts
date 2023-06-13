@@ -3,6 +3,11 @@ import dayjs from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, getRepeatTotal, isAlwaysRepeat } from './loopMatter'
 
+interface IGetRepeatDelayTotalParams {
+  rawTask?: IScheduleTask
+  userId: string
+}
+
 function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
   return `${i.ref_task_id}-${i.repeat_id || ''}`
 }
@@ -164,4 +169,54 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
   return _obj
 }
 
-export { getKey, getChildrenDict, shouldInsertSchedule, getRepeatTxt }
+/**
+ * 获取循环已延期的次数
+ */
+const getRepeatDelayTotal = ({
+  rawTask,
+  userId
+}: IGetRepeatDelayTotalParams) => {
+  let total = 0
+
+  if (rawTask) {
+    if (rawTask.repeat_delay_total === undefined) {
+      if (rawTask.repeat_list) {
+        const today = dayjs()
+
+        const repeatDelayList = rawTask.repeat_list.filter((item) => {
+          let selfFinish = false
+
+          // 自己是否完成
+          if (item.repeat_finishes && item.repeat_finishes.length > 0) {
+            const findSelf = item.repeat_finishes.find(
+              (e) => e.user_id === userId
+            )
+
+            selfFinish = !!findSelf
+          }
+
+          // 自己是否延期并且未完成(结束了，但是未完成)
+          return (
+            !selfFinish &&
+            item.end_time &&
+            dayjs.unix(item.end_time).isBefore(today)
+          )
+        })
+
+        total = repeatDelayList.length || 0
+      }
+    } else {
+      total = rawTask.repeat_delay_total || 0
+    }
+  }
+
+  return total
+}
+
+export {
+  getKey,
+  getChildrenDict,
+  shouldInsertSchedule,
+  getRepeatTxt,
+  getRepeatDelayTotal
+}

@@ -1,6 +1,6 @@
 import { service } from '../service'
 import { CommonResponse } from '../typings'
-import { IScheduleTask } from '../typings/schedule'
+import { IScheduleTask, IHoliday } from '../typings/schedule'
 
 interface IGetScheduleTreeParams {
   taskId: string
@@ -52,6 +52,18 @@ class Task {
     return service.post({
       url: `batch/v1/tasks/finish`,
       data
+    })
+  }
+  
+  /**
+   * 获取节假日
+   */
+  async getHoliday(year: number): Promise<CommonResponse<IHoliday[]>> {
+    return service.get({
+      url: `${this.prefix}/monthly_view/holiday`,
+      params: {
+        year
+      }
     })
   }
 }

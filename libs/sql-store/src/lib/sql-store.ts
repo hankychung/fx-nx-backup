@@ -13,7 +13,7 @@ import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 import { defaultDiffStamp } from './const'
 import _ from 'lodash'
-import { yieldConsole } from './utils/console'
+import { parseError, yieldConsole } from './utils/console'
 
 const wasmUrl = '/sql-wasm.wasm'
 
@@ -235,11 +235,9 @@ class SqlStore {
             type: 'error',
             data: {
               type: 'writting',
-              info: {
-                key,
-                e,
-                res
-              }
+              key,
+              ...parseError(e),
+              res
             }
           })
         }
@@ -345,7 +343,7 @@ class SqlStore {
         data: {
           type: 'api-error',
           url: requestUrl,
-          e
+          ...parseError(e)
         }
       })
     }
@@ -496,7 +494,7 @@ class SqlStore {
         data: {
           type: 'query',
           params,
-          e
+          ...parseError(e)
         }
       })
 
@@ -553,7 +551,7 @@ class SqlStore {
             yieldConsole({
               type: 'error',
               data: {
-                e,
+                ...parseError(e),
                 item,
                 table,
                 type: 'writting-diff-update'

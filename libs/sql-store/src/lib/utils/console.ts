@@ -44,4 +44,14 @@ function yieldConsole(info: {
   })
 }
 
-export { yieldConsole }
+function parseError(e: any) {
+  const { message, name, cause } = e
+
+  try {
+    return { error: { message, name, cause } }
+  } catch {
+    return {}
+  }
+}
+
+export { yieldConsole, parseError }

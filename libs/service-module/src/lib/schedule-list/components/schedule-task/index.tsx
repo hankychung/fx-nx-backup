@@ -43,7 +43,13 @@ const _ScheduleTask: FC<IProps> = ({
   style,
   isSimple = false
 }) => {
-  const data = useScheduleStore((state) => state.taskDict[taskKey])
+  const _data = useScheduleStore((state) => state.taskDict[taskKey])
+  const dataWithoutRepeatId = useScheduleStore(
+    (state) => state.taskDict[taskKey.split('-')[0]]
+  )
+
+  const data = _data || dataWithoutRepeatId
+
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
     const dict = state.expandedDict[date]
@@ -166,7 +172,7 @@ const _ScheduleTask: FC<IProps> = ({
           </div>
         )}
 
-        {!isSimple && <Workflow taskId={taskKey} />}
+        {/* {!isSimple && <Workflow taskId={taskKey} />} */}
 
         {!isSimple && <ParentInfo taskId={taskKey} isDarkMode />}
 
@@ -189,7 +195,7 @@ const _ScheduleTask: FC<IProps> = ({
                 </div>
                 <div className={styles.headRight}>
                   <ScheduleType matterType={data.matter_type} />
-                  {data.has_child ? (
+                  {data.has_child && !data.finish_time ? (
                     <Expand
                       task={data}
                       isExpanded={isExpanded}
@@ -206,13 +212,13 @@ const _ScheduleTask: FC<IProps> = ({
                 <div className={styles.info}>
                   <div className={styles.infoMain}>
                     <div className={styles.singleLine}>
-                      <Time
+                      {/* <Time
                         taskId={taskKey}
                         curTime={curTime}
                         userId={userId}
                         dateStr={date}
                         isDarkMode={isDarkMode}
-                      />
+                      /> */}
                       {/*<Takers taskId={taskId} />*/}
                       {/*<Tags taskId={taskKey} />*/}
                     </div>

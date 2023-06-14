@@ -1,17 +1,33 @@
 import { produce } from 'immer'
 import { useScheduleStore, IState } from './useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
+import { ListHandler } from './listHandler'
 
 class TaskHandler {
-  static modify({ key, diff }: { key: string; diff: Partial<IScheduleTask> }) {
+  static batchModify({
+    keys,
+    diff
+  }: {
+    keys: string[]
+    diff: Partial<IScheduleTask>
+  }) {
     useScheduleStore.setState(
       produce((state: IState) => {
-        state.taskDict[key] = {
-          ...state.taskDict[key],
-          ...diff
-        }
+        keys.forEach((key) => {
+          const task = state.taskDict[key]
+
+          state.taskDict[key] = {
+            ...task,
+            ...diff
+          }
+        })
       })
     )
+
+    // 完成事项
+    if (diff.finish_time) {
+      ListHandler.batchComplete(keys)
+    }
   }
 }
 

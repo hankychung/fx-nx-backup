@@ -1,0 +1,55 @@
+.workflow {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fafafa;
+  padding: 5px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    margin-right: 4px;
+  }
+
+  .repeat_icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    margin-right: 4px;
+  }
+
+  .blue {
+    color: #6985fd !important;
+  }
+
+  .appName {
+    font-size: 10px;
+    color: #8f8f8f;
+    flex: 2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+  }
+
+  .currentStep {
+    font-size: 10px;
+    font-weight: bold;
+    color: #1dd2c1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+  }
+
+  &.darkMode {
+    background-color: #383b48;
+
+    .appName {
+      color: #92929d;
+    }
+  }
+}

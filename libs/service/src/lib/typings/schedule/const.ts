@@ -51,3 +51,44 @@ export const MatterTypeLabel: {
   [MatterType.project]: '项目',
   [MatterType.target]: '目标'
 }
+
+// 循环类型 （新版）
+// 其实和旧版很像 但是 就是少了几个，多了几个
+export enum RepeatConfigRepeatType {
+  EVERY_DAY = 1, // 每天
+  EVERY_WEEK = 2, // 每周
+  EVERY_MONTH = 6, // 每月
+  EVERY_YEAR = 7 // 每年
+}
+
+// 循环事项选项 （旧版）
+export enum LOOP_MATTER {
+  noLoop = 0, // 不循环
+  everDay, // 每天
+  weekly, // 每周
+  everyFortnight, // 每两周
+  weekdays, // 工作日
+  nonWork, // 非工作日
+  monthly, // 每月
+  custom = 999 // 自定义循环
+}
+
+export const LOOP_MATTER_LABEL: { [key: number]: string } = {
+  [LOOP_MATTER.noLoop]: '不循环',
+  [LOOP_MATTER.everDay]: '每天',
+  [LOOP_MATTER.weekly]: '每周',
+  [LOOP_MATTER.everyFortnight]: '每2周',
+  [LOOP_MATTER.weekdays]: '工作日',
+  [LOOP_MATTER.nonWork]: '非工作日',
+  [LOOP_MATTER.monthly]: '每月',
+  [LOOP_MATTER.custom]: '自定义循环'
+}
+
+export enum AlwaysFinishTime {
+  value = 2114351999
+}
+
+export enum HolidayState {
+  FURLOUGH = 1, // 放假
+  DUTY // 补班
+}

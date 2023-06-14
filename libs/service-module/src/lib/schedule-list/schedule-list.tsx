@@ -23,6 +23,8 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   const updateList = useScheduleStore((state) => state.updateList)
   const updateTask = useScheduleStore((state) => state.updateTask)
 
+  const userId = '1657239291035777'
+
   const reload = useMemoizedFn(() => {
     pageRef.current = 1
     finishPageRef.current = 1
@@ -94,6 +96,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
               key={i}
               taskKey={i}
               topId={i}
+              userId={userId}
               curTime={dayjs().unix()}
             />
           ))}
@@ -117,6 +120,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
               key={i}
               taskKey={i}
               topId={i}
+              userId={userId}
               curTime={dayjs().unix()}
             />
           ))}

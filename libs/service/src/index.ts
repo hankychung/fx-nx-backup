@@ -31,6 +31,10 @@ import * as ScheduleTaskConst from './lib/typings/schedule/const'
 // 协作人
 import { IContactsAndStatus } from './lib/typings/taker'
 
+// Tag
+import { TagModel } from './lib/typings/tag'
+import { TagWidgetColor } from './lib/typings/tag/const'
+
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
 import * as OrderSystemConst from './lib/typings/order-system/const'
@@ -48,7 +52,8 @@ export {
   OrderSystemApi,
   TaskDispatchApi,
   OrderSystemConst,
-  ScheduleTaskConst
+  ScheduleTaskConst,
+  TagWidgetColor
 }
 
 export type {
@@ -62,5 +67,6 @@ export type {
   IRepeatConfig,
   IHoliday,
   Taker,
-  RepeatList
+  RepeatList,
+  TagModel
 }

@@ -1,0 +1,39 @@
+.tags {
+  position: relative;
+  cursor: pointer;
+  margin-right: auto;
+  margin-left: 5px;
+  overflow: hidden;
+
+  .tagBox {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+}
+
+.needLine {
+  margin-top: 0;
+  margin-left: 8px !important;
+
+  .tags {
+    margin-left: 9px;
+  }
+
+  &::before {
+    left: 0;
+  }
+}
+
+.tagsOuter {
+  margin-top: 3px;
+  flex: 1;
+  overflow: hidden;
+  min-width: 21px;
+}
+
+:global {
+  .ant-tooltip.antdTagToolTip {
+    max-width: 300px !important;
+  }
+}

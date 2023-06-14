@@ -1,7 +1,8 @@
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import dayjs from 'dayjs'
 import { DateType } from '../typing'
-import { getNowRepeatData, getRepeatTotal, isAlwaysRepeat } from './loopMatter'
+import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
+import { loopStuff } from './loop/loopStuff'
 
 interface IGetRepeatDelayTotalParams {
   rawTask?: IScheduleTask
@@ -164,7 +165,7 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
 
     _obj.t_r = `已循环（${
       cycle || getNowRepeatData(task)?.cycle || 0
-    }/${await getRepeatTotal(task)}）`
+    }/${await loopStuff.getRepeatTotal(task)}）`
   }
   return _obj
 }

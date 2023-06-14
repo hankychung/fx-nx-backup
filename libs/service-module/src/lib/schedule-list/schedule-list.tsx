@@ -6,6 +6,7 @@ import { useScheduleStore } from './utils/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
+import { getHoliday } from './utils/holiday'
 
 interface ScheduleListProps {
   date: string
@@ -27,6 +28,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   const reload = useMemoizedFn(() => {
     pageRef.current = 1
     finishPageRef.current = 1
+    getHoliday()
     fetchList()
     fetchList({ finish: true })
   })

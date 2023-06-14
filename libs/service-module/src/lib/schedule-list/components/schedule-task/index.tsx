@@ -19,6 +19,7 @@ import { Indent } from './components/indent'
 import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
+// import { Tags } from './components/tags'
 import { ChildrenTask } from './children-task'
 
 export interface IProps {
@@ -213,7 +214,7 @@ const _ScheduleTask: FC<IProps> = ({
                         isDarkMode={isDarkMode}
                       />
                       {/*<Takers taskId={taskId} />*/}
-                      {/*<Tags task={task} taskId={taskId} />*/}
+                      {/*<Tags taskId={taskKey} />*/}
                     </div>
                   </div>
                 </div>

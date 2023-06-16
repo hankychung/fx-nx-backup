@@ -17,7 +17,8 @@ import {
   ILoginKeyParams,
   IDevice,
   IErrorResponse,
-  IUserInfo
+  IUserInfo,
+  IVip
 } from './lib/typings'
 
 import {
@@ -30,11 +31,26 @@ import {
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
 
 // 协作人
-import { IContactsAndStatus } from './lib/typings/taker'
+import {
+  IContactsAndStatus,
+  ITakerAndStatus,
+  VipTypeEnum,
+  EConCheckStatus
+} from './lib/typings/taker'
 
 // Tag
 import { TagModel, TagObjType } from './lib/typings/tag'
 import { TagWidgetColor } from './lib/typings/tag/const'
+
+// Auth
+import * as AuthType from './lib/typings/auth'
+import * as AuthConst from './lib/typings/auth/const'
+
+// 空间
+import * as SpaceType from './lib/typings/space'
+
+// 项目
+import * as ProjectType from './lib/typings/project'
 
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
@@ -55,7 +71,10 @@ export {
   OrderSystemConst,
   ScheduleTaskConst,
   TagWidgetColor,
-  LabelApi
+  LabelApi,
+  AuthConst,
+  VipTypeEnum,
+  EConCheckStatus
 }
 
 export type {
@@ -71,5 +90,10 @@ export type {
   Taker,
   RepeatList,
   TagModel,
-  TagObjType
+  TagObjType,
+  ITakerAndStatus,
+  AuthType,
+  IVip,
+  SpaceType,
+  ProjectType
 }

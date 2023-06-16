@@ -6,6 +6,7 @@ import {
 } from './const'
 import { TagModel } from '../tag'
 import { TagWidgetColor } from '../tag/const'
+import { SPACE_TYPE } from '../space/const'
 
 /**
  * proto.day_view.GetDayViewReply
@@ -375,7 +376,7 @@ export interface IScheduleTask {
   category?: number
   complete_at?: number
   create_at?: number
-  creator_id?: string
+  creator_id: string
   cycle?: number
   cycle_date?: string
   dispatch_id?: string
@@ -389,6 +390,7 @@ export interface IScheduleTask {
   flow_step_join?: boolean
   flow_step_name?: string
   flow_step_user_count?: number
+  flow_step_user_complete?: number // 当前步骤用户完成时间
   has_child?: boolean
   has_follow?: boolean
   is_follow?: boolean // 这个和 has_follow 其实需要统一一个，估计是不同的事项列表接口返回的字段不同
@@ -427,6 +429,7 @@ export interface IScheduleTask {
   workspace_id?: string
   workspace_info?: WorkspaceInfo
   priority_level?: QuadrantValue
+  ws_type?: SPACE_TYPE
 }
 
 /**

@@ -19,6 +19,7 @@ import { Indent } from './components/indent'
 import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
+import { Tags } from './components/tags'
 import { ChildrenTask } from './children-task'
 
 export interface IProps {
@@ -100,6 +101,8 @@ const _ScheduleTask: FC<IProps> = ({
         })
       })
 
+      console.log('childrenDict', childrenDict)
+
       batchUpdateChildDict(childrenDict)
     }
 
@@ -166,7 +169,7 @@ const _ScheduleTask: FC<IProps> = ({
           </div>
         )}
 
-        {/* {!isSimple && <Workflow taskId={taskKey} />} */}
+        {!isSimple && <Workflow taskId={taskKey} />}
 
         {!isSimple && <ParentInfo taskId={taskKey} isDarkMode />}
 
@@ -206,15 +209,15 @@ const _ScheduleTask: FC<IProps> = ({
                 <div className={styles.info}>
                   <div className={styles.infoMain}>
                     <div className={styles.singleLine}>
-                      {/* <Time
+                      <Time
                         taskId={taskKey}
                         curTime={curTime}
                         userId={userId}
                         dateStr={date}
                         isDarkMode={isDarkMode}
-                      /> */}
+                      />
                       {/*<Takers taskId={taskId} />*/}
-                      {/*<Tags task={task} taskId={taskId} />*/}
+                      <Tags taskId={taskKey} userId={userId} />
                     </div>
                   </div>
                 </div>

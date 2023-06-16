@@ -13,3 +13,20 @@ export function changeCompleteState(state: number) {
       return 0
   }
 }
+
+// 获取当前事项下的所有子事项
+export function getValuesByKey(
+  obj: Record<string, string[]>,
+  key: string
+): string[] {
+  const values: any[] = []
+  if (obj[key]) {
+    values.push(...obj[key])
+    for (const childKey of obj[key]) {
+      if (obj[childKey]) {
+        values.push(...getValuesByKey(obj, childKey))
+      }
+    }
+  }
+  return values
+}

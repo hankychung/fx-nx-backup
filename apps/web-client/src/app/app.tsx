@@ -8,13 +8,7 @@ service.updateToken(
 )
 
 export function App() {
-  return (
-    <>
-      <ScheduleList date="2023-06-16" />
-      {/* <ScheduleList date="2023-06-02" />
-      <ScheduleList date="2023-06-03" /> */}
-    </>
-  )
+  return <ScheduleList date="2023-06-16" />
 }
 
 export default App

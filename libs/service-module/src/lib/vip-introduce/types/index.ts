@@ -2,8 +2,8 @@ export interface VipIntroduceContentProps {
   isVip: boolean
   isTeamVip: boolean
   isForeverVip?: boolean //是否个人永久会员
-  personVipBtnClick?: (isVip?: boolean) => void
-  teamVipBtnClick?: (isTeamVip?: boolean) => void
+  personVipBtnClick?: (item: IInfoType & { btnText: string }) => void
+  teamVipBtnClick?: (item: IInfoType & { btnText: string }) => void
   customBtnClick?: () => void
   descBtnClick?: () => void
 }

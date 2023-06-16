@@ -1,0 +1,61 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2021/10/20 下午 5:20
+**/
+
+.tag-input {
+  width: 200px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid rgba(223, 224, 227, 1);
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 10px 4px 11px;
+
+  input {
+    width: 150px;
+    border: none;
+    outline-style: none;
+    height: 17px;
+    font-size: 12px;
+
+    &::-webkit-input-placeholder {
+      color: #c1c1c1;
+    }
+  }
+}
+
+/** 单个选择 **/
+.tag-color-radio {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 3px;
+  cursor: pointer;
+
+  .radio-checked {
+    height: 100%;
+    width: 100%;
+    border-radius: 999px;
+  }
+}
+
+/** 颜色选择列表 **/
+
+.tag-color-list {
+  width: 38px;
+  background-color: white;
+  padding: 12px;
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+  // position: absolute;
+  box-shadow: 0 4px 10px 0 rgba(189, 189, 189, 0.4);
+  border-radius: 5px;
+  border: 1px solid #ededed;
+  align-items: center;
+}

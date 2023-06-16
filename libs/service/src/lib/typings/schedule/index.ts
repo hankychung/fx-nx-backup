@@ -4,6 +4,8 @@ import {
   RepeatConfigRepeatType,
   HolidayState
 } from './const'
+import { TagModel } from '../tag'
+import { TagWidgetColor } from '../tag/const'
 
 /**
  * proto.day_view.GetDayViewReply
@@ -466,15 +468,15 @@ export interface PersonalRemindAt {
 /**
  * .ScheduleTag，日程标签
  */
-export interface ScheduleTag {
+export interface ScheduleTag extends TagModel {
   /**
    * 标签颜色
    */
-  color?: string
+  color: TagWidgetColor
   /**
    * 标签名字
    */
-  name?: string
+  name: string
   /**
    * 标签id
    */

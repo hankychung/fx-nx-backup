@@ -137,7 +137,7 @@ export const getFilterSql = (
                   max(create_at)
           from task_repeat
           group by task_id, cycle)
-      WHERE datetime(cycle_date, 'localtime') <= DATETIME('now', 'localtime')
+      WHERE datetime(cycle_date, 'localtime') <= DATETIME('now', 'localtime') OR cycle = 1
       GROUP BY task_id) AS d
       ON c.id = d.task_id AND b.repeat_type > 0
       LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${user_id}`
@@ -329,7 +329,7 @@ export const getFilterSql = (
     /** 不分区 */
     default: {
       if (!order_by_key) {
-        ORDERS.unshift(`date_idx ASC, create_at ASC`)
+        ORDERS.unshift(`create_at DESC`)
       } else if (order_by_key === 'timestamp') {
         ORDERS.push(`date_idx ${sort}, ${order_by_key} ${sort}`)
         ORDERS.concat([`task_id ${sort}`, `repeat_id ${sort}`])

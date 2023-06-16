@@ -119,9 +119,10 @@ function _TagAutoBar(props: TagAutoBarProps) {
   // 创建item
   const buildItems = () => {
     return tags.map((item, index) => {
+      const key = `${item.id || item.tag_id}-${index}`
       return (
         <AutoTagItem
-          key={item.id + index}
+          key={key}
           data={item}
           order={index}
           onClick={onClickItem}

@@ -7,16 +7,17 @@ import {
 } from '@flyele/flyele-components'
 import { Tooltip } from 'antd'
 import TagAutoBar from '../../../../../tag/tag-auto-bar'
-// import TagContent from '@/pages/full-dose/components/FullDoseList/Row/components/TagContent'
+import TagContent from '../../../../../tag/tag-content'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
 import { useScheduleStore } from '../../../../utils/useScheduleStore'
 
 interface IPROPTags {
   taskId: string
+  userId: string
 }
 
-export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
+export const Tags: React.FC<IPROPTags> = ({ taskId, userId }) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const isVipSmallTool = false
   const isBoard = true
@@ -46,8 +47,7 @@ export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
             showArrow={false}
             placement="auto"
             strategy="absolute"
-            // content={() => task && <TagContent data={task} />}
-            content={() => task && <div />}
+            content={() => <TagContent data={task} userId={userId} />}
           >
             <Tooltip
               overlayClassName="antdTagToolTip"

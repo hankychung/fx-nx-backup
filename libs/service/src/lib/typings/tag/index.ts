@@ -10,3 +10,6 @@ export interface TagModel {
    */
   displayLength?: number
 }
+
+// 绑定 标签需要的类型
+export type TagObjType = 'task' | 'meeting' | 'todo' | 'record' | string

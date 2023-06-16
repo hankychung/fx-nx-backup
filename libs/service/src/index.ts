@@ -8,6 +8,7 @@ import { paymentApi } from './lib/payment'
 import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
 import { TaskDispatchApi } from './lib/task-dispatch'
+import { LabelApi } from './lib/label'
 import SSe from './lib/sse'
 import './lib/payment'
 
@@ -32,7 +33,7 @@ import * as ScheduleTaskConst from './lib/typings/schedule/const'
 import { IContactsAndStatus } from './lib/typings/taker'
 
 // Tag
-import { TagModel } from './lib/typings/tag'
+import { TagModel, TagObjType } from './lib/typings/tag'
 import { TagWidgetColor } from './lib/typings/tag/const'
 
 // 订单管理系统
@@ -53,7 +54,8 @@ export {
   TaskDispatchApi,
   OrderSystemConst,
   ScheduleTaskConst,
-  TagWidgetColor
+  TagWidgetColor,
+  LabelApi
 }
 
 export type {
@@ -68,5 +70,6 @@ export type {
   IHoliday,
   Taker,
   RepeatList,
-  TagModel
+  TagModel,
+  TagObjType
 }

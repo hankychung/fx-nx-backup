@@ -15,12 +15,12 @@ import { getRepeatDelayTotal } from '../../../../utils'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
 import { useScheduleStore } from '../../../../utils/useScheduleStore'
-import { getRepeatTotal } from '../../../../utils/loopMatter'
 import {
   RepeatDelayIcon,
   CycleCardIcon,
   CycleCardDarkIcon
 } from '@flyele-nx/icon'
+import { loopStuff } from '../../../../utils/loop/loopStuff'
 
 interface IPROPTime {
   taskId: string
@@ -58,8 +58,8 @@ export const Time: React.FC<IPROPTime> = ({
       setRepeatTotal(0)
       return
     }
-    getRepeatTotal(task).then((res) => {
-      setRepeatTotal(res)
+    loopStuff.getValue(task).then((res) => {
+      setRepeatTotal(res.count)
     })
   }, [task])
 

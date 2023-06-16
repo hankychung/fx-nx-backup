@@ -18,15 +18,15 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     isForeverVip
   } = props
 
-  const handleBtnClick = (key: string) => {
-    switch (key) {
+  const handleBtnClick = (item: IInfoType & { btnText: string }) => {
+    switch (item.key) {
       case 'free':
         break
       case 'personal':
-        personVipBtnClick?.(isVip)
+        personVipBtnClick?.(item)
         break
       case 'team':
-        teamVipBtnClick?.(isTeamVip)
+        teamVipBtnClick?.(item)
         break
       case 'custom':
         customBtnClick?.()
@@ -115,7 +115,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                 {btnText && (
                   <Button
                     style={{ background: item.btnBgColor, height: 36 }}
-                    onClick={() => handleBtnClick(item.key)}
+                    onClick={() => handleBtnClick(item)}
                   >
                     {btnText}
                   </Button>

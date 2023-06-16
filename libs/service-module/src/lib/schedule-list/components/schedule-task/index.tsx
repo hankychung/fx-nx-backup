@@ -105,6 +105,8 @@ const _ScheduleTask: FC<IProps> = ({
         })
       })
 
+      console.log('childrenDict', childrenDict)
+
       batchUpdateChildDict(childrenDict)
     }
 

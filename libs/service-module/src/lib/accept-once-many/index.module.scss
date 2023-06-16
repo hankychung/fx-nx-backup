@@ -1,0 +1,14 @@
+.accept_once_many {
+  //background: lightblue;
+  z-index: 999;
+}
+
+.hide_arrow {
+  :global {
+    .ant-popover-content {
+      .ant-popover-arrow {
+        display: none;
+      }
+    }
+  }
+}

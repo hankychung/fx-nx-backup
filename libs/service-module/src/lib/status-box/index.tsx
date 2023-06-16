@@ -24,6 +24,8 @@ import { changeCompleteState, getValuesByKey } from './utils'
 import AcceptOnceMany from '../accept-once-many'
 import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
 import { message } from 'antd'
+import { TaskHandler } from '../schedule-list/utils/taskHandler'
+import dayjs from 'dayjs'
 
 interface IProps {
   task: IScheduleTask
@@ -118,7 +120,22 @@ const _StatusBox: FC<IProps> = (props) => {
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 
-      await dispatchApi(!!isBatch, !!task.finish_time)
+      const state = changeCompleteState(task.state)
+
+      // TODO: for test
+      if (!task.finish_time) {
+        TaskHandler.batchModify({
+          keys: [task.ref_task_id],
+          diff: {
+            finish_time: dayjs().unix(),
+            state
+          }
+        })
+      }
+
+      await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
+        state
+      })
     } catch (error) {
       resetStatus?.()
     }

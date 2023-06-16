@@ -13,7 +13,7 @@ import { IDiffInfoResponse } from './type/service/increment'
 import { IUserParams } from './type'
 import { defaultDiffStamp } from './const'
 import _ from 'lodash'
-import { yieldConsole } from './utils/console'
+import { parseError, yieldConsole } from './utils/console'
 
 const wasmUrl = '/sql-wasm.wasm'
 
@@ -235,11 +235,9 @@ class SqlStore {
             type: 'error',
             data: {
               type: 'writting',
-              info: {
-                key,
-                e,
-                res
-              }
+              key,
+              ...parseError(e),
+              res
             }
           })
         }
@@ -345,7 +343,7 @@ class SqlStore {
         data: {
           type: 'api-error',
           url: requestUrl,
-          e
+          ...parseError(e)
         }
       })
     }
@@ -423,70 +421,85 @@ class SqlStore {
 
     yieldConsole({ type: 'query-start', data: params })
 
-    const timestamp = dayjs().startOf('day').unix() - this.timeDiff
+    try {
+      const timestamp = dayjs().startOf('day').unix() - this.timeDiff
 
-    const sqlTasks = this.db!.exec(
-      getFilterSql({ ...params, timestamp, user_id: this.userId })
-    )
+      const sqlTasks = this.db!.exec(
+        getFilterSql({ ...params, timestamp, user_id: this.userId })
+      )
 
-    const data = (sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []).map(
-      (i) =>
-        ({
-          ...i,
-          application_id:
-            i['application_id'] === '0' ? null : i['application_id'],
-          flow_step_id: i['flow_step_id'] === '0' ? null : i['flow_step_id'],
-          project_id: i['project_id'] === '0' ? null : i['project_id']
-        } as any)
-    )
+      const data = (sqlTasks[0] ? this.formatSelectValue(sqlTasks[0]) : []).map(
+        (i) =>
+          ({
+            ...i,
+            application_id:
+              i['application_id'] === '0' ? null : i['application_id'],
+            flow_step_id: i['flow_step_id'] === '0' ? null : i['flow_step_id'],
+            project_id: i['project_id'] === '0' ? null : i['project_id']
+          } as any)
+      )
 
-    for (const line of data) {
-      const task_id = line['task_id']
-      const repeat_id = line['repeat_id']
+      for (const line of data) {
+        const task_id = line['task_id']
+        const repeat_id = line['repeat_id']
 
-      const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id, repeat_id))
+        const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id, repeat_id))
 
-      const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(task_id))
+        const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(task_id))
 
-      const totalBack = sqlChildTotal[0]
-        ? this.formatSelectValue(sqlChildTotal[0])[0]
-        : {}
+        const totalBack = sqlChildTotal[0]
+          ? this.formatSelectValue(sqlChildTotal[0])[0]
+          : {}
 
-      Object.assign(line, {
-        task_tree_total: totalBack['task_tree_total'],
-        task_tree_complete_total: totalBack['task_tree_complete_total'],
-        interact_process: {
-          child_total: line['child_total'],
-          comment_total: line['comment_total'],
-          file_total: line['file_total'],
-          gadget_meeting_total: line['gadget_meeting_total'],
-          gadget_todo_total: line['gadget_todo_total'],
-          important_total: line['important_total'],
-          quote_total: line['quote_total']
+        Object.assign(line, {
+          task_tree_total: totalBack['task_tree_total'],
+          task_tree_complete_total: totalBack['task_tree_complete_total'],
+          interact_process: {
+            child_total: line['child_total'],
+            comment_total: line['comment_total'],
+            file_total: line['file_total'],
+            gadget_meeting_total: line['gadget_meeting_total'],
+            gadget_todo_total: line['gadget_todo_total'],
+            important_total: line['important_total'],
+            quote_total: line['quote_total']
+          }
+        })
+
+        line['takers'] = sqlTakers[0]
+          ? this.formatSelectValue(sqlTakers[0])
+          : []
+      }
+
+      yieldConsole({ type: 'query-end', data: params })
+
+      if (params.direction === Direction.up) {
+        const old = JSON.parse(JSON.stringify(data))
+
+        const back = data.reverse()
+
+        console.log(
+          'Reverse Before',
+          old,
+          'Reverser After',
+          JSON.parse(JSON.stringify(back))
+        )
+
+        return back
+      }
+
+      return data
+    } catch (e) {
+      yieldConsole({
+        type: 'error',
+        data: {
+          type: 'query',
+          params,
+          ...parseError(e)
         }
       })
 
-      line['takers'] = sqlTakers[0] ? this.formatSelectValue(sqlTakers[0]) : []
+      return []
     }
-
-    yieldConsole({ type: 'query-end', data: params })
-
-    if (params.direction === Direction.up) {
-      const old = JSON.parse(JSON.stringify(data))
-
-      const back = data.reverse()
-
-      console.log(
-        'Reverse Before',
-        old,
-        'Reverser After',
-        JSON.parse(JSON.stringify(back))
-      )
-
-      return back
-    }
-
-    return data
   }
 
   private async fetchZip(url: string) {
@@ -538,7 +551,7 @@ class SqlStore {
             yieldConsole({
               type: 'error',
               data: {
-                e,
+                ...parseError(e),
                 item,
                 table,
                 type: 'writting-diff-update'

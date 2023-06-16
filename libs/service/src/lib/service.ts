@@ -7,7 +7,8 @@ class Service {
 
   constructor() {
     this.axios = axios.create({
-      headers: {}
+      headers: {},
+      timeout: 1000 * 5
     })
     this.requestInterceptors()
     this.responseInterceptors()

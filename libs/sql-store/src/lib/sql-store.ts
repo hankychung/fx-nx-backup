@@ -326,13 +326,20 @@ class SqlStore {
     try {
       yieldConsole({ type: 'api-start', url: requestUrl })
 
-      const data = await (
-        await fetch(requestUrl, {
-          headers: {
-            Authorization: this.token
-          }
+      const data = await Promise.race([
+        await (
+          await fetch(requestUrl, {
+            headers: {
+              Authorization: this.token
+            }
+          })
+        ).json(),
+        new Promise((_, reject) => {
+          setTimeout(() => {
+            reject(new Error('timeout'))
+          }, 5000)
         })
-      ).json()
+      ])
 
       yieldConsole({ type: 'api-end', url: requestUrl })
 

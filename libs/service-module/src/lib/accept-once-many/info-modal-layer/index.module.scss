@@ -1,0 +1,200 @@
+.infos_modal_layer {
+  padding: 16px 21px;
+  width: 320px;
+  max-height: 320px;
+  min-height: 244px;
+  box-sizing: border-box;
+
+  :global {
+    .ant-tree-node-content-wrapper {
+      cursor: unset;
+    }
+
+    .ant-tree-treenode {
+      height: 22px;
+    }
+
+    .ant-tree-switcher {
+      visibility: hidden;
+      width: 0; //设计稿不需要偏移
+    }
+  }
+
+  &__title {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+    font-weight: 500;
+    color: #060606;
+    line-height: 25px;
+    margin-bottom: 5px;
+  }
+
+  &__desc {
+    font-size: 14px;
+    font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+    font-weight: 400;
+    color: #060606;
+    line-height: 20px;
+  }
+
+  &__cycle {
+    font-size: 12px;
+    font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+    font-weight: 400;
+    color: #262626;
+    line-height: 20px;
+    opacity: 0.8;
+  }
+
+  &__list {
+    margin-top: 11px;
+    margin-bottom: 42px;
+    max-height: 164px;
+    overflow-y: auto;
+    padding-bottom: 16px;
+
+    &::-webkit-scrollbar-thumb {
+      display: none;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+      /* 内层轨道，滚动条中间部分 */
+      background: #fff;
+      background-color: transparent;
+    }
+
+    &__item {
+      padding-bottom: 6px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      color: rgba(38, 38, 38, 0.6);
+
+      img {
+        width: 8px;
+        margin-right: 10px;
+      }
+
+      span {
+        width: 190px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+        font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+        font-weight: 400;
+        color: rgba(38, 38, 38, 0.6);
+        line-height: 17px;
+      }
+    }
+
+    &__item_son {
+      padding-bottom: 6px;
+      padding-left: 18px;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+      }
+
+      span {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+        font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+        font-weight: 400;
+        color: rgba(38, 38, 38, 0.6);
+        line-height: 17px;
+      }
+    }
+  }
+
+  &__list:hover {
+    &::-webkit-scrollbar-thumb {
+      display: block;
+    }
+  }
+
+  &__footer {
+    background: #f7f7f7;
+    position: absolute;
+    width: 100%;
+    height: 62px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    bottom: 0;
+    left: 0;
+    padding: 0 26px;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__btn_only {
+      width: 88px;
+      height: 35px;
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid #c9c9c9;
+      text-align: center;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+      font-weight: 400;
+      color: rgba(6, 6, 6, 0.3);
+      line-height: 20px;
+      margin-right: 44px;
+    }
+
+    &__btn_only:hover {
+      color: rgba(6, 6, 6, 0.3);
+      background: #fafafb;
+    }
+
+    &__btn_all {
+      width: 88px;
+      height: 35px;
+      background: #1dd2c1;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFangSC-Regular, Arial, sans-serif;
+      font-weight: 400;
+      color: #fff;
+      line-height: 20px;
+      text-align: center;
+      border: none;
+    }
+
+    &__btn_all:hover {
+      background: #61dfd3;
+    }
+  }
+}
+
+.node {
+  cursor: unset;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: #d3d3d3;
+    margin-right: 10px;
+  }
+
+  font-size: 10px;
+  color: rgba(38, 38, 38, 0.6);
+}

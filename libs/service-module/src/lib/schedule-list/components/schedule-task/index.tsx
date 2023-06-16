@@ -42,12 +42,7 @@ const _ScheduleTask: FC<IProps> = ({
   style,
   isSimple = false
 }) => {
-  const _data = useScheduleStore((state) => state.taskDict[taskKey])
-  const dataWithoutRepeatId = useScheduleStore(
-    (state) => state.taskDict[taskKey.split('-')[0]]
-  )
-
-  const data = _data || dataWithoutRepeatId
+  const data = useScheduleStore((state) => state.taskDict[taskKey])
 
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {

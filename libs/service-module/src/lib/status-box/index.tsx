@@ -79,6 +79,8 @@ const _StatusBox: FC<IProps> = (props) => {
             state
           }
         })
+      } else {
+        console.log(task)
       }
 
       await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {

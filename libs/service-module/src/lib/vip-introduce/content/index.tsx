@@ -115,7 +115,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                 {btnText && (
                   <Button
                     style={{ background: item.btnBgColor, height: 36 }}
-                    onClick={() => handleBtnClick({...item,btnText})}
+                    onClick={() => handleBtnClick({ ...item, btnText })}
                   >
                     {btnText}
                   </Button>

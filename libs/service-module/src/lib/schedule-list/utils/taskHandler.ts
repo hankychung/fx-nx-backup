@@ -10,6 +10,7 @@ class TaskHandler {
   }: {
     keys: string[]
     diff: Partial<IScheduleTask>
+    keysWithRepeatIds: string[]
   }) {
     useScheduleStore.setState(
       produce((state: IState) => {
@@ -24,9 +25,13 @@ class TaskHandler {
       })
     )
 
-    // 完成事项
-    if (diff.finish_time) {
-      ListHandler.batchComplete(keys)
+    if ('finish_time' in diff) {
+      if (diff.finish_time) {
+        // 完成事项
+        ListHandler.batchComplete(keys)
+      } else {
+        // 重启事项
+      }
     }
   }
 }

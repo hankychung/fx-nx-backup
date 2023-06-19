@@ -578,7 +578,7 @@ export const getFilterSql = (
       WHERES.push(
         `finish_time = 0
         AND (DATETIME(start_time, 'unixepoch', 'localtime') <= DATETIME('now', 'localtime') OR
-             STRFTIME('%Y-%m-%d', cycle_date, 'localtime') <= DATETIME('now', 'localtime'))
+            cycle_date <= DATETIME('now', 'localtime'))
         AND (end_time = 0 OR DATETIME(end_time, 'unixepoch', 'localtime') > DATETIME('now', 'localtime'))`
       )
       break

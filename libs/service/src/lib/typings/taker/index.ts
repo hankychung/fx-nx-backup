@@ -1,4 +1,5 @@
-import { SpaceMemberType } from '../space'
+import { SpaceMemberType } from '../space/const'
+import { Taker } from '../schedule'
 
 export enum AddContactsType {
   matterRelevant = '事项相关方',
@@ -44,4 +45,10 @@ export interface IContactsAndStatus extends IContacts {
   addType?: AddContactsType
   count?: number
   vip_type?: VipTypeEnum //0-非会员，1-个人会员，2-团队会员
+}
+
+export interface ITakerAndStatus extends Taker {
+  status: EConCheckStatus
+  key?: string
+  addType?: AddContactsType
 }

@@ -367,9 +367,11 @@ export const nextLoopRule: {
         return startTime.clone()
       }
 
-      const addTime = time.clone()
+      let addTime = time.clone()
 
-      if (!isFirst) addTime.add(1, 'day')
+      if (!isFirst) {
+        addTime = addTime.add(1, 'day')
+      }
 
       if (ignoreHoliday) {
         return checkDateAndReturnDate({
@@ -406,9 +408,11 @@ export const nextLoopRule: {
           : startTime.clone().day(week)
       }
 
-      const addTime = time.clone()
+      let addTime = time.clone()
 
-      if (!isFirst) addTime.add(1, 'week')
+      if (!isFirst) {
+        addTime = addTime.add(1, 'week')
+      }
 
       if (ignoreHoliday) {
         return checkDateAndReturnDate({
@@ -439,9 +443,11 @@ export const nextLoopRule: {
         return startTime.clone().add(2, 'week').weekday(time.get('day'))
       }
 
-      const addTime = time.clone()
+      let addTime = time.clone()
 
-      if (!isFirst) addTime.add(2, 'week')
+      if (!isFirst) {
+        addTime = addTime.add(2, 'week')
+      }
 
       if (ignoreHoliday) {
         return checkDateAndReturnDate({
@@ -527,9 +533,11 @@ export const nextLoopRule: {
           ? startTime.add(1, 'month')
           : startTime.date(_day)
       } else {
-        const addTime = time.clone()
+        let addTime = time.clone()
 
-        if (!isFirst) addTime.add(1, 'month')
+        if (!isFirst) {
+          addTime = addTime.add(1, 'month')
+        }
 
         if (ignoreHoliday) {
           date = checkDateAndReturnDate({

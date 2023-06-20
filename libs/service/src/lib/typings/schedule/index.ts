@@ -375,7 +375,7 @@ export interface IScheduleTask {
   biz?: Biz
   category?: number
   complete_at?: number
-  create_at?: number
+  create_at: number
   creator_id: string
   cycle?: number
   cycle_date?: string

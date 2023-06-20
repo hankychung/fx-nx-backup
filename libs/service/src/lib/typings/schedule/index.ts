@@ -2,11 +2,18 @@ import {
   QuadrantValue,
   MatterType,
   RepeatConfigRepeatType,
-  HolidayState
+  HolidayState,
+  LOOP_MATTER,
+  CreateType
 } from './const'
 import { TagModel } from '../tag'
 import { TagWidgetColor } from '../tag/const'
 import { SPACE_TYPE } from '../space/const'
+import { PROJECT_STATE } from '../project/const'
+import { IBaseProjectInfo } from '../project'
+import { ScheduleTaskConst } from '../../../index'
+import { FlowOperateType, FlowRangeType } from '../workflow/const'
+import { ITaskFlowStepData } from '../workflow'
 
 /**
  * proto.day_view.GetDayViewReply
@@ -379,7 +386,7 @@ export interface IScheduleTask {
   creator_id: string
   cycle?: number
   cycle_date?: string
-  dispatch_id?: string
+  dispatch_id: string
   end_repeat_at?: number
   end_time?: number
   end_time_full_day?: number
@@ -430,6 +437,8 @@ export interface IScheduleTask {
   workspace_info?: WorkspaceInfo
   priority_level?: QuadrantValue
   ws_type?: SPACE_TYPE
+  hide?: boolean
+  schedule_hide?: boolean
 }
 
 /**
@@ -750,4 +759,111 @@ export interface ApiError {
 export interface IHoliday {
   date: string
   state: HolidayState
+}
+
+export interface IRelation {
+  children?: Taker[]
+  child_total?: number
+  parents?: Array<{ task_id: string; application_id?: string; title: string }>
+  comment_total?: number
+  file_total?: number
+  gadget_meeting_total?: number
+  gadget_notice_total?: number
+  gadget_time_collect_total?: number
+  gadget_todo_total?: number
+  important_total?: number
+  is_red_dot?: boolean
+  note_total?: number
+  record_total?: number
+  taker_total?: number
+  unread_total?: number
+  notice_float?: Array<{
+    task_id: string
+    title: string
+    detail: string
+  }>
+  project?: {
+    creator_id: string
+    workspace_state?: number
+    project_state?: PROJECT_STATE
+  } & IBaseProjectInfo
+  is_follow?: boolean
+
+  operate_type?: FlowOperateType
+}
+
+export interface IChildren {
+  children?: IChildren[]
+  /** 最大长度 2500 */
+  detail?: string //
+  end_repeat_at?: number
+  end_time?: number
+  /** 截止时间全天事项，1->否，2->是 */
+  end_time_full_day?: 1 | 2
+  /**  是否派发 0 -> 否，1 -> 是 */
+  is_dispatch?: 0 | 1 //
+  remind_at?: IScheduleTask['remind_at']
+  /** 重复周期，0->永不，1->每天，2->每周，3->每两周，4->工作日，5->非工作日，6->每月 */
+  repeat_type?: LOOP_MATTER
+  repeat_config?: IRepeatConfig // 循环设置
+  start_time?: number
+  /** 开始时间全天事项，1->否，2->是 */
+  start_time_full_day?: 1 | 2
+  /** 邀请的协作人 */
+  takers?: string[]
+  title: string
+  widget?: any
+  /** 这个字段接口上没有，只用在前端判断然后手动掉绑定接口 */
+  tagIds?: string[]
+  temp_id?: string
+  files?: {
+    id: string
+    origin: string
+    name: string
+    size: string
+  }[]
+  operate_type?: FlowOperateType
+  priority_level?: QuadrantValue
+}
+
+export interface ICreateParams {
+  detail?: string
+  end_collect?: 1 | 2 | 3 // 1->2小时后，2->6小时后，3->1天后
+  end_time?: number
+  execute_addr?: string
+  files?: Array<{ id: string; name: string; origin: string; size: string }>
+  is_checkbox?: 0 | 1 // 是否多选 0->否，1->是
+  is_dispatch: 0 | 1 // 是否派发 0 -> 否，1 -> 是
+  matter_type: ScheduleTaskConst.MatterType // 任务类型 10701 -> 事项， 10702 -> 会议， 10703 -> 时间征集
+  remind_at?: IScheduleTask['remind_at']
+  remind_user_id?: string
+  reminder_time?: number[]
+  start_time?: number
+  task_id?: string
+  priority_level?: QuadrantValue
+  time_collects?: any
+  title: string
+  parent_id?: string // 父事项id
+  widget?: any
+  children?: IChildren[]
+  start_time_full_day?: 1 | 2 // 开始时间全天事项，1->否，2->是
+  end_time_full_day?: 1 | 2 // 截止时间全天事项，1->否，2->是
+  project_id?: string // 关联项目id
+  category?: 0 | 1 | 2 // 0=主事项, 1=小工具，2=子事项
+  end_repeat_at?: number // 结束重复时间戳，当天23:59:59时间
+  repeat_type?: LOOP_MATTER
+  repeat_config?: IRepeatConfig // 循环设置
+  group_id?: string // 分组id
+  _tagIds?: string[] // 已选中标签 id，用于埋点数据
+  _tagArr?: TagModel[] // 标签对象数组，用于埋点数据
+  _create_type?: CreateType // 创建类型，用于埋点数据
+  _meeting_remind_data?: string[] // 会议提醒时间，用于埋点数据
+  ancestor_id?: string // 所有的父id 暂时仅给埋点使用，因为那个parentId是不准确的
+
+  /** 2.1新增 **/
+  application_id?: string // 应用id 应用必传
+  task_flow_steps?: ITaskFlowStepData[] // 工作流
+  takers?: string[] // 邀请的协作人
+  operate_type?: FlowOperateType
+  execute_at?: number
 }

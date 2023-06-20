@@ -24,7 +24,6 @@ interface IMutation {
     isInit?: boolean
     isFinished?: boolean
   }) => void
-  updateTask: (info: { key: string; task: IScheduleTask }) => void
   batchUpdateTask: (tasks: IScheduleTask[]) => { keys: string[] }
   updateExpandedDict: (info: {
     date: string
@@ -84,16 +83,6 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           }
 
           state.schedule[date] = [...state.schedule[date], ...list]
-        })
-      )
-    },
-    /**
-     * 更新事项
-     */
-    updateTask({ key, task }) {
-      set(
-        produce((state: IState) => {
-          state.taskDict[key] = task
         })
       )
     },

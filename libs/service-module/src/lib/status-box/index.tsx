@@ -7,7 +7,7 @@ import {
 } from '@flyele-nx/service'
 import styles from './index.module.scss'
 import {
-  CheckIcon,
+  TaskCheckIcon,
   UncheckIcon,
   DisabledIcon,
   TimeCollectFinishIcon,
@@ -162,7 +162,7 @@ const _StatusBox: FC<IProps> = (props) => {
         )
       // 完成状态
       return task.finish_time ? (
-        <CheckIcon
+        <TaskCheckIcon
           onClick={(e) => {
             e.stopPropagation()
             handleComplete()
@@ -207,7 +207,7 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        <div>{buildIcon()}</div>
+        {buildIcon()}
       </AcceptOnceMany>
     </div>
   )

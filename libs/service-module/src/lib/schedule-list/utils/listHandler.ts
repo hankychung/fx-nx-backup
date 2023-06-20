@@ -34,9 +34,10 @@ class ListHandler {
     console.log('insertDates', insertDates)
   }
 
+  // 完成事项
   static batchComplete(taskIds: string[]) {
     // 从未完成列表移除已完成事项
-    this.removeTasks(taskIds)
+    this.removeTasks(taskIds, { type: 'schedule' })
 
     // 重置已完成事项的上下级关系
     const { needResetChildren } = this.resetRelation(taskIds)
@@ -48,6 +49,14 @@ class ListHandler {
 
     // 将已完成事项插入完成列表
     this.insertCompleteTasks(taskIds)
+  }
+
+  // 重启事项
+  static batchReopen(keysWithRepeatIds: string[]) {
+    // 从完成列表移除重启事项
+    this.removeTasks(keysWithRepeatIds, { type: 'finishSchedule' })
+
+    //
   }
 
   private static resetRelation(taskIds: string[]) {
@@ -103,49 +112,45 @@ class ListHandler {
     )
   }
 
-  // 从未完成列表批量移除事项
-  private static removeTasks(taskIds: string[]) {
-    const { schedule } = useScheduleStore.getState()
+  // 批量移除事项
+  private static removeTasks(
+    taskIds: string[],
+    options: {
+      type: 'schedule' | 'finishSchedule'
+    }
+  ) {
+    const { schedule, finishSchedule } = useScheduleStore.getState()
+
+    const l = options.type === 'finishSchedule' ? finishSchedule : schedule
 
     useScheduleStore.setState(
       produce((state: IState) => {
-        Object.entries(schedule).forEach(([date, list]) => {
-          state.schedule[date] = list.filter((i) => !taskIds.includes(i))
+        Object.entries(l).forEach(([date, list]) => {
+          state[options.type][date] = list.filter((i) => !taskIds.includes(i))
         })
       })
     )
   }
 
-  // 批量将事项插入已完成列表
+  // 批量插入未完成列表
+  private static insertTasks(tasks: IScheduleTask[]) {}
+
+  // 批量插入已完成列表
   private static insertCompleteTasks(ids: string[]) {
     const finishDate = dayjs().format('YYYY-MM-DD')
 
     const { finishSchedule, taskDict } = useScheduleStore.getState()
 
-    // 存在已完成的循环事项需要补充进事项字典
-    const completedCycleTask: { [k: string]: IScheduleTask } = {}
-
     const insertKeys = ids.map((id) => {
       const task = taskDict[id]
 
-      if (task.repeat_id) {
-        completedCycleTask[getKey(task)] = task
-      }
-
-      return task.repeat_id ? getKey(task) : task.ref_task_id
+      return getKey(task)
     })
 
     useScheduleStore.setState(
       produce((state: IState) => {
         if (finishSchedule[finishDate]) {
           state.finishSchedule[finishDate].push(...insertKeys)
-
-          if (Object.keys(completedCycleTask).length) {
-            state.taskDict = {
-              ...state.taskDict,
-              ...completedCycleTask
-            }
-          }
         }
       })
     )

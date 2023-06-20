@@ -63,10 +63,10 @@ const _ScheduleTask: FC<IProps> = ({
   // const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
   const isTopMost = !!data?.topmost_at && !data?.finish_time
 
-  const { updateExpandedDict, batchUpdateChildDict, updateTask } =
+  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
     useScheduleStore(
       (state) => ({
-        updateTask: state.updateTask,
+        batchUpdateTask: state.batchUpdateTask,
         updateExpandedDict: state.updateExpandedDict,
         batchUpdateChildDict: state.batchUpdateChildDict
       }),
@@ -91,17 +91,13 @@ const _ScheduleTask: FC<IProps> = ({
         originalId: ref_task_id
       })
 
-      tasks.forEach((child) => {
-        updateTask({
-          key: child.ref_task_id,
-          task: {
-            ...child,
-            has_child: Boolean(childrenDict[child.ref_task_id])
-          }
-        })
-      })
-
-      console.log('childrenDict', childrenDict)
+      // 更新事项字典
+      batchUpdateTask(
+        tasks.map((child) => ({
+          ...child,
+          has_child: Boolean(childrenDict[child.ref_task_id])
+        }))
+      )
 
       batchUpdateChildDict(childrenDict)
     }

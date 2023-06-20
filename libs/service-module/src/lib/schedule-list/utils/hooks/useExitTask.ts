@@ -4,11 +4,7 @@ import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 
 export const useExitTask = ({ taskId }: { taskId: string }) => {
-  const _data = useScheduleStore((state) => state.taskDict[taskId])
-  const dataWithoutRepeatId = useScheduleStore(
-    (state) => state.taskDict[taskId.split('-')[0]]
-  )
-  const data = _data || dataWithoutRepeatId
+  const data = useScheduleStore((state) => state.taskDict[taskId])
 
   const getDispatchId = useMemoizedFn(() => {
     return data?.dispatch_id || ''

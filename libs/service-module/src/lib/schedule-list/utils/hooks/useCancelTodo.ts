@@ -14,11 +14,7 @@ import { ScheduleTaskConst } from '@flyele-nx/service'
  * 这些东西目前不需要，需要的时候可以随时扩展
  */
 export const useCancelTodo = ({ taskId }: { taskId: string }) => {
-  const _data = useScheduleStore((state) => state.taskDict[taskId])
-  const dataWithoutRepeatId = useScheduleStore(
-    (state) => state.taskDict[taskId.split('-')[0]]
-  )
-  const data = _data || dataWithoutRepeatId
+  const data = useScheduleStore((state) => state.taskDict[taskId])
 
   // 检查是否为挂件
   // const isVipWin = document.getElementById('vipSmallToolsWinNow')

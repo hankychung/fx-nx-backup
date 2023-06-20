@@ -3,11 +3,7 @@ import { useScheduleStore } from '../useScheduleStore'
 import { TaskDispatchApi } from '@flyele-nx/service'
 
 export const useExitMeeting = ({ taskId }: { taskId: string }) => {
-  const _data = useScheduleStore((state) => state.taskDict[taskId])
-  const dataWithoutRepeatId = useScheduleStore(
-    (state) => state.taskDict[taskId.split('-')[0]]
-  )
-  const data = _data || dataWithoutRepeatId
+  const data = useScheduleStore((state) => state.taskDict[taskId])
 
   // 检查是否为挂件
   // const isVipWin = document.getElementById('vipSmallToolsWinNow')

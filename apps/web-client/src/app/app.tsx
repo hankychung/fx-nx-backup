@@ -1,5 +1,10 @@
 import { service, envStore } from '@flyele-nx/service'
-import { ScheduleList } from '@flyele-nx/service-module'
+import {
+  ScheduleList,
+  ContextMenu,
+  contextMenuTool
+} from '@flyele-nx/service-module'
+import React from 'react'
 
 envStore.initEnv(process.env.NODE_ENV as string)
 
@@ -8,7 +13,12 @@ service.updateToken(
 )
 
 export function App() {
-  return <ScheduleList date="2023-06-20" />
+  return (
+    <>
+      <ScheduleList date="2023-06-20" />
+      <ContextMenu ref={(r) => contextMenuTool.registerContextMenu(r)} />
+    </>
+  )
 }
 
 export default App

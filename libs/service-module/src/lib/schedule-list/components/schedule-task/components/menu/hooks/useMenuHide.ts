@@ -1,7 +1,7 @@
 import { useHide } from '../../../../../utils/hooks/useHide'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/service'
-import { IAction } from '../../../../../../context-menu'
+import { IAction } from '../../../../../../context-menu/types'
 
 export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
   const { hideOrShow } = useHide()

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
-import { IAction } from '../../../../../../context-menu'
+import { IAction } from '../../../../../../context-menu/types'
 
 export const useMenuSummary = ({ data }: { data: IScheduleTask }): IAction => {
   const action = useMemoizedFn(async () => {

@@ -1,5 +1,5 @@
 import { useMemoizedFn } from 'ahooks'
-import { IAction } from '../../../../../../context-menu'
+import { IAction } from '../../../../../../context-menu/types'
 
 export const useMenuSelectTime = (): IAction => {
   const action = useMemoizedFn(() => {

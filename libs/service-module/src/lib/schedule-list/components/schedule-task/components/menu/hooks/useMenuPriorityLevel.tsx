@@ -2,7 +2,7 @@ import React from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { PriorityLevelPopper } from '../../../../../../priority-level-popper'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
-import { IAction } from '../../../../../../context-menu'
+import { IAction } from '../../../../../../context-menu/types'
 
 export const useMenuPriorityLevel = ({
   data

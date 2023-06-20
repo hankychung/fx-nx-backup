@@ -26,6 +26,7 @@ import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
 import { message } from 'antd'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
+import { getKey } from '../schedule-list/utils'
 
 interface IProps {
   task: IScheduleTask
@@ -122,16 +123,14 @@ const _StatusBox: FC<IProps> = (props) => {
 
       const state = changeCompleteState(task.state)
 
-      // TODO: for test
-      if (!task.finish_time) {
-        TaskHandler.batchModify({
-          keys: [task.ref_task_id],
-          diff: {
-            finish_time: dayjs().unix(),
-            state
-          }
-        })
-      }
+      TaskHandler.batchModify({
+        keys: [task.ref_task_id],
+        keysWithRepeatIds: [getKey(task)],
+        diff: {
+          finish_time: task.finish_time ? 0 : dayjs().unix(),
+          state
+        }
+      })
 
       await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
         state

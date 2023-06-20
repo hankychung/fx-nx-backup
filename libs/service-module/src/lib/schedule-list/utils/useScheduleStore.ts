@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
+import { getKey } from '.'
 
 export interface IState {
   // 以下所有日期共用
@@ -24,6 +25,7 @@ interface IMutation {
     isFinished?: boolean
   }) => void
   updateTask: (info: { key: string; task: IScheduleTask }) => void
+  batchUpdateTask: (tasks: IScheduleTask[]) => { keys: string[] }
   updateExpandedDict: (info: {
     date: string
     taskId: string
@@ -94,6 +96,42 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           state.taskDict[key] = task
         })
       )
+    },
+    /**
+     * 批量更新事项字典
+     */
+    batchUpdateTask(arr) {
+      const keys: string[] = []
+
+      set(
+        produce((state: IState) => {
+          const dict: { [k: string]: IScheduleTask } = {}
+
+          arr.forEach((item) => {
+            const { ref_task_id, repeat_id, finish_time } = item
+            if (repeat_id) {
+              const key = getKey(item)
+
+              dict[key] = item
+            }
+
+            if (finish_time) {
+              keys.push(getKey(item))
+            } else {
+              keys.push(item.ref_task_id)
+            }
+
+            dict[ref_task_id] = item
+          })
+
+          state.taskDict = {
+            ...state.taskDict,
+            ...dict
+          }
+        })
+      )
+
+      return { keys }
     },
     /**
      * 更新对应日期下的事项展开字典

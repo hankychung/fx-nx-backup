@@ -122,8 +122,15 @@ class ListHandler {
 
     const { finishSchedule, taskDict } = useScheduleStore.getState()
 
+    // 存在已完成的循环事项需要补充进事项字典
+    const completedCycleTask: { [k: string]: IScheduleTask } = {}
+
     const insertKeys = ids.map((id) => {
       const task = taskDict[id]
+
+      if (task.repeat_id) {
+        completedCycleTask[getKey(task)] = task
+      }
 
       return task.repeat_id ? getKey(task) : task.ref_task_id
     })
@@ -132,6 +139,13 @@ class ListHandler {
       produce((state: IState) => {
         if (finishSchedule[finishDate]) {
           state.finishSchedule[finishDate].push(...insertKeys)
+
+          if (Object.keys(completedCycleTask).length) {
+            state.taskDict = {
+              ...state.taskDict,
+              ...completedCycleTask
+            }
+          }
         }
       })
     )

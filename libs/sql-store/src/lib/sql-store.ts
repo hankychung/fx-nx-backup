@@ -538,13 +538,11 @@ class SqlStore {
             if (isDiff) {
               const { type, data, keys } = item
 
-              if (type === 'delete') {
-                console.log('@del', data, table, keys)
-                this.db!.run(this.getDelSql(keys, table) + ';')
+              this.db!.run(this.getDelSql(keys, table) + ';')
 
-                // sqlStr += this.getDelSql(keys, table) + ';'
+              if (type === 'delete') {
+                // 一定会先删除数据, 此处不处理
               } else {
-                // sqlStr += this.getInsertSql(data, table) + ';'
                 this.db!.run(this.getInsertSql(data, table) + ';')
               }
 

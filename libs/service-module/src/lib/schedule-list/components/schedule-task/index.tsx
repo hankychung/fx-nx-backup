@@ -90,10 +90,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   // 目前它的逻辑和是否显示菜单是包含的
   const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
 
-  const { updateExpandedDict, batchUpdateChildDict, updateTask } =
+  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
     useScheduleStore(
       (state) => ({
-        updateTask: state.updateTask,
+        batchUpdateTask: state.batchUpdateTask,
         updateExpandedDict: state.updateExpandedDict,
         batchUpdateChildDict: state.batchUpdateChildDict
       }),
@@ -118,17 +118,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         originalId: ref_task_id
       })
 
-      tasks.forEach((child) => {
-        updateTask({
-          key: child.ref_task_id,
-          task: {
-            ...child,
-            has_child: Boolean(childrenDict[child.ref_task_id])
-          }
-        })
-      })
-
-      console.log('childrenDict', childrenDict)
+      // 更新事项字典
+      batchUpdateTask(
+        tasks.map((child) => ({
+          ...child,
+          has_child: Boolean(childrenDict[child.ref_task_id])
+        }))
+      )
 
       batchUpdateChildDict(childrenDict)
     }

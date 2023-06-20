@@ -1,37 +1,57 @@
-import React, { useMemo, useRef, CSSProperties } from 'react'
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useImperativeHandle,
+  ForwardRefRenderFunction
+} from 'react'
 import { useClickAway } from 'ahooks'
 import styles from './index.module.scss'
 import cs from 'classnames'
+import { IAction, IContextMenuRef, IShowMenuOptions } from './types'
 
-export interface IMenuPosition {
-  x: number
-  y: number
-}
-
-export interface IAction {
-  txt: string
-  callback: () => void
-  checkAction: boolean // 为false的时候不显示选项
-  reRender?: (close: () => void) => React.ReactNode
-  customClass?: string
-  getTxtStyle?: CSSProperties
-}
-
-interface IProps {
-  // parentRef: RefObject<HTMLDivElement>
-  x: number
-  y: number
-  actions: IAction[]
-  onClose: () => void
-  rootClassName?: string
-}
-
-const _ContextMenu = ({ x, y, actions, onClose, rootClassName }: IProps) => {
+const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
+  props,
+  ref
+) => {
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const [visible, setVisible] = useState(false)
+  const [x, setX] = useState(0)
+  const [y, setY] = useState(0)
+  const [actions, setActions] = useState<IAction[]>([])
+  const closeFunc = useRef<() => void>()
+
+  const onClose = () => {
+    closeFunc.current && closeFunc.current()
+    setVisible(false)
+  }
 
   useClickAway(() => {
     onClose()
   }, menuRef)
+
+  useImperativeHandle(ref, () => ({
+    show: (options: IShowMenuOptions) => {
+      const { x, y, action, onClose } = options
+      setX(x)
+      setY(y)
+      setActions(action)
+
+      if (onClose) {
+        closeFunc.current = onClose
+      } else {
+        closeFunc.current = () => {
+          // console.log('关闭')
+        }
+      }
+
+      setVisible(true)
+    },
+    close: () => {
+      onClose()
+    }
+  }))
 
   const menuStyle = useMemo(() => {
     return {
@@ -40,12 +60,10 @@ const _ContextMenu = ({ x, y, actions, onClose, rootClassName }: IProps) => {
     }
   }, [x, y])
 
+  if (!visible) return null
+
   return (
-    <div
-      ref={menuRef}
-      className={cs(styles.menuRoot, rootClassName)}
-      style={menuStyle}
-    >
+    <div ref={menuRef} className={cs(styles.menuRoot)} style={menuStyle}>
       {actions
         .filter((item) => item.checkAction)
         .map(({ txt, callback, customClass, getTxtStyle, reRender }) => (
@@ -72,4 +90,4 @@ const _ContextMenu = ({ x, y, actions, onClose, rootClassName }: IProps) => {
   )
 }
 
-export const ContextMenu = React.memo(_ContextMenu)
+export const ContextMenu = React.forwardRef(_ContextMenu)

@@ -5,8 +5,7 @@ import React, {
   CSSProperties,
   PropsWithChildren,
   ReactElement,
-  useRef,
-  useState
+  useRef
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
@@ -32,7 +31,7 @@ import { Tags } from './components/tags'
 import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
-import { ContextMenu, IMenuPosition } from '../../../context-menu'
+import { contextMenuTool } from '../../../../index'
 
 export interface IProps {
   taskKey: string
@@ -56,7 +55,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isSimple = false,
   children: childrenComponents
 }) => {
-  const [menuPosition, setMenuPosition] = useState<IMenuPosition | null>(null)
   const domRef = useRef<HTMLDivElement>(null)
   const reactChildren = childrenComponents as Array<ReactElement>
   const data = useScheduleStore((state) => state.taskDict[taskKey])
@@ -148,16 +146,14 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       if (!parentRect) return
       const x = event.clientX - parentRect.left || 0
       const y = event.clientY - parentRect.top || 0
-      setMenuPosition({ x, y })
+
+      contextMenuTool.open({
+        x,
+        y,
+        action: menuActions
+      })
     }
   )
-
-  /**
-   * 关闭右键菜单
-   */
-  const handleMenuClose = useMemoizedFn(() => {
-    setMenuPosition(null)
-  })
 
   const isToday = useMemo(() => {
     if (date) {
@@ -316,14 +312,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
             />
           ))}
         </div>
-      )}
-      {isShowMenu && !!menuPosition && (
-        <ContextMenu
-          x={menuPosition.x}
-          y={menuPosition.y}
-          onClose={handleMenuClose}
-          actions={menuActions}
-        />
       )}
     </div>
   )

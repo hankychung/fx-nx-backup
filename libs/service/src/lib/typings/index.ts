@@ -30,7 +30,9 @@ export interface IErrorResponse {
 
 export type IResponse<T, M = Record<string, never>> = CommonResponse<T> & M
 
-export type RequestConfig = import('axios').AxiosRequestConfig & { url: string }
+export type RequestConfig = import('axios').AxiosRequestConfig & {
+  url: string
+} & { notFilterEmpty?: boolean }
 
 export interface IRequestList {
   page_number?: number // 查询页数，默认1

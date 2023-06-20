@@ -1,0 +1,33 @@
+.PriorityLevelPopper {
+  padding: 8px 0;
+
+  .item {
+    cursor: pointer;
+    width: 130px;
+    height: 38px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px 0 12px;
+    font-size: 12px;
+
+    &:hover {
+      background: #f8f8f8;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+
+      .titleText {
+        margin-left: 4px;
+      }
+    }
+
+    .checkIcon {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}

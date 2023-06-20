@@ -1,0 +1,28 @@
+.menuBtn {
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
+  flex: none;
+  place-self: flex-end;
+  margin-right: 8px;
+
+  &.board {
+    margin-bottom: 4px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: #e8fbf9;
+    border-radius: 4px;
+  }
+
+  &.darkMode {
+    &:hover {
+      background-color: #3e4d5b;
+    }
+  }
+
+  &.visible {
+    visibility: visible;
+  }
+}

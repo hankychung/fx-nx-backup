@@ -26,6 +26,13 @@ export const QuadrantColor = {
   [QuadrantValue.no_important_no_urgent]: '#989F9F'
 }
 
+export enum CANCEL_TASK_STATE {
+  DEFAULT = -1,
+  CANCEL_JOIN = 10405, // 事项 我参与 取消事项
+  CANCEL_DISPATCH = 10303, // 事项 我派发 取消事项
+  CANCEL_MEETING = 10504 // 会议 取消会议
+}
+
 // 事项身份
 export enum IDENTITY {
   matterCreator = 10801, // 事项创建人(我参与)
@@ -132,3 +139,11 @@ export const MAX_BACKGROUND_LEN = 1500
 
 // 非法字符
 export const InvaildChar = ['@', '#', '*', '/', '\\', '<', '>']
+
+// 埋点使用
+export enum CreateType {
+  detail = '详细创建',
+  quick = '快速创建',
+  import = '导入创建',
+  copy = '复制创建'
+}

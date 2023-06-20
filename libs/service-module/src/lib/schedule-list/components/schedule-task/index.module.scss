@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
+
   .title {
     overflow: hidden;
     position: relative;
@@ -13,6 +15,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   .titleDarkMode {
     color: #fff;
 
@@ -26,6 +29,7 @@
       }
     }
   }
+
   .topHover {
     border-radius: 8px;
 
@@ -40,6 +44,7 @@
       position: relative;
     }
   }
+
   .iconTop {
     width: 10px;
     height: 10px;
@@ -47,6 +52,7 @@
     right: 5px;
     top: 5px;
   }
+
   .scheduleInfo {
     display: flex;
     margin: 0 2px;
@@ -62,51 +68,55 @@
       margin-left: 4px;
     }
 
-    .head {
-      display: flex;
-      height: 20px;
-      line-height: 20px;
-      align-items: center;
-      overflow: hidden;
+    .main {
+      width: 100%;
 
-      .headLeft,
-      .headRight {
+      .head {
         display: flex;
-        flex: 1;
+        height: 20px;
+        line-height: 20px;
         align-items: center;
-        height: 100%;
-      }
-
-      .headLeft {
         overflow: hidden;
-        margin-right: 5px;
+
+        .headLeft,
+        .headRight {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          height: 100%;
+        }
+
+        .headLeft {
+          overflow: hidden;
+          margin-right: 5px;
+        }
+
+        .headRight {
+          flex: none;
+          margin-left: auto;
+        }
       }
 
-      .headRight {
-        flex: none;
-        margin-left: auto;
-      }
-    }
-
-    .info {
-      display: flex;
-      margin-top: 4px;
-
-      .infoMain {
+      .info {
         display: flex;
-        flex-direction: column;
-        flex: 1;
-        margin-right: 5px;
-        overflow: hidden;
-        justify-content: center;
-      }
+        margin-top: 4px;
 
-      .singleLine {
-        overflow: hidden;
-        align-items: center;
-        flex: 1;
-        display: flex;
-        flex-wrap: nowrap;
+        .infoMain {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          margin-right: 5px;
+          overflow: hidden;
+          justify-content: center;
+        }
+
+        .singleLine {
+          overflow: hidden;
+          align-items: center;
+          flex: 1;
+          display: flex;
+          flex-wrap: nowrap;
+        }
       }
     }
   }

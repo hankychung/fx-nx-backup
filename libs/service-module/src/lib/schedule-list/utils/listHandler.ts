@@ -143,7 +143,7 @@ class ListHandler {
   }) {
     const { insertDateDict } = params
 
-    const { taskDict } = useScheduleStore.getState()
+    const { taskDict, schedule, childrenDict } = useScheduleStore.getState()
 
     useScheduleStore.setState(
       produce((state: IState) => {
@@ -151,15 +151,39 @@ class ListHandler {
           const tasks = insertDateDict[date]
 
           tasks.forEach((task) => {
-            if (!task.parent_id) {
-              // 无父事项直接插入列表, 需排序
-              state.schedule[date] = getSortedSchedule({
-                date,
-                tasks: [...state.schedule[date].map((id) => taskDict[id]), task]
-              })
-            } else {
-              // TODO: 有父事项需要插入到该父事项的子集, 同时重置父事项的has_child
-            }
+            const { parent_id, ref_task_id } = task
+
+            // TODO: 先直接插入, 父子关系难以判断
+            state.schedule[date] = getSortedSchedule({
+              date,
+              tasks: [...state.schedule[date].map((id) => taskDict[id]), task]
+            })
+
+            // if (!parent_id) {
+            //   // 无父事项直接插入列表, 需排序
+            //   state.schedule[date] = getSortedSchedule({
+            //     date,
+            //     tasks: [...state.schedule[date].map((id) => taskDict[id]), task]
+            //   })
+
+            //   return
+            // }
+
+            // // 有父事项需要插入到该父事项的子集, 同时重置父事项的has_child
+            // for (const parentId of parent_id.split(',').reverse()) {
+            //   if (schedule[date].includes(parentId)) {
+            //     console.log('bingo', taskDict[parentId], task)
+
+            //     // 插入到父事项的children list
+            //     if (!childrenDict[parentId]) {
+            //       state.childrenDict[parentId] = []
+            //       state.taskDict[parentId].has_child = true
+            //     }
+
+            //     state.childrenDict[parentId].push(ref_task_id)
+            //     return
+            //   }
+            // }
           })
         })
       })

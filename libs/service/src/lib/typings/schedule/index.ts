@@ -603,7 +603,7 @@ export interface Taker {
   /**
    * 承接人ID
    */
-  taker_id?: string
+  taker_id: string
   /**
    * 更新时间
    */

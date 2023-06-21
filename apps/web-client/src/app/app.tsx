@@ -15,7 +15,15 @@ service.updateToken(
 export function App() {
   return (
     <>
-      <ScheduleList date="2023-06-21" userId="1657239291035777" />
+      <ScheduleList
+        date="2023-06-21"
+        userId="1657239291035777"
+        memberInfo={{
+          contactDict: {},
+          interacts: [],
+          isEnterprise: false
+        }}
+      />
       <ContextMenu ref={(r) => contextMenuTool.registerContextMenu(r)} />
     </>
   )

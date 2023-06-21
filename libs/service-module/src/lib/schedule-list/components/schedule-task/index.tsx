@@ -4,8 +4,7 @@ import React, {
   useMemo,
   CSSProperties,
   PropsWithChildren,
-  useRef,
-  ReactNode
+  useRef
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
@@ -28,6 +27,7 @@ import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
 import { Tags } from './components/tags'
+import { Takers } from './components/takers'
 import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
@@ -42,7 +42,6 @@ export interface IProps {
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
-  takerComponent?: (taskId: string) => ReactNode
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -53,8 +52,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   userId,
   isDarkMode,
   style,
-  isSimple = false,
-  takerComponent
+  isSimple = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
   const data = useScheduleStore((state) => state.taskDict[taskKey])
@@ -262,8 +260,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      {takerComponent ? takerComponent(taskKey) : null}
-                      {/*<Takers taskId={taskId} />*/}
+                      <Takers
+                        taskId={taskKey}
+                        userId={userId}
+                        isDarkMode={isDarkMode}
+                      />
                       <Tags taskId={taskKey} userId={userId} />
                     </div>
                   </div>

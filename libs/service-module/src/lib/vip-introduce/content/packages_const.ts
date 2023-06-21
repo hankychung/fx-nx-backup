@@ -47,8 +47,8 @@ export const memberPowerStaticData: IInfoType[] = [
       {
         title: '1个',
         active: true,
-        isSpace:'free_space'
-      },
+        isSpace: 'free_space'
+      }
     ]
   },
   {
@@ -97,14 +97,15 @@ export const memberPowerStaticData: IInfoType[] = [
       {
         title: '批量操作、导出',
         active: true
-      },{
+      },
+      {
         title: '自定义循环频率',
         active: true
       },
       {
         title: '1个',
         active: true,
-        isSpace:'free_space'
+        isSpace: 'free_space'
       }
     ]
   },
@@ -130,12 +131,12 @@ export const memberPowerStaticData: IInfoType[] = [
       {
         title: '无限',
         active: true,
-        isSpace:'free_space'
+        isSpace: 'free_space'
       },
       {
         title: '无限',
         active: true,
-        isSpace:'professional_space'
+        isSpace: 'professional_space'
       },
       {
         title: '项目数量无限',

@@ -1,4 +1,4 @@
-import {Image} from 'antd'
+import { Image } from 'antd'
 export interface IEqualComparisonData {
   key: string
   title: string // 标题
@@ -249,9 +249,8 @@ export const spaceEqualComparisonData: IEqualComparison = {
         free: false,
         personal: false,
         team: '无限，无需会员即可加入',
-        teamDesc:
-          '外部成员可提供有限协作能力，无需付费即可参与事项',
-        onclick:true
+        teamDesc: '外部成员可提供有限协作能力，无需付费即可参与事项',
+        onclick: true
       },
       {
         key: 'spaceProjectNum',

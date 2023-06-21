@@ -72,8 +72,8 @@ export const memberPowerStaticData: IInfoType[] = [
       {
         title: '1个',
         active: true,
-        isDiyRender: 'free_space',
-      },
+        isDiyRender: 'free_space'
+      }
     ]
   },
   {
@@ -166,12 +166,13 @@ export const memberPowerStaticData: IInfoType[] = [
       {
         title: '无限',
         active: true,
-        isDiyRender:'professional_space'
+        isDiyRender: 'professional_space'
       },
       {
         title: '无限项目项目数量',
         active: true
-      },{
+      },
+      {
         title: '无限协作人数',
         active: true
       },

@@ -7,8 +7,9 @@ import { ReactComponent as SelectIcon } from '../../../../assets/introduction/se
 import { ReactComponent as CloseIcon } from '../../../../assets/introduction/close.svg'
 
 interface IProps {
-  title: string
+  title?: string
   header: string[]
+  isSpace?: boolean
   listObj: IEqualComparison
 }
 
@@ -39,10 +40,15 @@ export const TableData = ({
   }
 }
 
-export const EqualComparison = ({ title, header, listObj }: IProps) => {
+export const EqualComparison = ({
+  title,
+  header,
+  isSpace,
+  listObj
+}: IProps) => {
   return (
     <div className={styles.equalComparisonRoot}>
-      <div className={styles.rootTitle}>{title}</div>
+      {title && <div className={styles.rootTitle}>{title}</div>}
       <div className={styles.tableRoot}>
         <div className={cs(styles.tableRow, styles.tableHeader)}>
           {header.map((h, idx) => {
@@ -75,8 +81,67 @@ export const EqualComparison = ({ title, header, listObj }: IProps) => {
                       {item.title}
                       {item.desc && <DescTooltip text={item.desc} />}
                     </div>
+                    {!isSpace ? (
+                      <TableData data={item.personal} />
+                    ) : (
+                      <TableData data={''} />
+                    )}
                     <TableData data={item.free} />
-                    <TableData data={item.personal} />
+                    <TableData data={item.team} desc={item.teamDesc} />
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export const SpaceComparison = ({
+  title,
+  header,
+  isSpace,
+  listObj
+}: IProps) => {
+  return (
+    <div className={styles.equalComparisonRoot}>
+      {title && <div className={styles.rootTitle}>{title}</div>}
+      <div className={styles.tableRoot}>
+        <div className={cs(styles.tableRowSpace, styles.tableHeader)}>
+          {header.map((h, idx) => {
+            console.log('h:', h, 'idx:', idx)
+            return (
+              <div
+                key={idx}
+                className={cs(styles.tableItem, {
+                  [styles.tableItemHeader]: idx === 0
+                })}
+              >
+                {h}
+              </div>
+            )
+          })}
+        </div>
+        {Object.keys(listObj).map((obj, index) => {
+          return (
+            <div key={index}>
+              {listObj[obj].title && (
+                <div className={cs(styles.tableRowHeader)}>
+                  {listObj[obj].title}
+                </div>
+              )}
+              {listObj[obj].data.map((item) => {
+                return (
+                  <div key={item.key} className={styles.tableRowSpace}>
+                    <div
+                      className={cs(styles.tableItem, styles.tableItemHeader)}
+                    >
+                      {item.title}
+                      {item.desc && <DescTooltip text={item.desc} />}
+                    </div>
+                    <TableData data={item.free} />
                     <TableData data={item.team} desc={item.teamDesc} />
                   </div>
                 )

@@ -17,11 +17,7 @@ export const memberPowerStaticData: IInfoType[] = [
     oldPrice: '',
     powerList: [
       {
-        title: '永久免费',
-        active: true
-      },
-      {
-        title: '无限事项数量',
+        title: '无限事项、笔记数量',
         active: true
       },
       {
@@ -33,14 +29,6 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '日、周、月、全量视图',
-        active: true
-      },
-      {
-        title: '无限笔记数量',
-        active: true
-      },
-      {
         title: '子事项支持3级（20个）',
         active: true
       },
@@ -49,15 +37,7 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '单个文件上限50M',
-        active: true
-      },
-      {
-        title: '个人文件容量2G',
-        active: true
-      },
-      {
-        title: '自定义视图1个',
+        title: '单个文件50M,文件夹2G',
         active: true
       },
       {
@@ -65,13 +45,10 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '免费团队空间1个',
-        active: true
+        title: '1个',
+        active: true,
+        isSpace:'free_space'
       },
-      {
-        title: '全量表头数量5个',
-        active: true
-      }
     ]
   },
   {
@@ -84,8 +61,8 @@ export const memberPowerStaticData: IInfoType[] = [
     btnTextColor: '#FFFFFF',
     btnBgColor: 'linear-gradient(270.34deg, #FFB85E 2.92%, #FFD075 97.6%)',
     btnBorderColor: 'none',
-    money: '12',
-    unit: '月',
+    money: '128',
+    unit: '年',
     topText: '',
     oldPrice: '¥128/年',
     powerList: [
@@ -94,23 +71,19 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '子事项支持8级（200个）',
-        active: true
-      },
-      {
         title: '四象限视图',
         active: true
       },
       {
-        title: '事项协作人数提升至100人',
+        title: '关系、脉络视图',
         active: true
       },
       {
-        title: '单个文件上限300M',
+        title: '子事项支持8级',
         active: true
       },
       {
-        title: '个人文件容量20G',
+        title: '单文件300M、文件夹20G',
         active: true
       },
       {
@@ -118,28 +91,20 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '个人目标无限数量，并支持派发',
+        title: '个人目标数量无限',
         active: true
       },
       {
-        title: '个人脉络视图',
+        title: '批量操作、导出',
+        active: true
+      },{
+        title: '自定义循环频率',
         active: true
       },
       {
-        title: '个人关系视图',
-        active: true
-      },
-      {
-        title: '全量表头数量无限',
-        active: true
-      },
-      {
-        title: '批量操作、导出事项、自定义循环频率',
-        active: true
-      },
-      {
-        title: '……',
-        active: false
+        title: '1个',
+        active: true,
+        isSpace:'free_space'
       }
     ]
   },
@@ -159,15 +124,21 @@ export const memberPowerStaticData: IInfoType[] = [
     oldPrice: '',
     powerList: [
       {
-        title: '包含所有个人会员能力',
+        title: '所有个人会员能力',
         active: true
       },
       {
-        title: '支持创建无限的专业团队空间',
-        active: true
+        title: '无限',
+        active: true,
+        isSpace:'free_space'
       },
       {
-        title: '支持创建无限的项目',
+        title: '无限',
+        active: true,
+        isSpace:'professional_space'
+      },
+      {
+        title: '项目数量无限',
         active: true
       },
       {
@@ -175,35 +146,23 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '专业空间角色管理',
+        title: '空间外部协作人无限',
         active: true
       },
       {
-        title: '更大存储容量（人数*10G)',
+        title: '存储容量（人数*10G)',
         active: true
       },
       {
-        title: '团队脉络视图',
+        title: '空间脉络视图、关系视图',
         active: true
       },
       {
-        title: '空间关系视图',
+        title: '数据分析、成员日程',
         active: true
       },
       {
-        title: '数据分析',
-        active: true
-      },
-      {
-        title: '成员日程',
-        active: true
-      },
-      {
-        title: '团队目标',
-        active: true
-      },
-      {
-        title: '团队应用库',
+        title: '团队目标、团队应用库',
         active: true
       },
       {

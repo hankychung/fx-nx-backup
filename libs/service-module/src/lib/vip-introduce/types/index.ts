@@ -11,6 +11,7 @@ export interface VipIntroduceContentProps {
 export interface IPower {
   title: string
   active: boolean
+  isSpace?:string
 }
 
 export interface IInfoType {

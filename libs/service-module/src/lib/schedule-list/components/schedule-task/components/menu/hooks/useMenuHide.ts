@@ -2,6 +2,7 @@ import { useHide } from '../../../../../utils/hooks/useHide'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
+import { TaskHandler } from '../../../../../utils/taskHandler'
 
 export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
   const { hideOrShow } = useHide()
@@ -29,6 +30,8 @@ export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
       //   msgType: '消息',
       //   content: `已在日程中${isHide ? '显示' : '隐藏'}`,
       // })
+
+      TaskHandler.removeTasks([taskId])
     })
   })
 

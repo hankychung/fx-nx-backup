@@ -15,7 +15,6 @@ class TaskHandler {
     keysWithRepeatIds: string[]
   }) {
     // TODO: 更新事项需要考虑带taskDict中带有repeatId的
-
     useScheduleStore.setState(
       produce((state: IState) => {
         keys.forEach((key) => {
@@ -54,6 +53,30 @@ class TaskHandler {
     if ('topmost_at' in diff) {
       ListHandler.sortListByTask(keys)
     }
+  }
+
+  static removeTasks(ids: string[]) {
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        const { schedule, finishSchedule } = state
+
+        Object.keys(schedule).forEach((date) => {
+          state.schedule[date] = schedule[date].filter(
+            (id) => !ids.includes(id)
+          )
+
+          state.finishSchedule[date] = finishSchedule[date].filter((id) => {
+            for (const k of ids) {
+              if (id.includes(k)) {
+                return false
+              }
+            }
+
+            return true
+          })
+        })
+      })
+    )
   }
 }
 

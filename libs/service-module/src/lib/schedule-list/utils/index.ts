@@ -322,11 +322,22 @@ const getRepeatDelayTotal = ({
   return total
 }
 
+function isRelated(a: string[], b: string[]) {
+  for (const id of a) {
+    if (b.includes(id)) {
+      return true
+    }
+  }
+
+  return false
+}
+
 export {
   getKey,
   getChildrenDict,
   shouldInsertSchedule,
   getRepeatTxt,
   getRepeatDelayTotal,
-  getSortedSchedule
+  getSortedSchedule,
+  isRelated
 }

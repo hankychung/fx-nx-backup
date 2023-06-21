@@ -3,6 +3,7 @@ import { useScheduleStore } from '../useScheduleStore'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
 import { ScheduleTaskConst } from '@flyele-nx/service'
+import { TaskHandler } from '../taskHandler'
 
 /**
  * 用于退出事项的hook，外部给taskId，其余逻辑在这里完成
@@ -50,6 +51,7 @@ export const useCancelTodo = ({ taskId }: { taskId: string }) => {
       //   duration: 1.5
       // })
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      TaskHandler.removeTasks([taskId])
     } else {
       // showMsg({
       //   content: '取消失败',

@@ -3,6 +3,7 @@ import { useScheduleStore } from '../useScheduleStore'
 import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
+import { TaskHandler } from '../taskHandler'
 
 /**
  * 用于退出事项的hook，外部给taskId，其余逻辑在这里完成
@@ -60,6 +61,7 @@ export const useCancelTask = ({ taskId }: { taskId: string }) => {
       // })
       // 若事项被取消，事项详情小窗体需要被关闭，应该是这个意思
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      TaskHandler.removeTasks(taskIds)
     } else {
       // showMsg({
       //   content: '取消失败',

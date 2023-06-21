@@ -3,6 +3,7 @@ import { ISetFinishedStateParams } from '../typings/task-dispatch'
 
 class TaskDispatch {
   private prefix = 'flyele/v2/task_dispatch'
+  private prefixTaskDispatchs = 'flyele/v2/task_dispatchs'
 
   // 修改完成/重启事项状态
   setTaskDispatchState(id: string, data: { state: number }) {
@@ -50,6 +51,16 @@ class TaskDispatch {
   async exitTask(dispatch_id: string) {
     return await service.post({
       url: `${this.prefix}/${dispatch_id}/exit`
+    })
+  }
+
+  // 撤回承接人
+  async revokeTaker(data: string[]) {
+    return await service.post({
+      url: `${this.prefixTaskDispatchs}/revoke/batch`,
+      data: {
+        dispatchs_id: data
+      }
     })
   }
 }

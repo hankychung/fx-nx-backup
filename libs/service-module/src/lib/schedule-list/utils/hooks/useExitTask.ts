@@ -2,6 +2,7 @@ import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from '../useScheduleStore'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
+import { TaskHandler } from '../taskHandler'
 
 export const useExitTask = ({ taskId }: { taskId: string }) => {
   const data = useScheduleStore((state) => state.taskDict[taskId])
@@ -45,6 +46,8 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
       //   msgType: '消息',
       //   duration: 1.5
       // })
+
+      TaskHandler.removeTasks(taskIds)
     } catch (e) {
       console.log('退出错误', e)
     }

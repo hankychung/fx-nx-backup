@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
-import { getKey } from '.'
+import { getKey, getSortedSchedule } from '.'
 
 export interface IState {
   // 以下所有日期共用
@@ -64,14 +64,14 @@ const useScheduleStore = create<IState & IMutation>((set) => {
     updateList({ date, list, isInit, isFinished }) {
       set(
         produce((state: IState) => {
+          const { taskDict } = state
+
           if (isInit) {
             if (isFinished) {
-              state.finishSchedule[date] = list
-              return
+              state.finishSchedule[date] = []
+            } else {
+              state.schedule[date] = []
             }
-
-            state.schedule[date] = list
-            return
           }
 
           if (isFinished) {
@@ -82,7 +82,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
             return
           }
 
-          state.schedule[date] = [...state.schedule[date], ...list]
+          state.schedule[date] = getSortedSchedule({
+            date,
+            tasks: [...state.schedule[date], ...list].map((id) => taskDict[id])
+          })
         })
       )
     },

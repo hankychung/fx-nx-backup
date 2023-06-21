@@ -15,7 +15,7 @@ export const getAvatarsFromTakers = (
 
     return {
       userId: item.taker_id,
-      src: item.avatar,
+      src: item.avatar || '',
       is_view: item?.is_view,
       overlayClassName: '',
       isTeamVip,

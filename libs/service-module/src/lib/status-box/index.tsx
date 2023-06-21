@@ -26,7 +26,7 @@ import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
 import { message } from 'antd'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
-import { getKey } from '../schedule-list/utils'
+import { getChildrenDict, getKey } from '../schedule-list/utils'
 
 interface IProps {
   task: IScheduleTask
@@ -42,6 +42,8 @@ const _StatusBox: FC<IProps> = (props) => {
   const taskDict = useScheduleStore((state) => state.taskDict)
 
   const childrenDict = useScheduleStore((state) => state.childrenDict)
+  const batchUpdateTask = useScheduleStore((state)=>state.batchUpdateTask)
+  const batchUpdateChildDict = useScheduleStore((state)=>state.batchUpdateChildDict)
   const childrenIds = useMemo(() => {
     return getValuesByKey(childrenDict, task.ref_task_id)
   }, [childrenDict, task])
@@ -55,7 +57,7 @@ const _StatusBox: FC<IProps> = (props) => {
   )
 
   // 分发
-  const dispatchApi = useMemoizedFn(async (isBatch: boolean, isFinish) => {
+  const dispatchApi = useMemoizedFn(async (isBatch?: boolean) => {
     const isRepeat = !!task.repeat_id
 
     // 循环事项
@@ -74,7 +76,7 @@ const _StatusBox: FC<IProps> = (props) => {
         return TaskApi.repeatFinishBatch({ repeated_tasks })
       }
       // 循环事项重启
-      else if (isFinish) {
+      else if (task.finish_time) {
         return TaskApi.repeatRestart({
           task_id: task.ref_task_id,
           repeat_id: task.repeat_id || ''
@@ -106,10 +108,6 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-      // if (task.repeat_id && !task.repeat_type && task.finish_time) {
-      //   message.warning({ content: '循环已取消, 不支持再次打开' })
-      //   return
-      // }
 
       setUpdating(true)
 
@@ -132,13 +130,35 @@ const _StatusBox: FC<IProps> = (props) => {
         }
       })
 
-      await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
-        state
-      })
+      await dispatchApi(isBatch)
+
     } catch (error) {
       resetStatus?.()
     }
   }
+
+  // 获取并更新子任务
+  const getAndUpdateScheduleTree = useMemoizedFn(async ()=>{
+    const { ref_task_id } = task
+    const { data: tasks } = await TaskApi.getScheduleTree({
+      taskId: ref_task_id
+    })
+
+    const childrenDict = getChildrenDict({
+      tasks,
+      originalId: ref_task_id
+    })
+
+    // 更新事项字典
+    batchUpdateTask(
+      tasks.map((child) => ({
+        ...child,
+        has_child: Boolean(childrenDict[child.ref_task_id])
+      }))
+    )
+
+    batchUpdateChildDict(childrenDict)
+  })
 
   const buildIcon = useMemoizedFn(() => {
     const { matter_type: matterType, finish_time: finishTime } = task
@@ -173,6 +193,7 @@ const _StatusBox: FC<IProps> = (props) => {
           onClick={(e) => {
             e.stopPropagation()
             if (task.has_child) {
+              getAndUpdateScheduleTree()
               setVisible(true)
               return
             }

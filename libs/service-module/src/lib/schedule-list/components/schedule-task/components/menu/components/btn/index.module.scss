@@ -1,14 +1,9 @@
 .menuBtn {
-  width: 16px;
-  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   visibility: hidden;
-  flex: none;
-  place-self: center;
   margin-right: 8px;
-
-  &.board {
-    margin-bottom: 4px;
-  }
 
   &:hover {
     cursor: pointer;

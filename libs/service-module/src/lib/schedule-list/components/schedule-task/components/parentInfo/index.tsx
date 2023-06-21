@@ -2,7 +2,7 @@ import React from 'react'
 import cs from 'classnames'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 
 interface IPROPParentInfo {
   taskId: string

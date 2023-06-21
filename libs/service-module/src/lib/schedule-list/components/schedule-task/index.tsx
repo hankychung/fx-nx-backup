@@ -4,12 +4,11 @@ import React, {
   useMemo,
   CSSProperties,
   PropsWithChildren,
-  ReactElement,
   useRef
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
-import { useScheduleStore } from '../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
@@ -28,6 +27,7 @@ import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
 import { Tags } from './components/tags'
+import { Takers } from './components/takers'
 import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
@@ -52,11 +52,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   userId,
   isDarkMode,
   style,
-  isSimple = false,
-  children: childrenComponents
+  isSimple = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
-  const reactChildren = childrenComponents as Array<ReactElement>
   const data = useScheduleStore((state) => state.taskDict[taskKey])
 
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
@@ -137,7 +135,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
    */
   const handleContextMenu = useMemoizedFn(
     (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!isShowMenu) return
+
       event.preventDefault()
+      event.stopPropagation()
       const parentRect = domRef.current?.getBoundingClientRect()
       if (!parentRect) return
       const x = event.clientX - parentRect.left || 0
@@ -181,21 +182,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         return ''
     }
   }, [data?.priority_level])
-
-  /**
-   * 外部传入组件渲染
-   */
-  const slotChildren = useMemo(() => {
-    if (reactChildren) {
-      if (reactChildren.length > 1) {
-        return reactChildren.find((item) => item.props.slot === 'takers')
-      } else {
-        return reactChildren
-      }
-    } else {
-      return null
-    }
-  }, [reactChildren])
 
   if (!data) return null
 
@@ -275,8 +261,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      {slotChildren}
-                      {/*<Takers taskId={taskId} />*/}
+                      <Takers
+                        taskId={taskKey}
+                        userId={userId}
+                        isDarkMode={isDarkMode}
+                      />
                       <Tags taskId={taskKey} userId={userId} />
                     </div>
                   </div>

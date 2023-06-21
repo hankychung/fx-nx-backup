@@ -51,6 +51,48 @@ export enum IDENTITY {
   stTodoTaker = 10812 // 小工具待办参与人
 }
 
+// 事项创建人状态
+export enum MATTER_CREATOR_STATE {
+  dispatched = 10301, // 已派发
+  completed = 10302, // 已完成
+  canceled = 10303 // 已取消
+}
+
+// 会议创建人状态
+export enum MEETING_CREATOR_STATE {
+  wait = 10501, // 待开始
+  processing = 10502, // 会议中
+  completed = 10503, // 已完成
+  canceled = 10504 // 已取消
+}
+
+// 事项参与人状态
+export enum MATTER_TAKER_STATE {
+  processing = 10402, // 处理中
+  completed = 10404, // 已完成
+  canceled = 10405, // 已取消
+  withdrawn = 10406 // 已撤回
+}
+
+// 事项参与人被取消撤回状态
+export enum MATTER_OPERATE_STATE {
+  canceled = 10407, // 被取消
+  withdrawn = 10408 // 被撤回
+}
+
+// 会议参与人被取消撤回状态
+export enum MEETING_OPERATE_STATE {
+  canceled = 10609, // 被取消
+  withdrawn = 10610 // 被撤回
+}
+
+// 事项参与人参与状态
+export enum MATTER_PERSONAL_STATE {
+  wait = 10401,
+  accepted = 10409,
+  refused = 10403
+}
+
 export enum MatterType {
   matter = 10701, // 事项
   meeting = 10702, // 会议

@@ -14,7 +14,7 @@ import dayjs from 'dayjs'
 import { getRepeatDelayTotal } from '../../../../utils'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import {
   RepeatDelayIcon,
   CycleCardIcon,

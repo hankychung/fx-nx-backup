@@ -20,8 +20,7 @@ const _MenuBtn = ({ visible, openMenu, isDarkMode = false }: IProps) => {
     <div
       className={cs(styles.menuBtn, {
         [styles.visible]: visible,
-        [styles.darkMode]: isDarkMode,
-        [styles.board]: true
+        [styles.darkMode]: isDarkMode
       })}
       onClick={onOpenMenu}
     >

@@ -22,7 +22,7 @@ import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
 import AcceptOnceMany from '../accept-once-many'
-import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
+import { useScheduleStore } from '../store/useScheduleStore'
 import { message } from 'antd'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
@@ -207,7 +207,7 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        {buildIcon()}
+        <div>{buildIcon()}</div>
       </AcceptOnceMany>
     </div>
   )

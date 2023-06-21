@@ -1,8 +1,9 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
 import { ScheduleTaskConst } from '@flyele-nx/service'
+import { TaskHandler } from '../taskHandler'
 
 /**
  * 用于退出代办的hook，外部给taskId，其余逻辑在这里完成
@@ -52,6 +53,7 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
       //   duration: 1.5,
       // })
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      TaskHandler.removeTasks([taskId])
     } else {
       // Pubjs.publish(SUB.DB_INCREASE_02_UPDATE_FORCE, taskId)
       // showMsg({

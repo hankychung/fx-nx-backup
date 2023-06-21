@@ -3,6 +3,8 @@ import { useMemoizedFn } from 'ahooks'
 import { PriorityLevelPopper } from '../../../../../../priority-level-popper'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
+import { TaskHandler } from '../../../../../utils/taskHandler'
+import { getKey } from '../../../../../utils'
 
 export const useMenuPriorityLevel = ({
   data
@@ -21,6 +23,14 @@ export const useMenuPriorityLevel = ({
       <PriorityLevelPopper
         onChange={(level) => {
           // setPriorityLevel(id, level)
+
+          TaskHandler.batchModify({
+            keys: [id],
+            keysWithRepeatIds: [getKey(data)],
+            diff: {
+              priority_level: level
+            }
+          })
         }}
         close={close}
         task_id={id}

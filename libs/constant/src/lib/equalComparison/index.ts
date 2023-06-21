@@ -1,3 +1,4 @@
+import {Image} from 'antd'
 export interface IEqualComparisonData {
   key: string
   title: string // 标题
@@ -6,6 +7,7 @@ export interface IEqualComparisonData {
   personal: string | boolean // 个人会员的权益
   team: string | boolean // 团队会员的权益
   teamDesc?: string // 团队会员的权益， tooltip显示
+  onclick?: boolean
 }
 
 export interface IEqualComparison {
@@ -233,19 +235,23 @@ export const spaceEqualComparisonData: IEqualComparison = {
     data: [
       {
         key: 'spaceMember',
-        title: '空间成员',
-        free: '20人',
-        personal: '20人',
-        team: '仅会员可加入',
+        title: '内部成员',
+        free: '20人，无需会员即可加入',
+        personal: '20人，无需会员即可加入',
+        team: '无限，仅团队会员可加入',
         teamDesc:
-          '如需获得空间中所有付费服务，请开通团队会员；只有团队会员才能加入专业版空间、使用高级功能。'
+          '如需获得空间中所有付费服务，请开通团队会员；只有团队会员才能加入专业版空间、使用高级功能。',
+        onclick: true
       },
       {
         key: 'externalMember',
         title: '外部成员',
         free: false,
         personal: false,
-        team: true
+        team: '无限，无需会员即可加入',
+        teamDesc:
+          '外部成员可提供有限协作能力，无需付费即可参与事项',
+        onclick:true
       },
       {
         key: 'spaceProjectNum',

@@ -138,6 +138,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       if (!isShowMenu) return
 
       event.preventDefault()
+      event.stopPropagation()
       const parentRect = domRef.current?.getBoundingClientRect()
       if (!parentRect) return
       const x = event.clientX - parentRect.left || 0

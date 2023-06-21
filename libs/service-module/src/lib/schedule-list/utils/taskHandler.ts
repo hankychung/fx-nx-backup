@@ -37,6 +37,7 @@ class TaskHandler {
       })
     )
 
+    // 完成/重启事项
     if ('finish_time' in diff) {
       if (diff.finish_time) {
         // 完成事项
@@ -45,6 +46,13 @@ class TaskHandler {
         // 重启事项
         ListHandler.batchReopen(keysWithRepeatIds)
       }
+
+      return
+    }
+
+    // 置顶
+    if ('topmost_at' in diff) {
+      ListHandler.sortListByTask(keys)
     }
   }
 }

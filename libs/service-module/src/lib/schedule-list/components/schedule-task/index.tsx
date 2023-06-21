@@ -137,6 +137,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
    */
   const handleContextMenu = useMemoizedFn(
     (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!isShowMenu) return
+
       event.preventDefault()
       const parentRect = domRef.current?.getBoundingClientRect()
       if (!parentRect) return

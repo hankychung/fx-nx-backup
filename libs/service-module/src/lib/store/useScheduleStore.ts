@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
-import { getKey, getSortedSchedule } from '.'
+import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
 export interface IState {
   // 以下所有日期共用

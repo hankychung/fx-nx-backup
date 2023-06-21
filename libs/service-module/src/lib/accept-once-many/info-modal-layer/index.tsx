@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Tree } from 'antd'
 import styles from './index.module.scss'
 import { addKey } from '../utils'
-import { useScheduleStore } from '../../schedule-list/utils/useScheduleStore'
+import { useScheduleStore } from '../../store/useScheduleStore'
 
 export enum charsType {
   'accept',

@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
-import { useScheduleStore } from '../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'

@@ -11,7 +11,7 @@ import { UserInfoUtils } from '../../../../utils/userInfoUtils'
 import { createInfinite } from '@flyele-nx/utils'
 // import { useAddContacts } from '@/hooks/useAddContacts'
 // import { CATEGORY, INVITE_TYPE } from '@/types/task-enum'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 
 interface IAuthWithFetched extends AuthType.IMatterAuth {
   isFetched: boolean

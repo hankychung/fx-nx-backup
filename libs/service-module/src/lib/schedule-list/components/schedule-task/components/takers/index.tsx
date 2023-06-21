@@ -27,7 +27,7 @@ import { RemoveSimpleMemberListPopper } from '../../../../../remove-simple-membe
 import { getAvatarsFromTakers } from '../../../../utils/task'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import {
   AuthType,
   ITakerAndStatus,

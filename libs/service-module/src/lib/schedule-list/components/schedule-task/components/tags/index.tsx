@@ -10,7 +10,7 @@ import TagAutoBar from '../../../../../tag/tag-auto-bar'
 import TagContent from '../../../../../tag/tag-content'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 
 interface IPROPTags {
   taskId: string

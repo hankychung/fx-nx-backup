@@ -1,5 +1,5 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { TaskDispatchApi } from '@flyele-nx/service'
 import { TaskHandler } from '../taskHandler'
 

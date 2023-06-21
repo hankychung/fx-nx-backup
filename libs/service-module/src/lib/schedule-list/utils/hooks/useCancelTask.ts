@@ -1,5 +1,5 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'

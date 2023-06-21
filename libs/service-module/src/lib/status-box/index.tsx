@@ -42,8 +42,10 @@ const _StatusBox: FC<IProps> = (props) => {
   const taskDict = useScheduleStore((state) => state.taskDict)
 
   const childrenDict = useScheduleStore((state) => state.childrenDict)
-  const batchUpdateTask = useScheduleStore((state)=>state.batchUpdateTask)
-  const batchUpdateChildDict = useScheduleStore((state)=>state.batchUpdateChildDict)
+  const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
+  const batchUpdateChildDict = useScheduleStore(
+    (state) => state.batchUpdateChildDict
+  )
   const childrenIds = useMemo(() => {
     return getValuesByKey(childrenDict, task.ref_task_id)
   }, [childrenDict, task])
@@ -108,7 +110,6 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-
       setUpdating(true)
 
       await setTimeoutForIdleCallback({
@@ -131,14 +132,13 @@ const _StatusBox: FC<IProps> = (props) => {
       })
 
       await dispatchApi(isBatch)
-
     } catch (error) {
       resetStatus?.()
     }
   }
 
   // 获取并更新子任务
-  const getAndUpdateScheduleTree = useMemoizedFn(async ()=>{
+  const getAndUpdateScheduleTree = useMemoizedFn(async () => {
     const { ref_task_id } = task
     const { data: tasks } = await TaskApi.getScheduleTree({
       taskId: ref_task_id

@@ -2,41 +2,13 @@ import { produce } from 'immer'
 import { IScheduleTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from './useScheduleStore'
 import dayjs from 'dayjs'
-import { getKey, shouldInsertSchedule } from '.'
+import { getKey, getSortedSchedule, shouldInsertSchedule } from '.'
 
 class ListHandler {
-  private static insertTask(task: IScheduleTask) {
-    const { schedule, finishSchedule } = useScheduleStore.getState()
-
-    const { finish_time: finishTime } = task
-
-    // 插入进完成列表
-    if (finishTime) {
-      const date = dayjs.unix(finishTime).format('YYYY-MM-DD')
-
-      if (finishSchedule[date]) {
-        // 存在该日期, 插入
-        useScheduleStore.setState(
-          produce((state: IState) => {
-            state.finishSchedule[date].push(task.ref_task_id)
-          })
-        )
-      }
-
-      return
-    }
-
-    // 插入进未完成列表
-    const insertDates = Object.keys(schedule).filter((date) =>
-      shouldInsertSchedule({ date, task })
-    )
-
-    console.log('insertDates', insertDates)
-  }
-
+  // 完成事项
   static batchComplete(taskIds: string[]) {
     // 从未完成列表移除已完成事项
-    this.removeTasks(taskIds)
+    this.removeTasks(taskIds, { type: 'schedule' })
 
     // 重置已完成事项的上下级关系
     const { needResetChildren } = this.resetRelation(taskIds)
@@ -48,6 +20,15 @@ class ListHandler {
 
     // 将已完成事项插入完成列表
     this.insertCompleteTasks(taskIds)
+  }
+
+  // 重启事项
+  static batchReopen(keysWithRepeatIds: string[]) {
+    // 从完成列表移除重启事项
+    this.removeTasks(keysWithRepeatIds, { type: 'finishSchedule' })
+
+    // 插入未完成列表
+    this.insertTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
   }
 
   private static resetRelation(taskIds: string[]) {
@@ -103,20 +84,113 @@ class ListHandler {
     )
   }
 
-  // 从未完成列表批量移除事项
-  private static removeTasks(taskIds: string[]) {
-    const { schedule } = useScheduleStore.getState()
+  // 批量移除事项
+  private static removeTasks(
+    taskIds: string[],
+    options: {
+      type: 'schedule' | 'finishSchedule'
+    }
+  ) {
+    const { schedule, finishSchedule } = useScheduleStore.getState()
+
+    const l = options.type === 'finishSchedule' ? finishSchedule : schedule
 
     useScheduleStore.setState(
       produce((state: IState) => {
-        Object.entries(schedule).forEach(([date, list]) => {
-          state.schedule[date] = list.filter((i) => !taskIds.includes(i))
+        Object.entries(l).forEach(([date, list]) => {
+          state[options.type][date] = list.filter((i) => !taskIds.includes(i))
         })
       })
     )
   }
 
-  // 批量将事项插入已完成列表
+  // 批量插入未完成列表
+  private static insertTasks(taskIds: string[]) {
+    const { insertDateDict } = this.getInsertDateDict(taskIds)
+
+    this.insertIntoDate({ insertDateDict })
+  }
+
+  // 日期 -> 插入到该日期的事项数组
+  private static getInsertDateDict(taskIds: string[]) {
+    const { taskDict, schedule } = useScheduleStore.getState()
+
+    const tasks = taskIds.map((id) => taskDict[id])
+
+    // 需要插入该事项的日期
+    const insertDateDict = Object.keys(schedule).reduce<{
+      [k: string]: IScheduleTask[]
+    }>((dict, date) => {
+      const insertTasks = tasks.filter((task) =>
+        shouldInsertSchedule({ date, task })
+      )
+
+      if (insertTasks.length) {
+        dict[date] = insertTasks
+      }
+
+      return dict
+    }, {})
+
+    return { insertDateDict }
+  }
+
+  // 插入到指定日期的未完成列表
+  private static insertIntoDate(params: {
+    insertDateDict: {
+      [k: string]: IScheduleTask[]
+    }
+  }) {
+    const { insertDateDict } = params
+
+    const { taskDict, schedule, childrenDict } = useScheduleStore.getState()
+
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        Object.keys(insertDateDict).forEach((date) => {
+          const tasks = insertDateDict[date]
+
+          tasks.forEach((task) => {
+            const { parent_id, ref_task_id } = task
+
+            // TODO: 先直接插入, 父子关系难以判断
+            state.schedule[date] = getSortedSchedule({
+              date,
+              tasks: [...state.schedule[date].map((id) => taskDict[id]), task]
+            })
+
+            // if (!parent_id) {
+            //   // 无父事项直接插入列表, 需排序
+            //   state.schedule[date] = getSortedSchedule({
+            //     date,
+            //     tasks: [...state.schedule[date].map((id) => taskDict[id]), task]
+            //   })
+
+            //   return
+            // }
+
+            // // 有父事项需要插入到该父事项的子集, 同时重置父事项的has_child
+            // for (const parentId of parent_id.split(',').reverse()) {
+            //   if (schedule[date].includes(parentId)) {
+            //     console.log('bingo', taskDict[parentId], task)
+
+            //     // 插入到父事项的children list
+            //     if (!childrenDict[parentId]) {
+            //       state.childrenDict[parentId] = []
+            //       state.taskDict[parentId].has_child = true
+            //     }
+
+            //     state.childrenDict[parentId].push(ref_task_id)
+            //     return
+            //   }
+            // }
+          })
+        })
+      })
+    )
+  }
+
+  // 批量插入已完成列表
   private static insertCompleteTasks(ids: string[]) {
     const finishDate = dayjs().format('YYYY-MM-DD')
 
@@ -125,7 +199,7 @@ class ListHandler {
     const insertKeys = ids.map((id) => {
       const task = taskDict[id]
 
-      return task.repeat_id ? getKey(task) : task.ref_task_id
+      return getKey(task)
     })
 
     useScheduleStore.setState(

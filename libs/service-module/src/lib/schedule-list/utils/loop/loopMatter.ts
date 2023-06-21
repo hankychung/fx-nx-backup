@@ -2,7 +2,6 @@ import {
   IScheduleTask,
   IRepeatConfig,
   ScheduleTaskConst,
-  TaskApi,
   IHoliday
 } from '@flyele-nx/service'
 import dayjs, { Dayjs, ManipulateType } from 'dayjs'
@@ -10,7 +9,7 @@ import { cloneDeep, uniq } from 'lodash'
 import isBetween from 'dayjs/plugin/isBetween'
 import weekday from 'dayjs/plugin/weekday'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import { useHolidayStore } from './useHolidayStore'
+import { getHoliday } from '../holiday'
 dayjs.extend(weekday)
 dayjs.extend(isBetween)
 dayjs.extend(isSameOrAfter)
@@ -112,38 +111,6 @@ const repeatTypeToUnit = (
   }
 
   return timeUnit
-}
-
-/**
- * 获取节假日
- * */
-export const getHoliday = async () => {
-  const storeData = useHolidayStore.getState().holidayValue
-
-  if (!storeData || storeData.all.length === 0) {
-    const updateData = useHolidayStore.getState().updateData
-    const year = dayjs().get('year')
-    const { data } = await TaskApi.getHoliday(year)
-    updateData(data)
-    // 去掉补班的假期, 真放假的时候。
-    const realHolidays = data.filter(
-      (item) => item.state === ScheduleTaskConst.HolidayState.FURLOUGH
-    )
-    // 补班
-    const dutyHoliday = data.filter(
-      (item) => item.state === ScheduleTaskConst.HolidayState.DUTY
-    )
-
-    return {
-      all: data,
-      realHolidays: realHolidays,
-      dutyHoliday: dutyHoliday
-    }
-  }
-
-  return {
-    ...storeData
-  }
 }
 
 /**
@@ -400,9 +367,11 @@ export const nextLoopRule: {
         return startTime.clone()
       }
 
-      const addTime = time.clone()
+      let addTime = time.clone()
 
-      if (!isFirst) addTime.add(1, 'day')
+      if (!isFirst) {
+        addTime = addTime.add(1, 'day')
+      }
 
       if (ignoreHoliday) {
         return checkDateAndReturnDate({
@@ -439,9 +408,11 @@ export const nextLoopRule: {
           : startTime.clone().day(week)
       }
 
-      const addTime = time.clone()
+      let addTime = time.clone()
 
-      if (!isFirst) addTime.add(1, 'week')
+      if (!isFirst) {
+        addTime = addTime.add(1, 'week')
+      }
 
       if (ignoreHoliday) {
         return checkDateAndReturnDate({
@@ -472,9 +443,11 @@ export const nextLoopRule: {
         return startTime.clone().add(2, 'week').weekday(time.get('day'))
       }
 
-      const addTime = time.clone()
+      let addTime = time.clone()
 
-      if (!isFirst) addTime.add(2, 'week')
+      if (!isFirst) {
+        addTime = addTime.add(2, 'week')
+      }
 
       if (ignoreHoliday) {
         return checkDateAndReturnDate({
@@ -560,9 +533,11 @@ export const nextLoopRule: {
           ? startTime.add(1, 'month')
           : startTime.date(_day)
       } else {
-        const addTime = time.clone()
+        let addTime = time.clone()
 
-        if (!isFirst) addTime.add(1, 'month')
+        if (!isFirst) {
+          addTime = addTime.add(1, 'month')
+        }
 
         if (ignoreHoliday) {
           date = checkDateAndReturnDate({
@@ -727,27 +702,4 @@ export const getLoopDatesAndCount = async (value: {
   }
 
   return { ...res, count: res.dates.size }
-}
-
-export const getRepeatTotal = async (task: IScheduleTask) => {
-  if (!task.repeat_type || !task.end_repeat_at) {
-    return 0
-  }
-
-  if (isAlwaysRepeat(task?.end_repeat_at)) {
-    return '∞'
-  }
-
-  const params = {
-    startTime: getRepeatStartTime(task) || 0,
-    createAt: task.create_at || 0,
-    finnishTime: task.end_repeat_at as number,
-    loopOpt: task.repeat_type as ScheduleTaskConst.LOOP_MATTER,
-    ignoreHoliday: task.repeat_config?.repeat_interval === 1,
-    repeat_config: task.repeat_config
-  }
-
-  const repeatData = await getLoopDatesAndCount(params)
-
-  return repeatData.count
 }

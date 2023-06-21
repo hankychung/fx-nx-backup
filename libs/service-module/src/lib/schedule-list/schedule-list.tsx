@@ -6,7 +6,7 @@ import { useScheduleStore } from './utils/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
-import { getKey } from './utils'
+import { getHoliday } from './utils/holiday'
 
 interface ScheduleListProps {
   date: string
@@ -21,13 +21,14 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   const finishPageRef = useRef(1)
 
   const updateList = useScheduleStore((state) => state.updateList)
-  const updateTask = useScheduleStore((state) => state.updateTask)
+  const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
 
   const userId = '1657239291035777'
 
   const reload = useMemoizedFn(() => {
     pageRef.current = 1
     finishPageRef.current = 1
+    getHoliday()
     fetchList()
     fetchList({ finish: true })
   })
@@ -42,20 +43,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
 
     const list = res.data?.schedule || []
 
-    const keys: string[] = []
-
-    list.forEach((item) => {
-      const { ref_task_id, repeat_id, finish_time } = item
-
-      // 循环事项且已经完成, 以taskId + repeatId为key
-      const key = repeat_id && finish_time ? getKey(item) : ref_task_id
-
-      updateTask({ key, task: item })
-
-      keys.push(key)
-    })
-
-    console.log('list', list)
+    const { keys } = batchUpdateTask(list)
 
     const pRef = options?.finish ? finishPageRef : pageRef
 

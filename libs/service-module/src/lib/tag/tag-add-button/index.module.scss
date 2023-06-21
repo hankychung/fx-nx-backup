@@ -1,0 +1,18 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2021/10/27 下午 5:17
+**/
+
+/** 添加小按钮 **/
+.add-tag {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}

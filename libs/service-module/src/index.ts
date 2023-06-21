@@ -11,6 +11,9 @@ import { VipIntroduce } from './lib/vip-introduce/index'
 import { VipIntroduceContent } from './lib/vip-introduce/content'
 import { init, objectiveApi as NxObjectiveApi } from '@flyele-nx/api' //客服弹窗
 import { AvatarEdit } from './lib/avatar-edit' //头像编辑
+import { ContextMenu } from './lib/context-menu'
+import { contextMenuTool } from './lib/context-menu/contextMenuTool'
+
 export * from './lib/schedule-list/schedule-list' // 日程列表
 
 export {
@@ -25,7 +28,9 @@ export {
   CustomerServicesModal,
   VipIntroduce,
   VipIntroduceContent,
-  AvatarEdit
+  AvatarEdit,
+  ContextMenu,
+  contextMenuTool
 }
 
 export * from './lib/map-svg/type/props'

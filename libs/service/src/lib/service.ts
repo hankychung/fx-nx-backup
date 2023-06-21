@@ -7,7 +7,8 @@ class Service {
 
   constructor() {
     this.axios = axios.create({
-      headers: {}
+      headers: {},
+      timeout: 1000 * 5
     })
     this.requestInterceptors()
     this.responseInterceptors()
@@ -114,6 +115,19 @@ class Service {
     }
 
     throw new Error(`error post: ${config.url}`)
+  }
+
+  async delete<T>(config: RequestConfig) {
+    const { data } = await this.axios.delete<IResponse<T>>(
+      config.url,
+      config.data
+    )
+
+    if (!data.code) {
+      return data
+    }
+
+    throw new Error(`error: ${config.url}`)
   }
 }
 

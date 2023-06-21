@@ -1,0 +1,23 @@
+.menuBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  margin-right: 8px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #e8fbf9;
+    border-radius: 4px;
+  }
+
+  &.darkMode {
+    &:hover {
+      background-color: #3e4d5b;
+    }
+  }
+
+  &.visible {
+    visibility: visible;
+  }
+}

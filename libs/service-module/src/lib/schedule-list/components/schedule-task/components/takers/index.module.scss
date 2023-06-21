@@ -1,0 +1,52 @@
+.takers {
+  flex: none;
+  position: relative;
+  cursor: pointer;
+  margin: 8px auto 1px 5px;
+
+  &.darkMode {
+    &:hover::after {
+      background-color: #3e4d5b;
+    }
+  }
+
+  &:hover::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    background-color: #e8fbf9;
+    padding: 3px 5px;
+    box-sizing: content-box;
+    border-radius: 4px;
+  }
+
+  .avatarBox {
+    position: relative;
+    z-index: 2;
+    display: flex;
+  }
+}
+
+.moreBtn {
+  background-color: #fff !important;
+  border: none !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  font-size: 10px;
+  color: #6a6a6a !important;
+  height: 16px !important;
+  border-radius: 16px !important;
+  padding: 0 2px 0 2px;
+}
+
+.addTaker {
+  width: 17px;
+  height: 17px;
+}
+
+.isView {
+  opacity: 0.3;
+}

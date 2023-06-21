@@ -26,6 +26,31 @@ export const QuadrantColor = {
   [QuadrantValue.no_important_no_urgent]: '#989F9F'
 }
 
+export enum CANCEL_TASK_STATE {
+  DEFAULT = -1,
+  CANCEL_JOIN = 10405, // 事项 我参与 取消事项
+  CANCEL_DISPATCH = 10303, // 事项 我派发 取消事项
+  CANCEL_MEETING = 10504 // 会议 取消会议
+}
+
+// 事项身份
+export enum IDENTITY {
+  matterCreator = 10801, // 事项创建人(我参与)
+  meetingCreator = 10802, // 会议创建人
+  meetingTaker = 10803, // 会议参与人
+  // * 这里与MatterIdentity不一致
+  matterDistribute = 10804, // 事项创建人（我派发）
+  //
+  matterTaker = 10805, // 事项参与人
+  collectCreator = 10806, // 时间征集创建人
+  collectTaker = 10807, // 时间征集参与人
+  stNoticeCreator = 10808, // 小工具公告创建人
+  stNoticeTaker = 10809, // 小工具公告参与人
+  stTodoCreatorAndTaker = 10810, // 小工具待办创建人与参与人
+  stTodoCreator = 10811, // 小工具待办创建人
+  stTodoTaker = 10812 // 小工具待办参与人
+}
+
 export enum MatterType {
   matter = 10701, // 事项
   meeting = 10702, // 会议
@@ -91,4 +116,34 @@ export enum AlwaysFinishTime {
 export enum HolidayState {
   FURLOUGH = 1, // 放假
   DUTY // 补班
+}
+
+/** 事项类型 */
+export enum CATEGORY {
+  /** 主事项 */
+  mainMatter,
+  /** 小工具: 目前是待办、会议 */
+  smallTool,
+  /** 子事项 */
+  childMatter
+}
+
+// 普通字数
+export const NORMAL_LEN = 16
+
+// 最大标题字数
+export const MAX_TITLE_LEN = 300
+
+// 最大背景字数
+export const MAX_BACKGROUND_LEN = 1500
+
+// 非法字符
+export const InvaildChar = ['@', '#', '*', '/', '\\', '<', '>']
+
+// 埋点使用
+export enum CreateType {
+  detail = '详细创建',
+  quick = '快速创建',
+  import = '导入创建',
+  copy = '复制创建'
 }

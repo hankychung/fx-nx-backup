@@ -30,7 +30,9 @@ export interface IErrorResponse {
 
 export type IResponse<T, M = Record<string, never>> = CommonResponse<T> & M
 
-export type RequestConfig = import('axios').AxiosRequestConfig & { url: string }
+export type RequestConfig = import('axios').AxiosRequestConfig & {
+  url: string
+} & { notFilterEmpty?: boolean }
 
 export interface IRequestList {
   page_number?: number // 查询页数，默认1
@@ -100,4 +102,15 @@ interface Member {
 }
 export interface IVipMember {
   member: Member
+}
+
+export interface IVip {
+  id?: string // vip id
+  invite_code?: string // vip邀请码
+  level: number // 会员等级 1.8v 暂时只存在 0 | 1
+  deadline: number // 会员结束时间
+  start_time?: number // 会员开始时间
+  next_end_time?: number
+  end_time?: number
+  recently_type?: 1 | 2 | undefined
 }

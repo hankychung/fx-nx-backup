@@ -1,0 +1,25 @@
+.bar {
+  width: inherit;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+/* 标签使用的样式 */
+.tag-container {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 50px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+}

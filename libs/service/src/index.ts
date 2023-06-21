@@ -8,6 +8,7 @@ import { paymentApi } from './lib/payment'
 import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
 import { TaskDispatchApi } from './lib/task-dispatch'
+import { LabelApi } from './lib/label'
 import SSe from './lib/sse'
 import './lib/payment'
 
@@ -16,7 +17,8 @@ import {
   ILoginKeyParams,
   IDevice,
   IErrorResponse,
-  IUserInfo
+  IUserInfo,
+  IVip
 } from './lib/typings'
 
 import {
@@ -29,7 +31,26 @@ import {
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
 
 // 协作人
-import { IContactsAndStatus } from './lib/typings/taker'
+import {
+  IContactsAndStatus,
+  ITakerAndStatus,
+  VipTypeEnum,
+  EConCheckStatus
+} from './lib/typings/taker'
+
+// Tag
+import { TagModel, TagObjType } from './lib/typings/tag'
+import { TagWidgetColor } from './lib/typings/tag/const'
+
+// Auth
+import * as AuthType from './lib/typings/auth'
+import * as AuthConst from './lib/typings/auth/const'
+
+// 空间
+import * as SpaceType from './lib/typings/space'
+
+// 项目
+import * as ProjectType from './lib/typings/project'
 
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
@@ -48,7 +69,12 @@ export {
   OrderSystemApi,
   TaskDispatchApi,
   OrderSystemConst,
-  ScheduleTaskConst
+  ScheduleTaskConst,
+  TagWidgetColor,
+  LabelApi,
+  AuthConst,
+  VipTypeEnum,
+  EConCheckStatus
 }
 
 export type {
@@ -62,5 +88,12 @@ export type {
   IRepeatConfig,
   IHoliday,
   Taker,
-  RepeatList
+  RepeatList,
+  TagModel,
+  TagObjType,
+  ITakerAndStatus,
+  AuthType,
+  IVip,
+  SpaceType,
+  ProjectType
 }

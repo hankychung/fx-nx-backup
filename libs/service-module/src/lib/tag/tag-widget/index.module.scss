@@ -1,0 +1,68 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2021/10/20 下午 3:10
+**/
+.tag-container {
+  display: inline-block;
+}
+
+.tag {
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* normal = 'normal',
+  large = 'large',
+  */
+
+/* 正常size */
+.tag-normal {
+  height: 20px;
+  padding: 2px 8px;
+}
+
+/* 稍微大点 */
+.tag-large {
+  height: 22px;
+  padding: 3px 9px;
+}
+
+/** 字体大小 **/
+.tag-text {
+  font-size: 11px;
+  font-weight: 400;
+
+  /* transform: scale(0.92) translateY(-1px); /* 之前 font-size 12 使用 */
+}
+
+.tag-text-large {
+  font-size: 12px;
+  font-weight: 400;
+
+  /* transform: none; */
+}
+
+.tag-done {
+  font-size: 10px;
+  margin-left: 6px;
+  line-height: 18px;
+}
+
+.empty-color {
+  box-shadow: 0 0 0 1px #1dd2c1;
+}
+
+.not-color {
+  box-shadow: 0 0 0 1px #ebebeb;
+
+  /* border: 1px solid #EBEBEB; */
+}
+
+.nowrapClass {
+  white-space: nowrap;
+}

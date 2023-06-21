@@ -1,4 +1,12 @@
-import React, { FC, memo, useMemo, CSSProperties } from 'react'
+import React, {
+  FC,
+  memo,
+  useMemo,
+  CSSProperties,
+  PropsWithChildren,
+  ReactElement,
+  useRef
+} from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
 import { useScheduleStore } from '../../utils/useScheduleStore'
@@ -6,7 +14,7 @@ import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
 import expandStyles from './components/expand/index.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useHover } from 'ahooks'
 import cs from 'classnames'
 import { isHighlight } from '../../utils/tools'
 import dayjs from 'dayjs'
@@ -19,7 +27,11 @@ import { Indent } from './components/indent'
 import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
+import { Tags } from './components/tags'
+import { MenuBtn } from './components/menu/components/btn'
+import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
+import { contextMenuTool } from '../../../../index'
 
 export interface IProps {
   taskKey: string
@@ -32,7 +44,7 @@ export interface IProps {
   isSimple?: boolean
 }
 
-const _ScheduleTask: FC<IProps> = ({
+const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   taskKey,
   date,
   topId,
@@ -40,14 +52,12 @@ const _ScheduleTask: FC<IProps> = ({
   userId,
   isDarkMode,
   style,
-  isSimple = false
+  isSimple = false,
+  children: childrenComponents
 }) => {
-  const _data = useScheduleStore((state) => state.taskDict[taskKey])
-  const dataWithoutRepeatId = useScheduleStore(
-    (state) => state.taskDict[taskKey.split('-')[0]]
-  )
-
-  const data = _data || dataWithoutRepeatId
+  const domRef = useRef<HTMLDivElement>(null)
+  const reactChildren = childrenComponents as Array<ReactElement>
+  const data = useScheduleStore((state) => state.taskDict[taskKey])
 
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
@@ -58,19 +68,32 @@ const _ScheduleTask: FC<IProps> = ({
     return Boolean(dict[taskKey])
   })
 
+  const isHovering = useHover(domRef)
+
+  const { menuActions } = useMenuActions({ data, userId })
+
   // 记录是否为卡片顶级事项
   const isTopTask = topId === taskKey
 
+  // 右键的锚点, 只有自己的事项 && 顶级事项卡片才有右键
+  // 团队卡片没有右键
+  // 事项分组没有右键
+  // 如果以后还有其他条件的话往这上面拼
+  const isShowMenu = useMemo(() => {
+    return ![
+      ScheduleTaskConst.MatterType.timeCollect,
+      ScheduleTaskConst.MatterType.calendar
+    ].includes(data.matter_type)
+  }, [data.matter_type])
+
   // 只有今日，周，小挂件有置顶
   // 目前它的逻辑和是否显示菜单是包含的
-  // isShowMenu 的相关逻辑可等后面数据再看
-  // const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
-  const isTopMost = !!data?.topmost_at && !data?.finish_time
+  const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
 
-  const { updateExpandedDict, batchUpdateChildDict, updateTask } =
+  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
     useScheduleStore(
       (state) => ({
-        updateTask: state.updateTask,
+        batchUpdateTask: state.batchUpdateTask,
         updateExpandedDict: state.updateExpandedDict,
         batchUpdateChildDict: state.batchUpdateChildDict
       }),
@@ -95,23 +118,40 @@ const _ScheduleTask: FC<IProps> = ({
         originalId: ref_task_id
       })
 
-      tasks.forEach((child) => {
-        updateTask({
-          key: child.ref_task_id,
-          task: {
-            ...child,
-            has_child: Boolean(childrenDict[child.ref_task_id])
-          }
-        })
-      })
-
-      console.log('childrenDict', childrenDict)
+      // 更新事项字典
+      batchUpdateTask(
+        tasks.map((child) => ({
+          ...child,
+          has_child: Boolean(childrenDict[child.ref_task_id])
+        }))
+      )
 
       batchUpdateChildDict(childrenDict)
     }
 
     updateExpandedDict({ date, taskId: taskKey, isExpanded: !isExpanded })
   })
+
+  /**
+   * 打开右键菜单
+   */
+  const handleContextMenu = useMemoizedFn(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!isShowMenu) return
+
+      event.preventDefault()
+      const parentRect = domRef.current?.getBoundingClientRect()
+      if (!parentRect) return
+      const x = event.clientX - parentRect.left || 0
+      const y = event.clientY - parentRect.top || 0
+
+      contextMenuTool.open({
+        x,
+        y,
+        action: menuActions
+      })
+    }
+  )
 
   const isToday = useMemo(() => {
     if (date) {
@@ -144,10 +184,26 @@ const _ScheduleTask: FC<IProps> = ({
     }
   }, [data?.priority_level])
 
+  /**
+   * 外部传入组件渲染
+   */
+  const slotChildren = useMemo(() => {
+    if (reactChildren) {
+      if (reactChildren.length > 1) {
+        return reactChildren.find((item) => item.props.slot === 'takers')
+      } else {
+        return reactChildren
+      }
+    } else {
+      return null
+    }
+  }, [reactChildren])
+
   if (!data) return null
 
   return (
     <div
+      ref={domRef}
       className={cs(styles.scheduleTaskRoot, styles.boardSchedule, {
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
@@ -159,6 +215,7 @@ const _ScheduleTask: FC<IProps> = ({
         ...style
       }}
       data-id={taskKey}
+      onContextMenu={handleContextMenu}
     >
       <div
         className={cs(styles.topHover, styles.boardSchedulePadding, {
@@ -173,7 +230,7 @@ const _ScheduleTask: FC<IProps> = ({
           </div>
         )}
 
-        {/* {!isSimple && <Workflow taskId={taskKey} />} */}
+        {!isSimple && <Workflow taskId={taskKey} />}
 
         {!isSimple && <ParentInfo taskId={taskKey} isDarkMode />}
 
@@ -213,17 +270,25 @@ const _ScheduleTask: FC<IProps> = ({
                 <div className={styles.info}>
                   <div className={styles.infoMain}>
                     <div className={styles.singleLine}>
-                      {/* <Time
+                      <Time
                         taskId={taskKey}
                         curTime={curTime}
                         userId={userId}
                         dateStr={date}
                         isDarkMode={isDarkMode}
-                      /> */}
+                      />
+                      {slotChildren}
                       {/*<Takers taskId={taskId} />*/}
-                      {/*<Tags task={task} taskId={taskId} />*/}
+                      <Tags taskId={taskKey} userId={userId} />
                     </div>
                   </div>
+                  {isShowMenu && (
+                    <MenuBtn
+                      visible={isHovering}
+                      isDarkMode={isDarkMode}
+                      openMenu={handleContextMenu}
+                    />
+                  )}
                 </div>
               )}
             </div>

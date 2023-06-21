@@ -1,6 +1,11 @@
 import { service } from '../service'
 import { CommonResponse } from '../typings'
-import { IScheduleTask, IHoliday } from '../typings/schedule'
+import {
+  IScheduleTask,
+  IHoliday,
+  IRelation,
+  ICreateParams
+} from '../typings/schedule'
 
 interface IGetScheduleTreeParams {
   taskId: string
@@ -14,6 +19,7 @@ interface IRepeatParams {
 
 class Task {
   private prefix = 'flyele/v2/tasks'
+  private prefixTask = 'flyele/v2/task'
 
   // 获取所有下级事项
   async getScheduleTree(
@@ -64,6 +70,54 @@ class Task {
       params: {
         year
       }
+    })
+  }
+
+  // 关注事项
+  followTask(taskId: string) {
+    return service.post({
+      url: `/${this.prefixTask}/${taskId}/follow`
+    })
+  }
+
+  // 取关
+  unfollowTask(taskId: string) {
+    return service.delete({
+      url: `/${this.prefixTask}/${taskId}/follow`
+    })
+  }
+
+  // 隐藏日程
+  hide(ids: string[]) {
+    return service.post({
+      url: `${this.prefix}/schedule/show_or_hide`,
+      data: {
+        dispatchs_id: ids
+      }
+    })
+  }
+
+  getChildrenProcessRelation(task_id: string) {
+    return service.get<CommonResponse<IRelation>>({
+      url: `${this.prefix}/${task_id}/relation`,
+      params: {
+        _forceUpdate: true
+      }
+    })
+  }
+
+  // 修改事项或者会议
+  async updateTask(
+    data: Partial<ICreateParams>,
+    taskId: string,
+    headers?: Record<string, any>
+  ) {
+    return await service.post({
+      url: `${this.prefixTask}/${taskId}`,
+      data,
+      timeout: 10000,
+      headers,
+      notFilterEmpty: true
     })
   }
 }

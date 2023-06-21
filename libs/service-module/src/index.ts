@@ -35,6 +35,8 @@ export {
 
 export * from './lib/map-svg/type/props'
 
+export * from './lib/global'
+
 export const SMobjectiveApi = NxObjectiveApi
 
 export const registerPaymentInit = init

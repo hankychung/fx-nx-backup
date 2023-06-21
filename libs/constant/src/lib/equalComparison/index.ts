@@ -211,14 +211,14 @@ export const identityEqualComparisonData: IEqualComparison = {
         title: '免费空间',
         free: '创建1个，加入无限',
         personal: '创建1个，加入无限',
-        team: true
+        team: '创建无限，加入无限'
       },
       {
         key: 'specialSpace',
         title: '专业空间',
         free: false,
         personal: false,
-        team: true
+        team: '创建无限，加入无限'
       }
     ]
   }

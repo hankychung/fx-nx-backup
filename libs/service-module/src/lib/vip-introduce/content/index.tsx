@@ -7,7 +7,6 @@ import { ReactComponent as ProfessionalSpace } from '../../../assets/introductio
 import divisionIcon from '../../../assets/introduction/division.svg'
 
 import { Button } from 'antd'
-import classNames from 'classnames'
 import css from './index.module.scss'
 import { memberPowerStaticData } from './packages_const'
 import { IInfoType, IPower, VipIntroduceContentProps } from '../types'

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
@@ -10,9 +10,15 @@ import { getHoliday } from './utils/holiday'
 
 interface ScheduleListProps {
   date: string
+  userId: string // 当前用户id
+  takerComponent?: (taskId: string) => ReactNode
 }
 
-const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
+const _ScheduleList: React.FC<ScheduleListProps> = ({
+  date,
+  userId,
+  takerComponent
+}) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -22,8 +28,6 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
 
   const updateList = useScheduleStore((state) => state.updateList)
   const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
-
-  const userId = '1657239291035777'
 
   const reload = useMemoizedFn(() => {
     pageRef.current = 1
@@ -88,6 +92,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
               topId={i}
               userId={userId}
               curTime={dayjs().unix()}
+              takerComponent={takerComponent}
             />
           ))}
         </InfiniteScroll>
@@ -112,6 +117,7 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
               topId={i}
               userId={userId}
               curTime={dayjs().unix()}
+              takerComponent={takerComponent}
             />
           ))}
         </InfiniteScroll>

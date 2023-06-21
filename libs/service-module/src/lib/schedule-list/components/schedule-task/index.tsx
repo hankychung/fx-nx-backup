@@ -4,8 +4,8 @@ import React, {
   useMemo,
   CSSProperties,
   PropsWithChildren,
-  ReactElement,
-  useRef
+  useRef,
+  ReactNode
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
@@ -42,6 +42,7 @@ export interface IProps {
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
+  takerComponent?: (taskId: string) => ReactNode
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -53,10 +54,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isDarkMode,
   style,
   isSimple = false,
-  children: childrenComponents
+  takerComponent
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
-  const reactChildren = childrenComponents as Array<ReactElement>
   const data = useScheduleStore((state) => state.taskDict[taskKey])
 
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
@@ -184,21 +184,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     }
   }, [data?.priority_level])
 
-  /**
-   * 外部传入组件渲染
-   */
-  const slotChildren = useMemo(() => {
-    if (reactChildren) {
-      if (reactChildren.length > 1) {
-        return reactChildren.find((item) => item.props.slot === 'takers')
-      } else {
-        return reactChildren
-      }
-    } else {
-      return null
-    }
-  }, [reactChildren])
-
   if (!data) return null
 
   return (
@@ -277,7 +262,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      {slotChildren}
+                      {takerComponent ? takerComponent(taskKey) : null}
                       {/*<Takers taskId={taskId} />*/}
                       <Tags taskId={taskKey} userId={userId} />
                     </div>

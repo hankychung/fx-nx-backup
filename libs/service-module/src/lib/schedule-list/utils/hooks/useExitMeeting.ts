@@ -1,6 +1,7 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { useScheduleStore } from '../useScheduleStore'
 import { TaskDispatchApi } from '@flyele-nx/service'
+import { TaskHandler } from '../taskHandler'
 
 export const useExitMeeting = ({ taskId }: { taskId: string }) => {
   const data = useScheduleStore((state) => state.taskDict[taskId])
@@ -29,6 +30,7 @@ export const useExitMeeting = ({ taskId }: { taskId: string }) => {
 
       // 关闭子窗口
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      TaskHandler.removeTasks([taskId])
     } catch (_) {
       // 老代码，不知道什么作用
       // window.smallWinLock = false

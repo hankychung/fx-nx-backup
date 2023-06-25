@@ -23,10 +23,21 @@ const InterestsIntroduction = () => {
     setWidthStyle(width)
   })
 
+  const handleMoreEquitySpace = () => {
+    setShowComparison(false)
+    const targetElement = document.querySelector('#ComparsionTitle-element')
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <div className={styles.introductionPage}>
-      <MemberIntroduction widthStyle={widthStyle} />
-      <div className={styles.ComparsionTitle}>
+      <MemberIntroduction
+        widthStyle={widthStyle}
+        handleMoreEquitySpace={handleMoreEquitySpace}
+      />
+      <div className={styles.ComparsionTitle} id="ComparsionTitle-element">
         <div
           // className={styles.useTitle}
           onClick={() => {

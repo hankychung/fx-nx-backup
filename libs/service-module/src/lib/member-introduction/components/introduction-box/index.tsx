@@ -9,9 +9,14 @@ import { ReactComponent as ProfessionalSpace } from '../../../../assets/introduc
 interface IProps {
   info: IInfoType
   onClickBtn?: () => void
+  handleMoreEquitySpace?: () => void
 }
 
-export const IntroductionBox = ({ info, onClickBtn }: IProps) => {
+export const IntroductionBox = ({
+  info,
+  onClickBtn,
+  handleMoreEquitySpace
+}: IProps) => {
   const {
     key,
     title,
@@ -50,10 +55,6 @@ export const IntroductionBox = ({ info, onClickBtn }: IProps) => {
     ) : (
       ''
     )
-  }
-  const handleMoreEquitySpace = () => {
-    //Todo....
-    console.log('点击了更多权益空间')
   }
 
   const moreEquitySpace = (key: string) => {

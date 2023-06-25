@@ -22,7 +22,13 @@ export enum VipTypeEnum {
   Team = 2
 }
 
-export const MemberIntroduction = ({ widthStyle }: { widthStyle: string }) => {
+export const MemberIntroduction = ({
+  widthStyle,
+  handleMoreEquitySpace
+}: {
+  widthStyle: string
+  handleMoreEquitySpace: () => void
+}) => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -173,6 +179,7 @@ export const MemberIntroduction = ({ widthStyle }: { widthStyle: string }) => {
             key={item.key}
             info={item}
             onClickBtn={() => onClickBtn(item.key)}
+            handleMoreEquitySpace={handleMoreEquitySpace}
           />
         )
       })}

@@ -6,7 +6,7 @@ import {
   LockIcon,
   RemovedTextIcon,
   SelectedIcon,
-  WarmingIcon
+  WorkflowWarmingIcon
 } from '@flyele-nx/icon'
 
 /**
@@ -71,7 +71,7 @@ export const WorkflowMemberIcon = React.memo(
     }
     // 仅退回
     if (isBack && !isLock) {
-      return <WarmingIcon />
+      return <WorkflowWarmingIcon />
     }
     // 锁定+完成
     if (isLock && isComplete) {
@@ -87,7 +87,7 @@ export const WorkflowMemberIcon = React.memo(
       return (
         <div className={css.iconBottomGroup}>
           <LockIcon className={css.lock} />
-          <WarmingIcon className={css.back} />
+          <WorkflowWarmingIcon className={css.back} />
         </div>
       )
     }

@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { IScheduleTask } from '@flyele-nx/service'
-import { IState, useScheduleStore } from './useScheduleStore'
+import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import dayjs from 'dayjs'
 import { getKey, getSortedSchedule, isRelated, shouldInsertSchedule } from '.'
 

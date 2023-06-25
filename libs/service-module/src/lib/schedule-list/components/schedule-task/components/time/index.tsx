@@ -14,18 +14,19 @@ import dayjs from 'dayjs'
 import { getRepeatDelayTotal } from '../../../../utils'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import {
   RepeatDelayIcon,
   CycleCardIcon,
   CycleCardDarkIcon
 } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
+import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
+import { useMessage } from '@flyele-nx/ui'
 
 interface IPROPTime {
   taskId: string
   curTime: number // 当前时间, 今天的时间
-  userId: string
   isDarkMode?: boolean
   dateStr: string
   onlyRepeat?: boolean
@@ -35,13 +36,16 @@ interface IPROPTime {
 export const Time: React.FC<IPROPTime> = ({
   taskId,
   curTime,
-  userId,
   isDarkMode = false,
   dateStr,
   onlyRepeat = false,
   isSpets = false
 }) => {
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
+
+  const [showMsg] = useMessage()
+
   const [visible, setVisible] = useState(false)
   // const groupIdCtx = useContext(GroupIdCtx)
   // const memberIdCtx = useContext(MemberIdCtx)
@@ -210,7 +214,7 @@ export const Time: React.FC<IPROPTime> = ({
       task.matter_type === ScheduleTaskConst.MatterType.matter &&
       !task.takers?.find((taker) => taker.taker_id === userId)
     ) {
-      // showMsg({ msgType: '错误', content: '非协作人无法修改时间' })
+      showMsg({ msgType: '错误', content: '非协作人无法修改时间' })
       return
     }
 

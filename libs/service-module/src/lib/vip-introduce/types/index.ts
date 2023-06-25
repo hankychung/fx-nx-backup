@@ -6,11 +6,13 @@ export interface VipIntroduceContentProps {
   teamVipBtnClick?: (item: IInfoType & { btnText: string }) => void
   customBtnClick?: () => void
   descBtnClick?: () => void
+  equitySpaceClick?: () => void
 }
 
 export interface IPower {
   title: string
   active: boolean
+  isSpace?: string
 }
 
 export interface IInfoType {

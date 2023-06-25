@@ -22,8 +22,7 @@ import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
 import AcceptOnceMany from '../accept-once-many'
-import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
-import { message } from 'antd'
+import { useScheduleStore } from '../store/useScheduleStore'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
 import { getChildrenDict, getKey } from '../schedule-list/utils'
@@ -202,6 +201,8 @@ const _StatusBox: FC<IProps> = (props) => {
       // 完成状态
       return task.finish_time ? (
         <TaskCheckIcon
+          width={14}
+          height={14}
           onClick={(e) => {
             e.stopPropagation()
             handleComplete()
@@ -209,6 +210,8 @@ const _StatusBox: FC<IProps> = (props) => {
         />
       ) : (
         <UncheckIcon
+          width={14}
+          height={14}
           onClick={(e) => {
             e.stopPropagation()
             if (task.has_child) {
@@ -223,15 +226,27 @@ const _StatusBox: FC<IProps> = (props) => {
     }
 
     if (ScheduleTaskConst.MatterType.meeting === matterType) {
-      return !finishTime ? <MeetingIcon /> : <MeetingFinishedIcon />
+      return !finishTime ? (
+        <MeetingIcon width={14} height={14} />
+      ) : (
+        <MeetingFinishedIcon width={14} height={14} />
+      )
     }
 
     if (ScheduleTaskConst.MatterType.timeCollect === matterType) {
-      return !finishTime ? <TimeCollectIcon /> : <TimeCollectFinishIcon />
+      return !finishTime ? (
+        <TimeCollectIcon width={14} height={14} />
+      ) : (
+        <TimeCollectFinishIcon width={14} height={14} />
+      )
     }
 
     if (ScheduleTaskConst.MatterType.calendar === matterType) {
-      return !finishTime ? <CalendarIcon /> : <CalendarFinish />
+      return !finishTime ? (
+        <CalendarIcon width={14} height={14} />
+      ) : (
+        <CalendarFinish width={14} height={14} />
+      )
     }
   })
 

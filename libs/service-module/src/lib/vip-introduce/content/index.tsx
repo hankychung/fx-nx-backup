@@ -1,11 +1,16 @@
 import React, { useCallback } from 'react'
 import { ReactComponent as VectorIcon } from '../../../assets/vip-introduce/vector.svg'
 import { ReactComponent as ArrowIcon } from '../../../assets/vip-introduce/arrow.svg'
+import { ReactComponent as SelectIcon } from '../../../assets/introduction/select.svg'
+import { ReactComponent as FreeSpace } from '../../../assets/introduction/free_space.svg'
+import { ReactComponent as ProfessionalSpace } from '../../../assets/introduction/professional_space.svg'
+import divisionIcon from '../../../assets/introduction/division.svg'
+
 import { Button } from 'antd'
-import classNames from 'classnames'
 import css from './index.module.scss'
 import { memberPowerStaticData } from './packages_const'
-import { IInfoType, VipIntroduceContentProps } from '../types'
+import { IInfoType, IPower, VipIntroduceContentProps } from '../types'
+import { FlyTooltip } from '@flyele/flyele-components'
 
 export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
   const {
@@ -13,10 +18,37 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     teamVipBtnClick,
     customBtnClick,
     descBtnClick,
+    equitySpaceClick,
     isVip,
     isTeamVip,
     isForeverVip
   } = props
+
+  const isProfessionnalCapacity = (item: IPower) => {
+    if (!item.isSpace) return
+    return item.isSpace === 'professional_space' ? (
+      <div className={css.space_division}>
+        <div className={css.professionnal_capacity}>
+          <span>专业空间能力</span>
+        </div>
+        <img src={divisionIcon} alt="" />
+      </div>
+    ) : (
+      ''
+    )
+  }
+
+  const isSpace = (item: IPower) => {
+    if (!item) return
+    switch (item.isSpace) {
+      case 'free_space':
+        return <FreeSpace onClick={equitySpaceClick} />
+      case 'professional_space':
+        return <ProfessionalSpace onClick={equitySpaceClick} />
+      default:
+        return
+    }
+  }
 
   const handleBtnClick = (item: IInfoType) => {
     switch (item.key) {
@@ -68,11 +100,11 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
               className={css.body}
               style={{ border: `1px solid ${item.borderColor}` }}
             >
-              <div className={css.header}>
-                <div
-                  className={css.title}
-                  style={{ borderBottom: `1px dashed ${item.borderColor}` }}
-                >
+              <div
+                className={css.header}
+                style={{ borderBottom: `1px dashed ${item.borderColor}` }}
+              >
+                <div className={css.title}>
                   <h1>{item.title}</h1>
                   {item.desc && (
                     <span className={css.desc} onClick={descBtnClick}>
@@ -89,14 +121,43 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                     </span>
                   )}
                 </div>
+                {item.key !== 'custom' && (
+                  <div className={css.priceBox}>
+                    <span className={css.smallText}>¥ </span>
+                    {item.money}
+                    {item.unit && (
+                      <span className={css.smallText}>{` / ${item.unit}`}</span>
+                    )}
+                  </div>
+                )}
               </div>
               <div className={css.content}>
-                {item.powerList.map((power) => (
-                  <div key={power.title}>{power.title}</div>
+                {item.powerList.map((power, index) => (
+                  <>
+                    <div key={index} className={css.contentItem}>
+                      {power.active && (
+                        <SelectIcon color="#1DD2C1" width={14} height={14} />
+                      )}
+                      <div
+                        key={power.title}
+                        style={{ marginLeft: 5, marginRight: 4 }}
+                      >
+                        {power.title}
+                      </div>
+                      <FlyTooltip
+                        text="点击查看空间权益"
+                        trigger="hover"
+                        zIndex={1003}
+                      >
+                        {isSpace(power)}
+                      </FlyTooltip>
+                    </div>
+                    {isProfessionnalCapacity(power)}
+                  </>
                 ))}
               </div>
               <div className={css.footer}>
-                <p>
+                {/* <p>
                   {!['custom'].includes(item.key) && (
                     <span className={css.small}>¥</span>
                   )}
@@ -111,7 +172,12 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                   >
                     {item.oldPrice}
                   </span>
-                </p>
+                </p> */}
+                {item.key === 'custom' ? (
+                  <div className={css.priceConsultation}>价格咨询</div>
+                ) : (
+                  <></>
+                )}
                 {btnText && (
                   <Button
                     style={{ background: item.btnBgColor, height: 36 }}

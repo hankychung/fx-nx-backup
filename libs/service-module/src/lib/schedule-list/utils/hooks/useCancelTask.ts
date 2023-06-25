@@ -1,5 +1,5 @@
-import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../useScheduleStore'
+import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
@@ -25,7 +25,7 @@ export const useCancelTask = ({ taskId }: { taskId: string }) => {
   //   }
   // }
   // 消息提示
-  // const [showMsg] = useMessage()
+  const [showMsg] = useMessage()
 
   /**
    * 执行取消操作，这是内部方法，弹窗在下面
@@ -53,21 +53,20 @@ export const useCancelTask = ({ taskId }: { taskId: string }) => {
     if (result) {
       // 删除该事项相关的卡片和事项列表数据
       // Pubjs.publish(PUB.DELETE_MATTER_ITEM, taskIds)
-      // 取消成功
-      // showMsg({
-      //   content: '取消成功',
-      //   msgType: '成功',
-      //   duration: 1.5
-      // })
+      showMsg({
+        content: '取消成功',
+        msgType: '成功',
+        duration: 1.5
+      })
       // 若事项被取消，事项详情小窗体需要被关闭，应该是这个意思
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
       TaskHandler.removeTasks(taskIds)
     } else {
-      // showMsg({
-      //   content: '取消失败',
-      //   msgType: '错误',
-      //   duration: 1.5
-      // })
+      showMsg({
+        content: '取消失败',
+        msgType: '错误',
+        duration: 1.5
+      })
     }
   })
 

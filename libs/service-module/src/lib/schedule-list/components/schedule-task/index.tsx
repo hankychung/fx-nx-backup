@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
-import { useScheduleStore } from '../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
@@ -38,7 +38,6 @@ export interface IProps {
   date: string
   topId: string
   curTime: number // 当前时间, 今天的时间
-  userId: string
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
@@ -49,14 +48,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   date,
   topId,
   curTime,
-  userId,
   isDarkMode,
   style,
   isSimple = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
-  const data = useScheduleStore((state) => state.taskDict[taskKey])
 
+  const data = useScheduleStore((state) => state.taskDict[taskKey])
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
     const dict = state.expandedDict[date]
@@ -65,13 +63,24 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
     return Boolean(dict[taskKey])
   })
+  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
+    useScheduleStore(
+      (state) => ({
+        batchUpdateTask: state.batchUpdateTask,
+        updateExpandedDict: state.updateExpandedDict,
+        batchUpdateChildDict: state.batchUpdateChildDict
+      }),
+      shallow
+    )
 
   const isHovering = useHover(domRef)
 
-  const { menuActions } = useMenuActions({ data, userId })
+  const { menuActions } = useMenuActions({ data })
 
   // 记录是否为卡片顶级事项
-  const isTopTask = topId === taskKey
+  const isTopTask = useMemo(() => {
+    return topId === taskKey
+  }, [taskKey, topId])
 
   // 右键的锚点, 只有自己的事项 && 顶级事项卡片才有右键
   // 团队卡片没有右键
@@ -86,17 +95,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   // 只有今日，周，小挂件有置顶
   // 目前它的逻辑和是否显示菜单是包含的
-  const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
-
-  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
-    useScheduleStore(
-      (state) => ({
-        batchUpdateTask: state.batchUpdateTask,
-        updateExpandedDict: state.updateExpandedDict,
-        batchUpdateChildDict: state.batchUpdateChildDict
-      }),
-      shallow
-    )
+  const isTopMost = useMemo(() => {
+    return !!data?.topmost_at && !data?.finish_time && isShowMenu
+  }, [data?.finish_time, data?.topmost_at, isShowMenu])
 
   const toggleOpen = useMemoizedFn(async () => {
     if (!data) return
@@ -138,14 +139,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       if (!isShowMenu) return
 
       event.preventDefault()
-      const parentRect = domRef.current?.getBoundingClientRect()
-      if (!parentRect) return
-      const x = event.clientX - parentRect.left || 0
-      const y = event.clientY - parentRect.top || 0
+      event.stopPropagation()
 
       contextMenuTool.open({
-        x,
-        y,
+        x: event.clientX,
+        y: event.clientY,
         action: menuActions
       })
     }
@@ -256,16 +254,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                       <Time
                         taskId={taskKey}
                         curTime={curTime}
-                        userId={userId}
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      <Takers
-                        taskId={taskKey}
-                        userId={userId}
-                        isDarkMode={isDarkMode}
-                      />
-                      <Tags taskId={taskKey} userId={userId} />
+                      <Takers taskId={taskKey} isDarkMode={isDarkMode} />
+                      <Tags taskId={taskKey} />
                     </div>
                   </div>
                   {isShowMenu && (
@@ -292,7 +285,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               curTime={curTime}
               isDarkMode={isDarkMode}
               style={style}
-              userId={userId}
             />
           ))}
         </div>

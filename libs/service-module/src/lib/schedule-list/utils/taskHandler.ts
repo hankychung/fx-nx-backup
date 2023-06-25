@@ -1,10 +1,14 @@
 import { produce } from 'immer'
-import { useScheduleStore, IState } from './useScheduleStore'
+import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
 
 class TaskHandler {
+  static reloadTasks(tasks: IScheduleTask[]) {
+    this.updateTaskDict(tasks)
+  }
+
   static batchModify({
     keys,
     diff,
@@ -14,27 +18,18 @@ class TaskHandler {
     diff: Partial<IScheduleTask>
     keysWithRepeatIds: string[]
   }) {
-    // TODO: 更新事项需要考虑带taskDict中带有repeatId的
-    useScheduleStore.setState(
-      produce((state: IState) => {
-        keys.forEach((key) => {
-          const task = state.taskDict[key]
+    const { taskDict } = useScheduleStore.getState()
 
-          state.taskDict[key] = {
-            ...task,
-            ...diff
-          }
+    const newTasks = keys.map((key) => {
+      const task = taskDict[key]
 
-          // 精准更新, 带repeatId
-          if ('finish_time' in diff) {
-            state.taskDict[getKey(task)] = {
-              ...task,
-              ...diff
-            }
-          }
-        })
-      })
-    )
+      return {
+        ...task,
+        ...diff
+      }
+    })
+
+    this.updateTaskDict(newTasks)
 
     // 完成/重启事项
     if ('finish_time' in diff) {
@@ -74,6 +69,23 @@ class TaskHandler {
 
             return true
           })
+        })
+      })
+    )
+  }
+
+  // TODO: 循环事项共享数据更新
+  private static updateTaskDict(tasks: IScheduleTask[]) {
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        tasks.forEach((task) => {
+          const { ref_task_id, repeat_id } = task
+
+          state.taskDict[ref_task_id] = task
+
+          if (repeat_id) {
+            state.taskDict[getKey(task)] = task
+          }
         })
       })
     )

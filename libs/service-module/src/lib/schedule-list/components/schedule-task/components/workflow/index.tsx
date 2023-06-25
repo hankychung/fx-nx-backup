@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import styles from './index.module.scss'
 import { getRepeatTxt } from '../../../../utils'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import { useMemoizedFn } from 'ahooks'
 import { RepeatIcon, WorkflowBlueIcon } from '@flyele-nx/icon'
 

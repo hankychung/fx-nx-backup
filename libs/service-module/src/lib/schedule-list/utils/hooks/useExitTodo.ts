@@ -1,9 +1,11 @@
-import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../useScheduleStore'
+import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { TaskDispatchApi } from '@flyele-nx/service'
 import { TaskHandler } from '../taskHandler'
 
 export const useExitTodo = ({ taskId }: { taskId: string }) => {
+  const [showMsg] = useMessage()
+
   const data = useScheduleStore((state) => state.taskDict[taskId])
 
   // 检查是否为挂件
@@ -22,11 +24,11 @@ export const useExitTodo = ({ taskId }: { taskId: string }) => {
       // 删除该事项相关的卡片和事项列表数据
       // Pubjs.publish(PUB.DELETE_MATTER_ITEM, [taskId])
 
-      // showMsg({
-      //   content: '退出成功',
-      //   msgType: '消息',
-      //   duration: 1.5,
-      // })
+      showMsg({
+        content: '退出成功',
+        msgType: '消息',
+        duration: 1.5
+      })
 
       // 关闭子窗口
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)

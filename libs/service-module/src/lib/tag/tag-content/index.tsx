@@ -7,6 +7,8 @@ import TagAddButton from '../tag-add-button'
 import { cloneDeep, uniqBy } from 'lodash'
 import style from './index.module.scss'
 import { LabelApi, TagObjType, IScheduleTask } from '@flyele-nx/service'
+import { useMessage } from '@flyele-nx/ui'
+// import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 interface ITagContent {
   data: Pick<
@@ -15,11 +17,12 @@ interface ITagContent {
   > & {
     ref_task_id?: string
   }
-  userId: string
 }
 
 const TagContent: React.FC<ITagContent> = ({ data }) => {
   // const { tags, matter_type, task_id, creator_id, ref_task_id } = data
+  // const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const [showMsg] = useMessage()
   const { tags, matter_type } = data
 
   const [tagList, setTagList] = useState<TagWidgetModel[]>([])
@@ -199,11 +202,10 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
           //   })
           // }
         } catch (e) {
-          console.log('选择标签失败', e)
-          // showMsg({ msgType: '错误', content: '选择标签失败' })
+          showMsg({ msgType: '错误', content: '选择标签失败' })
         }
       } else {
-        // showMsg({ msgType: '消息', content: '最多只能选择5个标签' })
+        showMsg({ msgType: '消息', content: '最多只能选择5个标签' })
       }
     }
   )

@@ -10,6 +10,7 @@ import { Button } from 'antd'
 import css from './index.module.scss'
 import { memberPowerStaticData } from './packages_const'
 import { IInfoType, IPower, VipIntroduceContentProps } from '../types'
+import { FlyTooltip } from '@flyele/flyele-components'
 
 export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
   const {
@@ -17,6 +18,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     teamVipBtnClick,
     customBtnClick,
     descBtnClick,
+    equitySpaceClick,
     isVip,
     isTeamVip,
     isForeverVip
@@ -38,12 +40,11 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
 
   const isSpace = (item: IPower) => {
     if (!item) return
-    console.log('item', item)
     switch (item.isSpace) {
       case 'free_space':
-        return <FreeSpace />
+        return <FreeSpace onClick={equitySpaceClick} />
       case 'professional_space':
-        return <ProfessionalSpace />
+        return <ProfessionalSpace onClick={equitySpaceClick} />
       default:
         return
     }
@@ -143,7 +144,13 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                       >
                         {power.title}
                       </div>
-                      {isSpace(power)}
+                      <FlyTooltip
+                        text="点击查看空间权益"
+                        trigger="hover"
+                        zIndex={1003}
+                      >
+                        {isSpace(power)}
+                      </FlyTooltip>
                     </div>
                     {isProfessionnalCapacity(power)}
                   </>

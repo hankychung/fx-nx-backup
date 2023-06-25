@@ -39,6 +39,7 @@ import {
   Taker
 } from '@flyele-nx/service'
 import { useContactStore } from '../../../../../store/useContactStore'
+import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 
@@ -47,7 +48,6 @@ interface IPROPTakers {
    * 查该事项的参与者
    */
   taskId: string
-  userId: string
   /**
    * 最多显示多少头像
    */
@@ -72,8 +72,9 @@ const defaultMatterAuthWithFetch: IAuthWithFetched = {
 }
 
 export const Takers: React.FC<IPROPTakers> = (props) => {
-  const { taskId, userId, isDarkMode = false } = props
+  const { taskId, isDarkMode = false } = props
   const task = useScheduleStore((state) => state.taskDict[taskId])
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const { contactDict } = useContactStore()
   const isVipSmallTool = false
   const isBoard = true
@@ -442,7 +443,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
               memberList={simpleMemberList}
               onClickAdd={onClickAddModal}
               taskId={taskId}
-              userId={userId}
             >
               {avatarBoxJsx}
             </RemoveSimpleMemberListPopper>

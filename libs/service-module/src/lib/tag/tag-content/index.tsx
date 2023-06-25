@@ -7,6 +7,7 @@ import TagAddButton from '../tag-add-button'
 import { cloneDeep, uniqBy } from 'lodash'
 import style from './index.module.scss'
 import { LabelApi, TagObjType, IScheduleTask } from '@flyele-nx/service'
+// import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 interface ITagContent {
   data: Pick<
@@ -15,11 +16,12 @@ interface ITagContent {
   > & {
     ref_task_id?: string
   }
-  userId: string
 }
 
 const TagContent: React.FC<ITagContent> = ({ data }) => {
   // const { tags, matter_type, task_id, creator_id, ref_task_id } = data
+  // const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
   const { tags, matter_type } = data
 
   const [tagList, setTagList] = useState<TagWidgetModel[]>([])

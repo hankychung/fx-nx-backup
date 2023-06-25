@@ -21,11 +21,11 @@ import {
   CycleCardDarkIcon
 } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
+import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 
 interface IPROPTime {
   taskId: string
   curTime: number // 当前时间, 今天的时间
-  userId: string
   isDarkMode?: boolean
   dateStr: string
   onlyRepeat?: boolean
@@ -35,12 +35,12 @@ interface IPROPTime {
 export const Time: React.FC<IPROPTime> = ({
   taskId,
   curTime,
-  userId,
   isDarkMode = false,
   dateStr,
   onlyRepeat = false,
   isSpets = false
 }) => {
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const [visible, setVisible] = useState(false)
   // const groupIdCtx = useContext(GroupIdCtx)

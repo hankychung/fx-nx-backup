@@ -15,6 +15,7 @@ import {
   // ITakerAndStatus,
   TaskDispatchApi
 } from '@flyele-nx/service'
+import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 type IParams = {
   data: {
@@ -44,7 +45,9 @@ type IReduce = {
  * 为啥hook叫 task
  * 移出成员 包含事项、会议、待办逻
  * **/
-export const useTaskMemberRemove = ({ userId }: { userId: string }) => {
+export const useTaskMemberRemove = () => {
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
   // const [showMsg] = useMessage()
 
   // 退出事项

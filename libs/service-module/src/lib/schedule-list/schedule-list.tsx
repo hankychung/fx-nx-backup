@@ -9,10 +9,9 @@ import dayjs from 'dayjs'
 
 interface ScheduleListProps {
   date: string
-  userId: string // 当前用户id
 }
 
-const _ScheduleList: React.FC<ScheduleListProps> = ({ date, userId }) => {
+const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -83,7 +82,6 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date, userId }) => {
               key={i}
               taskKey={i}
               topId={i}
-              userId={userId}
               curTime={dayjs().unix()}
             />
           ))}
@@ -107,7 +105,6 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date, userId }) => {
               key={i}
               taskKey={i}
               topId={i}
-              userId={userId}
               curTime={dayjs().unix()}
             />
           ))}

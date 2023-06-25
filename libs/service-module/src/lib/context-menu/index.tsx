@@ -63,7 +63,12 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
   if (!visible) return null
 
   return (
-    <div ref={menuRef} className={cs(styles.menuRoot)} style={menuStyle}>
+    <div
+      id="fx-contextMenu"
+      ref={menuRef}
+      className={cs(styles.menuRoot)}
+      style={menuStyle}
+    >
       {actions
         .filter((item) => item.checkAction)
         .map(({ txt, callback, customClass, getTxtStyle, reRender }) => (

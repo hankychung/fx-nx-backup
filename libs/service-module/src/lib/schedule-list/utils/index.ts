@@ -17,6 +17,19 @@ function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
   return i.repeat_id ? `${i.ref_task_id}-${i.repeat_id}` : i.ref_task_id
 }
 
+function getDiffKeys(arr: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>[]) {
+  return arr.reduce<{ keys: string[]; keysWithRepeatIds: string[] }>(
+    (pre, cur) => {
+      pre.keys.push(cur.ref_task_id)
+
+      pre.keysWithRepeatIds.push(getKey(cur))
+
+      return pre
+    },
+    { keys: [], keysWithRepeatIds: [] }
+  )
+}
+
 /**
  * 上级数量
  */
@@ -339,5 +352,6 @@ export {
   getRepeatTxt,
   getRepeatDelayTotal,
   getSortedSchedule,
-  isRelated
+  isRelated,
+  getDiffKeys
 }

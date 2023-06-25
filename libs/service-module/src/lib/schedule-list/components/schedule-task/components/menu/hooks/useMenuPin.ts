@@ -3,7 +3,7 @@ import { IScheduleTask, TaskDispatchApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
-import { getKey } from '../../../../../utils'
+import { getDiffKeys } from '../../../../../utils'
 import dayjs from 'dayjs'
 
 export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
@@ -23,8 +23,7 @@ export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
       // })
 
       TaskHandler.batchModify({
-        keys: [data.ref_task_id],
-        keysWithRepeatIds: [getKey(data)],
+        ...getDiffKeys([data]),
         diff: { topmost_at: data.topmost_at ? 0 : dayjs().unix() }
       })
     })

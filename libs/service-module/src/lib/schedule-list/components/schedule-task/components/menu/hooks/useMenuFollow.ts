@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask, TaskApi } from '@flyele-nx/service'
+import { TaskHandler } from '../../../../../utils/taskHandler'
+import { getDiffKeys } from '../../../../../utils'
 
 export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
   const getTxt = useMemo(() => {
@@ -39,7 +41,14 @@ export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
     const changeTo = getChangeTo(isFollow)
 
     // 先发请求
-    TaskApi[changeTo.action](data.ref_task_id)
+    TaskApi[changeTo.action](data.ref_task_id).then(() => {
+      TaskHandler.batchModify({
+        diff: {
+          has_follow: !isFollow
+        },
+        ...getDiffKeys([data])
+      })
+    })
 
     // 然后弹提示
     // showMsg({ msgType: '消息', content: changeTo.msg })

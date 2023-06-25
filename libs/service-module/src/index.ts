@@ -15,7 +15,7 @@ import { ContextMenu } from './lib/context-menu'
 import { contextMenuTool } from './lib/context-menu/contextMenuTool'
 import { service, envStore } from '@flyele-nx/service'
 
-export * from './lib/schedule-list/schedule-list' // 日程列表
+export * from './lib/schedule-list' // 日程列表
 
 export {
   MapSvg,

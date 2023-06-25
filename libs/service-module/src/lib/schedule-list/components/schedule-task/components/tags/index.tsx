@@ -14,10 +14,9 @@ import { useScheduleStore } from '../../../../../store/useScheduleStore'
 
 interface IPROPTags {
   taskId: string
-  userId: string
 }
 
-export const Tags: React.FC<IPROPTags> = ({ taskId, userId }) => {
+export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const isVipSmallTool = false
   const isBoard = true
@@ -47,7 +46,7 @@ export const Tags: React.FC<IPROPTags> = ({ taskId, userId }) => {
             showArrow={false}
             placement="auto"
             strategy="absolute"
-            content={() => <TagContent data={task} userId={userId} />}
+            content={() => <TagContent data={task} />}
           >
             <Tooltip
               overlayClassName="antdTagToolTip"

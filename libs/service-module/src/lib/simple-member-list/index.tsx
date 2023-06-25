@@ -6,7 +6,7 @@ import { FlyAvatar } from '@flyele/flyele-components'
 import cs from 'classnames'
 import styles from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
-import { useContactStore } from '../contact/useContactStore'
+import { useContactStore } from '../store/useContactStore'
 
 export type ISimpleMember = {
   userId: string

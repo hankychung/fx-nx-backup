@@ -7,7 +7,6 @@ const _ChildrenTask: FC<IProps> = ({
   date,
   topId,
   curTime,
-  userId,
   isDarkMode,
   style
 }) => {
@@ -28,7 +27,6 @@ const _ChildrenTask: FC<IProps> = ({
       curTime={curTime}
       isDarkMode={isDarkMode}
       style={style}
-      userId={userId}
       isSimple={true}
     />
   )

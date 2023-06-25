@@ -38,7 +38,6 @@ export interface IProps {
   date: string
   topId: string
   curTime: number // 当前时间, 今天的时间
-  userId: string
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
@@ -49,14 +48,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   date,
   topId,
   curTime,
-  userId,
   isDarkMode,
   style,
   isSimple = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
-  const data = useScheduleStore((state) => state.taskDict[taskKey])
 
+  const data = useScheduleStore((state) => state.taskDict[taskKey])
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
     const dict = state.expandedDict[date]
@@ -68,7 +66,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const isHovering = useHover(domRef)
 
-  const { menuActions } = useMenuActions({ data, userId })
+  const { menuActions } = useMenuActions({ data })
 
   // 记录是否为卡片顶级事项
   const isTopTask = topId === taskKey
@@ -257,16 +255,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                       <Time
                         taskId={taskKey}
                         curTime={curTime}
-                        userId={userId}
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      <Takers
-                        taskId={taskKey}
-                        userId={userId}
-                        isDarkMode={isDarkMode}
-                      />
-                      <Tags taskId={taskKey} userId={userId} />
+                      <Takers taskId={taskKey} isDarkMode={isDarkMode} />
+                      <Tags taskId={taskKey} />
                     </div>
                   </div>
                   {isShowMenu && (
@@ -293,7 +286,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               curTime={curTime}
               isDarkMode={isDarkMode}
               style={style}
-              userId={userId}
             />
           ))}
         </div>

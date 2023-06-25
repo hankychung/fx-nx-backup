@@ -10,7 +10,6 @@ type IProps = {
   memberList: ISimpleMember[]
   onClickAdd?: (e: MouseEvent<HTMLDivElement>) => void
   ctrl: FlyBasePopperCtrl
-  userId: string
   isWorkFlow?: boolean // 是否工作流
   canNotAdd?: boolean // 是否可添加
   isView?: boolean //
@@ -27,12 +26,11 @@ export function RemoveSimpleMemberListPopper(props: PropsWithChildren<IProps>) {
     isWorkFlow,
     canNotAdd = false,
     isView,
-    userInTask = true,
-    userId
+    userInTask = true
   } = props
 
   // const [showMsg] = useMessage()
-  const { taskMemberRemove } = useTaskMemberRemove({ userId })
+  const { taskMemberRemove } = useTaskMemberRemove()
 
   const onClickRemove = useCallback(
     (member: ISimpleMember) => {

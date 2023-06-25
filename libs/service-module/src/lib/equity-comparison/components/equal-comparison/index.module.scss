@@ -12,6 +12,9 @@
   }
   .tableRoot {
     position: relative;
+    .tableHeaderSpace {
+      height: 88px;
+    }
     .tableHeader {
       font-weight: 600;
       font-size: 16px;
@@ -85,12 +88,31 @@
         justify-content: flex-start;
         font-weight: 400;
         font-size: 14px;
-        color: #000000;
+        // color: #000000;
       }
 
-      .tableBox {
+      .tableTittle {
         display: flex;
         flex-direction: column;
+        margin-top: 26px;
+      }
+
+      .tableDesc {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #7d838e;
+        margin-top: 7px;
+      }
+
+      .tableItemMember {
+        color: #0057ff;
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
   }

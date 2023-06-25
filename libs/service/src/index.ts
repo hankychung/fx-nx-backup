@@ -30,6 +30,9 @@ import {
 } from './lib/typings/schedule'
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
 
+import { IWorkflowStep, IUserStepInfo } from './lib/typings/workflow'
+import * as WorkflowConst from './lib/typings/workflow/const'
+
 // 协作人
 import {
   IContactsAndStatus,
@@ -74,7 +77,8 @@ export {
   LabelApi,
   AuthConst,
   VipTypeEnum,
-  EConCheckStatus
+  EConCheckStatus,
+  WorkflowConst
 }
 
 export type {
@@ -95,5 +99,7 @@ export type {
   AuthType,
   IVip,
   SpaceType,
-  ProjectType
+  ProjectType,
+  IWorkflowStep,
+  IUserStepInfo
 }

@@ -6,6 +6,7 @@ import {
   IRelation,
   ICreateParams
 } from '../typings/schedule'
+import { IWorkflowStep } from '../typings/workflow'
 
 interface IGetScheduleTreeParams {
   taskId: string
@@ -118,6 +119,49 @@ class Task {
       timeout: 10000,
       headers,
       notFilterEmpty: true
+    })
+  }
+
+  // 获取工作流步骤
+  async getFlowSteps({ taskId }: { taskId: string }) {
+    const res = await service.get<IWorkflowStep[]>({
+      url: `${this.prefixTask}/${taskId}/flow_steps`,
+      params: {
+        task_id: taskId
+      }
+    })
+
+    return res
+  }
+
+  // 工作流步骤完成
+  async flowStepComplete(params: { curStepId: string; taskId: string }) {
+    const { taskId, curStepId } = params
+
+    return await service.post({
+      url: `${this.prefixTask}/${taskId}/flow_step/complete`,
+      data: {
+        task_flow_step_id: curStepId,
+        task_id: taskId
+      }
+    })
+  }
+
+  // 工作流步骤回退
+  async flowStepRollback(params: {
+    reason?: string
+    curStepId: string
+    taskId: string
+  }) {
+    const { taskId, reason, curStepId } = params
+
+    return await service.post({
+      url: `${this.prefixTask}/${taskId}/flow_step/back`,
+      data: {
+        back_detail: reason,
+        task_flow_step_id: curStepId,
+        task_id: taskId
+      }
     })
   }
 }

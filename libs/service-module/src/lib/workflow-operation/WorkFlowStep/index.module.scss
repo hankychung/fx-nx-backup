@@ -1,0 +1,154 @@
+.container {
+  padding: 12px;
+  padding-right: 20px;
+  width: 220px;
+  height: 60px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .back {
+    width: 14px;
+    height: 14px;
+    background-size: contain;
+    // background-image: url('assets/undo-gray.svg');
+    cursor: pointer;
+
+    // &:hover {
+    //   background-image: url('assets/undo-red.svg');
+    // }
+  }
+
+  &:hover {
+    background-color: rgba(245, 247, 255, 1);
+  }
+
+  .badage-wrapper {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+
+    .badage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 27px;
+      height: 30px;
+      line-height: 24px;
+      // background-image: url('assets/icons/workflow/step.png');
+      background-size: cover;
+      font-size: 13px;
+      text-align: center;
+      color: rgba(93, 123, 255, 1);
+      z-index: 1;
+      flex-shrink: 0;
+
+      &-current {
+        // background-image: url('assets/icons/workflow/step-active.png');
+        color: white;
+      }
+
+      &-done {
+        top: 4px;
+      }
+
+      &-active {
+        // background-image: url('assets/icons/workflow/step-active.png');
+        color: white;
+      }
+    }
+
+    .line {
+      position: absolute;
+      top: 2px;
+      left: 13px;
+    }
+  }
+
+  .right-box {
+    margin-left: 36px;
+    font-size: 13px;
+    flex: 1;
+
+    // &.noCurrent {
+    //   max-width: calc(100% - 48px);
+    // }
+    .txt-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .txt {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: calc(100% - 48px);
+    }
+
+    .txt-done {
+      color: rgba(93, 123, 255, 1);
+    }
+
+    .subtitle {
+      font-size: 12px;
+      margin-top: 3px;
+      line-height: 14px;
+      color: rgba(143, 143, 143, 1);
+    }
+
+    .logic {
+      width: 13px;
+      height: 15px;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 9px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 4px;
+      border-radius: 2px;
+      flex-shrink: 0;
+
+      &-or {
+        border-color: rgba(93, 123, 255, 1);
+        color: rgba(93, 123, 255, 1);
+      }
+    }
+  }
+
+  .check {
+    width: 24px;
+    height: 24px;
+  }
+
+  .box-current,
+  .box-next {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .box-next {
+    background: rgba(241, 241, 241, 1);
+    border: 1px solid rgba(237, 237, 237, 1);
+  }
+
+  .box-current {
+    background: white;
+    border: 1px solid var(--primary);
+  }
+
+  .avatar {
+    border-radius: 50%;
+    background-size: cover;
+    border: 1px solid white;
+    position: relative;
+    box-sizing: content-box;
+    //  margin-right: 4px;
+    width: 20px;
+    height: 20px;
+  }
+}

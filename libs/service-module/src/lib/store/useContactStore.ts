@@ -4,13 +4,11 @@ import { IContactDict, IInteractsData } from './types'
 export interface IContactState {
   contactDict: IContactDict
   interacts: IInteractsData[]
-  isEnterprise: boolean
 }
 
 interface IMutation {
   updateContactDict: (data: IContactDict) => void
   updateInteracts: (data: IInteractsData[]) => void
-  updateIsEnterprise: (data: boolean) => void
 }
 
 const useContactStore = create<IContactState & IMutation>((set) => {
@@ -25,11 +23,6 @@ const useContactStore = create<IContactState & IMutation>((set) => {
      */
     interacts: [],
 
-    /**
-     * 是否企业版用户
-     */
-    isEnterprise: false,
-
     updateContactDict(data) {
       set(() => ({
         contactDict: data
@@ -39,12 +32,6 @@ const useContactStore = create<IContactState & IMutation>((set) => {
     updateInteracts(data) {
       set(() => ({
         interacts: data
-      }))
-    },
-
-    updateIsEnterprise(data) {
-      set(() => ({
-        isEnterprise: data
       }))
     }
   }

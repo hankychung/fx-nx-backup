@@ -63,13 +63,24 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
     return Boolean(dict[taskKey])
   })
+  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
+    useScheduleStore(
+      (state) => ({
+        batchUpdateTask: state.batchUpdateTask,
+        updateExpandedDict: state.updateExpandedDict,
+        batchUpdateChildDict: state.batchUpdateChildDict
+      }),
+      shallow
+    )
 
   const isHovering = useHover(domRef)
 
   const { menuActions } = useMenuActions({ data })
 
   // 记录是否为卡片顶级事项
-  const isTopTask = topId === taskKey
+  const isTopTask = useMemo(() => {
+    return topId === taskKey
+  }, [taskKey, topId])
 
   // 右键的锚点, 只有自己的事项 && 顶级事项卡片才有右键
   // 团队卡片没有右键
@@ -84,17 +95,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   // 只有今日，周，小挂件有置顶
   // 目前它的逻辑和是否显示菜单是包含的
-  const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
-
-  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
-    useScheduleStore(
-      (state) => ({
-        batchUpdateTask: state.batchUpdateTask,
-        updateExpandedDict: state.updateExpandedDict,
-        batchUpdateChildDict: state.batchUpdateChildDict
-      }),
-      shallow
-    )
+  const isTopMost = useMemo(() => {
+    return !!data?.topmost_at && !data?.finish_time && isShowMenu
+  }, [data?.finish_time, data?.topmost_at, isShowMenu])
 
   const toggleOpen = useMemoizedFn(async () => {
     if (!data) return
@@ -137,14 +140,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
       event.preventDefault()
       event.stopPropagation()
-      const parentRect = domRef.current?.getBoundingClientRect()
-      if (!parentRect) return
-      const x = event.clientX - parentRect.left || 0
-      const y = event.clientY - parentRect.top || 0
 
       contextMenuTool.open({
-        x,
-        y,
+        x: event.clientX,
+        y: event.clientY,
         action: menuActions
       })
     }

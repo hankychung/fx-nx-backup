@@ -1,10 +1,12 @@
 import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from '../../../store/useScheduleStore'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
-import { AlertWithOkAndCancel } from '@flyele-nx/ui'
+import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
 import { TaskHandler } from '../taskHandler'
 
 export const useExitTask = ({ taskId }: { taskId: string }) => {
+  const [showMsg] = useMessage()
+
   const data = useScheduleStore((state) => state.taskDict[taskId])
 
   const getDispatchId = useMemoizedFn(() => {
@@ -41,11 +43,11 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
       // 关闭子窗口
       // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
 
-      // showMsg({
-      //   content: '退出成功',
-      //   msgType: '消息',
-      //   duration: 1.5
-      // })
+      showMsg({
+        content: '退出成功',
+        msgType: '消息',
+        duration: 1.5
+      })
 
       TaskHandler.removeTasks(taskIds)
     } catch (e) {
@@ -99,11 +101,11 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
         }
       })
     } catch (_) {
-      // showMsg({
-      //   content: '网络暂时不可用',
-      //   msgType: '错误',
-      //   duration: 1.5
-      // })
+      showMsg({
+        content: '网络暂时不可用',
+        msgType: '错误',
+        duration: 1.5
+      })
     }
   }
 }

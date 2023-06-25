@@ -4,6 +4,7 @@ import { produce } from 'immer'
 
 export interface IUserInfoState {
   userInfo: Omit<IUserInfo, 'Token'>
+  isEnterprise: boolean
 }
 
 interface IMutation {
@@ -23,9 +24,15 @@ const useUserInfoStore = create<IUserInfoState & IMutation>((set) => {
       create_at: 0
     },
 
+    /**
+     * 是否企业版用户
+     */
+    isEnterprise: false,
+
     updateUserInfo(data) {
       produce((state: IUserInfoState) => {
         state.userInfo = data
+        state.isEnterprise = !!data.corpid
       })
     }
   }

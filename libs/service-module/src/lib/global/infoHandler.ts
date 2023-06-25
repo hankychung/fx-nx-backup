@@ -22,18 +22,11 @@ class GlobalInfoHandler {
     )
   }
 
-  static updateIsEnterprise(data: boolean) {
-    useContactStore.setState(
-      produce((state: IContactState) => {
-        state.isEnterprise = data
-      })
-    )
-  }
-
   static updateUserInfo(data: Omit<IUserInfo, 'Token'>) {
     useUserInfoStore.setState(
       produce((state: IUserInfoState) => {
         state.userInfo = data
+        state.isEnterprise = !!data.corpid
       })
     )
   }

@@ -9,11 +9,14 @@ import dayjs from 'dayjs'
 
 interface ScheduleListProps {
   date: string
+  isFinished?: boolean
 }
 
-const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
+const _ScheduleList: React.FC<ScheduleListProps> = ({ date, isFinished }) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
+
+  const decentList = isFinished ? finishList : list
 
   const isInit = useRef(false)
   const pageRef = useRef(1)
@@ -26,28 +29,27 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
     pageRef.current = 1
     finishPageRef.current = 1
     fetchList()
-    fetchList({ finish: true })
   })
 
-  const fetchList = useMemoizedFn(async (options?: { finish?: boolean }) => {
+  const fetchList = useMemoizedFn(async () => {
     const res = await BizApi.getScheduleList({
       type: 'today',
       day: date,
       pageNumber: pageRef.current,
-      queryType: options?.finish ? 3 : 1
+      queryType: isFinished ? 3 : 1
     })
 
     const list = res.data?.schedule || []
 
     const { keys } = batchUpdateTask(list)
 
-    const pRef = options?.finish ? finishPageRef : pageRef
+    const pRef = isFinished ? finishPageRef : pageRef
 
     updateList({
       date,
       list: keys,
       isInit: pRef.current === 1,
-      isFinished: options?.finish
+      isFinished
     })
 
     pRef.current += 1
@@ -62,55 +64,26 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date }) => {
   }, [reload])
 
   return (
-    <>
-      <div className={styles['container']}>
-        <span>{date}</span>
-
-        <InfiniteScroll
-          loadMore={() => {
-            fetchList()
-          }}
-          useWindow={false}
-          hasMore
-          initialLoad={false}
-          className={styles.scroller}
-        >
-          {(list || []).map((i) => (
-            // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-            <ScheduleTask
-              date={date}
-              key={i}
-              taskKey={i}
-              topId={i}
-              curTime={dayjs().unix()}
-            />
-          ))}
-        </InfiniteScroll>
-      </div>
-
-      <div className={styles['container']}>
-        <div>已完成</div>
-        <InfiniteScroll
-          loadMore={() => {
-            fetchList({ finish: true })
-          }}
-          useWindow={false}
-          hasMore
-          initialLoad={false}
-          className={styles.scroller}
-        >
-          {(finishList || []).map((i) => (
-            <ScheduleTask
-              date={date}
-              key={i}
-              taskKey={i}
-              topId={i}
-              curTime={dayjs().unix()}
-            />
-          ))}
-        </InfiniteScroll>
-      </div>
-    </>
+    <div className={styles['container']}>
+      <InfiniteScroll
+        loadMore={fetchList}
+        useWindow={false}
+        hasMore
+        initialLoad={false}
+        className={styles.scroller}
+      >
+        {(decentList || []).map((i) => (
+          // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+          <ScheduleTask
+            date={date}
+            key={i}
+            taskKey={i}
+            topId={i}
+            curTime={dayjs().unix()}
+          />
+        ))}
+      </InfiniteScroll>
+    </div>
   )
 }
 

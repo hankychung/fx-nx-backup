@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { IHoliday, ScheduleTaskConst } from '@flyele-nx/service'
 
-export interface IState {
+export interface IHolidayState {
   holidayValue: {
     all: IHoliday[]
     realHolidays: IHoliday[]
@@ -13,7 +13,7 @@ interface IMutation {
   updateData: (data: IHoliday[]) => void
 }
 
-const useHolidayStore = create<IState & IMutation>((set) => {
+const useHolidayStore = create<IHolidayState & IMutation>((set) => {
   return {
     /**
      *  接口返回的全部数据

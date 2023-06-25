@@ -38,7 +38,7 @@ import {
   // ProjectType,
   Taker
 } from '@flyele-nx/service'
-import { useContactStore } from '../../../../../contact/useContactStore'
+import { useContactStore } from '../../../../../store/useContactStore'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 

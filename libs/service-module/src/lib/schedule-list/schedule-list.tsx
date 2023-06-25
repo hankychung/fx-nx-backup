@@ -1,4 +1,10 @@
-import React, { useEffect, useRef } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  ForwardRefRenderFunction
+} from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
@@ -12,7 +18,14 @@ interface ScheduleListProps {
   isFinished?: boolean
 }
 
-const _ScheduleList: React.FC<ScheduleListProps> = ({ date, isFinished }) => {
+interface IScheduleListRef {
+  reload: () => void
+}
+
+const _ScheduleList: ForwardRefRenderFunction<
+  IScheduleListRef,
+  ScheduleListProps
+> = ({ date, isFinished }, ref) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -29,6 +42,12 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date, isFinished }) => {
     pageRef.current = 1
     finishPageRef.current = 1
     fetchList()
+  })
+
+  useImperativeHandle(ref, () => {
+    return {
+      reload
+    }
   })
 
   const fetchList = useMemoizedFn(async () => {
@@ -87,4 +106,6 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({ date, isFinished }) => {
   )
 }
 
-export const ScheduleList = React.memo(_ScheduleList)
+export const ScheduleList = React.memo(forwardRef(_ScheduleList))
+
+export { IScheduleListRef }

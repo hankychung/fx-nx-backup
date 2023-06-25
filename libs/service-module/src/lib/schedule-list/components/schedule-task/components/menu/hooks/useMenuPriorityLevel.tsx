@@ -4,7 +4,7 @@ import { PriorityLevelPopper } from '../../../../../../priority-level-popper'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
-import { getKey } from '../../../../../utils'
+import { getDiffKeys } from '../../../../../utils'
 
 export const useMenuPriorityLevel = ({
   data
@@ -25,8 +25,7 @@ export const useMenuPriorityLevel = ({
           // setPriorityLevel(id, level)
 
           TaskHandler.batchModify({
-            keys: [id],
-            keysWithRepeatIds: [getKey(data)],
+            ...getDiffKeys([data]),
             diff: {
               priority_level: level
             }

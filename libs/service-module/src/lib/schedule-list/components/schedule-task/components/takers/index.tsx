@@ -13,7 +13,7 @@ import {
 } from '@flyele/flyele-components'
 import { UserInfoUtils } from '../../../../utils/userInfoUtils'
 import { createInfinite } from '@flyele-nx/utils'
-// import useMessage from '@hooks/useMessage'
+import { useMessage } from '@flyele-nx/ui'
 import { AddTakerIcon } from '@flyele-nx/icon'
 // import SelContacts from 'components/SelContactsPopover'
 // import { useSmallToolContacts } from '@/hooks/useSmallToolContacts'
@@ -79,7 +79,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const isVipSmallTool = false
   const isBoard = true
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
-  // const [showMsg] = useMessage()
+  const [showMsg] = useMessage()
   const isSmallTool = task.category === ScheduleTaskConst.CATEGORY.smallTool
   const [takers, setTakers] = useState<Taker[]>([])
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
@@ -230,24 +230,22 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
 
     if (takers.length >= resAuth.maxTaker) {
-      console.log(`人数已达${resAuth.maxTaker}人上限`)
-      // showMsg({
-      //   msgType: '消息',
-      //   content: `人数已达${resAuth.maxTaker}人上限`
-      // })
+      showMsg({
+        msgType: '消息',
+        content: `人数已达${resAuth.maxTaker}人上限`
+      })
       return false
     }
 
     if (!isInTask) {
-      console.log('没参与事项不可修改')
-      // showMsg({
-      //   msgType: '错误',
-      //   content: '没参与事项不可修改'
-      // })
+      showMsg({
+        msgType: '错误',
+        content: '没参与事项不可修改'
+      })
       return false
     }
     return true
-  }, [auth, fetchPower, isInTask, takers.length])
+  }, [auth, fetchPower, isInTask, showMsg, takers.length])
 
   // 协作人弹窗
   const onClickAddModal = async () => {
@@ -270,8 +268,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       const status = getOperationStatus(task, userId)
 
       if (status === 'complete') {
-        console.log('已完成的工作流事项不支持添加人')
-        // showMsg({ content: '已完成的工作流事项不支持添加人' })
+        showMsg({ content: '已完成的工作流事项不支持添加人' })
         return
       }
 
@@ -279,7 +276,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         popCtrl.addClickAlwaysHide().show()
       }
     },
-    [isCanAdd, popCtrl, task, userId]
+    [isCanAdd, popCtrl, showMsg, task, userId]
   )
 
   // 关闭邀请弹窗

@@ -4,6 +4,7 @@ import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask, TaskApi } from '@flyele-nx/service'
 import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
+import { showMsg } from '@flyele-nx/ui'
 
 export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
   const getTxt = useMemo(() => {
@@ -51,7 +52,7 @@ export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
     })
 
     // 然后弹提示
-    // showMsg({ msgType: '消息', content: changeTo.msg })
+    showMsg({ msgType: '消息', content: changeTo.msg })
     // 最后发通知
     // Pubjs.publish(sub.FOLLOW_TASK, {
     //   id: taskId,

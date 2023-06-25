@@ -16,6 +16,7 @@ import {
   TaskDispatchApi
 } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { useMessage } from '@flyele-nx/ui'
 
 type IParams = {
   data: {
@@ -48,7 +49,7 @@ type IReduce = {
 export const useTaskMemberRemove = () => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
-  // const [showMsg] = useMessage()
+  const [showMsg] = useMessage()
 
   // 退出事项
   const { run } = useRequest<any, [IRunParams]>(
@@ -90,20 +91,20 @@ export const useTaskMemberRemove = () => {
           // })
         }
 
-        // showMsg({
-        //   msgType: '成功',
-        //   content: '操作成功'
-        // })
+        showMsg({
+          msgType: '成功',
+          content: '操作成功'
+        })
 
         onSuccess && onSuccess()
       },
       onError: (_error, [params]) => {
         const { onError } = params
 
-        // showMsg({
-        //   msgType: '错误',
-        //   content: '移除失败'
-        // })
+        showMsg({
+          msgType: '错误',
+          content: '移除失败'
+        })
         onError && onError()
       }
     }

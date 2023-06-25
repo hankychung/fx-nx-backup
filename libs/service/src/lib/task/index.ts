@@ -1,4 +1,3 @@
-import { IWorkflowStep } from '@flyele-nx/service'
 import { service } from '../service'
 import { CommonResponse } from '../typings'
 import {
@@ -7,6 +6,7 @@ import {
   IRelation,
   ICreateParams
 } from '../typings/schedule'
+import { IWorkflowStep } from '../typings/workflow'
 
 interface IGetScheduleTreeParams {
   taskId: string

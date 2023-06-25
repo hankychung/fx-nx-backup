@@ -3,7 +3,7 @@ import { FlyBasePopper, FlyBasePopperCtrl } from '@flyele/flyele-components'
 import SimpleMemberList, { ISimpleMember } from '../simple-member-list'
 import { useTaskMemberRemove } from '../member/hooks/useTaskMemberRemove'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-// import useMessage from '@hooks/useMessage'
+import { useMessage } from '@flyele-nx/ui'
 
 type IProps = {
   taskId: string
@@ -29,7 +29,7 @@ export function RemoveSimpleMemberListPopper(props: PropsWithChildren<IProps>) {
     userInTask = true
   } = props
 
-  // const [showMsg] = useMessage()
+  const [showMsg] = useMessage()
   const { taskMemberRemove } = useTaskMemberRemove()
 
   const onClickRemove = useCallback(
@@ -64,10 +64,10 @@ export function RemoveSimpleMemberListPopper(props: PropsWithChildren<IProps>) {
           }
         })
       } else {
-        // showMsg({ msgType: '错误', content: '没参与事项不可修改' })
+        showMsg({ msgType: '错误', content: '没参与事项不可修改' })
       }
     },
-    [ctrl, taskId, taskMemberRemove, userInTask]
+    [ctrl, showMsg, taskId, taskMemberRemove, userInTask]
   )
 
   return (

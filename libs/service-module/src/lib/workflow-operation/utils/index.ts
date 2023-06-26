@@ -21,8 +21,7 @@ export function curStepInfo(flowSteps: IWorkflowStep[], curStepId: string) {
 export function stepsFormatter(
   flowSteps: IWorkflowStep[],
   curStepId: string,
-  hasAddUser: boolean,
-  
+  hasAddUser: boolean
 ) {
   const targetIdx = flowSteps.findIndex((i) => i.id === curStepId)
 

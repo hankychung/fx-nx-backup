@@ -210,12 +210,12 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     setSteps(data || [])
     if (data && data[0] && data[0].creator_id) {
       const user = contactDict[data[0].creator_id]
-      
+
       setAddUser({
-        avatar: user?.avatar||'',
-        name: user?.original_name || user?.nick_name||'测试',
+        avatar: user?.avatar || '',
+        name: user?.original_name || user?.nick_name || '测试',
         isTeamVip: user?.isTeamVip,
-        isVip: user?.isVip,
+        isVip: user?.isVip
       })
     }
 
@@ -539,8 +539,8 @@ const _Container: FC<{
     }
   })
 
-  console.log("addUser",addUser,list);
-  
+  console.log('addUser', addUser, list)
+
   return (
     <div className={style.container}>
       {list.map(({ idx, title, step, members, operateType }) => {

@@ -35,6 +35,9 @@ const LeftBlock = ({ goInterests }: { goInterests: () => void }) => {
           )
         })}
       </div>
+      <div className={style.left_footer}>
+        *可创建免费空间 1 个，专业空间 0 个
+      </div>
     </div>
   )
 }

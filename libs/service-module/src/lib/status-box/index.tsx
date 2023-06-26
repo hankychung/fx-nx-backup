@@ -36,7 +36,7 @@ interface IProps {
   resetStatus?: () => void
 }
 
-const ANIMATION_DURATION = 900
+const ANIMATION_DURATION = 950
 
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus } = props
@@ -114,13 +114,16 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-      setUpdating(true)
+      
+      if(!task.finish_time){
+        setUpdating(true)
 
-      await setTimeoutForIdleCallback({
-        timer: ANIMATION_DURATION
-      })
-
-      setUpdating(false)
+        await setTimeoutForIdleCallback({
+          timer: ANIMATION_DURATION
+        })
+  
+        setUpdating(false)
+      }
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 

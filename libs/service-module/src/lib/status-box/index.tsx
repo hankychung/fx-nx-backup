@@ -114,14 +114,13 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-      
-      if(!task.finish_time){
+      if (!task.finish_time) {
         setUpdating(true)
 
         await setTimeoutForIdleCallback({
           timer: ANIMATION_DURATION
         })
-  
+
         setUpdating(false)
       }
 

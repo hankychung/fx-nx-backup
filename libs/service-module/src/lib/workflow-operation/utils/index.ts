@@ -21,7 +21,8 @@ export function curStepInfo(flowSteps: IWorkflowStep[], curStepId: string) {
 export function stepsFormatter(
   flowSteps: IWorkflowStep[],
   curStepId: string,
-  hasAddUser: boolean
+  hasAddUser: boolean,
+  
 ) {
   const targetIdx = flowSteps.findIndex((i) => i.id === curStepId)
 
@@ -74,7 +75,8 @@ export function getOperationStatus(
     complete_at?: number
     dispatch_id?: string
     creator_id: string
-  }
+  },
+  userId: string
 ): IOperation {
   if (!info.dispatch_id) return 'pass'
 
@@ -86,13 +88,13 @@ export function getOperationStatus(
   // 如果当前步骤没有人的话
   if (!info.flow_step_user_count) {
     // 当创建人是当前用户的话
-    // if (info.creator_id === store.getState().user.userInfo.user_id) {
-    //   // 如果已完成的话
-    //   if (complete_at) {
-    //     return 'complete'
-    //   }
-    //   return 'handle'
-    // }
+    if (info.creator_id === userId) {
+      // 如果已完成的话
+      if (complete_at) {
+        return 'complete'
+      }
+      return 'handle'
+    }
 
     // 如果已完成的话
     if (complete_at) {

@@ -31,6 +31,8 @@ import {
   TaskCheckIcon,
   UncheckIcon
 } from '@flyele-nx/icon'
+import { useContactStore } from '../store/useContactStore'
+import { useUserInfoStore } from '../store/useUserInfoStore'
 
 const { TextArea } = Input
 
@@ -54,7 +56,6 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     addClickAlwaysHide,
     status: statusFromProps,
     complete_at,
-    userId,
     changeStatus
   },
   ref
@@ -69,6 +70,9 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const [addUser, setAddUser] = useState<IWorkflowAddUser>()
   const [status, setStatus] = useState<IOperation>(statusFromProps)
   const getStepsLoading = useRef(false)
+  const { contactDict } = useContactStore()
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
   // const [chosenStep, setChosenStep] = useState<string>()
 
   // const [showAddMerbersModal, setShowAddMerbersModal] = useState(false)
@@ -204,17 +208,16 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     }
 
     setSteps(data || [])
-    // if (data && data[0] && data[0].creator_id) {
-    //   const user = getTakerInfo(data[0].creator_id)
-    //   const { isTeamVip, isVip } = getVipInfo(data[0].creator_id)
-
-    //   setAddUser({
-    //     avatar: user.avatar,
-    //     name: user.original_name || user.nick_name,
-    //     isTeamVip,
-    //     isVip,
-    //   })
-    // }
+    if (data && data[0] && data[0].creator_id) {
+      const user = contactDict[data[0].creator_id]
+      
+      setAddUser({
+        avatar: user?.avatar||'',
+        name: user?.original_name || user?.nick_name||'测试',
+        isTeamVip: user?.isTeamVip,
+        isVip: user?.isVip,
+      })
+    }
 
     getStepsLoading.current = false
 
@@ -536,6 +539,8 @@ const _Container: FC<{
     }
   })
 
+  console.log("addUser",addUser,list);
+  
   return (
     <div className={style.container}>
       {list.map(({ idx, title, step, members, operateType }) => {

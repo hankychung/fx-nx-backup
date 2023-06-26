@@ -3,7 +3,6 @@ export type IOperation = 'pass' | 'complete' | 'handle'
 export interface IOperationProps {
   taskId: string
   creator_id: string
-  userId: string
   complete_at?: number
   curStepId: string
   handleHover?: (isHover: boolean) => void

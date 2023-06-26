@@ -99,6 +99,9 @@ const LeftBlock = ({
           )
         })}
       </div>
+      <div className={style.left_footer}>
+        *可创建免费空间无限个，专业空间无限个
+      </div>
       <div ref={createRef}>
         {openAddModal && (
           <div className={style.member_list}>

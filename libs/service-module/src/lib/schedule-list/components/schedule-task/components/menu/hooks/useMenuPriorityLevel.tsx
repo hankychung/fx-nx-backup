@@ -22,8 +22,6 @@ export const useMenuPriorityLevel = ({
     return (
       <PriorityLevelPopper
         onChange={(level) => {
-          // setPriorityLevel(id, level)
-
           TaskHandler.batchModify({
             ...getDiffKeys([data]),
             diff: {

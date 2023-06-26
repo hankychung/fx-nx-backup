@@ -4,6 +4,8 @@ import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
 import { TaskHandler } from '../taskHandler'
+import { globalNxController } from '../../../global/nxController'
+import PUB from '../../../global/types/pubsub'
 
 /**
  * 用于退出事项的hook，外部给taskId，其余逻辑在这里完成
@@ -19,11 +21,11 @@ export const useCancelTask = ({ taskId }: { taskId: string }) => {
 
   // 检查是否为挂件
   // const isVipWin = document.getElementById('vipSmallToolsWinNow')
-  // const forVipSmallWin = () => {
-  //   if (isVipWin) {
-  //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
-  //   }
-  // }
+  const forVipSmallWin = () => {
+    //   if (isVipWin) {
+    //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
+    //   }
+  }
   // 消息提示
   const [showMsg] = useMessage()
 
@@ -52,14 +54,17 @@ export const useCancelTask = ({ taskId }: { taskId: string }) => {
     })
     if (result) {
       // 删除该事项相关的卡片和事项列表数据
-      // Pubjs.publish(PUB.DELETE_MATTER_ITEM, taskIds)
+      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, taskIds)
       showMsg({
         content: '取消成功',
         msgType: '成功',
         duration: 1.5
       })
       // 若事项被取消，事项详情小窗体需要被关闭，应该是这个意思
-      // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      globalNxController.ipcRendererSend(
+        'close_small_tools_window_by_rid',
+        taskId
+      )
       TaskHandler.removeTasks(taskIds)
     } else {
       showMsg({
@@ -89,10 +94,10 @@ export const useCancelTask = ({ taskId }: { taskId: string }) => {
       color: 'red',
       // 小窗需要执行一些东西，老代码
       onCancel: () => {
-        // forVipSmallWin()
+        forVipSmallWin()
       },
       onOk: () => {
-        // forVipSmallWin()
+        forVipSmallWin()
         // 执行删除逻辑
         doActionCancelTask(taskId)
       }

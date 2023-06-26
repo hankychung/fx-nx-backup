@@ -3,7 +3,7 @@
  create_at:2021/10/20 下午 3:48
  **/
 import { CSSProperties } from 'react'
-import { TagModel, TagWidgetColor } from '@flyele-nx/service'
+import { TagModel, TagConst } from '@flyele-nx/service'
 
 export type IColorInfo = {
   text: string
@@ -12,12 +12,15 @@ export type IColorInfo = {
   dragging: CSSProperties
 }
 
-type IColorMap = Map<TagWidgetColor, IColorInfo>
+type IColorMap = Map<TagConst.TagWidgetColor, IColorInfo>
 
 export class TagUtils {
-  static readonly colors: IColorMap = new Map<TagWidgetColor, IColorInfo>([
+  static readonly colors: IColorMap = new Map<
+    TagConst.TagWidgetColor,
+    IColorInfo
+  >([
     [
-      TagWidgetColor.red,
+      TagConst.TagWidgetColor.red,
       {
         text: '#F54930',
         bg: '#FFE7E3',
@@ -29,7 +32,7 @@ export class TagUtils {
       }
     ],
     [
-      TagWidgetColor.orange,
+      TagConst.TagWidgetColor.orange,
       {
         text: '#E88200',
         bg: '#FFF2D1',
@@ -41,7 +44,7 @@ export class TagUtils {
       }
     ],
     [
-      TagWidgetColor.green,
+      TagConst.TagWidgetColor.green,
       {
         text: '#10AB9C',
         bg: '#E1F8F6',
@@ -53,7 +56,7 @@ export class TagUtils {
       }
     ],
     [
-      TagWidgetColor.blue,
+      TagConst.TagWidgetColor.blue,
       {
         text: '#356DEF',
         bg: '#E4ECFF',
@@ -65,7 +68,7 @@ export class TagUtils {
       }
     ],
     [
-      TagWidgetColor.purple,
+      TagConst.TagWidgetColor.purple,
       {
         text: '#8F57EF',
         bg: '#F3ECFF',
@@ -79,28 +82,28 @@ export class TagUtils {
   ])
 
   // 兜底和兼容转化
-  static checkColorKey(key: TagWidgetColor): TagWidgetColor {
-    let _key = TagWidgetColor.green
+  static checkColorKey(key: TagConst.TagWidgetColor): TagConst.TagWidgetColor {
+    let _key = TagConst.TagWidgetColor.green
 
     if (TagUtils.colors.has(key)) {
       _key = key
-    } else if (Object.keys(TagWidgetColor).includes(key as any)) {
+    } else if (Object.keys(TagConst.TagWidgetColor).includes(key as any)) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      _key = TagWidgetColor[key as any]
+      _key = TagConst.TagWidgetColor[key as any]
     }
     return _key
   }
 
-  static getColor(key: TagWidgetColor): IColorInfo {
+  static getColor(key: TagConst.TagWidgetColor): IColorInfo {
     return TagUtils.colors.get(TagUtils.checkColorKey(key))!
   }
 
-  static getTextColor(key: TagWidgetColor) {
+  static getTextColor(key: TagConst.TagWidgetColor) {
     return TagUtils.colors.get(TagUtils.checkColorKey(key))!.text
   }
 
-  static getBgColor(key: TagWidgetColor) {
+  static getBgColor(key: TagConst.TagWidgetColor) {
     return TagUtils.colors.get(TagUtils.checkColorKey(key))?.bg
   }
 
@@ -188,8 +191,8 @@ export class TagUtils {
   }
 
   // 随机颜色
-  static randomColor(): TagWidgetColor {
-    const colors = Object.values(TagWidgetColor)
+  static randomColor(): TagConst.TagWidgetColor {
+    const colors = Object.values(TagConst.TagWidgetColor)
 
     const min = 0
 
@@ -201,8 +204,8 @@ export class TagUtils {
   }
 
   // 循环颜色
-  static loopColor(current: TagWidgetColor): TagWidgetColor {
-    const colors = Object.values(TagWidgetColor)
+  static loopColor(current: TagConst.TagWidgetColor): TagConst.TagWidgetColor {
+    const colors = Object.values(TagConst.TagWidgetColor)
 
     const index = colors.indexOf(current)
 

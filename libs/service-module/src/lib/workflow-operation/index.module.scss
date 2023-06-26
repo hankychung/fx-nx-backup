@@ -9,6 +9,20 @@
       width: 100%;
       height: 100%;
     }
+    .optionIcon {
+      display: none;
+    }
+    .uncheckIcon {
+      display: block;
+    }
+    &:hover {
+      .optionIcon {
+        display: block;
+      }
+      .uncheckIcon {
+        display: none;
+      }
+    }
   }
 
   &:hover {

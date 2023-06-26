@@ -52,7 +52,7 @@ export const WorkflowMemberIcon = React.memo(
     }
     // 仅锁定
     if (isLock && !isComplete && !isBack) {
-      return <LockIcon />
+      return <LockIcon className={css.lock} />
     }
     // 仅删除
     if (canRemove && isCreate) {
@@ -67,11 +67,11 @@ export const WorkflowMemberIcon = React.memo(
     }
     // 仅完成
     if (isComplete && !isLock) {
-      return <SelectedIcon />
+      return <SelectedIcon className={css.complete} />
     }
     // 仅退回
     if (isBack && !isLock) {
-      return <WorkflowWarmingIcon />
+      return <WorkflowWarmingIcon className={css.back} />
     }
     // 锁定+完成
     if (isLock && isComplete) {

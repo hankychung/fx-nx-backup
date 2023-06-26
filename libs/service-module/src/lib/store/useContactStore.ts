@@ -1,19 +1,17 @@
 import { create } from 'zustand'
 import { IContactDict, IInteractsData } from './types'
 
-export interface IState {
+export interface IContactState {
   contactDict: IContactDict
   interacts: IInteractsData[]
-  isEnterprise: boolean
 }
 
 interface IMutation {
   updateContactDict: (data: IContactDict) => void
   updateInteracts: (data: IInteractsData[]) => void
-  updateIsEnterprise: (data: boolean) => void
 }
 
-const useContactStore = create<IState & IMutation>((set) => {
+const useContactStore = create<IContactState & IMutation>((set) => {
   return {
     /**
      *  所有联系人字典(含企业微信)
@@ -25,11 +23,6 @@ const useContactStore = create<IState & IMutation>((set) => {
      */
     interacts: [],
 
-    /**
-     * 是否企业版用户
-     */
-    isEnterprise: false,
-
     updateContactDict(data) {
       set(() => ({
         contactDict: data
@@ -39,12 +32,6 @@ const useContactStore = create<IState & IMutation>((set) => {
     updateInteracts(data) {
       set(() => ({
         interacts: data
-      }))
-    },
-
-    updateIsEnterprise(data) {
-      set(() => ({
-        isEnterprise: data
       }))
     }
   }

@@ -5,6 +5,7 @@ import { CheckIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
 import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
+import { useMessage } from '@flyele-nx/ui'
 
 interface Props {
   task_id: string
@@ -23,6 +24,8 @@ const QuadrantColor = {
 
 export const PriorityLevelPopper = (props: Props) => {
   const { task_id, priority_level, matter_type, close, onChange } = props
+  const [showMsg] = useMessage()
+
   const changeLevel = useMemoizedFn(
     (level: ScheduleTaskConst.QuadrantValue) => {
       TaskApi.updateTask(
@@ -30,8 +33,7 @@ export const PriorityLevelPopper = (props: Props) => {
         task_id
       )
         .then(() => {
-          console.log('修改成功')
-          // showMsg({ content: '修改成功', msgType: '成功' })
+          showMsg({ content: '修改成功', msgType: '成功' })
           // PubSub.publish(Pubs.DB_INCREASE_01_READUX_AND_SQLITEDB, {
           //   task_id,
           //   diffObj: {
@@ -44,8 +46,7 @@ export const PriorityLevelPopper = (props: Props) => {
           onChange?.(level)
         })
         .catch(() => {
-          console.log('修改失败')
-          // showMsg({ content: '修改失败', msgType: '错误' })
+          showMsg({ content: '修改失败', msgType: '错误' })
         })
         .finally(() => {
           close?.()

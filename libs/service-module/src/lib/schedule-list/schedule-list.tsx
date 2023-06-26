@@ -1,4 +1,10 @@
-import React, { useEffect, useRef } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  ForwardRefRenderFunction
+} from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
@@ -6,27 +12,24 @@ import { useScheduleStore } from '../store/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
-import { getHoliday } from './utils/holiday'
-import { useContactStore } from '../contact/useContactStore'
-import { IContactDict, IInteractsData } from '../contact/types'
 
 interface ScheduleListProps {
   date: string
-  userId: string // 当前用户id
-  memberInfo: {
-    contactDict: IContactDict
-    interacts: IInteractsData[]
-    isEnterprise: boolean
-  }
+  isFinished?: boolean
 }
 
-const _ScheduleList: React.FC<ScheduleListProps> = ({
-  date,
-  userId,
-  memberInfo
-}) => {
+interface IScheduleListRef {
+  reload: () => void
+}
+
+const _ScheduleList: ForwardRefRenderFunction<
+  IScheduleListRef,
+  ScheduleListProps
+> = ({ date, isFinished }, ref) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
+
+  const decentList = isFinished ? finishList : list
 
   const isInit = useRef(false)
   const pageRef = useRef(1)
@@ -34,51 +37,42 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({
 
   const updateList = useScheduleStore((state) => state.updateList)
   const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
-  const updateContactDict = useContactStore((state) => state.updateContactDict)
-  const updateInteracts = useContactStore((state) => state.updateInteracts)
-  const updateIsEnterprise = useContactStore(
-    (state) => state.updateIsEnterprise
-  )
 
   const reload = useMemoizedFn(() => {
     pageRef.current = 1
     finishPageRef.current = 1
-    getHoliday()
     fetchList()
-    fetchList({ finish: true })
   })
 
-  const fetchList = useMemoizedFn(async (options?: { finish?: boolean }) => {
+  useImperativeHandle(ref, () => {
+    return {
+      reload
+    }
+  })
+
+  const fetchList = useMemoizedFn(async () => {
     const res = await BizApi.getScheduleList({
       type: 'today',
       day: date,
       pageNumber: pageRef.current,
-      queryType: options?.finish ? 3 : 1
+      queryType: isFinished ? 3 : 1
     })
 
     const list = res.data?.schedule || []
 
     const { keys } = batchUpdateTask(list)
 
-    const pRef = options?.finish ? finishPageRef : pageRef
+    const pRef = isFinished ? finishPageRef : pageRef
 
     updateList({
       date,
       list: keys,
       isInit: pRef.current === 1,
-      isFinished: options?.finish
+      isFinished
     })
 
     pRef.current += 1
   })
-
-  useEffect(() => {
-    console.log('@@@ 更新 memberInfo', memberInfo)
-    const { contactDict, interacts, isEnterprise } = memberInfo
-    updateContactDict(contactDict)
-    updateInteracts(interacts)
-    updateIsEnterprise(isEnterprise)
-  }, [memberInfo, updateContactDict, updateInteracts, updateIsEnterprise])
 
   useEffect(() => {
     if (!isInit.current) {
@@ -89,58 +83,29 @@ const _ScheduleList: React.FC<ScheduleListProps> = ({
   }, [reload])
 
   return (
-    <>
-      <div className={styles['container']}>
-        <span>{date}</span>
-
-        <InfiniteScroll
-          loadMore={() => {
-            fetchList()
-          }}
-          useWindow={false}
-          hasMore
-          initialLoad={false}
-          className={styles.scroller}
-        >
-          {(list || []).map((i) => (
-            // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-            <ScheduleTask
-              date={date}
-              key={i}
-              taskKey={i}
-              topId={i}
-              userId={userId}
-              curTime={dayjs().unix()}
-            />
-          ))}
-        </InfiniteScroll>
-      </div>
-
-      <div className={styles['container']}>
-        <div>已完成</div>
-        <InfiniteScroll
-          loadMore={() => {
-            fetchList({ finish: true })
-          }}
-          useWindow={false}
-          hasMore
-          initialLoad={false}
-          className={styles.scroller}
-        >
-          {(finishList || []).map((i) => (
-            <ScheduleTask
-              date={date}
-              key={i}
-              taskKey={i}
-              topId={i}
-              userId={userId}
-              curTime={dayjs().unix()}
-            />
-          ))}
-        </InfiniteScroll>
-      </div>
-    </>
+    <div className={styles['container']}>
+      <InfiniteScroll
+        loadMore={fetchList}
+        useWindow={false}
+        hasMore
+        initialLoad={false}
+        className={styles.scroller}
+      >
+        {(decentList || []).map((i) => (
+          // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+          <ScheduleTask
+            date={date}
+            key={i}
+            taskKey={i}
+            topId={i}
+            curTime={dayjs().unix()}
+          />
+        ))}
+      </InfiniteScroll>
+    </div>
   )
 }
 
-export const ScheduleList = React.memo(_ScheduleList)
+export const ScheduleList = React.memo(forwardRef(_ScheduleList))
+
+export { IScheduleListRef }

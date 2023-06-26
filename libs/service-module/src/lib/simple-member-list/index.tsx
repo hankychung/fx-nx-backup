@@ -6,7 +6,8 @@ import { FlyAvatar } from '@flyele/flyele-components'
 import cs from 'classnames'
 import styles from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
-import { useContactStore } from '../contact/useContactStore'
+import { useContactStore } from '../store/useContactStore'
+import { useUserInfoStore } from '../store/useUserInfoStore'
 
 export type ISimpleMember = {
   userId: string
@@ -35,7 +36,8 @@ const SimpleMemberList = (props: IProps) => {
     isView = false
   } = props
 
-  const { contactDict, interacts, isEnterprise } = useContactStore()
+  const { contactDict, interacts } = useContactStore()
+  const { isEnterprise } = useUserInfoStore()
 
   const getVipInfo = useMemoizedFn((id: string) => {
     let isVip = false

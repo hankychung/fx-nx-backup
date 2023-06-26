@@ -2,10 +2,11 @@ import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
+import { globalNxController } from '../../../../../../global/nxController'
 
 export const useMenuSummary = ({ data }: { data: IScheduleTask }): IAction => {
   const action = useMemoizedFn(async () => {
-    console.log('调用外部')
+    globalNxController.openEditTaskSummary({ task: data })
   })
 
   const check = useMemo(() => {

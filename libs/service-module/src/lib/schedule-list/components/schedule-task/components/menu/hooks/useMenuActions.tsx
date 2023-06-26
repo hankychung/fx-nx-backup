@@ -33,7 +33,7 @@ export const useMenuActions = (props: IMenuActions) => {
   /**
    * 菜单功能—调整时间
    */
-  const selectTime = useMenuSelectTime()
+  const selectTime = useMenuSelectTime({ data })
 
   /**
    * 菜单功能—总结

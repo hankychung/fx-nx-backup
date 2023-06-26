@@ -3,6 +3,8 @@ import { useScheduleStore } from '../../../store/useScheduleStore'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
 import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
 import { TaskHandler } from '../taskHandler'
+import { globalNxController } from '../../../global/nxController'
+import PUB from '../../../global/types/pubsub'
 
 export const useExitTask = ({ taskId }: { taskId: string }) => {
   const [showMsg] = useMessage()
@@ -15,11 +17,11 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
 
   // 检查是否为挂件
   // const isVipWin = document.getElementById('vipSmallToolsWinNow')
-  // const forVipSmallWin = () => {
-  //   if (isVipWin) {
-  //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
-  //   }
-  // }
+  const forVipSmallWin = () => {
+    //   if (isVipWin) {
+    //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
+    //   }
+  }
 
   async function doActionExitTask(taskId: string) {
     // 获得所有需要取消掉的事项id
@@ -38,10 +40,13 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
       await TaskDispatchApi.exitTask(dispatch_id)
       console.log('删除该事项相关的卡片和事项列表数据', taskIds)
       // 删除该事项相关的卡片和事项列表数据
-      // Pubjs.publish(PUB.DELETE_MATTER_ITEM, taskIds)
+      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, taskIds)
 
       // 关闭子窗口
-      // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      globalNxController.ipcRendererSend(
+        'close_small_tools_window_by_rid',
+        taskId
+      )
 
       showMsg({
         content: '退出成功',
@@ -92,12 +97,12 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
         color: 'red',
         // 小窗需要执行一些东西，老代码
         onCancel: () => {
-          // forVipSmallWin()
+          forVipSmallWin()
         },
         onOk: () => {
           // 执行退出逻辑
           doActionExitTask(taskId)
-          // forVipSmallWin()
+          forVipSmallWin()
         }
       })
     } catch (_) {

@@ -43,7 +43,7 @@ import {
 
 // Tag
 import { TagModel, TagObjType } from './lib/typings/tag'
-import { TagWidgetColor } from './lib/typings/tag/const'
+import * as TagConst from './lib/typings/tag/const'
 
 // Auth
 import * as AuthType from './lib/typings/auth'
@@ -73,7 +73,7 @@ export {
   TaskDispatchApi,
   OrderSystemConst,
   ScheduleTaskConst,
-  TagWidgetColor,
+  TagConst,
   LabelApi,
   AuthConst,
   VipTypeEnum,

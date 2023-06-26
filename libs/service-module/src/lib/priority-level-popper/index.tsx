@@ -6,6 +6,8 @@ import styles from './index.module.scss'
 import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { useMessage } from '@flyele-nx/ui'
+import { globalNxController } from '../global/nxController'
+import PUB from '../global/types/pubsub'
 
 interface Props {
   task_id: string
@@ -34,15 +36,18 @@ export const PriorityLevelPopper = (props: Props) => {
       )
         .then(() => {
           showMsg({ content: '修改成功', msgType: '成功' })
-          // PubSub.publish(Pubs.DB_INCREASE_01_READUX_AND_SQLITEDB, {
-          //   task_id,
-          //   diffObj: {
-          //     task: {
-          //       priority_level: level
-          //     }
-          //   },
-          //   type: 'updateDetail'
-          // })
+          globalNxController.pubJsPublish(
+            PUB.DB_INCREASE_01_READUX_AND_SQLITEDB,
+            {
+              task_id,
+              diffObj: {
+                task: {
+                  priority_level: level
+                }
+              },
+              type: 'updateDetail'
+            }
+          )
           onChange?.(level)
         })
         .catch(() => {

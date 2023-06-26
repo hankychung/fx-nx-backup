@@ -5,6 +5,7 @@ import style from './index.module.scss'
 import { IUserStepInfo, WorkflowConst } from '@flyele-nx/service'
 import { WorkflowMemberIcon } from '../WorkflowMemberIcon'
 import { LineIcon, UndoGrayIcon } from '@flyele-nx/icon'
+import { useContactStore } from '../../store/useContactStore'
 
 const { FlowOperateType } = WorkflowConst
 
@@ -48,6 +49,8 @@ const _WorkFlowStep: React.FC<IProps> = ({
 }) => {
   const isDone = useMemo(() => step === OperateStep.DONE, [step])
   const isOr = useMemo(() => operateType === FlowOperateType.OR, [operateType])
+  const { contactDict } = useContactStore()
+
   /**
    * 固定协作人排最前
    * **/
@@ -55,13 +58,13 @@ const _WorkFlowStep: React.FC<IProps> = ({
     if (!members) return []
     return members
       .map((item) => {
-        // const info = getTakerInfo(item.user_id)
+        const info = contactDict[item.user_id]
 
         return {
-          src: item.user_avatar || '',
+          src: info?.avatar || '',
           userId: item.user_id,
           isLock: item.is_lock,
-          name: item.user_name,
+          name: info?.nick_name || info?.original_name || '',
           isComplete: !!item.complete_at,
           isBack: item.is_back,
           isRemoved: !!item.removed_at
@@ -70,7 +73,7 @@ const _WorkFlowStep: React.FC<IProps> = ({
       .sort((item) => {
         return item.isLock ? -1 : 1
       })
-  }, [members])
+  }, [members, contactDict])
 
   return (
     <div className={style.container} onClick={handleClick}>
@@ -124,15 +127,17 @@ const _WorkFlowStep: React.FC<IProps> = ({
                 style={{ backgroundImage: `url(${src})` }}
               >
                 <FlyTooltip text={name} trigger="hover" zIndex={10000}>
-                  <WorkflowMemberIcon
-                    avatar={src}
-                    isLock={isLock}
-                    canRemove={canRemove}
-                    userId={userId}
-                    isComplete={isComplete}
-                    isBack={isBack}
-                    isRemoved={isRemoved}
-                  />
+                  <div className={style.iconWrap}>
+                    <WorkflowMemberIcon
+                      avatar={src}
+                      isLock={isLock}
+                      canRemove={canRemove}
+                      userId={userId}
+                      isComplete={isComplete}
+                      isBack={isBack}
+                      isRemoved={isRemoved}
+                    />
+                  </div>
                 </FlyTooltip>
               </div>
             )

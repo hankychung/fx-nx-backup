@@ -26,6 +26,8 @@ import { useScheduleStore } from '../store/useScheduleStore'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
 import { getChildrenDict, getKey } from '../schedule-list/utils'
+import { WorkflowOperation } from '../workflow-operation'
+import { getOperationStatus } from '../workflow-operation/utils'
 
 interface IProps {
   task: IScheduleTask
@@ -179,6 +181,23 @@ const _StatusBox: FC<IProps> = (props) => {
             alt="checkingIcon"
           />
         )
+
+      if (task.flow_step_id && task.ref_task_id) {
+        console.log('工作流应用***')
+
+        return (
+          <WorkflowOperation
+            creator_id={task.creator_id}
+            taskId={task.ref_task_id}
+            curStepId={task.flow_step_id}
+            complete_at={task.complete_at}
+            size={14}
+            status={getOperationStatus(task)}
+            userId={'2490770669437163'}
+            changeStatus={changeStatus}
+          />
+        )
+      }
       // 完成状态
       return task.finish_time ? (
         <TaskCheckIcon

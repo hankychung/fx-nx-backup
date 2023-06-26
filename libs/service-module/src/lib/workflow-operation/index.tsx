@@ -71,7 +71,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const [status, setStatus] = useState<IOperation>(statusFromProps)
   const getStepsLoading = useRef(false)
   const { contactDict } = useContactStore()
-  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)||'2581094491488455'
 
   // const [chosenStep, setChosenStep] = useState<string>()
 
@@ -357,25 +357,28 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       }
     }
 
-    //   AlertPromise({
-    //     title: '',
-    //     content: <div>下一步骤尚无执行人，请先选择执行人后再操作完成</div>,
-    //     cancelText: '取消',
-    //     okText: '去选择',
-    //     cancelStyle: { borderRadius: 8 },
-    //     okStyle: { borderRadius: 8, backgroundColor: '#1DD2C1' },
-    //     keyboard: false,
-    //   })
-    //     .then(() => {
-    //       setChosenStep(steps[curStepIndex + 1].id)
-    //       setShowAddMerbersModal(true)
-    //     })
-    //     .catch(() => {
-    //       message({
-    //         msgType: '错误',
-    //         content: '尚未选择下一步执行人，当前步骤无法完成',
-    //       })
-    //     })
+    const modal = Modal.confirm({
+      width: 420,
+      icon: null,
+      centered: true,
+      content: <div>下一步骤尚无执行人，请先选择执行人后再操作完成</div>,
+      cancelText: '取消',
+      okText: '去选择',
+      cancelButtonProps: {
+        type: 'text',
+        style: { borderRadius: 8 }
+      },
+      okButtonProps: {
+        style: { borderRadius: 8, backgroundColor: '#1DD2C1' }
+      },
+      onOk: () => {
+        modal.destroy()
+        // TODO 调用协作人弹窗
+      },
+      onCancel: () => {
+        modal.destroy()
+      }
+    })
   }, [steps, curStepId, stepList, handleNext])
 
   const closeModal = useMemoizedFn(() => {
@@ -432,7 +435,6 @@ const _WorkflowOperation: ForwardRefRenderFunction<
                 list={stepList}
                 ctrl={ctrl}
                 handleBack={handleBack}
-                // flowSteps={steps}
                 handleNext={nextStepHasPenson}
                 addUser={addUser}
               />
@@ -464,7 +466,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
               e.stopPropagation()
             }}
           >
-            {isHovering ? <OptionIcon /> : <UncheckIcon />}
+            <OptionIcon className={style.optionIcon} />
+            <UncheckIcon className={style.uncheckIcon} />
           </div>
         </FlyBasePopper>
       ) : (
@@ -518,7 +521,6 @@ const _WorkflowOperation: ForwardRefRenderFunction<
 
 const _Container: FC<{
   ctrl: FlyBasePopperCtrl
-  // flowSteps: IWorkflowStep[]
   handleBack: () => void
   handleNext: () => void
   list: IStepItem[]

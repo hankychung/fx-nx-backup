@@ -53,12 +53,12 @@ export const VipSmallIpcEvents = {
   REMINDTASKRIGHT: 'REMINDTASKRIGHT',
 
   //  固定展开true 缩小false
-  ISSHRIKN: 'ISSHRIKN',
+  ISSHRIKN: 'ISSHRIKN'
 }
 
 export enum TabType {
   NOW_VIEW = '与"月视图"挂件合并',
-  MONTH_VIEW = '与"今日"挂件合并',
+  MONTH_VIEW = '与"今日"挂件合并'
 }
 
 export interface ITabs {
@@ -79,7 +79,7 @@ export interface IOption {
 
 export enum OpenTpe {
   今日视图 = 'NOW_VIEW',
-  月视图 = 'MONTH_VIEW',
+  月视图 = 'MONTH_VIEW'
 }
 
 export interface Ipos {

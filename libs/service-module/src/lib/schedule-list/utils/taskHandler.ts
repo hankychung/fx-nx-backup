@@ -50,6 +50,28 @@ class TaskHandler {
     }
   }
 
+  static removeTakers({
+    taskIds,
+    takerIds
+  }: {
+    takerIds: string[]
+    taskIds: string[]
+  }) {
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        const { taskDict } = state
+
+        taskIds.forEach((id) => {
+          const takers = taskDict[id].takers || []
+
+          taskDict[id].takers = takers.filter(
+            (t) => !takerIds.includes(t.taker_id)
+          )
+        })
+      })
+    )
+  }
+
   static removeTasks(ids: string[]) {
     useScheduleStore.setState(
       produce((state: IState) => {

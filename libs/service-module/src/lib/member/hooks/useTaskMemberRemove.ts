@@ -17,6 +17,7 @@ import {
 } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { useMessage } from '@flyele-nx/ui'
+import { TaskHandler } from '../../schedule-list'
 
 type IParams = {
   data: {
@@ -73,6 +74,8 @@ export const useTaskMemberRemove = () => {
         // 退出事项
         if (exitMap.dispatchId.length > 0) {
           // Pub.publish(PUB.DELETE_MATTER_ITEM, [taskId])
+
+          TaskHandler.removeTasks([taskId])
         }
 
         // 移出协作人
@@ -89,6 +92,11 @@ export const useTaskMemberRemove = () => {
           //   action: 'remove',
           //   takerDiff
           // })
+
+          TaskHandler.removeTakers({
+            taskIds: [taskId],
+            takerIds: revokeMap.userId
+          })
         }
 
         showMsg({

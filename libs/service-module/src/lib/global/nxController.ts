@@ -1,4 +1,5 @@
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { Enter_page_detail } from './types/sensor/matter'
 
 export interface IEditTaskTime {
   taskId: string
@@ -9,6 +10,11 @@ export interface IEditTaskTime {
   remindAt: IScheduleTask['remind_at']
 }
 
+export interface IOpenTaskDetail {
+  task: IScheduleTask
+  enterPage: Enter_page_detail
+}
+
 class GlobalNxController {
   private ipcRenderer: any = null
   private pubJs: any = null
@@ -16,6 +22,7 @@ class GlobalNxController {
 
   editTaskTime: any = null
   editTaskSummary: any = null
+  openTaskDetail: any = null
 
   /**
    * ipc注册
@@ -52,6 +59,14 @@ class GlobalNxController {
    */
   editTaskSummaryRegister(callback: (data: { task: IScheduleTask }) => void) {
     this.editTaskSummary = callback
+  }
+
+  /**
+   * openTaskDetail注册
+   * 打开事项详情弹窗
+   */
+  openTaskDetailRegister(callback: (data: IOpenTaskDetail) => void) {
+    this.openTaskDetail = callback
   }
 
   /**
@@ -143,6 +158,21 @@ class GlobalNxController {
       }
     } else {
       console.log('editTaskSummary 未注册')
+    }
+  }
+
+  /**
+   * 点击事项卡片
+   */
+  openTaskDetailWindow(data: IOpenTaskDetail) {
+    if (this.openTaskDetail) {
+      try {
+        this.openTaskDetail(data)
+      } catch (e) {
+        console.log('openTaskDetail 失败', e)
+      }
+    } else {
+      console.log('openTaskDetail 未注册')
     }
   }
 }

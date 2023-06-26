@@ -9,17 +9,17 @@
       width: 100%;
       height: 100%;
     }
-    .optionIcon{
+    .optionIcon {
       display: none;
     }
-    .uncheckIcon{
+    .uncheckIcon {
       display: block;
     }
-    &:hover{
-      .optionIcon{
+    &:hover {
+      .optionIcon {
         display: block;
       }
-      .uncheckIcon{
+      .uncheckIcon {
         display: none;
       }
     }

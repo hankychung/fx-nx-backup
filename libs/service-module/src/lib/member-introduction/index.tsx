@@ -183,7 +183,6 @@ export const MemberIntroduction = ({
           />
         )
       })}
-
       <PayModal
         successRef={ChildRef}
         visible={show}

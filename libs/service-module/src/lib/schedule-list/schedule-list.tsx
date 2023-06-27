@@ -19,7 +19,7 @@ interface ScheduleListProps {
 }
 
 interface IScheduleListRef {
-  reload: () => void
+  reload: () => Promise<void>
 }
 
 const _ScheduleList: ForwardRefRenderFunction<
@@ -38,10 +38,10 @@ const _ScheduleList: ForwardRefRenderFunction<
   const updateList = useScheduleStore((state) => state.updateList)
   const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
 
-  const reload = useMemoizedFn(() => {
+  const reload = useMemoizedFn(async () => {
     pageRef.current = 1
     finishPageRef.current = 1
-    fetchList()
+    await fetchList()
   })
 
   useImperativeHandle(ref, () => {

@@ -71,6 +71,8 @@ export const useTaskMemberRemove = () => {
       onSuccess: (_res: Promise<any>[], [params]) => {
         const { taskId, exitMap, revokeMap, onSuccess } = params
 
+        console.log('removeTaker', exitMap, revokeMap)
+
         // 退出事项
         if (exitMap.dispatchId.length > 0) {
           // Pub.publish(PUB.DELETE_MATTER_ITEM, [taskId])

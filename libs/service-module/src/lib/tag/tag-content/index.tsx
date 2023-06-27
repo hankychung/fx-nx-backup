@@ -3,12 +3,24 @@ import { TagInput } from '../tag-input'
 import { useMemoizedFn, useMount } from 'ahooks'
 import TagWidget, { TagWidgetModel } from '../tag-widget'
 import TagAddButton from '../tag-add-button'
-// import { TagWidgetColor } from '@/components/Tag/tag_utils'
 import { cloneDeep, uniqBy } from 'lodash'
 import style from './index.module.scss'
-import { LabelApi, TagObjType, IScheduleTask } from '@flyele-nx/service'
+import {
+  LabelApi,
+  TagObjType,
+  IScheduleTask,
+  ScheduleTaskConst,
+  TagConst
+} from '@flyele-nx/service'
 import { useMessage } from '@flyele-nx/ui'
-// import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { globalNxController } from '../../global/nxController'
+import PUB from '../../global/types/pubsub'
+import { useUserInfoStore } from '../../store/useUserInfoStore'
+import {
+  EditTagType,
+  MatterStatus,
+  PeopleType
+} from '../../global/types/sensor/matter'
 
 interface ITagContent {
   data: Pick<
@@ -20,10 +32,9 @@ interface ITagContent {
 }
 
 const TagContent: React.FC<ITagContent> = ({ data }) => {
-  // const { tags, matter_type, task_id, creator_id, ref_task_id } = data
-  // const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const [showMsg] = useMessage()
-  const { tags, matter_type } = data
+  const { tags, matter_type, ref_task_id, creator_id } = data
 
   const [tagList, setTagList] = useState<TagWidgetModel[]>([])
   const [showInput, setShowInput] = useState<boolean>(false)
@@ -104,35 +115,6 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
   })
 
   /**
-   * 新增tag
-   */
-  // const onCreateTag = useMemoizedFn(
-  //   async (text: string, color: TagWidgetColor) => {
-  //     try {
-  //       const res = await tagApi.createTag({
-  //         name: text,
-  //         color,
-  //         type: TagType.ordinary
-  //       })
-  //       const tagId = res!.data as string
-  //
-  //       await fetchTags()
-  //       // 自动添加
-  //       onClickItem(tagId, true)
-  //
-  //       return true
-  //     } catch (e) {
-  //       showMsg({
-  //         msgType: '消息',
-  //         content: `“${text}” 标签名称已存在`,
-  //         duration: 1.5
-  //       })
-  //       return false
-  //     }
-  //   }
-  // )
-
-  /**
    * 点击每一项
    * */
   const onClickItem = useMemoizedFn(
@@ -152,55 +134,45 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
 
       if (cloneSelectedTags.length <= maxSelectedTag) {
         try {
-          console.log(
-            '@@@ 绑定 cloneSelectedTags',
-            cloneSelectedTags,
-            type[matter_type]
-          )
-          // const {
-          //   data: { code }
-          // } = await tagApi.bindTag({
-          //   tagKeys: cloneSelectedTags,
-          //   refId: ref_task_id || task_id,
-          //   obj_type: type[matter_type]
-          // })
-          //
-          // if (code === 0) {
-          //   const targetTags: any[] = []
-          //
-          //   for (let i = 0; i < tagList.length; i++) {
-          //     const tagId = tagList[i].id
-          //
-          //     if (tagId && cloneSelectedTags.includes(tagId)) {
-          //       targetTags.push(tagList[i])
-          //     }
-          //   }
-          //
-          //   Pubjs.publish(PUB.UPDATE_TAGS, {
-          //     task_id: ref_task_id || task_id,
-          //     tags: targetTags
-          //   })
-          //
-          //   setSelectedTags(cloneSelectedTags)
-          //
-          //   const business_type =
-          //     {
-          //       task: BusinessType.matter,
-          //       meeting: BusinessType.meeting,
-          //       todo: BusinessType.todo
-          //     }[type[matter_type]] || BusinessType.matter
-          //
-          //   SEN__bind_tag({
-          //     enter_page: EditTagType.full,
-          //     business_id: ref_task_id || task_id,
-          //     add_people_id: userId || '', // 添加人 id
-          //     add_people_type:
-          //       creator_id === userId ? PeopleType.creator : PeopleType.taker, // 添加人类型
-          //     business_type, // 业务类型
-          //     add_to_label_state: MatterStatus.create_done_add, // 添加标签时状态
-          //     label_name: targetTags.map((item) => item.name).join(',')
-          //   })
-          // }
+          const {
+            data: { code }
+          } = await LabelApi.bindTag({
+            tagKeys: cloneSelectedTags,
+            refId: ref_task_id,
+            obj_type: type[matter_type]
+          })
+
+          if (code === 0) {
+            const targetTags: any[] = []
+
+            for (let i = 0; i < tagList.length; i++) {
+              const tagId = tagList[i].id
+
+              if (tagId && cloneSelectedTags.includes(tagId)) {
+                targetTags.push(tagList[i])
+              }
+            }
+
+            globalNxController.pubJsPublish(PUB.UPDATE_TAGS, {
+              task_id: ref_task_id,
+              tags: targetTags
+            })
+
+            setSelectedTags(cloneSelectedTags)
+
+            const business_type = ScheduleTaskConst.MatterTypeLabel[matter_type]
+
+            globalNxController.sensorSend('SEN__bind_tag', {
+              enter_page: EditTagType.full,
+              business_id: ref_task_id,
+              add_people_id: userId || '', // 添加人 id
+              add_people_type:
+                creator_id === userId ? PeopleType.creator : PeopleType.taker, // 添加人类型
+              business_type, // 业务类型
+              add_to_label_state: MatterStatus.create_done_add, // 添加标签时状态
+              label_name: targetTags.map((item) => item.name).join(',')
+            })
+          }
         } catch (e) {
           showMsg({ msgType: '错误', content: '选择标签失败' })
         }
@@ -211,13 +183,41 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
   )
 
   /**
+   * 新增tag
+   */
+  const onCreateTag = useMemoizedFn(
+    async (text: string, color: TagConst.TagWidgetColor) => {
+      try {
+        const { data } = await LabelApi.createTag({
+          name: text,
+          color,
+          type: TagConst.TagType.ordinary
+        })
+        const tagId = data?.data as string
+
+        await fetchTags()
+        // 自动添加
+        onClickItem(tagId, true)
+
+        return true
+      } catch (e) {
+        showMsg({
+          msgType: '消息',
+          content: `“${text}” 标签名称已存在`,
+          duration: 1.5
+        })
+        return false
+      }
+    }
+  )
+
+  /**
    * 输入回车确定
    */
   const onEnterTap = useMemoizedFn(async (test, color) => {
-    console.log('@@@ onEnterTap', test, color)
-    // const createRes = await onCreateTag(test, color)
-    //
-    // if (createRes) setShowInput(false)
+    const createRes = await onCreateTag(test, color)
+
+    if (createRes) setShowInput(false)
   })
 
   return (
@@ -238,8 +238,7 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
       {!showInput && (
         <TagAddButton
           onClick={() => {
-            console.log('@@@ add')
-            // setShowInput(true)
+            setShowInput(true)
           }}
         />
       )}

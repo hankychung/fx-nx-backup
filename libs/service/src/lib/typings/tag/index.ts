@@ -1,4 +1,4 @@
-import { TagWidgetColor } from './const'
+import { TagWidgetColor, TagType } from './const'
 
 export interface TagModel {
   id: string
@@ -9,6 +9,12 @@ export interface TagModel {
    * afterSliptLength 用来定制标签宽度的css宽度Width值
    */
   displayLength?: number
+}
+
+export interface ITagParams {
+  color: string
+  name: string
+  type: TagType
 }
 
 // 绑定 标签需要的类型

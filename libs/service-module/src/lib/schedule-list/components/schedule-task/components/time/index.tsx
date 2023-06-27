@@ -23,6 +23,8 @@ import {
 import { loopStuff } from '../../../../utils/loop/loopStuff'
 import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 import { useMessage } from '@flyele-nx/ui'
+import { globalNxController } from '../../../../../global/nxController'
+import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
 
 interface IPROPTime {
   taskId: string
@@ -119,19 +121,16 @@ export const Time: React.FC<IPROPTime> = ({
     }
     // 发送给mini临时提醒
     if (isRemind) {
-      console.log('@@@ 发送给 今日/月视图 mini临时提醒', isRemind, task)
-
       // 今日mini窗体提醒
-      // ipcRenderer.invoke('vipSmallToolsWin', {
-      //   name: VipSmallIpcEvents.REMINDTASK,
-      //   task
-      // })
-      // // 月视图mini窗体提醒
-      // ipcRenderer.invoke('vipSmallToolsWinOnly', {
-      //   name: VipSmallIpcEvents.REMINDTASK,
-      //   task
-      // })
-      // end
+      globalNxController.ipcRendererInvoke('vipSmallToolsWin', {
+        name: VipSmallIpcEvents.REMINDTASK,
+        task
+      })
+      // 月视图mini窗体提醒
+      globalNxController.ipcRendererInvoke('vipSmallToolsWinOnly', {
+        name: VipSmallIpcEvents.REMINDTASK,
+        task
+      })
     }
 
     return () => {
@@ -228,7 +227,14 @@ export const Time: React.FC<IPROPTime> = ({
       }
     }
 
-    console.log('@@ remindAt 后面进入修改', remindAt)
+    globalNxController.openEditTaskTime({
+      taskId,
+      task,
+      isCreator,
+      repeatType,
+      matterType,
+      remindAt
+    })
   })
 
   const getTimerStr = useMemo(() => {

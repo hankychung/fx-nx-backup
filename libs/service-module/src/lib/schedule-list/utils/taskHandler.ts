@@ -3,6 +3,7 @@ import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
+import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 class TaskHandler {
   static reloadTasks(tasks: IScheduleTask[]) {
@@ -50,25 +51,59 @@ class TaskHandler {
     }
   }
 
+  static removeTakers({
+    taskIds,
+    takerIds
+  }: {
+    takerIds: string[]
+    taskIds: string[]
+  }) {
+    const { user_id } = useUserInfoStore.getState().userInfo
+
+    if (takerIds.includes(user_id)) {
+      this.removeTasks(taskIds)
+
+      return
+    }
+
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        const { taskDict } = state
+
+        taskIds.forEach((id) => {
+          const takers = taskDict[id].takers || []
+
+          taskDict[id].takers = takers.filter(
+            (t) => !takerIds.includes(t.taker_id)
+          )
+        })
+      })
+    )
+  }
+
   static removeTasks(ids: string[]) {
     useScheduleStore.setState(
       produce((state: IState) => {
         const { schedule, finishSchedule } = state
 
         Object.keys(schedule).forEach((date) => {
-          state.schedule[date] = schedule[date].filter(
-            (id) => !ids.includes(id)
-          )
+          if (state.schedule[date]) {
+            state.schedule[date] = schedule[date].filter(
+              (id) => !ids.includes(id)
+            )
+          }
 
-          state.finishSchedule[date] = finishSchedule[date].filter((id) => {
-            for (const k of ids) {
-              if (id.includes(k)) {
-                return false
+          if (state.finishSchedule[date]) {
+            state.finishSchedule[date] = finishSchedule[date].filter((id) => {
+              for (const k of ids) {
+                if (id.includes(k)) {
+                  return false
+                }
               }
-            }
 
-            return true
-          })
+              return true
+            })
+          }
         })
       })
     )

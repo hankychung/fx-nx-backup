@@ -17,6 +17,7 @@ import {
 } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { useMessage } from '@flyele-nx/ui'
+import { TaskHandler } from '../../schedule-list'
 
 type IParams = {
   data: {
@@ -70,9 +71,13 @@ export const useTaskMemberRemove = () => {
       onSuccess: (_res: Promise<any>[], [params]) => {
         const { taskId, exitMap, revokeMap, onSuccess } = params
 
+        console.log('removeTaker', exitMap, revokeMap)
+
         // 退出事项
         if (exitMap.dispatchId.length > 0) {
           // Pub.publish(PUB.DELETE_MATTER_ITEM, [taskId])
+
+          TaskHandler.removeTasks([taskId])
         }
 
         // 移出协作人
@@ -89,6 +94,11 @@ export const useTaskMemberRemove = () => {
           //   action: 'remove',
           //   takerDiff
           // })
+
+          TaskHandler.removeTakers({
+            taskIds: [taskId],
+            takerIds: revokeMap.userId
+          })
         }
 
         showMsg({
@@ -100,6 +110,8 @@ export const useTaskMemberRemove = () => {
       },
       onError: (_error, [params]) => {
         const { onError } = params
+
+        console.log('remove error', _error)
 
         showMsg({
           msgType: '错误',

@@ -4,7 +4,8 @@ import React, {
   useMemo,
   CSSProperties,
   PropsWithChildren,
-  useRef
+  useRef,
+  MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
@@ -32,6 +33,8 @@ import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
 import { contextMenuTool } from '../../../../index'
+import { Enter_page_detail } from '../../../global/types/sensor/matter'
+import { globalNxController } from '../../../global/nxController'
 
 export interface IProps {
   taskKey: string
@@ -135,7 +138,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
    * 打开右键菜单
    */
   const handleContextMenu = useMemoizedFn(
-    (event: React.MouseEvent<HTMLDivElement>) => {
+    (event: MouseEvent<HTMLDivElement>) => {
       if (!isShowMenu) return
 
       event.preventDefault()
@@ -148,6 +151,14 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       })
     }
   )
+
+  const onClickTask = useMemoizedFn((e: MouseEvent) => {
+    e.stopPropagation()
+    globalNxController.openTaskDetailWindow({
+      task: data,
+      enterPage: Enter_page_detail.日程列表
+    })
+  })
 
   const isToday = useMemo(() => {
     if (date) {
@@ -197,6 +208,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       }}
       data-id={taskKey}
       onContextMenu={handleContextMenu}
+      onClick={onClickTask}
     >
       <div
         className={cs(styles.topHover, styles.boardSchedulePadding, {

@@ -28,6 +28,7 @@ import dayjs from 'dayjs'
 import { getChildrenDict, getKey } from '../schedule-list/utils'
 import { WorkflowOperation } from '../workflow-operation'
 import { getOperationStatus } from '../workflow-operation/utils'
+import { useUserInfoStore } from '../store/useUserInfoStore'
 
 interface IProps {
   task: IScheduleTask
@@ -35,7 +36,7 @@ interface IProps {
   resetStatus?: () => void
 }
 
-const ANIMATION_DURATION = 900
+const ANIMATION_DURATION = 950
 
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus } = props
@@ -52,6 +53,8 @@ const _StatusBox: FC<IProps> = (props) => {
   }, [childrenDict, task])
 
   const [visible, setVisible] = useState(false)
+
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   // 非我执行
   const nonSelfExecution = useMemo(
@@ -111,13 +114,15 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-      setUpdating(true)
+      if (!task.finish_time) {
+        setUpdating(true)
 
-      await setTimeoutForIdleCallback({
-        timer: ANIMATION_DURATION
-      })
+        await setTimeoutForIdleCallback({
+          timer: ANIMATION_DURATION
+        })
 
-      setUpdating(false)
+        setUpdating(false)
+      }
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 
@@ -192,8 +197,7 @@ const _StatusBox: FC<IProps> = (props) => {
             curStepId={task.flow_step_id}
             complete_at={task.complete_at}
             size={14}
-            status={getOperationStatus(task)}
-            userId={'2490770669437163'}
+            status={getOperationStatus(task, userId)}
             changeStatus={changeStatus}
           />
         )

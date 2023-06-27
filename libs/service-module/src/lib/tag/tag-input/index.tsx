@@ -16,26 +16,26 @@ import React, {
 import { useInput } from '@flyele-nx/utils'
 import cs from 'classnames'
 import { TagUtils } from '../tag_utils'
-import { TagModel, TagWidgetColor } from '@flyele-nx/service'
+import { TagModel, TagConst } from '@flyele-nx/service'
 import css from './index.module.scss'
 import { useMessage } from '@flyele-nx/ui'
 
 // 颜色选择器
 interface TagInputProps {
-  defaultColor?: TagWidgetColor
+  defaultColor?: TagConst.TagWidgetColor
   defaultValue?: string
   onTap?: (
     name: string,
-    color: TagWidgetColor,
+    color: TagConst.TagWidgetColor,
     callback?: (arg: { tags: TagModel[]; selectedTags: string[] }) => void
   ) => void
-  onChange?: (name: string, color: TagWidgetColor) => void
+  onChange?: (name: string, color: TagConst.TagWidgetColor) => void
   emptyCallBack?: () => void
   wrapCla?: string
 }
 export interface InputRef {
   name?: string
-  pickerColor?: TagWidgetColor
+  pickerColor?: TagConst.TagWidgetColor
 }
 
 const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
@@ -43,7 +43,7 @@ const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
   inputRef
 ) => {
   const {
-    defaultColor = TagWidgetColor.green,
+    defaultColor = TagConst.TagWidgetColor.green,
     defaultValue,
     onTap,
     onChange,
@@ -111,7 +111,7 @@ const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
   }
 
   // 选择颜色
-  const onPickColor = (color: TagWidgetColor) => {
+  const onPickColor = (color: TagConst.TagWidgetColor) => {
     if (onChange) onChange(name, color)
     setPickerColor(color)
     setVisible(false)
@@ -127,7 +127,7 @@ const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
     const colorList = TagUtils.getColorList()
 
     const list = colorList.map((item) => {
-      const color = item as TagWidgetColor
+      const color = item as TagConst.TagWidgetColor
 
       return (
         <ColorPickerRadio
@@ -171,8 +171,8 @@ const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
 /** tag 颜色radio **/
 interface ColorPickerRadioProps {
   checked?: boolean
-  color: TagWidgetColor
-  onChange?: (color: TagWidgetColor) => void
+  color: TagConst.TagWidgetColor
+  onChange?: (color: TagConst.TagWidgetColor) => void
 }
 function ColorPickerRadio(props: ColorPickerRadioProps) {
   const { checked, color, onChange } = props

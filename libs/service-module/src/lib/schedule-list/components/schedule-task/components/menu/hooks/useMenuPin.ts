@@ -6,6 +6,9 @@ import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
 import dayjs from 'dayjs'
 import { showMsg } from '@flyele-nx/ui'
+import { globalNxController } from '../../../../../../global/nxController'
+import PUB from '../../../../../../global/types/pubsub'
+import timeGetter from '../../../../../../global/timeGetter'
 
 export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
   const action = useMemoizedFn(() => {
@@ -16,11 +19,11 @@ export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
         msgType: '消息',
         content: `${topmost_at ? '已取消置顶' : '已置顶'}`
       })
-      //
-      // Pubjs.publish(sub.BOARD_TOPMOST, {
-      //   ids: [dispatch],
-      //   topmost: topmost_at ? 0 : await timeGetter.getDate(),
-      // })
+
+      globalNxController.pubJsPublish(PUB.BOARD_TOPMOST, {
+        ids: [dispatch],
+        topmost: topmost_at ? 0 : await timeGetter.getDate()
+      })
 
       TaskHandler.batchModify({
         ...getDiffKeys([data]),

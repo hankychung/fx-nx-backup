@@ -45,7 +45,7 @@ const InterestsIntroduction = () => {
           }}
         >
           <span
-            className={showComparison ? styles.useTitle : styles.unUseTitle}
+            className={showComparison ? styles.use_title : styles.un_use_title}
           >
             身份权益对比
           </span>
@@ -57,7 +57,7 @@ const InterestsIntroduction = () => {
           }}
         >
           <span
-            className={showComparison ? styles.unUseTitle : styles.useTitle}
+            className={showComparison ? styles.un_use_title : styles.use_title}
           >
             空间权益对比
           </span>
@@ -71,6 +71,7 @@ const InterestsIntroduction = () => {
           免费使用
         </div>
       </div>
+      <div></div>
     </div>
   )
 }

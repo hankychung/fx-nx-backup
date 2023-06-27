@@ -436,7 +436,7 @@ export interface IScheduleTask {
   workspace_id?: string
   workspace_info?: WorkspaceInfo
   priority_level?: QuadrantValue
-  ws_type?: SPACE_TYPE
+  ws_type: SPACE_TYPE
   hide?: boolean
   schedule_hide?: boolean
 }
@@ -608,6 +608,10 @@ export interface Taker {
    * 更新时间
    */
   update_at?: number
+  /**
+   *  激活状态 1 是已激活的  2 未激活
+   */
+  species: 1 | 2
 }
 
 /**

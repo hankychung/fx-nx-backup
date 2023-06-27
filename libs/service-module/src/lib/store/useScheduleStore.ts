@@ -112,10 +112,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
             if (finish_time) {
               keys.push(getKey(item))
             } else {
+              // 更新未完成事项字典
+              dict[ref_task_id] = item
               keys.push(item.ref_task_id)
             }
-
-            dict[ref_task_id] = item
           })
 
           state.taskDict = {

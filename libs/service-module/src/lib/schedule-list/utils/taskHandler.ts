@@ -16,7 +16,7 @@ class TaskHandler {
     useScheduleStore.setState(
       produce((state: IState) => {
         Object.keys(taskDict).forEach((k) => {
-          taskDict[k] = handler(state.taskDict[k])
+          state.taskDict[k] = handler(state.taskDict[k])
         })
       })
     )

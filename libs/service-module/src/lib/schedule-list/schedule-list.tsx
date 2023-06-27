@@ -12,11 +12,14 @@ import { useScheduleStore } from '../store/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
+import { ListHandler } from './utils/listHandler'
 
 interface ScheduleListProps {
   date: string
   isFinished?: boolean
   getFinishListTotal?: (total: number) => void
+  isBoard?: boolean
+  isVipWin?: boolean // 是否小挂件窗体
 }
 
 interface IScheduleListRef {
@@ -26,9 +29,14 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished, getFinishListTotal }, ref) => {
+> = (
+  { date, isFinished, isVipWin = false, isBoard, getFinishListTotal },
+  ref
+) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
+
+  const reloaderId = useRef(date + isFinished + isBoard)
 
   const decentList = isFinished ? finishList : list
 
@@ -44,6 +52,16 @@ const _ScheduleList: ForwardRefRenderFunction<
     finishPageRef.current = 1
     await fetchList()
   })
+
+  useEffect(() => {
+    const id = reloaderId.current
+
+    ListHandler.collectReloader(id, reload)
+
+    return () => {
+      ListHandler.removeReloader(id)
+    }
+  }, [reload])
 
   useImperativeHandle(ref, () => {
     return {
@@ -102,6 +120,7 @@ const _ScheduleList: ForwardRefRenderFunction<
             taskKey={i}
             topId={i}
             curTime={dayjs().unix()}
+            isVipWin={isVipWin}
           />
         ))}
       </InfiniteScroll>

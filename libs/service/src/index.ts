@@ -64,6 +64,8 @@ export * from './lib/env'
 export * from './lib/biz'
 export * from './lib/task'
 
+export * as ScheduleType from './lib/typings/schedule'
+
 export {
   service,
   SSe,

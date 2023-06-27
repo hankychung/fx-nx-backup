@@ -1,19 +1,9 @@
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
-import { Enter_page_detail } from './types/sensor/matter'
-
-export interface IEditTaskTime {
-  taskId: string
-  task: IScheduleTask
-  isCreator: boolean
-  repeatType: number
-  matterType: ScheduleTaskConst.MatterType
-  remindAt: IScheduleTask['remind_at']
-}
-
-export interface IOpenTaskDetail {
-  task: IScheduleTask
-  enterPage: Enter_page_detail
-}
+import { IScheduleTask } from '@flyele-nx/service'
+import {
+  IEditTaskTime,
+  IOpenTaskDetail,
+  IHandlerTaskAddTaker
+} from './types/controller'
 
 /**
  * nxController 控制器的注册器
@@ -24,9 +14,10 @@ class NxControllerRegister {
   pubJs: any = null
   sensorTarget: any = null
 
-  editTaskTime: any = null
+  editTaskTime: ((data: IEditTaskTime) => void) | null = null
   editTaskSummary: any = null
   openTaskDetail: any = null
+  handlerTaskAddTaker: any = null
 
   /**
    * ipc注册
@@ -71,6 +62,14 @@ class NxControllerRegister {
    */
   openTaskDetailRegister(callback: (data: IOpenTaskDetail) => void) {
     this.openTaskDetail = callback
+  }
+
+  /**
+   * handlerTaskAddTaker注册
+   * 打开协作人邀请弹窗
+   */
+  handlerTaskAddTakerRegister(callback: (data: IHandlerTaskAddTaker) => void) {
+    this.handlerTaskAddTaker = callback
   }
 }
 

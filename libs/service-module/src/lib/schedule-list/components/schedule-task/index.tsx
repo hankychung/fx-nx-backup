@@ -44,6 +44,7 @@ export interface IProps {
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
+  isVipWin?: boolean // 是否小挂件窗体
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -53,7 +54,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   curTime,
   isDarkMode,
   style,
-  isSimple = false
+  isSimple = false,
+  isVipWin = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -269,7 +271,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      <Takers taskId={taskKey} isDarkMode={isDarkMode} />
+                      <Takers
+                        taskId={taskKey}
+                        isDarkMode={isDarkMode}
+                        isVipWin={isVipWin}
+                      />
                       <Tags taskId={taskKey} />
                     </div>
                   </div>
@@ -297,6 +303,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               curTime={curTime}
               isDarkMode={isDarkMode}
               style={style}
+              isVipWin={isVipWin}
             />
           ))}
         </div>

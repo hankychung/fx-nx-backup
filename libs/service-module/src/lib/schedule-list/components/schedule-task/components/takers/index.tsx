@@ -5,7 +5,6 @@ import React, {
   MouseEvent,
   useMemo
 } from 'react'
-// import { useInteractsInfo } from '@/hooks/useInteractsInfo'
 import cs from 'classnames'
 import {
   FlyAvatarGroup,
@@ -14,22 +13,21 @@ import {
 } from '@flyele/flyele-components'
 import { UserInfoUtils } from '../../../../utils/userInfoUtils'
 import { createInfinite } from '@flyele-nx/utils'
-// import useMessage from '@hooks/useMessage'
+import { useMessage } from '@flyele-nx/ui'
 import { AddTakerIcon } from '@flyele-nx/icon'
 // import SelContacts from 'components/SelContactsPopover'
 // import { useSmallToolContacts } from '@/hooks/useSmallToolContacts'
 // import { CreateType } from '@/types/created'
 // import { MatterTypeToCreateType } from '@/utils/createTypeMap'
 import { getOperationStatus } from '../../../../utils/workflowOperation'
-// import { bizUtils } from '@/utils/biz'
-// import { ISimpleMember } from '@/components/SimpleMemberList'
-// import { RemoveSimpleMemberListPopper } from '@/components/RemoveSimpleMemberListPopper'
+import { ISimpleMember } from '../../../../../simple-member-list'
+import { RemoveSimpleMemberListPopper } from '../../../../../remove-simple-member-list-popper'
 // import { useTaskMemberAdd } from '@/components/MemberSelectorModal/business/hooks/task/useTaskMemberAdd'
 // import { useGlobalMatterCondition } from '@/hooks/useGlobalMatterCondition'
-// import { getAvatarsFromTakers } from '../../../../utils/task'
+import { getAvatarsFromTakers } from '../../../../utils/task'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import {
   AuthType,
   ITakerAndStatus,
@@ -40,6 +38,8 @@ import {
   // ProjectType,
   Taker
 } from '@flyele-nx/service'
+import { useContactStore } from '../../../../../store/useContactStore'
+import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 
@@ -48,7 +48,6 @@ interface IPROPTakers {
    * 查该事项的参与者
    */
   taskId: string
-  userId: string
   /**
    * 最多显示多少头像
    */
@@ -73,13 +72,14 @@ const defaultMatterAuthWithFetch: IAuthWithFetched = {
 }
 
 export const Takers: React.FC<IPROPTakers> = (props) => {
-  const { taskId, userId, isDarkMode = false } = props
+  const { taskId, isDarkMode = false } = props
   const task = useScheduleStore((state) => state.taskDict[taskId])
-  // const { contactDict } = useInteractsInfo()
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const { contactDict } = useContactStore()
   const isVipSmallTool = false
   const isBoard = true
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
-  // const [showMsg] = useMessage()
+  const [showMsg] = useMessage()
   const isSmallTool = task.category === ScheduleTaskConst.CATEGORY.smallTool
   const [takers, setTakers] = useState<Taker[]>([])
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
@@ -230,35 +230,33 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
 
     if (takers.length >= resAuth.maxTaker) {
-      console.log(`人数已达${resAuth.maxTaker}人上限`)
-      // showMsg({
-      //   msgType: '消息',
-      //   content: `人数已达${resAuth.maxTaker}人上限`
-      // })
+      showMsg({
+        msgType: '消息',
+        content: `人数已达${resAuth.maxTaker}人上限`
+      })
       return false
     }
 
     if (!isInTask) {
-      console.log('没参与事项不可修改')
-      // showMsg({
-      //   msgType: '错误',
-      //   content: '没参与事项不可修改'
-      // })
+      showMsg({
+        msgType: '错误',
+        content: '没参与事项不可修改'
+      })
       return false
     }
     return true
-  }, [auth, fetchPower, isInTask, takers.length])
+  }, [auth, fetchPower, isInTask, showMsg, takers.length])
 
   // 协作人弹窗
   const onClickAddModal = async () => {
     if (await isCanAdd()) {
       // 打开协作人弹窗
       // 小挂件的骚操作（修改尺寸）
-      if (document.getElementById('vipSmallToolsWinNow')) {
-        // ipcRenderer.invoke('vipSmallToolsWin-siszable', {
-        //   sizeType: SIZE_TYPE_KEY.邀请协作人
-        // })
-      }
+      // if (document.getElementById('vipSmallToolsWinNow')) {
+      // ipcRenderer.invoke('vipSmallToolsWin-siszable', {
+      //   sizeType: SIZE_TYPE_KEY.邀请协作人
+      // })
+      // }
       setShowAddModal(true)
     }
   }
@@ -270,8 +268,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       const status = getOperationStatus(task, userId)
 
       if (status === 'complete') {
-        console.log('已完成的工作流事项不支持添加人')
-        // showMsg({ content: '已完成的工作流事项不支持添加人' })
+        showMsg({ content: '已完成的工作流事项不支持添加人' })
         return
       }
 
@@ -279,7 +276,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         popCtrl.addClickAlwaysHide().show()
       }
     },
-    [isCanAdd, popCtrl, task, userId]
+    [isCanAdd, popCtrl, showMsg, task, userId]
   )
 
   // 关闭邀请弹窗
@@ -319,6 +316,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       return
     }
 
+    // 过滤非我执行事项/非我参与会议
+    // 当创建人不参与时 state 为 10301
     const takers =
       (task.takers
         ?.map((taker) => {
@@ -331,39 +330,53 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
           }
           return (
             {
-              ...taker
-              // ...contactDict[taker.taker_id]
+              ...taker,
+              ...contactDict[taker.taker_id]
             } || null
           )
         })
-        // 过滤非我执行事项/非我参与会议
-        // 当创建人不参与时 state 为 10301
         .filter(
           (i) => i && ![10406, 10608, 10301].includes((i as any).state)
         ) as Taker[]) || []
 
     // 写入takers
     setTakers(takers)
-  }, [notATask, task, userId])
+  }, [contactDict, notATask, task, userId])
 
   // 设置头像
-  // useEffect(() => {
-  //   bizUtils.sortTaker(takers).then((res) => {
-  //     const list = getAvatarsFromTakers(res)
-  //
-  //     list.forEach((item) => {
-  //       item.overlayClassName = cs(
-  //         item.is_view ? '' : styles.isView,
-  //         item.isTeamVip
-  //           ? 'global-style-team-vip-min'
-  //           : item.isVip
-  //           ? 'global-style-person-vip-min'
-  //           : ''
-  //       )
-  //     })
-  //     setAvatars(list)
-  //   })
-  // }, [takers])
+  useEffect(() => {
+    const decentTakers = takers.map((taker) => {
+      const id = taker.taker_id
+
+      if (!id) return taker
+
+      return {
+        ...taker,
+        pinyin: contactDict[id]?.pinyin || '',
+        finish_time: taker?.finish_time || 0,
+        is_view: taker?.is_view || 0,
+        taker_id: id,
+        isVip: contactDict[id]?.isVip,
+        isTeamVip: contactDict[id]?.isTeamVip
+      }
+    })
+
+    const list = getAvatarsFromTakers(
+      decentTakers as Array<Taker & { isTeamVip: boolean; isVip: boolean }>
+    )
+
+    list.forEach((item) => {
+      item.overlayClassName = cs(
+        item.is_view ? '' : styles.isView,
+        item.isTeamVip
+          ? 'global-style-team-vip-min'
+          : item.isVip
+          ? 'global-style-person-vip-min'
+          : ''
+      )
+    })
+    setAvatars(list)
+  }, [contactDict, takers])
 
   const avatarBoxJsx = useMemo(
     () => (
@@ -386,17 +399,17 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   )
 
   // 成员列表
-  // const simpleMemberList = useMemo<ISimpleMember[]>(() => {
-  //   return (takers ?? []).map((item) => {
-  //     return {
-  //       userId: item.taker_id,
-  //       dispatchId: item.dispatch_id || '',
-  //       isView: true,
-  //       isFinished: false,
-  //       isCreator: Boolean(item.taker_id === task.creator_id)
-  //     }
-  //   })
-  // }, [task.creator_id, takers])
+  const simpleMemberList = useMemo<ISimpleMember[]>(() => {
+    return (takers ?? []).map((item) => {
+      return {
+        userId: item.taker_id,
+        dispatchId: item.dispatch_id || '',
+        isView: true,
+        isFinished: false,
+        isCreator: Boolean(item.taker_id === task.creator_id)
+      }
+    })
+  }, [task.creator_id, takers])
 
   // const defaultNoSel = useMemo(() => {
   //   return simpleMemberList.map((taker) => taker.userId)
@@ -422,14 +435,14 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
             })}
             onClick={editTakers}
           >
-            {/*<RemoveSimpleMemberListPopper*/}
-            {/*  ctrl={popCtrl}*/}
-            {/*  memberList={simpleMemberList}*/}
-            {/*  onClickAdd={onClickAddModal}*/}
-            {/*  taskId={taskId}*/}
-            {/*>*/}
-            {avatarBoxJsx}
-            {/*</RemoveSimpleMemberListPopper>*/}
+            <RemoveSimpleMemberListPopper
+              ctrl={popCtrl}
+              memberList={simpleMemberList}
+              onClickAdd={onClickAddModal}
+              taskId={taskId}
+            >
+              {avatarBoxJsx}
+            </RemoveSimpleMemberListPopper>
           </div>
           {/*{showAddModal && task && (*/}
           {/*  <MatterMemberAddModal*/}

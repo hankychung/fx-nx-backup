@@ -4,12 +4,12 @@ import React, {
   useMemo,
   CSSProperties,
   PropsWithChildren,
-  ReactElement,
-  useRef
+  useRef,
+  MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
-import { useScheduleStore } from '../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
@@ -28,17 +28,19 @@ import { Workflow } from './components/workflow'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
 import { Tags } from './components/tags'
+import { Takers } from './components/takers'
 import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
 import { contextMenuTool } from '../../../../index'
+import { Enter_page_detail } from '../../../global/types/sensor/matter'
+import { globalNxController } from '../../../global/nxController'
 
 export interface IProps {
   taskKey: string
   date: string
   topId: string
   curTime: number // 当前时间, 今天的时间
-  userId: string
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
@@ -49,16 +51,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   date,
   topId,
   curTime,
-  userId,
   isDarkMode,
   style,
-  isSimple = false,
-  children: childrenComponents
+  isSimple = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
-  const reactChildren = childrenComponents as Array<ReactElement>
-  const data = useScheduleStore((state) => state.taskDict[taskKey])
 
+  const data = useScheduleStore((state) => state.taskDict[taskKey])
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
     const dict = state.expandedDict[date]
@@ -67,13 +66,24 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
     return Boolean(dict[taskKey])
   })
+  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
+    useScheduleStore(
+      (state) => ({
+        batchUpdateTask: state.batchUpdateTask,
+        updateExpandedDict: state.updateExpandedDict,
+        batchUpdateChildDict: state.batchUpdateChildDict
+      }),
+      shallow
+    )
 
   const isHovering = useHover(domRef)
 
-  const { menuActions } = useMenuActions({ data, userId })
+  const { menuActions } = useMenuActions({ data })
 
   // 记录是否为卡片顶级事项
-  const isTopTask = topId === taskKey
+  const isTopTask = useMemo(() => {
+    return topId === taskKey
+  }, [taskKey, topId])
 
   // 右键的锚点, 只有自己的事项 && 顶级事项卡片才有右键
   // 团队卡片没有右键
@@ -88,17 +98,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   // 只有今日，周，小挂件有置顶
   // 目前它的逻辑和是否显示菜单是包含的
-  const isTopMost = !!data?.topmost_at && !data?.finish_time && isShowMenu
-
-  const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
-    useScheduleStore(
-      (state) => ({
-        batchUpdateTask: state.batchUpdateTask,
-        updateExpandedDict: state.updateExpandedDict,
-        batchUpdateChildDict: state.batchUpdateChildDict
-      }),
-      shallow
-    )
+  const isTopMost = useMemo(() => {
+    return !!data?.topmost_at && !data?.finish_time && isShowMenu
+  }, [data?.finish_time, data?.topmost_at, isShowMenu])
 
   const toggleOpen = useMemoizedFn(async () => {
     if (!data) return
@@ -136,20 +138,27 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
    * 打开右键菜单
    */
   const handleContextMenu = useMemoizedFn(
-    (event: React.MouseEvent<HTMLDivElement>) => {
+    (event: MouseEvent<HTMLDivElement>) => {
+      if (!isShowMenu) return
+
       event.preventDefault()
-      const parentRect = domRef.current?.getBoundingClientRect()
-      if (!parentRect) return
-      const x = event.clientX - parentRect.left || 0
-      const y = event.clientY - parentRect.top || 0
+      event.stopPropagation()
 
       contextMenuTool.open({
-        x,
-        y,
+        x: event.clientX,
+        y: event.clientY,
         action: menuActions
       })
     }
   )
+
+  const onClickTask = useMemoizedFn((e: MouseEvent) => {
+    e.stopPropagation()
+    globalNxController.openTaskDetailWindow({
+      task: data,
+      enterPage: Enter_page_detail.日程列表
+    })
+  })
 
   const isToday = useMemo(() => {
     if (date) {
@@ -182,21 +191,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     }
   }, [data?.priority_level])
 
-  /**
-   * 外部传入组件渲染
-   */
-  const slotChildren = useMemo(() => {
-    if (reactChildren) {
-      if (reactChildren.length > 1) {
-        return reactChildren.find((item) => item.props.slot === 'takers')
-      } else {
-        return reactChildren
-      }
-    } else {
-      return null
-    }
-  }, [reactChildren])
-
   if (!data) return null
 
   return (
@@ -214,6 +208,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       }}
       data-id={taskKey}
       onContextMenu={handleContextMenu}
+      onClick={onClickTask}
     >
       <div
         className={cs(styles.topHover, styles.boardSchedulePadding, {
@@ -271,13 +266,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                       <Time
                         taskId={taskKey}
                         curTime={curTime}
-                        userId={userId}
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      {slotChildren}
-                      {/*<Takers taskId={taskId} />*/}
-                      <Tags taskId={taskKey} userId={userId} />
+                      <Takers taskId={taskKey} isDarkMode={isDarkMode} />
+                      <Tags taskId={taskKey} />
                     </div>
                   </div>
                   {isShowMenu && (
@@ -304,7 +297,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               curTime={curTime}
               isDarkMode={isDarkMode}
               style={style}
-              userId={userId}
             />
           ))}
         </div>

@@ -9,13 +9,13 @@ import React from 'react'
 envStore.initEnv(process.env.NODE_ENV as string)
 
 service.updateToken(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODcyNTkzODQsImlhdCI6MTY4NzI1MTg3MiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMzMxMzYzMzU0NTA5NDgyIiwiRGV2aWNlSUQiOiI5Yjk1NTYzZS0zNWQwLTQ2NDUtODI4Yi03MDNjNDJmNDdkNDYiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.aGAjmIt28s1nAZT-QOvoBkr5qT4BTxGUc4urCk4Qg-A'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3Nzg5MjcsImlhdCI6MTY4Nzc3MTM4NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiI1NDI0MDg0MjE2NzExODUiLCJEZXZpY2VJRCI6ImU2MWQxMmEzLWY2NjYtNDZmMi1hOGY3LWUwZTYwZTQxZGMwNyIsIlBsYXRmb3JtIjoibW9iaWxlIiwiQ2xpZW50VmVyc2lvbiI6IjIuMzAuMTAiLCJQaG9uZSI6IiIsIk5pY2tOYW1lIjoiIiwiQXZhdGFyIjoiIn0.a6uStDg2iFFgp3GdGiB4eIN_V9noRLhWb2C405FO5FY'
 )
 
 export function App() {
   return (
     <>
-      <ScheduleList date="2023-06-20" />
+      <ScheduleList date="2023-06-26" />
       <ContextMenu ref={(r) => contextMenuTool.registerContextMenu(r)} />
     </>
   )

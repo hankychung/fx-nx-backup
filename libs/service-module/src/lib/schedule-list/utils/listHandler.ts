@@ -1,8 +1,8 @@
 import { produce } from 'immer'
 import { IScheduleTask } from '@flyele-nx/service'
-import { IState, useScheduleStore } from './useScheduleStore'
+import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import dayjs from 'dayjs'
-import { getKey, getSortedSchedule, shouldInsertSchedule } from '.'
+import { getKey, getSortedSchedule, isRelated, shouldInsertSchedule } from '.'
 
 class ListHandler {
   // 完成事项
@@ -29,6 +29,31 @@ class ListHandler {
 
     // 插入未完成列表
     this.insertTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
+  }
+
+  // 根据改变的事项更新列表排序
+  static sortListByTask(ids: string[]) {
+    const { schedule, taskDict } = useScheduleStore.getState()
+
+    // 需要更新的日期
+    const sortDates: string[] = []
+
+    Object.entries(schedule).forEach(([date, list]) => {
+      if (isRelated(list, ids)) {
+        sortDates.push(date)
+      }
+    })
+
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        sortDates.forEach((date) => {
+          state.schedule[date] = getSortedSchedule({
+            date,
+            tasks: schedule[date].map((id) => taskDict[id])
+          })
+        })
+      })
+    )
   }
 
   private static resetRelation(taskIds: string[]) {

@@ -30,6 +30,9 @@ import {
 } from './lib/typings/schedule'
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
 
+import { IWorkflowStep, IUserStepInfo } from './lib/typings/workflow'
+import * as WorkflowConst from './lib/typings/workflow/const'
+
 // 协作人
 import {
   IContactsAndStatus,
@@ -40,7 +43,7 @@ import {
 
 // Tag
 import { TagModel, TagObjType } from './lib/typings/tag'
-import { TagWidgetColor } from './lib/typings/tag/const'
+import * as TagConst from './lib/typings/tag/const'
 
 // Auth
 import * as AuthType from './lib/typings/auth'
@@ -70,11 +73,12 @@ export {
   TaskDispatchApi,
   OrderSystemConst,
   ScheduleTaskConst,
-  TagWidgetColor,
+  TagConst,
   LabelApi,
   AuthConst,
   VipTypeEnum,
-  EConCheckStatus
+  EConCheckStatus,
+  WorkflowConst
 }
 
 export type {
@@ -95,5 +99,7 @@ export type {
   AuthType,
   IVip,
   SpaceType,
-  ProjectType
+  ProjectType,
+  IWorkflowStep,
+  IUserStepInfo
 }

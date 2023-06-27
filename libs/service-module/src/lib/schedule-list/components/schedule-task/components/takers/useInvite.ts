@@ -11,7 +11,9 @@ import { UserInfoUtils } from '../../../../utils/userInfoUtils'
 import { createInfinite } from '@flyele-nx/utils'
 // import { useAddContacts } from '@/hooks/useAddContacts'
 // import { CATEGORY, INVITE_TYPE } from '@/types/task-enum'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import { useMessage } from '@flyele-nx/ui'
+import { useMemoizedFn } from 'ahooks'
 
 interface IAuthWithFetched extends AuthType.IMatterAuth {
   isFetched: boolean
@@ -33,6 +35,7 @@ export const useInvite = ({
   // const { isOnline_and_check_alert } = useOnline()
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
   // const { inviteMembers } = useAddContacts()
+  const [showMsg] = useMessage()
 
   const isCreator = useMemo(() => {
     return task.creator_id === userId
@@ -104,7 +107,7 @@ export const useInvite = ({
     return resObj
   }, [taskId])
 
-  const isCanAdd = useCallback(async () => {
+  const isCanAdd = useMemoizedFn(async () => {
     let resAuth = auth
 
     if (!resAuth.isFetched) {
@@ -112,24 +115,22 @@ export const useInvite = ({
     }
 
     if (takers.length >= resAuth.maxTaker) {
-      console.log(`人数已达${resAuth.maxTaker}人上限`)
-      // showMsg({
-      //   msgType: '消息',
-      //   content: `人数已达${resAuth.maxTaker}人上限`
-      // })
+      showMsg({
+        msgType: '消息',
+        content: `人数已达${resAuth.maxTaker}人上限`
+      })
       return false
     }
 
     if (!isInTask) {
-      console.log('没参与事项不可修改')
-      // showMsg({
-      //   msgType: '错误',
-      //   content: '没参与事项不可修改'
-      // })
+      showMsg({
+        msgType: '错误',
+        content: '没参与事项不可修改'
+      })
       return false
     }
     return true
-  }, [auth, fetchPower, isInTask, takers.length])
+  })
 
   return useCallback(
     (

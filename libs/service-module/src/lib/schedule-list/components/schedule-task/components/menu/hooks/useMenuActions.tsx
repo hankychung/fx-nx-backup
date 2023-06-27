@@ -10,11 +10,10 @@ import { useMenuSummary } from './useMenuSummary'
 
 interface IMenuActions {
   data: IScheduleTask
-  userId: string
 }
 
 export const useMenuActions = (props: IMenuActions) => {
-  const { data, userId } = props
+  const { data } = props
 
   /**
    * 菜单功能—置顶
@@ -34,7 +33,7 @@ export const useMenuActions = (props: IMenuActions) => {
   /**
    * 菜单功能—调整时间
    */
-  const selectTime = useMenuSelectTime()
+  const selectTime = useMenuSelectTime({ data })
 
   /**
    * 菜单功能—总结
@@ -49,7 +48,7 @@ export const useMenuActions = (props: IMenuActions) => {
   /**
    * 菜单功能—退出/取消
    */
-  const quit = useMenuQuit({ data, userId })
+  const quit = useMenuQuit({ data })
 
   /**
    * 右键菜单

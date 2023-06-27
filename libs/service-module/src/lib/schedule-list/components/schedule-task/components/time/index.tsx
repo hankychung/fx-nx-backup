@@ -14,18 +14,21 @@ import dayjs from 'dayjs'
 import { getRepeatDelayTotal } from '../../../../utils'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import {
   RepeatDelayIcon,
   CycleCardIcon,
   CycleCardDarkIcon
 } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
+import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
+import { useMessage } from '@flyele-nx/ui'
+import { globalNxController } from '../../../../../global/nxController'
+import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
 
 interface IPROPTime {
   taskId: string
   curTime: number // 当前时间, 今天的时间
-  userId: string
   isDarkMode?: boolean
   dateStr: string
   onlyRepeat?: boolean
@@ -35,13 +38,16 @@ interface IPROPTime {
 export const Time: React.FC<IPROPTime> = ({
   taskId,
   curTime,
-  userId,
   isDarkMode = false,
   dateStr,
   onlyRepeat = false,
   isSpets = false
 }) => {
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
+
+  const [showMsg] = useMessage()
+
   const [visible, setVisible] = useState(false)
   // const groupIdCtx = useContext(GroupIdCtx)
   // const memberIdCtx = useContext(MemberIdCtx)
@@ -115,19 +121,16 @@ export const Time: React.FC<IPROPTime> = ({
     }
     // 发送给mini临时提醒
     if (isRemind) {
-      console.log('@@@ 发送给 今日/月视图 mini临时提醒', isRemind, task)
-
       // 今日mini窗体提醒
-      // ipcRenderer.invoke('vipSmallToolsWin', {
-      //   name: VipSmallIpcEvents.REMINDTASK,
-      //   task
-      // })
-      // // 月视图mini窗体提醒
-      // ipcRenderer.invoke('vipSmallToolsWinOnly', {
-      //   name: VipSmallIpcEvents.REMINDTASK,
-      //   task
-      // })
-      // end
+      globalNxController.ipcRendererInvoke('vipSmallToolsWin', {
+        name: VipSmallIpcEvents.REMINDTASK,
+        task
+      })
+      // 月视图mini窗体提醒
+      globalNxController.ipcRendererInvoke('vipSmallToolsWinOnly', {
+        name: VipSmallIpcEvents.REMINDTASK,
+        task
+      })
     }
 
     return () => {
@@ -210,7 +213,7 @@ export const Time: React.FC<IPROPTime> = ({
       task.matter_type === ScheduleTaskConst.MatterType.matter &&
       !task.takers?.find((taker) => taker.taker_id === userId)
     ) {
-      // showMsg({ msgType: '错误', content: '非协作人无法修改时间' })
+      showMsg({ msgType: '错误', content: '非协作人无法修改时间' })
       return
     }
 
@@ -224,7 +227,14 @@ export const Time: React.FC<IPROPTime> = ({
       }
     }
 
-    console.log('@@ remindAt 后面进入修改', remindAt)
+    globalNxController.openEditTaskTime({
+      taskId,
+      task,
+      isCreator,
+      repeatType,
+      matterType,
+      remindAt
+    })
   })
 
   const getTimerStr = useMemo(() => {

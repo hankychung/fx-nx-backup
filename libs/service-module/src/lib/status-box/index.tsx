@@ -22,11 +22,13 @@ import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
 import AcceptOnceMany from '../accept-once-many'
-import { useScheduleStore } from '../schedule-list/utils/useScheduleStore'
-import { message } from 'antd'
+import { useScheduleStore } from '../store/useScheduleStore'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
-import { getKey } from '../schedule-list/utils'
+import { getChildrenDict, getKey } from '../schedule-list/utils'
+import { WorkflowOperation } from '../workflow-operation'
+import { getOperationStatus } from '../workflow-operation/utils'
+import { useUserInfoStore } from '../store/useUserInfoStore'
 
 interface IProps {
   task: IScheduleTask
@@ -34,7 +36,7 @@ interface IProps {
   resetStatus?: () => void
 }
 
-const ANIMATION_DURATION = 900
+const ANIMATION_DURATION = 950
 
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus } = props
@@ -42,11 +44,17 @@ const _StatusBox: FC<IProps> = (props) => {
   const taskDict = useScheduleStore((state) => state.taskDict)
 
   const childrenDict = useScheduleStore((state) => state.childrenDict)
+  const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
+  const batchUpdateChildDict = useScheduleStore(
+    (state) => state.batchUpdateChildDict
+  )
   const childrenIds = useMemo(() => {
     return getValuesByKey(childrenDict, task.ref_task_id)
   }, [childrenDict, task])
 
   const [visible, setVisible] = useState(false)
+
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   // 非我执行
   const nonSelfExecution = useMemo(
@@ -55,7 +63,7 @@ const _StatusBox: FC<IProps> = (props) => {
   )
 
   // 分发
-  const dispatchApi = useMemoizedFn(async (isBatch: boolean, isFinish) => {
+  const dispatchApi = useMemoizedFn(async (isBatch?: boolean) => {
     const isRepeat = !!task.repeat_id
 
     // 循环事项
@@ -74,7 +82,7 @@ const _StatusBox: FC<IProps> = (props) => {
         return TaskApi.repeatFinishBatch({ repeated_tasks })
       }
       // 循环事项重启
-      else if (isFinish) {
+      else if (task.finish_time) {
         return TaskApi.repeatRestart({
           task_id: task.ref_task_id,
           repeat_id: task.repeat_id || ''
@@ -106,18 +114,15 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus?.()
     setVisible(false)
     try {
-      // if (task.repeat_id && !task.repeat_type && task.finish_time) {
-      //   message.warning({ content: '循环已取消, 不支持再次打开' })
-      //   return
-      // }
+      if (!task.finish_time) {
+        setUpdating(true)
 
-      setUpdating(true)
+        await setTimeoutForIdleCallback({
+          timer: ANIMATION_DURATION
+        })
 
-      await setTimeoutForIdleCallback({
-        timer: ANIMATION_DURATION
-      })
-
-      setUpdating(false)
+        setUpdating(false)
+      }
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 
@@ -132,13 +137,34 @@ const _StatusBox: FC<IProps> = (props) => {
         }
       })
 
-      await TaskDispatchApi.setTaskDispatchState(task.dispatch_id, {
-        state
-      })
+      await dispatchApi(isBatch)
     } catch (error) {
       resetStatus?.()
     }
   }
+
+  // 获取并更新子任务
+  const getAndUpdateScheduleTree = useMemoizedFn(async () => {
+    const { ref_task_id } = task
+    const { data: tasks } = await TaskApi.getScheduleTree({
+      taskId: ref_task_id
+    })
+
+    const childrenDict = getChildrenDict({
+      tasks,
+      originalId: ref_task_id
+    })
+
+    // 更新事项字典
+    batchUpdateTask(
+      tasks.map((child) => ({
+        ...child,
+        has_child: Boolean(childrenDict[child.ref_task_id])
+      }))
+    )
+
+    batchUpdateChildDict(childrenDict)
+  })
 
   const buildIcon = useMemoizedFn(() => {
     const { matter_type: matterType, finish_time: finishTime } = task
@@ -160,9 +186,27 @@ const _StatusBox: FC<IProps> = (props) => {
             alt="checkingIcon"
           />
         )
+
+      if (task.flow_step_id && task.ref_task_id) {
+        console.log('工作流应用***')
+
+        return (
+          <WorkflowOperation
+            creator_id={task.creator_id}
+            taskId={task.ref_task_id}
+            curStepId={task.flow_step_id}
+            complete_at={task.complete_at}
+            size={14}
+            status={getOperationStatus(task, userId)}
+            changeStatus={changeStatus}
+          />
+        )
+      }
       // 完成状态
       return task.finish_time ? (
         <TaskCheckIcon
+          width={14}
+          height={14}
           onClick={(e) => {
             e.stopPropagation()
             handleComplete()
@@ -170,9 +214,12 @@ const _StatusBox: FC<IProps> = (props) => {
         />
       ) : (
         <UncheckIcon
+          width={14}
+          height={14}
           onClick={(e) => {
             e.stopPropagation()
             if (task.has_child) {
+              getAndUpdateScheduleTree()
               setVisible(true)
               return
             }
@@ -183,15 +230,27 @@ const _StatusBox: FC<IProps> = (props) => {
     }
 
     if (ScheduleTaskConst.MatterType.meeting === matterType) {
-      return !finishTime ? <MeetingIcon /> : <MeetingFinishedIcon />
+      return !finishTime ? (
+        <MeetingIcon width={14} height={14} />
+      ) : (
+        <MeetingFinishedIcon width={14} height={14} />
+      )
     }
 
     if (ScheduleTaskConst.MatterType.timeCollect === matterType) {
-      return !finishTime ? <TimeCollectIcon /> : <TimeCollectFinishIcon />
+      return !finishTime ? (
+        <TimeCollectIcon width={14} height={14} />
+      ) : (
+        <TimeCollectFinishIcon width={14} height={14} />
+      )
     }
 
     if (ScheduleTaskConst.MatterType.calendar === matterType) {
-      return !finishTime ? <CalendarIcon /> : <CalendarFinish />
+      return !finishTime ? (
+        <CalendarIcon width={14} height={14} />
+      ) : (
+        <CalendarFinish width={14} height={14} />
+      )
     }
   })
 
@@ -207,7 +266,7 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        {buildIcon()}
+        <div>{buildIcon()}</div>
       </AcceptOnceMany>
     </div>
   )

@@ -1,6 +1,7 @@
 export interface IPower {
   title: string
   active: boolean
+  isDiyRender?: string
 }
 
 export interface IInfoType {
@@ -16,6 +17,7 @@ export interface IInfoType {
   unit: '' | '月' | '年'
   moneyText?: string
   powerList: IPower[]
+  isDiyRender?: string
 }
 
 export const memberPowerStaticData: IInfoType[] = [
@@ -32,10 +34,6 @@ export const memberPowerStaticData: IInfoType[] = [
     unit: '',
     powerList: [
       {
-        title: '永久免费',
-        active: true
-      },
-      {
         title: '无限事项数量',
         active: true
       },
@@ -48,7 +46,7 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '日、周、月、全量视图',
+        title: '基础视图',
         active: true
       },
       {
@@ -60,10 +58,6 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '事项协作人数20人',
-        active: true
-      },
-      {
         title: '单个文件上限50M',
         active: true
       },
@@ -72,20 +66,13 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '自定义视图1个',
-        active: true
-      },
-      {
         title: '个人目标20个',
         active: true
       },
       {
-        title: '免费团队空间1个',
-        active: true
-      },
-      {
-        title: '全量表头数量5个',
-        active: true
+        title: '1个',
+        active: true,
+        isDiyRender: 'free_space'
       }
     ]
   },
@@ -98,8 +85,8 @@ export const memberPowerStaticData: IInfoType[] = [
     btnTextColor: '#FFFFFF',
     btnBgColor: 'linear-gradient(270.34deg, #FFB85E 2.92%, #FFD075 97.6%)',
     btnBorderColor: 'none',
-    money: 12,
-    unit: '月',
+    money: 128,
+    unit: '年',
     powerList: [
       {
         title: '包含所有免费账户能力',
@@ -172,15 +159,21 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '支持创建无限的专业团队空间',
+        title: '无限',
+        active: true,
+        isDiyRender: 'free_space'
+      },
+      {
+        title: '无限',
+        active: true,
+        isDiyRender: 'professional_space'
+      },
+      {
+        title: '无限项目项目数量',
         active: true
       },
       {
-        title: '支持创建无限的项目',
-        active: true
-      },
-      {
-        title: '协作人数无限',
+        title: '无限协作人数',
         active: true
       },
       {
@@ -210,14 +203,6 @@ export const memberPowerStaticData: IInfoType[] = [
       {
         title: '团队目标',
         active: true
-      },
-      {
-        title: '团队应用库',
-        active: true
-      },
-      {
-        title: '……',
-        active: false
       }
     ]
   },

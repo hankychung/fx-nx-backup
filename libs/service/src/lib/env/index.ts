@@ -23,6 +23,10 @@ class EnvStore {
   getHost() {
     return this.info[this.env].host
   }
+
+  updateEnvByClient(env: 'dev' | 'test' | 'prod') {
+    this.env = env
+  }
 }
 
 export const envStore = new EnvStore()

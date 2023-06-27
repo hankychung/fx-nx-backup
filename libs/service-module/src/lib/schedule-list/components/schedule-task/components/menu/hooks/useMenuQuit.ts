@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
+import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
 
 /**
  * 取消相关hooks
@@ -17,13 +18,9 @@ import { useExitTask } from '../../../../../utils/hooks/useExitTask'
 import { useExitTodo } from '../../../../../utils/hooks/useExitTodo'
 import { useExitMeeting } from '../../../../../utils/hooks/useExitMeeting'
 
-export const useMenuQuit = ({
-  data,
-  userId
-}: {
-  data: IScheduleTask
-  userId: string
-}): IAction => {
+export const useMenuQuit = ({ data }: { data: IScheduleTask }): IAction => {
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
   const cancelTask = useCancelTask({ taskId: data.ref_task_id })
   const exitTask = useExitTask({ taskId: data.ref_task_id })
   const cancelTodo = useCancelTodo({ taskId: data.ref_task_id })

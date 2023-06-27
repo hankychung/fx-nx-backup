@@ -1,8 +1,11 @@
-import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../useScheduleStore'
+import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
 import { ScheduleTaskConst } from '@flyele-nx/service'
+import { TaskHandler } from '../taskHandler'
+import { globalNxController } from '../../../global/nxController'
+import PUB from '../../../global/types/pubsub'
 
 /**
  * 用于退出代办的hook，外部给taskId，其余逻辑在这里完成
@@ -18,14 +21,14 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
 
   // 检查是否为挂件
   // const isVipWin = document.getElementById('vipSmallToolsWinNow')
-  // const forVipSmallWin = () => {
-  //   if (isVipWin) {
-  //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
-  //   }
-  // }
+  const forVipSmallWin = () => {
+    //   if (isVipWin) {
+    //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
+    //   }
+  }
   // 检测网络状态
   // 消息提示
-  // const [showMsg] = useMessage()
+  const [showMsg] = useMessage()
 
   /**
    * 执行取消操作，这是内部方法，弹窗在下面
@@ -38,27 +41,33 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
       state: ScheduleTaskConst.CANCEL_TASK_STATE.CANCEL_MEETING
     })
     if (result) {
-      // Pubjs.publish(SUB.DELETE_MATTER_ITEM, [taskId])
-      //
-      // // TODO: 调取增量接口
-      // Pubjs.publish(SUB.DB_INCREASE_01_READUX_AND_SQLITEDB, {
-      //   task_id: taskId, // ↓ 需要更新的部分差量数据
-      //   diffObj: { task_dispatch: { state } },
-      // })
-      // 取消成功
-      // showMsg({
-      //   content: '取消成功',
-      //   msgType: '成功',
-      //   duration: 1.5,
-      // })
-      // ipcRenderer.send('close_small_tools_window_by_rid', taskId)
+      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
+
+      globalNxController.pubJsPublish(PUB.DB_INCREASE_01_READUX_AND_SQLITEDB, {
+        task_id: taskId, // ↓ 需要更新的部分差量数据
+        diffObj: {
+          task_dispatch: {
+            state: ScheduleTaskConst.CANCEL_TASK_STATE.CANCEL_MEETING
+          }
+        }
+      })
+      showMsg({
+        content: '取消成功',
+        msgType: '成功',
+        duration: 1.5
+      })
+      globalNxController.ipcRendererSend(
+        'close_small_tools_window_by_rid',
+        taskId
+      )
+      TaskHandler.removeTasks([taskId])
     } else {
-      // Pubjs.publish(SUB.DB_INCREASE_02_UPDATE_FORCE, taskId)
-      // showMsg({
-      //   content: '取消失败',
-      //   msgType: '错误',
-      //   duration: 1.5,
-      // })
+      globalNxController.pubJsPublish(PUB.DB_INCREASE_02_UPDATE_FORCE, taskId)
+      showMsg({
+        content: '取消失败',
+        msgType: '错误',
+        duration: 1.5
+      })
     }
   })
 
@@ -76,10 +85,10 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
       color: 'red',
       // 小窗需要执行一些东西，老代码
       onCancel: () => {
-        // forVipSmallWin()
+        forVipSmallWin()
       },
       onOk: () => {
-        // forVipSmallWin()
+        forVipSmallWin()
         // 执行删除逻辑
         doActionCancelMeeting(taskId)
       }

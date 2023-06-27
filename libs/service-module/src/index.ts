@@ -13,8 +13,10 @@ import { init, objectiveApi as NxObjectiveApi } from '@flyele-nx/api' //客服�
 import { AvatarEdit } from './lib/avatar-edit' //头像编辑
 import { ContextMenu } from './lib/context-menu'
 import { contextMenuTool } from './lib/context-menu/contextMenuTool'
+import { service, envStore } from '@flyele-nx/service'
+import { getDiffKeys } from './lib/schedule-list/utils'
 
-export * from './lib/schedule-list/schedule-list' // 日程列表
+export * from './lib/schedule-list' // 日程列表
 
 export {
   MapSvg,
@@ -35,6 +37,16 @@ export {
 
 export * from './lib/map-svg/type/props'
 
+export * from './lib/global'
+
 export const SMobjectiveApi = NxObjectiveApi
 
+export const updateNxEnv = envStore.updateEnvByClient.bind(envStore)
+
+export const updateNxToken = service.updateToken.bind(service)
+
 export const registerPaymentInit = init
+
+export const ScheduleUtils = {
+  getDiffKeys
+}

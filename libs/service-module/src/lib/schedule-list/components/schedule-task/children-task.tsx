@@ -1,13 +1,12 @@
 import React, { FC, memo } from 'react'
 import { IProps, ScheduleTask } from './index'
-import { useScheduleStore } from '../../utils/useScheduleStore'
+import { useScheduleStore } from '../../../store/useScheduleStore'
 
 const _ChildrenTask: FC<IProps> = ({
   taskKey,
   date,
   topId,
   curTime,
-  userId,
   isDarkMode,
   style
 }) => {
@@ -28,7 +27,6 @@ const _ChildrenTask: FC<IProps> = ({
       curTime={curTime}
       isDarkMode={isDarkMode}
       style={style}
-      userId={userId}
       isSimple={true}
     />
   )

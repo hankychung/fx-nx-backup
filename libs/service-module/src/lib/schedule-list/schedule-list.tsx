@@ -17,6 +17,7 @@ import { ListHandler } from './utils/listHandler'
 interface ScheduleListProps {
   date: string
   isFinished?: boolean
+  getFinishListTotal?: (total: number) => void
   isBoard?: boolean
   isVipWin?: boolean // 是否小挂件窗体
 }
@@ -28,7 +29,10 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished, isVipWin = false, isBoard }, ref) => {
+> = (
+  { date, isFinished, isVipWin = false, isBoard, getFinishListTotal },
+  ref
+) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -74,6 +78,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     })
 
     const list = res.data?.schedule || []
+
+    getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 
     const { keys } = batchUpdateTask(list)
 

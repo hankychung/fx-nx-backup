@@ -2,7 +2,7 @@ import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
-import { showMsg } from '@flyele-nx/ui'
+import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../../../../../global/nxController'
 import timeGetter from '../../../../../../global/timeGetter'
 
@@ -11,6 +11,7 @@ export const useMenuSelectTime = ({
 }: {
   data: IScheduleTask
 }): IAction => {
+  const [showMsg] = useMessage()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   const action = useMemoizedFn(async () => {

@@ -81,7 +81,7 @@ const _ScheduleList: ForwardRefRenderFunction<
 
     getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 
-    const { keys } = batchUpdateTask(list)
+    const { keys } = batchUpdateTask(list, { isFinished })
 
     const pRef = isFinished ? finishPageRef : pageRef
 

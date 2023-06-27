@@ -1,8 +1,6 @@
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
-import person_bac from './img/person_bac.png'
-import team_bac from './img/team_bac.png'
 import { ReactComponent as ArrowRight } from './img/arrow_right.svg'
 import { ReactComponent as Close } from './img/close.svg'
 import { ReactComponent as Customer } from './img/customer.svg'
@@ -25,6 +23,8 @@ export interface VipCountProps {
 
 function VipCount({ handleClose, handleConfirm, open, type }: VipCountProps) {
   const Controller = useController(new FlyBasePopperCtrl())
+  const person_bac = 'https://cdn.flyele.net/resources/PC/person_bac.png'
+  const team_bac = 'https://cdn.flyele.net/resources/PC/team_bac.png'
   return (
     <Modal
       open={open}

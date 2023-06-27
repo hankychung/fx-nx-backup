@@ -1,13 +1,9 @@
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
-import person_bac from './img/person_bac.png'
-import team_bac from './img/team_bac.png'
 import { ReactComponent as ArrowRight } from './img/arrow_right.svg'
 import { ReactComponent as Close } from './img/close.svg'
 import { ReactComponent as Customer } from './img/customer.svg'
-import { ReactComponent as PersonInter } from './img/person_inter.svg'
-import { ReactComponent as TeamInter } from './img/team_inter.svg'
 import {
   FlyBasePopper,
   FlyBasePopperCtrl,
@@ -31,6 +27,10 @@ function VipInterests({
   type
 }: VipInterestsProps) {
   const Controller = useController(new FlyBasePopperCtrl())
+  const person_bac = 'https://cdn.flyele.net/resources/PC/person_bac.png'
+  const team_bac = 'https://cdn.flyele.net/resources/PC/team_bac.png'
+  const person_inter = 'https://cdn.flyele.net/resources/PC/person_inter.png'
+  const team_inter = 'https://cdn.flyele.net/resources/PC/team_inter.png'
   return (
     <Modal
       open={open}
@@ -101,8 +101,24 @@ function VipInterests({
             </div>
           </div>
           <div className={styles.content_block}>
-            {type === 'personVipFunction' && <PersonInter></PersonInter>}
-            {type === 'teamVipFunction' && <TeamInter></TeamInter>}
+            {type === 'personVipFunction' && (
+              <div>
+                <img
+                  src={person_inter}
+                  alt=""
+                  style={{ width: '606px', height: '336px' }}
+                />
+              </div>
+            )}
+            {type === 'teamVipFunction' && (
+              <div>
+                <img
+                  src={team_inter}
+                  alt=""
+                  style={{ width: '606px', height: '336px' }}
+                />
+              </div>
+            )}
             <div className={styles.content_btn}>
               <div
                 className={classNames(styles.btn, {

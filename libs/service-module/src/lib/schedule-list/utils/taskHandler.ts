@@ -17,7 +17,7 @@ class TaskHandler {
   }: {
     keys: string[]
     diff: Partial<IScheduleTask>
-    keysWithRepeatIds: string[]
+    keysWithRepeatIds?: string[]
   }) {
     const { taskDict } = useScheduleStore.getState()
 
@@ -39,7 +39,7 @@ class TaskHandler {
         ListHandler.batchComplete(keys)
       } else {
         // 重启事项
-        ListHandler.batchReopen(keysWithRepeatIds)
+        keysWithRepeatIds && ListHandler.batchReopen(keysWithRepeatIds)
       }
 
       return

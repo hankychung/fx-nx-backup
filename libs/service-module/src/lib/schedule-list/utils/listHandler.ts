@@ -31,6 +31,24 @@ class ListHandler {
     this.insertTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
   }
 
+  // 更新器
+  private static listReloader: { [k: string]: () => unknown } = {}
+
+  // 列表更新收集器
+  static collectReloader(k: string, reloader: () => unknown) {
+    this.listReloader[k] = reloader
+  }
+
+  // 移除列表更新器
+  static removeReloader(k: string) {
+    delete this.listReloader[k]
+  }
+
+  // 更新所有列表
+  static reloadAllList() {
+    Object.values(this.listReloader).forEach((reloader) => reloader())
+  }
+
   // 根据改变的事项更新列表排序
   static sortListByTask(ids: string[]) {
     const { schedule, taskDict } = useScheduleStore.getState()

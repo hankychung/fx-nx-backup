@@ -12,10 +12,12 @@ import { useScheduleStore } from '../store/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
+import { ListHandler } from './utils/listHandler'
 
 interface ScheduleListProps {
   date: string
   isFinished?: boolean
+  isBoard?: boolean
 }
 
 interface IScheduleListRef {
@@ -25,9 +27,11 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished }, ref) => {
+> = ({ date, isFinished, isBoard }, ref) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
+
+  const reloaderId = useRef(date + isFinished + isBoard)
 
   const decentList = isFinished ? finishList : list
 
@@ -43,6 +47,16 @@ const _ScheduleList: ForwardRefRenderFunction<
     finishPageRef.current = 1
     await fetchList()
   })
+
+  useEffect(() => {
+    const id = reloaderId.current
+
+    ListHandler.collectReloader(id, reload)
+
+    return () => {
+      ListHandler.removeReloader(id)
+    }
+  }, [reload])
 
   useImperativeHandle(ref, () => {
     return {

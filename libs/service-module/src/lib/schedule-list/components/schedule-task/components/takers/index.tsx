@@ -258,10 +258,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         parentId: task.parent_id,
         project: projectInfo
       },
-      setStateFn: (id: string) => {
-        if (defaultNoSel.includes(id)) return 'freeze'
-        return 'normal'
-      },
       sensor: null,
       conditionModel: {
         modelName: 'MatterConditionModel',

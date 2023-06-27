@@ -1,2 +1,2 @@
 export * from './infoHandler'
-export { globalNxController } from './nxController'
+export { nxControllerRegister } from './nxControllerRegister'

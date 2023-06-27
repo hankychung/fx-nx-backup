@@ -82,31 +82,31 @@ class TaskHandler {
   }
 
   static removeTasks(ids: string[]) {
-    console.log('remove tasks', ids)
-
     useScheduleStore.setState(
       produce((state: IState) => {
         const { schedule, finishSchedule } = state
 
         Object.keys(schedule).forEach((date) => {
-          state.schedule[date] = schedule[date].filter(
-            (id) => !ids.includes(id)
-          )
+          if (state.schedule[date]) {
+            state.schedule[date] = schedule[date].filter(
+              (id) => !ids.includes(id)
+            )
+          }
 
-          state.finishSchedule[date] = finishSchedule[date].filter((id) => {
-            for (const k of ids) {
-              if (id.includes(k)) {
-                return false
+          if (state.finishSchedule[date]) {
+            state.finishSchedule[date] = finishSchedule[date].filter((id) => {
+              for (const k of ids) {
+                if (id.includes(k)) {
+                  return false
+                }
               }
-            }
 
-            return true
-          })
+              return true
+            })
+          }
         })
       })
     )
-
-    console.log('finishe remove', useScheduleStore.getState().schedule)
   }
 
   // TODO: 循环事项共享数据更新

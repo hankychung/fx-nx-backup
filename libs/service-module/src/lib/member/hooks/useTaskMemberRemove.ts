@@ -7,17 +7,17 @@
  * 移除包含事项、会议、待办成员 hook
  * **/
 import { useRequest } from 'ahooks'
-// import Pub from '@utils/pubsub'
-// import PUB from '@/constants/pubsub'
-// import { TakersUtils } from '../utils/takers_utils'
+import { TakersUtils } from '../utils/takers_utils'
 import {
-  // EConCheckStatus,
-  // ITakerAndStatus,
+  EConCheckStatus,
+  ITakerAndStatus,
   TaskDispatchApi
 } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { useMessage } from '@flyele-nx/ui'
 import { TaskHandler } from '../../schedule-list'
+import { globalNxController } from '../../global/nxController'
+import PUB from '../../global/types/pubsub'
 
 type IParams = {
   data: {
@@ -73,25 +73,25 @@ export const useTaskMemberRemove = () => {
 
         // 退出事项
         if (exitMap.dispatchId.length > 0) {
-          // Pub.publish(PUB.DELETE_MATTER_ITEM, [taskId])
+          globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
 
           TaskHandler.removeTasks([taskId])
         }
 
         // 移出协作人
         if (revokeMap.dispatchId.length > 0) {
-          // const takerDiff: ITakerAndStatus[] = revokeMap.userId.map((id) => {
-          //   return {
-          //     ...TakersUtils.generateTakerData(id),
-          //     status: EConCheckStatus.checked
-          //   }
-          // })
-          // Pub.publish(PUB.TASK_DETAIL_UPDATE, {
-          //   taskId,
-          //   type: 'takers',
-          //   action: 'remove',
-          //   takerDiff
-          // })
+          const takerDiff: ITakerAndStatus[] = revokeMap.userId.map((id) => {
+            return {
+              ...TakersUtils.generateTakerData(id),
+              status: EConCheckStatus.checked
+            }
+          })
+          globalNxController.pubJsPublish(PUB.TASK_DETAIL_UPDATE, {
+            taskId,
+            type: 'takers',
+            action: 'remove',
+            takerDiff
+          })
 
           TaskHandler.removeTakers({
             taskIds: [taskId],

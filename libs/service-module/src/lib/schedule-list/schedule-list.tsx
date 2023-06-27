@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 interface ScheduleListProps {
   date: string
   isFinished?: boolean
+  isVipWin?: boolean // 是否小挂件窗体
 }
 
 interface IScheduleListRef {
@@ -25,7 +26,7 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished }, ref) => {
+> = ({ date, isFinished, isVipWin = false }, ref) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -99,6 +100,7 @@ const _ScheduleList: ForwardRefRenderFunction<
             taskKey={i}
             topId={i}
             curTime={dayjs().unix()}
+            isVipWin={isVipWin}
           />
         ))}
       </InfiniteScroll>

@@ -2,11 +2,11 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-09 09:55:49
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-04-25 15:32:19
+ * @LastEditTime: 2023-06-27 11:23:17
  */
 import React from 'react'
 import { ReactComponent as CustomerModalBg } from '../../assets/payImg/customer_modal_bg.svg'
-import { ReactComponent as CustomerServicesQrcode } from '../../assets/payImg/customer_services_qrcode.svg'
+// import { ReactComponent as CustomerServicesQrcode } from '../../assets/payImg/customer_services_qrcode.svg'
 import { ReactComponent as PhoneNumIcon } from '../../assets/payImg/phone_num_icon.svg'
 import { ReactComponent as Close } from '../../assets/payImg/close.svg'
 

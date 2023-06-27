@@ -176,7 +176,6 @@ export const MemberIntroduction = ({ widthStyle }: { widthStyle: string }) => {
           />
         )
       })}
-
       <PayModal
         successRef={ChildRef}
         visible={show}

@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 interface ScheduleListProps {
   date: string
   isFinished?: boolean
+  getFinishListTotal?: (total: number) => void
 }
 
 interface IScheduleListRef {
@@ -25,7 +26,7 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished }, ref) => {
+> = ({ date, isFinished, getFinishListTotal }, ref) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -59,6 +60,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     })
 
     const list = res.data?.schedule || []
+
+    getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 
     const { keys } = batchUpdateTask(list)
 

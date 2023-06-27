@@ -3,6 +3,7 @@ import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
+import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 class TaskHandler {
   static reloadTasks(tasks: IScheduleTask[]) {
@@ -57,6 +58,14 @@ class TaskHandler {
     takerIds: string[]
     taskIds: string[]
   }) {
+    const { user_id } = useUserInfoStore.getState().userInfo
+
+    if (takerIds.includes(user_id)) {
+      this.removeTasks(taskIds)
+
+      return
+    }
+
     useScheduleStore.setState(
       produce((state: IState) => {
         const { taskDict } = state
@@ -73,6 +82,8 @@ class TaskHandler {
   }
 
   static removeTasks(ids: string[]) {
+    console.log('remove tasks', ids)
+
     useScheduleStore.setState(
       produce((state: IState) => {
         const { schedule, finishSchedule } = state
@@ -94,6 +105,8 @@ class TaskHandler {
         })
       })
     )
+
+    console.log('finishe remove', useScheduleStore.getState().schedule)
   }
 
   // TODO: 循环事项共享数据更新

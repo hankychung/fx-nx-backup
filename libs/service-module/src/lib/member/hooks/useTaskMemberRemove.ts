@@ -111,6 +111,8 @@ export const useTaskMemberRemove = () => {
       onError: (_error, [params]) => {
         const { onError } = params
 
+        console.log('remove error', _error)
+
         showMsg({
           msgType: '错误',
           content: '移除失败'

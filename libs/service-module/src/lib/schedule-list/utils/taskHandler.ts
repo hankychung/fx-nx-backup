@@ -3,6 +3,7 @@ import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
+import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 class TaskHandler {
   static reloadTasks(tasks: IScheduleTask[]) {
@@ -16,7 +17,7 @@ class TaskHandler {
   }: {
     keys: string[]
     diff: Partial<IScheduleTask>
-    keysWithRepeatIds: string[]
+    keysWithRepeatIds?: string[]
   }) {
     const { taskDict } = useScheduleStore.getState()
 
@@ -38,7 +39,7 @@ class TaskHandler {
         ListHandler.batchComplete(keys)
       } else {
         // 重启事项
-        ListHandler.batchReopen(keysWithRepeatIds)
+        keysWithRepeatIds && ListHandler.batchReopen(keysWithRepeatIds)
       }
 
       return
@@ -57,6 +58,14 @@ class TaskHandler {
     takerIds: string[]
     taskIds: string[]
   }) {
+    const { user_id } = useUserInfoStore.getState().userInfo
+
+    if (takerIds.includes(user_id)) {
+      this.removeTasks(taskIds)
+
+      return
+    }
+
     useScheduleStore.setState(
       produce((state: IState) => {
         const { taskDict } = state
@@ -78,19 +87,23 @@ class TaskHandler {
         const { schedule, finishSchedule } = state
 
         Object.keys(schedule).forEach((date) => {
-          state.schedule[date] = schedule[date].filter(
-            (id) => !ids.includes(id)
-          )
+          if (state.schedule[date]) {
+            state.schedule[date] = schedule[date].filter(
+              (id) => !ids.includes(id)
+            )
+          }
 
-          state.finishSchedule[date] = finishSchedule[date].filter((id) => {
-            for (const k of ids) {
-              if (id.includes(k)) {
-                return false
+          if (state.finishSchedule[date]) {
+            state.finishSchedule[date] = finishSchedule[date].filter((id) => {
+              for (const k of ids) {
+                if (id.includes(k)) {
+                  return false
+                }
               }
-            }
 
-            return true
-          })
+              return true
+            })
+          }
         })
       })
     )

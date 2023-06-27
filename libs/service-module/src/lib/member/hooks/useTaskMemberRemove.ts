@@ -71,6 +71,8 @@ export const useTaskMemberRemove = () => {
       onSuccess: (_res: Promise<any>[], [params]) => {
         const { taskId, exitMap, revokeMap, onSuccess } = params
 
+        console.log('removeTaker', exitMap, revokeMap)
+
         // 退出事项
         if (exitMap.dispatchId.length > 0) {
           globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
@@ -108,6 +110,8 @@ export const useTaskMemberRemove = () => {
       },
       onError: (_error, [params]) => {
         const { onError } = params
+
+        console.log('remove error', _error)
 
         showMsg({
           msgType: '错误',

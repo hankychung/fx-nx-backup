@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
+import { useScheduleStore } from '../../store/useScheduleStore'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
   compareVal: number
@@ -345,6 +346,20 @@ function isRelated(a: string[], b: string[]) {
   return false
 }
 
+function getTaskIdsByDispatch(dispatchIds: string[]) {
+  const { taskDict } = useScheduleStore.getState()
+
+  const taskIds: string[] = []
+
+  Object.entries(taskDict).forEach(([k, task]) => {
+    if (dispatchIds.includes(task.dispatch_id) && !k.includes('-')) {
+      taskIds.push(k)
+    }
+  })
+
+  return taskIds
+}
+
 export {
   getKey,
   getChildrenDict,
@@ -353,5 +368,6 @@ export {
   getRepeatDelayTotal,
   getSortedSchedule,
   isRelated,
-  getDiffKeys
+  getDiffKeys,
+  getTaskIdsByDispatch
 }

@@ -1,81 +1,23 @@
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
-import { Enter_page_detail } from './types/sensor/matter'
+import { IScheduleTask } from '@flyele-nx/service'
+import {
+  IEditTaskTime,
+  IOpenTaskDetail,
+  nxControllerRegister
+} from './nxControllerRegister'
 
-export interface IEditTaskTime {
-  taskId: string
-  task: IScheduleTask
-  isCreator: boolean
-  repeatType: number
-  matterType: ScheduleTaskConst.MatterType
-  remindAt: IScheduleTask['remind_at']
-}
-
-export interface IOpenTaskDetail {
-  task: IScheduleTask
-  enterPage: Enter_page_detail
-}
-
+/**
+ * nxController
+ * nx 控制器
+ * nx 使用其方法用于调用外部的函数
+ */
 class GlobalNxController {
-  private ipcRenderer: any = null
-  private pubJs: any = null
-  sensorTarget: any = null
-
-  editTaskTime: any = null
-  editTaskSummary: any = null
-  openTaskDetail: any = null
-
-  /**
-   * ipc注册
-   */
-  ipcRendererRegister(ipc: any) {
-    this.ipcRenderer = ipc
-  }
-
-  /**
-   * pub注册
-   */
-  pubJsRegister(pubJs: any) {
-    this.pubJs = pubJs
-  }
-
-  /**
-   * sensorTarget 埋点注册
-   */
-  sensorSendRegister(callback: (type: string, data: any) => void) {
-    this.sensorTarget = callback
-  }
-
-  /**
-   * editTaskTime注册
-   * 修改事项时间
-   */
-  editTaskTimeRegister(callback: (data: IEditTaskTime) => void) {
-    this.editTaskTime = callback
-  }
-
-  /**
-   * editTaskSummary注册
-   * 修改事项总结
-   */
-  editTaskSummaryRegister(callback: (data: { task: IScheduleTask }) => void) {
-    this.editTaskSummary = callback
-  }
-
-  /**
-   * openTaskDetail注册
-   * 打开事项详情弹窗
-   */
-  openTaskDetailRegister(callback: (data: IOpenTaskDetail) => void) {
-    this.openTaskDetail = callback
-  }
-
   /**
    * ipc invoke
    */
   ipcRendererInvoke(channel: string, params: any) {
-    if (this.ipcRenderer) {
+    if (nxControllerRegister.ipcRenderer) {
       try {
-        this.ipcRenderer.invoke(channel, params)
+        nxControllerRegister.ipcRenderer.invoke(channel, params)
       } catch (e) {
         console.log('ipcRenderer.invoke 失败', e)
       }
@@ -88,9 +30,9 @@ class GlobalNxController {
    * ipc send
    */
   ipcRendererSend(channel: string, params: any) {
-    if (this.ipcRenderer) {
+    if (nxControllerRegister.ipcRenderer) {
       try {
-        this.ipcRenderer.send(channel, params)
+        nxControllerRegister.ipcRenderer.send(channel, params)
       } catch (e) {
         console.log('ipcRenderer.send 失败', e)
       }
@@ -103,9 +45,9 @@ class GlobalNxController {
    * pub publish
    */
   pubJsPublish(message: string, data: any) {
-    if (this.pubJs) {
+    if (nxControllerRegister.pubJs) {
       try {
-        this.pubJs.publish(message, data)
+        nxControllerRegister.pubJs.publish(message, data)
       } catch (e) {
         console.log('pubJs.publish 失败', e)
       }
@@ -118,9 +60,9 @@ class GlobalNxController {
    * 发送埋点
    */
   sensorSend(type: string, data: any) {
-    if (this.sensorTarget) {
+    if (nxControllerRegister.sensorTarget) {
       try {
-        this.sensorTarget(type, data)
+        nxControllerRegister.sensorTarget(type, data)
       } catch (e) {
         console.log('sensorSend 失败', e)
       }
@@ -134,9 +76,9 @@ class GlobalNxController {
    * 需要外部弹出日期选择器
    */
   openEditTaskTime(data: IEditTaskTime) {
-    if (this.editTaskTime) {
+    if (nxControllerRegister.editTaskTime) {
       try {
-        this.editTaskTime(data)
+        nxControllerRegister.editTaskTime(data)
       } catch (e) {
         console.log('editTaskTime 失败', e)
       }
@@ -150,9 +92,9 @@ class GlobalNxController {
    * 需要外部弹出事项总结，弹出前的判断也要外部写
    */
   openEditTaskSummary(data: { task: IScheduleTask }) {
-    if (this.editTaskSummary) {
+    if (nxControllerRegister.editTaskSummary) {
       try {
-        this.editTaskSummary(data)
+        nxControllerRegister.editTaskSummary(data)
       } catch (e) {
         console.log('editTaskSummary 失败', e)
       }
@@ -165,9 +107,9 @@ class GlobalNxController {
    * 点击事项卡片
    */
   openTaskDetailWindow(data: IOpenTaskDetail) {
-    if (this.openTaskDetail) {
+    if (nxControllerRegister.openTaskDetail) {
       try {
-        this.openTaskDetail(data)
+        nxControllerRegister.openTaskDetail(data)
       } catch (e) {
         console.log('openTaskDetail 失败', e)
       }

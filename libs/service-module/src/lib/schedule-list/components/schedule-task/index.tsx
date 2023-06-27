@@ -32,8 +32,9 @@ import { Takers } from './components/takers'
 import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
-import { contextMenuTool, globalNxController } from '../../../../index'
+import { contextMenuTool } from '../../../../index'
 import { Enter_page_detail } from '../../../global/types/sensor/matter'
+import { globalNxController } from '../../../global/nxController'
 
 export interface IProps {
   taskKey: string

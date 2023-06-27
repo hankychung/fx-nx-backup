@@ -10,13 +10,13 @@ class TaskHandler {
     this.updateTaskDict(tasks)
   }
 
-  static allTasksModifier(handler: (task: IScheduleTask) => void) {
+  static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {
     const { taskDict } = useScheduleStore.getState()
 
     useScheduleStore.setState(
       produce((state: IState) => {
         Object.keys(taskDict).forEach((k) => {
-          handler(state.taskDict[k])
+          taskDict[k] = handler(state.taskDict[k])
         })
       })
     )

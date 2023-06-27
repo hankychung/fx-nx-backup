@@ -29,10 +29,6 @@ export interface IHandlerTaskAddTaker {
     parentId?: string
     project: ProjectType.IBaseProjectInfo
   }
-  setStateFn?: (
-    id: string,
-    preState: ICircleCheckBoxState
-  ) => ICircleCheckBoxState
   sensor?: any
   conditionModel?: {
     modelName: string

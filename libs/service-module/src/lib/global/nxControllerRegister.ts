@@ -14,7 +14,7 @@ class NxControllerRegister {
   pubJs: any = null
   sensorTarget: any = null
 
-  editTaskTime: any = null
+  editTaskTime: ((data: IEditTaskTime) => void) | null = null
   editTaskSummary: any = null
   openTaskDetail: any = null
   handlerTaskAddTaker: any = null

@@ -18,6 +18,7 @@ interface ScheduleListProps {
   date: string
   isFinished?: boolean
   isBoard?: boolean
+  isVipWin?: boolean // 是否小挂件窗体
 }
 
 interface IScheduleListRef {
@@ -27,7 +28,7 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished, isBoard }, ref) => {
+> = ({ date, isFinished, isVipWin = false, isBoard }, ref) => {
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -113,6 +114,7 @@ const _ScheduleList: ForwardRefRenderFunction<
             taskKey={i}
             topId={i}
             curTime={dayjs().unix()}
+            isVipWin={isVipWin}
           />
         ))}
       </InfiniteScroll>

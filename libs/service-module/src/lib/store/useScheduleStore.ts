@@ -62,6 +62,8 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      * 初始化/更新事项列表
      */
     updateList({ date, list, isInit, isFinished }) {
+      console.log('NXupdateList', { date, list, isInit, isFinished })
+
       set(
         produce((state: IState) => {
           const { taskDict } = state

@@ -10,6 +10,18 @@ class TaskHandler {
     this.updateTaskDict(tasks)
   }
 
+  static allTasksModifier(handler: (task: IScheduleTask) => void) {
+    const { taskDict } = useScheduleStore.getState()
+
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        Object.keys(taskDict).forEach((k) => {
+          handler(state.taskDict[k])
+        })
+      })
+    )
+  }
+
   static batchModify({
     keys,
     diff,

@@ -63,4 +63,15 @@
       border-radius: 8px;
     }
   }
+
+  .customer_service {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+
+    button {
+      display: flex;
+      align-items: center;
+    }
+  }
 }

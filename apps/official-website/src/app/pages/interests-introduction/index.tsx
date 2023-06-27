@@ -3,11 +3,19 @@ import styles from './index.module.scss'
 import {
   MemberIntroduction,
   IdentityEqualComparison,
-  SpaceEqualComparison
+  SpaceEqualComparison,
+  CustomerServicesModal
 } from '@flyele-nx/service-module'
 import { useMount } from 'ahooks'
-
+import {
+  FlyBasePopper,
+  FlyBasePopperCtrl,
+  useController
+} from '@flyele/flyele-components'
+import { Button } from 'antd'
+import { ReactComponent as CustomerIcon } from '../../../assets/icons/customer_service.svg'
 const InterestsIntroduction = () => {
+  const Controller = useController(new FlyBasePopperCtrl())
   // 在移动端ui没出来之前，暂时直接把宽度拉大 临时方案
   const [widthStyle, setWidthStyle] = useState('100%')
   // 权益身份对比切换状态true为身份权益对比,false为空间权益对比
@@ -71,7 +79,33 @@ const InterestsIntroduction = () => {
           免费使用
         </div>
       </div>
-      <div></div>
+      <div className={styles.customer_service}>
+        <FlyBasePopper
+          controller={Controller}
+          trigger="click"
+          placement="bottom-end"
+          showArrow={false}
+          zIndex={1003}
+          content={() => (
+            <div>
+              <CustomerServicesModal
+                onClose={() => {
+                  Controller.hide()
+                }}
+              ></CustomerServicesModal>
+            </div>
+          )}
+        >
+          <Button
+            onClick={() => {
+              Controller.show()
+            }}
+            icon={<CustomerIcon />}
+          >
+            联系客服
+          </Button>
+        </FlyBasePopper>
+      </div>
     </div>
   )
 }

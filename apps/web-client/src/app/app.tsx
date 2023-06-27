@@ -4,7 +4,7 @@ import {
   ContextMenu,
   contextMenuTool
 } from '@flyele-nx/service-module'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useMessage } from '@flyele-nx/ui'
 
 envStore.initEnv(process.env.NODE_ENV as string)

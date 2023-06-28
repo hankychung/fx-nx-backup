@@ -259,6 +259,8 @@ const _StatusBox: FC<IProps> = (props) => {
       <AcceptOnceMany
         visible={visible} // 气泡框显示状态
         visibleChange={(v) => {
+          console.trace()
+          if (v) return
           setVisible(v)
         }} // 设置气泡框显隐
         taskList={childrenIds}

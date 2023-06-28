@@ -16,7 +16,7 @@ class TaskHandler {
     useScheduleStore.setState(
       produce((state: IState) => {
         Object.keys(taskDict).forEach((k) => {
-          taskDict[k] = handler(state.taskDict[k])
+          state.taskDict[k] = handler(state.taskDict[k])
         })
       })
     )
@@ -136,6 +136,12 @@ class TaskHandler {
         })
       })
     )
+  }
+
+  // 创建新事项
+  static createTasks(tasks: IScheduleTask[]) {
+    this.updateTaskDict(tasks)
+    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
   }
 }
 

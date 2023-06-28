@@ -5,6 +5,7 @@ import {
   contextMenuTool
 } from '@flyele-nx/service-module'
 import React from 'react'
+import { useMessage } from '@flyele-nx/ui'
 
 envStore.initEnv(process.env.NODE_ENV as string)
 
@@ -13,8 +14,11 @@ service.updateToken(
 )
 
 export function App() {
+  const [, , contextHolder] = useMessage()
+
   return (
     <>
+      {contextHolder}
       <ScheduleList date="2023-06-26" />
       <ContextMenu ref={(r) => contextMenuTool.registerContextMenu(r)} />
     </>

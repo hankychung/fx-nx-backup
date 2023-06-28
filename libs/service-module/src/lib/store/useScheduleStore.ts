@@ -24,7 +24,12 @@ interface IMutation {
     isInit?: boolean
     isFinished?: boolean
   }) => void
-  batchUpdateTask: (tasks: IScheduleTask[]) => { keys: string[] }
+  batchUpdateTask: (
+    tasks: IScheduleTask[],
+    options?: { isFinished?: boolean }
+  ) => {
+    keys: string[]
+  }
   updateExpandedDict: (info: {
     date: string
     taskId: string
@@ -94,8 +99,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
     /**
      * 批量更新事项字典
      */
-    batchUpdateTask(arr) {
+    batchUpdateTask(arr, options) {
       const keys: string[] = []
+
+      const isFinished = options?.isFinished
 
       set(
         produce((state: IState) => {
@@ -115,7 +122,12 @@ const useScheduleStore = create<IState & IMutation>((set) => {
               keys.push(item.ref_task_id)
             }
 
-            dict[ref_task_id] = item
+            if (isFinished && repeat_id) {
+              // do nothing
+              // 不写入纯ref_task_id字典
+            } else {
+              dict[ref_task_id] = item
+            }
           })
 
           state.taskDict = {

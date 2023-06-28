@@ -3,9 +3,10 @@ import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
-import { showMsg } from '@flyele-nx/ui'
+import { useMessage } from '@flyele-nx/ui'
 
 export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
+  const [showMsg] = useMessage()
   const { hideOrShow } = useHide()
 
   const action = useMemoizedFn(() => {

@@ -3,7 +3,8 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
-  ForwardRefRenderFunction
+  ForwardRefRenderFunction,
+  useMemo
 } from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
@@ -13,6 +14,7 @@ import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
 import { ListHandler } from './utils/listHandler'
+import timeGetter from '../global/timeGetter'
 
 interface ScheduleListProps {
   date: string
@@ -30,9 +32,20 @@ const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
 > = (
-  { date, isFinished, isVipWin = false, isBoard, getFinishListTotal },
+  {
+    date,
+    isFinished: _isFinished,
+    isVipWin = false,
+    isBoard,
+    getFinishListTotal
+  },
   ref
 ) => {
+  const isFinished = useMemo(() => {
+    const curTime = timeGetter.getDateRoughly()
+    return _isFinished || dayjs.unix(curTime).isAfter(dayjs(date), 'date')
+  }, [_isFinished, date])
+
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
 
@@ -81,7 +94,7 @@ const _ScheduleList: ForwardRefRenderFunction<
 
     getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 
-    const { keys } = batchUpdateTask(list)
+    const { keys } = batchUpdateTask(list, { isFinished })
 
     const pRef = isFinished ? finishPageRef : pageRef
 
@@ -121,6 +134,7 @@ const _ScheduleList: ForwardRefRenderFunction<
             topId={i}
             curTime={dayjs().unix()}
             isVipWin={isVipWin}
+            isBoard={isBoard}
           />
         ))}
       </InfiniteScroll>

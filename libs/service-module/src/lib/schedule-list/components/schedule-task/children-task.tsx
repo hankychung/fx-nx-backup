@@ -7,6 +7,7 @@ const _ChildrenTask: FC<IProps> = ({
   date,
   topId,
   curTime,
+  listKey,
   isDarkMode,
   style,
   isVipWin = false
@@ -24,6 +25,7 @@ const _ChildrenTask: FC<IProps> = ({
     <ScheduleTask
       date={date}
       taskKey={taskKey}
+      listKey={listKey}
       topId={topId}
       curTime={curTime}
       isDarkMode={isDarkMode}

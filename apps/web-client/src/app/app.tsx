@@ -19,7 +19,7 @@ export function App() {
   return (
     <>
       {contextHolder}
-      <ScheduleList date="2023-06-28" isBoard={true} />
+      <ScheduleList date="2023-06-28" isBoard={true} listKey="board" />
       <ContextMenu ref={(r) => contextMenuTool.registerContextMenu(r)} />
     </>
   )

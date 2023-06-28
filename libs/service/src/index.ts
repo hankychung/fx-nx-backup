@@ -29,6 +29,7 @@ import {
   RepeatList
 } from './lib/typings/schedule'
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
+import * as CreateTypeMap from './lib/typings/schedule/createTypeMap'
 
 import { IWorkflowStep, IUserStepInfo } from './lib/typings/workflow'
 import * as WorkflowConst from './lib/typings/workflow/const'
@@ -75,6 +76,7 @@ export {
   TaskDispatchApi,
   OrderSystemConst,
   ScheduleTaskConst,
+  CreateTypeMap,
   TagConst,
   LabelApi,
   AuthConst,

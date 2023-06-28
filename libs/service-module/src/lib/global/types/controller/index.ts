@@ -34,4 +34,5 @@ export interface IHandlerTaskAddTaker {
     modelName: string
     params: any
   }
+  isSmallTool?: boolean // 是否小工具
 }

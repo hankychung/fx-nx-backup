@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-07 17:46:20
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-05-09 09:35:44
+ * @LastEditTime: 2023-06-28 17:45:03
  * @FilePath: /electron-client/app/components/PersonPayModal/components/VipPackage/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -95,7 +95,7 @@ const VipPackage = (props: Iprops) => {
     setTabs(newTab)
   })
   const getCou = useMemoizedFn(() => {
-    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4] }).then((_) => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
       if (_.data) {
         setCouponList(_.data)
       } else {

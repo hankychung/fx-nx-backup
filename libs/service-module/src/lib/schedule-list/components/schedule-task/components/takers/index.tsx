@@ -38,6 +38,7 @@ interface IPROPTakers {
    * 查该事项的参与者
    */
   taskId: string
+  listKey: string
   /**
    * 最多显示多少头像
    */
@@ -66,6 +67,7 @@ const defaultMatterAuthWithFetch: IAuthWithFetched = {
 export const Takers: React.FC<IPROPTakers> = (props) => {
   const {
     taskId,
+    listKey,
     isDarkMode = false,
     isVipWin = false,
     isBoard = false
@@ -222,7 +224,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       },
       isSmallTool
     }
-    globalNxController.onHandlerTaskAddTaker(params)
+    globalNxController.onHandlerTaskAddTaker(params, listKey)
   })
 
   // 协作人弹窗

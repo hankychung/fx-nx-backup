@@ -79,21 +79,13 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const { contactDict } = useContactStore()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
-  // const [chosenStep, setChosenStep] = useState<string>()
-
-  // const [showAddMerbersModal, setShowAddMerbersModal] = useState(false)
-
   const stepList = useMemo(
     () => stepsFormatter(steps, curStepId, !!addUser),
     [steps, curStepId, addUser]
   )
 
   const openSteps = useMemoizedFn(() => {
-    console.log('steps.length***', steps.length)
-
     if (isHovering && steps.length) {
-      console.log('show***')
-
       ctrl.show()
     } else {
       setShowPopper(false)
@@ -219,7 +211,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
 
       setAddUser({
         avatar: user?.avatar || '',
-        name: user?.original_name || user?.nick_name || '测试',
+        name: user?.original_name || user?.nick_name,
         isTeamVip: user?.isTeamVip,
         isVip: user?.isVip
       })

@@ -157,9 +157,7 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
 
   // 日期在该事项的时间区间内
   const duringTask =
-    startTime &&
-    endTime &&
-    (startTime <= dateStartUnix || endTime >= dateEndUnix)
+    startTime && endTime && startTime <= dateStartUnix && endTime >= dateEndUnix
 
   // 未来开始无截止 且在当前选中日期
   const futureStart =

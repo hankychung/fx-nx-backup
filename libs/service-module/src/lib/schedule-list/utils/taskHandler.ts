@@ -2,12 +2,29 @@ import { produce } from 'immer'
 import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
-import { getKey } from '.'
+import { getKey, isRelated } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 class TaskHandler {
   static reloadTasks(tasks: IScheduleTask[]) {
     this.updateTaskDict(tasks)
+
+    const { schedule } = useScheduleStore.getState()
+
+    const taskIds = tasks.map((t) => t.ref_task_id)
+
+    // 从所有未完成列表移除事项
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        Object.entries(schedule).forEach(([date, keys]) => {
+          if (isRelated(keys, taskIds)) {
+            state.schedule[date] = keys.filter((k) => !taskIds.includes(k))
+          }
+        })
+      })
+    )
+
+    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
   }
 
   static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {

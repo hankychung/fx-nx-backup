@@ -5,13 +5,29 @@ import { ListHandler } from './listHandler'
 import { getKey, isRelated } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 
+interface IReloadTasksParams {
+  task: IScheduleTask[]
+  id: string[]
+}
+
+function isTasks(a: any): a is IReloadTasksParams['task'] {
+  return typeof a[0] !== 'string'
+}
+
 class TaskHandler {
-  static reloadTasks(tasks: IScheduleTask[]) {
-    this.updateTaskDict(tasks)
+  static reloadTasks<T extends keyof IReloadTasksParams>(
+    type: T,
+    val: IReloadTasksParams[T]
+  ) {
+    if (isTasks(val)) {
+      this.updateTaskDict(val)
+    }
 
     const { schedule } = useScheduleStore.getState()
 
-    const taskIds = tasks.map((t) => t.ref_task_id)
+    const taskIds = isTasks(val)
+      ? val.map((t) => t.ref_task_id)
+      : (val as IReloadTasksParams['id'])
 
     // 从所有未完成列表移除事项
     useScheduleStore.setState(
@@ -24,7 +40,7 @@ class TaskHandler {
       })
     )
 
-    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
+    ListHandler.insertTasks(taskIds)
   }
 
   static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {

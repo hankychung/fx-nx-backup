@@ -159,6 +159,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   const onClickTask = useMemoizedFn((e: MouseEvent) => {
     e.stopPropagation()
 
+    /**
+     * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
+     */
     const contextMenuVisible = contextMenuTool.getVisible()
     if (contextMenuVisible) {
       contextMenuTool.close()

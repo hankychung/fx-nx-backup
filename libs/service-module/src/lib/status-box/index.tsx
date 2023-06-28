@@ -273,7 +273,7 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        <div>{buildIcon()}</div>
+        <div className={styles.iconBox}>{buildIcon()}</div>
       </AcceptOnceMany>
     </div>
   )

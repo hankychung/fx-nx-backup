@@ -77,8 +77,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const [status, setStatus] = useState<IOperation>(statusFromProps)
   const getStepsLoading = useRef(false)
   const { contactDict } = useContactStore()
-  const userId =
-    useUserInfoStore((state) => state.userInfo.user_id) || '2581094491488455'
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   // const [chosenStep, setChosenStep] = useState<string>()
 

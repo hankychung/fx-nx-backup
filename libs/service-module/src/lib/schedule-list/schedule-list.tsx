@@ -134,6 +134,7 @@ const _ScheduleList: ForwardRefRenderFunction<
             topId={i}
             curTime={dayjs().unix()}
             isVipWin={isVipWin}
+            isBoard={isBoard}
           />
         ))}
       </InfiniteScroll>

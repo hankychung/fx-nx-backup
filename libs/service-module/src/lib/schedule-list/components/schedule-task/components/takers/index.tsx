@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  MouseEvent,
-  useMemo
-} from 'react'
+import React, { useState, useEffect, MouseEvent, useMemo } from 'react'
 import cs from 'classnames'
 import {
   FlyAvatarGroup,
@@ -124,7 +118,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const popCtrl = useController(new FlyBasePopperCtrl())
 
   // 获取权限
-  const fetchPower = useCallback(async () => {
+  const fetchPower = useMemoizedFn(async () => {
     const {
       data: { task_equity: q, member, member_equity }
     } = await UsercApi.taskPower(taskId)
@@ -169,7 +163,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
 
     return resObj
-  }, [taskId])
+  })
 
   // 是否在事项里面
   const isInTask = useMemo(() => {
@@ -179,13 +173,15 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   }, [isCreator, takers, userId])
 
   // 是否可以添加
-  const isCanAdd = useCallback(async () => {
+  const isCanAdd = useMemoizedFn(async () => {
     let resAuth = auth
 
+    console.log('@@@ 进入 isCanAdd', resAuth)
     if (!resAuth.isFetched) {
       resAuth = await fetchPower()
     }
 
+    console.log('@@@ resAuth', resAuth)
     if (takers.length >= resAuth.maxTaker) {
       showMsg({
         msgType: '消息',
@@ -194,6 +190,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       return false
     }
 
+    console.log('@@@ isInTask', isInTask)
     if (!isInTask) {
       showMsg({
         msgType: '错误',
@@ -202,7 +199,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       return false
     }
     return true
-  }, [auth, fetchPower, isInTask, showMsg, takers.length])
+  })
 
   /**
    * 通知外部打开协作人邀请弹窗
@@ -246,22 +243,22 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   })
 
   // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
-  const editTakers = useCallback(
-    async (e: MouseEvent) => {
-      e.stopPropagation()
-      const status = getOperationStatus(task, userId)
+  const editTakers = useMemoizedFn(async (e: MouseEvent) => {
+    e.stopPropagation()
+    const status = getOperationStatus(task, userId)
+    console.log('@@@ 进入 editTakers', status, isSmallTool)
 
-      if (status === 'complete') {
-        showMsg({ content: '已完成的工作流事项不支持添加人' })
-        return
-      }
+    if (status === 'complete') {
+      showMsg({ content: '已完成的工作流事项不支持添加人' })
+      return
+    }
 
-      if (await isCanAdd()) {
-        popCtrl.addClickAlwaysHide().show()
-      }
-    },
-    [isCanAdd, popCtrl, showMsg, task, userId]
-  )
+    console.log('@@@ 进入这里 1')
+    if (await isCanAdd()) {
+      console.log('@@@ 进入这里 2')
+      popCtrl.addClickAlwaysHide().show()
+    }
+  })
 
   // 检测，获取，写入takers信息
   useEffect(() => {

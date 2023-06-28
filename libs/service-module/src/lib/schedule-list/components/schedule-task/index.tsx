@@ -204,7 +204,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode
+        [styles.darkMode]: isDarkMode,
+        [styles.complexSchedulePadding]: !isBoard
       })}
       style={{
         background: isDarkMode ? '#3b3e4b' : '#fff',
@@ -266,20 +267,29 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               {!isSimple && (
                 <div className={styles.info}>
                   <div className={styles.infoMain}>
-                    <div className={styles.singleLine}>
+                    <div
+                      className={
+                        isBoard ? styles.singleLine : styles.reverseSort
+                      }
+                    >
                       <Time
                         taskId={taskKey}
                         curTime={curTime}
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
+                      {!isBoard && (
+                        <Tags taskId={taskKey} wrapClassName={styles.tags} />
+                      )}
                       <Takers
                         taskId={taskKey}
                         isDarkMode={isDarkMode}
                         isVipWin={isVipWin}
                         isBoard={isBoard}
                       />
-                      <Tags taskId={taskKey} />
+                      {isBoard && (
+                        <Tags taskId={taskKey} wrapClassName={styles.tags} />
+                      )}
                     </div>
                   </div>
                   {isShowMenu && (

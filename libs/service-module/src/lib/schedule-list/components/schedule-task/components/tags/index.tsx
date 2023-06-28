@@ -14,9 +14,10 @@ import { useScheduleStore } from '../../../../../store/useScheduleStore'
 
 interface IPROPTags {
   taskId: string
+  wrapClassName?: string
 }
 
-export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
+export const Tags: React.FC<IPROPTags> = ({ taskId, wrapClassName }) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const isVipSmallTool = false
   const isBoard = true
@@ -34,7 +35,7 @@ export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
 
   return (
     <div
-      className={cs(styles.tagsOuter, {
+      className={cs(styles.tagsOuter, wrapClassName, {
         [parentStyle.needLine]: isBoard || isVipSmallTool,
         [styles.needLine]: isBoard || isVipSmallTool
       })}

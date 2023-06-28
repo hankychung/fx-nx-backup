@@ -176,12 +176,10 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const isCanAdd = useMemoizedFn(async () => {
     let resAuth = auth
 
-    console.log('@@@ 进入 isCanAdd', resAuth)
     if (!resAuth.isFetched) {
       resAuth = await fetchPower()
     }
 
-    console.log('@@@ resAuth', resAuth)
     if (takers.length >= resAuth.maxTaker) {
       showMsg({
         msgType: '消息',
@@ -190,7 +188,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       return false
     }
 
-    console.log('@@@ isInTask', isInTask)
     if (!isInTask) {
       showMsg({
         msgType: '错误',
@@ -245,17 +242,15 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
   const editTakers = useMemoizedFn(async (e: MouseEvent) => {
     e.stopPropagation()
+    console.log('@@ 触发 editTakers')
     const status = getOperationStatus(task, userId)
-    console.log('@@@ 进入 editTakers', status, isSmallTool)
 
     if (status === 'complete') {
       showMsg({ content: '已完成的工作流事项不支持添加人' })
       return
     }
 
-    console.log('@@@ 进入这里 1')
     if (await isCanAdd()) {
-      console.log('@@@ 进入这里 2')
       popCtrl.addClickAlwaysHide().show()
     }
   })
@@ -329,9 +324,10 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     setAvatars(list)
   }, [contactDict, takers])
 
-  const avatarBoxJsx = useMemo(
-    () => (
-      <div className={styles.avatarBox}>
+  const avatarBoxJsx = useMemo(() => {
+    console.log('@@@ avatarBoxJsx')
+    return (
+      <div className={styles.avatarBox} onClick={editTakers}>
         {avatars.length ? (
           <FlyAvatarGroup
             list={avatars}
@@ -345,9 +341,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
           <AddTakerIcon width={17} height={17} />
         )}
       </div>
-    ),
-    [avatars]
-  )
+    )
+  }, [avatars, editTakers])
 
   // 成员列表
   const simpleMemberList = useMemo<ISimpleMember[]>(() => {
@@ -379,7 +374,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
             [styles.darkMode]: isDarkMode,
             [parentStyle.needLine]: isBoard || isVipWin
           })}
-          onClick={editTakers}
         >
           <RemoveSimpleMemberListPopper
             ctrl={popCtrl}

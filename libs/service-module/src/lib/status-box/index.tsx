@@ -255,11 +255,16 @@ const _StatusBox: FC<IProps> = (props) => {
   })
 
   return (
-    <div className={styles['status-box']}>
+    <div
+      className={styles['status-box']}
+      onClick={(e) => {
+        // 防止AcceptOnceMany或者buildIcon里面的点击事件触发卡片点击
+        e.stopPropagation()
+      }}
+    >
       <AcceptOnceMany
         visible={visible} // 气泡框显示状态
         visibleChange={(v) => {
-          console.trace()
           if (v) return
           setVisible(v)
         }} // 设置气泡框显隐

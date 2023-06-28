@@ -32,126 +32,15 @@ type Msg = {
   fun?: () => void
 }
 
-export const showMsg = ({
-  msgType = '消息',
-  content = '',
-  line2content = '',
-  duration = 1.5,
-  key = '', // 控制同步的key
-  // icon = undefined,
-  style = undefined, // 额外的样式
-  top = 24,
-  fun
-}: Msg) => {
-  message.destroy()
+export const useMessage = (): [
+  (v: Msg) => void,
+  () => void,
+  React.ReactElement<any, string | React.JSXElementConstructor<any>>
+] => {
+  message.config({ top: 24 })
 
-  message.config({ top, rtl: false })
+  const [messageApi, contextHolder] = message.useMessage()
 
-  switch (msgType) {
-    case '消息':
-      return message.info({
-        content: ' ',
-        key: key || 'msg01',
-        style,
-        icon: <MessageSimpleLine content={content} iconName={msgType} />,
-        duration
-      })
-    case '消息长':
-      return message.info({
-        content: ' ',
-        key: key || 'msg01',
-        style,
-        icon: <MessageSimpleLine content={content} iconName={msgType} />,
-        duration
-      })
-    case '成功':
-      return message.info({
-        content: ' ',
-        key: key || 'msg02',
-        style,
-        icon: <MessageSimpleLine content={content} iconName={msgType} />,
-        duration
-      })
-
-    case '时间':
-      return message.info({
-        content: ' ',
-        key: key || 'msg02',
-        style,
-        icon: <MessageSimpleLine content={content} iconName={msgType} />,
-        duration
-      })
-    case '错误':
-      return message.info({
-        content: ' ',
-        key: key || 'msg03',
-        style,
-        icon: <MessageSimpleLine content={content} iconName={msgType} />,
-        duration
-      })
-    case '日历':
-      return message.info({
-        content: ' ',
-        key: key || 'msg04',
-        duration,
-        style,
-        icon: (
-          <MessageWithIcon
-            content={content}
-            line2content={line2content}
-            iconName={msgType}
-          />
-        )
-      })
-    case '撒花':
-      return message.info({
-        content: ' ',
-        key: key || 'msg05',
-        duration,
-        style,
-        icon: (
-          <MessageWithIcon
-            content={content}
-            line2content={line2content}
-            iconName={msgType}
-          />
-        )
-      })
-    case '上传错误':
-      return message.info({
-        content: ' ',
-        key: key || 'msg06',
-        duration,
-        style,
-        className: 'uploadError_notice',
-        icon: (
-          <MessageUploadError content={content} line2content={line2content} />
-        )
-      })
-    case '应用发布':
-      return message.info({
-        content: ' ',
-        key: key || 'msg07',
-        duration,
-        style,
-        icon: (
-          <MessageApplication
-            content={content}
-            line2content={line2content}
-            fun={fun}
-          />
-        )
-      })
-    default:
-      return 0
-  }
-}
-
-export const clearAllMsg = () => {
-  message.destroy()
-}
-
-export const useMessage = (): [(v: Msg) => void, () => void] => {
   // 显示消息框
   const showMsg = useMemoizedFn(
     ({
@@ -160,58 +49,56 @@ export const useMessage = (): [(v: Msg) => void, () => void] => {
       line2content = '',
       duration = 1.5,
       key = '', // 控制同步的key
-      // icon = undefined,
-      style = undefined, // 额外的样式
-      top = 24
+      style = undefined // 额外的样式
     }: Msg) => {
       message.destroy()
-      message.config({ top })
+
       switch (msgType) {
         case '消息':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg01',
+            key,
             style,
             icon: <MessageSimpleLine content={content} iconName={msgType} />,
             duration
           })
         case '消息长':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg01',
+            key,
             style,
             icon: <MessageSimpleLine content={content} iconName={msgType} />,
             duration
           })
         case '成功':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg02',
+            key,
             style,
             icon: <MessageSimpleLine content={content} iconName={msgType} />,
             duration
           })
 
         case '时间':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg02',
+            key,
             style,
             icon: <MessageSimpleLine content={content} iconName={msgType} />,
             duration
           })
         case '错误':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg03',
+            key,
             style,
             icon: <MessageSimpleLine content={content} iconName={msgType} />,
             duration
           })
         case '日历':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg04',
+            key,
             duration,
             style,
             icon: (
@@ -223,9 +110,9 @@ export const useMessage = (): [(v: Msg) => void, () => void] => {
             )
           })
         case '撒花':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg05',
+            key,
             duration,
             style,
             icon: (
@@ -237,9 +124,9 @@ export const useMessage = (): [(v: Msg) => void, () => void] => {
             )
           })
         case '上传错误':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg05',
+            key,
             duration,
             style,
             className: 'uploadError_notice',
@@ -251,9 +138,9 @@ export const useMessage = (): [(v: Msg) => void, () => void] => {
             )
           })
         case '应用发布':
-          return message.info({
+          return messageApi.info({
             content: ' ',
-            key: key || 'msg05',
+            key,
             duration,
             style,
             icon: (
@@ -270,8 +157,8 @@ export const useMessage = (): [(v: Msg) => void, () => void] => {
   )
 
   const clearAllMsg = useMemoizedFn(() => {
-    message.destroy()
+    messageApi.destroy()
   })
 
-  return [showMsg, clearAllMsg]
+  return [showMsg, clearAllMsg, contextHolder]
 }

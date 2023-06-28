@@ -7,8 +7,10 @@ const _ChildrenTask: FC<IProps> = ({
   date,
   topId,
   curTime,
+  listKey,
   isDarkMode,
-  style
+  style,
+  isVipWin = false
 }) => {
   const data = useScheduleStore((state) => state.taskDict[taskKey])
 
@@ -23,11 +25,13 @@ const _ChildrenTask: FC<IProps> = ({
     <ScheduleTask
       date={date}
       taskKey={taskKey}
+      listKey={listKey}
       topId={topId}
       curTime={curTime}
       isDarkMode={isDarkMode}
       style={style}
       isSimple={true}
+      isVipWin={isVipWin}
     />
   )
 }

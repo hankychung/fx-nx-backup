@@ -11,12 +11,14 @@ import TagContent from '../../../../../tag/tag-content'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
 import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import { contextMenuTool } from '../../../../../../index'
 
 interface IPROPTags {
   taskId: string
+  wrapClassName?: string
 }
 
-export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
+export const Tags: React.FC<IPROPTags> = ({ taskId, wrapClassName }) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const isVipSmallTool = false
   const isBoard = true
@@ -34,7 +36,7 @@ export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
 
   return (
     <div
-      className={cs(styles.tagsOuter, {
+      className={cs(styles.tagsOuter, wrapClassName, {
         [parentStyle.needLine]: isBoard || isVipSmallTool,
         [styles.needLine]: isBoard || isVipSmallTool
       })}
@@ -58,6 +60,16 @@ export const Tags: React.FC<IPROPTags> = ({ taskId }) => {
                   tags={tags}
                   onClickItem={(e) => {
                     e.stopPropagation()
+
+                    /**
+                     * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
+                     */
+                    const contextMenuVisible = contextMenuTool.getVisible()
+                    if (contextMenuVisible) {
+                      contextMenuTool.close()
+                      return
+                    }
+
                     ctrl.addClickAlwaysHide({ stopPropagation: true }).show()
                   }}
                 />

@@ -3,7 +3,8 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
-  ForwardRefRenderFunction
+  ForwardRefRenderFunction,
+  useMemo
 } from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
@@ -12,10 +13,18 @@ import { useScheduleStore } from '../store/useScheduleStore'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
+import { ListHandler } from './utils/listHandler'
+import timeGetter from '../global/timeGetter'
+import classNames from 'classnames'
 
 interface ScheduleListProps {
   date: string
+  listKey: string
   isFinished?: boolean
+  getFinishListTotal?: (total: number) => void
+  isBoard?: boolean
+  isVipWin?: boolean // 是否小挂件窗体
+  overlayClassName?: string
 }
 
 interface IScheduleListRef {
@@ -25,9 +34,27 @@ interface IScheduleListRef {
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
-> = ({ date, isFinished }, ref) => {
+> = (
+  {
+    date,
+    listKey,
+    isFinished: _isFinished,
+    isVipWin = false,
+    isBoard,
+    getFinishListTotal,
+    overlayClassName
+  },
+  ref
+) => {
+  const isFinished = useMemo(() => {
+    const curTime = timeGetter.getDateRoughly()
+    return _isFinished || dayjs.unix(curTime).isAfter(dayjs(date), 'date')
+  }, [_isFinished, date])
+
   const list = useScheduleStore((state) => state.schedule[date])
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
+
+  const reloaderId = useRef(date + isFinished + isBoard)
 
   const decentList = isFinished ? finishList : list
 
@@ -43,6 +70,16 @@ const _ScheduleList: ForwardRefRenderFunction<
     finishPageRef.current = 1
     await fetchList()
   })
+
+  useEffect(() => {
+    const id = reloaderId.current
+
+    ListHandler.collectReloader(id, reload)
+
+    return () => {
+      ListHandler.removeReloader(id)
+    }
+  }, [reload])
 
   useImperativeHandle(ref, () => {
     return {
@@ -60,7 +97,9 @@ const _ScheduleList: ForwardRefRenderFunction<
 
     const list = res.data?.schedule || []
 
-    const { keys } = batchUpdateTask(list)
+    getFinishListTotal?.(res.data?.schedule_complete_total || 0)
+
+    const { keys } = batchUpdateTask(list, { isFinished })
 
     const pRef = isFinished ? finishPageRef : pageRef
 
@@ -83,7 +122,7 @@ const _ScheduleList: ForwardRefRenderFunction<
   }, [reload])
 
   return (
-    <div className={styles['container']}>
+    <div className={classNames(styles['container'], overlayClassName)}>
       <InfiniteScroll
         loadMore={fetchList}
         useWindow={false}
@@ -98,7 +137,10 @@ const _ScheduleList: ForwardRefRenderFunction<
             key={i}
             taskKey={i}
             topId={i}
+            listKey={listKey}
             curTime={dayjs().unix()}
+            isVipWin={isVipWin}
+            isBoard={isBoard}
           />
         ))}
       </InfiniteScroll>

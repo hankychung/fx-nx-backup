@@ -1,9 +1,10 @@
 import { IScheduleTask } from '@flyele-nx/service'
+import { nxControllerRegister } from './nxControllerRegister'
 import {
   IEditTaskTime,
   IOpenTaskDetail,
-  nxControllerRegister
-} from './nxControllerRegister'
+  IHandlerTaskAddTaker
+} from './types/controller'
 
 /**
  * nxController
@@ -115,6 +116,21 @@ class GlobalNxController {
       }
     } else {
       console.log('openTaskDetail 未注册')
+    }
+  }
+
+  /**
+   * 点击事项邀请协作人
+   */
+  onHandlerTaskAddTaker(data: IHandlerTaskAddTaker, key: string) {
+    if (nxControllerRegister.handlerTaskAddTaker) {
+      try {
+        nxControllerRegister.handlerTaskAddTaker(data, key)
+      } catch (e) {
+        console.log('handlerTaskAddTaker 失败', e)
+      }
+    } else {
+      console.log('handlerTaskAddTaker 未注册')
     }
   }
 }

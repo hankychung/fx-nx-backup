@@ -32,6 +32,7 @@ import { useUserInfoStore } from '../store/useUserInfoStore'
 
 interface IProps {
   task: IScheduleTask
+  listKey: string
   changeStatus?: () => void
   resetStatus?: () => void
 }
@@ -39,7 +40,7 @@ interface IProps {
 const ANIMATION_DURATION = 950
 
 const _StatusBox: FC<IProps> = (props) => {
-  const { task, changeStatus, resetStatus } = props
+  const { task, changeStatus, resetStatus, listKey } = props
   const [updating, setUpdating] = useState(false)
   const taskDict = useScheduleStore((state) => state.taskDict)
 
@@ -196,6 +197,7 @@ const _StatusBox: FC<IProps> = (props) => {
             taskId={task.ref_task_id}
             curStepId={task.flow_step_id}
             complete_at={task.complete_at}
+            listKey={listKey}
             size={14}
             status={getOperationStatus(task, userId)}
             changeStatus={changeStatus}
@@ -255,10 +257,17 @@ const _StatusBox: FC<IProps> = (props) => {
   })
 
   return (
-    <div className={styles['status-box']}>
+    <div
+      className={styles['status-box']}
+      onClick={(e) => {
+        // 防止AcceptOnceMany或者buildIcon里面的点击事件触发卡片点击
+        e.stopPropagation()
+      }}
+    >
       <AcceptOnceMany
         visible={visible} // 气泡框显示状态
         visibleChange={(v) => {
+          if (v) return
           setVisible(v)
         }} // 设置气泡框显隐
         taskList={childrenIds}
@@ -266,7 +275,7 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        <div>{buildIcon()}</div>
+        <div className={styles.iconBox}>{buildIcon()}</div>
       </AcceptOnceMany>
     </div>
   )

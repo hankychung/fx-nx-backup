@@ -1,8 +1,11 @@
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
+import { IState, useScheduleStore } from '../../store/useScheduleStore'
+import timeGetter from '../../global/timeGetter'
+import { produce } from 'immer'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
   compareVal: number
@@ -107,6 +110,10 @@ function getDecentTime(task: IScheduleTask) {
   }
 }
 
+function getDateUnix(d: Dayjs) {
+  return d.hour(0).minute(0).second(0).unix()
+}
+
 /**
  * 是否插入该日程的未完成列表
  */
@@ -119,7 +126,11 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
 
   const dateEndUnix = dayjs(date).add(1, 'day').unix() - 1
 
-  const todayUnix = dayjs().hour(0).minute(0).second(0).unix()
+  const todayDj = dayjs.unix(timeGetter.getDateRoughly())
+
+  const todayUnix = getDateUnix(todayDj)
+
+  const todayEndUnix = getDateUnix(todayDj.add(1, 'day')) - 1
 
   // 当前日期类型
   const type: DateType =
@@ -133,10 +144,10 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
   if ((!startTime && !endTime) || type === 'history') return false
 
   // 未来开始事项
-  const startInFuture = startTime > dateEndUnix
+  const startInFuture = startTime > todayEndUnix
 
   // 无开始时间的未来截止事项
-  const onlyEndInFuture = !startTime && endTime > dateEndUnix
+  const onlyEndInFuture = !startTime && endTime > todayEndUnix
 
   const futureTask = startInFuture || onlyEndInFuture
 
@@ -147,12 +158,20 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
 
   // 日期在该事项的时间区间内
   const duringTask =
-    startTime &&
-    endTime &&
-    (startTime <= dateStartUnix || endTime >= dateEndUnix)
+    startTime && endTime && startTime <= dateStartUnix && endTime >= dateEndUnix
+
+  // 未来开始无截止 且在当前选中日期
+  const futureStart =
+    startInFuture &&
+    !endTime &&
+    dayjs.unix(startTime).isSame(dayjs(date), 'date')
+
+  // 未来截止无开始 且在当前选中日期
+  const futureEnd =
+    onlyEndInFuture && dayjs.unix(endTime).isSame(dayjs(date), 'date')
 
   // 未来日期
-  return duringTask || futureTask
+  return duringTask || futureStart || futureEnd
 }
 
 /**
@@ -345,6 +364,30 @@ function isRelated(a: string[], b: string[]) {
   return false
 }
 
+function getTaskIdsByDispatch(dispatchIds: string[]) {
+  const { taskDict } = useScheduleStore.getState()
+
+  const taskIds: string[] = []
+
+  Object.entries(taskDict).forEach(([k, task]) => {
+    if (dispatchIds.includes(task.dispatch_id) && !k.includes('-')) {
+      taskIds.push(k)
+    }
+  })
+
+  return taskIds
+}
+
+function handleLogout() {
+  useScheduleStore.setState({
+    schedule: {},
+    finishSchedule: {},
+    childrenDict: {},
+    taskDict: {},
+    expandedDict: {}
+  })
+}
+
 export {
   getKey,
   getChildrenDict,
@@ -353,5 +396,7 @@ export {
   getRepeatDelayTotal,
   getSortedSchedule,
   isRelated,
-  getDiffKeys
+  getDiffKeys,
+  getTaskIdsByDispatch,
+  handleLogout
 }

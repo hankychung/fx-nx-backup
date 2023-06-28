@@ -14,7 +14,11 @@ import { AvatarEdit } from './lib/avatar-edit' //头像编辑
 import { ContextMenu } from './lib/context-menu'
 import { contextMenuTool } from './lib/context-menu/contextMenuTool'
 import { service, envStore } from '@flyele-nx/service'
-import { getDiffKeys } from './lib/schedule-list/utils'
+import {
+  getDiffKeys,
+  getTaskIdsByDispatch,
+  handleLogout
+} from './lib/schedule-list/utils'
 
 export * from './lib/schedule-list' // 日程列表
 
@@ -48,5 +52,7 @@ export const updateNxToken = service.updateToken.bind(service)
 export const registerPaymentInit = init
 
 export const ScheduleUtils = {
-  getDiffKeys
+  getDiffKeys,
+  getTaskIdsByDispatch,
+  handleLogout
 }

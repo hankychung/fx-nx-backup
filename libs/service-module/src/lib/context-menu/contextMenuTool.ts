@@ -14,6 +14,10 @@ class ContextMenuTool {
   close() {
     this.contextMenu?.close()
   }
+
+  getVisible() {
+    return this.contextMenu?.getVisible()
+  }
 }
 
 export const contextMenuTool = new ContextMenuTool()

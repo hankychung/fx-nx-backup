@@ -3,8 +3,9 @@ import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
-import { useScheduleStore } from '../../store/useScheduleStore'
+import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import timeGetter from '../../global/timeGetter'
+import { produce } from 'immer'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
   compareVal: number
@@ -377,6 +378,16 @@ function getTaskIdsByDispatch(dispatchIds: string[]) {
   return taskIds
 }
 
+function handleLogout() {
+  useScheduleStore.setState({
+    schedule: {},
+    finishSchedule: {},
+    childrenDict: {},
+    taskDict: {},
+    expandedDict: {}
+  })
+}
+
 export {
   getKey,
   getChildrenDict,
@@ -386,5 +397,6 @@ export {
   getSortedSchedule,
   isRelated,
   getDiffKeys,
-  getTaskIdsByDispatch
+  getTaskIdsByDispatch,
+  handleLogout
 }

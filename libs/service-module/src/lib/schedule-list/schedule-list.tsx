@@ -15,6 +15,7 @@ import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
 import { ListHandler } from './utils/listHandler'
 import timeGetter from '../global/timeGetter'
+import classNames from 'classnames'
 
 interface ScheduleListProps {
   date: string
@@ -22,6 +23,7 @@ interface ScheduleListProps {
   getFinishListTotal?: (total: number) => void
   isBoard?: boolean
   isVipWin?: boolean // 是否小挂件窗体
+  overlayClassName?: string
 }
 
 interface IScheduleListRef {
@@ -37,7 +39,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     isFinished: _isFinished,
     isVipWin = false,
     isBoard,
-    getFinishListTotal
+    getFinishListTotal,
+    overlayClassName
   },
   ref
 ) => {
@@ -117,7 +120,7 @@ const _ScheduleList: ForwardRefRenderFunction<
   }, [reload])
 
   return (
-    <div className={styles['container']}>
+    <div className={classNames(styles['container'], overlayClassName)}>
       <InfiniteScroll
         loadMore={fetchList}
         useWindow={false}

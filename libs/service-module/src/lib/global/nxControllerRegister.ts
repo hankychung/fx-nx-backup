@@ -12,12 +12,12 @@ import {
 class NxControllerRegister {
   ipcRenderer: any = null
   pubJs: any = null
-  sensorTarget: any = null
+  sensorTarget: ((type: string, data: any) => void) | null = null
 
   editTaskTime: ((data: IEditTaskTime) => void) | null = null
-  editTaskSummary: any = null
-  openTaskDetail: any = null
-  handlerTaskAddTaker: any = null
+  editTaskSummary: ((data: { task: IScheduleTask }) => void) | null = null
+  openTaskDetail: ((data: IOpenTaskDetail) => void) | null = null
+  handlerTaskAddTaker: ((data: IHandlerTaskAddTaker) => void) | null = null
 
   /**
    * ipc注册

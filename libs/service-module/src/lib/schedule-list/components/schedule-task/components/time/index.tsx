@@ -25,6 +25,7 @@ import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../../../../global/nxController'
 import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
+import { contextMenuTool } from '../../../../../../index'
 
 interface IPROPTime {
   taskId: string
@@ -199,6 +200,15 @@ export const Time: React.FC<IPROPTime> = ({
 
   const editTime = useMemoizedFn((e: MouseEvent) => {
     e.stopPropagation()
+
+    /**
+     * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
+     */
+    const contextMenuVisible = contextMenuTool.getVisible()
+    if (contextMenuVisible) {
+      contextMenuTool.close()
+      return
+    }
 
     // 已完成不可设置时间
     if (task.finish_time) {

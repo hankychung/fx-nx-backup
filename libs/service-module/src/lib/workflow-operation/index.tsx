@@ -58,6 +58,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     curStepId,
     creator_id,
     handleHover,
+    listKey,
     size,
     popoverPos = 'absolute',
     addClickAlwaysHide,
@@ -345,7 +346,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       chosenStep
     }
     console.log('params***', params)
-    globalNxController.onHandlerTaskAddTaker(params)
+    globalNxController.onHandlerTaskAddTaker(params, listKey)
   })
 
   /**

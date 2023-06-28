@@ -29,6 +29,7 @@ import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 import { globalNxController } from '../../../../../global/nxController'
 import { SIZE_TYPE_KEY } from '../../../../../global/types/channel/SIZE_TYPE'
 import { useMemoizedFn } from 'ahooks'
+import { contextMenuTool } from '../../../../../../index'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 
@@ -242,6 +243,16 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
   const editTakers = useMemoizedFn(async (e: MouseEvent) => {
     e.stopPropagation()
+
+    /**
+     * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
+     */
+    const contextMenuVisible = contextMenuTool.getVisible()
+    if (contextMenuVisible) {
+      contextMenuTool.close()
+      return
+    }
+
     const status = getOperationStatus(task, userId)
 
     if (status === 'complete') {

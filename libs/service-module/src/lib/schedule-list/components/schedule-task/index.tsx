@@ -45,6 +45,7 @@ export interface IProps {
   style?: CSSProperties
   isSimple?: boolean
   isVipWin?: boolean // 是否小挂件窗体
+  isBoard?: boolean
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -55,7 +56,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isDarkMode,
   style,
   isSimple = false,
-  isVipWin = false
+  isVipWin = false,
+  isBoard = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -275,6 +277,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         taskId={taskKey}
                         isDarkMode={isDarkMode}
                         isVipWin={isVipWin}
+                        isBoard={isBoard}
                       />
                       <Tags taskId={taskKey} />
                     </div>

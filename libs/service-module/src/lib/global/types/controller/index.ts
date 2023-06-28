@@ -21,17 +21,20 @@ export interface IOpenTaskDetail {
 }
 
 export interface IHandlerTaskAddTaker {
-  defaultTakers: string[]
+  defaultTakers?: string[]
   matterType: ScheduleTaskConst.MatterType
   task: {
     id: string
     title: string
     parentId?: string
-    project: ProjectType.IBaseProjectInfo
+    project?: ProjectType.IBaseProjectInfo
   }
   sensor?: any
   conditionModel?: {
     modelName: string
     params: any
   }
+  isWorkFlowAdd?: boolean //是否工作流邀请 默认false
+  allTakerIds?: string[]
+  chosenStep?: string
 }

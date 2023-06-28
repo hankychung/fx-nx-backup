@@ -151,6 +151,20 @@ export const LOOP_MATTER_LABEL: { [key: number]: string } = {
   [LOOP_MATTER.custom]: '自定义循环'
 }
 
+export enum CreateType {
+  MATTER = 'MATTER', // 普通创建事项
+  APP_MATTER = 'APP_MATTER', // 应用普通创建事项
+  MEETING = 'MEETING',
+  TOOL_NOTICE = 'TOOL_NOTICE',
+  TOOl_MEETING = 'TOOl_MEETING',
+  TOOL_TODO = 'TOOL_TODO',
+  TOOL_COLLECT = 'TOOL_COLLECT',
+  PROJECT = 'PROJECT',
+  UNKNOWN = 'UNKNOWN',
+  TARGET = 'TARGET',
+  KR = 'KR'
+}
+
 export enum AlwaysFinishTime {
   value = 2114351999
 }
@@ -183,7 +197,7 @@ export const MAX_BACKGROUND_LEN = 1500
 export const InvaildChar = ['@', '#', '*', '/', '\\', '<', '>']
 
 // 埋点使用
-export enum CreateType {
+export enum SensorCreateType {
   detail = '详细创建',
   quick = '快速创建',
   import = '导入创建',

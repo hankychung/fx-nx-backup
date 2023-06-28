@@ -143,7 +143,7 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
           })
 
           if (code === 0) {
-            const targetTags: any[] = []
+            const targetTags: TagWidgetModel[] = []
 
             for (let i = 0; i < tagList.length; i++) {
               const tagId = tagList[i].id

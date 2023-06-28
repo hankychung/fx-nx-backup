@@ -23,8 +23,13 @@ import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { IOperationProps, IOperation, IWorkflowAddUser } from './types'
 import { OperateStep, IStepItem, WorkFlowStep } from './WorkFlowStep'
 import style from './index.module.scss'
-import { stepsFormatter } from './utils'
-import { TaskApi, IWorkflowStep, WorkflowConst } from '@flyele-nx/service'
+import { getAllTakers, stepsFormatter } from './utils'
+import {
+  TaskApi,
+  IWorkflowStep,
+  WorkflowConst,
+  ScheduleTaskConst
+} from '@flyele-nx/service'
 import {
   DisabledIcon,
   OptionIcon,
@@ -33,6 +38,7 @@ import {
 } from '@flyele-nx/icon'
 import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
+import { globalNxController } from '../global/nxController'
 
 const { TextArea } = Input
 
@@ -324,6 +330,32 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   })
 
   /**
+   * 通知外部打开协作人邀请弹窗
+   */
+  const showAddModal = useMemoizedFn((chosenStep: string) => {
+    const { allTakerIds } = getAllTakers(steps)
+    const params = {
+      matterType: ScheduleTaskConst.MatterType.matter,
+      task: {
+        id: taskId,
+        title: ''
+      },
+      sensor: null,
+      conditionModel: {
+        modelName: 'MatterConditionModel',
+        params: {
+          type: 'globalMatterCondition'
+        }
+      },
+      isWorkFlowAdd: true,
+      allTakerIds,
+      chosenStep
+    }
+    console.log('params***', params)
+    globalNxController.onHandlerTaskAddTaker(params)
+  })
+
+  /**
    * 在工作流事项中，当勾选当前步骤时，需要判断下一步是否有人：
    * 1、若下一步无人：
    *   若为“或”步骤，勾选完成后出现弹窗
@@ -374,13 +406,13 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       },
       onOk: () => {
         modal.destroy()
-        // TODO 调用协作人弹窗
+        showAddModal(steps[curStepIndex + 1].id)
       },
       onCancel: () => {
         modal.destroy()
       }
     })
-  }, [steps, curStepId, stepList, handleNext])
+  }, [steps, curStepId, stepList, handleNext, showAddModal])
 
   const closeModal = useMemoizedFn(() => {
     setShowModal(false)

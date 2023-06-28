@@ -112,3 +112,32 @@ export function getOperationStatus(
 
   return 'handle'
 }
+
+/**  获取工作流所有id 与 lock id  **/
+export function getAllTakers(flowSteps: IWorkflowStep[]) {
+  const _allTakerIds: string[] = []
+  const _lockList: any[] = []
+
+  flowSteps.forEach((step) => {
+    const { user_ids = [], specify_user_ids = [] } = step
+
+    _lockList.push(specify_user_ids)
+
+    // 所有协作人显示上 不能有 已移出的人显示
+    const unRemoveUsers = user_ids.filter((i) => !i?.removed_at)
+
+    _allTakerIds.push(...unRemoveUsers.map((i) => i.user_id))
+  })
+
+  const lockList: string[] = [...new Set(_lockList.flat())]
+  const allTakerIds: string[] = [...new Set(_allTakerIds)]
+
+  // 固定协作人排最前
+  allTakerIds.sort((a) => {
+    const aIsLock = lockList.includes(a)
+
+    return aIsLock ? -1 : 1
+  })
+
+  return { allTakerIds, allLockIds: lockList }
+}

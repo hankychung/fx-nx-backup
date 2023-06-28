@@ -148,7 +148,7 @@ class ListHandler {
   }
 
   // 批量插入未完成列表
-  private static insertTasks(taskIds: string[]) {
+  static insertTasks(taskIds: string[]) {
     const { insertDateDict } = this.getInsertDateDict(taskIds)
 
     this.insertIntoDate({ insertDateDict })

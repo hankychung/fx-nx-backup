@@ -57,6 +57,7 @@ interface IPROPTakers {
   max?: number
   isDarkMode?: boolean
   isVipWin?: boolean
+  isBoard?: boolean
 }
 
 interface ICUSTOMAvatar {
@@ -76,11 +77,15 @@ const defaultMatterAuthWithFetch: IAuthWithFetched = {
 }
 
 export const Takers: React.FC<IPROPTakers> = (props) => {
-  const { taskId, isDarkMode = false, isVipWin = false } = props
+  const {
+    taskId,
+    isDarkMode = false,
+    isVipWin = false,
+    isBoard = false
+  } = props
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const { contactDict } = useContactStore()
-  const isBoard = true
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
   const [showMsg] = useMessage()
   const isSmallTool = task.category === ScheduleTaskConst.CATEGORY.smallTool

@@ -22,4 +22,5 @@ export interface IShowMenuOptions extends IMenuPosition {
 export interface IContextMenuRef {
   show: (options: IShowMenuOptions) => void
   close: () => void
+  getVisible: () => boolean
 }

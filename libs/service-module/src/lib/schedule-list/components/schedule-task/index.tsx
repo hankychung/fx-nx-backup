@@ -158,6 +158,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const onClickTask = useMemoizedFn((e: MouseEvent) => {
     e.stopPropagation()
+
+    const contextMenuVisible = contextMenuTool.getVisible()
+    if (contextMenuVisible) {
+      contextMenuTool.close()
+      return
+    }
+
     globalNxController.openTaskDetailWindow({
       task: data,
       enterPage: Enter_page_detail.日程列表

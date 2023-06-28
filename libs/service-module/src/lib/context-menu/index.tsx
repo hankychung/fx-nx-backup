@@ -5,7 +5,7 @@ import React, {
   useImperativeHandle,
   ForwardRefRenderFunction
 } from 'react'
-import { useClickAway } from 'ahooks'
+import { useClickAway, useMemoizedFn } from 'ahooks'
 import styles from './index.module.scss'
 import cs from 'classnames'
 import { IAction, IContextMenuRef, IShowMenuOptions } from './types'
@@ -27,6 +27,31 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
     setVisible(false)
   }
 
+  /**
+   * 用于判断是否会超出显示范围
+   */
+  const checkPosition = useMemoizedFn(
+    (x: number, y: number, itemNum: number) => {
+      const padding = 12
+      const itemHeight = 38
+      const divWidth = 120
+      const divHeight = itemHeight * itemNum + padding
+      const engagedWidth = divWidth + x
+      const engagedHeight = divHeight + y
+      let resX = x
+      let resY = y
+
+      if (engagedWidth > window.innerWidth) {
+        resX = resX - divWidth
+      }
+
+      if (engagedHeight > window.innerHeight) {
+        resY = resY - divHeight
+      }
+      return [resX, resY]
+    }
+  )
+
   useClickAway(() => {
     onClose()
   }, menuRef)
@@ -34,8 +59,10 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
   useImperativeHandle(ref, () => ({
     show: (options: IShowMenuOptions) => {
       const { x, y, action, onClose } = options
-      setX(x)
-      setY(y)
+      const [resX, resY] = checkPosition(x, y, action.length)
+
+      setX(resX)
+      setY(resY)
       setActions(action)
 
       if (onClose) {
@@ -50,10 +77,13 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
     },
     close: () => {
       onClose()
+    },
+    getVisible: () => {
+      return visible
     }
   }))
 
-  const menuStyle = useMemo(() => {
+  const menuPosition = useMemo(() => {
     return {
       left: x + 10,
       top: y + 10
@@ -67,7 +97,7 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
       id="fx-contextMenu"
       ref={menuRef}
       className={cs(styles.menuRoot)}
-      style={menuStyle}
+      style={menuPosition}
     >
       {actions
         .filter((item) => item.checkAction)

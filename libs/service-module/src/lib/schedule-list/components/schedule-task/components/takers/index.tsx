@@ -242,7 +242,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
   const editTakers = useMemoizedFn(async (e: MouseEvent) => {
     e.stopPropagation()
-    console.log('@@ 触发 editTakers')
     const status = getOperationStatus(task, userId)
 
     if (status === 'complete') {
@@ -325,7 +324,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   }, [contactDict, takers])
 
   const avatarBoxJsx = useMemo(() => {
-    console.log('@@@ avatarBoxJsx')
     return (
       <div className={styles.avatarBox} onClick={editTakers}>
         {avatars.length ? (

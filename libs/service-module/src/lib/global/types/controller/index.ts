@@ -4,7 +4,6 @@ import {
   ScheduleTaskConst
 } from '@flyele-nx/service'
 import { Enter_page_detail } from '../sensor/matter'
-import { ICircleCheckBoxState } from '@flyele/flyele-components/dist/components/Base/CheckBox/type'
 
 export interface IEditTaskTime {
   taskId: string
@@ -37,4 +36,5 @@ export interface IHandlerTaskAddTaker {
   isWorkFlowAdd?: boolean //是否工作流邀请 默认false
   allTakerIds?: string[]
   chosenStep?: string
+  isSmallTool?: boolean // 是否小工具
 }

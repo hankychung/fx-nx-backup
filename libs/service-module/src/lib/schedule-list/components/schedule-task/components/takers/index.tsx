@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  MouseEvent,
-  useMemo
-} from 'react'
+import React, { useState, useEffect, MouseEvent, useMemo } from 'react'
 import cs from 'classnames'
 import {
   FlyAvatarGroup,
@@ -15,23 +9,15 @@ import { UserInfoUtils } from '../../../../utils/userInfoUtils'
 import { createInfinite } from '@flyele-nx/utils'
 import { useMessage } from '@flyele-nx/ui'
 import { AddTakerIcon } from '@flyele-nx/icon'
-// import SelContacts from 'components/SelContactsPopover'
-// import { useSmallToolContacts } from '@/hooks/useSmallToolContacts'
-// import { CreateType } from '@/types/created'
-// import { MatterTypeToCreateType } from '@/utils/createTypeMap'
 import { getOperationStatus } from '../../../../utils/workflowOperation'
 import { ISimpleMember } from '../../../../../simple-member-list'
 import { RemoveSimpleMemberListPopper } from '../../../../../remove-simple-member-list-popper'
-// import { useTaskMemberAdd } from '@/components/MemberSelectorModal/business/hooks/task/useTaskMemberAdd'
-// import { useGlobalMatterCondition } from '@/hooks/useGlobalMatterCondition'
 import { getAvatarsFromTakers } from '../../../../utils/task'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
 import { useScheduleStore } from '../../../../../store/useScheduleStore'
 import {
   AuthType,
-  ITakerAndStatus,
-  EConCheckStatus,
   UsercApi,
   ScheduleTaskConst,
   AuthConst,
@@ -88,9 +74,12 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const { contactDict } = useContactStore()
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
   const [showMsg] = useMessage()
-  const isSmallTool = task.category === ScheduleTaskConst.CATEGORY.smallTool
   const [takers, setTakers] = useState<Taker[]>([])
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
+
+  const isSmallTool = useMemo(() => {
+    return task.category === ScheduleTaskConst.CATEGORY.smallTool
+  }, [task.category])
 
   const isCreator = useMemo(() => {
     return (
@@ -128,48 +117,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
   const popCtrl = useController(new FlyBasePopperCtrl())
 
-  const [isShowSelContacts, setIsShowSelContacts] = useState(false)
-
-  // const createType = useMemo(() => {
-  //   if (task) {
-  //     let type =
-  //       MatterTypeToCreateType[task.matter_type as ScheduleTaskConst.MatterType]
-  //
-  //     if (
-  //       type === CreateType.MEETING &&
-  //       isSmallTool
-  //     ) {
-  //       type = CreateType.TOOl_MEETING
-  //     }
-  //     return type
-  //   }
-  //
-  //   return CreateType.MATTER
-  // }, [task])
-
-  // const [statusTakers, setStatusTakers] = useSmallToolContacts({
-  //   doGet: isShowSelContacts && isSmallTool,
-  //   createType,
-  //   taskId: task.parent_id ?? '',
-  //   from: 'detail' as const,
-  //   taskTakers: takers as any,
-  //   createId: task.creator_id,
-  //   doNotInit: true
-  // })
-
-  // const { taskMemberAdd } = useTaskMemberAdd()
-
-  /**
-   * 获取选中人数
-   */
-  const getSelCount = useCallback(
-    (takers: ITakerAndStatus[]) =>
-      takers.filter((t) => t.status === EConCheckStatus.checked).length,
-    []
-  )
-
   // 获取权限
-  const fetchPower = useCallback(async () => {
+  const fetchPower = useMemoizedFn(async () => {
     const {
       data: { task_equity: q, member, member_equity }
     } = await UsercApi.taskPower(taskId)
@@ -214,7 +163,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
 
     return resObj
-  }, [taskId])
+  })
 
   // 是否在事项里面
   const isInTask = useMemo(() => {
@@ -224,7 +173,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   }, [isCreator, takers, userId])
 
   // 是否可以添加
-  const isCanAdd = useCallback(async () => {
+  const isCanAdd = useMemoizedFn(async () => {
     let resAuth = auth
 
     if (!resAuth.isFetched) {
@@ -247,7 +196,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       return false
     }
     return true
-  }, [auth, fetchPower, isInTask, showMsg, takers.length])
+  })
 
   /**
    * 通知外部打开协作人邀请弹窗
@@ -269,7 +218,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         params: {
           type: 'globalMatterCondition'
         }
-      }
+      },
+      isSmallTool
     }
     globalNxController.onHandlerTaskAddTaker(params)
   })
@@ -290,42 +240,20 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   })
 
   // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
-  const editTakers = useCallback(
-    async (e: MouseEvent) => {
-      e.stopPropagation()
-      const status = getOperationStatus(task, userId)
+  const editTakers = useMemoizedFn(async (e: MouseEvent) => {
+    e.stopPropagation()
+    console.log('@@ 触发 editTakers')
+    const status = getOperationStatus(task, userId)
 
-      if (status === 'complete') {
-        showMsg({ content: '已完成的工作流事项不支持添加人' })
-        return
-      }
+    if (status === 'complete') {
+      showMsg({ content: '已完成的工作流事项不支持添加人' })
+      return
+    }
 
-      if (await isCanAdd()) {
-        popCtrl.addClickAlwaysHide().show()
-      }
-    },
-    [isCanAdd, popCtrl, showMsg, task, userId]
-  )
-
-  // const onConfirmStatusTaker = (data: ITakerAndStatus[]) => {
-  //   setStatusTakers(data)
-  //   const list = data
-  //     .filter((i) => i.status === EConCheckStatus.checked)
-  //     .map((i) => i.taker_id || i.user_id || '')
-  //
-  //   if (list && list.length > 0) {
-  //     taskMemberAdd({
-  //       data: {
-  //         taskId,
-  //         userIds: list,
-  //         projectId: projectInfo.project_id
-  //       },
-  //       onSuccess: () => {
-  //         console.log('onSuccess')
-  //       }
-  //     })
-  //   }
-  // }
+    if (await isCanAdd()) {
+      popCtrl.addClickAlwaysHide().show()
+    }
+  })
 
   // 检测，获取，写入takers信息
   useEffect(() => {
@@ -396,9 +324,10 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     setAvatars(list)
   }, [contactDict, takers])
 
-  const avatarBoxJsx = useMemo(
-    () => (
-      <div className={styles.avatarBox}>
+  const avatarBoxJsx = useMemo(() => {
+    console.log('@@@ avatarBoxJsx')
+    return (
+      <div className={styles.avatarBox} onClick={editTakers}>
         {avatars.length ? (
           <FlyAvatarGroup
             list={avatars}
@@ -412,9 +341,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
           <AddTakerIcon width={17} height={17} />
         )}
       </div>
-    ),
-    [avatars]
-  )
+    )
+  }, [avatars, editTakers])
 
   // 成员列表
   const simpleMemberList = useMemo<ISimpleMember[]>(() => {
@@ -440,13 +368,12 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         e.stopPropagation()
       }}
     >
-      {!isSmallTool ? (
+      {
         <div
           className={cs(styles.takers, {
             [styles.darkMode]: isDarkMode,
             [parentStyle.needLine]: isBoard || isVipWin
           })}
-          onClick={editTakers}
         >
           <RemoveSimpleMemberListPopper
             ctrl={popCtrl}
@@ -457,31 +384,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
             {avatarBoxJsx}
           </RemoveSimpleMemberListPopper>
         </div>
-      ) : (
-        <div
-          style={{ display: 'flex', flex: 'none' }}
-          // 阻止这个元素里面的 协作人弹窗的 取消、确定按钮触发外面的打开事项详情事件
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/*<SelContacts*/}
-          {/*  open={isShowSelContacts}*/}
-          {/*  takers={statusTakers}*/}
-          {/*  onConfirm={(data) => onConfirmStatusTaker(data)}*/}
-          {/*  shakeDuration={400}*/}
-          {/*  getSelCount={getSelCount}*/}
-          {/*>*/}
-          <div
-            className={cs(styles.takers, {
-              [styles.darkMode]: isDarkMode,
-              [parentStyle.needLine1]: isBoard || isVipWin
-            })}
-            onClick={() => setIsShowSelContacts(true)}
-          >
-            {avatarBoxJsx}
-          </div>
-          {/*</SelContacts>*/}
-        </div>
-      )}
+      }
     </div>
   )
 }

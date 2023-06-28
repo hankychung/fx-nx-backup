@@ -44,6 +44,8 @@ export interface IProps {
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
+  isVipWin?: boolean // 是否小挂件窗体
+  isBoard?: boolean
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -53,7 +55,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   curTime,
   isDarkMode,
   style,
-  isSimple = false
+  isSimple = false,
+  isVipWin = false,
+  isBoard = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -154,6 +158,16 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const onClickTask = useMemoizedFn((e: MouseEvent) => {
     e.stopPropagation()
+
+    /**
+     * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
+     */
+    const contextMenuVisible = contextMenuTool.getVisible()
+    if (contextMenuVisible) {
+      contextMenuTool.close()
+      return
+    }
+
     globalNxController.openTaskDetailWindow({
       task: data,
       enterPage: Enter_page_detail.日程列表
@@ -200,7 +214,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode
+        [styles.darkMode]: isDarkMode,
+        [styles.complexSchedulePadding]: !isBoard
       })}
       style={{
         background: isDarkMode ? '#3b3e4b' : '#fff',
@@ -262,15 +277,29 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               {!isSimple && (
                 <div className={styles.info}>
                   <div className={styles.infoMain}>
-                    <div className={styles.singleLine}>
+                    <div
+                      className={
+                        isBoard ? styles.singleLine : styles.reverseSort
+                      }
+                    >
                       <Time
                         taskId={taskKey}
                         curTime={curTime}
                         dateStr={date}
                         isDarkMode={isDarkMode}
                       />
-                      <Takers taskId={taskKey} isDarkMode={isDarkMode} />
-                      <Tags taskId={taskKey} />
+                      {!isBoard && (
+                        <Tags taskId={taskKey} wrapClassName={styles.tags} />
+                      )}
+                      <Takers
+                        taskId={taskKey}
+                        isDarkMode={isDarkMode}
+                        isVipWin={isVipWin}
+                        isBoard={isBoard}
+                      />
+                      {isBoard && (
+                        <Tags taskId={taskKey} wrapClassName={styles.tags} />
+                      )}
                     </div>
                   </div>
                   {isShowMenu && (
@@ -297,6 +326,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               curTime={curTime}
               isDarkMode={isDarkMode}
               style={style}
+              isVipWin={isVipWin}
             />
           ))}
         </div>

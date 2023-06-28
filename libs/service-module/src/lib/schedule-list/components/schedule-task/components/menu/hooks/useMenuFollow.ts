@@ -4,11 +4,13 @@ import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask, TaskApi } from '@flyele-nx/service'
 import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
-import { showMsg } from '@flyele-nx/ui'
+import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../../../../../global/nxController'
 import PUB from '../../../../../../global/types/pubsub'
 
 export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
+  const [showMsg] = useMessage()
+
   const getTxt = useMemo(() => {
     return data.has_follow ? '取消关注' : '关注'
   }, [data.has_follow])

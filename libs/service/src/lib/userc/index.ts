@@ -10,7 +10,7 @@ class Userc {
   private prefix = 'userc/v2'
 
   async phoneLogin(phone?: number) {
-    const res = await service.put<IUserInfo>({
+    await service.put<IUserInfo>({
       url: `${this.prefix}/auth/phonelogin/code`,
       data: {
         telephone: phone || '13650939928',
@@ -24,8 +24,6 @@ class Userc {
         }
       }
     })
-
-    console.log('res', res.data.telephone, res)
   }
 
   async getCurrentDate() {
@@ -35,9 +33,7 @@ class Userc {
         timeout: 3000
       })
 
-      console.log('check time', res)
-
-      return res
+      return res.data
     } catch (e) {
       console.error('获取服务器时间戳失败', dayjs().unix(), e)
       return dayjs().unix()

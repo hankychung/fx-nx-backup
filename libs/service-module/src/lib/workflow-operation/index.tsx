@@ -10,7 +10,7 @@ import React, {
   useDeferredValue,
   useCallback
 } from 'react'
-import { Modal, Input, message } from 'antd'
+import { Modal, Input } from 'antd'
 import cs from 'classnames'
 import {
   FlyAvatar,
@@ -23,8 +23,13 @@ import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { IOperationProps, IOperation, IWorkflowAddUser } from './types'
 import { OperateStep, IStepItem, WorkFlowStep } from './WorkFlowStep'
 import style from './index.module.scss'
-import { stepsFormatter } from './utils'
-import { TaskApi, IWorkflowStep, WorkflowConst } from '@flyele-nx/service'
+import { getAllTakers, stepsFormatter } from './utils'
+import {
+  TaskApi,
+  IWorkflowStep,
+  WorkflowConst,
+  ScheduleTaskConst
+} from '@flyele-nx/service'
 import {
   DisabledIcon,
   OptionIcon,
@@ -33,6 +38,8 @@ import {
 } from '@flyele-nx/icon'
 import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
+import { globalNxController } from '../global/nxController'
+import { useMessage } from '@flyele-nx/ui'
 
 const { TextArea } = Input
 
@@ -71,12 +78,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const [status, setStatus] = useState<IOperation>(statusFromProps)
   const getStepsLoading = useRef(false)
   const { contactDict } = useContactStore()
-  const userId =
-    useUserInfoStore((state) => state.userInfo.user_id) || '2581094491488455'
-
-  // const [chosenStep, setChosenStep] = useState<string>()
-
-  // const [showAddMerbersModal, setShowAddMerbersModal] = useState(false)
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const [showMsg] = useMessage()
 
   const stepList = useMemo(
     () => stepsFormatter(steps, curStepId, !!addUser),
@@ -84,11 +87,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   )
 
   const openSteps = useMemoizedFn(() => {
-    console.log('steps.length***', steps.length)
-
     if (isHovering && steps.length) {
-      console.log('show***')
-
       ctrl.show()
     } else {
       setShowPopper(false)
@@ -214,7 +213,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
 
       setAddUser({
         avatar: user?.avatar || '',
-        name: user?.original_name || user?.nick_name || '测试',
+        name: user?.original_name || user?.nick_name,
         isTeamVip: user?.isTeamVip,
         isVip: user?.isVip
       })
@@ -266,7 +265,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepRollback({ reason: inputVal, taskId, curStepId })
       .then(() => {
         changeStatus?.()
-        message.success({ content: '操作成功，该事项已退回上一步' })
+        showMsg({ msgType: '成功', content: '操作成功，该事项已退回上一步' })
       })
       .catch((err: any) => {
         if (err?.response?.data && err?.response?.data?.code === 40050) {
@@ -312,7 +311,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepComplete({ curStepId, taskId })
       .then(() => {
         changeStatus?.()
-        message.success({ content: getHandleNextTxt() })
+        showMsg({ msgType: '成功', content: getHandleNextTxt() })
       })
       .catch((err) => {
         if (err?.response?.data && err?.response?.data?.code === 40050) {
@@ -321,6 +320,32 @@ const _WorkflowOperation: ForwardRefRenderFunction<
           changeStatus?.()
         }
       })
+  })
+
+  /**
+   * 通知外部打开协作人邀请弹窗
+   */
+  const showAddModal = useMemoizedFn((chosenStep: string) => {
+    const { allTakerIds } = getAllTakers(steps)
+    const params = {
+      matterType: ScheduleTaskConst.MatterType.matter,
+      task: {
+        id: taskId,
+        title: ''
+      },
+      sensor: null,
+      conditionModel: {
+        modelName: 'MatterConditionModel',
+        params: {
+          type: 'globalMatterCondition'
+        }
+      },
+      isWorkFlowAdd: true,
+      allTakerIds,
+      chosenStep
+    }
+    console.log('params***', params)
+    globalNxController.onHandlerTaskAddTaker(params)
   })
 
   /**
@@ -374,13 +399,13 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       },
       onOk: () => {
         modal.destroy()
-        // TODO 调用协作人弹窗
+        showAddModal(steps[curStepIndex + 1].id)
       },
       onCancel: () => {
         modal.destroy()
       }
     })
-  }, [steps, curStepId, stepList, handleNext])
+  }, [steps, curStepId, stepList, handleNext, showAddModal])
 
   const closeModal = useMemoizedFn(() => {
     setShowModal(false)
@@ -390,22 +415,22 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   useEffect(() => {
     if (showModal) {
       closeModal()
-      message.info({ content: '他人已处理' })
+      showMsg({ content: '他人已处理' })
     }
-  }, [curStepId, closeModal, showModal])
+  }, [curStepId, closeModal, showModal, showMsg])
 
   const overToast = useMemoizedFn(() => {
     if (isOverDoneVerify()) {
-      message.info({ content: '工作流事项，暂不支持重新打开' })
+      showMsg({ msgType: '消息', content: '工作流事项，暂不支持重新打开' })
     } else {
-      message.info({ content: '当前步骤，你已处理' })
+      showMsg({ msgType: '消息', content: '当前步骤，你已处理' })
     }
   })
 
   const clickIcon = useMemoizedFn(async () => {
     switch (status) {
       case 'pass': {
-        message.info({ content: '当前步骤，你无需处理' })
+        showMsg({ msgType: '消息', content: '当前步骤，你无需处理' })
         break
       }
       case 'complete': {
@@ -503,7 +528,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
                 const { value } = e.target
 
                 if (value.length >= 150) {
-                  message.error({ content: '最多支持150个汉字' })
+                  showMsg({ msgType: '消息', content: '最多支持150个汉字' })
                 }
 
                 setInputVal(value)

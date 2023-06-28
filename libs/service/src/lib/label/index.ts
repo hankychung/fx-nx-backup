@@ -11,7 +11,7 @@ class Label {
   }
 
   async createTag(params: ITagParams) {
-    return await service.post({ url: '/tag', data: params })
+    return await service.post({ url: `${this.prefix}/tag`, data: params })
   }
 
   // 绑定标签

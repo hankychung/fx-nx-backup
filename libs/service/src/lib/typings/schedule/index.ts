@@ -4,7 +4,7 @@ import {
   RepeatConfigRepeatType,
   HolidayState,
   LOOP_MATTER,
-  CreateType
+  SensorCreateType
 } from './const'
 import { TagModel } from '../tag'
 import { TagWidgetColor } from '../tag/const'
@@ -436,7 +436,7 @@ export interface IScheduleTask {
   workspace_id?: string
   workspace_info?: WorkspaceInfo
   priority_level?: QuadrantValue
-  ws_type?: SPACE_TYPE
+  ws_type: SPACE_TYPE
   hide?: boolean
   schedule_hide?: boolean
 }
@@ -608,6 +608,10 @@ export interface Taker {
    * 更新时间
    */
   update_at?: number
+  /**
+   *  激活状态 1 是已激活的  2 未激活
+   */
+  species: 1 | 2
 }
 
 /**
@@ -856,7 +860,7 @@ export interface ICreateParams {
   group_id?: string // 分组id
   _tagIds?: string[] // 已选中标签 id，用于埋点数据
   _tagArr?: TagModel[] // 标签对象数组，用于埋点数据
-  _create_type?: CreateType // 创建类型，用于埋点数据
+  _create_type?: SensorCreateType // 创建类型，用于埋点数据
   _meeting_remind_data?: string[] // 会议提醒时间，用于埋点数据
   ancestor_id?: string // 所有的父id 暂时仅给埋点使用，因为那个parentId是不准确的
 

@@ -1,0 +1,35 @@
+.shake {
+  display: inline-block;
+  //background-color: #fff;
+}
+
+.mask {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.shake_ani {
+  animation: shake_frames 0.1s infinite;
+}
+
+@keyframes shake_frames {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  33% {
+    transform: rotate(1deg);
+  }
+
+  67% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(-1deg);
+  }
+}

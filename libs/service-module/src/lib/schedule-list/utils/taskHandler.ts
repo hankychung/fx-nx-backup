@@ -2,24 +2,71 @@ import { produce } from 'immer'
 import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
-import { getKey } from '.'
+import { getKey, isRelated } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 
+interface IReloadTasksParams {
+  task: IScheduleTask[]
+  id: string[]
+}
+
+type ITaskModifier = (task: IScheduleTask) => IScheduleTask
+
+function isTasks(a: any): a is IReloadTasksParams['task'] {
+  return typeof a[0] !== 'string'
+}
+
 class TaskHandler {
-  static reloadTasks(tasks: IScheduleTask[]) {
-    this.updateTaskDict(tasks)
-  }
+  static reloadTasks<T extends keyof IReloadTasksParams>(
+    type: T,
+    val: IReloadTasksParams[T]
+  ) {
+    if (isTasks(val)) {
+      this.updateTaskDict(val)
+    }
 
-  static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {
-    const { taskDict } = useScheduleStore.getState()
+    const { schedule } = useScheduleStore.getState()
 
+    const taskIds = isTasks(val)
+      ? val.map((t) => t.ref_task_id)
+      : (val as IReloadTasksParams['id'])
+
+    // 从所有未完成列表移除事项
     useScheduleStore.setState(
       produce((state: IState) => {
-        Object.keys(taskDict).forEach((k) => {
-          state.taskDict[k] = handler(state.taskDict[k])
+        Object.entries(schedule).forEach(([date, keys]) => {
+          if (isRelated(keys, taskIds)) {
+            state.schedule[date] = keys.filter((k) => !taskIds.includes(k))
+          }
         })
       })
     )
+
+    ListHandler.insertTasks(taskIds)
+  }
+
+  static allTasksModifier(handler: ITaskModifier) {
+    const { taskDict } = useScheduleStore.getState()
+
+    this.tasksModifier(Object.keys(taskDict), handler)
+  }
+
+  static tasksModifier(taskIds: string[], handler: ITaskModifier) {
+    const { taskDict } = useScheduleStore.getState()
+
+    console.log('NX inner modifier', taskIds, taskDict)
+
+    // TODO: 循环事项的更新需要考虑
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        taskIds.forEach((k) => {
+          console.log('NX inner taker result', handler(taskDict[k]))
+          state.taskDict[k] = handler(taskDict[k])
+        })
+      })
+    )
+
+    console.log('NX inner modifier end', useScheduleStore.getState().taskDict)
   }
 
   static batchModify({

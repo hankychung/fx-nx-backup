@@ -17,9 +17,7 @@ class NxControllerRegister {
   editTaskTime: ((data: IEditTaskTime) => void) | null = null
   editTaskSummary: ((data: { task: IScheduleTask }) => void) | null = null
   openTaskDetail: ((data: IOpenTaskDetail) => void) | null = null
-  handlerTaskAddTaker:
-    | ((data: IHandlerTaskAddTaker, key: string) => void)
-    | null = null
+  handlerTaskAddTaker: ((data: IHandlerTaskAddTaker) => void) | null = null
 
   /**
    * ipc注册
@@ -71,9 +69,7 @@ class NxControllerRegister {
    * 打开协作人邀请弹窗
    * key 从 ScheduleList 来，由外部传入，避免协助人弹窗出现多个的问题
    */
-  handlerTaskAddTakerRegister(
-    callback: (data: IHandlerTaskAddTaker, key: string) => void
-  ) {
+  handlerTaskAddTakerRegister(callback: (data: IHandlerTaskAddTaker) => void) {
     this.handlerTaskAddTaker = callback
   }
 }

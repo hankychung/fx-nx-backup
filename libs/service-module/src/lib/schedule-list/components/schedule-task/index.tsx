@@ -41,7 +41,6 @@ export interface IProps {
   date: string
   topId: string
   curTime: number // 当前时间, 今天的时间
-  listKey: string
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
@@ -54,7 +53,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   date,
   topId,
   curTime,
-  listKey,
   isDarkMode,
   style,
   isSimple = false,
@@ -248,7 +246,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask} />
           <div className={styles.wrapper}>
-            <StatusBox task={data} listKey={listKey} />
+            <StatusBox task={data} />
             <div className={styles.main}>
               <div className={styles.head}>
                 <div className={styles.headLeft}>
@@ -296,7 +294,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                       )}
                       <Takers
                         taskId={taskKey}
-                        listKey={listKey}
                         isDarkMode={isDarkMode}
                         isVipWin={isVipWin}
                         isBoard={isBoard}
@@ -326,7 +323,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               key={i}
               date={date}
               taskKey={i}
-              listKey={listKey}
               topId={taskKey}
               curTime={curTime}
               isDarkMode={isDarkMode}

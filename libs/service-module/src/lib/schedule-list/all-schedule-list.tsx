@@ -4,7 +4,8 @@ import React, {
   forwardRef,
   useImperativeHandle,
   ForwardRefRenderFunction,
-  useMemo
+  useMemo,
+  useState
 } from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
@@ -13,12 +14,17 @@ import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
 import { ListHandler } from './utils/listHandler'
-import timeGetter from '../global/timeGetter'
 import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from './types'
+import { FinishNumBtn } from './components/finish-num-btn'
 import { useScheduleList } from './utils/hooks/useScheduleList'
 
-const _ScheduleList: ForwardRefRenderFunction<
+/**
+ * 请求全部未完成和已完成事项的列表
+ * 先请求 未完成
+ * 未完成列表结束后 再请求 已完成
+ */
+const _AllScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
 > = (
@@ -53,28 +59,27 @@ const _ScheduleList: ForwardRefRenderFunction<
 
   const isInit = useRef(false)
 
-  const isFinished = useMemo(() => {
-    const curTime = timeGetter.getDateRoughly()
-    return _isFinished || dayjs.unix(curTime).isAfter(dayjs(date), 'date')
-  }, [_isFinished, date])
+  const [finishTotal, setFinishTotal] = useState(0)
+  const [showFinished, setShowFinished] = useState(false)
 
-  const decentList = useMemo(() => {
-    return isFinished ? finishList : list
-  }, [finishList, isFinished, list])
+  const isFinished = useMemo(() => {
+    return pageFetchFinished
+  }, [pageFetchFinished])
 
   const reloaderId = useRef(date + isFinished + isBoard)
+
+  const onToggleShowFinished = useMemoizedFn((show: boolean) => {
+    setShowFinished(!show)
+  })
 
   const fetchList = useMemoizedFn(async () => {
     if (loading) return
     setLoading(true)
 
     const pRef = isFinished ? finishPageRef : pageRef
-    const fetchFinishedRef = isFinished
-      ? finishPageFetchFinished
-      : pageFetchFinished
 
-    if (fetchFinishedRef) {
-      console.log(`${isFinished ? '已完成' : '未完成'}事项列表已经加载完成`)
+    if (pageFetchFinished && finishPageFetchFinished) {
+      console.log(`已完成 和 未完成事项列表已经加载完成`)
       return
     }
 
@@ -88,7 +93,9 @@ const _ScheduleList: ForwardRefRenderFunction<
 
     const list = res.data?.schedule || []
 
-    getFinishListTotal?.(res.data?.schedule_complete_total || 0)
+    const total = res.data?.schedule_complete_total || 0
+    getFinishListTotal?.(total)
+    setFinishTotal(total)
 
     const { keys } = batchUpdateTask(list, { isFinished })
 
@@ -149,7 +156,7 @@ const _ScheduleList: ForwardRefRenderFunction<
         initialLoad={false}
         className={styles.scroller}
       >
-        {(decentList || []).map((i) => (
+        {(list || []).map((i) => (
           // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
           <ScheduleTask
             date={date}
@@ -162,9 +169,33 @@ const _ScheduleList: ForwardRefRenderFunction<
             isDarkMode={isDarkMode}
           />
         ))}
+        {finishTotal && pageFetchFinished && (
+          <>
+            <FinishNumBtn
+              show={showFinished}
+              count={finishTotal}
+              isDarkMode={isDarkMode}
+              onToggleShow={onToggleShowFinished}
+            />
+            {showFinished &&
+              (finishList || []).map((i) => (
+                // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+                <ScheduleTask
+                  date={date}
+                  key={i}
+                  taskKey={i}
+                  topId={i}
+                  curTime={dayjs().unix()}
+                  isVipWin={isVipWin}
+                  isBoard={isBoard}
+                  isDarkMode={isDarkMode}
+                />
+              ))}
+          </>
+        )}
       </InfiniteScroll>
     </div>
   )
 }
 
-export const ScheduleList = React.memo(forwardRef(_ScheduleList))
+export const AllScheduleList = React.memo(forwardRef(_AllScheduleList))

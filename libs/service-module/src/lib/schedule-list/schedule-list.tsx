@@ -24,6 +24,7 @@ interface ScheduleListProps {
   isBoard?: boolean
   isVipWin?: boolean // 是否小挂件窗体
   overlayClassName?: string
+  isDarkMode?: boolean
 }
 
 interface IScheduleListRef {
@@ -40,7 +41,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     isVipWin = false,
     isBoard,
     getFinishListTotal,
-    overlayClassName
+    overlayClassName,
+    isDarkMode
   },
   ref
 ) => {
@@ -138,6 +140,7 @@ const _ScheduleList: ForwardRefRenderFunction<
             curTime={dayjs().unix()}
             isVipWin={isVipWin}
             isBoard={isBoard}
+            isDarkMode={isDarkMode}
           />
         ))}
       </InfiniteScroll>

@@ -214,8 +214,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode,
-        [styles.complexSchedulePadding]: !isBoard
+        [styles.darkMode]: isDarkMode
       })}
       style={{
         background: isDarkMode ? '#3b3e4b' : '#fff',
@@ -226,9 +225,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       onClick={onClickTask}
     >
       <div
-        className={cs(styles.topHover, styles.boardSchedulePadding, {
+        className={cs(styles.topHover, {
           [styles.darkModeHover]: isDarkMode,
-          [styles.remind]: isRemind
+          [styles.remind]: isRemind,
+          [styles.complexSchedulePadding]: !isBoard,
+          [styles.boardSchedulePadding]: isBoard
         })}
       >
         {/* 2.1 pc-4745加入日程置顶 */}

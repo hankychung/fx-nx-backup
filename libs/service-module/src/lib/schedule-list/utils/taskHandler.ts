@@ -10,6 +10,8 @@ interface IReloadTasksParams {
   id: string[]
 }
 
+type ITaskModifier = (task: IScheduleTask) => IScheduleTask
+
 function isTasks(a: any): a is IReloadTasksParams['task'] {
   return typeof a[0] !== 'string'
 }
@@ -43,12 +45,17 @@ class TaskHandler {
     ListHandler.insertTasks(taskIds)
   }
 
-  static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {
+  static allTasksModifier(handler: ITaskModifier) {
     const { taskDict } = useScheduleStore.getState()
 
+    this.tasksModifier(Object.keys(taskDict), handler)
+  }
+
+  static tasksModifier(taskIds: string[], handler: ITaskModifier) {
+    // TODO: 循环事项的更新需要考虑
     useScheduleStore.setState(
       produce((state: IState) => {
-        Object.keys(taskDict).forEach((k) => {
+        taskIds.forEach((k) => {
           state.taskDict[k] = handler(state.taskDict[k])
         })
       })

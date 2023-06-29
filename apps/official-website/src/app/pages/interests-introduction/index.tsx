@@ -55,7 +55,7 @@ const InterestsIntroduction = () => {
           <span
             className={showComparison ? styles.use_title : styles.un_use_title}
           >
-            身份权益对比
+            会员权益对比
           </span>
         </div>
         <div

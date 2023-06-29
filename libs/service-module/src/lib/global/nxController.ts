@@ -122,10 +122,10 @@ class GlobalNxController {
   /**
    * 点击事项邀请协作人
    */
-  onHandlerTaskAddTaker(data: IHandlerTaskAddTaker, key: string) {
+  onHandlerTaskAddTaker(data: IHandlerTaskAddTaker) {
     if (nxControllerRegister.handlerTaskAddTaker) {
       try {
-        nxControllerRegister.handlerTaskAddTaker(data, key)
+        nxControllerRegister.handlerTaskAddTaker(data)
       } catch (e) {
         console.log('handlerTaskAddTaker 失败', e)
       }

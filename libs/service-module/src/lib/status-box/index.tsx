@@ -32,7 +32,6 @@ import { useUserInfoStore } from '../store/useUserInfoStore'
 
 interface IProps {
   task: IScheduleTask
-  listKey: string
   changeStatus?: () => void
   resetStatus?: () => void
 }
@@ -40,7 +39,7 @@ interface IProps {
 const ANIMATION_DURATION = 950
 
 const _StatusBox: FC<IProps> = (props) => {
-  const { task, changeStatus, resetStatus, listKey } = props
+  const { task, changeStatus, resetStatus } = props
   const [updating, setUpdating] = useState(false)
   const taskDict = useScheduleStore((state) => state.taskDict)
 
@@ -197,7 +196,6 @@ const _StatusBox: FC<IProps> = (props) => {
             taskId={task.ref_task_id}
             curStepId={task.flow_step_id}
             complete_at={task.complete_at}
-            listKey={listKey}
             size={14}
             status={getOperationStatus(task, userId)}
             changeStatus={changeStatus}

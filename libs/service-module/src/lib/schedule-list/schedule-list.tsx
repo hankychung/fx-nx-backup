@@ -18,7 +18,6 @@ import timeGetter from '../global/timeGetter'
 
 interface ScheduleListProps {
   date: string
-  listKey: string
   isFinished?: boolean
   getFinishListTotal?: (total: number) => void
   isBoard?: boolean
@@ -35,7 +34,6 @@ const _ScheduleList: ForwardRefRenderFunction<
 > = (
   {
     date,
-    listKey,
     isFinished: _isFinished,
     isVipWin = false,
     isBoard,
@@ -134,7 +132,6 @@ const _ScheduleList: ForwardRefRenderFunction<
             key={i}
             taskKey={i}
             topId={i}
-            listKey={listKey}
             curTime={dayjs().unix()}
             isVipWin={isVipWin}
             isBoard={isBoard}

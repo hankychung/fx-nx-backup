@@ -60,12 +60,13 @@ class TaskHandler {
     useScheduleStore.setState(
       produce((state: IState) => {
         taskIds.forEach((k) => {
+          console.log('NX inner taker result', handler(taskDict[k]))
           state.taskDict[k] = handler(taskDict[k])
         })
       })
     )
 
-    console.log('NX inner modifier end', taskDict)
+    console.log('NX inner modifier end', useScheduleStore.getState().taskDict)
   }
 
   static batchModify({

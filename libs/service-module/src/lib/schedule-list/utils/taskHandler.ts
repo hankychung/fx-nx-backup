@@ -52,14 +52,20 @@ class TaskHandler {
   }
 
   static tasksModifier(taskIds: string[], handler: ITaskModifier) {
+    const { taskDict } = useScheduleStore.getState()
+
+    console.log('NX inner modifier', taskIds, taskDict)
+
     // TODO: 循环事项的更新需要考虑
     useScheduleStore.setState(
       produce((state: IState) => {
         taskIds.forEach((k) => {
-          state.taskDict[k] = handler(state.taskDict[k])
+          state.taskDict[k] = handler(taskDict[k])
         })
       })
     )
+
+    console.log('NX inner modifier end', taskDict)
   }
 
   static batchModify({

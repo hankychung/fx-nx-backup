@@ -212,12 +212,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   return (
     <div
       ref={domRef}
-      className={cs(styles.scheduleTaskRoot, styles.boardSchedule, {
+      className={cs(styles.scheduleTaskRoot, {
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
         [styles.darkMode]: isDarkMode,
-        [styles.complexSchedulePadding]: !isBoard
+        [styles.complexSchedulePadding]: !isBoard,
+        [styles.boardSchedule]: isBoard
       })}
       style={{
         background: isDarkMode ? '#3b3e4b' : '#fff',

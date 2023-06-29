@@ -5,7 +5,6 @@ export interface IOperationProps {
   creator_id: string
   complete_at?: number
   curStepId: string
-  listKey: string
   handleHover?: (isHover: boolean) => void
   size?: number
   popoverPos?: 'fixed' | 'absolute'

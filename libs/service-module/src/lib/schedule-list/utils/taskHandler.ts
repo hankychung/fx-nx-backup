@@ -2,12 +2,45 @@ import { produce } from 'immer'
 import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
-import { getKey } from '.'
+import { getKey, isRelated } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 
+interface IReloadTasksParams {
+  task: IScheduleTask[]
+  id: string[]
+}
+
+function isTasks(a: any): a is IReloadTasksParams['task'] {
+  return typeof a[0] !== 'string'
+}
+
 class TaskHandler {
-  static reloadTasks(tasks: IScheduleTask[]) {
-    this.updateTaskDict(tasks)
+  static reloadTasks<T extends keyof IReloadTasksParams>(
+    type: T,
+    val: IReloadTasksParams[T]
+  ) {
+    if (isTasks(val)) {
+      this.updateTaskDict(val)
+    }
+
+    const { schedule } = useScheduleStore.getState()
+
+    const taskIds = isTasks(val)
+      ? val.map((t) => t.ref_task_id)
+      : (val as IReloadTasksParams['id'])
+
+    // 从所有未完成列表移除事项
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        Object.entries(schedule).forEach(([date, keys]) => {
+          if (isRelated(keys, taskIds)) {
+            state.schedule[date] = keys.filter((k) => !taskIds.includes(k))
+          }
+        })
+      })
+    )
+
+    ListHandler.insertTasks(taskIds)
   }
 
   static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {

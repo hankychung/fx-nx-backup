@@ -35,6 +35,36 @@ class Task {
     })
   }
 
+  async search({
+    pageRecord = 20,
+    pageNumber = 1,
+    title,
+    refId,
+    batchId,
+    lastExitAt
+  }: {
+    pageRecord?: number
+    pageNumber?: number
+    title?: string
+    refId: string
+    batchId?: string
+    lastExitAt?: number
+  }) {
+    const res = await service.get<IScheduleTask[]>({
+      url: `${this.prefix}/search`,
+      params: {
+        page_record: pageRecord,
+        page_number: pageNumber,
+        title,
+        ref_task_id: refId,
+        batch_id: batchId,
+        last_exit_at: lastExitAt
+      }
+    })
+
+    return res
+  }
+
   // 完成循环事项
   repeatFinish(data: IRepeatParams) {
     const { task_id, repeat_id } = data

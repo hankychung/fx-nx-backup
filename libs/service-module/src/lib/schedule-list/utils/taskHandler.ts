@@ -10,6 +10,8 @@ interface IReloadTasksParams {
   id: string[]
 }
 
+type ITaskModifier = (task: IScheduleTask) => IScheduleTask
+
 function isTasks(a: any): a is IReloadTasksParams['task'] {
   return typeof a[0] !== 'string'
 }
@@ -43,16 +45,28 @@ class TaskHandler {
     ListHandler.insertTasks(taskIds)
   }
 
-  static allTasksModifier(handler: (task: IScheduleTask) => IScheduleTask) {
+  static allTasksModifier(handler: ITaskModifier) {
     const { taskDict } = useScheduleStore.getState()
 
+    this.tasksModifier(Object.keys(taskDict), handler)
+  }
+
+  static tasksModifier(taskIds: string[], handler: ITaskModifier) {
+    const { taskDict } = useScheduleStore.getState()
+
+    console.log('NX inner modifier', taskIds, taskDict)
+
+    // TODO: 循环事项的更新需要考虑
     useScheduleStore.setState(
       produce((state: IState) => {
-        Object.keys(taskDict).forEach((k) => {
-          state.taskDict[k] = handler(state.taskDict[k])
+        taskIds.forEach((k) => {
+          console.log('NX inner taker result', handler(taskDict[k]))
+          state.taskDict[k] = handler(taskDict[k])
         })
       })
     )
+
+    console.log('NX inner modifier end', useScheduleStore.getState().taskDict)
   }
 
   static batchModify({

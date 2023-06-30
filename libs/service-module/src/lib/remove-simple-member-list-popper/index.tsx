@@ -4,6 +4,7 @@ import SimpleMemberList, { ISimpleMember } from '../simple-member-list'
 import { useTaskMemberRemove } from '../member/hooks/useTaskMemberRemove'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { useMessage } from '@flyele-nx/ui'
+import { TaskApi } from '@flyele-nx/service'
 
 type IProps = {
   taskId: string
@@ -41,15 +42,29 @@ export function RemoveSimpleMemberListPopper(props: PropsWithChildren<IProps>) {
           confirmTxt: '移出',
           cancelTxt: '取消',
           color: 'red',
-          onOk() {
+          async onOk() {
             ctrl.addClickAlwaysHide()
+
+            let dispatchId = member.dispatchId
+
+            // 本地添加的协作人无法知道其dispatchId
+            if (!dispatchId) {
+              const task = await TaskApi.search({ refId: taskId })
+
+              const taker = (task.data[0].takers || []).find(
+                (t) => t.taker_id === member.userId
+              )
+
+              dispatchId = taker?.dispatch_id || ''
+            }
+
             taskMemberRemove({
               data: {
                 taskId,
                 selectedTakerList: [
                   {
                     userId: member.userId,
-                    dispatchId: member.dispatchId,
+                    dispatchId,
                     isCreator: !!member.isCreator
                   }
                 ]

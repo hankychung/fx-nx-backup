@@ -41,7 +41,6 @@ export interface IProps {
   date: string
   topId: string
   curTime: number // 当前时间, 今天的时间
-  listKey: string
   isDarkMode?: boolean
   style?: CSSProperties
   isSimple?: boolean
@@ -54,7 +53,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   date,
   topId,
   curTime,
-  listKey,
   isDarkMode,
   style,
   isSimple = false,
@@ -83,6 +81,17 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     )
 
   const isHovering = useHover(domRef)
+
+  if (!data) {
+    console.log(
+      'taskKey',
+      taskKey,
+      useScheduleStore.getState().taskDict,
+      useScheduleStore.getState().schedule,
+      useScheduleStore.getState().finishSchedule,
+      useScheduleStore.getState()
+    )
+  }
 
   const { menuActions } = useMenuActions({ data })
 
@@ -216,8 +225,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode,
-        [styles.complexSchedulePadding]: !isBoard
+        [styles.darkMode]: isDarkMode
       })}
       style={{
         background: isDarkMode ? '#3b3e4b' : '#fff',
@@ -228,9 +236,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       onClick={onClickTask}
     >
       <div
-        className={cs(styles.topHover, styles.boardSchedulePadding, {
+        className={cs(styles.topHover, {
           [styles.darkModeHover]: isDarkMode,
-          [styles.remind]: isRemind
+          [styles.remind]: isRemind,
+          [styles.complexSchedulePadding]: !isBoard,
+          [styles.boardSchedulePadding]: isBoard
         })}
       >
         {/* 2.1 pc-4745加入日程置顶 */}
@@ -247,7 +257,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask} />
           <div className={styles.wrapper}>
-            <StatusBox task={data} listKey={listKey} />
+            <StatusBox task={data} />
             <div className={styles.main}>
               <div className={styles.head}>
                 <div className={styles.headLeft}>
@@ -295,7 +305,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                       )}
                       <Takers
                         taskId={taskKey}
-                        listKey={listKey}
                         isDarkMode={isDarkMode}
                         isVipWin={isVipWin}
                         isBoard={isBoard}
@@ -325,7 +334,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               key={i}
               date={date}
               taskKey={i}
-              listKey={listKey}
               topId={taskKey}
               curTime={curTime}
               isDarkMode={isDarkMode}

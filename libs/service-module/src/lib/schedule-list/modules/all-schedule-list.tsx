@@ -8,16 +8,16 @@ import React, {
   useState
 } from 'react'
 import { BizApi } from '@flyele-nx/service'
-import styles from './schedule-list.module.scss'
+import styles from '../schedule-list.module.scss'
 import { useMemoizedFn, useUpdateEffect } from 'ahooks'
-import { ScheduleTask } from './components/schedule-task'
+import { ScheduleTask } from '../components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
-import { ListHandler } from './utils/listHandler'
+import { ListHandler } from '../utils/listHandler'
 import classNames from 'classnames'
-import { ScheduleListProps, IScheduleListRef } from './types'
-import { FinishNumBtn } from './components/finish-num-btn'
-import { useScheduleList } from './utils/hooks/useScheduleList'
+import { ScheduleListProps, IScheduleListRef } from '../types'
+import { FinishNumBtn } from '../components/finish-num-btn'
+import { useScheduleList } from '../utils/hooks/useScheduleList'
 
 /**
  * 请求全部未完成和已完成事项的列表

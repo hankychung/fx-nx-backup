@@ -83,7 +83,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   const isHovering = useHover(domRef)
 
   if (!data) {
-    console.log('taskKey', taskKey, data)
+    console.log('taskKey', taskKey, useScheduleStore.getState().taskDict)
   }
 
   const { menuActions } = useMenuActions({ data })

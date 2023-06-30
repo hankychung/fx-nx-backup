@@ -9,7 +9,7 @@ import React, {
 } from 'react'
 import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
@@ -66,7 +66,10 @@ const _AllScheduleList: ForwardRefRenderFunction<
     return pageFetchFinished
   }, [pageFetchFinished])
 
-  const reloaderId = useRef(date + isFinished + isBoard)
+  const reloaderId = useMemo(
+    () => date + isFinished + isBoard,
+    [date, isFinished, isBoard]
+  )
 
   const onToggleShowFinished = useMemoizedFn((show: boolean) => {
     setShowFinished(!show)
@@ -124,14 +127,12 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   useEffect(() => {
-    const id = reloaderId.current
-
-    ListHandler.collectReloader(id, reload)
+    ListHandler.collectReloader(reloaderId, reload)
 
     return () => {
-      ListHandler.removeReloader(id)
+      ListHandler.removeReloader(reloaderId)
     }
-  }, [reload])
+  }, [reload, reloaderId])
 
   useImperativeHandle(ref, () => {
     return {
@@ -146,6 +147,11 @@ const _AllScheduleList: ForwardRefRenderFunction<
       reload()
     }
   }, [reload])
+
+  useUpdateEffect(() => {
+    // 日期改变重载
+    reload()
+  }, [date])
 
   return (
     <div className={classNames(styles['container'], overlayClassName)}>

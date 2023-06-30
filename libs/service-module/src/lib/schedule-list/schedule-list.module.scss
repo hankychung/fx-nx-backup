@@ -1,7 +1,6 @@
 .container {
   height: 100%;
   overflow: overlay;
-  background-color: #f4f4f4;
   width: 100%;
   /* 隐藏非滚动状态下的滚动条 */
   &::-webkit-scrollbar {

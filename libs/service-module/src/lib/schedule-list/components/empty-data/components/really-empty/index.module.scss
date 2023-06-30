@@ -1,0 +1,39 @@
+// 减去底部高度 和 已完成按钮的高度
+$h: calc(525px - 120px - 50px);
+
+.board {
+  // height: 323px;
+  height: $h;
+  font-size: 13px;
+  font-weight: 400;
+  color: #b4b4b4;
+  line-height: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    height: 136px;
+    width: 136px;
+    margin-bottom: 10px;
+  }
+}
+
+.other {
+  height: 323px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #b4b4b4;
+  line-height: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    height: 32px;
+    width: 32px;
+    margin-bottom: 10px;
+  }
+}

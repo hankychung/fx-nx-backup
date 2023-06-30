@@ -169,7 +169,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
             isDarkMode={isDarkMode}
           />
         ))}
-        {finishTotal && pageFetchFinished && (
+        {!!finishTotal && pageFetchFinished && (
           <>
             <FinishNumBtn
               show={showFinished}

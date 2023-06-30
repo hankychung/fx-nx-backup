@@ -82,6 +82,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const isHovering = useHover(domRef)
 
+  if (!data) {
+    console.error('taskKey not found', taskKey, useScheduleStore.getState())
+  }
+
   const { menuActions } = useMenuActions({ data })
 
   // 记录是否为卡片顶级事项

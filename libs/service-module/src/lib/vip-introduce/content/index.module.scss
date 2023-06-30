@@ -66,7 +66,7 @@
     }
 
     .content {
-      padding: 16px 16px 0 16px;
+      padding: 10px 16px 0 16px;
       box-sizing: border-box;
       flex: 1;
       color: #6a6a6a;
@@ -103,9 +103,13 @@
         display: flex;
         align-items: center;
       }
+      .space_free_professional {
+        display: flex;
+        cursor: pointer;
+      }
 
       div {
-        margin: 2.5px 0;
+        margin: 2.7px 0;
       }
     }
 

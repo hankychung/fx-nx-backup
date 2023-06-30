@@ -17,6 +17,8 @@ export const useScheduleList = ({ date }: IProps) => {
   const [loading, setLoading] = useState(false)
   const [pageFetchFinished, setPageFetchFinished] = useState(false) // 未完成列表是否请求到最后一页
   const [finishPageFetchFinished, setFinishPageFetchFinished] = useState(false) // 已完成列表是否请求到最后一页
+  const [isError, setIsError] = useState(false)
+  const [completeCount, setCompleteCount] = useState(0)
 
   return {
     list,
@@ -31,6 +33,10 @@ export const useScheduleList = ({ date }: IProps) => {
     pageFetchFinished,
     setPageFetchFinished,
     finishPageFetchFinished,
-    setFinishPageFetchFinished
+    setFinishPageFetchFinished,
+    isError,
+    setIsError,
+    completeCount,
+    setCompleteCount
   }
 }

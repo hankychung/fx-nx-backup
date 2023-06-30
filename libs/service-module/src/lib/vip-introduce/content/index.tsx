@@ -11,6 +11,7 @@ import css from './index.module.scss'
 import { memberPowerStaticData } from './packages_const'
 import { IInfoType, IPower, VipIntroduceContentProps } from '../types'
 import { FlyTooltip } from '@flyele/flyele-components'
+import { pointer } from 'd3-selection'
 
 export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
   const {
@@ -42,9 +43,17 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     if (!item) return
     switch (item.isSpace) {
       case 'free_space':
-        return <FreeSpace onClick={equitySpaceClick} />
+        return (
+          <div className={css.space_free_professional}>
+            <FreeSpace onClick={equitySpaceClick} />
+          </div>
+        )
       case 'professional_space':
-        return <ProfessionalSpace onClick={equitySpaceClick} />
+        return (
+          <div className={css.space_free_professional}>
+            <ProfessionalSpace onClick={equitySpaceClick} />
+          </div>
+        )
       default:
         return
     }

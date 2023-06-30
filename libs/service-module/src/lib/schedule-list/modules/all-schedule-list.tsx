@@ -18,6 +18,7 @@ import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from '../types'
 import { FinishNumBtn } from '../components/finish-num-btn'
 import { useScheduleList } from '../utils/hooks/useScheduleList'
+import { EmptyData } from '../components/empty-data'
 
 /**
  * 请求全部未完成和已完成事项的列表
@@ -52,14 +53,17 @@ const _AllScheduleList: ForwardRefRenderFunction<
     pageFetchFinished,
     setPageFetchFinished,
     finishPageFetchFinished,
-    setFinishPageFetchFinished
+    setFinishPageFetchFinished,
+    isError,
+    setIsError,
+    finishTotal,
+    setFinishTotal
   } = useScheduleList({
     date
   })
 
   const isInit = useRef(false)
 
-  const [finishTotal, setFinishTotal] = useState(0)
   const [showFinished, setShowFinished] = useState(false)
 
   const isFinished = useMemo(() => {
@@ -123,7 +127,11 @@ const _AllScheduleList: ForwardRefRenderFunction<
     finishPageRef.current = 1
     setPageFetchFinished(false)
     setFinishPageFetchFinished(false)
-    await fetchList()
+    try {
+      await fetchList()
+    } catch {
+      setIsError(true)
+    }
   })
 
   useEffect(() => {
@@ -155,51 +163,61 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   return (
     <div className={classNames(styles['container'], overlayClassName)}>
-      <InfiniteScroll
-        loadMore={fetchList}
-        useWindow={false}
-        hasMore
-        initialLoad={false}
-        className={styles.scroller}
-      >
-        {(list || []).map((i) => (
-          // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-          <ScheduleTask
-            date={date}
-            key={i}
-            taskKey={i}
-            topId={i}
-            curTime={dayjs().unix()}
-            isVipWin={isVipWin}
-            isBoard={isBoard}
-            isDarkMode={isDarkMode}
-          />
-        ))}
-        {!!finishTotal && pageFetchFinished && (
-          <>
-            <FinishNumBtn
-              show={showFinished}
-              count={finishTotal}
+      {(list || []).length ? (
+        <InfiniteScroll
+          loadMore={fetchList}
+          useWindow={false}
+          hasMore
+          initialLoad={false}
+          className={styles.scroller}
+        >
+          {list.map((i) => (
+            // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+            <ScheduleTask
+              date={date}
+              key={i}
+              taskKey={i}
+              topId={i}
+              curTime={dayjs().unix()}
+              isVipWin={isVipWin}
+              isBoard={isBoard}
               isDarkMode={isDarkMode}
-              onToggleShow={onToggleShowFinished}
             />
-            {showFinished &&
-              (finishList || []).map((i) => (
-                // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-                <ScheduleTask
-                  date={date}
-                  key={i}
-                  taskKey={i}
-                  topId={i}
-                  curTime={dayjs().unix()}
-                  isVipWin={isVipWin}
-                  isBoard={isBoard}
-                  isDarkMode={isDarkMode}
-                />
-              ))}
-          </>
-        )}
-      </InfiniteScroll>
+          ))}
+          {!!finishTotal && pageFetchFinished && (
+            <>
+              <FinishNumBtn
+                show={showFinished}
+                count={finishTotal}
+                isDarkMode={isDarkMode}
+                onToggleShow={onToggleShowFinished}
+              />
+              {showFinished &&
+                (finishList || []).map((i) => (
+                  // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+                  <ScheduleTask
+                    date={date}
+                    key={i}
+                    taskKey={i}
+                    topId={i}
+                    curTime={dayjs().unix()}
+                    isVipWin={isVipWin}
+                    isBoard={isBoard}
+                    isDarkMode={isDarkMode}
+                  />
+                ))}
+            </>
+          )}
+        </InfiniteScroll>
+      ) : (
+        <EmptyData
+          isError={isError}
+          listType={isFinished ? 'COMPLETE' : 'NORMAL'}
+          isBoard={!!isBoard}
+          noTask={!finishList?.length && !list?.length}
+          allFinished={!!finishTotal && !list?.length}
+        />
+      )}
     </div>
   )
 }

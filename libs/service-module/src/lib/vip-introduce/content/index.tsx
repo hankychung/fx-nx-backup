@@ -149,7 +149,12 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                       )}
                       <div
                         key={power.title}
-                        style={{ marginLeft: 5, marginRight: 4 }}
+                        style={{
+                          marginLeft: 5,
+                          marginRight: 4,
+                          color: '#535353',
+                          fontWeight: 'normal'
+                        }}
                       >
                         {power.title}
                       </div>

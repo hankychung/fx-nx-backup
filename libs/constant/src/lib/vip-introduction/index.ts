@@ -24,7 +24,7 @@ export const identityData: IIdentityData[] = [
     title: '单一事项协作人',
     free: '20人',
     personal: '100人',
-    team: '100人'
+    team: '无限'
   },
   {
     key: 'customView',

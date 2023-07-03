@@ -10,6 +10,8 @@ interface IReloadTasksParams {
   id: string[]
 }
 
+type IGetBingoTasks = (task: IScheduleTask) => boolean
+
 type ITaskModifier = (task: IScheduleTask) => IScheduleTask
 
 function isTasks(a: any): a is IReloadTasksParams['task'] {
@@ -189,6 +191,28 @@ class TaskHandler {
   static createTasks(tasks: IScheduleTask[]) {
     this.updateTaskDict(tasks)
     ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
+  }
+
+  // 获取符合条件的所有事项
+  private static getTasksByCondition(handler: IGetBingoTasks) {
+    const { taskDict } = useScheduleStore.getState()
+
+    const bingoTasks: IScheduleTask[] = []
+
+    Object.entries(taskDict).forEach(([, task]) => {
+      if (handler(task)) {
+        bingoTasks.push(task)
+      }
+    })
+
+    return { bingoTasks }
+  }
+
+  // 删除符合条件的所有事项
+  static removeTasksByConditions(handler: IGetBingoTasks) {
+    const { bingoTasks } = this.getTasksByCondition(handler)
+
+    ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
   }
 }
 

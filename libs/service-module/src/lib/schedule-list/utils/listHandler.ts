@@ -128,20 +128,28 @@ class ListHandler {
   }
 
   // 批量移除事项
-  private static removeTasks(
+  static removeTasks(
     taskIds: string[],
-    options: {
-      type: 'schedule' | 'finishSchedule'
+    options?: {
+      type?: 'schedule' | 'finishSchedule'
     }
   ) {
+    const type = options?.type
+
+    if (!type) {
+      this.removeTasks(taskIds, { type: 'finishSchedule' })
+      this.removeTasks(taskIds, { type: 'schedule' })
+      return
+    }
+
     const { schedule, finishSchedule } = useScheduleStore.getState()
 
-    const l = options.type === 'finishSchedule' ? finishSchedule : schedule
+    const l = type === 'finishSchedule' ? finishSchedule : schedule
 
     useScheduleStore.setState(
       produce((state: IState) => {
         Object.entries(l).forEach(([date, list]) => {
-          state[options.type][date] = list.filter((i) => !taskIds.includes(i))
+          state[type][date] = list.filter((i) => !taskIds.includes(i))
         })
       })
     )

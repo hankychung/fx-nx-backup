@@ -27,9 +27,10 @@ function VipInterests({
   type
 }: VipInterestsProps) {
   const Controller = useController(new FlyBasePopperCtrl())
-  const person_bac = 'https://cdn.flyele.net/resources/PC/person_bac.png'
+  const person_bac = 'https://cdn.flyele.net/resources/PC/person_background.png'
   const team_bac = 'https://cdn.flyele.net/resources/PC/team_bac.png'
-  const person_inter = 'https://cdn.flyele.net/resources/PC/person_inter1.png'
+  const person_inter =
+    'https://cdn.flyele.net/resources/PC/person_inter_icon.png'
   const team_inter = 'https://cdn.flyele.net/resources/PC/team_inter.png'
   return (
     <Modal

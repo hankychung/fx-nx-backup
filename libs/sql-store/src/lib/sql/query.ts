@@ -101,7 +101,57 @@ export const BaseQuerySql = ({
   user_id: string
   LeftJoinRepeatAnd: string // 平铺和非平铺模式下 循环事项的判断
 }) => {
-  return `SELECT *, CASE WHEN date ISNULL THEN 99 ELSE 0 END AS date_idx,
+  return `
+  WITH real_parent AS (
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 0, 17) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 18, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 35, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 52, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 69, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 86, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 103, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 120, 16) AS parent_id 
+    FROM 
+      task_config
+  )
+  SELECT *, CASE WHEN date ISNULL THEN 99 ELSE 0 END AS date_idx,
   CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
        WHEN STRFTIME('%w', date) == '1' THEN '周一'
        WHEN STRFTIME('%w', date) == '2' THEN '周二'
@@ -129,7 +179,7 @@ CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime'
 w.project_name, CAST(project_creator_id AS text) AS project_creator_id, 
 CASE WHEN workspace_id IS NULL THEN 0 ELSE CAST(workspace_id AS text) END AS workspace_id, workspace_name, ws_type, 
 is_external_member,
-IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
+IFNULL(tags, '[]') AS tags, IFNULL(zc.parent_id, '') AS parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
 IFNULL(k.child_total, 0) AS child_total, CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child,
 IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
@@ -352,8 +402,12 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
       GROUP BY 
         id
     ) AS zc
-    ON a.id = zc.task_id
+    ON a.id = zc.task_id)
 ${where || ''} 
 ${order}
 ${limit} `
 }
+
+
+
+

@@ -3,6 +3,8 @@ import { ListAllFinished } from './components/all-finished'
 import ReallyEmpty from './components/really-empty'
 import styles from './index.module.scss'
 import relaxBg from '../../../../assets/schedule/relax.png'
+import LoadingIcon from '../../../../assets/schedule/loading.gif'
+import classNames from 'classnames'
 
 interface IProps {
   /**
@@ -31,10 +33,26 @@ interface IProps {
    * 无事项 + 无已完成
    */
   noTask?: boolean
+
+  /**
+   * loading
+   */
+  loading?: boolean
 }
 
 export const EmptyData = (props: IProps) => {
-  const { isError, allFinished, isBoard, listType, noTask } = props
+  const { isError, allFinished, isBoard, listType, noTask, loading } = props
+  console.log('loading', loading)
+
+  // loading
+  if (loading)
+    return (
+      <div className={classNames(styles.loading)}>
+        <img alt="" src={LoadingIcon} />
+        <span>加载中</span>
+      </div>
+    )
+
   // 网络错误
   if (isError) return <ErrorPage />
 

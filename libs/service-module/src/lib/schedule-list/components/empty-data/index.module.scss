@@ -30,3 +30,20 @@
   padding-top: 10px;
   text-align: center;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  height: 323px;
+  align-items: center;
+  img {
+    width: 25px;
+    height: 25px;
+  }
+
+  span {
+    color: rgba($color: #000000, $alpha: 0.3);
+    font-size: 14px;
+    margin-left: 5px;
+  }
+}

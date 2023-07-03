@@ -167,12 +167,19 @@ export const SpaceComparison = ({ title, header, desc, listObj }: IProps) => {
                         <span
                           onClick={() => {
                             Modal.confirm({
+                              closable: true,
                               title: null,
                               icon: null,
                               width: 620,
                               okButtonProps: { style: { display: 'none' } },
-                              cancelText: '关闭',
-                              content: <img src={equityComparison}></img>
+                              cancelButtonProps: { style: { display: 'none' } },
+                              maskClosable: true,
+                              content: (
+                                <img
+                                  src={equityComparison}
+                                  style={{ marginTop: 10 }}
+                                ></img>
+                              )
                             })
                           }}
                           className={styles.tableItemMember}

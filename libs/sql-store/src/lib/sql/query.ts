@@ -27,54 +27,14 @@ export const QueryTaskTreeCompleteTotal = (task_id: string) => {
   return `SELECT count(*) as task_tree_complete_total from task_dispatch d JOIN task_config c ON c.id = d.ref_task_id JOIN task t ON t.id = d.ref_task_id WHERE (complete_at != 0 or finish_time != 0 ) AND instr(c.parent_id, ${task_id})`
 }
 
-export const QueryTaskChildTotal = (user_id: string) => {
-  return `LEFT JOIN (
-    SELECT 
-      id, 
-      COUNT(*) AS task_tree_total, 
-      COUNT(CASE WHEN complete_at > 0 THEN id END) AS task_tree_complete_total 
-    FROM 
-      (
-        SELECT 
-          id 
-        FROM 
-          task t 
-        WHERE 
-          t.state = 10201 
-          AND t.matter_type IN (10701, 10702, 10705)
-      ) a 
-      LEFT JOIN (
-        SELECT 
-          complete_at, 
-          parent_id 
-        FROM 
-          (
-            SELECT 
-              parent_id, 
-              id 
-            FROM 
-              task_config tc 
-              JOIN (
-                SELECT 
-                  ref_task_id AS task_id 
-                FROM 
-                  task_dispatch 
-                WHERE 
-                  status = 1 
-                  AND is_valid = 1 
-                  AND delete_at = 0 
-                  AND taker_id = ${user_id} 
-                GROUP BY 
-                  ref_task_id
-              ) tt1 ON tc.id = tt1.task_id 
-              AND tc.category = 2
-          ) tc 
-          JOIN task t ON t.state = 10201 
-          AND t.matter_type IN (10701, 10702, 10705) 
-          AND tc.id = t.id
-      ) tc ON tc.parent_id != '' 
-      AND INSTR(tc.parent_id, a.id) 
-    GROUP BY id`
+export const QueryTaskChildTotal = (task_id: string) => {
+  return `SELECT t.id, COUNT(*) AS task_tree_total, COUNT(CASE WHEN complete_at > 0 THEN t.id END) AS task_tree_complete_total
+  FROM task t
+  JOIN task_config tc
+  ON t.id = tc.id
+  WHERE t.state = 10201
+  AND t.matter_type IN (10701, 10702, 10705)
+  AND INSTR(tc.parent_id, ${task_id})`
 }
 
 export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {

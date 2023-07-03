@@ -452,7 +452,7 @@ class SqlStore {
 
         const sqlTakers = this.db!.exec(QueryTaskTakersSQL(task_id, repeat_id))
 
-        const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(this.userId))
+        const sqlChildTotal = this.db!.exec(QueryTaskChildTotal(task_id))
 
         const totalBack = sqlChildTotal[0]
           ? this.formatSelectValue(sqlChildTotal[0])[0]

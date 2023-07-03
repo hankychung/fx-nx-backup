@@ -177,7 +177,7 @@ export const SpaceComparison = ({ title, header, desc, listObj }: IProps) => {
                               content: (
                                 <img
                                   src={equityComparison}
-                                  style={{ marginTop: 10 }}
+                                  style={{ marginTop: 10, width: 574 }}
                                 ></img>
                               )
                             })

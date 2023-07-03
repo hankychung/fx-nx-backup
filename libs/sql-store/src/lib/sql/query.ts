@@ -333,7 +333,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                     status = 1 
                     AND is_valid = 1 
                     AND delete_at = 0 
-                    AND taker_id = 2567146083188875 
+                    AND taker_id = ${user_id} 
                   GROUP BY 
                     ref_task_id
                 ) tt1 ON tc.id = tt1.task_id
@@ -361,7 +361,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
             JOIN task t ON td.ref_task_id = t.id 
             JOIN task_config tc ON t.id = tc.id 
           WHERE 
-            taker_id = 2567146083188875 
+            taker_id = ${user_id} 
             AND td.status = 1 
             AND matter_type = 10701 
             AND td.is_valid = 1 
@@ -389,7 +389,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
             JOIN task t ON td.ref_task_id = t.id 
             JOIN task_config tc ON t.id = tc.id 
           WHERE 
-            taker_id = 2567146083188875 
+            taker_id = ${user_id} 
             AND td.status = 1 
             AND matter_type = 10701 
             AND td.is_valid = 1 

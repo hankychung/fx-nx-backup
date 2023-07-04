@@ -4,6 +4,7 @@ import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { ILocalTask } from '../../../../types/schedule'
 
 interface IReloadTasksParams {
   task: IScheduleTask[]
@@ -183,6 +184,10 @@ class TaskHandler {
         })
       })
     )
+  }
+
+  static updateTaskDictByTodo(tasks: ILocalTask[]) {
+    this.updateTaskDict(tasks)
   }
 
   // 创建新事项

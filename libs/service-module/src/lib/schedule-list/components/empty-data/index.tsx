@@ -42,10 +42,9 @@ interface IProps {
 
 export const EmptyData = (props: IProps) => {
   const { isError, allFinished, isBoard, listType, noTask, loading } = props
-  console.log('loading', loading)
 
   // loading
-  if (loading)
+  if (loading && !isError)
     return (
       <div className={classNames(styles.loading)}>
         <img alt="" src={LoadingIcon} />

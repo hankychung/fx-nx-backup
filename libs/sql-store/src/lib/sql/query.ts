@@ -27,14 +27,55 @@ export const QueryTaskTreeCompleteTotal = (task_id: string) => {
   return `SELECT count(*) as task_tree_complete_total from task_dispatch d JOIN task_config c ON c.id = d.ref_task_id JOIN task t ON t.id = d.ref_task_id WHERE (complete_at != 0 or finish_time != 0 ) AND instr(c.parent_id, ${task_id})`
 }
 
-export const QueryTaskChildTotal = (task_id: string) => {
-  return `SELECT t.id, COUNT(*) AS task_tree_total, COUNT(CASE WHEN complete_at > 0 THEN t.id END) AS task_tree_complete_total
-  FROM task t
-  JOIN task_config tc
-  ON t.id = tc.id
-  WHERE t.state = 10201
-  AND t.matter_type IN (10701, 10702, 10705)
-  AND INSTR(tc.parent_id, ${task_id})`
+export const QueryTaskChildTotal = (task_id: string, user_id: string) => {
+  return `SELECT 
+  id, 
+  COUNT(*) AS task_tree_total, 
+  COUNT(CASE WHEN complete_at > 0 THEN id END) AS task_tree_complete_total 
+FROM 
+  (
+    SELECT 
+      id 
+    FROM 
+      task t 
+    WHERE 
+      t.state = 10201 
+      AND t.matter_type IN (10701, 10702, 10705)
+  ) a 
+  LEFT JOIN (
+    SELECT 
+      complete_at, 
+      parent_id 
+    FROM 
+      (
+        SELECT 
+          parent_id, 
+          id 
+        FROM 
+          task_config tc 
+          JOIN (
+            SELECT 
+              ref_task_id AS task_id 
+            FROM 
+              task_dispatch 
+            WHERE 
+              status = 1 
+              AND is_valid = 1 
+              AND delete_at = 0 
+              AND taker_id = ${user_id} 
+            GROUP BY 
+              ref_task_id
+          ) tt1 ON tc.id = tt1.task_id 
+          AND tc.category = 2
+      ) tc 
+      JOIN task t ON t.state = 10201 
+      AND t.matter_type IN (10701, 10702, 10705) 
+      AND tc.id = t.id
+  ) tc ON tc.parent_id != '' 
+  AND INSTR(tc.parent_id, a.id) 
+WHERE 
+  INSTR(parent_id, ${task_id}) 
+GROUP BY id`
 }
 
 export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
@@ -101,7 +142,57 @@ export const BaseQuerySql = ({
   user_id: string
   LeftJoinRepeatAnd: string // 平铺和非平铺模式下 循环事项的判断
 }) => {
-  return `SELECT *, CASE WHEN date ISNULL THEN 99 ELSE 0 END AS date_idx,
+  return `
+  WITH real_parent AS (
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 0, 17) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 18, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 35, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 52, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 69, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 86, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 103, 16) AS parent_id 
+    FROM 
+      task_config 
+    UNION ALL 
+    SELECT 
+      id, 
+      SUBSTR(parent_id, 120, 16) AS parent_id 
+    FROM 
+      task_config
+  )
+  SELECT *, CASE WHEN date ISNULL THEN 99 ELSE 0 END AS date_idx,
   CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
        WHEN STRFTIME('%w', date) == '1' THEN '周一'
        WHEN STRFTIME('%w', date) == '2' THEN '周二'
@@ -129,7 +220,7 @@ CASE WHEN a.complete_at = 0 AND (DATETIME(a.start_time, 'unixepoch', 'localtime'
 w.project_name, CAST(project_creator_id AS text) AS project_creator_id, 
 CASE WHEN workspace_id IS NULL THEN 0 ELSE CAST(workspace_id AS text) END AS workspace_id, workspace_name, ws_type, 
 is_external_member,
-IFNULL(tags, '[]') AS tags, parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
+IFNULL(tags, '[]') AS tags, IFNULL(zc.parent_id, '') AS parent_id, parent_name, IFNULL(k.taker_total, 0) AS taker_total,
 IFNULL(k.child_total, 0) AS child_total, CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child,
 IFNULL(k.comment_total, 0) AS comment_total,
 IFNULL(k.important_total, 0) AS important_total, IFNULL(k.quote_total, 0) AS quote_total,
@@ -248,13 +339,111 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                       ON r.step_id = tfs.id AND r.delete_at = 0
                 GROUP BY tc.id, tfs.id) z
     ON a.id = z.id
-    LEFT JOIN (SELECT CAST(CASE WHEN INSTR(parent_id, ',') > 0
-                THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)
-                ELSE parent_id END AS bigint) AS task_id, COUNT(*) AS child_count
-                FROM task_config
-                WHERE category = 2
-                GROUP BY parent_id) AS zb
-    ON a.id = zb.task_id)
+    LEFT JOIN (
+      SELECT 
+        id, 
+        COUNT(*) AS task_tree_total, 
+        COUNT(CASE WHEN complete_at > 0 THEN id END) AS task_tree_complete_total 
+      FROM 
+        (
+          SELECT 
+            id 
+          FROM 
+            task t 
+          WHERE 
+            t.state = 10201 
+            AND t.matter_type IN (10701, 10702, 10705)
+        ) a 
+        LEFT JOIN (
+          SELECT 
+            complete_at, 
+            parent_id 
+          FROM 
+            (
+              SELECT 
+                parent_id, 
+                id 
+              FROM 
+                task_config tc 
+                JOIN (
+                  SELECT 
+                    ref_task_id AS task_id 
+                  FROM 
+                    task_dispatch 
+                  WHERE 
+                    status = 1 
+                    AND is_valid = 1 
+                    AND delete_at = 0 
+                    AND taker_id = ${user_id} 
+                  GROUP BY 
+                    ref_task_id
+                ) tt1 ON tc.id = tt1.task_id
+            ) tc 
+            JOIN task t ON t.state = 10201 
+            AND t.matter_type IN (10701, 10702, 10705) 
+            AND tc.id = t.id
+        ) tc ON tc.parent_id != '' 
+        AND INSTR(tc.parent_id, a.id) 
+      GROUP BY 
+        id
+    ) za ON a.id = za.id 
+    LEFT JOIN (
+      SELECT 
+        parent_id AS task_id, 
+        COUNT(parent_id) AS child_count 
+      FROM 
+        (real_parent) a1 
+        JOIN (
+          SELECT 
+            t.id AS task_id, 
+            IFNULL(finish_time, complete_at) AS complete_time 
+          FROM 
+            task_dispatch td 
+            JOIN task t ON td.ref_task_id = t.id 
+            JOIN task_config tc ON t.id = tc.id 
+          WHERE 
+            taker_id = ${user_id} 
+            AND td.status = 1 
+            AND matter_type = 10701 
+            AND td.is_valid = 1 
+            AND complete_time = 0 
+          GROUP BY 
+            ref_task_id
+        ) a2 ON a1.id = a2.task_id 
+      WHERE 
+        parent_id != '' 
+      GROUP BY 
+        parent_id
+    ) AS zb ON a.id = zb.task_id 
+    LEFT JOIN (
+      SELECT 
+        id AS task_id, 
+        GROUP_CONCAT(parent_id) AS parent_id 
+      FROM 
+        (real_parent) a1 
+        JOIN (
+          SELECT 
+            t.id AS task_id, 
+            IFNULL(finish_time, complete_at) AS complete_time 
+          FROM 
+            task_dispatch td 
+            JOIN task t ON td.ref_task_id = t.id 
+            JOIN task_config tc ON t.id = tc.id 
+          WHERE 
+            taker_id = ${user_id} 
+            AND td.status = 1 
+            AND matter_type = 10701 
+            AND td.is_valid = 1 
+            AND complete_time = 0 
+          GROUP BY 
+            ref_task_id
+        ) a2 ON a1.parent_id = a2.task_id 
+      WHERE 
+        parent_id != '' 
+      GROUP BY 
+        id
+    ) AS zc
+    ON a.id = zc.task_id)
 ${where || ''} 
 ${order}
 ${limit} `

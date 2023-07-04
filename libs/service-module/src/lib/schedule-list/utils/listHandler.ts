@@ -173,7 +173,9 @@ class ListHandler {
   private static getInsertDateDict(taskIds: string[]) {
     const { taskDict, schedule } = useScheduleStore.getState()
 
-    const tasks = taskIds.map((id) => taskDict[id])
+    const tasks = taskIds
+      .map((id) => taskDict[id])
+      .filter((i) => !i.finish_time)
 
     // 需要插入该事项的日期
     const insertDateDict = Object.keys(schedule).reduce<{

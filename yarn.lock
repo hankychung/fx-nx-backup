@@ -12367,6 +12367,11 @@ rxjs@^7.0.0, rxjs@^7.5.1, rxjs@^7.5.5, rxjs@^7.8.0:
   dependencies:
     tslib "^2.1.0"
 
+sa-sdk-javascript@^1.25.9:
+  version "1.25.9"
+  resolved "https://registry.npmmirror.com/sa-sdk-javascript/-/sa-sdk-javascript-1.25.9.tgz#4f7ad7dde7facd04de2135fa87ce17a45899c295"
+  integrity sha512-4R8rK4LzFKFfKtJBnhHXdyHQ+3GIB22XeRJ+cnDQIFTydkXChz5o5SRHXaDhipeeJHzdxa28ZYApaFf0lQ9iFw==
+
 safari-14-idb-fix@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/safari-14-idb-fix/-/safari-14-idb-fix-3.0.0.tgz#450fc049b996ec7f3fd9ca2f89d32e0761583440"

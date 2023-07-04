@@ -133,6 +133,13 @@ class GlobalNxController {
       console.log('handlerTaskAddTaker 未注册')
     }
   }
+
+  /**
+   * 更新今日已完成数量
+   */
+  updateFinishedCount(count: number) {
+    console.log('已完成数量', count)
+  }
 }
 
 export const globalNxController = new GlobalNxController()

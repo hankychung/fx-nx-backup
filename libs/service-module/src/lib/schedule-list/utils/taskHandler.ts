@@ -2,7 +2,7 @@ import { produce } from 'immer'
 import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
-import { getKey, isRelated } from '.'
+import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 
 interface IReloadTasksParams {
@@ -23,28 +23,20 @@ class TaskHandler {
     type: T,
     val: IReloadTasksParams[T]
   ) {
+    // 传入类型是IScheduleTask, 先更新事项字典
     if (isTasks(val)) {
       this.updateTaskDict(val)
     }
-
-    const { schedule } = useScheduleStore.getState()
 
     const taskIds = isTasks(val)
       ? val.map((t) => t.ref_task_id)
       : (val as IReloadTasksParams['id'])
 
-    // 从所有未完成列表移除事项
-    useScheduleStore.setState(
-      produce((state: IState) => {
-        Object.entries(schedule).forEach(([date, keys]) => {
-          if (isRelated(keys, taskIds)) {
-            state.schedule[date] = keys.filter((k) => !taskIds.includes(k))
-          }
-        })
-      })
-    )
+    // 从所有未完成/完成列表移除事项
+    ListHandler.removeTasks(taskIds)
 
-    ListHandler.insertTasks(taskIds)
+    // 重新插入事项
+    ListHandler.insertTasksByConds(taskIds)
   }
 
   static allTasksModifier(handler: ITaskModifier) {

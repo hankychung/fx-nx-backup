@@ -2,7 +2,14 @@ import { produce } from 'immer'
 import { IScheduleTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import dayjs from 'dayjs'
-import { getKey, getSortedSchedule, isRelated, shouldInsertSchedule } from '.'
+import {
+  getInsertedFinishTasks,
+  getKey,
+  getSortedSchedule,
+  isRelated,
+  shouldInsertSchedule
+} from '.'
+import timeGetter from '../../global/timeGetter'
 
 class ListHandler {
   // 完成事项
@@ -243,7 +250,9 @@ class ListHandler {
 
   // 批量插入已完成列表
   private static insertCompleteTasks(ids: string[]) {
-    const finishDate = dayjs().format('YYYY-MM-DD')
+    const finishDate = dayjs
+      .unix(timeGetter.getDateRoughly())
+      .format('YYYY-MM-DD')
 
     const { finishSchedule, taskDict } = useScheduleStore.getState()
 
@@ -260,6 +269,16 @@ class ListHandler {
         }
       })
     )
+  }
+
+  // 根据事项信息插入到相关列表
+  static insertTasksByConds(taskIds: string[]) {
+    // 未完成列表
+    this.insertTasks(taskIds)
+
+    // 已完成列表
+    const { taskIds: finishedIds } = getInsertedFinishTasks(taskIds)
+    finishedIds.length && this.insertCompleteTasks(finishedIds)
   }
 
   // 重新分配子事项的直属上级

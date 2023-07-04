@@ -456,7 +456,7 @@ export interface Parents {
   /**
    * 父级事项id
    */
-  task_id?: string
+  task_id: string
   /**
    * 父事项名称
    */

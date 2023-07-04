@@ -109,6 +109,12 @@ class TaskHandler {
     // 置顶
     if ('topmost_at' in diff) {
       ListHandler.sortListByTask(keys)
+      return
+    }
+
+    // 修改时间, 重载数据
+    if ('start_time' in diff || 'end_time' in diff || 'execute_at' in diff) {
+      TaskHandler.reloadTasks('id', keys)
     }
   }
 

@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import {
   getInsertedFinishTasks,
@@ -8,7 +8,6 @@ import {
   isRelated,
   shouldInsertSchedule
 } from '.'
-import { globalNxController } from '../../global/nxController'
 import { getDateOfToday } from './tools'
 
 class ListHandler {
@@ -186,7 +185,7 @@ class ListHandler {
 
     // 需要插入该事项的日期
     const insertDateDict = Object.keys(schedule).reduce<{
-      [k: string]: IScheduleTask[]
+      [k: string]: ILocalTask[]
     }>((dict, date) => {
       const insertTasks = tasks.filter((task) =>
         shouldInsertSchedule({ date, task })
@@ -205,7 +204,7 @@ class ListHandler {
   // 插入到指定日期的未完成列表
   private static insertIntoDate(params: {
     insertDateDict: {
-      [k: string]: IScheduleTask[]
+      [k: string]: ILocalTask[]
     }
   }) {
     const { insertDateDict } = params

@@ -1,7 +1,7 @@
 import { IScheduleTask } from '@flyele-nx/service'
 import { useScheduleStore } from '../../store/useScheduleStore'
 import { TaskHandler } from './taskHandler'
-import { ILocalTask } from '../../../../types/schedule'
+import { ILocalTask } from '@flyele-nx/service'
 
 class ExecutionHandler {
   static updateTasks(tasks: IScheduleTask[]) {

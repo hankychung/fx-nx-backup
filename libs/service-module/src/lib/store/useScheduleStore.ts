@@ -1,12 +1,12 @@
 import { create } from 'zustand'
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
 export interface IState {
   // 以下所有日期共用
   todayFinishCount: number
-  taskDict: { [k: string]: IScheduleTask }
+  taskDict: { [k: string]: ILocalTask }
   childrenDict: { [k: string]: string[] }
   // 以下与日期相关, 每个日期独立维护
   schedule: { [k: string]: string[] }
@@ -26,7 +26,7 @@ interface IMutation {
     isFinished?: boolean
   }) => void
   batchUpdateTask: (
-    tasks: IScheduleTask[],
+    tasks: ILocalTask[],
     options?: { isFinished?: boolean }
   ) => {
     keys: string[]
@@ -112,7 +112,7 @@ const useScheduleStore = create<IState & IMutation>((set) => {
 
       set(
         produce((state: IState) => {
-          const dict: { [k: string]: IScheduleTask } = {}
+          const dict: { [k: string]: ILocalTask } = {}
 
           arr.forEach((item) => {
             const { ref_task_id, repeat_id, finish_time } = item

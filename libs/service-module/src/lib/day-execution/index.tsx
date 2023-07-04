@@ -11,6 +11,7 @@ import { Loading } from '@flyele-nx/ui'
 import { disposalTodayList } from './utils'
 import { TimelineTaskList } from './components/timeline-task-list'
 import { Nodata } from './components/no-data'
+import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
 
 interface IProps {
   date: number
@@ -65,6 +66,7 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
             return [...prevState, ...data]
           })
         }
+        ExecutionHandler.updateTasks(data)
       }
     } catch (e) {
       console.error('获取日程列表失败', e)

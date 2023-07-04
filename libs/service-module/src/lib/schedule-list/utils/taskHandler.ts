@@ -185,7 +185,11 @@ class TaskHandler {
     )
   }
 
-  static updateTaskDictByTodo(tasks: ILocalTask[]) {
+  /**
+   * 用于 今日执行 同步事项数据
+   * same_day 的接口
+   */
+  static updateTaskDictByExecution(tasks: ILocalTask[]) {
     this.updateTaskDict(tasks)
   }
 

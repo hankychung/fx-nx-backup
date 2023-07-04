@@ -17,6 +17,7 @@ import timeGetter from '../global/timeGetter'
 import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from './types'
 import { useScheduleList } from './utils/hooks/useScheduleList'
+import { EmptyData } from './components/empty-data'
 
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
@@ -46,7 +47,11 @@ const _ScheduleList: ForwardRefRenderFunction<
     pageFetchFinished,
     setPageFetchFinished,
     finishPageFetchFinished,
-    setFinishPageFetchFinished
+    setFinishPageFetchFinished,
+    isError,
+    setIsError,
+    finishTotal,
+    setFinishTotal
   } = useScheduleList({
     date
   })
@@ -90,6 +95,8 @@ const _ScheduleList: ForwardRefRenderFunction<
 
     getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 
+    setFinishTotal(res.data?.schedule_complete_total || 0)
+
     const { keys } = batchUpdateTask(list, { isFinished })
 
     updateList({
@@ -113,7 +120,11 @@ const _ScheduleList: ForwardRefRenderFunction<
     finishPageRef.current = 1
     setPageFetchFinished(false)
     setFinishPageFetchFinished(false)
-    await fetchList()
+    try {
+      await fetchList()
+    } catch (error) {
+      setIsError(true)
+    }
   })
 
   useEffect(() => {
@@ -145,27 +156,38 @@ const _ScheduleList: ForwardRefRenderFunction<
       className={classNames(styles['container'], overlayClassName)}
       style={{ backgroundColor: isDarkMode ? 'unset' : '#f4f4f4' }}
     >
-      <InfiniteScroll
-        loadMore={fetchList}
-        useWindow={false}
-        hasMore
-        initialLoad={false}
-        className={styles.scroller}
-      >
-        {(decentList || []).map((i) => (
-          // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-          <ScheduleTask
-            date={date}
-            key={i}
-            taskKey={i}
-            topId={i}
-            curTime={dayjs().unix()}
-            isVipWin={isVipWin}
-            isBoard={isBoard}
-            isDarkMode={isDarkMode}
-          />
-        ))}
-      </InfiniteScroll>
+      {(decentList ?? []).length ? (
+        <InfiniteScroll
+          loadMore={fetchList}
+          useWindow={false}
+          hasMore
+          initialLoad={false}
+          className={styles.scroller}
+        >
+          {decentList.map((i) => (
+            // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+            <ScheduleTask
+              date={date}
+              key={i}
+              taskKey={i}
+              topId={i}
+              curTime={dayjs().unix()}
+              isVipWin={isVipWin}
+              isBoard={isBoard}
+              isDarkMode={isDarkMode}
+            />
+          ))}
+        </InfiniteScroll>
+      ) : (
+        <EmptyData
+          isError={isError}
+          listType={isFinished ? 'COMPLETE' : 'NORMAL'}
+          isBoard={!!isBoard}
+          noTask={!finishList?.length && !list?.length}
+          allFinished={!!finishTotal && !list?.length}
+          loading={loading}
+        />
+      )}
     </div>
   )
 }

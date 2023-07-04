@@ -83,14 +83,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   const isHovering = useHover(domRef)
 
   if (!data) {
-    console.log(
-      'taskKey',
-      taskKey,
-      useScheduleStore.getState().taskDict,
-      useScheduleStore.getState().schedule,
-      useScheduleStore.getState().finishSchedule,
-      useScheduleStore.getState()
-    )
+    console.error('taskKey not found', taskKey, useScheduleStore.getState())
   }
 
   const { menuActions } = useMenuActions({ data })

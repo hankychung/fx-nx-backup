@@ -3,9 +3,8 @@ import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
-import { IState, useScheduleStore } from '../../store/useScheduleStore'
+import { useScheduleStore } from '../../store/useScheduleStore'
 import timeGetter from '../../global/timeGetter'
-import { produce } from 'immer'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
   compareVal: number
@@ -384,8 +383,20 @@ function handleLogout() {
     finishSchedule: {},
     childrenDict: {},
     taskDict: {},
-    expandedDict: {}
+    expandedDict: {},
+    todayFinishCount: 0
   })
+}
+
+function getInsertedFinishTasks(taskIds: string[]) {
+  const { taskDict } = useScheduleStore.getState()
+
+  return {
+    taskIds: taskIds
+      .map((id) => taskDict[id])
+      .filter((t) => t.finish_time)
+      .map((t) => t.ref_task_id)
+  }
 }
 
 export {
@@ -398,5 +409,6 @@ export {
   isRelated,
   getDiffKeys,
   getTaskIdsByDispatch,
-  handleLogout
+  handleLogout,
+  getInsertedFinishTasks
 }

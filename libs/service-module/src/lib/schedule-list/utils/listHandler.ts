@@ -1,7 +1,6 @@
 import { produce } from 'immer'
 import { IScheduleTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
-import dayjs from 'dayjs'
 import {
   getInsertedFinishTasks,
   getKey,
@@ -9,7 +8,8 @@ import {
   isRelated,
   shouldInsertSchedule
 } from '.'
-import timeGetter from '../../global/timeGetter'
+import { globalNxController } from '../../global/nxController'
+import { getDateOfToday } from './tools'
 
 class ListHandler {
   // 完成事项
@@ -26,7 +26,7 @@ class ListHandler {
     this.checkToClearChildren()
 
     // 将已完成事项插入完成列表
-    this.insertCompleteTasks(taskIds)
+    this.insertFinishTasks(taskIds)
   }
 
   // 重启事项
@@ -156,7 +156,13 @@ class ListHandler {
     useScheduleStore.setState(
       produce((state: IState) => {
         Object.entries(l).forEach(([date, list]) => {
-          state[type][date] = list.filter((i) => !taskIds.includes(i))
+          const updatedList = list.filter((i) => !taskIds.includes(i))
+
+          state[type][date] = updatedList
+
+          if (type === 'finishSchedule' && date === getDateOfToday()) {
+            globalNxController.updateFinishedCount(updatedList.length)
+          }
         })
       })
     )
@@ -251,10 +257,8 @@ class ListHandler {
   }
 
   // 批量插入已完成列表
-  private static insertCompleteTasks(ids: string[]) {
-    const finishDate = dayjs
-      .unix(timeGetter.getDateRoughly())
-      .format('YYYY-MM-DD')
+  private static insertFinishTasks(ids: string[]) {
+    const finishDate = getDateOfToday()
 
     const { finishSchedule, taskDict } = useScheduleStore.getState()
 
@@ -268,6 +272,9 @@ class ListHandler {
       produce((state: IState) => {
         if (finishSchedule[finishDate]) {
           state.finishSchedule[finishDate].push(...insertKeys)
+          globalNxController.updateFinishedCount(
+            state.finishSchedule[finishDate].length
+          )
         }
       })
     )
@@ -280,7 +287,7 @@ class ListHandler {
 
     // 已完成列表
     const { taskIds: finishedIds } = getInsertedFinishTasks(taskIds)
-    finishedIds.length && this.insertCompleteTasks(finishedIds)
+    finishedIds.length && this.insertFinishTasks(finishedIds)
   }
 
   // 重新分配子事项的直属上级

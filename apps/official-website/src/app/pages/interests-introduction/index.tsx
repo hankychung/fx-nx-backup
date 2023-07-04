@@ -39,17 +39,28 @@ const InterestsIntroduction = () => {
     }
   }
 
+  const scrollIntoTop = () => {
+    const targetElement = document.querySelector(
+      '#ComparsionTitle-element-scroll'
+    )
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <div className={styles.introductionPage}>
       <MemberIntroduction
         widthStyle={widthStyle}
         handleMoreEquitySpace={handleMoreEquitySpace}
       />
+      <div id="ComparsionTitle-element-scroll"></div>
       <div className={styles.ComparsionTitle} id="ComparsionTitle-element">
         <div
           // className={styles.useTitle}
           onClick={() => {
             setShowComparison(true)
+            scrollIntoTop()
           }}
         >
           <span
@@ -62,6 +73,7 @@ const InterestsIntroduction = () => {
           // className={styles.useTitle}
           onClick={() => {
             setShowComparison(false)
+            scrollIntoTop()
           }}
         >
           <span

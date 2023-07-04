@@ -383,7 +383,8 @@ function handleLogout() {
     finishSchedule: {},
     childrenDict: {},
     taskDict: {},
-    expandedDict: {}
+    expandedDict: {},
+    todayFinishCount: 0
   })
 }
 

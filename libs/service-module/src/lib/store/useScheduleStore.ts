@@ -5,6 +5,7 @@ import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
 export interface IState {
   // 以下所有日期共用
+  todayFinishCount: number
   taskDict: { [k: string]: IScheduleTask }
   childrenDict: { [k: string]: string[] }
   // 以下与日期相关, 每个日期独立维护
@@ -37,6 +38,7 @@ interface IMutation {
   }) => void
   updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
+  updateTodayFinishCount: (n: number) => void
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
@@ -63,6 +65,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      * 事项展开字典, key为日期, value为该日期下的事项收合字典
      */
     expandedDict: {},
+    /**
+     * 今日已完成数量
+     */
+    todayFinishCount: 0,
     /**
      * 初始化/更新事项列表
      */
@@ -171,6 +177,12 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           ...info
         }
       }))
+    },
+    /**
+     * 更新今日已完成数量
+     */
+    updateTodayFinishCount(n) {
+      set({ todayFinishCount: n })
     }
   }
 })

@@ -19,6 +19,7 @@ import {
   getTaskIdsByDispatch,
   handleLogout
 } from './lib/schedule-list/utils'
+import { DayExecution } from './lib/day-execution'
 
 export * from './lib/schedule-list' // 日程列表
 
@@ -36,7 +37,8 @@ export {
   VipIntroduceContent,
   AvatarEdit,
   ContextMenu,
-  contextMenuTool
+  contextMenuTool,
+  DayExecution
 }
 
 export * from './lib/map-svg/type/props'

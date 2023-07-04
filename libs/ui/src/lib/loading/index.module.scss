@@ -1,0 +1,15 @@
+.wrap {
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 25px;
+    height: 25px;
+  }
+
+  span {
+    color: rgba(6, 6, 6, 0.3);
+    font-size: 14px;
+    margin-left: 5px;
+  }
+}

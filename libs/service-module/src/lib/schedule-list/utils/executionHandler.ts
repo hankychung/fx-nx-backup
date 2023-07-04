@@ -3,7 +3,7 @@ import { useScheduleStore } from '../../store/useScheduleStore'
 import { TaskHandler } from './taskHandler'
 import { ILocalTask } from '@flyele-nx/service'
 
-class TodoHandler {
+class ExecutionHandler {
   static updateTasks(tasks: IScheduleTask[]) {
     const { taskDict } = useScheduleStore.getState()
 
@@ -20,8 +20,8 @@ class TodoHandler {
       })
     })
 
-    TaskHandler.updateTaskDictByTodo(decentTasks)
+    TaskHandler.updateTaskDictByExecution(decentTasks)
   }
 }
 
-export { TodoHandler }
+export { ExecutionHandler }

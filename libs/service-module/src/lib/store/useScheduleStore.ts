@@ -38,7 +38,6 @@ interface IMutation {
   }) => void
   updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
-  updateTodayFinishCount: (n: number) => void
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
@@ -177,12 +176,6 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           ...info
         }
       }))
-    },
-    /**
-     * 更新今日已完成数量
-     */
-    updateTodayFinishCount(n) {
-      set({ todayFinishCount: n })
     }
   }
 })

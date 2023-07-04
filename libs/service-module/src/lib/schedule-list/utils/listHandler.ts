@@ -148,8 +148,7 @@ class ListHandler {
       return
     }
 
-    const { schedule, finishSchedule, updateTodayFinishCount } =
-      useScheduleStore.getState()
+    const { schedule, finishSchedule } = useScheduleStore.getState()
 
     const l = type === 'finishSchedule' ? finishSchedule : schedule
 
@@ -161,7 +160,7 @@ class ListHandler {
           state[type][date] = updatedList
 
           if (type === 'finishSchedule' && date === getDateOfToday()) {
-            updateTodayFinishCount(updatedList.length)
+            state.todayFinishCount = updatedList.length
           }
         })
       })
@@ -260,8 +259,7 @@ class ListHandler {
   private static insertFinishTasks(ids: string[]) {
     const finishDate = getDateOfToday()
 
-    const { finishSchedule, taskDict, updateTodayFinishCount } =
-      useScheduleStore.getState()
+    const { finishSchedule, taskDict } = useScheduleStore.getState()
 
     const insertKeys = ids.map((id) => {
       const task = taskDict[id]
@@ -273,7 +271,7 @@ class ListHandler {
       produce((state: IState) => {
         if (finishSchedule[finishDate]) {
           state.finishSchedule[finishDate].push(...insertKeys)
-          updateTodayFinishCount(state.finishSchedule[finishDate].length)
+          state.todayFinishCount = state.finishSchedule[finishDate].length
         }
       })
     )

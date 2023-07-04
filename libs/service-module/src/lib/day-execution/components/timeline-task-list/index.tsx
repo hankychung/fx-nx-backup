@@ -34,12 +34,15 @@ const _TimelineTaskList = ({
                   <ScheduleTask
                     key={task.ref_task_id}
                     taskKey={task.ref_task_id}
-                    topId={task.ref_task_id}
+                    topId={
+                      task.parents && task.parents.length
+                        ? task.parents[0].task_id
+                        : task.ref_task_id
+                    }
                     date={day}
                     curTime={dayjs().unix()}
-                    isVipWin={false}
-                    isBoard={false}
-                    isDarkMode={false}
+                    isTimeLine={true}
+                    isSimple={true}
                   />
                 )
               })}

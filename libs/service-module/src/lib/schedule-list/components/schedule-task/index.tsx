@@ -46,6 +46,7 @@ export interface IProps {
   isSimple?: boolean
   isVipWin?: boolean // 是否小挂件窗体
   isBoard?: boolean
+  isTimeLine?: boolean
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -57,7 +58,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   style,
   isSimple = false,
   isVipWin = false,
-  isBoard = false
+  isBoard = false,
+  isTimeLine = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -98,11 +100,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   // 事项分组没有右键
   // 如果以后还有其他条件的话往这上面拼
   const isShowMenu = useMemo(() => {
-    return ![
-      ScheduleTaskConst.MatterType.timeCollect,
-      ScheduleTaskConst.MatterType.calendar
-    ].includes(data.matter_type)
-  }, [data.matter_type])
+    return (
+      ![
+        ScheduleTaskConst.MatterType.timeCollect,
+        ScheduleTaskConst.MatterType.calendar
+      ].includes(data.matter_type) && isTopTask
+    )
+  }, [data.matter_type, isTopTask])
 
   // 只有今日，周，小挂件有置顶
   // 目前它的逻辑和是否显示菜单是包含的
@@ -214,7 +218,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   return (
     <div
       ref={domRef}
-      className={cs(styles.scheduleTaskRoot, styles.boardSchedule, {
+      className={cs(styles.scheduleTaskRoot, {
+        [styles.boardSchedule]: isBoard,
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
@@ -229,11 +234,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       onClick={onClickTask}
     >
       <div
-        className={cs(styles.topHover, {
+        className={cs({
+          [styles.topHover]: !isTimeLine,
           [styles.darkModeHover]: isDarkMode,
           [styles.remind]: isRemind,
-          [styles.complexSchedulePadding]: !isBoard,
-          [styles.boardSchedulePadding]: isBoard
+          [styles.complexSchedulePadding]: !isBoard && !isTimeLine,
+          [styles.boardSchedulePadding]: isBoard,
+          [styles.timeLineSchedule]: isTimeLine
         })}
       >
         {/* 2.1 pc-4745加入日程置顶 */}
@@ -243,12 +250,14 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         )}
 
-        {!isSimple && <Workflow taskId={taskKey} />}
+        {!isSimple && !isTimeLine && <Workflow taskId={taskKey} />}
 
-        {!isSimple && <ParentInfo taskId={taskKey} isDarkMode />}
+        {(!isSimple || isTimeLine) && (
+          <ParentInfo taskId={taskKey} isDarkMode />
+        )}
 
         <div className={styles.scheduleInfo}>
-          <Indent task={data} isTopTask={isTopTask} />
+          <Indent task={data} isTopTask={isTopTask || isTimeLine} />
           <div className={styles.wrapper}>
             <StatusBox task={data} />
             <div className={styles.main}>
@@ -266,7 +275,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                 </div>
                 <div className={styles.headRight}>
                   <ScheduleType matterType={data.matter_type} />
-                  {data.has_child && !data.finish_time ? (
+                  {data.has_child && !data.finish_time && !isTimeLine ? (
                     <Expand
                       task={data}
                       isExpanded={isExpanded}
@@ -279,7 +288,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                 </div>
               </div>
 
-              {!isSimple && (
+              {(!isSimple || isTimeLine) && (
                 <div className={styles.info}>
                   <div className={styles.infoMain}>
                     <div
@@ -292,17 +301,20 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         curTime={curTime}
                         dateStr={date}
                         isDarkMode={isDarkMode}
+                        isTimeLine={isTimeLine}
                       />
-                      {!isBoard && (
+                      {!isBoard && !isTimeLine && (
                         <Tags taskId={taskKey} wrapClassName={styles.tags} />
                       )}
-                      <Takers
-                        taskId={taskKey}
-                        isDarkMode={isDarkMode}
-                        isVipWin={isVipWin}
-                        isBoard={isBoard}
-                      />
-                      {isBoard && (
+                      {!isTimeLine && (
+                        <Takers
+                          taskId={taskKey}
+                          isDarkMode={isDarkMode}
+                          isVipWin={isVipWin}
+                          isBoard={isBoard}
+                        />
+                      )}
+                      {isBoard && !isTimeLine && (
                         <Tags taskId={taskKey} wrapClassName={styles.tags} />
                       )}
                     </div>

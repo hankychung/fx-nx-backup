@@ -1,19 +1,18 @@
 import { produce } from 'immer'
 import { useScheduleStore, IState } from '../../store/useScheduleStore'
-import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
-import { ILocalTask } from '../../../../types/schedule'
+import { ILocalTask } from '@flyele-nx/service'
 
 interface IReloadTasksParams {
-  task: IScheduleTask[]
+  task: ILocalTask[]
   id: string[]
 }
 
-type IGetBingoTasks = (task: IScheduleTask) => boolean
+type IGetBingoTasks = (task: ILocalTask) => boolean
 
-type ITaskModifier = (task: IScheduleTask) => IScheduleTask
+type ITaskModifier = (task: ILocalTask) => ILocalTask
 
 function isTasks(a: any): a is IReloadTasksParams['task'] {
   return typeof a[0] !== 'string'
@@ -24,7 +23,7 @@ class TaskHandler {
     type: T,
     val: IReloadTasksParams[T]
   ) {
-    // 传入类型是IScheduleTask, 先更新事项字典
+    // 传入类型是ILocalTask, 先更新事项字典
     if (isTasks(val)) {
       this.updateTaskDict(val)
     }
@@ -70,7 +69,7 @@ class TaskHandler {
     keysWithRepeatIds
   }: {
     keys: string[]
-    diff: Partial<IScheduleTask>
+    diff: Partial<ILocalTask>
     keysWithRepeatIds?: string[]
   }) {
     const { taskDict } = useScheduleStore.getState()
@@ -170,7 +169,7 @@ class TaskHandler {
   }
 
   // TODO: 循环事项共享数据更新
-  private static updateTaskDict(tasks: IScheduleTask[]) {
+  private static updateTaskDict(tasks: ILocalTask[]) {
     useScheduleStore.setState(
       produce((state: IState) => {
         tasks.forEach((task) => {
@@ -191,7 +190,7 @@ class TaskHandler {
   }
 
   // 创建新事项
-  static createTasks(tasks: IScheduleTask[]) {
+  static createTasks(tasks: ILocalTask[]) {
     this.updateTaskDict(tasks)
     ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
   }
@@ -200,7 +199,7 @@ class TaskHandler {
   private static getTasksByCondition(handler: IGetBingoTasks) {
     const { taskDict } = useScheduleStore.getState()
 
-    const bingoTasks: IScheduleTask[] = []
+    const bingoTasks: ILocalTask[] = []
 
     Object.entries(taskDict).forEach(([, task]) => {
       if (handler(task)) {

@@ -15,7 +15,9 @@ import {
   CalendarIcon,
   CalendarFinish,
   MeetingIcon,
-  MeetingFinishedIcon
+  MeetingFinishedIcon,
+  RepeatIcon,
+  CycleCardIcon
 } from '@flyele-nx/icon'
 import checkingIcon from '../../assets/schedule/checking.gif'
 import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
@@ -61,6 +63,36 @@ const _StatusBox: FC<IProps> = (props) => {
     () => task.identity === 10804 || task.identity === 10811,
     [task]
   )
+
+  const showCycle = useMemo(() => {
+    // 最后一次已完成的循环无循环id
+    if (!task.repeat_id || task.finish_time) {
+      return false
+    }
+
+    if (
+      task.cycle_date &&
+      dayjs(task.cycle_date).isAfter(dayjs(Date.now()), 'day')
+    ) {
+      return true
+    }
+
+    const nowRepeat = task?.repeat_list?.find(
+      (v) => v.repeat_id === task?.repeat_id
+    )?.cycle_date
+
+    if (nowRepeat && dayjs(nowRepeat).isAfter(dayjs(Date.now()), 'day')) {
+      return true
+    }
+
+    return !!task.repeat_type && !task.repeat_id
+  }, [
+    task.cycle_date,
+    task.repeat_id,
+    task?.repeat_list,
+    task.repeat_type,
+    task.finish_time
+  ])
 
   // 分发
   const dispatchApi = useMemoizedFn(async (isBatch?: boolean) => {
@@ -201,6 +233,11 @@ const _StatusBox: FC<IProps> = (props) => {
             changeStatus={changeStatus}
           />
         )
+      }
+
+      // 未来循环事项
+      if (showCycle) {
+        return <CycleCardIcon width={14} height={14} />
       }
       // 完成状态
       return task.finish_time ? (

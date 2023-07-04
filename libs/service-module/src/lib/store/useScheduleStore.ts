@@ -182,7 +182,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      * 更新今日已完成数量
      */
     updateTodayFinishCount(n) {
-      set({ todayFinishCount: n })
+      console.log('set finish', n)
+      set(() => ({
+        todayFinishCount: n
+      }))
     }
   }
 })

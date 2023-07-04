@@ -119,6 +119,7 @@
     "jest-environment-jsdom": "^29.4.1",
     "jsdom": "~20.0.3",
     "nx": "15.8.5",
+    "postcss-px-to-viewport": "^1.1.1",
     "prettier": "^2.6.2",
     "react-refresh": "^0.10.0",
     "react-test-renderer": "18.2.0",

@@ -14,8 +14,6 @@ import { IUserParams } from './type'
 import { defaultDiffStamp } from './const'
 import _ from 'lodash'
 import { parseError, yieldConsole } from './utils/console'
-
-import './sql/schedule'
 import './sdk/datazeus.js'
 const wasmUrl = '/sql-wasm.wasm'
 

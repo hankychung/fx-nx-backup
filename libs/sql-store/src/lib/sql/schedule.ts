@@ -16,4 +16,4 @@ class JsDataZeusDb {
   }
 }
 
-window.JsDataZeusDb = JsDataZeusDb
+export default JsDataZeusDb

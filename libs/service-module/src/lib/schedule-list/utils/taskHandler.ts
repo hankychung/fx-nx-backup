@@ -215,7 +215,7 @@ class TaskHandler {
   }
 
   // 删除符合条件的所有事项
-  static removeTasksByConditions(handler: IGetBingoTasks) {
+  static removeTasksByCondition(handler: IGetBingoTasks) {
     const { bingoTasks } = this.getTasksByCondition(handler)
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))

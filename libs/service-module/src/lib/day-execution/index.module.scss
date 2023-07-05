@@ -1,6 +1,6 @@
 .dayExecutionRoot {
   width: 100%;
-  background-color: #fff;
+  height: 100%;
   .header {
     height: 20px;
     display: flex;
@@ -12,6 +12,7 @@
     padding-top: 20px;
     padding-bottom: 17px;
     border-top: #ededed 1px dashed;
+    background-color: #fff;
     .headerLeft {
       display: flex;
       align-items: center;
@@ -26,27 +27,44 @@
         font-size: 13px;
         color: #363636;
       }
-      .arrowIcon {
-        width: 17px;
-        height: 17px;
-        transition: all 0.3s;
-        cursor: pointer;
-        transform: rotate(180deg);
-        margin-left: 8px;
-      }
-      .arrowIconUp {
-        transform: rotate(0);
-      }
     }
+  }
+
+  .arrowIcon {
+    width: 17px;
+    height: 17px;
+    transition: all 0.3s;
+    cursor: pointer;
+    transform: rotate(180deg);
+    margin-left: 8px;
+  }
+  .arrowIconUp {
+    transform: rotate(0);
   }
 
   .content {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 58px);
+    position: relative;
     overflow: hidden;
+    background-color: #fff;
     .scroller {
       width: 100%;
+      height: calc(100% - 20px);
       overflow-x: hidden;
+    }
+    .hideBtn {
+      width: 50px;
+      height: 20px;
+      position: absolute;
+      left: calc(50% - 25px);
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      color: #b4b4b4;
     }
   }
 

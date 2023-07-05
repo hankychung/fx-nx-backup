@@ -3,7 +3,8 @@ import {
   ScheduleList,
   ContextMenu,
   DayExecution,
-  contextMenuTool
+  contextMenuTool,
+  ProjectLure
 } from '@flyele-nx/service-module'
 import React from 'react'
 import { useMessage } from '@flyele-nx/ui'
@@ -12,7 +13,7 @@ import dayjs from 'dayjs'
 envStore.initEnv(process.env.NODE_ENV as string)
 
 service.updateToken(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODg0Njk2NjUsImlhdCI6MTY4ODQ2MDgzOSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxNjU3MjM5MjkxMDM1Nzc3IiwiRGV2aWNlSUQiOiIyODM3MmNiZC01Y2U0LTQ4ZTEtOTg1OC1jMTZiOGVmMTRjMWQiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.OnbmhM-qw4xohZoVt78-nqgDjE1njRIZdwN5wgLLhno'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODg1NTg3OTgsImlhdCI6MTY4ODU1MTEyMywiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMDk3MTYyNTU0ODY3ODU2IiwiRGV2aWNlSUQiOiI4ZGQyYmQ2NC0zYjdhLTRlYTAtYjRiZS1kODAxZDBiMTM0MDYiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.WdGscHa9rnexIPiZSUzzbRYm6cOqOdb4x0FUoV7jaVc'
 )
 
 export function App() {
@@ -41,6 +42,7 @@ export function App() {
         </div>
       </div>
       <ContextMenu ref={(r) => contextMenuTool.registerContextMenu(r)} />
+      <ProjectLure visible />
     </>
   )
 }

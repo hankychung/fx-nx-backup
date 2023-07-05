@@ -28,7 +28,7 @@ const defaultRecord = {
   id: '0',
   attach_info: defaultDiffStamp
 }
-
+window.JsDataZeusDb = JsDataZeusDb
 class SqlStore {
   private db: initSql.Database | null = null
 
@@ -53,9 +53,7 @@ class SqlStore {
 
   private sdk: any = null
 
-  JsDataZeusDb: any = null
   async initDB(p: IUserParams) {
-    this.JsDataZeusDb = JsDataZeusDb
     this.isReady = false
     this.userId = p.userId
     // 初始化日程sdk

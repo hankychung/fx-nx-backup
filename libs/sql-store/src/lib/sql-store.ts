@@ -15,6 +15,7 @@ import { defaultDiffStamp } from './const'
 import _ from 'lodash'
 import { parseError, yieldConsole } from './utils/console'
 import './sdk/datazeus.js'
+import JsDataZeusDb from './sql/schedule'
 const wasmUrl = '/sql-wasm.wasm'
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
@@ -52,7 +53,9 @@ class SqlStore {
 
   private sdk: any = null
 
+  JsDataZeusDb: any = null
   async initDB(p: IUserParams) {
+    this.JsDataZeusDb = JsDataZeusDb
     this.isReady = false
     this.userId = p.userId
     // 初始化日程sdk

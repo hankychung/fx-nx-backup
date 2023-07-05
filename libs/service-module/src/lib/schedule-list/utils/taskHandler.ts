@@ -55,7 +55,9 @@ class TaskHandler {
       produce((state: IState) => {
         taskIds.forEach((k) => {
           console.log('NX inner taker result', handler(taskDict[k]))
-          state.taskDict[k] = handler(taskDict[k])
+          if (state.taskDict[k]) {
+            state.taskDict[k] = handler(taskDict[k])
+          }
         })
       })
     )
@@ -74,14 +76,18 @@ class TaskHandler {
   }) {
     const { taskDict } = useScheduleStore.getState()
 
-    const newTasks = keys.map((key) => {
+    const newTasks = keys.reduce<ILocalTask[]>((list, key) => {
       const task = taskDict[key]
 
-      return {
-        ...task,
-        ...diff
+      if (task) {
+        list.push({
+          ...task,
+          ...diff
+        })
       }
-    })
+
+      return list
+    }, [])
 
     this.updateTaskDict(newTasks)
 
@@ -200,7 +206,7 @@ class TaskHandler {
   }
 
   // 获取符合条件的所有事项
-  private static getTasksByCondition(handler: IGetBingoTasks) {
+  static getTasksByCondition(handler: IGetBingoTasks) {
     const { taskDict } = useScheduleStore.getState()
 
     const bingoTasks: ILocalTask[] = []
@@ -219,13 +225,6 @@ class TaskHandler {
     const { bingoTasks } = this.getTasksByCondition(handler)
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
-  }
-
-  // 获取事项信息
-  static getTask({ taskId, repeatId }: { taskId: string; repeatId?: string }) {
-    const { taskDict } = useScheduleStore.getState()
-
-    return taskDict[getKey({ ref_task_id: taskId, repeat_id: repeatId })]
   }
 }
 

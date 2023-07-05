@@ -15,6 +15,8 @@ import { defaultDiffStamp } from './const'
 import _ from 'lodash'
 import { parseError, yieldConsole } from './utils/console'
 
+import './sql/schedule'
+import './sdk/datazeus.js'
 const wasmUrl = '/sql-wasm.wasm'
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
@@ -50,9 +52,16 @@ class SqlStore {
 
   private token = ''
 
+  private sdk: any = null
+
   async initDB(p: IUserParams) {
     this.isReady = false
     this.userId = p.userId
+    // 初始化日程sdk
+    this.sdk = new registerDataZeusSDK({
+      userId: '13800138000',
+      platform: 'PC'
+    })
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
     try {
@@ -671,8 +680,36 @@ class SqlStore {
 
     return singleSql
   }
+
+  querySchedule(sql: string) {
+    const res = this.db!.run(sql)
+    return {
+      code: 0,
+      data: res ? res : []
+    }
+  }
+  executeSchedule(sql: string) {
+    const res = this.db!.exec(sql)
+    return {
+      code: 0,
+      data: res ? res : []
+    }
+  }
+
+  getDayView(date: string) {
+    const dayData = this.sdk.schedule.dayView({
+      day: date || '2023-07-03',
+      tabType: '',
+      queryType: 1
+    })
+    console.log('dayData', 'pppppppp_____*****')
+
+    return dayData
+  }
 }
 
 export const sqlStore = new SqlStore()
 
 export type ISqlStore = SqlStore
+
+export default SqlStore

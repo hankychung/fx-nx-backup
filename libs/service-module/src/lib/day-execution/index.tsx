@@ -151,16 +151,31 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
       </div>
       <div className={cs(styles.content, { [styles.contentHide]: !show })}>
         {total ? (
-          <InfiniteScroll
-            loadMore={fetchDayList}
-            useWindow={false}
-            hasMore
-            initialLoad={false}
-            className={styles.scroller}
-          >
-            {day !== 0 && <TimelineTaskList timeList={todayList} day={day} />}
-            {loading && <Loading text="正在加载" top={10} />}
-          </InfiniteScroll>
+          <>
+            <InfiniteScroll
+              loadMore={fetchDayList}
+              useWindow={false}
+              hasMore
+              initialLoad={false}
+              className={styles.scroller}
+            >
+              {day !== 0 && <TimelineTaskList timeList={todayList} day={day} />}
+              {loading && <Loading text="正在加载" top={10} />}
+            </InfiniteScroll>
+            {show && (
+              <div className={styles.hideBtn}>
+                收起
+                <div
+                  className={cs(styles.arrowIcon, {
+                    [styles.arrowIconUp]: show
+                  })}
+                  onClick={() => setShow((show) => !show)}
+                >
+                  <CircleArrowUpIcon width={17} height={17} />
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <Nodata total={taskTotal} />
         )}

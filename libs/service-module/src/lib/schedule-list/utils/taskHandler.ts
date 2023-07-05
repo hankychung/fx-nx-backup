@@ -227,6 +227,11 @@ class TaskHandler {
 
     return taskDict[getKey({ ref_task_id: taskId, repeat_id: repeatId })]
   }
+
+  // 获取所有事项
+  static getTaskDict() {
+    return useScheduleStore.getState().taskDict
+  }
 }
 
 export { TaskHandler }

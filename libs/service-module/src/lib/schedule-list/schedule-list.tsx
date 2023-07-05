@@ -18,6 +18,8 @@ import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from './types'
 import { useScheduleList } from './utils/hooks/useScheduleList'
 import { EmptyData } from './components/empty-data'
+import { getDateOfToday } from './utils/tools'
+import { useScheduleStore } from '../store/useScheduleStore'
 
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
@@ -28,7 +30,7 @@ const _ScheduleList: ForwardRefRenderFunction<
     isFinished: _isFinished,
     isVipWin = false,
     isBoard,
-    getFinishListTotal,
+    // getFinishListTotal,
     overlayClassName,
     isDarkMode
   },
@@ -50,8 +52,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     setFinishPageFetchFinished,
     isError,
     setIsError,
-    finishTotal,
-    setFinishTotal
+    finishTotal
+    // setFinishTotal
   } = useScheduleList({
     date
   })
@@ -91,18 +93,27 @@ const _ScheduleList: ForwardRefRenderFunction<
       queryType: isFinished ? 3 : 1
     })
 
+    const isInit = pRef.current === 1
+
+    // 初始化已完成数量
+    if (date === getDateOfToday() && isInit) {
+      useScheduleStore.setState({
+        todayFinishCount: res.data?.schedule_complete_total || 0
+      })
+    }
+
     const list = res.data?.schedule || []
 
-    getFinishListTotal?.(res.data?.schedule_complete_total || 0)
+    // getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 
-    setFinishTotal(res.data?.schedule_complete_total || 0)
+    // setFinishTotal(res.data?.schedule_complete_total || 0)
 
     const { keys } = batchUpdateTask(list, { isFinished })
 
     updateList({
       date,
       list: keys,
-      isInit: pRef.current === 1,
+      isInit,
       isFinished
     })
 

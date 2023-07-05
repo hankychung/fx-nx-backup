@@ -26,8 +26,10 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   const [dayList, setDayList] = useState<IScheduleTask[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
+  const isFetchFinished = useRef<boolean>(false)
 
   const pageNumber = useRef(1)
+  const pageRecord = useRef(20)
 
   /**
    * 列表事项日期
@@ -41,7 +43,7 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
    * 获取列表
    */
   const fetchDayList = useMemoizedFn(async (reset = false) => {
-    if (loading || day === 0) return
+    if (loading || day === 0 || isFetchFinished.current) return
     setLoading(true)
 
     if (reset) {
@@ -53,7 +55,8 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
     try {
       const { complete_total, total, data } = await TaskApi.getToDayTask({
         day,
-        pageNumber: pageNumber.current
+        pageNumber: pageNumber.current,
+        pageRecord: pageRecord.current
       })
 
       setTotal(total || 0)
@@ -66,7 +69,12 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
             return [...prevState, ...data]
           })
         }
+        if (data.length < pageRecord.current) {
+          isFetchFinished.current = true
+        }
         ExecutionHandler.updateTasks(data)
+      } else {
+        isFetchFinished.current = true
       }
     } catch (e) {
       console.error('获取日程列表失败', e)
@@ -80,6 +88,7 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
    */
   const init = useMemoizedFn(() => {
     setDayList([])
+    isFetchFinished.current = false
     fetchDayList(true)
   })
 
@@ -152,16 +161,20 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
       <div className={cs(styles.content, { [styles.contentHide]: !show })}>
         {total ? (
           <>
-            <InfiniteScroll
-              loadMore={fetchDayList}
-              useWindow={false}
-              hasMore
-              initialLoad={false}
-              className={styles.scroller}
-            >
-              {day !== 0 && <TimelineTaskList timeList={todayList} day={day} />}
-              {loading && <Loading text="正在加载" top={10} />}
-            </InfiniteScroll>
+            <div className={styles.scroller}>
+              <InfiniteScroll
+                hasMore={true}
+                useWindow={false}
+                initialLoad={false}
+                loadMore={() => fetchDayList(false)}
+                className={styles.timelineTaskListRoot}
+              >
+                {day !== 0 && (
+                  <TimelineTaskList timeList={todayList} day={day} />
+                )}
+                {loading && <Loading text="正在加载" top={10} />}
+              </InfiniteScroll>
+            </div>
             {show && (
               <div className={styles.footer}>
                 <div className={styles.hideBtn}>

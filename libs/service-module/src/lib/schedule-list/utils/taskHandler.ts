@@ -220,6 +220,13 @@ class TaskHandler {
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
   }
+
+  // 获取事项信息
+  static getTask({ taskId, repeatId }: { taskId: string; repeatId?: string }) {
+    const { taskDict } = useScheduleStore.getState()
+
+    return taskDict[getKey({ ref_task_id: taskId, repeat_id: repeatId })]
+  }
 }
 
 export { TaskHandler }

@@ -55,7 +55,9 @@ class TaskHandler {
       produce((state: IState) => {
         taskIds.forEach((k) => {
           console.log('NX inner taker result', handler(taskDict[k]))
-          state.taskDict[k] = handler(taskDict[k])
+          if (state.taskDict[k]) {
+            state.taskDict[k] = handler(taskDict[k])
+          }
         })
       })
     )
@@ -74,14 +76,18 @@ class TaskHandler {
   }) {
     const { taskDict } = useScheduleStore.getState()
 
-    const newTasks = keys.map((key) => {
+    const newTasks = keys.reduce<ILocalTask[]>((list, key) => {
       const task = taskDict[key]
 
-      return {
-        ...task,
-        ...diff
+      if (task) {
+        list.push({
+          ...task,
+          ...diff
+        })
       }
-    })
+
+      return list
+    }, [])
 
     this.updateTaskDict(newTasks)
 

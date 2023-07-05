@@ -53,10 +53,15 @@ class SqlStore {
 
   private sdk: any = null
 
+  JsDataZeusDb: any = null
+
   async initDB(p: IUserParams) {
     this.isReady = false
     this.userId = p.userId
     // 初始化日程sdk
+    this.JsDataZeusDb = JsDataZeusDb
+    console.log(this.JsDataZeusDb, 'this.JsDataZeusDb')
+
     this.sdk = new registerDataZeusSDK({
       userId: '13800138000',
       platform: 'PC'

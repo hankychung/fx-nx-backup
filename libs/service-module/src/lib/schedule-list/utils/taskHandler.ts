@@ -62,7 +62,7 @@ class TaskHandler {
       })
     )
 
-    console.log('NX inner modifier end!', useScheduleStore.getState().taskDict)
+    console.log('NX inner modifier end', useScheduleStore.getState().taskDict)
   }
 
   static batchModify({

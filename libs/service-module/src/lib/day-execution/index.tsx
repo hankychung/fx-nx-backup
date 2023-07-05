@@ -163,15 +163,17 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
               {loading && <Loading text="正在加载" top={10} />}
             </InfiniteScroll>
             {show && (
-              <div className={styles.hideBtn}>
-                收起
-                <div
-                  className={cs(styles.arrowIcon, {
-                    [styles.arrowIconUp]: show
-                  })}
-                  onClick={() => setShow((show) => !show)}
-                >
-                  <CircleArrowUpIcon width={17} height={17} />
+              <div className={styles.footer}>
+                <div className={styles.hideBtn}>
+                  收起
+                  <div
+                    className={cs(styles.arrowIcon, {
+                      [styles.arrowIconUp]: show
+                    })}
+                    onClick={() => setShow((show) => !show)}
+                  >
+                    <CircleArrowUpIcon width={17} height={17} />
+                  </div>
                 </div>
               </div>
             )}

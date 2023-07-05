@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
 import { useMemoizedFn, useMount } from 'ahooks'
-import { IScheduleTask, TaskApi } from '@flyele-nx/service'
+import { TaskApi } from '@flyele-nx/service'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { Progress } from 'antd'
@@ -12,6 +12,7 @@ import { disposalTodayList } from './utils'
 import { TimelineTaskList } from './components/timeline-task-list'
 import { Nodata } from './components/no-data'
 import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
+import { useScheduleStore } from '../store/useScheduleStore'
 
 interface IProps {
   date: number
@@ -23,10 +24,14 @@ interface IProps {
 const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   const [total, setTotal] = useState<number>(0) // 事项总数
   const [completeTotal, setCompleteTotal] = useState<number>(0) //已完成
-  const [dayList, setDayList] = useState<IScheduleTask[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
   const isFetchFinished = useRef<boolean>(false)
+
+  const todayExecution = useScheduleStore((state) => state.todayExecution)
+  const updateTodayExecutionList = useScheduleStore(
+    (state) => state.updateTodayExecutionList
+  )
 
   const pageNumber = useRef(1)
   const pageRecord = useRef(20)
@@ -62,17 +67,16 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
       setTotal(total || 0)
       setCompleteTotal(complete_total || 0)
       if (data.length) {
-        if (reset) {
-          setDayList(data)
-        } else {
-          setDayList((prevState) => {
-            return [...prevState, ...data]
-          })
-        }
+        updateTodayExecutionList({
+          date: day,
+          list: data,
+          isInit: reset,
+          isFinished: false
+        })
+        ExecutionHandler.updateTasks(data)
         if (data.length < pageRecord.current) {
           isFetchFinished.current = true
         }
-        ExecutionHandler.updateTasks(data)
       } else {
         isFetchFinished.current = true
       }
@@ -87,7 +91,6 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
    * 初始化
    */
   const init = useMemoizedFn(() => {
-    setDayList([])
     isFetchFinished.current = false
     fetchDayList(true)
   })
@@ -102,8 +105,9 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
    * 用于渲染
    **/
   const todayList = useMemo(() => {
-    return disposalTodayList(dayList.sort((a, b) => b.create_at - a.create_at))
-  }, [dayList])
+    const list = todayExecution[day] || []
+    return disposalTodayList(list)
+  }, [day, todayExecution])
 
   // 切换日期刷新列表
   useEffect(() => {

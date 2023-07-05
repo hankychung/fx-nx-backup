@@ -34,7 +34,7 @@ class ListHandler {
     this.removeTasks(keysWithRepeatIds, { type: 'finishSchedule' })
 
     // 插入未完成列表
-    this.insertTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
+    this.insertOngoingTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
   }
 
   // 更新器
@@ -168,7 +168,7 @@ class ListHandler {
   }
 
   // 批量插入未完成列表
-  static insertTasks(taskIds: string[]) {
+  static insertOngoingTasks(taskIds: string[]) {
     const { insertDateDict } = this.getInsertDateDict(taskIds)
 
     this.insertIntoDate({ insertDateDict })
@@ -280,7 +280,7 @@ class ListHandler {
   // 根据事项信息插入到相关列表
   static insertTasksByConds(taskIds: string[]) {
     // 未完成列表
-    this.insertTasks(taskIds)
+    this.insertOngoingTasks(taskIds)
 
     // 已完成列表
     const { taskIds: finishedIds } = getInsertedFinishTasks(taskIds)

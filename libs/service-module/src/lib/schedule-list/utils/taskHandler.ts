@@ -196,7 +196,7 @@ class TaskHandler {
   // 创建新事项
   static createTasks(tasks: ILocalTask[]) {
     this.updateTaskDict(tasks)
-    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
+    ListHandler.insertOngoingTasks(tasks.map((t) => t.ref_task_id))
   }
 
   // 获取符合条件的所有事项
@@ -215,7 +215,7 @@ class TaskHandler {
   }
 
   // 删除符合条件的所有事项
-  static removeTasksByConditions(handler: IGetBingoTasks) {
+  static removeTasksByCondition(handler: IGetBingoTasks) {
     const { bingoTasks } = this.getTasksByCondition(handler)
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))

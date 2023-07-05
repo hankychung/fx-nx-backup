@@ -29,7 +29,6 @@ const defaultRecord = {
   attach_info: defaultDiffStamp
 }
 
-self.JsDataZeusDb = JsDataZeusDb
 class SqlStore {
   private db: initSql.Database | null = null
 

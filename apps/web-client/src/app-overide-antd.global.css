@@ -133,9 +133,18 @@
   box-shadow: none !important;
 }
 
-.menu_pover .ant-popover-placement-bottom>.ant-popover-content>.ant-popover-arrow,
-.menu_pover .ant-popover-placement-bottomLeft>.ant-popover-content>.ant-popover-arrow,
-.menu_pover .ant-popover-placement-bottomRight>.ant-popover-content>.ant-popover-arrow {
+.menu_pover
+  .ant-popover-placement-bottom
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.menu_pover
+  .ant-popover-placement-bottomLeft
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.menu_pover
+  .ant-popover-placement-bottomRight
+  > .ant-popover-content
+  > .ant-popover-arrow {
   top: 4px !important;
 }
 

@@ -200,7 +200,7 @@ class TaskHandler {
   }
 
   // 获取符合条件的所有事项
-  private static getTasksByCondition(handler: IGetBingoTasks) {
+  static getTasksByCondition(handler: IGetBingoTasks) {
     const { taskDict } = useScheduleStore.getState()
 
     const bingoTasks: ILocalTask[] = []

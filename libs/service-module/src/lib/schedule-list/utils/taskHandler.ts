@@ -196,7 +196,7 @@ class TaskHandler {
   // 创建新事项
   static createTasks(tasks: ILocalTask[]) {
     this.updateTaskDict(tasks)
-    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
+    ListHandler.insertOngoingTasks(tasks.map((t) => t.ref_task_id))
   }
 
   // 获取符合条件的所有事项

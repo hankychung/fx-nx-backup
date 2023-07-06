@@ -22,15 +22,19 @@ interface IProps {
 }
 
 const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
-  const [total, setTotal] = useState<number>(0) // 事项总数
-  const [completeTotal, setCompleteTotal] = useState<number>(0) //已完成
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
   const isFetchFinished = useRef<boolean>(false)
 
   const todayExecution = useScheduleStore((state) => state.todayExecution)
+  const { total, completeTotal } = useScheduleStore(
+    (state) => state.todayExecutionCount
+  ).todayExecutionCount
   const updateTodayExecutionList = useScheduleStore(
     (state) => state.updateTodayExecutionList
+  )
+  const updateTodayExecutionCount = useScheduleStore(
+    (state) => state.updateTodayExecutionCount
   )
 
   const pageNumber = useRef(1)
@@ -64,8 +68,13 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
         pageRecord: pageRecord.current
       })
 
-      setTotal(total || 0)
-      setCompleteTotal(complete_total || 0)
+      updateTodayExecutionCount({
+        date: day,
+        data: {
+          completeTotal: complete_total || 0,
+          total: total || 0
+        }
+      })
       if (data.length) {
         updateTodayExecutionList({
           date: day,

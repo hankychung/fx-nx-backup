@@ -6,6 +6,7 @@ export * from './lib/vip-interests/lure-modal'
 export * from './lib/vip-count/lure-modal'
 export * from './lib/customer-services-modal/index'
 export * from './lib/message/useMessage'
+export * from './lib/space-avatar/index'
 
 export { PhoneLogin } from './lib/phone-login'
 export { FlySearchInput } from './lib/fly-search-input'

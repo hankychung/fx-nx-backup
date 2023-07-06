@@ -17,6 +17,9 @@ export interface IState {
     }
   }
   todayExecution: { [date: string]: IScheduleTask[] }
+  todayExecutionCount: {
+    [date: string]: { completeTotal: number; total: number }
+  }
 }
 
 interface IMutation {
@@ -44,6 +47,10 @@ interface IMutation {
     list: IScheduleTask[]
     isInit?: boolean
     isFinished?: boolean
+  }) => void
+  updateTodayExecutionCount: (options: {
+    date: string
+    data: { completeTotal: number; total: number }
   }) => void
 }
 
@@ -76,9 +83,14 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      */
     todayFinishCount: 0,
     /**
-     * 当日事项
+     * 当日事项 列表数据
      */
     todayExecution: {},
+    /**
+     * 当天事项 统计数据（未完成/已完成）的数量
+     * 从接口返回出来的
+     */
+    todayExecutionCount: {},
     /**
      * 初始化/更新事项列表
      */
@@ -209,6 +221,19 @@ const useScheduleStore = create<IState & IMutation>((set) => {
             ...state.todayExecution[date],
             ...list
           ].sort((a, b) => b.create_at - a.create_at)
+        })
+      )
+    },
+    /**
+     * 更新当日事项的统计数据
+     */
+    updateTodayExecutionCount({ date, data }) {
+      set(
+        produce((state: IState) => {
+          state.todayExecutionCount[date] = {
+            completeTotal: data.completeTotal,
+            total: data.total
+          }
         })
       )
     }

@@ -16,6 +16,8 @@ import { contextMenuTool } from './lib/context-menu/contextMenuTool'
 import { service, envStore } from '@flyele-nx/service'
 import { DayExecution } from './lib/day-execution'
 
+export * from './lib/project-lure' // 项目权益弹窗
+
 export * from './lib/schedule-list' // 日程列表
 
 export {

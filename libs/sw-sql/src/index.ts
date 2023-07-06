@@ -46,6 +46,10 @@ class DBHandler {
           responseData = sqlStore.queryFullDoseCount()
           break
         }
+        case ServiceWorkerKey.DAY_VIEW: {
+          responseData = sqlStore.getDayView(data.data as string)
+          break
+        }
       }
 
       self.postMessage({ uid: data.uid, data: responseData })

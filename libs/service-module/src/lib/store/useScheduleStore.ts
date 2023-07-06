@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
@@ -15,6 +15,10 @@ export interface IState {
     [k: string]: {
       [k: string]: boolean
     }
+  }
+  todayExecution: { [date: string]: IScheduleTask[] }
+  todayExecutionCount: {
+    [date: string]: { completeTotal: number; total: number }
   }
 }
 
@@ -38,6 +42,16 @@ interface IMutation {
   }) => void
   updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
+  updateTodayExecutionList: (options: {
+    date: string
+    list: IScheduleTask[]
+    isInit?: boolean
+    isFinished?: boolean
+  }) => void
+  updateTodayExecutionCount: (options: {
+    date: string
+    data: { completeTotal: number; total: number }
+  }) => void
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
@@ -68,6 +82,15 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      * 今日已完成数量
      */
     todayFinishCount: 0,
+    /**
+     * 当日事项 列表数据
+     */
+    todayExecution: {},
+    /**
+     * 当天事项 统计数据（未完成/已完成）的数量
+     * 从接口返回出来的
+     */
+    todayExecutionCount: {},
     /**
      * 初始化/更新事项列表
      */
@@ -176,6 +199,43 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           ...info
         }
       }))
+    },
+    /**
+     * 更新当日事项的列表
+     */
+    updateTodayExecutionList({ date, list, isInit, isFinished }) {
+      console.log('NX updateTodayExecutionList', {
+        date,
+        list,
+        isInit,
+        isFinished
+      })
+
+      set(
+        produce((state: IState) => {
+          if (isInit) {
+            state.todayExecution[date] = []
+          }
+
+          state.todayExecution[date] = [
+            ...state.todayExecution[date],
+            ...list
+          ].sort((a, b) => b.create_at - a.create_at)
+        })
+      )
+    },
+    /**
+     * 更新当日事项的统计数据
+     */
+    updateTodayExecutionCount({ date, data }) {
+      set(
+        produce((state: IState) => {
+          state.todayExecutionCount[date] = {
+            completeTotal: data.completeTotal,
+            total: data.total
+          }
+        })
+      )
     }
   }
 })

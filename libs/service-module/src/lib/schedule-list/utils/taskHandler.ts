@@ -55,7 +55,9 @@ class TaskHandler {
       produce((state: IState) => {
         taskIds.forEach((k) => {
           console.log('NX inner taker result', handler(taskDict[k]))
-          state.taskDict[k] = handler(taskDict[k])
+          if (state.taskDict[k]) {
+            state.taskDict[k] = handler(taskDict[k])
+          }
         })
       })
     )
@@ -74,14 +76,18 @@ class TaskHandler {
   }) {
     const { taskDict } = useScheduleStore.getState()
 
-    const newTasks = keys.map((key) => {
+    const newTasks = keys.reduce<ILocalTask[]>((list, key) => {
       const task = taskDict[key]
 
-      return {
-        ...task,
-        ...diff
+      if (task) {
+        list.push({
+          ...task,
+          ...diff
+        })
       }
-    })
+
+      return list
+    }, [])
 
     this.updateTaskDict(newTasks)
 
@@ -196,11 +202,11 @@ class TaskHandler {
   // 创建新事项
   static createTasks(tasks: ILocalTask[]) {
     this.updateTaskDict(tasks)
-    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
+    ListHandler.insertOngoingTasks(tasks.map((t) => t.ref_task_id))
   }
 
   // 获取符合条件的所有事项
-  private static getTasksByCondition(handler: IGetBingoTasks) {
+  static getTasksByCondition(handler: IGetBingoTasks) {
     const { taskDict } = useScheduleStore.getState()
 
     const bingoTasks: ILocalTask[] = []
@@ -215,7 +221,7 @@ class TaskHandler {
   }
 
   // 删除符合条件的所有事项
-  static removeTasksByConditions(handler: IGetBingoTasks) {
+  static removeTasksByCondition(handler: IGetBingoTasks) {
     const { bingoTasks } = this.getTasksByCondition(handler)
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))

@@ -17,7 +17,7 @@ const _TimelineTaskList = ({
   }, [timeList.length])
 
   return (
-    <div className={styles.timelineTaskListRoot}>
+    <>
       {timeList.map((item, index) => {
         return (
           <div key={item.tTime} className={styles.listRoot}>
@@ -50,7 +50,7 @@ const _TimelineTaskList = ({
           </div>
         )
       })}
-    </div>
+    </>
   )
 }
 

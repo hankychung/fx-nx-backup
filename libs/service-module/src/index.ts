@@ -14,11 +14,7 @@ import { AvatarEdit } from './lib/avatar-edit' //头像编辑
 import { ContextMenu } from './lib/context-menu'
 import { contextMenuTool } from './lib/context-menu/contextMenuTool'
 import { service, envStore } from '@flyele-nx/service'
-import {
-  getDiffKeys,
-  getTaskIdsByDispatch,
-  handleLogout
-} from './lib/schedule-list/utils'
+import { DayExecution } from './lib/day-execution'
 
 export * from './lib/schedule-list' // 日程列表
 
@@ -36,7 +32,8 @@ export {
   VipIntroduceContent,
   AvatarEdit,
   ContextMenu,
-  contextMenuTool
+  contextMenuTool,
+  DayExecution
 }
 
 export * from './lib/map-svg/type/props'
@@ -50,9 +47,3 @@ export const updateNxEnv = envStore.updateEnvByClient.bind(envStore)
 export const updateNxToken = service.updateToken.bind(service)
 
 export const registerPaymentInit = init
-
-export const ScheduleUtils = {
-  getDiffKeys,
-  getTaskIdsByDispatch,
-  handleLogout
-}

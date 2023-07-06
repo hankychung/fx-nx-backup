@@ -1,18 +1,18 @@
 import { produce } from 'immer'
 import { useScheduleStore, IState } from '../../store/useScheduleStore'
-import { IScheduleTask } from '@flyele-nx/service'
 import { ListHandler } from './listHandler'
-import { getKey, isRelated } from '.'
+import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { ILocalTask } from '@flyele-nx/service'
 
 interface IReloadTasksParams {
-  task: IScheduleTask[]
+  task: ILocalTask[]
   id: string[]
 }
 
-type IGetBingoTasks = (task: IScheduleTask) => boolean
+type IGetBingoTasks = (task: ILocalTask) => boolean
 
-type ITaskModifier = (task: IScheduleTask) => IScheduleTask
+type ITaskModifier = (task: ILocalTask) => ILocalTask
 
 function isTasks(a: any): a is IReloadTasksParams['task'] {
   return typeof a[0] !== 'string'
@@ -23,28 +23,20 @@ class TaskHandler {
     type: T,
     val: IReloadTasksParams[T]
   ) {
+    // 传入类型是ILocalTask, 先更新事项字典
     if (isTasks(val)) {
       this.updateTaskDict(val)
     }
-
-    const { schedule } = useScheduleStore.getState()
 
     const taskIds = isTasks(val)
       ? val.map((t) => t.ref_task_id)
       : (val as IReloadTasksParams['id'])
 
-    // 从所有未完成列表移除事项
-    useScheduleStore.setState(
-      produce((state: IState) => {
-        Object.entries(schedule).forEach(([date, keys]) => {
-          if (isRelated(keys, taskIds)) {
-            state.schedule[date] = keys.filter((k) => !taskIds.includes(k))
-          }
-        })
-      })
-    )
+    // 从所有未完成/完成列表移除事项
+    ListHandler.removeTasks(taskIds)
 
-    ListHandler.insertTasks(taskIds)
+    // 重新插入事项
+    ListHandler.insertTasksByConds(taskIds)
   }
 
   static allTasksModifier(handler: ITaskModifier) {
@@ -63,7 +55,9 @@ class TaskHandler {
       produce((state: IState) => {
         taskIds.forEach((k) => {
           console.log('NX inner taker result', handler(taskDict[k]))
-          state.taskDict[k] = handler(taskDict[k])
+          if (state.taskDict[k]) {
+            state.taskDict[k] = handler(taskDict[k])
+          }
         })
       })
     )
@@ -77,19 +71,23 @@ class TaskHandler {
     keysWithRepeatIds
   }: {
     keys: string[]
-    diff: Partial<IScheduleTask>
+    diff: Partial<ILocalTask>
     keysWithRepeatIds?: string[]
   }) {
     const { taskDict } = useScheduleStore.getState()
 
-    const newTasks = keys.map((key) => {
+    const newTasks = keys.reduce<ILocalTask[]>((list, key) => {
       const task = taskDict[key]
 
-      return {
-        ...task,
-        ...diff
+      if (task) {
+        list.push({
+          ...task,
+          ...diff
+        })
       }
-    })
+
+      return list
+    }, [])
 
     this.updateTaskDict(newTasks)
 
@@ -109,6 +107,12 @@ class TaskHandler {
     // 置顶
     if ('topmost_at' in diff) {
       ListHandler.sortListByTask(keys)
+      return
+    }
+
+    // 修改时间, 重载数据
+    if ('start_time' in diff || 'end_time' in diff || 'execute_at' in diff) {
+      TaskHandler.reloadTasks('id', keys)
     }
   }
 
@@ -171,7 +175,7 @@ class TaskHandler {
   }
 
   // TODO: 循环事项共享数据更新
-  private static updateTaskDict(tasks: IScheduleTask[]) {
+  private static updateTaskDict(tasks: ILocalTask[]) {
     useScheduleStore.setState(
       produce((state: IState) => {
         tasks.forEach((task) => {
@@ -187,17 +191,25 @@ class TaskHandler {
     )
   }
 
-  // 创建新事项
-  static createTasks(tasks: IScheduleTask[]) {
+  /**
+   * 用于 今日执行 同步事项数据
+   * same_day 的接口
+   */
+  static updateTaskDictByExecution(tasks: ILocalTask[]) {
     this.updateTaskDict(tasks)
-    ListHandler.insertTasks(tasks.map((t) => t.ref_task_id))
+  }
+
+  // 创建新事项
+  static createTasks(tasks: ILocalTask[]) {
+    this.updateTaskDict(tasks)
+    ListHandler.insertOngoingTasks(tasks.map((t) => t.ref_task_id))
   }
 
   // 获取符合条件的所有事项
-  private static getTasksByCondition(handler: IGetBingoTasks) {
+  static getTasksByCondition(handler: IGetBingoTasks) {
     const { taskDict } = useScheduleStore.getState()
 
-    const bingoTasks: IScheduleTask[] = []
+    const bingoTasks: ILocalTask[] = []
 
     Object.entries(taskDict).forEach(([, task]) => {
       if (handler(task)) {
@@ -209,7 +221,7 @@ class TaskHandler {
   }
 
   // 删除符合条件的所有事项
-  static removeTasksByConditions(handler: IGetBingoTasks) {
+  static removeTasksByCondition(handler: IGetBingoTasks) {
     const { bingoTasks } = this.getTasksByCondition(handler)
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))

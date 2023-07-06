@@ -1,8 +1,14 @@
 import { produce } from 'immer'
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
-import dayjs from 'dayjs'
-import { getKey, getSortedSchedule, isRelated, shouldInsertSchedule } from '.'
+import {
+  getInsertedFinishTasks,
+  getKey,
+  getSortedSchedule,
+  isRelated,
+  shouldInsertSchedule
+} from '.'
+import { getDateOfToday } from './tools'
 
 class ListHandler {
   // 完成事项
@@ -19,7 +25,7 @@ class ListHandler {
     this.checkToClearChildren()
 
     // 将已完成事项插入完成列表
-    this.insertCompleteTasks(taskIds)
+    this.insertFinishTasks(taskIds)
   }
 
   // 重启事项
@@ -28,7 +34,7 @@ class ListHandler {
     this.removeTasks(keysWithRepeatIds, { type: 'finishSchedule' })
 
     // 插入未完成列表
-    this.insertTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
+    this.insertOngoingTasks(keysWithRepeatIds.map((id) => id.split('-')[0]))
   }
 
   // 更新器
@@ -149,14 +155,20 @@ class ListHandler {
     useScheduleStore.setState(
       produce((state: IState) => {
         Object.entries(l).forEach(([date, list]) => {
-          state[type][date] = list.filter((i) => !taskIds.includes(i))
+          const updatedList = list.filter((i) => !taskIds.includes(i))
+
+          state[type][date] = updatedList
+
+          if (type === 'finishSchedule' && date === getDateOfToday()) {
+            state.todayFinishCount = updatedList.length
+          }
         })
       })
     )
   }
 
   // 批量插入未完成列表
-  static insertTasks(taskIds: string[]) {
+  static insertOngoingTasks(taskIds: string[]) {
     const { insertDateDict } = this.getInsertDateDict(taskIds)
 
     this.insertIntoDate({ insertDateDict })
@@ -166,11 +178,13 @@ class ListHandler {
   private static getInsertDateDict(taskIds: string[]) {
     const { taskDict, schedule } = useScheduleStore.getState()
 
-    const tasks = taskIds.map((id) => taskDict[id])
+    const tasks = taskIds
+      .map((id) => taskDict[id])
+      .filter((i) => !i.finish_time)
 
     // 需要插入该事项的日期
     const insertDateDict = Object.keys(schedule).reduce<{
-      [k: string]: IScheduleTask[]
+      [k: string]: ILocalTask[]
     }>((dict, date) => {
       const insertTasks = tasks.filter((task) =>
         shouldInsertSchedule({ date, task })
@@ -189,7 +203,7 @@ class ListHandler {
   // 插入到指定日期的未完成列表
   private static insertIntoDate(params: {
     insertDateDict: {
-      [k: string]: IScheduleTask[]
+      [k: string]: ILocalTask[]
     }
   }) {
     const { insertDateDict } = params
@@ -242,8 +256,8 @@ class ListHandler {
   }
 
   // 批量插入已完成列表
-  private static insertCompleteTasks(ids: string[]) {
-    const finishDate = dayjs().format('YYYY-MM-DD')
+  private static insertFinishTasks(ids: string[]) {
+    const finishDate = getDateOfToday()
 
     const { finishSchedule, taskDict } = useScheduleStore.getState()
 
@@ -257,9 +271,20 @@ class ListHandler {
       produce((state: IState) => {
         if (finishSchedule[finishDate]) {
           state.finishSchedule[finishDate].push(...insertKeys)
+          state.todayFinishCount = state.finishSchedule[finishDate].length
         }
       })
     )
+  }
+
+  // 根据事项信息插入到相关列表
+  static insertTasksByConds(taskIds: string[]) {
+    // 未完成列表
+    this.insertOngoingTasks(taskIds)
+
+    // 已完成列表
+    const { taskIds: finishedIds } = getInsertedFinishTasks(taskIds)
+    finishedIds.length && this.insertFinishTasks(finishedIds)
   }
 
   // 重新分配子事项的直属上级

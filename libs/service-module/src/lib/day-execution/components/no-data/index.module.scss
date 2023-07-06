@@ -1,0 +1,19 @@
+.noDataRoot {
+  font-size: 16px;
+  color: #262626;
+  width: 100%;
+  margin: 20% auto;
+  text-align: center;
+
+  .icon {
+    width: 148px;
+    height: 106px;
+    margin: 0 auto 20px;
+  }
+
+  p:last-child {
+    color: #6a6a6a;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+}

@@ -33,7 +33,7 @@ interface IPROPTime {
   isDarkMode?: boolean
   dateStr: string
   onlyRepeat?: boolean
-  isSpets?: boolean
+  isTimeLine?: boolean
 }
 
 export const Time: React.FC<IPROPTime> = ({
@@ -42,7 +42,7 @@ export const Time: React.FC<IPROPTime> = ({
   isDarkMode = false,
   dateStr,
   onlyRepeat = false,
-  isSpets = false
+  isTimeLine = false
 }) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
@@ -320,7 +320,7 @@ export const Time: React.FC<IPROPTime> = ({
       className={cs(styles.timeRange, styles.board, parentStyle.needLine, {
         [styles.darkMode]: isDarkMode,
         [styles.isFinish]: task.finish_time,
-        [styles.notHover]: isSpets
+        [styles.notHover]: isTimeLine
       })}
       onClick={editTime}
     >

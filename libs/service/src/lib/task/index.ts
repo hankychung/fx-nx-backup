@@ -1,5 +1,5 @@
 import { service } from '../service'
-import { CommonResponse } from '../typings'
+import { CommonResponse, IExternalListResponse } from '../typings'
 import {
   IScheduleTask,
   IHoliday,
@@ -133,6 +133,28 @@ class Task {
       url: `${this.prefix}/${task_id}/relation`,
       params: {
         _forceUpdate: true
+      }
+    })
+  }
+
+  /**
+   * 当日事项
+   */
+  getToDayTask({
+    day,
+    pageNumber = 1,
+    pageRecord = 20
+  }: {
+    day: string
+    pageNumber?: number
+    pageRecord?: number
+  }) {
+    return service.get<IScheduleTask[], IExternalListResponse>({
+      url: `${this.prefix}/schedule/same_day`,
+      params: {
+        day,
+        page_number: pageNumber,
+        page_record: pageRecord
       }
     })
   }

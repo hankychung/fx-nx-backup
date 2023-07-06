@@ -1,0 +1,82 @@
+.dayExecutionRoot {
+  width: 100%;
+  height: 100%;
+  .header {
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8f8f8f;
+    font-size: 11px;
+    font-weight: 400;
+    padding: 0 20px;
+    border-top: #ededed 1px dashed;
+    background-color: #fff;
+    .headerLeft {
+      display: flex;
+      align-items: center;
+      .text {
+        margin-right: 10px;
+      }
+    }
+    .headerRight {
+      display: flex;
+      align-items: center;
+      .total {
+        font-size: 13px;
+        color: #363636;
+      }
+    }
+  }
+
+  .arrowIcon {
+    width: 17px;
+    height: 17px;
+    transition: all 0.3s;
+    cursor: pointer;
+    transform: rotate(180deg);
+    margin-left: 8px;
+  }
+  .arrowIconUp {
+    transform: rotate(0);
+  }
+
+  .content {
+    width: 100%;
+    height: calc(100% - 50px);
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    .scroller {
+      width: 100%;
+      height: calc(100% - 40px);
+      overflow-x: hidden;
+    }
+    .timelineTaskListRoot {
+      padding: 10px 20px 10px 20px;
+    }
+  }
+
+  .footer {
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .hideBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      color: #b4b4b4;
+    }
+  }
+
+  .contentHide {
+    height: 0;
+  }
+}

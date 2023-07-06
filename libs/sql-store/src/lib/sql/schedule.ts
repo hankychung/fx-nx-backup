@@ -15,8 +15,7 @@ class JsDataZeusDb {
     return sqlStore.executeSchedule(sql)
   }
 }
-console.log(self, 'nxnxnx****的self')
 
 self.JsDataZeusDb = JsDataZeusDb
-
+console.log(self, 'nxnxnx****的self')
 export default JsDataZeusDb

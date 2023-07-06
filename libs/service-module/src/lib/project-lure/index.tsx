@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import cs from 'classnames'
 import {
   FlyBasePopper,
@@ -12,14 +12,16 @@ import { SpaceType, SpaceTypeConst, workspaceApi } from '@flyele-nx/service'
 import { SpaceAvatar } from '@flyele-nx/ui'
 import CustomerServicesModal from '../customer-services-modal'
 import { Close, CustomerServiceIcon, WarmingGrayIcon } from '@flyele-nx/icon'
+import EmptyImage from '../../assets/project-lure/empty.png'
 
 interface IProps {
   visible: boolean
   handleClose?: () => void
+  onCreateSpace?: () => void
 }
 
 export const ProjectLure = (props: IProps) => {
-  const { visible, handleClose } = props
+  const { visible, handleClose, onCreateSpace } = props
   const [list, setList] = useState<SpaceType.IBasicSpace[]>([])
 
   const getList = useMemoizedFn(async () => {
@@ -29,7 +31,7 @@ export const ProjectLure = (props: IProps) => {
       (i) => i.member_type === SpaceTypeConst.SpaceMemberType.SPACE
     )
 
-    setList(list.concat(list).concat(list))
+    setList(list)
   })
 
   useMount(() => {
@@ -59,28 +61,38 @@ export const ProjectLure = (props: IProps) => {
           <Close className={style.icon_close} onClick={handleClose} />
         </div>
         <div className={style.content}>
-          <div className={style.list_wrap}>
-            <div className={style.list}>
-              {list.map((item) => {
-                return (
-                  <div key={item.workspace_id} className={style.item}>
-                    <SpaceAvatar
-                      style={{ borderRadius: '50%', transition: 'none' }}
-                      size={28}
-                      icon={item.icon}
-                      icon_color={item.icon_color}
-                    />
-                    <span className={style.item_name}>{item.name}</span>
-                    <div className={style.item_btn}>导入</div>
-                  </div>
-                )
-              })}
+          {list.length ? (
+            <div className={style.list_wrap}>
+              <div className={style.list}>
+                {list.map((item) => {
+                  return (
+                    <div key={item.workspace_id} className={style.item}>
+                      <SpaceAvatar
+                        style={{ borderRadius: '50%', transition: 'none' }}
+                        size={28}
+                        icon={item.icon}
+                        icon_color={item.icon_color}
+                      />
+                      <span className={style.item_name}>{item.name}</span>
+                      <div className={style.item_btn}>导入</div>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className={style.warming}>
+                <WarmingGrayIcon />
+                <span>导入操作不可逆，且只能选择一个专业空间导入</span>
+              </div>
             </div>
-            <div className={style.warming}>
-              <WarmingGrayIcon />
-              <span>导入操作不可逆，且只能选择一个专业空间导入</span>
+          ) : (
+            <div className={style.empty}>
+              <img className={style.empty_img} src={EmptyImage} alt="empty" />
+              <span className={style.empty_txt}>你当前没有专业空间</span>
+              <Button onClick={onCreateSpace} className={style.empty_btn}>
+                创建专业空间
+              </Button>
             </div>
-          </div>
+          )}
         </div>
 
         <div className={style.footer}>

@@ -7,6 +7,14 @@ export interface SpaceListParams {
   query_external?: boolean
 }
 
+/**
+ * (项目) 移动到空间请求参数
+ */
+export interface MoveToSpaceParams {
+  project_id: string
+  current_workspace_id: string
+}
+
 class Workspace {
   private prefix = 'flyele/v2/workspace'
   /**
@@ -16,6 +24,16 @@ class Workspace {
     return service.get<ISpaceList>({
       url: `${this.prefix}/list`,
       params
+    })
+  }
+
+  /**
+   * (项目) 移动到空间
+   */
+  moveToSpace(workspace_id: string, data: MoveToSpaceParams) {
+    return service.post({
+      url: `${this.prefix}/workspace/${workspace_id}/import_project`,
+      data
     })
   }
 }

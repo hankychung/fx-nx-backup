@@ -26,7 +26,8 @@ import {
   IRepeatConfig,
   IHoliday,
   Taker,
-  RepeatList
+  RepeatList,
+  ILocalTask
 } from './lib/typings/schedule'
 import * as ScheduleTaskConst from './lib/typings/schedule/const'
 import * as CreateTypeMap from './lib/typings/schedule/createTypeMap'
@@ -105,5 +106,6 @@ export type {
   SpaceType,
   ProjectType,
   IWorkflowStep,
-  IUserStepInfo
+  IUserStepInfo,
+  ILocalTask
 }

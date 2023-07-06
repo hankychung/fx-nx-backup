@@ -441,6 +441,10 @@ export interface IScheduleTask {
   schedule_hide?: boolean
 }
 
+export interface ILocalTask extends IScheduleTask {
+  fromExecuate?: boolean
+}
+
 /**
  * .Parents，父事项相关
  */
@@ -452,7 +456,7 @@ export interface Parents {
   /**
    * 父级事项id
    */
-  task_id?: string
+  task_id: string
   /**
    * 父事项名称
    */

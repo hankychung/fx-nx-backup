@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { IScheduleTaskTime } from '../../utils'
 import styles from './index.module.scss'
 import cs from 'classnames'
-// import { ScheduleTask } from '../../../schedule-list/components/schedule-task'
-// import dayjs from 'dayjs'
+import { ScheduleTask } from '../../../schedule-list/components/schedule-task'
+import dayjs from 'dayjs'
 
 const _TimelineTaskList = ({
   timeList,
@@ -17,7 +17,7 @@ const _TimelineTaskList = ({
   }, [timeList.length])
 
   return (
-    <div className={styles.timelineTaskListRoot}>
+    <>
       {timeList.map((item, index) => {
         return (
           <div key={item.tTime} className={styles.listRoot}>
@@ -29,25 +29,28 @@ const _TimelineTaskList = ({
               <div className={styles.text}>{item.tTimeTxt}</div>
             </div>
             <div className={styles.listRight}>
-              {/*{item.taskItems.map((task) => {*/}
-              {/*  return (*/}
-              {/*    <ScheduleTask*/}
-              {/*      key={task.ref_task_id}*/}
-              {/*      taskKey={task.ref_task_id}*/}
-              {/*      topId={task.ref_task_id}*/}
-              {/*      date={day}*/}
-              {/*      curTime={dayjs().unix()}*/}
-              {/*      isVipWin={false}*/}
-              {/*      isBoard={false}*/}
-              {/*      isDarkMode={false}*/}
-              {/*    />*/}
-              {/*  )*/}
-              {/*})}*/}
+              {item.taskItems.map((task) => {
+                return (
+                  <ScheduleTask
+                    key={task.ref_task_id}
+                    taskKey={task.ref_task_id}
+                    topId={
+                      task.parents && task.parents.length
+                        ? task.parents[0].task_id
+                        : task.ref_task_id
+                    }
+                    date={day}
+                    curTime={dayjs().unix()}
+                    isTimeLine={true}
+                    isSimple={true}
+                  />
+                )
+              })}
             </div>
           </div>
         )
       })}
-    </div>
+    </>
   )
 }
 

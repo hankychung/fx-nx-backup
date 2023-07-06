@@ -1,12 +1,12 @@
 import { create } from 'zustand'
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
 export interface IState {
   // 以下所有日期共用
   todayFinishCount: number
-  taskDict: { [k: string]: IScheduleTask }
+  taskDict: { [k: string]: ILocalTask }
   childrenDict: { [k: string]: string[] }
   // 以下与日期相关, 每个日期独立维护
   schedule: { [k: string]: string[] }
@@ -16,6 +16,7 @@ export interface IState {
       [k: string]: boolean
     }
   }
+  todayExecution: { [date: string]: IScheduleTask[] }
 }
 
 interface IMutation {
@@ -26,7 +27,7 @@ interface IMutation {
     isFinished?: boolean
   }) => void
   batchUpdateTask: (
-    tasks: IScheduleTask[],
+    tasks: ILocalTask[],
     options?: { isFinished?: boolean }
   ) => {
     keys: string[]
@@ -38,7 +39,12 @@ interface IMutation {
   }) => void
   updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
-  updateTodayFinishCount: (n: number) => void
+  updateTodayExecutionList: (options: {
+    date: string
+    list: IScheduleTask[]
+    isInit?: boolean
+    isFinished?: boolean
+  }) => void
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
@@ -69,6 +75,10 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      * 今日已完成数量
      */
     todayFinishCount: 0,
+    /**
+     * 当日事项
+     */
+    todayExecution: {},
     /**
      * 初始化/更新事项列表
      */
@@ -112,7 +122,7 @@ const useScheduleStore = create<IState & IMutation>((set) => {
 
       set(
         produce((state: IState) => {
-          const dict: { [k: string]: IScheduleTask } = {}
+          const dict: { [k: string]: ILocalTask } = {}
 
           arr.forEach((item) => {
             const { ref_task_id, repeat_id, finish_time } = item
@@ -179,10 +189,28 @@ const useScheduleStore = create<IState & IMutation>((set) => {
       }))
     },
     /**
-     * 更新今日已完成数量
+     * 更新当日事项的列表
      */
-    updateTodayFinishCount(n) {
-      set({ todayFinishCount: n })
+    updateTodayExecutionList({ date, list, isInit, isFinished }) {
+      console.log('NX updateTodayExecutionList', {
+        date,
+        list,
+        isInit,
+        isFinished
+      })
+
+      set(
+        produce((state: IState) => {
+          if (isInit) {
+            state.todayExecution[date] = []
+          }
+
+          state.todayExecution[date] = [
+            ...state.todayExecution[date],
+            ...list
+          ].sort((a, b) => b.create_at - a.create_at)
+        })
+      )
     }
   }
 })

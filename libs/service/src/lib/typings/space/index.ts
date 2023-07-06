@@ -24,3 +24,8 @@ export interface IBasicSpace {
   member_type?: number //内部外部成员
   identify?: number //管理员 普通成员
 }
+
+export interface ISpaceList {
+  data_list?: IBasicSpace[]
+  other_datas?: IBasicSpace[]
+}

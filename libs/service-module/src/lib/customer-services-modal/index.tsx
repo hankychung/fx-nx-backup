@@ -14,9 +14,10 @@ import style from './index.module.scss'
 
 interface Iprops {
   onClose: () => void
+  desc?: string
 }
 const CustomerServicesModal = (props: Iprops) => {
-  const { onClose } = props
+  const { onClose, desc } = props
 
   return (
     <div>
@@ -35,6 +36,8 @@ const CustomerServicesModal = (props: Iprops) => {
         </div>
 
         <div className={style.qrcode}>
+          {desc ? <div className={style.desc}>{desc}</div> : null}
+
           <img
             src="https://cdn.flyele.net/resources/customer_service_qr_img.png"
             alt="客服"

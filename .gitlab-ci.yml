@@ -29,6 +29,15 @@ compile-management-system:
     - chmod a+x ./self_build.sh
     - ./self_build.sh $CI_COMMIT_BRANCH management-system
   when: manual
+compile-landing:
+  tags:
+    - nodejs
+    - mac
+  stage: compile
+  script:
+    - chmod a+x ./self_build.sh
+    - ./self_build.sh $CI_COMMIT_BRANCH landing
+  when: manual
 # 构建失败时的通知消息
 notifyFailWeChat:
   stage: notify

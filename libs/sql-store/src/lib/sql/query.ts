@@ -28,54 +28,18 @@ export const QueryTaskTreeCompleteTotal = (task_id: string) => {
 }
 
 export const QueryTaskChildTotal = (task_id: string, user_id: string) => {
-  return `SELECT 
-  id, 
-  COUNT(*) AS task_tree_total, 
-  COUNT(CASE WHEN complete_at > 0 THEN id END) AS task_tree_complete_total 
-FROM 
-  (
-    SELECT 
-      id 
-    FROM 
-      task t 
-    WHERE 
-      t.state = 10201 
-      AND t.matter_type IN (10701, 10702, 10705)
-  ) a 
-  LEFT JOIN (
-    SELECT 
-      complete_at, 
-      parent_id 
-    FROM 
-      (
-        SELECT 
-          parent_id, 
-          id 
-        FROM 
-          task_config tc 
-          JOIN (
-            SELECT 
-              ref_task_id AS task_id 
-            FROM 
-              task_dispatch 
-            WHERE 
-              status = 1 
-              AND is_valid = 1 
-              AND delete_at = 0 
-              AND taker_id = ${user_id} 
-            GROUP BY 
-              ref_task_id
-          ) tt1 ON tc.id = tt1.task_id 
-          AND tc.category = 2
-      ) tc 
-      JOIN task t ON t.state = 10201 
-      AND t.matter_type IN (10701, 10702, 10705) 
-      AND tc.id = t.id
-  ) tc ON tc.parent_id != '' 
-  AND INSTR(tc.parent_id, a.id) 
-WHERE 
-  INSTR(parent_id, ${task_id}) 
-GROUP BY id`
+  return `SELECT t.id, COUNT(*) AS task_tree_total, COUNT(CASE WHEN complete_at > 0 THEN t.id END) AS task_tree_complete_total
+  FROM task t JOIN (SELECT ref_task_id AS task_id
+                      FROM task_dispatch
+                     WHERE status = 1
+                       AND is_valid = 1
+                       AND taker_id = ${user_id}
+                     GROUP BY ref_task_id) td ON t.id = td.task_id
+           JOIN    task_config tc
+                   ON t.id = tc.id
+ WHERE t.state = 10201
+   AND t.matter_type IN (10701, 10702, 10705) AND category = 2
+   AND INSTR(tc.parent_id, ${task_id})`
 }
 
 export const FullDoseCountSql = ({ user_id }: { user_id: string }) => {
@@ -143,30 +107,17 @@ export const BaseQuerySql = ({
   LeftJoinRepeatAnd: string // 平铺和非平铺模式下 循环事项的判断
 }) => {
   return `
-  WITH real_parent AS (
-    SELECT 
-      tc1.id, 
-      GROUP_CONCAT(tc2.ref_task_id) AS parent_id 
-    FROM 
-      task_config tc1 
-      LEFT JOIN (
-        SELECT 
-          ref_task_id 
-        FROM 
-          task_dispatch 
-        WHERE 
-          is_valid = 1 
-          AND status = 1 
-          AND taker_id = ${user_id} 
-        GROUP BY 
-          ref_task_id
-      ) tc2 ON INSTR(tc1.parent_id, tc2.ref_task_id) 
-    WHERE 
-      tc1.category = 2 AND
-      tc2.ref_task_id IS NOT NULL 
-    GROUP BY 
-      tc1.id
-  )
+  WITH td AS (SELECT ref_task_id
+    FROM task_dispatch
+   WHERE is_valid = 1
+     AND status = 1
+     AND taker_id = 2567146083188875
+   GROUP BY ref_task_id)
+, real_parent AS (SELECT tc1.id, GROUP_CONCAT(td.ref_task_id) AS parent_id
+             FROM (SELECT * FROM task_config tc1 JOIN td ON tc1.id = td.ref_task_id) tc1
+                      LEFT JOIN td ON INSTR(tc1.parent_id, td.ref_task_id)
+            WHERE tc1.category = 2 AND td.ref_task_id IS NOT NULL
+            GROUP BY tc1.id)
   SELECT *, CASE WHEN date ISNULL THEN 99 ELSE 0 END AS date_idx,
   CASE WHEN STRFTIME('%w', date) == '0' THEN '周日'
        WHEN STRFTIME('%w', date) == '1' THEN '周一'

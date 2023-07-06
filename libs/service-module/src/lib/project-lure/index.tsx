@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'antd'
 import cs from 'classnames'
 import {
@@ -11,12 +11,7 @@ import style from './index.module.scss'
 import { SpaceType, SpaceTypeConst, workspaceApi } from '@flyele-nx/service'
 import { SpaceAvatar } from '@flyele-nx/ui'
 import CustomerServicesModal from '../customer-services-modal'
-import {
-  Close,
-  CustomerServiceIcon,
-  SpaceCompleteIcon,
-  WarmingGrayIcon
-} from '@flyele-nx/icon'
+import { Close, CustomerServiceIcon, WarmingGrayIcon } from '@flyele-nx/icon'
 import EmptyImage from '../../assets/project-lure/empty.png'
 
 interface IProps {
@@ -25,22 +20,17 @@ interface IProps {
   workspaceId: string
   handleClose?: () => void
   onCreateSpace?: () => void
-  onOpenSpace?: (spaceId: string) => void
+  onImport?: (item: SpaceType.IBasicSpace) => void
 }
 
 export const ProjectLure = (props: IProps) => {
-  const {
-    visible,
-    handleClose,
-    onCreateSpace,
-    onOpenSpace,
-    projectId,
-    workspaceId
-  } = props
+  const { visible, handleClose, onImport, onCreateSpace } = props
   const [list, setList] = useState<SpaceType.IBasicSpace[]>([])
 
   const getList = useMemoizedFn(async () => {
     const { data } = await workspaceApi.getSpaceList({})
+
+    console.log('data***', data)
 
     const list = (data.data_list ?? []).filter(
       (i) => i.member_type === SpaceTypeConst.SpaceMemberType.SPACE
@@ -49,53 +39,11 @@ export const ProjectLure = (props: IProps) => {
     setList(list)
   })
 
-  useMount(() => {
-    getList()
-  })
+  useEffect(() => {
+    if (visible) getList()
+  }, [visible, getList])
 
   const serviceController = useController(new FlyBasePopperCtrl())
-
-  const buildImportSucceedContent = useMemoizedFn(
-    (identify: number, spaceId: string) => {
-      const isAdmin =
-        identify === SpaceTypeConst.SpaceMemberNewType.ADMIN ||
-        identify === SpaceTypeConst.SpaceMemberNewType.CREATOR
-      return (
-        <div className={style.import_content}>
-          <div className={style.import_close}>
-            <Close />
-          </div>
-          <div className={style.import_title}>
-            {isAdmin ? '导入成功' : '已申请导入，请联系空间管理员 通过审批'}
-          </div>
-          <SpaceCompleteIcon className={style.import_icon} />
-          <Button
-            onClick={() => onOpenSpace?.(spaceId)}
-            className={style.import_btn}
-          >
-            进入空间
-          </Button>
-          <div className={style.import_finish}>完成</div>
-        </div>
-      )
-    }
-  )
-
-  const projectImport = useMemoizedFn((item: SpaceType.IBasicSpace) => {
-    workspaceApi.moveToSpace(item.workspace_id, {
-      project_id: projectId,
-      current_workspace_id: workspaceId
-    })
-    Modal.success({
-      title: false,
-      icon: null,
-      footer: false,
-      width: 360,
-      className: style.import,
-      centered: true,
-      content: buildImportSucceedContent(item.identify || 0, item.workspace_id)
-    })
-  })
 
   return (
     <Modal
@@ -132,7 +80,7 @@ export const ProjectLure = (props: IProps) => {
                       />
                       <span className={style.item_name}>{item.name}</span>
                       <div
-                        onClick={() => projectImport(item)}
+                        onClick={() => onImport?.(item)}
                         className={style.item_btn}
                       >
                         导入

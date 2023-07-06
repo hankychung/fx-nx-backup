@@ -32,7 +32,7 @@ class Workspace {
    */
   moveToSpace(workspace_id: string, data: MoveToSpaceParams) {
     return service.post({
-      url: `${this.prefix}/workspace/${workspace_id}/import_project`,
+      url: `${this.prefix}/${workspace_id}/import_project`,
       data
     })
   }

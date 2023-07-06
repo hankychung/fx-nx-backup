@@ -17,5 +17,4 @@ class JsDataZeusDb {
 }
 
 self.JsDataZeusDb = JsDataZeusDb
-console.log(self, 'nxnxnx****的self')
 export default JsDataZeusDb

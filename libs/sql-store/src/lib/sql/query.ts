@@ -111,7 +111,7 @@ export const BaseQuerySql = ({
     FROM task_dispatch
    WHERE is_valid = 1
      AND status = 1
-     AND taker_id = 2567146083188875
+     AND taker_id = ${user_id}
    GROUP BY ref_task_id)
 , real_parent AS (SELECT tc1.id, GROUP_CONCAT(td.ref_task_id) AS parent_id
              FROM (SELECT * FROM task_config tc1 JOIN td ON tc1.id = td.ref_task_id) tc1

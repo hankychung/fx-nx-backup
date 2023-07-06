@@ -75,10 +75,17 @@
       background: linear-gradient(90deg, #7b5eef 0%, #6248ed 100%);
     }
   }
+  .warming {
+    padding: 12px 22px 0 22px;
+    display: flex;
+    align-items: center;
+    color: #afafaf;
+  }
 }
 .footer {
   margin-top: 20px;
   .footer_btn {
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;

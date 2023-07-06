@@ -11,7 +11,7 @@ import style from './index.module.scss'
 import { SpaceType, SpaceTypeConst, workspaceApi } from '@flyele-nx/service'
 import { SpaceAvatar } from '@flyele-nx/ui'
 import CustomerServicesModal from '../customer-services-modal'
-import { Close } from '@flyele-nx/icon'
+import { Close, CustomerServiceIcon, WarmingGrayIcon } from '@flyele-nx/icon'
 
 interface IProps {
   visible: boolean
@@ -76,8 +76,8 @@ export const ProjectLure = (props: IProps) => {
                 )
               })}
             </div>
-            <div>
-              <Close />
+            <div className={style.warming}>
+              <WarmingGrayIcon />
               <span>导入操作不可逆，且只能选择一个专业空间导入</span>
             </div>
           </div>
@@ -101,8 +101,8 @@ export const ProjectLure = (props: IProps) => {
                 className={style.footer_btn}
                 onClick={() => serviceController.show()}
               >
-                <Close />
-                联系客服，解答所有疑问
+                <CustomerServiceIcon />
+                <span style={{ marginLeft: 4 }}>联系客服，解答所有疑问</span>
               </div>
             </FlyBasePopper>
           </div>

@@ -1,4 +1,12 @@
 branch=$1
+###
+ # @Author: wanghui wanghui@flyele.net
+ # @Date: 2023-06-21 09:50:59
+ # @LastEditors: wanghui wanghui@flyele.net
+ # @LastEditTime: 2023-07-06 15:08:24
+ # @FilePath: /fx-nx/self_build.sh
+ # @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+### 
 
 app=$2
 
@@ -41,6 +49,8 @@ elif [ $app == "official-website" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
 elif [ $app == "management-system" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
+elif [ $app == "landing" ];then
+  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileLanding .
 else
   echo "  --> 不打镜像..."
   exit 1

@@ -681,17 +681,20 @@ class SqlStore {
   }
 
   querySchedule(sql: string) {
-    const res = this.db!.run(sql)
+    const res = this.db!.exec(sql)
+
+    const data = res[0] ? this.formatSelectValue(res[0]) : []
     return {
       code: 0,
-      data: res ? res : []
+      data: data
     }
   }
   executeSchedule(sql: string) {
     const res = this.db!.exec(sql)
+    const data = res[0] ? this.formatSelectValue(res[0]) : []
     return {
       code: 0,
-      data: res ? res : []
+      data: data
     }
   }
 

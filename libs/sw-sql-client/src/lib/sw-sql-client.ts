@@ -186,6 +186,11 @@ class ServiceWorkerUtils {
   static updateDiff(mode: 1 | 2) {
     return promiseWorkerMessage(ServiceWorkerKey.UPDATE_DIFF, { mode })
   }
+
+  // 按日获取
+  static getDayView(date: string) {
+    return promiseWorkerMessage(ServiceWorkerKey.DAY_VIEW, date)
+  }
 }
 
 export { ServiceWorkerUtils }

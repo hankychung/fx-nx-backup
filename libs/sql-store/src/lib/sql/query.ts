@@ -162,6 +162,7 @@ export const BaseQuerySql = ({
           ref_task_id
       ) tc2 ON INSTR(tc1.parent_id, tc2.ref_task_id) 
     WHERE 
+      tc1.category = 2 AND
       tc2.ref_task_id IS NOT NULL 
     GROUP BY 
       tc1.id
@@ -314,11 +315,10 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                 GROUP BY tc.id, tfs.id) z
     ON a.id = z.id
     LEFT JOIN (SELECT CAST(CASE WHEN INSTR(parent_id, ',') > 0
-                                                   THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)
-                                               ELSE parent_id END AS bigint) AS task_id, COUNT(*) AS child_count
-                                FROM real_parent
-                               WHERE category = 2
-                               GROUP BY parent_id) AS zb
+              THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)
+               ELSE parent_id END AS bigint) AS task_id, COUNT(*) AS child_count
+               FROM real_parent
+               GROUP BY parent_id) AS zb
                    ON a.id = zb.task_id
     LEFT JOIN real_parent AS zc ON a.id = zc.id)
 ${where || ''} 

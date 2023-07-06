@@ -11,7 +11,12 @@ import style from './index.module.scss'
 import { SpaceType, SpaceTypeConst, workspaceApi } from '@flyele-nx/service'
 import { SpaceAvatar } from '@flyele-nx/ui'
 import CustomerServicesModal from '../customer-services-modal'
-import { Close, CustomerServiceIcon, WarmingGrayIcon } from '@flyele-nx/icon'
+import {
+  Close,
+  CustomerServiceIcon,
+  SpaceCompleteIcon,
+  WarmingGrayIcon
+} from '@flyele-nx/icon'
 import EmptyImage from '../../assets/project-lure/empty.png'
 
 interface IProps {
@@ -39,6 +44,34 @@ export const ProjectLure = (props: IProps) => {
   })
 
   const serviceController = useController(new FlyBasePopperCtrl())
+
+  const buildImportSucceedContent = useMemoizedFn(() => {
+    return (
+      <div className={style.import_content}>
+        <div className={style.import_close}>
+          <Close />
+        </div>
+        <div className={style.import_title}>
+          已申请导入，请联系空间管理员 通过审批
+        </div>
+        <SpaceCompleteIcon className={style.import_icon} />
+        <Button className={style.import_btn}>进入空间</Button>
+        <div className={style.import_finish}>完成</div>
+      </div>
+    )
+  })
+
+  const projectImport = useMemoizedFn(() => {
+    Modal.success({
+      title: false,
+      icon: null,
+      footer: false,
+      width: 360,
+      className: style.import,
+      centered: true,
+      content: buildImportSucceedContent()
+    })
+  })
 
   return (
     <Modal
@@ -74,7 +107,9 @@ export const ProjectLure = (props: IProps) => {
                         icon_color={item.icon_color}
                       />
                       <span className={style.item_name}>{item.name}</span>
-                      <div className={style.item_btn}>导入</div>
+                      <div onClick={projectImport} className={style.item_btn}>
+                        导入
+                      </div>
                     </div>
                   )
                 })}

@@ -125,3 +125,66 @@
     width: 354px;
   }
 }
+
+.import {
+  :global(.ant-modal-confirm-content) {
+    max-width: unset !important;
+    margin-block-start: unset !important;
+  }
+  .import_content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .import_close {
+    cursor: pointer;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .import_title {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 28px;
+    color: #22204e;
+    text-align: center;
+    height: 56px;
+    width: 280px;
+    margin-top: 16px;
+  }
+  .import_icon {
+    margin-top: 28px;
+    width: 60px;
+    height: 60px;
+  }
+  .import_btn {
+    height: 44px;
+    width: 246px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    margin-top: 64px;
+    background: linear-gradient(90deg, #7b5eef 0%, #6248ed 100%);
+    &:hover {
+      color: white;
+    }
+  }
+  .import_finish {
+    height: 44px;
+    width: 246px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #7878fd;
+    text-align: center;
+    line-height: 44px;
+    cursor: pointer;
+    margin: 8px 0;
+  }
+}

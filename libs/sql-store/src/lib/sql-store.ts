@@ -545,21 +545,23 @@ class SqlStore {
 
         content.forEach((item) => {
           try {
-            const { type, data, keys } = item
+            if (isDiff) {
+              const { type, data, keys } = item
 
-            this.db!.run(this.getDelSql(keys, table) + ';')
+              this.db!.run(this.getDelSql(keys, table) + ';')
 
-            if (type === 'delete') {
-              // 一定会先删除数据, 此处不处理
-            } else {
-              this.db!.run(
-                this.getInsertSql(
-                  data,
-                  table,
-                  isDiff ? 'zip-diff' : 'zip-full'
-                ) + ';'
-              )
+              if (type === 'delete') {
+                // 一定会先删除数据, 此处不处理
+              } else {
+                this.db!.run(this.getInsertSql(data, table, 'zip-diff') + ';')
+              }
+
+              return
             }
+
+            // sqlStr += this.getInsertSql(item, table) + ';'
+
+            this.db!.run(this.getInsertSql(item, table, 'zip-full') + ';')
           } catch (e) {
             yieldConsole({
               type: 'error',
@@ -570,6 +572,8 @@ class SqlStore {
                 type: 'writting-diff-update'
               }
             })
+
+            throw e
           }
         })
 

@@ -51,7 +51,7 @@ const PayQrCode = ({
     try {
       paymentApi.createOrder(params).then(async (_) => {
         const a = {
-          ..._.data,
+          ..._.data.data,
           total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
         }
         const res = await QRCode.toDataURL(
@@ -59,7 +59,6 @@ const PayQrCode = ({
             a
           )}&&token=${paymentApi.getToken()}`
         )
-        console.log('准备a-----', _)
         setQrCode(res)
       })
     } catch {

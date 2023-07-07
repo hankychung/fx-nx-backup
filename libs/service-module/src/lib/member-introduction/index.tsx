@@ -188,7 +188,7 @@ export const MemberIntroduction = ({
         visible={show}
         isPay={isShowPay}
         mineId={selfUserInfo?.userId || ''}
-        modalType="quick_person"
+        modalType="person"
         payType={payType}
         memberList={memberList}
         onClose={() => {

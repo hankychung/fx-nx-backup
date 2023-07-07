@@ -92,12 +92,12 @@ export const EqualComparison = ({
                       {item.title}
                       {item.desc && <DescTooltip text={item.desc} />}
                     </div>
+                    <TableData data={item.free} />
                     {!isSpace ? (
                       <TableData data={item.personal} />
                     ) : (
                       <TableData data={''} />
                     )}
-                    <TableData data={item.free} />
                     <TableData data={item.team} desc={item.teamDesc} />
                   </div>
                 )

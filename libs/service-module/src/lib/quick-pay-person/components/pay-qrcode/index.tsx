@@ -45,7 +45,7 @@ const PayQrCode = ({
       origin_route: 'PC客户端',
       total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0,
       // total_price: 1,
-      users_id: ['862306044739653'],
+      users_id: memberList.map((item) => item.userId),
       indent_member_type: 1
     }
     try {

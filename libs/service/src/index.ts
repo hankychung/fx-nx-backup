@@ -53,6 +53,8 @@ import * as AuthConst from './lib/typings/auth/const'
 
 // 空间
 import * as SpaceType from './lib/typings/space'
+import * as SpaceTypeConst from './lib/typings/space/const'
+import { workspaceApi } from './lib/workspace'
 
 // 项目
 import * as ProjectType from './lib/typings/project'
@@ -80,6 +82,8 @@ export {
   CreateTypeMap,
   TagConst,
   LabelApi,
+  workspaceApi,
+  SpaceTypeConst,
   AuthConst,
   VipTypeEnum,
   EConCheckStatus,

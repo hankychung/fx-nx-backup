@@ -222,7 +222,7 @@ class SqlStore {
 
             // 重新插入数据
             if (type === 'insert' || type === 'update') {
-              this.db!.run(this.getInsertSql(data, key) + ';')
+              this.db!.run(this.getInsertSql(data, key, 'data') + ';')
             }
           }
 
@@ -552,7 +552,7 @@ class SqlStore {
               if (type === 'delete') {
                 // 一定会先删除数据, 此处不处理
               } else {
-                this.db!.run(this.getInsertSql(data, table) + ';')
+                this.db!.run(this.getInsertSql(data, table, 'zip-diff') + ';')
               }
 
               return
@@ -560,7 +560,7 @@ class SqlStore {
 
             // sqlStr += this.getInsertSql(item, table) + ';'
 
-            this.db!.run(this.getInsertSql(item, table) + ';')
+            this.db!.run(this.getInsertSql(item, table, 'zip-full') + ';')
           } catch (e) {
             yieldConsole({
               type: 'error',
@@ -571,6 +571,8 @@ class SqlStore {
                 type: 'writting-diff-update'
               }
             })
+
+            throw e
           }
         })
 
@@ -653,8 +655,14 @@ class SqlStore {
     return `UPDATE ${table} SET ${set.join(',')} WHERE ${where.join(' AND ')}`
   }
 
-  private getInsertSql(_item: Record<string, any>, table: string) {
+  private getInsertSql(
+    _item: Record<string, any>,
+    table: string,
+    _type: 'zip-full' | 'zip-diff' | 'data'
+  ) {
     const item = this.getDecentItem(_item, table)
+
+    // console.log('@store', item, table, type)
 
     const singleSql = `INSERT OR REPLACE INTO ${table} (${Object.keys(
       item

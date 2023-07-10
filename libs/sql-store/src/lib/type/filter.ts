@@ -107,11 +107,24 @@ export interface FilterParamsProps {
 export interface DayViewParamsProps {
   userID?: string
   day?: string
-  tabType?: 'history' | 'today' | 'future' //history -> 历史， today -> 今天，future -> 未来，
-  queryType?: '0' | '1' | '2' | '3' // 0->全部，1->我参与的，2->我派发的 3->已完成
+  tabType?: TabType //history -> 历史， today -> 今天，future -> 未来，
+  queryType?: QueryType // 0->全部，1->我参与的，2->我派发的 3->已完成
   pageRecord?: number
   pageNumber?: number
   isCount?: boolean
   task_ids?: string[]
   parent_id?: string
+}
+
+export enum QueryType {
+  all,
+  participate,
+  distribute,
+  completed
+}
+
+export enum TabType {
+  HISTORY = 'history',
+  TODAY = 'today',
+  FUTURE = 'future'
 }

@@ -390,8 +390,6 @@ class SqlStore {
         const value = values[mapI][Number(keyI)]
 
         if (jsonKey.includes(key)) {
-          console.log(value, keyAndI)
-
           obj[key] = JSON.parse(value || '{}')
         } else if (boolKey.includes(key)) {
           obj[key] = Boolean(value)
@@ -402,6 +400,41 @@ class SqlStore {
               : ''
             : value
         }
+      }
+
+      return obj
+    })
+
+    return data
+  }
+
+  formatSelectValue1({
+    columns,
+    values
+  }: {
+    columns: string[]
+    values: any[][]
+  }) {
+    const keyAndI = Object.entries(columns)
+
+    const data = new Array(values.length).fill('').map((v, mapI) => {
+      //TODO 切换正常类型
+      const obj: { [key: string]: any } = {}
+
+      for (const [keyI, key] of keyAndI) {
+        // const value = values[mapI][Number(keyI)]
+        obj[key] = values[mapI][Number(keyI)]
+        // if (jsonKey.includes(key)) {
+        //   obj[key] = JSON.parse(value || '{}')
+        // } else if (boolKey.includes(key)) {
+        //   obj[key] = Boolean(value)
+        // } else {
+        //   obj[key] = /^(id)$|_id$/.test(key)
+        //     ? value
+        //       ? String(value)
+        //       : ''
+        //     : value
+        // }
       }
 
       return obj
@@ -696,9 +729,9 @@ class SqlStore {
       '日程参数_____*****',
       sql,
       res,
-      this.formatSelectValue(res[0])
+      this.formatSelectValue1(res[0])
     )
-    const data = res[0] ? this.formatSelectValue(res[0]) : []
+    const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
     return {
       code: 0,
@@ -712,9 +745,9 @@ class SqlStore {
       '日程参数_____*****',
       sql,
       res,
-      this.formatSelectValue(res[0])
+      this.formatSelectValue1(res[0])
     )
-    const data = res[0] ? this.formatSelectValue(res[0]) : []
+    const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
     return {
       code: 0,

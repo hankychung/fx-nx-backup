@@ -17,6 +17,7 @@ import PayQrCode from '../pay-qr-code'
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { useMemoizedFn } from '@flyele/flyele-components'
+
 const url = `https://cdn.flyele.net/resources/PC/`
 interface Iprops {
   memberList: IFlyeleAvatarItem[]
@@ -66,6 +67,7 @@ const VipPackage = (props: Iprops) => {
           setShowPay(service.getData('showPay').show)
           setPayInfo(service.getData('showPay').payInfo)
           setUserInfo(service.getData('showPay').userInfo)
+
           break
 
         default:

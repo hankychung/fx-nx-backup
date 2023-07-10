@@ -6,7 +6,7 @@ import {
   ServiceWorkerParams,
   WorkerBack
 } from './type'
-import { SqlStore } from '@flyele-nx/sql-store'
+import { DayViewParamsProps, SqlStore } from '@flyele-nx/sql-store'
 
 import { Direction, FilterParamsProps } from '@flyele-nx/sql-store'
 import { SqlFilterSplitKeys, SqlFilterTimerkeys } from './const'
@@ -188,8 +188,8 @@ class ServiceWorkerUtils {
   }
 
   // 按日获取
-  static getDayView(date: string) {
-    return promiseWorkerMessage(ServiceWorkerKey.DAY_VIEW, date)
+  static getDayView(params: DayViewParamsProps) {
+    return promiseWorkerMessage(ServiceWorkerKey.DAY_VIEW, params)
   }
 }
 

@@ -1,4 +1,4 @@
-import { SqlStore } from '@flyele-nx/sql-store'
+import { DayViewParamsProps, SqlStore } from '@flyele-nx/sql-store'
 
 export type FilterKeys = keyof SqlStore.Filter.FilterParamsFilter
 
@@ -22,7 +22,7 @@ export type ServiceWorkerParams = {
   [ServiceWorkerKey.UPDATE_DIFF]: {
     mode: 1 | 2
   }
-  [ServiceWorkerKey.DAY_VIEW]: string
+  [ServiceWorkerKey.DAY_VIEW]: DayViewParamsProps
 }
 
 export type ServiceWorkerData = {

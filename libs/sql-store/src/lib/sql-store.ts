@@ -6,7 +6,13 @@ import { set, get } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql, getFullDoseCountSql } from './utils/filter'
-import { DayViewParamsProps, Direction, FilterParamsProps } from './type/filter'
+import {
+  DayViewParamsProps,
+  Direction,
+  FilterParamsProps,
+  QueryType,
+  TabType
+} from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Datum } from './type/service/datapandora'
 import { IDiffInfoResponse } from './type/service/increment'
@@ -761,6 +767,9 @@ class SqlStore {
     console.log('params', '日程参数_____*****', params, dayData)
 
     return dayData
+  }
+  getIsReady() {
+    return this.isReady
   }
 }
 

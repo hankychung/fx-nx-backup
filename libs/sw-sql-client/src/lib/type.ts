@@ -12,7 +12,8 @@ export enum ServiceWorkerKey {
   INIT_DB = 'INIT_DB',
   UPDATE_TOKEN = 'UPDATE_TOKEN',
   UPDATE_DIFF = 'UPDATE_DIFF',
-  DAY_VIEW = 'DAY_VIEW'
+  DAY_VIEW = 'DAY_VIEW',
+  IS_READY = 'IS_READY'
 }
 
 export type ServiceWorkerParams = {
@@ -23,6 +24,7 @@ export type ServiceWorkerParams = {
     mode: 1 | 2
   }
   [ServiceWorkerKey.DAY_VIEW]: DayViewParamsProps
+  [ServiceWorkerKey.IS_READY]: null
 }
 
 export type ServiceWorkerData = {
@@ -40,6 +42,7 @@ export type ServiceWorkerData = {
     data: any
   }
   [ServiceWorkerKey.DAY_VIEW]: any[]
+  [ServiceWorkerKey.IS_READY]: boolean
 }
 
 export interface PostData {

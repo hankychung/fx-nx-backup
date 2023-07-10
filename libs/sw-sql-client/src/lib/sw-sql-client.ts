@@ -199,6 +199,11 @@ class ServiceWorkerUtils {
 
     return res
   }
+
+  // 按日获取
+  static getIsReady() {
+    return promiseWorkerMessage(ServiceWorkerKey.IS_READY, null)
+  }
 }
 
 export { ServiceWorkerUtils }

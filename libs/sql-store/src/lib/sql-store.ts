@@ -390,6 +390,8 @@ class SqlStore {
         const value = values[mapI][Number(keyI)]
 
         if (jsonKey.includes(key)) {
+          console.log(value, keyAndI)
+
           obj[key] = JSON.parse(value)
         } else if (boolKey.includes(key)) {
           obj[key] = Boolean(value)

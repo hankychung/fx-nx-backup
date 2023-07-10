@@ -691,7 +691,7 @@ class SqlStore {
     const res = this.db!.exec(sql)
 
     const data = res[0] ? this.formatSelectValue(res[0]) : []
-    console.log('querySchedule', '日程参数_____*****', data)
+    console.log('querySchedule', '日程参数_____*****', data, res)
     return {
       code: 0,
       data: data
@@ -700,7 +700,7 @@ class SqlStore {
   executeSchedule(sql: string) {
     const res = this.db!.exec(sql)
     const data = res[0] ? this.formatSelectValue(res[0]) : []
-    console.log('executeSchedule', '日程参数_____*****', data)
+    console.log('executeSchedule', '日程参数_____*****', data, res)
     return {
       code: 0,
       data: data
@@ -709,7 +709,7 @@ class SqlStore {
 
   getDayView(params: DayViewParamsProps) {
     const dayData = this.sdk.schedule.dayView(params)
-    console.log('params', '日程参数_____*****', params)
+    console.log('params', '日程参数_____*****', params, dayData)
 
     return dayData
   }

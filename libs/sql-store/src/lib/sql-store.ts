@@ -767,6 +767,9 @@ class SqlStore {
 
     return dayData
   }
+  getIsReady() {
+    return this.isReady
+  }
 }
 
 export const sqlStore = new SqlStore()

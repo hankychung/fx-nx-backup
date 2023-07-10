@@ -191,6 +191,11 @@ class ServiceWorkerUtils {
   static getDayView(params: DayViewParamsProps) {
     return promiseWorkerMessage(ServiceWorkerKey.DAY_VIEW, params)
   }
+
+  // 按日获取
+  static getIsReady() {
+    return promiseWorkerMessage(ServiceWorkerKey.IS_READY, null)
+  }
 }
 
 export { ServiceWorkerUtils }

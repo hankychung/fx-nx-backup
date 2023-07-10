@@ -392,7 +392,7 @@ class SqlStore {
         if (jsonKey.includes(key)) {
           console.log(value, keyAndI)
 
-          obj[key] = JSON.parse(value)
+          obj[key] = JSON.parse(value || '{}')
         } else if (boolKey.includes(key)) {
           obj[key] = Boolean(value)
         } else {

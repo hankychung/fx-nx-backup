@@ -57,7 +57,7 @@ class SqlStore {
     this.userId = p.userId
     // 初始化日程sdk
     this.sdk = new registerDataZeusSDK({
-      userId: '13800138000',
+      userId: this.userId,
       platform: 'PC'
     })
     const loadWasmUrl = p.wasmUrl || wasmUrl

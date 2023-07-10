@@ -1,4 +1,5 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
+import { DayViewParamsProps } from '@flyele-nx/sql-store'
 import {
   IEditTaskTime,
   IOpenTaskDetail,
@@ -18,6 +19,21 @@ class NxControllerRegister {
   editTaskSummary: ((data: { task: IScheduleTask }) => void) | null = null
   openTaskDetail: ((data: IOpenTaskDetail) => void) | null = null
   handlerTaskAddTaker: ((data: IHandlerTaskAddTaker) => void) | null = null
+
+  getDayView: (params: DayViewParamsProps) => {
+    code: number
+    data: ILocalTask[]
+  } = () => ({
+    code: 0,
+    data: []
+  })
+
+  /**
+   * 从缓存数据库获取日程
+   */
+  getDayViewRegister(fn: any) {
+    this.getDayView = fn
+  }
 
   /**
    * ipc注册

@@ -1,5 +1,6 @@
 import { IScheduleTask } from '@flyele-nx/service'
 import { nxControllerRegister } from './nxControllerRegister'
+import { DayViewParamsProps } from '@flyele-nx/sql-store'
 import {
   IEditTaskTime,
   IOpenTaskDetail,
@@ -132,6 +133,13 @@ class GlobalNxController {
     } else {
       console.log('handlerTaskAddTaker 未注册')
     }
+  }
+
+  /**
+   * 从缓存数据库获取日程
+   */
+  async getDayView(params: DayViewParamsProps) {
+    return nxControllerRegister.getDayView(params)
   }
 }
 

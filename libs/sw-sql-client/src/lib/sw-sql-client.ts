@@ -6,9 +6,9 @@ import {
   ServiceWorkerParams,
   WorkerBack
 } from './type'
-import { SqlStore } from '@flyele-nx/sql-store'
-
+import { DayViewParamsProps, SqlStore } from '@flyele-nx/sql-store'
 import { Direction, FilterParamsProps } from '@flyele-nx/sql-store'
+import { ILocalTask } from '@flyele-nx/service'
 import { SqlFilterSplitKeys, SqlFilterTimerkeys } from './const'
 
 let serviceWorker: Worker | undefined
@@ -188,8 +188,21 @@ class ServiceWorkerUtils {
   }
 
   // 按日获取
-  static getDayView(date: string) {
-    return promiseWorkerMessage(ServiceWorkerKey.DAY_VIEW, date)
+  static async getDayView(params: DayViewParamsProps) {
+    const res = (await promiseWorkerMessage(
+      ServiceWorkerKey.DAY_VIEW,
+      params
+    )) as unknown as {
+      code: number
+      data: ILocalTask[]
+    }
+
+    return res
+  }
+
+  // 按日获取
+  static getIsReady() {
+    return promiseWorkerMessage(ServiceWorkerKey.IS_READY, null)
   }
 }
 

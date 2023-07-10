@@ -15,7 +15,7 @@ export type IEvent = {
     show: boolean
     payInfo?: IActiveGoods
     userInfo?: IFlyeleAvatarItem[]
-    isPayFinish?:boolean
+    isPayFinish?: boolean
   }
 }
 export class SelectMemberService extends BaseEventNotify<IEvent> {

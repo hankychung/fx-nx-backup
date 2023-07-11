@@ -115,7 +115,9 @@
           color: rgba(233, 68, 57, 1);
         }
       }
-
+      .priceItemFifstActive{
+        background-image: url('../../../../assets/payImg/meal_person_first.svg') !important;
+      }
       .activeStyle {
         border: 2px solid rgba(241, 170, 64, 1);
         background-color: #fdf6e9;
@@ -134,8 +136,8 @@
         border: 2px solid rgba(241, 170, 64, 1);
         background-color: #fdf6e9;
         .priceSaveActiveB {
-          background-color: rgba(243, 85, 98, 1);
-          color: white;
+          background-color: rgba(243, 85, 98, 1) !important;
+          color: white !important;
         }
       }
     }

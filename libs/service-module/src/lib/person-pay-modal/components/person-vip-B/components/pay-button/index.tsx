@@ -1,8 +1,11 @@
 import { IActiveGoods } from '@flyele-nx/api'
 import cs from 'classnames'
-import React from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import style from './index.module.scss'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
+import { useGetState } from 'ahooks'
+import { SelectMemberContext } from '../../../../context/context'
+import PayUnfinish from '../pay-unfinish'
 
 interface Iprops {
   activeGood?: IActiveGoods[]
@@ -12,6 +15,24 @@ interface Iprops {
 }
 const PayButton = (props: Iprops) => {
   const { payClick, goProtocol, goInterests } = props
+  const [isShow, setIsShow] = useState(false)
+  const service = useContext(SelectMemberContext)
+
+  useEffect(() => {
+    service.addListener((ev) => {
+      const { event } = ev
+      if (event === 'showPay') {
+        const isPayFinish = service.getData('showPay').isPayUnFinish
+        if (isPayFinish) {
+          setIsShow(isPayFinish)
+        }
+      }
+    })
+
+    return () => {
+      service.dispose()
+    }
+  }, [service])
 
   return (
     <div className={style.payButton}>
@@ -37,6 +58,11 @@ const PayButton = (props: Iprops) => {
           <ArrowRight color="#F1AA40" />
         </div>
       </div>
+      <PayUnfinish
+        isShow={isShow}
+        onClose={() => setIsShow(false)}
+        payClick={payClick}
+      />
     </div>
   )
 }

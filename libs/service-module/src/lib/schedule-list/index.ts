@@ -1,4 +1,5 @@
 import { getDiffKeys, getTaskIdsByDispatch, handleLogout } from './utils'
+import { initTodayList } from './utils/initTodayList'
 import { ListHandler } from './utils/listHandler'
 
 export * from './schedule-list' // 日程列表
@@ -10,5 +11,6 @@ export const ScheduleUtils = {
   getDiffKeys,
   getTaskIdsByDispatch,
   handleLogout,
-  reloadAllList: ListHandler.reloadAllList.bind(ListHandler)
+  reloadAllList: ListHandler.reloadAllList.bind(ListHandler),
+  initTodayList
 }

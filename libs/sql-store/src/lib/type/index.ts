@@ -6,6 +6,7 @@ interface IUserParams {
   env: string
   userId: string
   wasmUrl?: string
+  initTodayListHandler: () => void
 }
 
 interface IQueryFullViewCountRes {

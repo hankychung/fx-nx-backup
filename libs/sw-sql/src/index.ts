@@ -47,7 +47,7 @@ class DBHandler {
           break
         }
         case ServiceWorkerKey.DAY_VIEW: {
-          responseData = sqlStore.getDayView(data.data as any)
+          responseData = await sqlStore.getDayView(data.data as any)
           break
         }
         case ServiceWorkerKey.IS_READY: {

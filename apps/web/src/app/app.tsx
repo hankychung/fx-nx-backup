@@ -7,10 +7,10 @@ import {
   VipIntroduce
 } from '@flyele-nx/service-module'
 import { useEffect, useRef } from 'react'
-import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
-import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
+// import { Direction, FullGroupBy, sqlStore } from '@flyele-nx/sql-store'
+// import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { envStore } from '@flyele-nx/service'
-import { LureModal } from '@flyele-nx/ui'
+// import { LureModal } from '@flyele-nx/ui'
 // import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 
 const env = process.env.NODE_ENV as string
@@ -44,15 +44,14 @@ export function App() {
     //   query_type: 0,
     //   show_mode: 2
     // })
-    await sqlStore.initDB({
-      host: envStore.getHost(),
-      token,
-      env,
-      userId: '1331363354509482'
-    })
-
+    // await sqlStore.initDB({
+    //   host: envStore.getHost(),
+    //   token,
+    //   env,
+    //   userId: '1331363354509482'
+    //   initt
+    // })
     // window['update'] = sqlStore.updateDiffForClient()
-
     // const page_record = 200
     // console.time(`${page_record}条查询`)
     // const data = sqlStore.query({

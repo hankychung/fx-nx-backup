@@ -28,6 +28,9 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
 
   const taskDict = useScheduleStore((state) => state.taskDict)
   const todayExecution = useScheduleStore((state) => state.todayExecution)
+  const todayCompletedExecution = useScheduleStore(
+    (state) => state.todayCompletedExecution
+  )
   const todayExecutionCount = useScheduleStore(
     (state) => state.todayExecutionCount
   )
@@ -109,6 +112,23 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
     return disposalTodayList(list)
   }, [day, taskDict, todayExecution])
 
+  /**
+   * 整理今日已完成的数据
+   * 用于渲染
+   */
+  const todayCompletedList = useMemo(() => {
+    const idList = todayCompletedExecution[day] || []
+    const list = idList.map((id) => taskDict[id])
+
+    return [
+      {
+        tTime: 0,
+        tTimeTxt: '',
+        taskItems: list.sort((a, b) => a.create_at - b.create_at)
+      }
+    ]
+  }, [day, taskDict, todayCompletedExecution])
+
   // 切换日期刷新列表
   useEffect(() => {
     !!day && init()
@@ -176,7 +196,14 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
                 }}
               >
                 {day !== 0 && (
-                  <TimelineTaskList timeList={todayList} day={day} />
+                  <>
+                    <TimelineTaskList timeList={todayList} day={day} />
+                    <TimelineTaskList
+                      timeList={todayCompletedList}
+                      day={day}
+                      showTimeText={false}
+                    />
+                  </>
                 )}
                 {loading && <Loading text="正在加载" top={10} />}
               </InfiniteScroll>

@@ -185,7 +185,8 @@ const PersonVipB = ({
                     [style.activeStyleBstyle]: _.active && _.name === '终身会员'
                   },
                   {
-                    [style.priceItemFifstActive]: _.active && _.name === '终身会员'
+                    [style.priceItemFifstActive]:
+                      _.active && _.name === '终身会员'
                   }
                 )}
                 key={_.id}

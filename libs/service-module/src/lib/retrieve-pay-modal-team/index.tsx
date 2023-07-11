@@ -77,7 +77,6 @@ const RetrievePayModalTeam = (props: Iprops) => {
         onClose={closeCommonQuestionModal}
       />
     </div>
-
   )
 }
 

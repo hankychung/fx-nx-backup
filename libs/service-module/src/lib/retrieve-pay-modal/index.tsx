@@ -76,7 +76,7 @@ const RetrievePayModal = (props: Iprops) => {
   useEffect(() => {
     getMealList()
     console.log('vipMeal', vipMeal)
-  }, [getMealList,vipMeal])
+  }, [getMealList, vipMeal])
 
   return (
     <>

@@ -252,9 +252,7 @@ export const MemberIntroduction = ({
           width={320}
           className={styles.retrieveModal}
         >
-          <RetrievePayModalTeam
-            onClose={() => setIsRetrievePay(false)}
-          />
+          <RetrievePayModalTeam onClose={() => setIsRetrievePay(false)} />
         </Modal>
       ) : (
         <Modal

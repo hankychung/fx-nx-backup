@@ -194,7 +194,10 @@ class ServiceWorkerUtils {
       params
     )) as unknown as {
       code: number
-      data: ILocalTask[]
+      data: {
+        list: ILocalTask[]
+        total?: number
+      }
     }
 
     return res

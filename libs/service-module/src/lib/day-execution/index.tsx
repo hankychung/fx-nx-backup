@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import styles from './index.module.scss'
 import { useMemoizedFn, useMount } from 'ahooks'
-import { TaskApi } from '@flyele-nx/service'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { Progress } from 'antd'
@@ -13,6 +12,8 @@ import { TimelineTaskList } from './components/timeline-task-list'
 import { Nodata } from './components/no-data'
 import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
 import { useScheduleStore } from '../store/useScheduleStore'
+import { globalNxController } from '../global/nxController'
+import { QueryType } from '@flyele-nx/sql-store'
 
 interface IProps {
   date: number
@@ -24,21 +25,17 @@ interface IProps {
 const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
-  const isFetchFinished = useRef<boolean>(false)
 
   const todayExecution = useScheduleStore((state) => state.todayExecution)
-  const { total, completeTotal } = useScheduleStore(
+  const todayExecutionCount = useScheduleStore(
     (state) => state.todayExecutionCount
-  ).todayExecutionCount
+  )
   const updateTodayExecutionList = useScheduleStore(
     (state) => state.updateTodayExecutionList
   )
   const updateTodayExecutionCount = useScheduleStore(
     (state) => state.updateTodayExecutionCount
   )
-
-  const pageNumber = useRef(1)
-  const pageRecord = useRef(20)
 
   /**
    * 列表事项日期
@@ -50,45 +47,33 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
 
   /**
    * 获取列表
+   * 未完成 和 已完成
    */
-  const fetchDayList = useMemoizedFn(async (reset = false) => {
-    if (loading || day === 0 || isFetchFinished.current) return
+  const fetchDayList = useMemoizedFn(async (isFinished = false) => {
+    if (loading || day === 0) return
     setLoading(true)
 
-    if (reset) {
-      pageNumber.current = 1
-    } else {
-      pageNumber.current++
-    }
-
     try {
-      const { complete_total, total, data } = await TaskApi.getToDayTask({
-        day,
-        pageNumber: pageNumber.current,
-        pageRecord: pageRecord.current
+      const {
+        data: { list, total }
+      } = await globalNxController.getDayView({
+        day: day,
+        queryType: isFinished ? QueryType.completed : QueryType.participate,
+        isCount: true
       })
 
       updateTodayExecutionCount({
         date: day,
-        data: {
-          completeTotal: complete_total || 0,
-          total: total || 0
-        }
+        isFinished: isFinished,
+        data: total || 0
       })
-      if (data.length) {
-        updateTodayExecutionList({
-          date: day,
-          list: data,
-          isInit: reset,
-          isFinished: false
-        })
-        ExecutionHandler.updateTasks(data)
-        if (data.length < pageRecord.current) {
-          isFetchFinished.current = true
-        }
-      } else {
-        isFetchFinished.current = true
-      }
+      updateTodayExecutionList({
+        date: day,
+        list: list,
+        isInit: true,
+        isFinished: isFinished
+      })
+      ExecutionHandler.updateTasks(list)
     } catch (e) {
       console.error('获取日程列表失败', e)
     } finally {
@@ -99,10 +84,21 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   /**
    * 初始化
    */
-  const init = useMemoizedFn(() => {
-    isFetchFinished.current = false
-    fetchDayList(true)
+  const init = useMemoizedFn(async () => {
+    await fetchDayList()
+    await fetchDayList(true)
   })
+
+  /**
+   * 统计数量
+   */
+  const total = useMemo(() => {
+    return todayExecutionCount[day]?.total || 0
+  }, [day, todayExecutionCount])
+
+  const completeTotal = useMemo(() => {
+    return todayExecutionCount[day]?.completeTotal || 0
+  }, [day, todayExecutionCount])
 
   /**
    * 事项总数 = 待处理事项 + 已完成事项
@@ -176,11 +172,13 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
           <>
             <div className={styles.scroller}>
               <InfiniteScroll
-                hasMore={true}
+                className={styles.timelineTaskListRoot}
+                hasMore={false}
                 useWindow={false}
                 initialLoad={false}
-                loadMore={() => fetchDayList(false)}
-                className={styles.timelineTaskListRoot}
+                loadMore={() => {
+                  // do nothing
+                }}
               >
                 {day !== 0 && (
                   <TimelineTaskList timeList={todayList} day={day} />

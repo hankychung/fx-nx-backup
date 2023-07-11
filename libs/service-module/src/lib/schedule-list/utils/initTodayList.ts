@@ -15,7 +15,7 @@ export const initTodayList = async () => {
         day: date,
         queryType: QueryType.participate
       })
-    ).data || []
+    ).data.list || []
 
   const { keys } = batchUpdateTask(tasks, { isFinished: false })
 
@@ -32,7 +32,7 @@ export const initTodayList = async () => {
         day: date,
         queryType: QueryType.completed
       })
-    ).data || []
+    ).data.list || []
 
   const { keys: finishKeys } = batchUpdateTask(finishTasks, {
     isFinished: true

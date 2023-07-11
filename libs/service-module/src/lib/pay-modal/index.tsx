@@ -19,6 +19,7 @@ import { VipMealType } from '../person-pay-modal/components/controller'
 import { VipPayType } from '../team-pay-modal/components/controller'
 import { sortMap } from '../person-pay-modal/utils'
 import { QuickPayPerson } from '../quick-pay-person'
+import { useMemoizedFn } from 'ahooks'
 
 export declare type IFlyeleAvatarItem = {
   userId: string
@@ -50,7 +51,7 @@ interface Iprops {
   domain: string //域名
   modalType: 'quick' | 'person' | 'team' | 'quick_person' //所有支付弹窗类型
   successRef: RefObject<fun>
-  onClose: () => void
+  onClose: (modalType?: VipMealType) => void
   upSpace?: () => void
   senConfirm?: () => void
   getOrderCode?: (str: string) => void
@@ -123,6 +124,10 @@ export default function PayModal(props: Iprops) {
     }),
     [setIsPay]
   )
+  const handleOnClose = useMemoizedFn(() => {
+    onClose(payType)
+  })
+
   const handleModalType = () => {
     setModalType('person')
   }
@@ -159,7 +164,7 @@ export default function PayModal(props: Iprops) {
         return (
           <PersonPayModal
             payType={payType}
-            onClose={onClose}
+            onClose={handleOnClose}
             memberList={sortMemberList}
             mineId={mineId}
             senConfirm={senConfirm}

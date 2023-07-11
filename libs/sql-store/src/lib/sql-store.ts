@@ -22,6 +22,7 @@ import _ from 'lodash'
 import { parseError, yieldConsole } from './utils/console'
 import './sdk/datazeus.js'
 const wasmUrl = '/sql-wasm.wasm'
+declare const registerDataZeusSDK: any
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 

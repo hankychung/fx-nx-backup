@@ -7,7 +7,8 @@ import React, {
   useMemo,
   useState
 } from 'react'
-import { BizApi } from '@flyele-nx/service'
+import { QueryType, TabType } from '@flyele-nx/sql-store'
+// import { BizApi } from '@flyele-nx/service'
 import styles from '../schedule-list.module.scss'
 import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
@@ -19,6 +20,8 @@ import { ScheduleListProps, IScheduleListRef } from '../types'
 import { FinishNumBtn } from '../components/finish-num-btn'
 import { useScheduleList } from '../utils/hooks/useScheduleList'
 import { EmptyData } from '../components/empty-data'
+import { globalNxController } from '../../global/nxController'
+import { useScheduleStore } from '../../store/useScheduleStore'
 
 /**
  * 请求全部未完成和已完成事项的列表
@@ -34,7 +37,6 @@ const _AllScheduleList: ForwardRefRenderFunction<
     isFinished: _isFinished,
     isVipWin = false,
     isBoard,
-    getFinishListTotal,
     overlayClassName,
     isDarkMode
   },
@@ -45,7 +47,6 @@ const _AllScheduleList: ForwardRefRenderFunction<
     finishList,
     updateList,
     batchUpdateTask,
-    pageRecord,
     pageRef,
     finishPageRef,
     loading,
@@ -56,8 +57,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     setFinishPageFetchFinished,
     isError,
     setIsError,
-    finishTotal,
-    setFinishTotal
+    finishTotal
   } = useScheduleList({
     date
   })
@@ -83,40 +83,39 @@ const _AllScheduleList: ForwardRefRenderFunction<
     if (loading) return
     setLoading(true)
 
-    const pRef = isFinished ? finishPageRef : pageRef
-
     if (pageFetchFinished && finishPageFetchFinished) {
       console.log(`已完成 和 未完成事项列表已经加载完成`)
       return
     }
 
-    const res = await BizApi.getScheduleList({
-      type: 'today',
-      day: date,
-      pageRecord: pageRecord.current,
-      pageNumber: pRef.current,
-      queryType: isFinished ? 3 : 1
-    })
+    const tasks =
+      (
+        await globalNxController.getDayView({
+          day: date,
+          tabType: TabType.TODAY,
+          queryType: isFinished ? QueryType.completed : QueryType.participate
+        })
+      ).data || []
 
-    const list = res.data?.schedule || []
+    if (!isFinished) {
+      useScheduleStore.setState({
+        todayFinishCount: tasks.length || 0
+      })
+    }
 
-    const total = res.data?.schedule_complete_total || 0
-    getFinishListTotal?.(total)
-    setFinishTotal(total)
-
-    const { keys } = batchUpdateTask(list, { isFinished })
+    const { keys } = batchUpdateTask(tasks, { isFinished })
 
     updateList({
       date,
       list: keys,
-      isInit: pRef.current === 1,
+      isInit: true,
       isFinished
     })
 
-    if (list.length < pageRecord.current) {
-      isFinished ? setFinishPageFetchFinished(true) : setPageFetchFinished(true)
+    if (isFinished) {
+      setFinishPageFetchFinished(true)
     } else {
-      pRef.current += 1
+      setPageFetchFinished(true)
     }
 
     setLoading(false)

@@ -43,7 +43,7 @@ const _ScheduleList: ForwardRefRenderFunction<
     finishList,
     updateList,
     batchUpdateTask,
-    pageRecord,
+    // pageRecord,
     pageRef,
     finishPageRef,
     loading,
@@ -127,10 +127,16 @@ const _ScheduleList: ForwardRefRenderFunction<
       isFinished
     })
 
-    if (list.length < pageRecord.current) {
-      isFinished ? setFinishPageFetchFinished(true) : setPageFetchFinished(true)
+    // if (list.length < pageRecord.current) {
+    //   isFinished ? setFinishPageFetchFinished(true) : setPageFetchFinished(true)
+    // } else {
+    //   pRef.current += 1
+    // }
+
+    if (isFinished) {
+      setFinishPageFetchFinished(true)
     } else {
-      pRef.current += 1
+      setPageFetchFinished(true)
     }
 
     setLoading(false)

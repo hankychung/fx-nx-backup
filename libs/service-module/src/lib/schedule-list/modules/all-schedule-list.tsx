@@ -28,24 +28,14 @@ const _AllScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
 > = (
-  {
-    date,
-    isFinished: _isFinished,
-    isVipWin = false,
-    isBoard,
-    overlayClassName,
-    isDarkMode
-  },
+  { date, isFinished, isVipWin = false, isBoard, overlayClassName, isDarkMode },
   ref
 ) => {
   const {
     list,
     finishList,
-    // updateList,
-    // batchUpdateTask,
     loading,
     setLoading,
-    pageFetchFinished,
     isError,
     setIsError,
     finishTotal
@@ -54,10 +44,6 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   const [showFinished, setShowFinished] = useState(false)
-
-  const isFinished = useMemo(() => {
-    return pageFetchFinished
-  }, [pageFetchFinished])
 
   const reloaderId = useMemo(
     () => date + isFinished + isBoard,
@@ -129,7 +115,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
           />
         ))}
 
-        {!!finishTotal && pageFetchFinished ? (
+        {finishTotal ? (
           <>
             <FinishNumBtn
               show={showFinished}

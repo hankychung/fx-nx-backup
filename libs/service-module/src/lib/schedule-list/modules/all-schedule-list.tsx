@@ -79,6 +79,14 @@ const _AllScheduleList: ForwardRefRenderFunction<
     }
   }, [reload, reloaderId])
 
+  useEffect(() => {
+    console.log('@@ list', list)
+  }, [list])
+
+  useEffect(() => {
+    console.log('@@ finishList', finishList)
+  }, [finishList])
+
   useImperativeHandle(ref, () => {
     return {
       reload: () => {

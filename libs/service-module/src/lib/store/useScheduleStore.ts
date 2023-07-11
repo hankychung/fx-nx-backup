@@ -16,7 +16,8 @@ export interface IState {
       [k: string]: boolean
     }
   }
-  todayExecution: { [date: string]: IScheduleTask[] }
+  todayExecution: { [date: string]: string[] }
+  todayCompletedExecution: { [date: string]: string[] }
   todayExecutionCount: {
     [date: string]: { completeTotal: number; total: number }
   }
@@ -42,17 +43,6 @@ interface IMutation {
   }) => void
   updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
-  updateTodayExecutionList: (options: {
-    date: string
-    list: IScheduleTask[]
-    isInit?: boolean
-    isFinished?: boolean
-  }) => void
-  updateTodayExecutionCount: (options: {
-    date: string
-    isFinished: boolean
-    data: number
-  }) => void
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
@@ -84,9 +74,15 @@ const useScheduleStore = create<IState & IMutation>((set) => {
      */
     todayFinishCount: 0,
     /**
-     * 当日事项 列表数据
+     * 当日事项 未完成列表数据 仅id
+     * 具体数据 通过 taskDict 拿
      */
     todayExecution: {},
+    /**
+     * 当日事项 已完成列表数据 仅id
+     * 具体数据 通过 taskDict 拿
+     */
+    todayCompletedExecution: {},
     /**
      * 当天事项 统计数据（未完成/已完成）的数量
      * 从接口返回出来的
@@ -200,50 +196,6 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           ...info
         }
       }))
-    },
-    /**
-     * 更新当日事项的列表
-     */
-    updateTodayExecutionList({ date, list, isInit, isFinished }) {
-      console.log('NX updateTodayExecutionList', {
-        date,
-        list,
-        isInit,
-        isFinished
-      })
-
-      set(
-        produce((state: IState) => {
-          if (isInit) {
-            state.todayExecution[date] = []
-          }
-
-          state.todayExecution[date] = [
-            ...state.todayExecution[date],
-            ...list
-          ].sort((a, b) => b.create_at - a.create_at)
-        })
-      )
-    },
-    /**
-     * 更新当日事项的统计数据
-     */
-    updateTodayExecutionCount({ date, data, isFinished }) {
-      set(
-        produce((state: IState) => {
-          if (!state.todayExecutionCount[date]) {
-            state.todayExecutionCount[date] = {
-              completeTotal: 0,
-              total: 0
-            }
-          }
-          if (isFinished) {
-            state.todayExecutionCount[date].completeTotal = data
-          } else {
-            state.todayExecutionCount[date].total = data
-          }
-        })
-      )
     }
   }
 })

@@ -56,8 +56,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     setFinishPageFetchFinished,
     isError,
     setIsError,
-    finishTotal,
-    setFinishTotal
+    finishTotal
   } = useScheduleList({
     date
   })
@@ -102,7 +101,6 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
     const total = res.data?.schedule_complete_total || 0
     getFinishListTotal?.(total)
-    setFinishTotal(total)
 
     const { keys } = batchUpdateTask(list, { isFinished })
 

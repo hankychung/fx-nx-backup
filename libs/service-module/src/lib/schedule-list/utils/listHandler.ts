@@ -52,6 +52,7 @@ class ListHandler {
 
   // 更新所有列表
   static reloadAllList() {
+    console.log('reload all')
     Object.values(this.listReloader).forEach((reloader) => reloader())
   }
 

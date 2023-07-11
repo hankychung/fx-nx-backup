@@ -71,7 +71,7 @@ const _ScheduleList: ForwardRefRenderFunction<
       queryType: isFinished ? QueryType.completed : QueryType.participate
     })
 
-    const list = r.data || []
+    const list = r.data.list || []
 
     const { keys } = batchUpdateTask(list, { isFinished })
 

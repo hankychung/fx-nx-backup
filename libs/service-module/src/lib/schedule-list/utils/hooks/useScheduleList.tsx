@@ -10,6 +10,7 @@ export const useScheduleList = ({ date }: IProps) => {
   const finishList = useScheduleStore((state) => state.finishSchedule[date])
   const updateList = useScheduleStore((state) => state.updateList)
   const batchUpdateTask = useScheduleStore((state) => state.batchUpdateTask)
+  const finishTotal = useScheduleStore((state) => state.todayFinishCount)
 
   const pageRecord = useRef(20)
   const pageRef = useRef(1)
@@ -18,7 +19,7 @@ export const useScheduleList = ({ date }: IProps) => {
   const [pageFetchFinished, setPageFetchFinished] = useState(false) // 未完成列表是否请求到最后一页
   const [finishPageFetchFinished, setFinishPageFetchFinished] = useState(false) // 已完成列表是否请求到最后一页
   const [isError, setIsError] = useState(false)
-  const [finishTotal, setFinishTotal] = useState(0)
+  // const [finishTotal, setFinishTotal] = useState(0)
 
   return {
     list,
@@ -36,7 +37,6 @@ export const useScheduleList = ({ date }: IProps) => {
     setFinishPageFetchFinished,
     isError,
     setIsError,
-    finishTotal,
-    setFinishTotal
+    finishTotal
   }
 }

@@ -50,7 +50,8 @@ interface IMutation {
   }) => void
   updateTodayExecutionCount: (options: {
     date: string
-    data: { completeTotal: number; total: number }
+    isFinished: boolean
+    data: number
   }) => void
 }
 
@@ -227,12 +228,19 @@ const useScheduleStore = create<IState & IMutation>((set) => {
     /**
      * 更新当日事项的统计数据
      */
-    updateTodayExecutionCount({ date, data }) {
+    updateTodayExecutionCount({ date, data, isFinished }) {
       set(
         produce((state: IState) => {
-          state.todayExecutionCount[date] = {
-            completeTotal: data.completeTotal,
-            total: data.total
+          if (!state.todayExecutionCount[date]) {
+            state.todayExecutionCount[date] = {
+              completeTotal: 0,
+              total: 0
+            }
+          }
+          if (isFinished) {
+            state.todayExecutionCount[date].completeTotal = data
+          } else {
+            state.todayExecutionCount[date].total = data
           }
         })
       )

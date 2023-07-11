@@ -22,10 +22,16 @@ class NxControllerRegister {
 
   getDayView: (params: DayViewParamsProps) => {
     code: number
-    data: ILocalTask[]
+    data: {
+      list: ILocalTask[]
+      total?: number
+    }
   } = () => ({
     code: 0,
-    data: []
+    data: {
+      list: [],
+      total: 0
+    }
   })
 
   /**

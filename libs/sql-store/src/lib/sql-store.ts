@@ -143,7 +143,8 @@ class SqlStore {
     } catch (e) {
       console.error('initDB error', e)
     }
-
+    //执行日程首页加载
+    await p.initTodayListHandler()
     this.isReady = true
   }
 

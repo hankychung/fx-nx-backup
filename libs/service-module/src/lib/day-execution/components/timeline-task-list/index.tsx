@@ -7,10 +7,12 @@ import dayjs from 'dayjs'
 
 const _TimelineTaskList = ({
   timeList,
-  day
+  day,
+  showTimeText = true
 }: {
   timeList: IScheduleTaskTime[]
   day: string
+  showTimeText?: boolean
 }) => {
   const lastIndex = useMemo(() => {
     return timeList.length - 1
@@ -23,10 +25,12 @@ const _TimelineTaskList = ({
           <div key={item.tTime} className={styles.listRoot}>
             <div
               className={cs(styles.listLeft, {
-                [styles.dashed]: lastIndex !== index
+                [styles.dashed]: lastIndex !== index && showTimeText
               })}
             >
-              <div className={styles.text}>{item.tTimeTxt}</div>
+              {showTimeText && (
+                <div className={styles.text}>{item.tTimeTxt}</div>
+              )}
             </div>
             <div className={styles.listRight}>
               {item.taskItems.map((task) => {

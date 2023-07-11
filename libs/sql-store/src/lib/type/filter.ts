@@ -92,3 +92,39 @@ export interface FilterParamsProps {
 
   filter?: FilterParamsFilter
 }
+
+// 日程
+// @param {String} userID  		用户id '2361092641390798', 可选
+// @param {String} day     		时间   '2023-06-04'
+// @param {String} tabType 		类型 history -> 历史， today -> 今天，future -> 未来，
+// @param {String} queryType    查询类型 0->全部，1->我参与的，2->我派发的 3->已完成
+// @param {Int} pageRecord  	查询条数
+// @param {Int} pageNumber  	查询页数
+// @param {Bool} isCount  	    是否为统计, 默认为 false
+// @param {[]String} task_ids  	事项id列表, 用于查询多个事项的详情
+// @param {String} parent_id    父事项id, 用于查询子事项。该参数不为空时, task_ids 无效。子事项不过滤时间
+// return {Response} res
+export interface DayViewParamsProps {
+  userID?: string
+  day?: string
+  tabType?: TabType //history -> 历史， today -> 今天，future -> 未来，
+  queryType?: QueryType // 0->全部，1->我参与的，2->我派发的 3->已完成
+  pageRecord?: number
+  pageNumber?: number
+  isCount?: boolean
+  task_ids?: string[]
+  parent_id?: string
+}
+
+export enum QueryType {
+  all,
+  participate,
+  distribute,
+  completed
+}
+
+export enum TabType {
+  HISTORY = 'history',
+  TODAY = 'today',
+  FUTURE = 'future'
+}

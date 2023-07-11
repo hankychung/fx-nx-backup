@@ -17,6 +17,9 @@ import PayQrCode from '../pay-qr-code'
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { useMemoizedFn } from '@flyele/flyele-components'
+import { useUserInfoStore } from '../../../store/useUserInfoStore'
+import PersonVipB from '../person-vip-B'
+
 const url = `https://cdn.flyele.net/resources/PC/`
 interface Iprops {
   memberList: IFlyeleAvatarItem[]
@@ -56,6 +59,7 @@ const VipPackage = (props: Iprops) => {
   const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
   const [couponList, setCouponList] = useState<ICoupon[]>()
   const service = useContext(SelectMemberContext)
+  const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -66,6 +70,7 @@ const VipPackage = (props: Iprops) => {
           setShowPay(service.getData('showPay').show)
           setPayInfo(service.getData('showPay').payInfo)
           setUserInfo(service.getData('showPay').userInfo)
+
           break
 
         default:
@@ -170,14 +175,25 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        <PersonVip
-          memberList={memberList}
-          mineId={mineId}
-          goProtocol={goProtocol}
-          couponList={couponList}
-          vipMealType={vipMealType}
-          goInterests={goInterests}
-        />
+        {userId % 2 === 0 ? (
+          <PersonVip
+            memberList={memberList}
+            mineId={mineId}
+            goProtocol={goProtocol}
+            couponList={couponList}
+            vipMealType={vipMealType}
+            goInterests={goInterests}
+          />
+        ) : (
+          <PersonVipB
+            memberList={memberList}
+            mineId={mineId}
+            goProtocol={goProtocol}
+            couponList={couponList}
+            vipMealType={vipMealType}
+            goInterests={goInterests}
+          />
+        )}
       </div>
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}

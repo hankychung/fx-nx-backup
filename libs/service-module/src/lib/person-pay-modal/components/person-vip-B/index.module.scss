@@ -1,0 +1,162 @@
+.personVip {
+  display: flex;
+  justify-content: space-between;
+  height: 460px;
+  width: 100%;
+  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .above {
+    height: 280px;
+    width: 100%;
+    background-color: blue($color: #000000);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+    .priceBox {
+      height: 170px;
+      width: 570px;
+      display: flex;
+      justify-content: space-between;
+
+      .priceItem {
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+        height: 147px;
+        width: 162px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        position: relative;
+
+        .priceTop {
+          margin-top: 22px;
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          align-items: center;
+          .mealName {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+            opacity: 0.8;
+            color: rgba(51, 51, 51, 1);
+          }
+          .price {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 17px;
+            color: rgba(235, 111, 46, 1);
+
+            span {
+              font-size: 30px;
+              font-weight: 700;
+              line-height: 35px;
+              color: rgba(235, 111, 46, 1);
+            }
+          }
+          .priceActive {
+            color: white;
+            span {
+              color: white;
+            }
+          }
+          .oldPrice {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: rgba(131, 131, 131, 1);
+            opacity: 0.5;
+            text-decoration: line-through;
+          }
+        }
+        .priceSave {
+          width: 100%;
+          height: 29px;
+          border-radius: 0 0 4px 4px;
+          background-color: #fdf6e9;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          display: flex;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          color: rgba(115, 76, 36, 1);
+        }
+      }
+      .priceItem:first-child {
+        background-image: url('../../../../assets/payImg/price_box_bg.svg');
+        .time {
+          background-image: url('../../../../assets/payImg/count_down_a.svg');
+          background-repeat: no-repeat;
+          position: absolute;
+          left: -5px;
+          top: -25px;
+          display: flex;
+          align-items: center;
+          border-radius: 0 8px;
+          padding: 0px 10px;
+          height: 39px;
+          width: 100%;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 17px;
+          text-align: left;
+          color: white;
+        }
+        .timeActive {
+          background-image: url('../../../../assets/payImg/count_down_b.svg');
+          color: rgba(233, 68, 57, 1);
+        }
+      }
+
+      .activeStyle {
+        border: 2px solid rgba(241, 170, 64, 1);
+        background-color: #fdf6e9;
+        .priceSaveActive {
+          background-color: unset;
+          background: linear-gradient(
+            91.67deg,
+            #fdf6e9 -5.41%,
+            #f0a257 -5.4%,
+            #ea7130 104.4%
+          );
+          color: white;
+        }
+      }
+      .activeStyleB {
+        border: 2px solid rgba(241, 170, 64, 1);
+        background-color: #fdf6e9;
+        .priceSaveActiveB {
+          background-color: rgba(243, 85, 98, 1);
+          color: white;
+        }
+      }
+    }
+    .priceBottom {
+      margin-top: 10px;
+      background-color: rgba(255, 204, 136, 0.28);
+      width: 324px;
+      height: 26px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #734c24;
+      opacity: 0.5;
+    }
+  }
+  .below {
+    height: 220px;
+    width: 100%;
+  }
+}

@@ -18,6 +18,7 @@ import TeamPayModal from '../team-pay-modal/index' //团队支付
 import { VipMealType } from '../person-pay-modal/components/controller'
 import { VipPayType } from '../team-pay-modal/components/controller'
 import { sortMap } from '../person-pay-modal/utils'
+import { QuickPayPerson } from '../quick-pay-person'
 
 export declare type IFlyeleAvatarItem = {
   userId: string
@@ -47,7 +48,7 @@ interface Iprops {
   payType?: VipMealType //个人支付类型 1个人 2团队
   teamVipType?: VipPayType
   domain: string //域名
-  modalType: 'quick' | 'person' | 'team' //所有支付弹窗类型
+  modalType: 'quick' | 'person' | 'team' | 'quick_person' //所有支付弹窗类型
   successRef: RefObject<fun>
   onClose: () => void
   upSpace?: () => void
@@ -81,6 +82,7 @@ export default function PayModal(props: Iprops) {
     isPay
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
+  const [_modalType, setModalType] = useState(modalType)
   useEffect(() => {
     if (isPay) {
       setIsPay(true)
@@ -121,10 +123,26 @@ export default function PayModal(props: Iprops) {
     }),
     [setIsPay]
   )
+  const handleModalType = () => {
+    setModalType('person')
+  }
   const buildPayModal = () => {
-    if (!modalType) return null
+    if (!_modalType) return null
 
-    switch (modalType) {
+    switch (_modalType) {
+      case 'quick_person':
+        return (
+          <QuickPayPerson
+            onClose={onClose}
+            memberList={sortMemberList}
+            mineId={mineId}
+            isPaySuccess={isPaySuccess}
+            goProtocol={goProtocol}
+            goInterests={goInterests}
+            domain={domain}
+            handleModalType={handleModalType}
+          />
+        )
       case 'quick':
         return (
           <QuickPay

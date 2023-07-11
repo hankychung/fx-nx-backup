@@ -6,7 +6,13 @@ import { set, get } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql, getFullDoseCountSql } from './utils/filter'
-import { Direction, FilterParamsProps } from './type/filter'
+import {
+  DayViewParamsProps,
+  Direction,
+  FilterParamsProps,
+  QueryType,
+  TabType
+} from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Datum } from './type/service/datapandora'
 import { IDiffInfoResponse } from './type/service/increment'
@@ -15,8 +21,8 @@ import { defaultDiffStamp } from './const'
 import _ from 'lodash'
 import { parseError, yieldConsole } from './utils/console'
 import './sdk/datazeus.js'
-import JsDataZeusDb from './sql/schedule'
 const wasmUrl = '/sql-wasm.wasm'
+declare const registerDataZeusSDK: any
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 
@@ -58,7 +64,7 @@ class SqlStore {
     this.userId = p.userId
     // 初始化日程sdk
     this.sdk = new registerDataZeusSDK({
-      userId: '13800138000',
+      userId: this.userId,
       platform: 'PC'
     })
     const loadWasmUrl = p.wasmUrl || wasmUrl
@@ -223,7 +229,7 @@ class SqlStore {
 
             // 重新插入数据
             if (type === 'insert' || type === 'update') {
-              this.db!.run(this.getInsertSql(data, key) + ';')
+              this.db!.run(this.getInsertSql(data, key, 'data') + ';')
             }
           }
 
@@ -391,7 +397,7 @@ class SqlStore {
         const value = values[mapI][Number(keyI)]
 
         if (jsonKey.includes(key)) {
-          obj[key] = JSON.parse(value)
+          obj[key] = JSON.parse(value || '{}')
         } else if (boolKey.includes(key)) {
           obj[key] = Boolean(value)
         } else {
@@ -401,6 +407,41 @@ class SqlStore {
               : ''
             : value
         }
+      }
+
+      return obj
+    })
+
+    return data
+  }
+
+  formatSelectValue1({
+    columns,
+    values
+  }: {
+    columns: string[]
+    values: any[][]
+  }) {
+    const keyAndI = Object.entries(columns)
+
+    const data = new Array(values.length).fill('').map((v, mapI) => {
+      //TODO 切换正常类型
+      const obj: { [key: string]: any } = {}
+
+      for (const [keyI, key] of keyAndI) {
+        // const value = values[mapI][Number(keyI)]
+        obj[key] = values[mapI][Number(keyI)]
+        // if (jsonKey.includes(key)) {
+        //   obj[key] = JSON.parse(value || '{}')
+        // } else if (boolKey.includes(key)) {
+        //   obj[key] = Boolean(value)
+        // } else {
+        //   obj[key] = /^(id)$|_id$/.test(key)
+        //     ? value
+        //       ? String(value)
+        //       : ''
+        //     : value
+        // }
       }
 
       return obj
@@ -553,7 +594,7 @@ class SqlStore {
               if (type === 'delete') {
                 // 一定会先删除数据, 此处不处理
               } else {
-                this.db!.run(this.getInsertSql(data, table) + ';')
+                this.db!.run(this.getInsertSql(data, table, 'zip-diff') + ';')
               }
 
               return
@@ -561,7 +602,7 @@ class SqlStore {
 
             // sqlStr += this.getInsertSql(item, table) + ';'
 
-            this.db!.run(this.getInsertSql(item, table) + ';')
+            this.db!.run(this.getInsertSql(item, table, 'zip-full') + ';')
           } catch (e) {
             yieldConsole({
               type: 'error',
@@ -572,6 +613,8 @@ class SqlStore {
                 type: 'writting-diff-update'
               }
             })
+
+            throw e
           }
         })
 
@@ -654,8 +697,14 @@ class SqlStore {
     return `UPDATE ${table} SET ${set.join(',')} WHERE ${where.join(' AND ')}`
   }
 
-  private getInsertSql(_item: Record<string, any>, table: string) {
+  private getInsertSql(
+    _item: Record<string, any>,
+    table: string,
+    _type: 'zip-full' | 'zip-diff' | 'data'
+  ) {
     const item = this.getDecentItem(_item, table)
+
+    // console.log('@store', item, table, type)
 
     const singleSql = `INSERT OR REPLACE INTO ${table} (${Object.keys(
       item
@@ -682,8 +731,15 @@ class SqlStore {
 
   querySchedule(sql: string) {
     const res = this.db!.exec(sql)
+    console.log(
+      'querySchedule',
+      '日程参数_____*****',
+      sql,
+      res,
+      this.formatSelectValue1(res[0])
+    )
+    const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
-    const data = res[0] ? this.formatSelectValue(res[0]) : []
     return {
       code: 0,
       data: data
@@ -691,22 +747,29 @@ class SqlStore {
   }
   executeSchedule(sql: string) {
     const res = this.db!.exec(sql)
-    const data = res[0] ? this.formatSelectValue(res[0]) : []
+    console.log(
+      'executeSchedule',
+      '日程参数_____*****',
+      sql,
+      res,
+      this.formatSelectValue1(res[0])
+    )
+    const data = res[0] ? this.formatSelectValue1(res[0]) : []
+
     return {
       code: 0,
       data: data
     }
   }
 
-  getDayView(date: string) {
-    const dayData = this.sdk.schedule.dayView({
-      day: date || '2023-07-03',
-      tabType: '',
-      queryType: 1
-    })
-    console.log('dayData', 'pppppppp_____*****')
+  getDayView(params: DayViewParamsProps) {
+    const dayData = this.sdk.schedule.dayView(params)
+    console.log('params', '日程参数_____*****', params, dayData)
 
     return dayData
+  }
+  getIsReady() {
+    return this.isReady
   }
 }
 

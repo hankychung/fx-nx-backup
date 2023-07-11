@@ -17,5 +17,4 @@ class JsDataZeusDb {
 }
 
 self.JsDataZeusDb = JsDataZeusDb
-
 export default JsDataZeusDb

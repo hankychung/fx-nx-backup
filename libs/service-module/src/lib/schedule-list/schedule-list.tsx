@@ -6,7 +6,7 @@ import React, {
   ForwardRefRenderFunction,
   useMemo
 } from 'react'
-import { BizApi } from '@flyele-nx/service'
+// import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { ScheduleTask } from './components/schedule-task'
@@ -20,6 +20,8 @@ import { useScheduleList } from './utils/hooks/useScheduleList'
 import { EmptyData } from './components/empty-data'
 import { getDateOfToday } from './utils/tools'
 import { useScheduleStore } from '../store/useScheduleStore'
+import { globalNxController } from '../global/nxController'
+import { QueryType, TabType } from '@flyele-nx/sql-store'
 
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
@@ -85,24 +87,32 @@ const _ScheduleList: ForwardRefRenderFunction<
       return
     }
 
-    const res = await BizApi.getScheduleList({
-      type: 'today',
+    // const res = await BizApi.getScheduleList({
+    //   type: 'today',
+    //   day: date,
+    //   pageRecord: pageRecord.current,
+    //   pageNumber: pRef.current,
+    //   queryType: isFinished ? 3 : 1
+    // })
+
+    const r = await globalNxController.getDayView({
       day: date,
-      pageRecord: pageRecord.current,
-      pageNumber: pRef.current,
-      queryType: isFinished ? 3 : 1
+      tabType: TabType.TODAY,
+      queryType: isFinished ? QueryType.completed : QueryType.participate
     })
+
+    console.log('@nx list', r)
 
     const isInit = pRef.current === 1
 
     // 初始化已完成数量
     if (date === getDateOfToday() && isInit) {
       useScheduleStore.setState({
-        todayFinishCount: res.data?.schedule_complete_total || 0
+        todayFinishCount: r.data.length || 0
       })
     }
 
-    const list = res.data?.schedule || []
+    const list = r.data || []
 
     // getFinishListTotal?.(res.data?.schedule_complete_total || 0)
 

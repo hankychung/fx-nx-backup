@@ -14,7 +14,6 @@ FROM task_dispatch a
 WHERE ref_task_id IN (${task_id})
 AND is_valid = 1
 AND status = 1
-AND delete_at = 0
 AND identity NOT IN (10804, 10811)
 AND operate_state = 0;`
 }
@@ -111,7 +110,7 @@ export const BaseQuerySql = ({
     FROM task_dispatch
    WHERE is_valid = 1
      AND status = 1
-     AND taker_id = 2567146083188875
+     AND taker_id = ${user_id}
    GROUP BY ref_task_id)
 , real_parent AS (SELECT tc1.id, GROUP_CONCAT(td.ref_task_id) AS parent_id
              FROM (SELECT * FROM task_config tc1 JOIN td ON tc1.id = td.ref_task_id) tc1
@@ -243,8 +242,11 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
     LEFT JOIN (SELECT fp.id AS project_id, project_name, fp.creator_id AS project_creator_id,
               fw.id AS workspace_id, fw.name AS workspace_name, fwb.ws_type, CASE WHEN fwm.member_type = 2 THEN 1 ELSE 0 END AS is_external_member
           FROM project AS fp
-          LEFT JOIN workspace_bind fwb
-          ON fp.id = fwb.project_id AND fwb.state = 1 AND fwb.accept_at > 0 AND (fwb.ws_type = 1 OR (fwb.ws_type = 2 AND fwb.creator_id = ${user_id} AND fp.state = 10201))
+          LEFT JOIN (SELECT project_id, ws_type, creator_id, workspace_id
+            FROM workspace_bind
+           WHERE state = 1 AND accept_at > 0
+           GROUP BY creator_id, project_id, workspace_id) fwb
+          ON fp.id = fwb.project_id AND (fwb.ws_type = 1 OR (fwb.ws_type = 2 AND fwb.creator_id = ${user_id} AND fp.state = 10201))
           LEFT JOIN workspace AS fw
           ON fwb.workspace_id = fw.id
           LEFT JOIN workspace_member AS fwm

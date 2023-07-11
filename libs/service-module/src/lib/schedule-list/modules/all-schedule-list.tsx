@@ -7,7 +7,7 @@ import React, {
   useMemo,
   useState
 } from 'react'
-import { QueryType, TabType } from '@flyele-nx/sql-store'
+import { QueryType } from '@flyele-nx/sql-store'
 // import { BizApi } from '@flyele-nx/service'
 import styles from '../schedule-list.module.scss'
 import { useMemoizedFn, useUpdateEffect } from 'ahooks'
@@ -47,14 +47,9 @@ const _AllScheduleList: ForwardRefRenderFunction<
     finishList,
     updateList,
     batchUpdateTask,
-    pageRef,
-    finishPageRef,
     loading,
     setLoading,
     pageFetchFinished,
-    setPageFetchFinished,
-    finishPageFetchFinished,
-    setFinishPageFetchFinished,
     isError,
     setIsError,
     finishTotal
@@ -83,49 +78,50 @@ const _AllScheduleList: ForwardRefRenderFunction<
     if (loading) return
     setLoading(true)
 
-    if (pageFetchFinished && finishPageFetchFinished) {
-      console.log(`已完成 和 未完成事项列表已经加载完成`)
-      return
-    }
-
     const tasks =
       (
         await globalNxController.getDayView({
           day: date,
-          tabType: TabType.TODAY,
-          queryType: isFinished ? QueryType.completed : QueryType.participate
+          queryType: QueryType.participate
         })
       ).data || []
 
-    if (!isFinished) {
-      useScheduleStore.setState({
-        todayFinishCount: tasks.length || 0
-      })
-    }
-
-    const { keys } = batchUpdateTask(tasks, { isFinished })
+    const { keys } = batchUpdateTask(tasks, { isFinished: false })
 
     updateList({
       date,
       list: keys,
       isInit: true,
-      isFinished
+      isFinished: false
     })
 
-    if (isFinished) {
-      setFinishPageFetchFinished(true)
-    } else {
-      setPageFetchFinished(true)
-    }
+    const finishTasks =
+      (
+        await globalNxController.getDayView({
+          day: date,
+          queryType: QueryType.completed
+        })
+      ).data || []
+
+    const { keys: finishKeys } = batchUpdateTask(finishTasks, {
+      isFinished: true
+    })
+
+    updateList({
+      date,
+      list: finishKeys,
+      isInit: true,
+      isFinished: true
+    })
+
+    useScheduleStore.setState({
+      todayFinishCount: finishTasks.length || 0
+    })
 
     setLoading(false)
   })
 
   const reload = useMemoizedFn(async () => {
-    pageRef.current = 1
-    finishPageRef.current = 1
-    setPageFetchFinished(false)
-    setFinishPageFetchFinished(false)
     try {
       await fetchList()
     } catch {
@@ -163,7 +159,9 @@ const _AllScheduleList: ForwardRefRenderFunction<
   return (
     <div className={classNames(styles['container'], overlayClassName)}>
       <InfiniteScroll
-        loadMore={fetchList}
+        loadMore={() => {
+          // do nothing
+        }}
         useWindow={false}
         hasMore
         initialLoad={false}

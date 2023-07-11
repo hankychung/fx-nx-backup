@@ -6,7 +6,6 @@ import React, {
   ForwardRefRenderFunction,
   useMemo
 } from 'react'
-// import { BizApi } from '@flyele-nx/service'
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { ScheduleTask } from './components/schedule-task'
@@ -18,10 +17,8 @@ import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from './types'
 import { useScheduleList } from './utils/hooks/useScheduleList'
 import { EmptyData } from './components/empty-data'
-import { getDateOfToday } from './utils/tools'
-import { useScheduleStore } from '../store/useScheduleStore'
 import { globalNxController } from '../global/nxController'
-import { QueryType, TabType } from '@flyele-nx/sql-store'
+import { QueryType } from '@flyele-nx/sql-store'
 
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
@@ -43,19 +40,11 @@ const _ScheduleList: ForwardRefRenderFunction<
     finishList,
     updateList,
     batchUpdateTask,
-    // pageRecord,
-    pageRef,
-    finishPageRef,
     loading,
     setLoading,
-    pageFetchFinished,
-    setPageFetchFinished,
-    finishPageFetchFinished,
-    setFinishPageFetchFinished,
     isError,
     setIsError,
     finishTotal
-    // setFinishTotal
   } = useScheduleList({
     date
   })
@@ -77,76 +66,26 @@ const _ScheduleList: ForwardRefRenderFunction<
     if (loading) return
     setLoading(true)
 
-    const pRef = isFinished ? finishPageRef : pageRef
-    const fetchFinishedRef = isFinished
-      ? finishPageFetchFinished
-      : pageFetchFinished
-
-    if (fetchFinishedRef) {
-      console.log(`${isFinished ? '已完成' : '未完成'}事项列表已经加载完成`)
-      return
-    }
-
-    // const res = await BizApi.getScheduleList({
-    //   type: 'today',
-    //   day: date,
-    //   pageRecord: pageRecord.current,
-    //   pageNumber: pRef.current,
-    //   queryType: isFinished ? 3 : 1
-    // })
-
     const r = await globalNxController.getDayView({
       day: date,
-      tabType: TabType.TODAY,
       queryType: isFinished ? QueryType.completed : QueryType.participate
     })
 
-    console.log('@nx list', r)
-
-    const isInit = pRef.current === 1
-
-    // 初始化已完成数量
-    if (date === getDateOfToday() && isInit) {
-      useScheduleStore.setState({
-        todayFinishCount: r.data.length || 0
-      })
-    }
-
     const list = r.data || []
-
-    // getFinishListTotal?.(res.data?.schedule_complete_total || 0)
-
-    // setFinishTotal(res.data?.schedule_complete_total || 0)
 
     const { keys } = batchUpdateTask(list, { isFinished })
 
     updateList({
       date,
       list: keys,
-      isInit,
+      isInit: true,
       isFinished
     })
-
-    // if (list.length < pageRecord.current) {
-    //   isFinished ? setFinishPageFetchFinished(true) : setPageFetchFinished(true)
-    // } else {
-    //   pRef.current += 1
-    // }
-
-    if (isFinished) {
-      setFinishPageFetchFinished(true)
-    } else {
-      setPageFetchFinished(true)
-    }
 
     setLoading(false)
   })
 
   const reload = useMemoizedFn(async () => {
-    pageRef.current = 1
-    finishPageRef.current = 1
-    setPageFetchFinished(false)
-    setFinishPageFetchFinished(false)
     try {
       await fetchList()
     } catch (error) {
@@ -185,7 +124,9 @@ const _ScheduleList: ForwardRefRenderFunction<
     >
       {(decentList ?? []).length ? (
         <InfiniteScroll
-          loadMore={fetchList}
+          loadMore={() => {
+            // do nothing
+          }}
           useWindow={false}
           hasMore
           initialLoad={false}

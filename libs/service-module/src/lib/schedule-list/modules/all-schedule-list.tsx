@@ -7,7 +7,7 @@ import React, {
   useState
 } from 'react'
 import styles from '../schedule-list.module.scss'
-import { useMemoizedFn, useUpdateEffect } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
@@ -81,14 +81,13 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   useImperativeHandle(ref, () => {
     return {
-      reload
+      reload: () => {
+        console.log('主动reload', date)
+
+        return reload()
+      }
     }
   })
-
-  useUpdateEffect(() => {
-    // 日期改变重载
-    reload()
-  }, [date])
 
   return (
     <div className={classNames(styles['container'], overlayClassName)}>

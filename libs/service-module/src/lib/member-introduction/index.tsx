@@ -12,6 +12,9 @@ import { ReactComponent as OnlyPersonalImg } from '../../assets/login/onlyPerson
 import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
 import { FlyButton } from '@flyele/flyele-components'
+import RetrievePayModal from '../retrieve-pay-modal'
+import RetrievePayModalTeam from '../retrieve-pay-modal-team'
+import { VipMealType } from '../person-pay-modal/components/controller'
 
 /**
  * 0-非会员，1-个人会员，2-团队会员
@@ -33,7 +36,10 @@ export const MemberIntroduction = ({
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCorpModal, setShowCorpModal] = useState(false)
+  const [modalType, setModalType] = useState<VipMealType>()
+
   const [showCustomerModal, setShowCustomerModal] = useState(false)
+  const [isRetrievePay, setIsRetrievePay] = useState(false)
   const [isShowPay, setIsShowPay] = useState(false)
   const [orderCode, setOrderCode] = useState('')
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
@@ -198,9 +204,12 @@ export const MemberIntroduction = ({
         modalType="person"
         payType={payType}
         memberList={memberList}
-        onClose={() => {
+        onClose={(modalType) => {
           setShow(false)
           setIsShowPay(false)
+          setIsRetrievePay(true)
+          setModalType(modalType)
+          console.log('modaleType', modalType)
         }}
         showMsg={() => {
           messageApi.open({
@@ -233,7 +242,32 @@ export const MemberIntroduction = ({
       >
         <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
       </Modal>
-
+      {modalType === 2 ? (
+        <Modal
+          open={isRetrievePay}
+          centered
+          footer={null}
+          closable={false}
+          wrapClassName={styles.modalWrap}
+          width={320}
+          className={styles.retrieveModal}
+        >
+          <RetrievePayModalTeam onClose={() => setIsRetrievePay(false)} />
+        </Modal>
+      ) : (
+        <Modal
+          open={isRetrievePay}
+          centered
+          footer={null}
+          closable={false}
+          wrapClassName={styles.modalWrap}
+        >
+          <RetrievePayModal
+            onClose={() => setIsRetrievePay(false)}
+            isShowPay={isShowPay}
+          />
+        </Modal>
+      )}
       <Modal
         open={showLoginModal}
         width={480}

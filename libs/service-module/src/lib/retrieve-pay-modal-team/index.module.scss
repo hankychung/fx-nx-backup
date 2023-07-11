@@ -1,0 +1,124 @@
+.modalWrap {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+}
+.content {
+  width: 320px;
+  height: 447px;
+  display: flex;
+  flex-direction: column;
+  background-color: unset;
+  border-radius: 8px;
+  background-image: url('../../assets/payImg/retrieve_pay_modal_team.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    .close {
+      margin-left: 288px;
+      margin-top: 36px;
+      cursor: pointer;
+    }
+    svg {
+      position: absolute;
+    }
+  }
+  .ModalBox {
+    display: flex;
+    // justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  .title {
+    margin-top: 48px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: rgba(34, 32, 78, 1);
+    text-align: center;
+  }
+  .body {
+    margin-top: 12px;
+    width: 213px;
+    height: 299px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+    .top {
+      display: flex;
+      flex-direction: row;
+      margin-top: 20px;
+      align-items: center;
+      justify-content: center;
+      .addCustomerService {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        color: rgba(0, 0, 0, 1);
+      }
+      .answer {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 17px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+      > div {
+        margin-left: 8px;
+      }
+    }
+    .customer {
+      margin-top: 8px;
+    }
+    .phone {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: row;
+      > div {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 17px;
+        color: rgba(177, 177, 177, 1);
+      }
+    }
+    .bottom {
+      margin-top: 20px;
+      width: 196px;
+      height: 32px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 22px;
+      text-align: center;
+      color: rgba(123, 123, 123, 1);
+      background-color: rgba(250, 250, 255, 1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    flex-direction: row;
+    cursor: pointer;
+    > div {
+      margin-left: 5px;
+      margin-right: 3px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      color: rgba(0, 0, 0, 1);
+    }
+  }
+}

@@ -1,0 +1,48 @@
+.takerRuleModal {
+  padding: 0;
+
+  :global {
+    .ant-modal-body {
+      max-height: 600px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    .ant-modal-header {
+      background-color: #5d5eee;
+    }
+
+    .ant-modal-close,
+    .ant-modal-title {
+      color: #fff;
+    }
+
+    .ant-modal-content {
+      border-radius: 8px !important;
+      overflow: hidden;
+      filter: drop-shadow(0 3px 16px rgba(113, 113, 172, 0.18));
+    }
+
+    .ant-modal-close-x {
+      img {
+        width: 16px;
+        height: 16px;
+        margin-top: -4px;
+      }
+    }
+  }
+
+  .modalBodyImg {
+    width: 400px;
+    height: 520px;
+    overflow: hidden auto;
+
+    img {
+      width: 100%;
+      height: 729px;
+    }
+    //background-image: url('assets/images/project/taker-rule.png');
+    //background-size: cover;
+    // background-position: -14px -14px;
+  }
+}

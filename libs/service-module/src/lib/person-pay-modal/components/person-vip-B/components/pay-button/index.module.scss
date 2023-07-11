@@ -1,0 +1,108 @@
+.payButton {
+  margin-bottom: 24px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .protocol {
+    font-size: 10px;
+    color: #b3b3b1;
+    margin-top: 8px;
+    text-align: center;
+
+    > span {
+      color: rgba(241, 170, 64, 1);
+      cursor: pointer;
+    }
+
+    .teamColor {
+      color: rgba(106, 103, 244, 1);
+    }
+  }
+
+  .priceSum {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // height: 60px;
+    > span {
+      font-size: 12px;
+      color: #000;
+    }
+
+    .price {
+      display: flex;
+      align-items: flex-end;
+
+      > span {
+        font-size: 12px;
+        color: #f26b57;
+        margin-bottom: 5px;
+        margin-right: 8px;
+      }
+
+      > div {
+        color: #000;
+        font-size: 14px;
+
+        > span {
+          &:last-child {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+
+  .payBtn {
+    width: 324px;
+    height: 44px;
+    background: linear-gradient(270.36deg, #ffb85e 0.58%, #ffd075 99.97%);
+    border-radius: 4px;
+    font-size: 14px;
+    color: #734c24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .teamPayBtn {
+    color: #fff;
+    background: linear-gradient(90deg, #7b5eef 0%, #6248ed 100%);
+  }
+  .noMember {
+    background: linear-gradient(90deg, #7b5eef 0%, #6248ed 100%) !important;
+    opacity: 0.4 !important;
+    // pointer-events: none !important;
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    height: 45px;
+    background-color: rgba(255, 235, 211, 1);
+    width: 100%;
+    align-items: center;
+    margin-top: 40px;
+    cursor: pointer;
+    .left {
+      margin-left: 36px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 17px;
+      color: rgba(21, 21, 21, 1);
+    }
+    .right {
+      margin-right: 27px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 17px;
+      color: rgba(241, 170, 64, 1);
+      > span {
+        margin-right: 5px;
+      }
+    }
+  }
+}

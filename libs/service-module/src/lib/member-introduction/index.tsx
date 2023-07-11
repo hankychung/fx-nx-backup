@@ -7,7 +7,7 @@ import { message, Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
-import { envStore, UsercApi, IUserInfo } from '@flyele-nx/service'
+import { envStore, UsercApi, IUserInfo, service } from '@flyele-nx/service'
 import { ReactComponent as OnlyPersonalImg } from '../../assets/login/onlyPersonal.svg'
 import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
@@ -42,14 +42,21 @@ export const MemberIntroduction = ({
   const TimerRef = useRef<NodeJS.Timer | undefined>()
   const [messageApi, contextHolder] = message.useMessage()
 
-  const onClickBtn = (key: string) => {
-    if (key === 'personal' || key === 'team') {
-      setVipType(key)
-      setShowLoginModal(true)
-    }
-    if (key === 'custom') {
-      setShowCustomerModal(true)
-    }
+  const onClickBtn = async (key: string) => {
+    //方便调试
+    await service.updateToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk4NDI5MzAsImlhdCI6MTY4ODk3ODQyOSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNDg2MTk1MTc4OTYzMTg1IiwiRGV2aWNlSUQiOiJmMTlkNWE1Mi1jNGRkLTRjNWQtOTRmNy1jZDQwYTZhN2ZmNjUiLCJQbGF0Zm9ybSI6IndlYiIsIkNsaWVudFZlcnNpb24iOiIwLjAuMSIsIlBob25lIjoiIiwiTmlja05hbWUiOiIiLCJBdmF0YXIiOiIifQ.PKwXhbB_X8R6eMKdWjemVMumqXc6zNQugN-dDaZAH10'
+    )
+    setVipType(key)
+    await fetchTakerList()
+    setShow(true)
+    // if (key === 'personal' || key === 'team') {
+    //   setVipType(key)
+    //   setShowLoginModal(true)
+    // }
+    // if (key === 'custom') {
+    //   setShowCustomerModal(true)
+    // }
   }
 
   const getOrderDetail = useMemoizedFn(() => {

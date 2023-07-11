@@ -762,8 +762,8 @@ class SqlStore {
     }
   }
 
-  getDayView(params: DayViewParamsProps) {
-    const dayData = this.sdk.schedule.dayView(params)
+  async getDayView(params: DayViewParamsProps) {
+    const dayData = await this.sdk.schedule.dayView(params)
     console.log('params', '日程参数_____*****', params, dayData)
 
     return dayData

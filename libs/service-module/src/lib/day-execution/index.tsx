@@ -58,8 +58,7 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
         data: { list, total }
       } = await globalNxController.getDayView({
         day: day,
-        queryType: isFinished ? QueryType.completed : QueryType.participate,
-        isCount: true
+        queryType: isFinished ? QueryType.completed : QueryType.participate
       })
 
       updateTodayExecutionCount({

@@ -19,7 +19,7 @@ interface IProps {
   projectId: string
   workspaceId: string
   handleClose?: () => void
-  onCreateSpace?: () => void
+  onCreateSpace?: (cb: () => void) => void
   onImport?: (item: SpaceType.IBasicSpace) => void
 }
 
@@ -98,7 +98,12 @@ export const ProjectLure = (props: IProps) => {
             <div className={style.empty}>
               <img className={style.empty_img} src={EmptyImage} alt="empty" />
               <span className={style.empty_txt}>你当前没有专业空间</span>
-              <Button onClick={onCreateSpace} className={style.empty_btn}>
+              <Button
+                onClick={() => {
+                  onCreateSpace?.(getList)
+                }}
+                className={style.empty_btn}
+              >
                 创建专业空间
               </Button>
             </div>

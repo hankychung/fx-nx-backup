@@ -111,5 +111,9 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     }
   })
 
+  // 根据时间戳排序
+  temp.sort((a, b) => a.tTime - b.tTime)
+
+  console.log('@@@ 看看 nx 的 temp', temp)
   return temp
 }

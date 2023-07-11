@@ -12,7 +12,7 @@ import dayjs from 'dayjs'
 envStore.initEnv(process.env.NODE_ENV as string)
 
 service.updateToken(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkwNzI3MDcsImlhdCI6MTY4OTA2NDk1MywiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxNjU3MjM5MjkxMDM1Nzc3IiwiRGV2aWNlSUQiOiJiNDUyM2MzZC1hZjk0LTRiODYtOWViZC1mMjhlNWMyNTIxODciLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.kixv0-h0tHyOcCuZbq0RDGwulIcNvLGHREhKDUrHy1c'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkwODM5MDIsImlhdCI6MTY4OTA3NTAyNCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxNjU3MjM5MjkxMDM1Nzc3IiwiRGV2aWNlSUQiOiJiOWJmZDYyOC02NTcwLTRkMTYtOTM2MC1iNzkwOWI2OTU1YzEiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.apfKJc1yDWkDGAzS5u1s1-QwxjfmJH_XyEL3c3NJ8eo'
 )
 
 export function App() {
@@ -28,7 +28,7 @@ export function App() {
             height: '390px'
           }}
         >
-          <ScheduleList date="2023-07-04" isBoard={true} />
+          <ScheduleList date="2023-07-11" isBoard={true} />
         </div>
         <div
           style={{

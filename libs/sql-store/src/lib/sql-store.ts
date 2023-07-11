@@ -731,13 +731,7 @@ class SqlStore {
 
   querySchedule(sql: string) {
     const res = this.db!.exec(sql)
-    console.log(
-      'querySchedule',
-      '日程参数_____*****',
-      sql,
-      res,
-      this.formatSelectValue1(res[0])
-    )
+
     const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
     return {
@@ -747,13 +741,6 @@ class SqlStore {
   }
   executeSchedule(sql: string) {
     const res = this.db!.exec(sql)
-    console.log(
-      'executeSchedule',
-      '日程参数_____*****',
-      sql,
-      res,
-      this.formatSelectValue1(res[0])
-    )
     const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
     return {

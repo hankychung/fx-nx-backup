@@ -1,15 +1,13 @@
 import React, {
   useEffect,
-  useRef,
   forwardRef,
   useImperativeHandle,
   ForwardRefRenderFunction,
   useMemo,
   useState
 } from 'react'
-import { BizApi } from '@flyele-nx/service'
 import styles from '../schedule-list.module.scss'
-import { useMemoizedFn, useUpdateEffect } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
@@ -19,6 +17,7 @@ import { ScheduleListProps, IScheduleListRef } from '../types'
 import { FinishNumBtn } from '../components/finish-num-btn'
 import { useScheduleList } from '../utils/hooks/useScheduleList'
 import { EmptyData } from '../components/empty-data'
+import { initTodayList } from '../utils/initTodayList'
 
 /**
  * 请求全部未完成和已完成事项的列表
@@ -29,46 +28,22 @@ const _AllScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
 > = (
-  {
-    date,
-    isFinished: _isFinished,
-    isVipWin = false,
-    isBoard,
-    getFinishListTotal,
-    overlayClassName,
-    isDarkMode
-  },
+  { date, isFinished, isVipWin = false, isBoard, overlayClassName, isDarkMode },
   ref
 ) => {
   const {
     list,
     finishList,
-    updateList,
-    batchUpdateTask,
-    pageRecord,
-    pageRef,
-    finishPageRef,
     loading,
     setLoading,
-    pageFetchFinished,
-    setPageFetchFinished,
-    finishPageFetchFinished,
-    setFinishPageFetchFinished,
     isError,
     setIsError,
-    finishTotal,
-    setFinishTotal
+    finishTotal
   } = useScheduleList({
     date
   })
 
-  const isInit = useRef(false)
-
   const [showFinished, setShowFinished] = useState(false)
-
-  const isFinished = useMemo(() => {
-    return pageFetchFinished
-  }, [pageFetchFinished])
 
   const reloaderId = useMemo(
     () => date + isFinished + isBoard,
@@ -83,50 +58,12 @@ const _AllScheduleList: ForwardRefRenderFunction<
     if (loading) return
     setLoading(true)
 
-    const pRef = isFinished ? finishPageRef : pageRef
-
-    if (pageFetchFinished && finishPageFetchFinished) {
-      console.log(`已完成 和 未完成事项列表已经加载完成`)
-      return
-    }
-
-    const res = await BizApi.getScheduleList({
-      type: 'today',
-      day: date,
-      pageRecord: pageRecord.current,
-      pageNumber: pRef.current,
-      queryType: isFinished ? 3 : 1
-    })
-
-    const list = res.data?.schedule || []
-
-    const total = res.data?.schedule_complete_total || 0
-    getFinishListTotal?.(total)
-    setFinishTotal(total)
-
-    const { keys } = batchUpdateTask(list, { isFinished })
-
-    updateList({
-      date,
-      list: keys,
-      isInit: pRef.current === 1,
-      isFinished
-    })
-
-    if (list.length < pageRecord.current) {
-      isFinished ? setFinishPageFetchFinished(true) : setPageFetchFinished(true)
-    } else {
-      pRef.current += 1
-    }
+    await initTodayList()
 
     setLoading(false)
   })
 
   const reload = useMemoizedFn(async () => {
-    pageRef.current = 1
-    finishPageRef.current = 1
-    setPageFetchFinished(false)
-    setFinishPageFetchFinished(false)
     try {
       await fetchList()
     } catch {
@@ -144,27 +81,20 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   useImperativeHandle(ref, () => {
     return {
-      reload
+      reload: () => {
+        console.log('主动reload', date)
+
+        return reload()
+      }
     }
   })
-
-  useEffect(() => {
-    if (!isInit.current) {
-      isInit.current = true
-
-      reload()
-    }
-  }, [reload])
-
-  useUpdateEffect(() => {
-    // 日期改变重载
-    reload()
-  }, [date])
 
   return (
     <div className={classNames(styles['container'], overlayClassName)}>
       <InfiniteScroll
-        loadMore={fetchList}
+        loadMore={() => {
+          // do nothing
+        }}
         useWindow={false}
         hasMore
         initialLoad={false}
@@ -184,7 +114,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
           />
         ))}
 
-        {!!finishTotal && pageFetchFinished ? (
+        {finishTotal ? (
           <>
             <FinishNumBtn
               show={showFinished}

@@ -6,13 +6,7 @@ import { set, get } from 'idb-keyval'
 import dayjs from 'dayjs'
 import { jsonKey, boolKey } from './const'
 import { getFilterSql, getFullDoseCountSql } from './utils/filter'
-import {
-  DayViewParamsProps,
-  Direction,
-  FilterParamsProps,
-  QueryType,
-  TabType
-} from './type/filter'
+import { DayViewParamsProps, Direction, FilterParamsProps } from './type/filter'
 import { QueryTaskChildTotal, QueryTaskTakersSQL } from './sql/query'
 import { PackInfo, Datum } from './type/service/datapandora'
 import { IDiffInfoResponse } from './type/service/increment'
@@ -731,13 +725,7 @@ class SqlStore {
 
   querySchedule(sql: string) {
     const res = this.db!.exec(sql)
-    console.log(
-      'querySchedule',
-      '日程参数_____*****',
-      sql,
-      res,
-      this.formatSelectValue1(res[0])
-    )
+
     const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
     return {
@@ -747,13 +735,6 @@ class SqlStore {
   }
   executeSchedule(sql: string) {
     const res = this.db!.exec(sql)
-    console.log(
-      'executeSchedule',
-      '日程参数_____*****',
-      sql,
-      res,
-      this.formatSelectValue1(res[0])
-    )
     const data = res[0] ? this.formatSelectValue1(res[0]) : []
 
     return {
@@ -762,14 +743,11 @@ class SqlStore {
     }
   }
 
-  getDayView(params: DayViewParamsProps) {
-    const dayData = this.sdk.schedule.dayView(params)
+  async getDayView(params: DayViewParamsProps) {
+    const dayData = await this.sdk.schedule.dayView(params)
     console.log('params', '日程参数_____*****', params, dayData)
 
     return dayData
-  }
-  getIsReady() {
-    return this.isReady
   }
 }
 

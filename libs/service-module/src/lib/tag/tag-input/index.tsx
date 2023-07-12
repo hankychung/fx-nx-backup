@@ -18,7 +18,7 @@ import cs from 'classnames'
 import { TagUtils } from '../tag_utils'
 import { TagModel, TagConst } from '@flyele-nx/service'
 import css from './index.module.scss'
-import { useMessage } from '@flyele-nx/ui'
+import { globalNxController } from '../../global/nxController'
 
 // 颜色选择器
 interface TagInputProps {
@@ -51,7 +51,6 @@ const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
     wrapCla
   } = props
 
-  const [showMsg] = useMessage()
   const tagRef = useRef<HTMLDivElement>(null)
 
   const [pickerColor, setPickerColor] = useState(defaultColor)
@@ -89,12 +88,12 @@ const _TagInput: ForwardRefRenderFunction<InputRef, TagInputProps> = (
       onChangeValue(value)
     })
     setCb('onMoreThanMaxLen', () => {
-      showMsg({
+      globalNxController.showMsg({
         msgType: '消息',
         content: `标签名称最多${maxLength}个字符`
       })
     })
-  }, [onChange, pickerColor, setCb, showMsg])
+  }, [onChange, pickerColor, setCb])
 
   const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

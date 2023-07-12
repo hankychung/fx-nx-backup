@@ -7,7 +7,6 @@ import {
 } from '@flyele/flyele-components'
 import { UserInfoUtils } from '../../../../utils/userInfoUtils'
 import { createInfinite } from '@flyele-nx/utils'
-import { useMessage } from '@flyele-nx/ui'
 import { AddTakerIcon } from '@flyele-nx/icon'
 import { getOperationStatus } from '../../../../utils/workflowOperation'
 import { ISimpleMember } from '../../../../../simple-member-list'
@@ -74,7 +73,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const { contactDict } = useContactStore()
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
-  const [showMsg] = useMessage()
   const [takers, setTakers] = useState<Taker[]>([])
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
 
@@ -182,7 +180,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
 
     if (takers.length >= resAuth.maxTaker) {
-      showMsg({
+      globalNxController.showMsg({
         msgType: '消息',
         content: `人数已达${resAuth.maxTaker}人上限`
       })
@@ -190,12 +188,13 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
 
     if (!isInTask) {
-      showMsg({
+      globalNxController.showMsg({
         msgType: '错误',
         content: '没参与事项不可修改'
       })
       return false
     }
+
     return true
   })
 
@@ -256,7 +255,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     const status = getOperationStatus(task, userId)
 
     if (status === 'complete') {
-      showMsg({ content: '已完成的工作流事项不支持添加人' })
+      globalNxController.showMsg({ content: '已完成的工作流事项不支持添加人' })
       return
     }
 
@@ -334,25 +333,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     setAvatars(list)
   }, [contactDict, takers])
 
-  const avatarBoxJsx = useMemo(() => {
-    return (
-      <div className={styles.avatarBox} onClick={editTakers}>
-        {avatars.length ? (
-          <FlyAvatarGroup
-            list={avatars}
-            avatarSize={16}
-            shiftingWidth={3}
-            max={3}
-            min={3}
-            moreBtnClass={styles.moreBtn}
-          />
-        ) : (
-          <AddTakerIcon width={17} height={17} />
-        )}
-      </div>
-    )
-  }, [avatars, editTakers])
-
   // 成员列表
   const simpleMemberList = useMemo<ISimpleMember[]>(() => {
     return (takers ?? []).map((item) => {
@@ -377,23 +357,34 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         e.stopPropagation()
       }}
     >
-      {
-        <div
-          className={cs(styles.takers, {
-            [styles.darkMode]: isDarkMode,
-            [parentStyle.needLine]: isBoard || isVipWin
-          })}
+      <div
+        className={cs(styles.takers, {
+          [styles.darkMode]: isDarkMode,
+          [parentStyle.needLine]: isBoard || isVipWin
+        })}
+      >
+        <RemoveSimpleMemberListPopper
+          ctrl={popCtrl}
+          memberList={simpleMemberList}
+          onClickAdd={onClickAddModal}
+          taskId={taskId}
         >
-          <RemoveSimpleMemberListPopper
-            ctrl={popCtrl}
-            memberList={simpleMemberList}
-            onClickAdd={onClickAddModal}
-            taskId={taskId}
-          >
-            {avatarBoxJsx}
-          </RemoveSimpleMemberListPopper>
-        </div>
-      }
+          <div className={styles.avatarBox} onClick={editTakers}>
+            {avatars.length ? (
+              <FlyAvatarGroup
+                list={avatars}
+                avatarSize={16}
+                shiftingWidth={3}
+                max={3}
+                min={3}
+                moreBtnClass={styles.moreBtn}
+              />
+            ) : (
+              <AddTakerIcon width={17} height={17} />
+            )}
+          </div>
+        </RemoveSimpleMemberListPopper>
+      </div>
     </div>
   )
 }

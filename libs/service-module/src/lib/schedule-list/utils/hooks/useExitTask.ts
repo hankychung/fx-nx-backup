@@ -1,14 +1,19 @@
 import { useMemoizedFn } from 'ahooks'
 import { useScheduleStore } from '../../../store/useScheduleStore'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
-import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
+import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { TaskHandler } from '../taskHandler'
 import { globalNxController } from '../../../global/nxController'
 import PUB from '../../../global/types/pubsub'
+import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
 
-export const useExitTask = ({ taskId }: { taskId: string }) => {
-  const [showMsg] = useMessage()
-
+export const useExitTask = ({
+  taskId,
+  isVipWin
+}: {
+  taskId: string
+  isVipWin: boolean
+}) => {
   const data = useScheduleStore((state) => state.taskDict[taskId])
 
   const getDispatchId = useMemoizedFn(() => {
@@ -16,11 +21,10 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
   })
 
   // 检查是否为挂件
-  // const isVipWin = document.getElementById('vipSmallToolsWinNow')
   const forVipSmallWin = () => {
-    //   if (isVipWin) {
-    //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
-    //   }
+    if (isVipWin) {
+      globalNxController.ipcRendererInvoke('vipSmallToolsWin-siszable-reset')
+    }
   }
 
   async function doActionExitTask(taskId: string) {
@@ -48,7 +52,7 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
         taskId
       )
 
-      showMsg({
+      globalNxController.showMsg({
         content: '退出成功',
         msgType: '消息',
         duration: 1.5
@@ -84,11 +88,11 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
         message = '退出事项后将不再参与该事项'
       }
 
-      // if (isVipWin) {
-      //   ipcRenderer.invoke('vipSmallToolsWin-siszable', {
-      //     sizeType: SIZE_TYPE_KEY.确认弹窗
-      //   })
-      // }
+      if (isVipWin) {
+        globalNxController.ipcRendererInvoke('vipSmallToolsWin-siszable', {
+          sizeType: SIZE_TYPE_KEY.确认弹窗
+        })
+      }
 
       AlertWithOkAndCancel.alert({
         message,
@@ -106,7 +110,7 @@ export const useExitTask = ({ taskId }: { taskId: string }) => {
         }
       })
     } catch (_) {
-      showMsg({
+      globalNxController.showMsg({
         content: '网络暂时不可用',
         msgType: '错误',
         duration: 1.5

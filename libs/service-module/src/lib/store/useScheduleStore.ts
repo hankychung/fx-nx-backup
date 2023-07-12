@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
@@ -16,7 +16,8 @@ export interface IState {
       [k: string]: boolean
     }
   }
-  todayExecution: { [date: string]: IScheduleTask[] }
+  todayExecution: { [date: string]: string[] }
+  todayCompletedExecution: { [date: string]: string[] }
   todayExecutionCount: {
     [date: string]: { completeTotal: number; total: number }
   }
@@ -42,56 +43,55 @@ interface IMutation {
   }) => void
   updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
-  updateTodayExecutionList: (options: {
-    date: string
-    list: IScheduleTask[]
-    isInit?: boolean
-    isFinished?: boolean
-  }) => void
-  updateTodayExecutionCount: (options: {
-    date: string
-    isFinished: boolean
-    data: number
-  }) => void
+}
+
+const initScheduleState: IState = {
+  /**
+   * 日程列表字典, key为日期, value为该日期下事项列表id数组(带排序)
+   */
+  schedule: {},
+  /**
+   * 日程已完成列表字典, key为日期, value为该日期下事项列表id数组(带排序)
+   */
+  finishSchedule: {},
+  /**
+   * 子事项字典
+   */
+  childrenDict: {},
+  /**
+   * 事项字典
+   * key为taskId -> 普通事项/未完成的循环事项
+   * key为taskId + repeatId -> 已完成的循环事项
+   */
+  taskDict: {},
+  /**
+   * 事项展开字典, key为日期, value为该日期下的事项收合字典
+   */
+  expandedDict: {},
+  /**
+   * 今日已完成数量
+   */
+  todayFinishCount: 0,
+  /**
+   * 当日事项 未完成列表数据 仅id
+   * 具体数据 通过 taskDict 拿
+   */
+  todayExecution: {},
+  /**
+   * 当日事项 已完成列表数据 仅id
+   * 具体数据 通过 taskDict 拿
+   */
+  todayCompletedExecution: {},
+  /**
+   * 当天事项 统计数据（未完成/已完成）的数量
+   * 从接口返回出来的
+   */
+  todayExecutionCount: {}
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
   return {
-    /**
-     * 日程列表字典, key为日期, value为该日期下事项列表id数组(带排序)
-     */
-    schedule: {},
-    /**
-     * 日程已完成列表字典, key为日期, value为该日期下事项列表id数组(带排序)
-     */
-    finishSchedule: {},
-    /**
-     * 子事项字典
-     */
-    childrenDict: {},
-    /**
-     * 事项字典
-     * key为taskId -> 普通事项/未完成的循环事项
-     * key为taskId + repeatId -> 已完成的循环事项
-     */
-    taskDict: {},
-    /**
-     * 事项展开字典, key为日期, value为该日期下的事项收合字典
-     */
-    expandedDict: {},
-    /**
-     * 今日已完成数量
-     */
-    todayFinishCount: 0,
-    /**
-     * 当日事项 列表数据
-     */
-    todayExecution: {},
-    /**
-     * 当天事项 统计数据（未完成/已完成）的数量
-     * 从接口返回出来的
-     */
-    todayExecutionCount: {},
+    ...initScheduleState,
     /**
      * 初始化/更新事项列表
      */
@@ -200,52 +200,8 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           ...info
         }
       }))
-    },
-    /**
-     * 更新当日事项的列表
-     */
-    updateTodayExecutionList({ date, list, isInit, isFinished }) {
-      console.log('NX updateTodayExecutionList', {
-        date,
-        list,
-        isInit,
-        isFinished
-      })
-
-      set(
-        produce((state: IState) => {
-          if (isInit) {
-            state.todayExecution[date] = []
-          }
-
-          state.todayExecution[date] = [
-            ...state.todayExecution[date],
-            ...list
-          ].sort((a, b) => b.create_at - a.create_at)
-        })
-      )
-    },
-    /**
-     * 更新当日事项的统计数据
-     */
-    updateTodayExecutionCount({ date, data, isFinished }) {
-      set(
-        produce((state: IState) => {
-          if (!state.todayExecutionCount[date]) {
-            state.todayExecutionCount[date] = {
-              completeTotal: 0,
-              total: 0
-            }
-          }
-          if (isFinished) {
-            state.todayExecutionCount[date].completeTotal = data
-          } else {
-            state.todayExecutionCount[date].total = data
-          }
-        })
-      )
     }
   }
 })
 
-export { useScheduleStore }
+export { useScheduleStore, initScheduleState }

@@ -26,15 +26,13 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
 
+  const taskDict = useScheduleStore((state) => state.taskDict)
   const todayExecution = useScheduleStore((state) => state.todayExecution)
+  const todayCompletedExecution = useScheduleStore(
+    (state) => state.todayCompletedExecution
+  )
   const todayExecutionCount = useScheduleStore(
     (state) => state.todayExecutionCount
-  )
-  const updateTodayExecutionList = useScheduleStore(
-    (state) => state.updateTodayExecutionList
-  )
-  const updateTodayExecutionCount = useScheduleStore(
-    (state) => state.updateTodayExecutionCount
   )
 
   /**
@@ -61,18 +59,17 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
         queryType: isFinished ? QueryType.completed : QueryType.participate
       })
 
-      updateTodayExecutionCount({
-        date: day,
-        isFinished: isFinished,
-        data: total || 0
-      })
-      updateTodayExecutionList({
+      ExecutionHandler.updateList({
         date: day,
         list: list,
         isInit: true,
         isFinished: isFinished
       })
-      ExecutionHandler.updateTasks(list)
+      ExecutionHandler.updateCount({
+        date: day,
+        isFinished: isFinished,
+        data: total || 0
+      })
     } catch (e) {
       console.error('获取日程列表失败', e)
     } finally {
@@ -109,9 +106,30 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
    * 用于渲染
    **/
   const todayList = useMemo(() => {
-    const list = todayExecution[day] || []
+    const idList = todayExecution[day] || []
+    const list = idList.map((id) => taskDict[id])
+
+    console.log('@check list', idList, list, taskDict)
+
     return disposalTodayList(list)
-  }, [day, todayExecution])
+  }, [day, taskDict, todayExecution])
+
+  /**
+   * 整理今日已完成的数据
+   * 用于渲染
+   */
+  const todayCompletedList = useMemo(() => {
+    const idList = todayCompletedExecution[day] || []
+    const list = idList.map((id) => taskDict[id])
+
+    return [
+      {
+        tTime: 0,
+        tTimeTxt: '已完成',
+        taskItems: list.sort((a, b) => a.create_at - b.create_at)
+      }
+    ]
+  }, [day, taskDict, todayCompletedExecution])
 
   // 切换日期刷新列表
   useEffect(() => {
@@ -180,7 +198,14 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
                 }}
               >
                 {day !== 0 && (
-                  <TimelineTaskList timeList={todayList} day={day} />
+                  <>
+                    <TimelineTaskList timeList={todayList} day={day} />
+                    <TimelineTaskList
+                      timeList={todayCompletedList}
+                      day={day}
+                      showTimeText={false}
+                    />
+                  </>
                 )}
                 {loading && <Loading text="正在加载" top={10} />}
               </InfiniteScroll>

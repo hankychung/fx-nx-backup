@@ -152,6 +152,7 @@ const PersonVipB = ({
         <div className={style.priceBox}>
           {vipMealList.map((_: IActiveGoods) => {
             let num = 0
+
             if (_.end_at) {
               num = dayjs.unix(_.end_at).valueOf() / 1000 //结束时间
             }
@@ -182,7 +183,11 @@ const PersonVipB = ({
                     [style.activeStyle]: _.active && _.name !== '终身会员'
                   },
                   {
-                    [style.activeStyleB]: _.active && _.name === '终身会员'
+                    [style.activeStyleBstyle]: _.active && _.name === '终身会员'
+                  },
+                  {
+                    [style.priceItemFifstActive]:
+                      _.active && _.name === '终身会员'
                   }
                 )}
                 key={_.id}
@@ -199,7 +204,11 @@ const PersonVipB = ({
                   >
                     ￥<span>{regFenToYuan(_.now_price - (_.price || 0))}</span>
                   </div>
-                  <div className={style.oldPrice}>
+                  <div
+                    className={cs(style.oldPrice, {
+                      [style.oldPriceActive]: _.active && _.name === '终身会员'
+                    })}
+                  >
                     ¥{regFenToYuan(_.original_price)}
                   </div>
                 </div>
@@ -256,14 +265,13 @@ const PersonVipB = ({
       <div className={style.below}>
         {/* 支付按钮 */}
         {!isLifeLong && (
-          <div>
-            <PayButton
-              activeGood={activeGood}
-              payClick={payClick}
-              goProtocol={goProtocol}
-              goInterests={goInterests}
-            />
-          </div>
+          <PayButton
+            activeGood={activeGood}
+            payClick={payClick}
+            goProtocol={goProtocol}
+            goInterests={goInterests}
+            vipMealList={vipMealList}
+          />
         )}
         {isLifeLong && (
           <div>

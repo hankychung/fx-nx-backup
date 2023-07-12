@@ -12,7 +12,6 @@ import {
   ScheduleTaskConst,
   TagConst
 } from '@flyele-nx/service'
-import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../global/nxController'
 import PUB from '../../global/types/pubsub'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
@@ -33,7 +32,6 @@ interface ITagContent {
 
 const TagContent: React.FC<ITagContent> = ({ data }) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
-  const [showMsg] = useMessage()
   const { tags, matter_type, ref_task_id, creator_id } = data
 
   const [tagList, setTagList] = useState<TagWidgetModel[]>([])
@@ -174,10 +172,16 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
             })
           }
         } catch (e) {
-          showMsg({ msgType: '错误', content: '选择标签失败' })
+          globalNxController.showMsg({
+            msgType: '错误',
+            content: '选择标签失败'
+          })
         }
       } else {
-        showMsg({ msgType: '消息', content: '最多只能选择5个标签' })
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '最多只能选择5个标签'
+        })
       }
     }
   )
@@ -201,7 +205,7 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
 
         return true
       } catch (e) {
-        showMsg({
+        globalNxController.showMsg({
           msgType: '消息',
           content: `“${text}” 标签名称已存在`,
           duration: 1.5

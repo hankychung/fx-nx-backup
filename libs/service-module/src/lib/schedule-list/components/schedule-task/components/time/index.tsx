@@ -22,7 +22,6 @@ import {
 } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
 import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
-import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../../../../global/nxController'
 import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
 import { contextMenuTool } from '../../../../../../index'
@@ -46,8 +45,6 @@ export const Time: React.FC<IPROPTime> = ({
 }) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
-
-  const [showMsg] = useMessage()
 
   const [visible, setVisible] = useState(false)
   // const groupIdCtx = useContext(GroupIdCtx)
@@ -223,7 +220,10 @@ export const Time: React.FC<IPROPTime> = ({
       task.matter_type === ScheduleTaskConst.MatterType.matter &&
       !task.takers?.find((taker) => taker.taker_id === userId)
     ) {
-      showMsg({ msgType: '错误', content: '非协作人无法修改时间' })
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: '非协作人无法修改时间'
+      })
       return
     }
 

@@ -111,5 +111,40 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     }
   })
 
+  /**
+   * 根据时间timeTxt排序
+   * 全天排最后
+   */
+  temp.sort((a, b) => {
+    if (a.tTimeTxt === '全天' && b.tTimeTxt !== '全天') {
+      return 1
+    }
+    if (a.tTimeTxt !== '全天' && b.tTimeTxt === '全天') {
+      return -1
+    }
+    if (a.tTimeTxt === '全天' && b.tTimeTxt === '全天') {
+      return 0
+    }
+    const timeA = a.tTimeTxt.split(':')
+    const timeB = b.tTimeTxt.split(':')
+    const hourA = parseInt(timeA[0])
+    const minuteA = parseInt(timeA[1])
+    const hourB = parseInt(timeB[0])
+    const minuteB = parseInt(timeB[1])
+    if (hourA < hourB) {
+      return -1
+    } else if (hourA > hourB) {
+      return 1
+    } else {
+      if (minuteA < minuteB) {
+        return -1
+      } else if (minuteA > minuteB) {
+        return 1
+      } else {
+        return 0
+      }
+    }
+  })
+
   return temp
 }

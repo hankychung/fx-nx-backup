@@ -2,7 +2,6 @@ import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
-import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../../../../../global/nxController'
 import timeGetter from '../../../../../../global/timeGetter'
 
@@ -11,7 +10,6 @@ export const useMenuSelectTime = ({
 }: {
   data: IScheduleTask
 }): IAction => {
-  const [showMsg] = useMessage()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   const action = useMemoizedFn(async () => {
@@ -28,7 +26,7 @@ export const useMenuSelectTime = ({
       data.start_time &&
       (await timeGetter.getDate()) >= data.start_time
     ) {
-      showMsg({
+      globalNxController.showMsg({
         msgType,
         content: '会议已开始，无法修改'
       })
@@ -45,7 +43,7 @@ export const useMenuSelectTime = ({
         content = `${ScheduleTaskConst.MatterType[matterType]}已完成，无法修改`
       }
 
-      showMsg({
+      globalNxController.showMsg({
         msgType,
         content
       })

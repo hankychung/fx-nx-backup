@@ -1,0 +1,60 @@
+.modalWrap {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+}
+.wrap {
+  width: 332px;
+  height: 158px;
+  background: linear-gradient(179.7deg, #ffc85e 0.12%, #ffffff 49.86%);
+  border-radius: 6px;
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    .close {
+      margin-left: 304px;
+      margin-top: 36px;
+      cursor: pointer;
+    }
+    svg {
+      position: absolute;
+    }
+  }
+  .content {
+    margin-top: 31px;
+    margin-left: 24px;
+
+    > div:first-child {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 22px;
+      color: rgba(75, 48, 20, 1);
+    }
+    > div:nth-child(2) {
+      margin-top: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 22px;
+      color: rgba(165, 121, 37, 1);
+    }
+    > div:nth-child(3) {
+      margin-top: 14px;
+      width: 292px;
+      height: 44px;
+      border-radius: 8px;
+      background: linear-gradient(270.36deg, #ffd074 0.58%, #f2ac4d 99.97%);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 25px;
+      color: rgba(75, 48, 20, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+}

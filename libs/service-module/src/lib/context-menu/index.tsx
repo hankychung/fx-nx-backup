@@ -79,7 +79,6 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
       onClose()
     },
     getVisible: () => {
-      console.log('@@@ 触发 nx visible', visible)
       return visible
     }
   }))

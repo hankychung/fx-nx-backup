@@ -6,6 +6,7 @@ import {
   IOpenTaskDetail,
   IHandlerTaskAddTaker
 } from './types/controller'
+import { Msg } from '@flyele-nx/ui'
 
 /**
  * nxController
@@ -16,7 +17,7 @@ class GlobalNxController {
   /**
    * ipc invoke
    */
-  ipcRendererInvoke(channel: string, params: any) {
+  ipcRendererInvoke(channel: string, params?: any) {
     if (nxControllerRegister.ipcRenderer) {
       try {
         nxControllerRegister.ipcRenderer.invoke(channel, params)
@@ -140,6 +141,21 @@ class GlobalNxController {
    */
   async getDayView(params: DayViewParamsProps) {
     return nxControllerRegister.getDayView(params)
+  }
+
+  /**
+   * showMsg
+   */
+  showMsg(data: Msg) {
+    if (nxControllerRegister.showMsg) {
+      try {
+        nxControllerRegister.showMsg(data)
+      } catch (e) {
+        console.log('showMsg 失败', e)
+      }
+    } else {
+      console.log('showMsg 未注册')
+    }
   }
 }
 

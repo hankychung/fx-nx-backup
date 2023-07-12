@@ -14,7 +14,6 @@ import {
   TaskDispatchApi
 } from '@flyele-nx/service'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
-import { useMessage } from '@flyele-nx/ui'
 import { TaskHandler } from '../../schedule-list'
 import { globalNxController } from '../../global/nxController'
 import PUB from '../../global/types/pubsub'
@@ -49,8 +48,6 @@ type IReduce = {
  * **/
 export const useTaskMemberRemove = () => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
-
-  const [showMsg] = useMessage()
 
   // 退出事项
   const { run } = useRequest<any, [IRunParams]>(
@@ -101,7 +98,7 @@ export const useTaskMemberRemove = () => {
           })
         }
 
-        showMsg({
+        globalNxController.showMsg({
           msgType: '成功',
           content: '操作成功'
         })
@@ -113,7 +110,7 @@ export const useTaskMemberRemove = () => {
 
         console.log('remove error', _error)
 
-        showMsg({
+        globalNxController.showMsg({
           msgType: '错误',
           content: '移除失败'
         })

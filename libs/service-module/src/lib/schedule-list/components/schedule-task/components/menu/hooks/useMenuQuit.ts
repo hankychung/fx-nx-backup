@@ -18,15 +18,21 @@ import { useExitTask } from '../../../../../utils/hooks/useExitTask'
 import { useExitTodo } from '../../../../../utils/hooks/useExitTodo'
 import { useExitMeeting } from '../../../../../utils/hooks/useExitMeeting'
 
-export const useMenuQuit = ({ data }: { data: IScheduleTask }): IAction => {
+export const useMenuQuit = ({
+  data,
+  isVipWin
+}: {
+  data: IScheduleTask
+  isVipWin: boolean
+}): IAction => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
-  const cancelTask = useCancelTask({ taskId: data.ref_task_id })
-  const exitTask = useExitTask({ taskId: data.ref_task_id })
-  const cancelTodo = useCancelTodo({ taskId: data.ref_task_id })
-  const exitTodo = useExitTodo({ taskId: data.ref_task_id })
-  const cancelMeeting = useCancelMeeting({ taskId: data.ref_task_id })
-  const exitMeeting = useExitMeeting({ taskId: data.ref_task_id })
+  const cancelTask = useCancelTask({ taskId: data.ref_task_id, isVipWin })
+  const exitTask = useExitTask({ taskId: data.ref_task_id, isVipWin })
+  const cancelTodo = useCancelTodo({ taskId: data.ref_task_id, isVipWin })
+  const exitTodo = useExitTodo({ taskId: data.ref_task_id, isVipWin })
+  const cancelMeeting = useCancelMeeting({ taskId: data.ref_task_id, isVipWin })
+  const exitMeeting = useExitMeeting({ taskId: data.ref_task_id, isVipWin })
 
   const action = useMemoizedFn(async () => {
     const taskId = data.ref_task_id

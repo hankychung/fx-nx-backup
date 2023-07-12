@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useMemo } from 'react'
 import style from './index.module.scss'
 import { Modal } from 'antd'
-import { ReactComponent as Diamond } from '../../../../../../assets/payImg/diamond.svg'
+import { ReactComponent as Diamond } from '../../../../../../assets/payImg/diamond_small.svg'
 import { ReactComponent as Close } from '../../../../../../assets/payImg/close.svg'
 import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../../../utils'
@@ -33,7 +33,7 @@ const PayUnfinish = ({
     >
       <div className={style.wrap}>
         <div className={style.head}>
-          <Diamond style={{ height: 40, width: 56 }}></Diamond>
+          <Diamond></Diamond>
           <Close
             className={style.close}
             onClick={() => {

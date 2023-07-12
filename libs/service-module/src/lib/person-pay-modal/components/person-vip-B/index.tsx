@@ -9,7 +9,7 @@ import style from './index.module.scss'
 import price_box_BG from '../../../../assets/payImg/price_box_bg.svg'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
-import { getResidueTime, regFenToYuan } from '../../utils'
+import { getResidueTime, regFenToYuan } from './utils'
 import { useCurrentTime } from '../../hooks/useCurrentTime'
 import { SelectMemberContext } from '../../context/context'
 import PersonVipEmpty from '../person-vip/components/right-block/person-vip-empty'
@@ -265,15 +265,13 @@ const PersonVipB = ({
       <div className={style.below}>
         {/* 支付按钮 */}
         {!isLifeLong && (
-          <div>
-            <PayButton
-              activeGood={activeGood}
-              payClick={payClick}
-              goProtocol={goProtocol}
-              goInterests={goInterests}
-              vipMealList={vipMealList}
-            />
-          </div>
+          <PayButton
+            activeGood={activeGood}
+            payClick={payClick}
+            goProtocol={goProtocol}
+            goInterests={goInterests}
+            vipMealList={vipMealList}
+          />
         )}
         {isLifeLong && (
           <div>

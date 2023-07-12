@@ -26,6 +26,8 @@ import dayjs from 'dayjs'
 import { getResidueTime } from '../quick-pay/utils'
 import { useCurrentTime } from '../quick-pay/hoooks/useCurrentTime'
 import { Modal } from 'antd'
+import { globalNxController } from '../global/nxController'
+import { useUserInfoStore } from '../store/useUserInfoStore'
 
 interface Iprops {
   onClose: () => void
@@ -43,6 +45,7 @@ const RetrievePayModal = (props: Iprops) => {
   const [mealTime, setMealTime] = useState('')
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
+  const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
 
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
@@ -134,7 +137,17 @@ const RetrievePayModal = (props: Iprops) => {
   //获取套餐
   useEffect(() => {
     getMealList()
-  }, [getMealList, vipMeal])
+  }, [getMealList])
+
+  useEffect(() => {
+    if (!isShow) return
+    globalNxController.sensorSend('touch_to_pay_rule', {
+      touch_rule: vipMeal?.price
+        ? '退出支付挽回弹窗--优惠期内'
+        : '退出支付挽回弹窗--优惠期外',
+      page_name: userId % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
+    })
+  }, [isShow, userId, vipMeal?.price])
 
   return (
     <>

@@ -5,19 +5,16 @@ import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
 import dayjs from 'dayjs'
-import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../../../../../../global/nxController'
 import PUB from '../../../../../../global/types/pubsub'
 import timeGetter from '../../../../../../global/timeGetter'
 
 export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
-  const [showMsg] = useMessage()
-
   const action = useMemoizedFn(() => {
     const dispatch = data.dispatch_id
     const topmost_at = data.topmost_at
     TaskDispatchApi.pinSchedule(dispatch).then(async () => {
-      showMsg({
+      globalNxController.showMsg({
         msgType: '消息',
         content: `${topmost_at ? '已取消置顶' : '已置顶'}`
       })

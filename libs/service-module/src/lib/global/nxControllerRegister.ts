@@ -5,6 +5,7 @@ import {
   IOpenTaskDetail,
   IHandlerTaskAddTaker
 } from './types/controller'
+import { Msg } from '@flyele-nx/ui'
 
 /**
  * nxController 控制器的注册器
@@ -19,6 +20,7 @@ class NxControllerRegister {
   editTaskSummary: ((data: { task: IScheduleTask }) => void) | null = null
   openTaskDetail: ((data: IOpenTaskDetail) => void) | null = null
   handlerTaskAddTaker: ((data: IHandlerTaskAddTaker) => void) | null = null
+  showMsg: ((v: Msg) => void) | null = null
 
   getDayView: (params: DayViewParamsProps) => {
     code: number
@@ -93,6 +95,15 @@ class NxControllerRegister {
    */
   handlerTaskAddTakerRegister(callback: (data: IHandlerTaskAddTaker) => void) {
     this.handlerTaskAddTaker = callback
+  }
+
+  /**
+   * showMsg
+   * 本来是使用nx里面的 showMsg，但是用在 electron后 不会关闭
+   * 所以还是从外部传入吧
+   */
+  handlerShowMsgRegister(callback: (v: Msg) => void) {
+    this.showMsg = callback
   }
 }
 

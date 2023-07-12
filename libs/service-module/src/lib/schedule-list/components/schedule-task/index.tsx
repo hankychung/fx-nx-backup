@@ -88,7 +88,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     console.error('taskKey not found', taskKey, useScheduleStore.getState())
   }
 
-  const { menuActions } = useMenuActions({ data })
+  const { menuActions } = useMenuActions({ data, isVipWin })
 
   // 记录是否为卡片顶级事项
   const isTopTask = useMemo(() => {

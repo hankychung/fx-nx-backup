@@ -10,10 +10,11 @@ import { useMenuSummary } from './useMenuSummary'
 
 interface IMenuActions {
   data: IScheduleTask
+  isVipWin?: boolean
 }
 
 export const useMenuActions = (props: IMenuActions) => {
-  const { data } = props
+  const { data, isVipWin = false } = props
 
   /**
    * 菜单功能—置顶
@@ -48,7 +49,7 @@ export const useMenuActions = (props: IMenuActions) => {
   /**
    * 菜单功能—退出/取消
    */
-  const quit = useMenuQuit({ data })
+  const quit = useMenuQuit({ data, isVipWin })
 
   /**
    * 右键菜单

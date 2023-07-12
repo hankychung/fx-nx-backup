@@ -16,8 +16,6 @@ class ContextMenuTool {
   }
 
   getVisible() {
-    console.log('@@@ nx menu getVisible', this.contextMenu)
-    console.log('@@@ nx menu res', this.contextMenu?.getVisible())
     return this.contextMenu?.getVisible()
   }
 }

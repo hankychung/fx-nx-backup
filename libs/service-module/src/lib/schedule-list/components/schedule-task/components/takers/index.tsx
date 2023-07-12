@@ -186,6 +186,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         msgType: '消息',
         content: `人数已达${resAuth.maxTaker}人上限`
       })
+      console.log('@@ 返回 false 222')
       return false
     }
 
@@ -194,8 +195,11 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         msgType: '错误',
         content: '没参与事项不可修改'
       })
+      console.log('@@ 返回 false 111')
       return false
     }
+
+    console.log('@@ 返回 true')
     return true
   })
 
@@ -248,7 +252,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
      * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
      */
     const contextMenuVisible = contextMenuTool.getVisible()
-    console.log('@@@ contextMenuVisible', contextMenuVisible)
     if (contextMenuVisible) {
       contextMenuTool.close()
       return
@@ -256,12 +259,15 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
     const status = getOperationStatus(task, userId)
 
+    console.log('@@@ status', status)
     if (status === 'complete') {
       showMsg({ content: '已完成的工作流事项不支持添加人' })
       return
     }
 
+    console.log('@@@ 准备进入 add')
     if (await isCanAdd()) {
+      console.log('@@@ 准备 show')
       popCtrl.addClickAlwaysHide().show()
     }
   })

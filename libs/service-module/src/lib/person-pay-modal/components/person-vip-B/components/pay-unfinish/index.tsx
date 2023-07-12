@@ -11,12 +11,17 @@ const PayUnfinish = ({
   isShow,
   onClose,
   payClick,
+  vipMealList
 }: {
   isShow: boolean
   onClose: () => void
   payClick: () => void
+  vipMealList: IActiveGoods[]
 }) => {
-
+  console.log('vipMealList', vipMealList)
+  const meal = useMemo(() => {
+    return vipMealList.find((item) => item.name === '终身会员')
+  }, [vipMealList])
   return (
     <Modal
       open={isShow}
@@ -39,7 +44,10 @@ const PayUnfinish = ({
         <div className={style.content}>
           <div>未支付成功</div>
           <div>终身会员限时优惠，不要错过啦</div>
-          <div onClick={payClick}>仅需¥198，开通终身会员</div>
+          <div onClick={payClick}>
+            仅需¥{regFenToYuan((meal?.now_price || 19800) - (meal?.price || 0))}
+            ，开通终身会员
+          </div>
         </div>
       </div>
     </Modal>

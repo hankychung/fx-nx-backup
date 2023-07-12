@@ -5,7 +5,6 @@ import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { regFenToYuan } from '../../utils'
 import { VipMealType } from '../controller'
 import style from './index.module.scss'
-import PayUnfinish from '../person-vip-B/components/pay-unfinish'
 import { SelectMemberContext } from '../../context/context'
 
 interface Iprops {
@@ -102,11 +101,11 @@ const PayButton = (props: Iprops) => {
           《飞项会员协议》
         </span>
       </div>
-      <PayUnfinish
+      {/* <PayUnfinish
         isShow={isShow}
         onClose={() => setIsShow(false)}
         payClick={payClick}
-      />
+      /> */}
     </div>
   )
 }

@@ -128,7 +128,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       })
 
       const queryChildren = await globalNxController.getDayView({
-        parent_id: ref_task_id
+        parentId: `${data.parent_id ? `${data.parent_id},` : ''}${ref_task_id}`
       })
 
       console.log('@querychildren', queryChildren, tasks)

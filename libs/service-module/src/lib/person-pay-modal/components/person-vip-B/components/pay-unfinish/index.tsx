@@ -1,11 +1,12 @@
-import React, { useContext, useState, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import style from './index.module.scss'
 import { Modal } from 'antd'
 import { ReactComponent as Diamond } from '../../../../../../assets/payImg/diamond_small.svg'
 import { ReactComponent as Close } from '../../../../../../assets/payImg/close.svg'
 import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../../../utils'
-import { useMemoizedFn, useMount } from 'ahooks'
+import { globalNxController } from '../../../../../../lib/global/nxController'
+import { useUserInfoStore } from '../../../../../../lib/store/useUserInfoStore'
 
 const PayUnfinish = ({
   isShow,
@@ -19,9 +20,24 @@ const PayUnfinish = ({
   vipMealList: IActiveGoods[]
 }) => {
   console.log('vipMealList', vipMealList)
+
+  const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
+
   const meal = useMemo(() => {
     return vipMealList.find((item) => item.name === '终身会员')
   }, [vipMealList])
+
+  useEffect(() => {
+    if (!isShow) return
+
+    globalNxController.sensorSend('touch_to_pay_rule', {
+      touch_rule: meal?.price
+        ? '退出支付挽回弹窗--优惠期内'
+        : '退出支付挽回弹窗--优惠期外',
+      page_name: userId % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
+    })
+  }, [isShow, userId, meal?.price])
+
   return (
     <Modal
       open={isShow}

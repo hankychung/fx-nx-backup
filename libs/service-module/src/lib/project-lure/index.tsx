@@ -6,7 +6,7 @@ import {
   FlyBasePopperCtrl,
   useController
 } from '@flyele/flyele-components'
-import { useMemoizedFn, useMount } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import style from './index.module.scss'
 import { SpaceType, SpaceTypeConst, workspaceApi } from '@flyele-nx/service'
 import { SpaceAvatar } from '@flyele-nx/ui'

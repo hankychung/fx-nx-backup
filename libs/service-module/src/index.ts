@@ -25,8 +25,7 @@ import RetrievePayModalTeam from './lib/retrieve-pay-modal-team'
 import RetrievePayModal from './lib/retrieve-pay-modal'
 import { service, envStore } from '@flyele-nx/service'
 import { DayExecution } from './lib/day-execution'
-
-export * from './lib/project-lure' // 项目权益弹窗
+import { ProjectLure } from './lib/project-lure'
 
 export * from './lib/schedule-list' // 日程列表
 
@@ -47,6 +46,7 @@ export {
   contextMenuTool,
   DayExecution,
   RetrievePayModalTeam,
+  ProjectLure,
   RetrievePayModal
 }
 

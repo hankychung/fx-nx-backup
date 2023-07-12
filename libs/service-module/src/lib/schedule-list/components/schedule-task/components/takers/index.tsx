@@ -170,8 +170,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const isInTask = useMemo(() => {
     if (isCreator) return true
 
-    console.log('@@@ takers', takers)
-    console.log('@@@ userId', userId)
     return !!takers.find((taker) => taker.taker_id === userId)
   }, [isCreator, takers, userId])
 
@@ -188,7 +186,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         msgType: '消息',
         content: `人数已达${resAuth.maxTaker}人上限`
       })
-      console.log('@@ 返回 false 222')
       return false
     }
 
@@ -197,11 +194,9 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         msgType: '错误',
         content: '没参与事项不可修改'
       })
-      console.log('@@ 返回 false 111')
       return false
     }
 
-    console.log('@@ 返回 true')
     return true
   })
 
@@ -261,15 +256,12 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
     const status = getOperationStatus(task, userId)
 
-    console.log('@@@ status', status)
     if (status === 'complete') {
       showMsg({ content: '已完成的工作流事项不支持添加人' })
       return
     }
 
-    console.log('@@@ 准备进入 add')
     if (await isCanAdd()) {
-      console.log('@@@ 准备 show')
       popCtrl.addClickAlwaysHide().show()
     }
   })

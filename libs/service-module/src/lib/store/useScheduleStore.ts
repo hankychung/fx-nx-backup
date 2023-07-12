@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { ILocalTask } from '@flyele-nx/service'
 import { produce } from 'immer'
-import { getKey, getSortedSchedule } from '../schedule-list/utils'
+import { getKey, getKeyOfList, getSortedSchedule } from '../schedule-list/utils'
 
 export interface IState {
   // 以下所有日期共用
@@ -138,18 +138,14 @@ const useScheduleStore = create<IState & IMutation>((set) => {
           const dict: { [k: string]: ILocalTask } = {}
 
           arr.forEach((item) => {
-            const { ref_task_id, repeat_id, finish_time } = item
+            const { ref_task_id, repeat_id } = item
             if (repeat_id) {
               const key = getKey(item)
 
               dict[key] = item
             }
 
-            if (finish_time) {
-              keys.push(getKey(item))
-            } else {
-              keys.push(item.ref_task_id)
-            }
+            keys.push(getKeyOfList(item))
 
             if (isFinished && repeat_id) {
               // do nothing

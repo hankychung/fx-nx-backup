@@ -1,7 +1,7 @@
 import { IScheduleTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import { produce } from 'immer'
-import { getKey } from './index'
+import { getKeyOfList } from './index'
 import { uniq } from 'lodash'
 
 /**
@@ -32,9 +32,8 @@ class ExecutionHandler {
           }
         }
 
-        const ids = list.map((item) => {
-          return getKey(item)
-        })
+        const ids = list.map(getKeyOfList)
+
         if (isFinished) {
           state.todayCompletedExecution[date] = uniq([
             ...state.todayCompletedExecution[date],

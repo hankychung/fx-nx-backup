@@ -152,6 +152,7 @@ const PersonVipB = ({
         <div className={style.priceBox}>
           {vipMealList.map((_: IActiveGoods) => {
             let num = 0
+
             if (_.end_at) {
               num = dayjs.unix(_.end_at).valueOf() / 1000 //结束时间
             }
@@ -270,6 +271,7 @@ const PersonVipB = ({
               payClick={payClick}
               goProtocol={goProtocol}
               goInterests={goInterests}
+              vipMealList={vipMealList}
             />
           </div>
         )}

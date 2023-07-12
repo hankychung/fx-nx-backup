@@ -42,7 +42,6 @@ const RetrievePayModal = (props: Iprops) => {
             res.data &&
             res.data.length &&
             res.data.filter((item) => item.name === '终身会员')
-          console.log('test-list', list)
           if (list) {
             const new_arr = list.map((item) => {
               const arr = getItem(item.id, _.data || [])

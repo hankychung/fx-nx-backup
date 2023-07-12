@@ -39,7 +39,6 @@ import {
 import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
 import { globalNxController } from '../global/nxController'
-import { useMessage } from '@flyele-nx/ui'
 
 const { TextArea } = Input
 
@@ -79,7 +78,6 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const getStepsLoading = useRef(false)
   const { contactDict } = useContactStore()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
-  const [showMsg] = useMessage()
 
   const stepList = useMemo(
     () => stepsFormatter(steps, curStepId, !!addUser),
@@ -265,7 +263,10 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepRollback({ reason: inputVal, taskId, curStepId })
       .then(() => {
         changeStatus?.()
-        showMsg({ msgType: '成功', content: '操作成功，该事项已退回上一步' })
+        globalNxController.showMsg({
+          msgType: '成功',
+          content: '操作成功，该事项已退回上一步'
+        })
       })
       .catch((err: any) => {
         if (err?.response?.data && err?.response?.data?.code === 40050) {
@@ -311,7 +312,10 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepComplete({ curStepId, taskId })
       .then(() => {
         changeStatus?.()
-        showMsg({ msgType: '成功', content: getHandleNextTxt() })
+        globalNxController.showMsg({
+          msgType: '成功',
+          content: getHandleNextTxt()
+        })
       })
       .catch((err) => {
         if (err?.response?.data && err?.response?.data?.code === 40050) {
@@ -415,22 +419,31 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   useEffect(() => {
     if (showModal) {
       closeModal()
-      showMsg({ content: '他人已处理' })
+      globalNxController.showMsg({ content: '他人已处理' })
     }
-  }, [curStepId, closeModal, showModal, showMsg])
+  }, [curStepId, closeModal, showModal])
 
   const overToast = useMemoizedFn(() => {
     if (isOverDoneVerify()) {
-      showMsg({ msgType: '消息', content: '工作流事项，暂不支持重新打开' })
+      globalNxController.showMsg({
+        msgType: '消息',
+        content: '工作流事项，暂不支持重新打开'
+      })
     } else {
-      showMsg({ msgType: '消息', content: '当前步骤，你已处理' })
+      globalNxController.showMsg({
+        msgType: '消息',
+        content: '当前步骤，你已处理'
+      })
     }
   })
 
   const clickIcon = useMemoizedFn(async () => {
     switch (status) {
       case 'pass': {
-        showMsg({ msgType: '消息', content: '当前步骤，你无需处理' })
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '当前步骤，你无需处理'
+        })
         break
       }
       case 'complete': {
@@ -528,7 +541,10 @@ const _WorkflowOperation: ForwardRefRenderFunction<
                 const { value } = e.target
 
                 if (value.length >= 150) {
-                  showMsg({ msgType: '消息', content: '最多支持150个汉字' })
+                  globalNxController.showMsg({
+                    msgType: '消息',
+                    content: '最多支持150个汉字'
+                  })
                 }
 
                 setInputVal(value)

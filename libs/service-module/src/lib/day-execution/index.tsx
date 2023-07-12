@@ -109,6 +109,8 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
     const idList = todayExecution[day] || []
     const list = idList.map((id) => taskDict[id])
 
+    console.log('@check list', idList, list, taskDict)
+
     return disposalTodayList(list)
   }, [day, taskDict, todayExecution])
 

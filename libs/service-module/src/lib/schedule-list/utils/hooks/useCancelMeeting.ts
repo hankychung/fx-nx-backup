@@ -1,4 +1,4 @@
-import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
+import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { useScheduleStore } from '../../../store/useScheduleStore'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
@@ -6,6 +6,7 @@ import { ScheduleTaskConst } from '@flyele-nx/service'
 import { TaskHandler } from '../taskHandler'
 import { globalNxController } from '../../../global/nxController'
 import PUB from '../../../global/types/pubsub'
+import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
 
 /**
  * 用于退出代办的hook，外部给taskId，其余逻辑在这里完成
@@ -16,19 +17,21 @@ import PUB from '../../../global/types/pubsub'
  * 执行回调
  * 这些东西目前不需要，需要的时候可以随时扩展
  */
-export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
+export const useCancelMeeting = ({
+  taskId,
+  isVipWin
+}: {
+  taskId: string
+  isVipWin: boolean
+}) => {
   const data = useScheduleStore((state) => state.taskDict[taskId])
 
   // 检查是否为挂件
-  // const isVipWin = document.getElementById('vipSmallToolsWinNow')
   const forVipSmallWin = () => {
-    //   if (isVipWin) {
-    //     ipcRenderer.invoke('vipSmallToolsWin-siszable-reset')
-    //   }
+    if (isVipWin) {
+      globalNxController.ipcRendererInvoke('vipSmallToolsWin-siszable-reset')
+    }
   }
-  // 检测网络状态
-  // 消息提示
-  const [showMsg] = useMessage()
 
   /**
    * 执行取消操作，这是内部方法，弹窗在下面
@@ -51,7 +54,7 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
           }
         }
       })
-      showMsg({
+      globalNxController.showMsg({
         content: '取消成功',
         msgType: '成功',
         duration: 1.5
@@ -63,7 +66,7 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
       TaskHandler.removeTasks([taskId])
     } else {
       globalNxController.pubJsPublish(PUB.DB_INCREASE_02_UPDATE_FORCE, taskId)
-      showMsg({
+      globalNxController.showMsg({
         content: '取消失败',
         msgType: '错误',
         duration: 1.5
@@ -72,10 +75,10 @@ export const useCancelMeeting = ({ taskId }: { taskId: string }) => {
   })
 
   return function showConfirm(taskId: string) {
-    // isVipWin &&
-    //   ipcRenderer.invoke('vipSmallToolsWin-siszable', {
-    //     sizeType: SIZE_TYPE_KEY.确认弹窗,
-    //   })
+    isVipWin &&
+      globalNxController.ipcRendererInvoke('vipSmallToolsWin-siszable', {
+        sizeType: SIZE_TYPE_KEY.确认弹窗
+      })
 
     AlertWithOkAndCancel.alert({
       // 这些文案如果需要可配置，加上useState，放到hook参数里

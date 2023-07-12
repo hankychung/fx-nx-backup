@@ -3,10 +3,9 @@ import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/service'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
-import { useMessage } from '@flyele-nx/ui'
+import { globalNxController } from '../../../../../../global/nxController'
 
 export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
-  const [showMsg] = useMessage()
   const { hideOrShow } = useHide()
 
   const action = useMemoizedFn(() => {
@@ -25,7 +24,7 @@ export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
       show: isHide
     }).then(() => {
       !data.has_child &&
-        showMsg({
+        globalNxController.showMsg({
           msgType: '消息',
           content: `已在日程中${isHide ? '显示' : '隐藏'}`
         })

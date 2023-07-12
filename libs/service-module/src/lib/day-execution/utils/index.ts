@@ -146,6 +146,5 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     }
   })
 
-  console.log('@@@ 看看 nx 的 temp', temp)
   return temp
 }

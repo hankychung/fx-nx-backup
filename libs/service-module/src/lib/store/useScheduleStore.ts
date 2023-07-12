@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/service'
 import { produce } from 'immer'
 import { getKey, getSortedSchedule } from '../schedule-list/utils'
 
@@ -45,49 +45,53 @@ interface IMutation {
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
 }
 
+const initScheduleState: IState = {
+  /**
+   * 日程列表字典, key为日期, value为该日期下事项列表id数组(带排序)
+   */
+  schedule: {},
+  /**
+   * 日程已完成列表字典, key为日期, value为该日期下事项列表id数组(带排序)
+   */
+  finishSchedule: {},
+  /**
+   * 子事项字典
+   */
+  childrenDict: {},
+  /**
+   * 事项字典
+   * key为taskId -> 普通事项/未完成的循环事项
+   * key为taskId + repeatId -> 已完成的循环事项
+   */
+  taskDict: {},
+  /**
+   * 事项展开字典, key为日期, value为该日期下的事项收合字典
+   */
+  expandedDict: {},
+  /**
+   * 今日已完成数量
+   */
+  todayFinishCount: 0,
+  /**
+   * 当日事项 未完成列表数据 仅id
+   * 具体数据 通过 taskDict 拿
+   */
+  todayExecution: {},
+  /**
+   * 当日事项 已完成列表数据 仅id
+   * 具体数据 通过 taskDict 拿
+   */
+  todayCompletedExecution: {},
+  /**
+   * 当天事项 统计数据（未完成/已完成）的数量
+   * 从接口返回出来的
+   */
+  todayExecutionCount: {}
+}
+
 const useScheduleStore = create<IState & IMutation>((set) => {
   return {
-    /**
-     * 日程列表字典, key为日期, value为该日期下事项列表id数组(带排序)
-     */
-    schedule: {},
-    /**
-     * 日程已完成列表字典, key为日期, value为该日期下事项列表id数组(带排序)
-     */
-    finishSchedule: {},
-    /**
-     * 子事项字典
-     */
-    childrenDict: {},
-    /**
-     * 事项字典
-     * key为taskId -> 普通事项/未完成的循环事项
-     * key为taskId + repeatId -> 已完成的循环事项
-     */
-    taskDict: {},
-    /**
-     * 事项展开字典, key为日期, value为该日期下的事项收合字典
-     */
-    expandedDict: {},
-    /**
-     * 今日已完成数量
-     */
-    todayFinishCount: 0,
-    /**
-     * 当日事项 未完成列表数据 仅id
-     * 具体数据 通过 taskDict 拿
-     */
-    todayExecution: {},
-    /**
-     * 当日事项 已完成列表数据 仅id
-     * 具体数据 通过 taskDict 拿
-     */
-    todayCompletedExecution: {},
-    /**
-     * 当天事项 统计数据（未完成/已完成）的数量
-     * 从接口返回出来的
-     */
-    todayExecutionCount: {},
+    ...initScheduleState,
     /**
      * 初始化/更新事项列表
      */
@@ -200,4 +204,4 @@ const useScheduleStore = create<IState & IMutation>((set) => {
   }
 })
 
-export { useScheduleStore }
+export { useScheduleStore, initScheduleState }

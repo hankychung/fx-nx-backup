@@ -19,18 +19,49 @@ import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { getResidueTime } from '../quick-pay/utils'
 import { useCurrentTime } from '../quick-pay/hoooks/useCurrentTime'
+import { Modal } from 'antd'
 
 interface Iprops {
   onClose: () => void
   isShowPay: boolean
+  isShow: boolean
 }
 const RetrievePayModal = (props: Iprops) => {
-  const { onClose, isShowPay } = props
+  const { onClose, isShowPay, isShow } = props
   const { nowScecond } = useCurrentTime()
-
+  const [mealTime, setMealTime] = useState('')
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
+  }
+
+  const getResidueTime = (totalSeconds: number, text = '0') => {
+    //   const nowtime = new Date().getTime() // 当前时间 毫秒数
+    //   const endTime = dayjs.unix(end).valueOf() //结束时间  毫秒数
+    //   const totalSeconds = (endTime - nowtime) / 1000 // 结束时间-当前时间 = 剩余多少时间
+    const day = parseInt(`${totalSeconds / 3600 / 24}`) //天
+    const hour = parseInt(`${(totalSeconds / 3600) % 24}`)
+      .toString()
+      .padStart(2, '0') //时
+    const minute = parseInt(`${(totalSeconds / 60) % 60}`)
+      .toString()
+      .padStart(2, '0') //分
+    const second = parseInt(`${totalSeconds % 60}`)
+      .toString()
+      .padStart(2, '0') //秒
+    let residueTime =
+      '倒计时：' + day + '天 ' + hour + '时 ' + minute + '分 ' + second + '秒'
+    if (day >= 1) {
+      residueTime = `${day + 1}`
+    }
+    if (day === 0) {
+      residueTime = `${hour}:${minute}:${second}`
+    }
+    if (totalSeconds <= 0) {
+      residueTime = '0'
+    }
+
+    return residueTime
   }
   const getMealList = useMemoizedFn(async () => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
@@ -49,6 +80,15 @@ const RetrievePayModal = (props: Iprops) => {
                 const num = arr[0].end_at
                   ? dayjs.unix(arr[0].end_at).valueOf() / 1000
                   : 0 //结束时间
+                setMealTime(
+                  getResidueTime(
+                    num - nowScecond,
+                    (
+                      (item?.now_price - (item.price || 0)) /
+                      item?.original_price
+                    ).toFixed(2)
+                  )
+                )
                 return {
                   ...arr[0],
                   ...item,
@@ -64,7 +104,7 @@ const RetrievePayModal = (props: Iprops) => {
                 active: false
               }
             })
-            console.log('new_arr', new_arr)
+            console.log('new_arr1111111111', new_arr)
             setVipMeal(new_arr[0])
           }
         }
@@ -79,50 +119,60 @@ const RetrievePayModal = (props: Iprops) => {
   return (
     <>
       {!isShowPay && (
-        <div className={style.wrap}>
-          <div className={style.head}>
-            <Diamond></Diamond>
-            <Close
-              className={style.close}
-              onClick={() => {
-                onClose()
-              }}
-            ></Close>
-          </div>
-          <div className={style.content}>
-            <div className={style.left}>
-              <div className={style.left_title}>真的要放弃终身会员优惠吗？</div>
-              {vipMeal?.price ? (
-                <>
-                  <div className={style.left_tips}>
-                    限时优惠，到期将恢复原价
-                  </div>
-                  <div className={style.left_coupon}>
-                    <div className={style.coupon_content}>
-                      限时&nbsp;23:59:00
+        <Modal
+          open={isShow}
+          centered
+          footer={null}
+          closable={false}
+          wrapClassName={style.modalWrap}
+        >
+          <div className={style.wrap}>
+            <div className={style.head}>
+              <Diamond></Diamond>
+              <Close
+                className={style.close}
+                onClick={() => {
+                  onClose()
+                }}
+              ></Close>
+            </div>
+            <div className={style.content}>
+              <div className={style.left}>
+                <div className={style.left_title}>
+                  真的要放弃终身会员优惠吗？
+                </div>
+                {vipMeal?.price ? (
+                  <>
+                    <div className={style.left_tips}>
+                      限时优惠，到期将恢复原价
                     </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={style.left_tips}>
-                    开通终身会员，即可持续使用以下权益
-                  </div>
-                  <EquityList style={{ marginTop: 20 }} />
-                </>
-              )}
-            </div>
-            <div className={style.right}>
-              {vipMeal && (
-                <PayQrCode
-                  isShowPay={isShowPay}
-                  vipMeal={vipMeal}
-                  onClose={onClose}
-                />
-              )}
+                    <div className={style.left_coupon}>
+                      <div className={style.coupon_content}>
+                        限时&nbsp;{mealTime}天
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={style.left_tips}>
+                      开通终身会员，即可持续使用以下权益
+                    </div>
+                    <EquityList style={{ marginTop: 20 }} />
+                  </>
+                )}
+              </div>
+              <div className={style.right}>
+                {vipMeal && (
+                  <PayQrCode
+                    isShowPay={isShowPay}
+                    vipMeal={vipMeal}
+                    onClose={onClose}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </>
   )

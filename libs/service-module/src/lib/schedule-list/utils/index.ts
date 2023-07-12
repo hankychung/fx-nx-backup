@@ -1,4 +1,8 @@
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import {
+  ILocalTask,
+  IScheduleTask,
+  ScheduleTaskConst
+} from '@flyele-nx/service'
 import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
@@ -395,6 +399,10 @@ function getInsertedFinishTasks(taskIds: string[]) {
   }
 }
 
+function getKeyOfList(task: ILocalTask) {
+  return task.finish_time ? getKey(task) : task.ref_task_id
+}
+
 export {
   getKey,
   getChildrenDict,
@@ -406,5 +414,6 @@ export {
   getDiffKeys,
   getTaskIdsByDispatch,
   handleLogout,
-  getInsertedFinishTasks
+  getInsertedFinishTasks,
+  getKeyOfList
 }

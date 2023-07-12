@@ -36,7 +36,7 @@ export const MemberIntroduction = ({
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCorpModal, setShowCorpModal] = useState(false)
-  const [modalType, setModalType] = useState<VipMealType>()
+  const [showPersonModal, setShowPersonModal] = useState(true)
 
   const [showCustomerModal, setShowCustomerModal] = useState(false)
   const [isRetrievePay, setIsRetrievePay] = useState(false)
@@ -50,19 +50,19 @@ export const MemberIntroduction = ({
 
   const onClickBtn = async (key: string) => {
     //方便调试
-    await service.updateToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk4NDI5MzAsImlhdCI6MTY4ODk3ODQyOSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNDg2MTk1MTc4OTYzMTg1IiwiRGV2aWNlSUQiOiJmMTlkNWE1Mi1jNGRkLTRjNWQtOTRmNy1jZDQwYTZhN2ZmNjUiLCJQbGF0Zm9ybSI6IndlYiIsIkNsaWVudFZlcnNpb24iOiIwLjAuMSIsIlBob25lIjoiIiwiTmlja05hbWUiOiIiLCJBdmF0YXIiOiIifQ.PKwXhbB_X8R6eMKdWjemVMumqXc6zNQugN-dDaZAH10'
-    )
-    setVipType(key)
-    await fetchTakerList()
-    setShow(true)
-    // if (key === 'personal' || key === 'team') {
-    //   setVipType(key)
-    //   setShowLoginModal(true)
-    // }
-    // if (key === 'custom') {
-    //   setShowCustomerModal(true)
-    // }
+    // await service.updateToken(
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkxNTEwNDIsImlhdCI6MTY4OTE0MzMxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTc0NDgxNTM1Nzk1MzYzIiwiRGV2aWNlSUQiOiJjNzNhMTEwMy0wYzJmLTQ0ZTQtYWNhNy05MWY1Y2ZhM2UxYTAiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.seDDb5ESgFvjx4QyIXbG92hlMglLq7aMU_cXwG9MQkc'
+    // )
+    // setVipType(key)
+    // await fetchTakerList()
+    // setShow(true)
+    if (key === 'personal' || key === 'team') {
+      setVipType(key)
+      setShowLoginModal(true)
+    }
+    if (key === 'custom') {
+      setShowCustomerModal(true)
+    }
   }
 
   const getOrderDetail = useMemoizedFn(() => {
@@ -208,8 +208,8 @@ export const MemberIntroduction = ({
           setShow(false)
           setIsShowPay(false)
           setIsRetrievePay(true)
-          setModalType(modalType)
-          console.log('modaleType', modalType)
+          // setModalType(modalType)
+          // console.log('modaleType', modalType)
         }}
         showMsg={() => {
           messageApi.open({
@@ -230,6 +230,7 @@ export const MemberIntroduction = ({
             'https://cdn.flyele.net/agreements/service-agreement.html'
           )
         }}
+        setShowPersonModal={setShowPersonModal}
       ></PayModal>
 
       <Modal
@@ -242,31 +243,17 @@ export const MemberIntroduction = ({
       >
         <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
       </Modal>
-      {modalType === 2 ? (
-        <Modal
-          open={isRetrievePay}
-          centered
-          footer={null}
-          closable={false}
-          wrapClassName={styles.modalWrap}
-          width={320}
-          className={styles.retrieveModal}
-        >
-          <RetrievePayModalTeam onClose={() => setIsRetrievePay(false)} />
-        </Modal>
+      {showPersonModal ? (
+        <RetrievePayModal
+          onClose={() => setIsRetrievePay(false)}
+          isShowPay={isShowPay}
+          isShow={isRetrievePay}
+        />
       ) : (
-        <Modal
-          open={isRetrievePay}
-          centered
-          footer={null}
-          closable={false}
-          wrapClassName={styles.modalWrap}
-        >
-          <RetrievePayModal
-            onClose={() => setIsRetrievePay(false)}
-            isShowPay={isShowPay}
-          />
-        </Modal>
+        <RetrievePayModalTeam
+          onClose={() => setIsRetrievePay(false)}
+          isShow={isRetrievePay}
+        />
       )}
       <Modal
         open={showLoginModal}

@@ -113,7 +113,7 @@ export interface DayViewParamsProps {
   pageNumber?: number
   isCount?: boolean
   task_ids?: string[]
-  parent_id?: string
+  parentId?: string
 }
 
 export enum QueryType {

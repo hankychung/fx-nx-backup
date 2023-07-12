@@ -3,7 +3,6 @@
   justify-content: space-between;
   height: 460px;
   width: 100%;
-  padding-top: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -14,6 +13,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 45px;
+    margin-bottom: 40px;
     // justify-content: center;
     .priceBox {
       height: 170px;

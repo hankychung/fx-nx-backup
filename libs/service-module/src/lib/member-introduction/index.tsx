@@ -49,9 +49,9 @@ export const MemberIntroduction = ({
   const [messageApi, contextHolder] = message.useMessage()
 
   const onClickBtn = async (key: string) => {
-    //方便调试
+    //方便调试直接放token可以绕过扫码登录
     // await service.updateToken(
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkxNTEwNDIsImlhdCI6MTY4OTE0MzMxNiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTc0NDgxNTM1Nzk1MzYzIiwiRGV2aWNlSUQiOiJjNzNhMTEwMy0wYzJmLTQ0ZTQtYWNhNy05MWY1Y2ZhM2UxYTAiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.seDDb5ESgFvjx4QyIXbG92hlMglLq7aMU_cXwG9MQkc'
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkxNjE3OTAsImlhdCI6MTY4OTE1MzM3NCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTc0NDgxNTM1Nzk1MzYzIiwiRGV2aWNlSUQiOiIyZTJjOTBjZC00NDAxLTQ2MWMtYjJlYS1kMzIwMDNiZjU0MTQiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.Yuy_DfAB-yTqWxo7Y2BI5ayH4b3yfgePXGdvk8gN4Zk'
     // )
     // setVipType(key)
     // await fetchTakerList()
@@ -247,7 +247,7 @@ export const MemberIntroduction = ({
         <RetrievePayModal
           onClose={() => setIsRetrievePay(false)}
           isShow={isRetrievePay}
-          successRef={ChildRef}
+          isPaySuccess={isShowPay}
         />
       ) : (
         <RetrievePayModalTeam

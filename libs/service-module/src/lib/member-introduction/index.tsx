@@ -243,7 +243,7 @@ export const MemberIntroduction = ({
       >
         <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
       </Modal>
-      {showPersonModal ? (
+      {/* {showPersonModal ? (
         <RetrievePayModal
           onClose={() => setIsRetrievePay(false)}
           isShow={isRetrievePay}
@@ -254,7 +254,7 @@ export const MemberIntroduction = ({
           onClose={() => setIsRetrievePay(false)}
           isShow={isRetrievePay}
         />
-      )}
+      )} */}
       <Modal
         open={showLoginModal}
         width={480}

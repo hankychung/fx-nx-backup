@@ -20,7 +20,7 @@ declare type MsgType =
   | '团队会员'
   | '应用发布'
 
-type Msg = {
+export type Msg = {
   msgType?: MsgType
   content?: string | any
   line2content?: string | any

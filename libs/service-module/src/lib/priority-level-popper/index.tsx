@@ -5,7 +5,6 @@ import { CheckIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
 import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
-import { useMessage } from '@flyele-nx/ui'
 import { globalNxController } from '../global/nxController'
 import PUB from '../global/types/pubsub'
 
@@ -26,7 +25,6 @@ const QuadrantColor = {
 
 export const PriorityLevelPopper = (props: Props) => {
   const { task_id, priority_level, matter_type, close, onChange } = props
-  const [showMsg] = useMessage()
 
   const changeLevel = useMemoizedFn(
     (level: ScheduleTaskConst.QuadrantValue) => {
@@ -35,7 +33,7 @@ export const PriorityLevelPopper = (props: Props) => {
         task_id
       )
         .then(() => {
-          showMsg({ content: '修改成功', msgType: '成功' })
+          globalNxController.showMsg({ content: '修改成功', msgType: '成功' })
           globalNxController.pubJsPublish(
             PUB.DB_INCREASE_01_READUX_AND_SQLITEDB,
             {
@@ -51,7 +49,7 @@ export const PriorityLevelPopper = (props: Props) => {
           onChange?.(level)
         })
         .catch(() => {
-          showMsg({ content: '修改失败', msgType: '错误' })
+          globalNxController.showMsg({ content: '修改失败', msgType: '错误' })
         })
         .finally(() => {
           close?.()

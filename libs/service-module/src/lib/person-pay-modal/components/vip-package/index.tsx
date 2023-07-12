@@ -35,6 +35,7 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
+  setShowPersonModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const VipPackage = (props: Iprops) => {
@@ -51,7 +52,8 @@ const VipPackage = (props: Iprops) => {
     goProtocol,
     goInterests,
     originRoute,
-    showMsg
+    showMsg,
+    setShowPersonModal
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -134,6 +136,7 @@ const VipPackage = (props: Iprops) => {
               className={cs(style.tabs_item, { [style.active]: _.active })}
               onClick={() => {
                 setVipMealType(_.type)
+
                 const newTab = tabsList.map((item) => {
                   if (item.type === _.type) {
                     return {
@@ -146,7 +149,9 @@ const VipPackage = (props: Iprops) => {
                     active: false
                   }
                 })
-
+                if (setShowPersonModal) {
+                  setShowPersonModal(newTab[0].active)
+                }
                 setTabs(newTab)
               }}
             >

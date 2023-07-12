@@ -122,14 +122,27 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     if (a.tTimeTxt !== '全天' && b.tTimeTxt === '全天') {
       return -1
     }
-    const timeA = dayjs(a.tTimeTxt, 'HH:mm')
-    const timeB = dayjs(b.tTimeTxt, 'HH:mm')
-    if (timeA.isBefore(timeB)) {
+    if (a.tTimeTxt === '全天' && b.tTimeTxt === '全天') {
+      return 0
+    }
+    const timeA = a.tTimeTxt.split(':')
+    const timeB = b.tTimeTxt.split(':')
+    const hourA = parseInt(timeA[0])
+    const minuteA = parseInt(timeA[1])
+    const hourB = parseInt(timeB[0])
+    const minuteB = parseInt(timeB[1])
+    if (hourA < hourB) {
       return -1
-    } else if (timeA.isAfter(timeB)) {
+    } else if (hourA > hourB) {
       return 1
     } else {
-      return 0
+      if (minuteA < minuteB) {
+        return -1
+      } else if (minuteA > minuteB) {
+        return 1
+      } else {
+        return 0
+      }
     }
   })
 

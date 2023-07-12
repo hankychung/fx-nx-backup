@@ -248,6 +248,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
      * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
      */
     const contextMenuVisible = contextMenuTool.getVisible()
+    console.log('@@@ contextMenuVisible', contextMenuVisible)
     if (contextMenuVisible) {
       contextMenuTool.close()
       return
@@ -334,25 +335,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     setAvatars(list)
   }, [contactDict, takers])
 
-  const avatarBoxJsx = useMemo(() => {
-    return (
-      <div className={styles.avatarBox} onClick={editTakers}>
-        {avatars.length ? (
-          <FlyAvatarGroup
-            list={avatars}
-            avatarSize={16}
-            shiftingWidth={3}
-            max={3}
-            min={3}
-            moreBtnClass={styles.moreBtn}
-          />
-        ) : (
-          <AddTakerIcon width={17} height={17} />
-        )}
-      </div>
-    )
-  }, [avatars, editTakers])
-
   // 成员列表
   const simpleMemberList = useMemo<ISimpleMember[]>(() => {
     return (takers ?? []).map((item) => {
@@ -390,7 +372,20 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
             onClickAdd={onClickAddModal}
             taskId={taskId}
           >
-            {avatarBoxJsx}
+            <div className={styles.avatarBox} onClick={editTakers}>
+              {avatars.length ? (
+                <FlyAvatarGroup
+                  list={avatars}
+                  avatarSize={16}
+                  shiftingWidth={3}
+                  max={3}
+                  min={3}
+                  moreBtnClass={styles.moreBtn}
+                />
+              ) : (
+                <AddTakerIcon width={17} height={17} />
+              )}
+            </div>
           </RemoveSimpleMemberListPopper>
         </div>
       }

@@ -139,13 +139,15 @@ const RetrievePayModal = (props: Iprops) => {
     getMealList()
   }, [getMealList])
 
-  useEffect(()=>{
-    if(!isShow)return 
+  useEffect(() => {
+    if (!isShow) return
     globalNxController.sensorSend('touch_to_pay_rule', {
-      touch_rule: vipMeal?.price ? '退出支付挽回弹窗--优惠期内' : '退出支付挽回弹窗--优惠期外',
-      page_name: userId % 2 ===0 ? '个人支付tabA': '个人支付tabB',
+      touch_rule: vipMeal?.price
+        ? '退出支付挽回弹窗--优惠期内'
+        : '退出支付挽回弹窗--优惠期外',
+      page_name: userId % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
     })
-  },[isShow,userId,vipMeal?.price])
+  }, [isShow, userId, vipMeal?.price])
 
   return (
     <>

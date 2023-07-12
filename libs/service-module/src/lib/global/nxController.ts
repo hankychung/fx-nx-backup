@@ -63,7 +63,7 @@ class GlobalNxController {
    * 发送埋点
    */
   sensorSend(type: string, data: any) {
-    console.log("埋点***",type, data)
+    console.log('埋点***', type, data)
     if (nxControllerRegister.sensorTarget) {
       try {
         nxControllerRegister.sensorTarget(type, data)

@@ -74,7 +74,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const { contactDict } = useContactStore()
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
-  const [showMsg] = useMessage()
+  const [showMsg, , contextHolder] = useMessage()
   const [takers, setTakers] = useState<Taker[]>([])
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
 
@@ -170,6 +170,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const isInTask = useMemo(() => {
     if (isCreator) return true
 
+    console.log('@@@ takers', takers)
+    console.log('@@@ userId', userId)
     return !!takers.find((taker) => taker.taker_id === userId)
   }, [isCreator, takers, userId])
 
@@ -365,6 +367,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         e.stopPropagation()
       }}
     >
+      {contextHolder}
       {
         <div
           className={cs(styles.takers, {

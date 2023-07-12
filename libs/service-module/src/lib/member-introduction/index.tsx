@@ -244,30 +244,16 @@ export const MemberIntroduction = ({
         <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
       </Modal>
       {showPersonModal ? (
-        <Modal
-          open={isRetrievePay}
-          centered
-          footer={null}
-          closable={false}
-          wrapClassName={styles.modalWrap}
-        >
-          <RetrievePayModal
-            onClose={() => setIsRetrievePay(false)}
-            isShowPay={isShowPay}
-          />
-        </Modal>
+        <RetrievePayModal
+          onClose={() => setIsRetrievePay(false)}
+          isShowPay={isShowPay}
+          isShow={isRetrievePay}
+        />
       ) : (
-        <Modal
-          open={isRetrievePay}
-          centered
-          footer={null}
-          closable={false}
-          wrapClassName={styles.modalWrap}
-          width={320}
-          className={styles.retrieveModal}
-        >
-          <RetrievePayModalTeam onClose={() => setIsRetrievePay(false)} />
-        </Modal>
+        <RetrievePayModalTeam
+          onClose={() => setIsRetrievePay(false)}
+          isShow={isRetrievePay}
+        />
       )}
       <Modal
         open={showLoginModal}

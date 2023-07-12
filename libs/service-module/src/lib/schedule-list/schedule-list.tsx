@@ -89,6 +89,7 @@ const _ScheduleList: ForwardRefRenderFunction<
     try {
       await fetchList()
     } catch (error) {
+      console.error(error)
       setIsError(true)
     }
   })

@@ -123,7 +123,7 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
     return [
       {
         tTime: 0,
-        tTimeTxt: '',
+        tTimeTxt: '已完成',
         taskItems: list.sort((a, b) => a.create_at - b.create_at)
       }
     ]

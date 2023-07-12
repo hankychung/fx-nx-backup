@@ -47,15 +47,15 @@ export const useMessage = (): [
       msgType = '消息',
       content = '',
       line2content = '',
-      duration = 1.5,
-      key = '', // 控制同步的key
+      duration = 2,
+      key, // 控制同步的key
       style = undefined // 额外的样式
     }: Msg) => {
       message.destroy()
 
       switch (msgType) {
         case '消息':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             style,
@@ -63,7 +63,7 @@ export const useMessage = (): [
             duration
           })
         case '消息长':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             style,
@@ -71,16 +71,15 @@ export const useMessage = (): [
             duration
           })
         case '成功':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             style,
             icon: <MessageSimpleLine content={content} iconName={msgType} />,
             duration
           })
-
         case '时间':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             style,
@@ -88,7 +87,7 @@ export const useMessage = (): [
             duration
           })
         case '错误':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             style,
@@ -96,7 +95,7 @@ export const useMessage = (): [
             duration
           })
         case '日历':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             duration,
@@ -110,7 +109,7 @@ export const useMessage = (): [
             )
           })
         case '撒花':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             duration,
@@ -124,7 +123,7 @@ export const useMessage = (): [
             )
           })
         case '上传错误':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             duration,
@@ -138,7 +137,7 @@ export const useMessage = (): [
             )
           })
         case '应用发布':
-          return messageApi.info({
+          return messageApi.open({
             content: ' ',
             key,
             duration,

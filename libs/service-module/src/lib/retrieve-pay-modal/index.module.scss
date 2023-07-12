@@ -1,0 +1,100 @@
+.modalWrap {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+}
+.wrap {
+  width: 520px;
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+  background-color: unset;
+  border-radius: 8px;
+  background: linear-gradient(179.7deg, #ffc85e 0.12%, #ffffff 49.86%);
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    .close {
+      margin-left: 486px;
+      margin-top: 36px;
+      cursor: pointer;
+    }
+    svg {
+      position: absolute;
+    }
+  }
+  .content {
+    display: flex;
+    // align-items: center;
+    margin-top: 37px;
+    justify-content: center;
+
+    .left {
+      width: 260px;
+      height: 142px;
+      margin-top: 13px;
+      margin-right: 38px;
+      .left_title {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        color: rgba(75, 48, 20, 1);
+      }
+      .left_tips {
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        color: rgba(165, 121, 37, 1);
+      }
+      .left_coupon {
+        width: 248px;
+        height: 70px;
+        background-image: url('../../assets/payImg/coupon_forty.svg');
+        margin-top: 20px;
+        overflow: hidden;
+        .coupon_content {
+          background-color: rgba(208, 100, 84, 1);
+          border-radius: 0 8px 0 8px;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 17px;
+          text-align: center;
+          margin-top: 36px;
+          width: 98px;
+          height: 20px;
+          margin-left: 85px;
+          color: white;
+        }
+      }
+    }
+    .right {
+      width: 147px;
+      height: 197px;
+      background-color: white;
+      border-radius: 6px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .pay_price {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 17px;
+        color: rgba(75, 48, 20, 1);
+      }
+      .price {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        color: rgba(254, 108, 25, 1);
+      }
+    }
+  }
+}

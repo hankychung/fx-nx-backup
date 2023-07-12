@@ -111,8 +111,27 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     }
   })
 
-  // 根据时间戳排序
-  temp.sort((a, b) => a.tTime - b.tTime)
+  /**
+   * 根据时间timeTxt排序
+   * 全天排最后
+   */
+  temp.sort((a, b) => {
+    if (a.tTimeTxt === '全天' && b.tTimeTxt !== '全天') {
+      return 1
+    }
+    if (a.tTimeTxt !== '全天' && b.tTimeTxt === '全天') {
+      return -1
+    }
+    const timeA = dayjs(a.tTimeTxt, 'HH:mm')
+    const timeB = dayjs(b.tTimeTxt, 'HH:mm')
+    if (timeA.isBefore(timeB)) {
+      return -1
+    } else if (timeA.isAfter(timeB)) {
+      return 1
+    } else {
+      return 0
+    }
+  })
 
   console.log('@@@ 看看 nx 的 temp', temp)
   return temp

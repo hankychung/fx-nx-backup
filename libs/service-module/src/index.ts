@@ -13,6 +13,7 @@ import { init, objectiveApi as NxObjectiveApi } from '@flyele-nx/api' //客服�
 import { AvatarEdit } from './lib/avatar-edit' //头像编辑
 import { ContextMenu } from './lib/context-menu'
 import { contextMenuTool } from './lib/context-menu/contextMenuTool'
+import RetrievePayModalTeam from "./lib/retrieve-pay-modal-team"
 import { service, envStore } from '@flyele-nx/service'
 import { DayExecution } from './lib/day-execution'
 
@@ -35,7 +36,8 @@ export {
   AvatarEdit,
   ContextMenu,
   contextMenuTool,
-  DayExecution
+  DayExecution,
+  RetrievePayModalTeam
 }
 
 export * from './lib/map-svg/type/props'

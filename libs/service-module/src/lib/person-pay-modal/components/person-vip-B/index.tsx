@@ -203,9 +203,11 @@ const PersonVipB = ({
                   >
                     ￥<span>{regFenToYuan(_.now_price - (_.price || 0))}</span>
                   </div>
-                  <div className={cs(style.oldPrice,{
+                  <div
+                    className={cs(style.oldPrice, {
                       [style.oldPriceActive]: _.active && _.name === '终身会员'
-                    })}>
+                    })}
+                  >
                     ¥{regFenToYuan(_.original_price)}
                   </div>
                 </div>

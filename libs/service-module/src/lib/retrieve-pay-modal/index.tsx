@@ -4,7 +4,13 @@
  * @LastEditors: wanghui wanghui@flyele.net
  * @LastEditTime: 2023-06-27 11:23:17
  */
-import React, { useEffect, useMemo, useState } from 'react'
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  RefObject,
+  useImperativeHandle
+} from 'react'
 import { ReactComponent as CustomerModalBg } from '../../assets/payImg/customer_modal_bg.svg'
 // import { ReactComponent as CustomerServicesQrcode } from '../../assets/payImg/customer_services_qrcode.svg'
 import { ReactComponent as PhoneNumIcon } from '../../assets/payImg/phone_num_icon.svg'
@@ -23,14 +29,21 @@ import { Modal } from 'antd'
 
 interface Iprops {
   onClose: () => void
-  isShowPay: boolean
   isShow: boolean
+  successRef: RefObject<fun>
 }
+
+interface fun {
+  setIsPay: (_: boolean) => void
+}
+
 const RetrievePayModal = (props: Iprops) => {
-  const { onClose, isShowPay, isShow } = props
+  const { onClose, isShow, successRef } = props
   const { nowScecond } = useCurrentTime()
   const [mealTime, setMealTime] = useState('')
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
+  const [isPaySuccess, setIsPay] = useState<boolean>(false)
+
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
   }
@@ -111,6 +124,13 @@ const RetrievePayModal = (props: Iprops) => {
       })
     })
   })
+  useImperativeHandle(
+    successRef,
+    () => ({
+      setIsPay
+    }),
+    [setIsPay]
+  )
   //获取套餐
   useEffect(() => {
     getMealList()
@@ -118,7 +138,7 @@ const RetrievePayModal = (props: Iprops) => {
 
   return (
     <>
-      {!isShowPay && (
+      {!isPaySuccess && (
         <Modal
           open={isShow}
           centered
@@ -164,7 +184,7 @@ const RetrievePayModal = (props: Iprops) => {
               <div className={style.right}>
                 {vipMeal && (
                   <PayQrCode
-                    isShowPay={isShowPay}
+                    isShowPay={isPaySuccess}
                     vipMeal={vipMeal}
                     onClose={onClose}
                   />

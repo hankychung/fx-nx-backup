@@ -246,8 +246,8 @@ export const MemberIntroduction = ({
       {showPersonModal ? (
         <RetrievePayModal
           onClose={() => setIsRetrievePay(false)}
-          isShowPay={isShowPay}
           isShow={isRetrievePay}
+          successRef={ChildRef}
         />
       ) : (
         <RetrievePayModalTeam

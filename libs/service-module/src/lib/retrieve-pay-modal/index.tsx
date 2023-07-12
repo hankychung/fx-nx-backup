@@ -4,7 +4,7 @@
  * @LastEditors: wanghui wanghui@flyele.net
  * @LastEditTime: 2023-06-27 11:23:17
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ReactComponent as CustomerModalBg } from '../../assets/payImg/customer_modal_bg.svg'
 // import { ReactComponent as CustomerServicesQrcode } from '../../assets/payImg/customer_services_qrcode.svg'
 import { ReactComponent as PhoneNumIcon } from '../../assets/payImg/phone_num_icon.svg'
@@ -74,7 +74,6 @@ const RetrievePayModal = (props: Iprops) => {
   //获取套餐
   useEffect(() => {
     getMealList()
-    console.log('vipMeal', vipMeal)
   }, [getMealList, vipMeal])
 
   return (

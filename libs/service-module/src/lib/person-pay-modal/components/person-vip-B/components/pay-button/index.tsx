@@ -37,18 +37,20 @@ const PayButton = (props: Iprops) => {
 
   return (
     <div className={style.payButton}>
-      <div className={cs(style.payBtn)} onClick={payClick}>
-        立即支付
-      </div>
-      <div className={style.protocol}>
-        支付即视为同意
-        <span
-          onClick={() => {
-            goProtocol && goProtocol()
-          }}
-        >
-          《飞项会员协议》
-        </span>
+      <div>
+        <div className={cs(style.payBtn)} onClick={payClick}>
+          立即支付
+        </div>
+        <div className={style.protocol}>
+          支付即视为同意
+          <span
+            onClick={() => {
+              goProtocol && goProtocol()
+            }}
+          >
+            《飞项会员协议》
+          </span>
+        </div>
       </div>
       <div className={style.footer}>
         <div className={style.left}>

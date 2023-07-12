@@ -265,15 +265,13 @@ const PersonVipB = ({
       <div className={style.below}>
         {/* 支付按钮 */}
         {!isLifeLong && (
-          <div>
-            <PayButton
-              activeGood={activeGood}
-              payClick={payClick}
-              goProtocol={goProtocol}
-              goInterests={goInterests}
-              vipMealList={vipMealList}
-            />
-          </div>
+          <PayButton
+            activeGood={activeGood}
+            payClick={payClick}
+            goProtocol={goProtocol}
+            goInterests={goInterests}
+            vipMealList={vipMealList}
+          />
         )}
         {isLifeLong && (
           <div>

@@ -15,6 +15,8 @@ import { useCreation } from 'ahooks'
 import { SelectMemberService } from './context/service'
 import { SelectMemberContext } from './context/context'
 import { IFlyeleAvatarItem } from '../pay-modal'
+import RetrievePayModal from '../retrieve-pay-modal'
+import RetrievePayModalTeam from '../retrieve-pay-modal-team'
 interface Iprops {
   onClose: () => void
   payType?: VipMealType
@@ -46,7 +48,8 @@ const PersonPayModal = (props: Iprops) => {
     showMsg,
     setShowPersonModal
   } = props
-  const [vipMealType, setVipMealType] = useState<VipMealType>(1) // 切换tab
+  const [vipMealType, setVipMealType] = useState<VipMealType>(payType || 1) // 切换tab
+  const [showRetrieveModal, setShowRetrieveModal] = useState(false)
   useEffect(() => {
     if (payType) {
       setVipMealType(payType)
@@ -103,6 +106,18 @@ const PersonPayModal = (props: Iprops) => {
           </div>
         </SelectMemberContext.Provider>
       </Modal>
+      {vipMealType === 1 ? (
+        <RetrievePayModal
+          isShow={showRetrieveModal}
+          onClose={() => setShowRetrieveModal(false)}
+          isPaySuccess={isPaySuccess}
+        ></RetrievePayModal>
+      ) : (
+        <RetrievePayModalTeam
+          isShow={showRetrieveModal}
+          onClose={() => setShowRetrieveModal(false)}
+        />
+      )}
     </div>
   )
 }

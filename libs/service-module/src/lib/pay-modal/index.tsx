@@ -20,6 +20,7 @@ import { VipPayType } from '../team-pay-modal/components/controller'
 import { sortMap } from '../person-pay-modal/utils'
 import { QuickPayPerson } from '../quick-pay-person'
 import { useMemoizedFn } from 'ahooks'
+import RetrievePayModal from '../retrieve-pay-modal'
 
 export declare type IFlyeleAvatarItem = {
   userId: string

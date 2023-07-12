@@ -21,7 +21,7 @@ import { ReactComponent as EquityList } from '../../assets/payImg/equity_list.sv
 import style from './index.module.scss'
 import PayQrCode from './pay-qrcode'
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useMount } from 'ahooks'
 import dayjs from 'dayjs'
 import { getResidueTime } from '../quick-pay/utils'
 import { useCurrentTime } from '../quick-pay/hoooks/useCurrentTime'
@@ -30,7 +30,7 @@ import { Modal } from 'antd'
 interface Iprops {
   onClose: () => void
   isShow: boolean
-  successRef: RefObject<fun>
+  isPaySuccess: boolean
 }
 
 interface fun {
@@ -38,11 +38,10 @@ interface fun {
 }
 
 const RetrievePayModal = (props: Iprops) => {
-  const { onClose, isShow, successRef } = props
+  const { onClose, isShow, isPaySuccess } = props
   const { nowScecond } = useCurrentTime()
   const [mealTime, setMealTime] = useState('')
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
-  const [isPaySuccess, setIsPay] = useState<boolean>(false)
 
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
@@ -77,6 +76,7 @@ const RetrievePayModal = (props: Iprops) => {
     return residueTime
   }
   const getMealList = useMemoizedFn(async () => {
+    console.log('123getMealList')
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
       paymentApi.getPrice({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
@@ -124,17 +124,11 @@ const RetrievePayModal = (props: Iprops) => {
       })
     })
   })
-  useImperativeHandle(
-    successRef,
-    () => ({
-      setIsPay
-    }),
-    [setIsPay]
-  )
+
   //获取套餐
-  useEffect(() => {
+  useMount(() => {
     getMealList()
-  }, [getMealList, vipMeal])
+  })
 
   return (
     <>

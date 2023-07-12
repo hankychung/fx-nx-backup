@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import cs from 'classnames'
 import { ScheduleTask } from '../../../schedule-list/components/schedule-task'
 import dayjs from 'dayjs'
+import { getKeyOfList } from '../../../schedule-list/utils'
 
 const _TimelineTaskList = ({
   timeList,
@@ -36,8 +37,8 @@ const _TimelineTaskList = ({
               {item.taskItems.map((task) => {
                 return (
                   <ScheduleTask
-                    key={task.ref_task_id}
-                    taskKey={task.ref_task_id}
+                    key={getKeyOfList(task)}
+                    taskKey={getKeyOfList(task)}
                     topId={
                       task.parents && task.parents.length
                         ? task.parents[0].task_id

@@ -19,13 +19,15 @@ import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { getResidueTime } from '../quick-pay/utils'
 import { useCurrentTime } from '../quick-pay/hoooks/useCurrentTime'
+import { Modal } from 'antd'
 
 interface Iprops {
   onClose: () => void
   isShowPay: boolean
+  isShow: boolean
 }
 const RetrievePayModal = (props: Iprops) => {
-  const { onClose, isShowPay } = props
+  const { onClose, isShowPay, isShow } = props
   const { nowScecond } = useCurrentTime()
   const [mealTime, setMealTime] = useState('')
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
@@ -117,50 +119,60 @@ const RetrievePayModal = (props: Iprops) => {
   return (
     <>
       {!isShowPay && (
-        <div className={style.wrap}>
-          <div className={style.head}>
-            <Diamond></Diamond>
-            <Close
-              className={style.close}
-              onClick={() => {
-                onClose()
-              }}
-            ></Close>
-          </div>
-          <div className={style.content}>
-            <div className={style.left}>
-              <div className={style.left_title}>真的要放弃终身会员优惠吗？</div>
-              {vipMeal?.price ? (
-                <>
-                  <div className={style.left_tips}>
-                    限时优惠，到期将恢复原价
-                  </div>
-                  <div className={style.left_coupon}>
-                    <div className={style.coupon_content}>
-                      限时&nbsp;{mealTime}天
+        <Modal
+          open={isShow}
+          centered
+          footer={null}
+          closable={false}
+          wrapClassName={style.modalWrap}
+        >
+          <div className={style.wrap}>
+            <div className={style.head}>
+              <Diamond></Diamond>
+              <Close
+                className={style.close}
+                onClick={() => {
+                  onClose()
+                }}
+              ></Close>
+            </div>
+            <div className={style.content}>
+              <div className={style.left}>
+                <div className={style.left_title}>
+                  真的要放弃终身会员优惠吗？
+                </div>
+                {vipMeal?.price ? (
+                  <>
+                    <div className={style.left_tips}>
+                      限时优惠，到期将恢复原价
                     </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={style.left_tips}>
-                    开通终身会员，即可持续使用以下权益
-                  </div>
-                  <EquityList style={{ marginTop: 20 }} />
-                </>
-              )}
-            </div>
-            <div className={style.right}>
-              {vipMeal && (
-                <PayQrCode
-                  isShowPay={isShowPay}
-                  vipMeal={vipMeal}
-                  onClose={onClose}
-                />
-              )}
+                    <div className={style.left_coupon}>
+                      <div className={style.coupon_content}>
+                        限时&nbsp;{mealTime}天
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={style.left_tips}>
+                      开通终身会员，即可持续使用以下权益
+                    </div>
+                    <EquityList style={{ marginTop: 20 }} />
+                  </>
+                )}
+              </div>
+              <div className={style.right}>
+                {vipMeal && (
+                  <PayQrCode
+                    isShowPay={isShowPay}
+                    vipMeal={vipMeal}
+                    onClose={onClose}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </>
   )

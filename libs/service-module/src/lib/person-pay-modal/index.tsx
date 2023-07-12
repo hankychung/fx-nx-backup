@@ -59,6 +59,10 @@ const PersonPayModal = (props: Iprops) => {
     return new SelectMemberService()
   }, [])
 
+  const RetrieveModal = () => {
+    setShowRetrieveModal(true)
+  }
+
   return (
     <div>
       <Modal
@@ -81,7 +85,7 @@ const PersonPayModal = (props: Iprops) => {
             {/* 头部信息 */}
             <div>
               <Header
-                onClose={onClose}
+                onClose={RetrieveModal}
                 mineId={mineId}
                 memberList={memberList}
               />
@@ -109,13 +113,19 @@ const PersonPayModal = (props: Iprops) => {
       {vipMealType === 1 ? (
         <RetrievePayModal
           isShow={showRetrieveModal}
-          onClose={() => setShowRetrieveModal(false)}
+          onClose={() => {
+            setShowRetrieveModal(false)
+            onClose()
+          }}
           isPaySuccess={isPaySuccess}
         ></RetrievePayModal>
       ) : (
         <RetrievePayModalTeam
           isShow={showRetrieveModal}
-          onClose={() => setShowRetrieveModal(false)}
+          onClose={() => {
+            setShowRetrieveModal(false)
+            onClose()
+          }}
         />
       )}
     </div>

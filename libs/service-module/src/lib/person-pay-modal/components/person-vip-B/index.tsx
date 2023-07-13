@@ -49,7 +49,6 @@ const PersonVipB = ({
       if (res.code === 0) {
         const new_arr = res.data.map((item, index) => {
           const arr = getItem(item.id, couponList || [])
-
           if (index === 0) {
             if (arr.length > 0) {
               const num = arr[0].end_at

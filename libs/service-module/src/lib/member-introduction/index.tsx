@@ -36,7 +36,6 @@ export const MemberIntroduction = ({
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCorpModal, setShowCorpModal] = useState(false)
-  const [showPersonModal, setShowPersonModal] = useState(true)
 
   const [showCustomerModal, setShowCustomerModal] = useState(false)
   const [isRetrievePay, setIsRetrievePay] = useState(false)
@@ -51,7 +50,7 @@ export const MemberIntroduction = ({
   const onClickBtn = async (key: string) => {
     //方便调试直接放token可以绕过扫码登录
     // await service.updateToken(
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkxNjE3OTAsImlhdCI6MTY4OTE1MzM3NCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTc0NDgxNTM1Nzk1MzYzIiwiRGV2aWNlSUQiOiIyZTJjOTBjZC00NDAxLTQ2MWMtYjJlYS1kMzIwMDNiZjU0MTQiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.Yuy_DfAB-yTqWxo7Y2BI5ayH4b3yfgePXGdvk8gN4Zk'
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkyMjAyOTAsImlhdCI6MTY4OTIxMjA4OSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTc0NDgxNTM1Nzk1MzYzIiwiRGV2aWNlSUQiOiJjODU3NGM3MS0yM2QxLTRkMWEtYjUyNS0wNjIyODY5NWM3OTAiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.rF7wggKzLPhVYKLs1P8L0ONV7tkMfq5qE-EZxcVGuE8'
     // )
     // setVipType(key)
     // await fetchTakerList()
@@ -230,7 +229,6 @@ export const MemberIntroduction = ({
             'https://cdn.flyele.net/agreements/service-agreement.html'
           )
         }}
-        setShowPersonModal={setShowPersonModal}
       ></PayModal>
 
       <Modal

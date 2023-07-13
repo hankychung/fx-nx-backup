@@ -20,7 +20,6 @@ import { VipPayType } from '../team-pay-modal/components/controller'
 import { sortMap } from '../person-pay-modal/utils'
 import { QuickPayPerson } from '../quick-pay-person'
 import { useMemoizedFn } from 'ahooks'
-import RetrievePayModal from '../retrieve-pay-modal'
 
 export declare type IFlyeleAvatarItem = {
   userId: string
@@ -60,7 +59,6 @@ interface Iprops {
   goProtocol: () => void
   goInterests: () => void
   showMsg?: () => void
-  setShowPersonModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function PayModal(props: Iprops) {
@@ -82,8 +80,7 @@ export default function PayModal(props: Iprops) {
     goInterests,
     domain,
     originRoute,
-    isPay,
-    setShowPersonModal
+    isPay
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
   const [_modalType, setModalType] = useState(modalType)
@@ -178,7 +175,6 @@ export default function PayModal(props: Iprops) {
             domain={domain}
             showMsg={showMsg}
             originRoute={originRoute}
-            setShowPersonModal={setShowPersonModal}
           />
         )
       case 'team':

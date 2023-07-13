@@ -35,7 +35,6 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
-  setShowPersonModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const VipPackage = (props: Iprops) => {
@@ -52,8 +51,7 @@ const VipPackage = (props: Iprops) => {
     goProtocol,
     goInterests,
     originRoute,
-    showMsg,
-    setShowPersonModal
+    showMsg
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -61,8 +59,7 @@ const VipPackage = (props: Iprops) => {
   const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
   const [couponList, setCouponList] = useState<ICoupon[]>()
   const service = useContext(SelectMemberContext)
-  const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
-
+  const telephone = +useUserInfoStore((state) => state.userInfo)
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
@@ -149,9 +146,6 @@ const VipPackage = (props: Iprops) => {
                     active: false
                   }
                 })
-                if (setShowPersonModal) {
-                  setShowPersonModal(newTab[0].active)
-                }
                 setTabs(newTab)
               }}
             >
@@ -180,7 +174,7 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        {userId % 2 === 0 ? (
+        {telephone % 2 === 0 ? (
           <PersonVip
             memberList={memberList}
             mineId={mineId}

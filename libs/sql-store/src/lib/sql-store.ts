@@ -724,6 +724,8 @@ class SqlStore {
   }
 
   querySchedule(sql: string) {
+    console.log(sql, 'sql__打印')
+
     const res = this.db!.exec(sql)
 
     const data = res[0] ? this.formatSelectValue1(res[0]) : []
@@ -734,6 +736,7 @@ class SqlStore {
     }
   }
   executeSchedule(sql: string) {
+    console.log(sql, 'sql__打印')
     const res = this.db!.exec(sql)
     const data = res[0] ? this.formatSelectValue1(res[0]) : []
 

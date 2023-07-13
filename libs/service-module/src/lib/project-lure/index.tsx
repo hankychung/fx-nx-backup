@@ -30,10 +30,9 @@ export const ProjectLure = (props: IProps) => {
   const getList = useMemoizedFn(async () => {
     const { data } = await workspaceApi.getSpaceList({})
 
-    console.log('data***', data)
-
     const list = (data.data_list ?? []).filter(
-      (i) => i.member_type === SpaceTypeConst.SpaceMemberType.SPACE
+      (i) =>
+        i.member_type === SpaceTypeConst.SpaceMemberType.SPACE && i.level > 1
     )
 
     setList(list)
@@ -115,7 +114,7 @@ export const ProjectLure = (props: IProps) => {
             <FlyBasePopper
               controller={serviceController}
               trigger="click"
-              placement="bottom-end"
+              placement="top"
               showArrow={false}
               zIndex={10003}
               content={() => (

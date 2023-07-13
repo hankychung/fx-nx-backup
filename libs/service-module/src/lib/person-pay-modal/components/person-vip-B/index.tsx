@@ -12,8 +12,8 @@ import dayjs from 'dayjs'
 import { getResidueTime, regFenToYuan } from './utils'
 import { useCurrentTime } from '../../hooks/useCurrentTime'
 import { SelectMemberContext } from '../../context/context'
-import PersonVipEmpty from '../person-vip/components/right-block/person-vip-empty'
 import PayButton from './components/pay-button'
+import PersonVipEmpty from './components/person-vip-empty'
 const PersonVipB = ({
   memberList,
   mineId,
@@ -147,123 +147,129 @@ const PersonVipB = ({
   }, [getMealList, vipMealType, couponList])
   return (
     <div className={style.personVip}>
-      <div className={style.above}>
-        <div className={style.priceBox}>
-          {vipMealList.map((_: IActiveGoods) => {
-            let num = 0
+      {!isLifeLong && (
+        <div className={style.above}>
+          <div className={style.priceBox}>
+            {vipMealList.map((_: IActiveGoods) => {
+              let num = 0
 
-            if (_.end_at) {
-              num = dayjs.unix(_.end_at).valueOf() / 1000 //结束时间
-            }
-            if (
-              _.end_at &&
-              getResidueTime(num - nowScecond) === '0' &&
-              _.price
-            ) {
-              const new_list = vipMealList.map((item) => {
-                if (item.id === _.id) {
+              if (_.end_at) {
+                num = dayjs.unix(_.end_at).valueOf() / 1000 //结束时间
+              }
+              if (
+                _.end_at &&
+                getResidueTime(num - nowScecond) === '0' &&
+                _.price
+              ) {
+                const new_list = vipMealList.map((item) => {
+                  if (item.id === _.id) {
+                    return {
+                      ...item,
+                      price: 0,
+                      coupon_id: 0
+                    }
+                  }
                   return {
-                    ...item,
-                    price: 0,
-                    coupon_id: 0
+                    ...item
                   }
-                }
-                return {
-                  ...item
-                }
-              })
-              setVipMealList(new_list)
-            }
-            return (
-              <div
-                className={cs(
-                  style.priceItem,
-                  {
-                    [style.activeStyle]: _.active && _.name !== '终身会员'
-                  },
-                  {
-                    [style.activeStyleBstyle]: _.active && _.name === '终身会员'
-                  },
-                  {
-                    [style.priceItemFifstActive]:
-                      _.active && _.name === '终身会员'
-                  }
-                )}
-                key={_.id}
-                onClick={() => {
-                  mealSelect(_)
-                }}
-              >
-                <div className={style.priceTop}>
-                  <div className={style.mealName}>{_.name}</div>
-                  <div
-                    className={cs(style.price, {
-                      [style.priceActive]: _.active && _.name === '终身会员'
-                    })}
-                  >
-                    ￥<span>{regFenToYuan(_.now_price - (_.price || 0))}</span>
-                  </div>
-                  <div
-                    className={cs(style.oldPrice, {
-                      [style.oldPriceActive]: _.active && _.name === '终身会员'
-                    })}
-                  >
-                    ¥{regFenToYuan(_.original_price)}
-                  </div>
-                </div>
+                })
+                setVipMealList(new_list)
+              }
+              return (
                 <div
                   className={cs(
-                    style.priceSave,
+                    style.priceItem,
                     {
-                      [style.priceSaveActive]: _.active && _.name !== '终身会员'
+                      [style.activeStyle]: _.active && _.name !== '终身会员'
                     },
                     {
-                      [style.priceSaveActiveB]:
+                      [style.activeStyleBstyle]:
+                        _.active && _.name === '终身会员'
+                    },
+                    {
+                      [style.priceItemFifstActive]:
                         _.active && _.name === '终身会员'
                     }
                   )}
+                  key={_.id}
+                  onClick={() => {
+                    mealSelect(_)
+                  }}
                 >
-                  立省¥
-                  {regFenToYuan(
-                    _.original_price - _.now_price - (_.price || 0)
-                  )}
-                </div>
-                {/* <div
+                  <div className={style.priceTop}>
+                    <div className={style.mealName}>{_.name}</div>
+                    <div
+                      className={cs(style.price, {
+                        [style.priceActive]: _.active && _.name === '终身会员'
+                      })}
+                    >
+                      ￥
+                      <span>{regFenToYuan(_.now_price - (_.price || 0))}</span>
+                    </div>
+                    <div
+                      className={cs(style.oldPrice, {
+                        [style.oldPriceActive]:
+                          _.active && _.name === '终身会员'
+                      })}
+                    >
+                      ¥{regFenToYuan(_.original_price)}
+                    </div>
+                  </div>
+                  <div
+                    className={cs(
+                      style.priceSave,
+                      {
+                        [style.priceSaveActive]:
+                          _.active && _.name !== '终身会员'
+                      },
+                      {
+                        [style.priceSaveActiveB]:
+                          _.active && _.name === '终身会员'
+                      }
+                    )}
+                  >
+                    立省¥
+                    {regFenToYuan(
+                      _.original_price - _.now_price - (_.price || 0)
+                    )}
+                  </div>
+                  {/* <div
                   className={cs(style.time, {
                     [style.timeActive]: _.active
                   })}
                 >
                   限时&nbsp; 23:59:00
                 </div> */}
-                {_.name === '终身会员' &&
-                  _.end_at &&
-                  getResidueTime(num - nowScecond) !== '0' && (
-                    <div
-                      className={cs(style.time, {
-                        [style.timeActive]: _.active
-                      })}
-                    >
-                      限时&nbsp;
-                      {getResidueTime(
-                        num - nowScecond,
-                        (
-                          (_?.now_price - (_.price || 0)) /
-                          _?.original_price
-                        ).toFixed(2)
-                      )}
-                    </div>
-                  )}
-              </div>
-            )
-          })}
+                  {_.name === '终身会员' &&
+                    _.end_at &&
+                    getResidueTime(num - nowScecond) !== '0' && (
+                      <div
+                        className={cs(style.time, {
+                          [style.timeActive]: _.active
+                        })}
+                      >
+                        限时&nbsp;
+                        {getResidueTime(
+                          num - nowScecond,
+                          (
+                            (_?.now_price - (_.price || 0)) /
+                            _?.original_price
+                          ).toFixed(2)
+                        )}
+                      </div>
+                    )}
+                </div>
+              )
+            })}
+          </div>
+          <div className={style.priceBottom}>
+            已有{persons}人开通会员，正在更好管理自己的生活、工作
+          </div>
         </div>
-        <div className={style.priceBottom}>
-          已有{persons}人开通会员，正在更好管理自己的生活、工作
-        </div>
-      </div>
-      <div className={style.below}>
-        {/* 支付按钮 */}
-        {!isLifeLong && (
+      )}
+      {!isLifeLong && (
+        <div className={style.below}>
+          {/* 支付按钮 */}
           <PayButton
             activeGood={activeGood}
             payClick={payClick}
@@ -271,13 +277,9 @@ const PersonVipB = ({
             goInterests={goInterests}
             vipMealList={vipMealList}
           />
-        )}
-        {isLifeLong && (
-          <div>
-            <PersonVipEmpty></PersonVipEmpty>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
+      {isLifeLong && <PersonVipEmpty />}
     </div>
   )
 }

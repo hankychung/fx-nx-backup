@@ -27,6 +27,7 @@ import { getResidueTime, regFenToYuan } from '../../utils'
 import { useCurrentTime } from '../../hoooks/useCurrentTime'
 import { useMemoizedFn } from 'ahooks'
 import meal_time from '../../../../assets/payImg/meal_time.svg'
+import { globalNxController } from '../../../global/nxController'
 
 const MemberInfo = ({
   memberList,
@@ -165,7 +166,20 @@ const MemberInfo = ({
             <div>个人会员·终身会员</div>
             <div className={style.more}>
               开通后立即享受众多
-              <span>个人会员权益</span>
+              <span
+                onClick={() => {
+                  const shell = globalNxController.electronShell()
+                  if (shell) {
+                    // 先判断 有没有 electron
+                    shell.openExternal(`https://official-website.flyele.net`)
+                  } else {
+                    // 再用 普通 web打开新页面的方式
+                    window.open(`https://official-website.flyele.net`)
+                  }
+                }}
+              >
+                个人会员权益
+              </span>
             </div>
           </div>
           <div className={style.price}>

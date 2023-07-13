@@ -14,6 +14,7 @@ import { Msg } from '@flyele-nx/ui'
 class NxControllerRegister {
   ipcRenderer: any = null
   pubJs: any = null
+  electronShell: any = null
   sensorTarget: ((type: string, data: any) => void) | null = null
 
   editTaskTime: ((data: IEditTaskTime) => void) | null = null
@@ -104,6 +105,13 @@ class NxControllerRegister {
    */
   handlerShowMsgRegister(callback: (v: Msg) => void) {
     this.showMsg = callback
+  }
+
+  /**
+   * shell注册
+   */
+  shellRegister(electronShell: any) {
+    this.electronShell = electronShell
   }
 }
 

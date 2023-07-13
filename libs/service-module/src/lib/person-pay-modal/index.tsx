@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 // import { UsercApi } from '../../service/index'
 // import { service } from '../../service/service'
 // import { add } from 'utils'
@@ -58,8 +58,19 @@ const PersonPayModal = (props: Iprops) => {
   }, [])
 
   const RetrieveModal = () => {
-    setShowRetrieveModal(true)
+    if (isLifeLong && vipMealType === 1) {
+      onClose()
+    } else {
+      setShowRetrieveModal(true)
+    }
   }
+  const isLifeLong = useMemo(() => {
+    const info = memberList.filter((item) => item.userId === mineId)[0]
+    if (info.end_time === 9999999999 || info.next_end_time === 9999999999) {
+      return true
+    }
+    return false
+  }, [mineId, memberList])
 
   return (
     <div>
@@ -108,14 +119,16 @@ const PersonPayModal = (props: Iprops) => {
         </SelectMemberContext.Provider>
       </Modal>
       {vipMealType === 1 && showRetrieveModal ? (
-        <RetrievePayModal
-          isShow={showRetrieveModal}
-          onClose={() => {
-            setShowRetrieveModal(false)
-            onClose()
-          }}
-          isPaySuccess={isPaySuccess}
-        ></RetrievePayModal>
+        !isLifeLong && (
+          <RetrievePayModal
+            isShow={showRetrieveModal}
+            onClose={() => {
+              setShowRetrieveModal(false)
+              onClose()
+            }}
+            isPaySuccess={isPaySuccess}
+          ></RetrievePayModal>
+        )
       ) : (
         <RetrievePayModalTeam
           isShow={showRetrieveModal}

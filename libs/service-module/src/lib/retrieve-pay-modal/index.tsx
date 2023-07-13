@@ -44,7 +44,7 @@ const RetrievePayModal = (props: Iprops) => {
   const { nowScecond } = useCurrentTime()
   const [mealTime, setMealTime] = useState('')
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
-  const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
+  const telephone = +useUserInfoStore((state) => state.userInfo.telephone)
 
   const getItem = (id: number, list: ICoupon[]) => {
     return list.filter((item) => +item.ref_goods_id === id)
@@ -83,8 +83,6 @@ const RetrievePayModal = (props: Iprops) => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
       paymentApi.getPrice({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
-          console.log('res', res)
-
           const list =
             res.data &&
             res.data.length &&
@@ -120,7 +118,6 @@ const RetrievePayModal = (props: Iprops) => {
                 active: false
               }
             })
-            console.log('new_arr1111111111', new_arr)
             setVipMeal(new_arr[0])
           }
         }
@@ -139,9 +136,9 @@ const RetrievePayModal = (props: Iprops) => {
       touch_rule: vipMeal?.price
         ? '退出支付挽回弹窗--优惠期内'
         : '退出支付挽回弹窗--优惠期外',
-      page_name: userId % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
+      page_name: telephone % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
     })
-  }, [isShow, userId, vipMeal?.price])
+  }, [isShow, telephone, vipMeal?.price])
 
   return (
     <>

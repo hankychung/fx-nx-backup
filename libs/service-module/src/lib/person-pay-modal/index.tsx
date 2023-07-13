@@ -30,7 +30,6 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
-  setShowPersonModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 const PersonPayModal = (props: Iprops) => {
   const {
@@ -45,8 +44,7 @@ const PersonPayModal = (props: Iprops) => {
     getOrderCode,
     goProtocol,
     goInterests,
-    showMsg,
-    setShowPersonModal
+    showMsg
   } = props
   const [vipMealType, setVipMealType] = useState<VipMealType>(payType || 1) // 切换tab
   const [showRetrieveModal, setShowRetrieveModal] = useState(false)
@@ -105,12 +103,11 @@ const PersonPayModal = (props: Iprops) => {
               goInterests={goInterests}
               domain={domain}
               showMsg={showMsg}
-              setShowPersonModal={setShowPersonModal}
             />
           </div>
         </SelectMemberContext.Provider>
       </Modal>
-      {vipMealType === 1 ? (
+      {vipMealType === 1 && showRetrieveModal ? (
         <RetrievePayModal
           isShow={showRetrieveModal}
           onClose={() => {

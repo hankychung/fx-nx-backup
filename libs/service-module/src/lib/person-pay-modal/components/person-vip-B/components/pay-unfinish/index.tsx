@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { memo, useEffect, useMemo } from 'react'
 import style from './index.module.scss'
 import { Modal } from 'antd'
 import { ReactComponent as Diamond } from '../../../../../../assets/payImg/diamond_small.svg'
@@ -19,8 +19,6 @@ const PayUnfinish = ({
   payClick: () => void
   vipMealList: IActiveGoods[]
 }) => {
-  console.log('vipMealList', vipMealList)
-
   const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
 
   const meal = useMemo(() => {
@@ -70,4 +68,4 @@ const PayUnfinish = ({
   )
 }
 
-export default PayUnfinish
+export default memo(PayUnfinish)

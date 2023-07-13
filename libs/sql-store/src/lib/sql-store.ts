@@ -264,14 +264,18 @@ class SqlStore {
     }
   }
 
-  // 增量更新数据回传客户端
-  async updateDiffForClient(params: { mode: 1 | 2 }): Promise<{
+  // 增量更新后查询全量数据回传给客户端
+  async updateFullDose(
+    info: {
+      taskIds: string[]
+      parentIds: string[]
+    },
+    params: { mode: 1 | 2 }
+  ): Promise<{
     taskIds: string[]
     parentIds: string[]
     list: any[]
   }> {
-    const info = await this.updateDiff()
-
     const { taskIds, parentIds } = info
 
     if (!taskIds.length)
@@ -286,17 +290,23 @@ class SqlStore {
       show_model: params.mode
     })
 
-    console.log('@DIFF', {
-      taskIds,
-      list: res,
-      parentIds
-    })
-
     return {
       taskIds,
       parentIds,
       list: res
     }
+  }
+
+  // 增量更新数据
+  async updateDiffForClient(): Promise<{
+    taskIds: string[]
+    parentIds: string[]
+  }> {
+    const info = await this.updateDiff()
+
+    console.log('@DIFF', info)
+
+    return info
   }
 
   private async getUpdates(key: string, lastId: string, pageIdx: number) {

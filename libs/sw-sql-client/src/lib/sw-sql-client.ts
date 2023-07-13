@@ -183,8 +183,22 @@ class ServiceWorkerUtils {
   }
 
   // 增量数据更新
-  static updateDiff(mode: 1 | 2) {
-    return promiseWorkerMessage(ServiceWorkerKey.UPDATE_DIFF, { mode })
+  static updateDiff() {
+    return promiseWorkerMessage(NotParamsWorkerKey.UPDATE_DIFF)
+  }
+
+  // 查询全量的增量更新数据
+  static updateDiffFull(
+    mode: 1 | 2,
+    diffInfo: {
+      taskIds: string[]
+      parentIds: string[]
+    }
+  ) {
+    return promiseWorkerMessage(ServiceWorkerKey.QUERY_DIFF_FULL, {
+      mode,
+      diffInfo
+    })
   }
 
   // 按日获取

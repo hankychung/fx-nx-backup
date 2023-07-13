@@ -37,8 +37,8 @@ class DBHandler {
           break
         }
 
-        case ServiceWorkerKey.UPDATE_DIFF: {
-          responseData = await sqlStore.updateDiffForClient(data.data as any)
+        case NotParamsWorkerKey.UPDATE_DIFF: {
+          responseData = await sqlStore.updateDiffForClient()
           break
         }
 

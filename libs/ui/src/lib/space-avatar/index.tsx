@@ -22,8 +22,8 @@ export const getSpaceAvatarUrl = (key_name = '') => {
 
   if (key_name) {
     urlObj = {
-      normal: `assets/space/avatar/${key_name}.png`,
-      active: `assets/space/avatar/${key_name}_color.png`
+      normal: `https://cdn.flyele.net/resources/PC/${key_name}.png`,
+      active: `https://cdn.flyele.net/resources/PC/${key_name}_color.png`
     }
   }
   return urlObj

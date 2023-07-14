@@ -1,13 +1,18 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import { produce } from 'immer'
 import { getKeyOfList } from './index'
 import { uniq } from 'lodash'
+import { globalNxController } from '../../global/nxController'
+import { QueryType, TabType } from '@flyele-nx/sql-store'
+import { getDateOfToday } from './tools'
 
 /**
  * 今日执行日程的控制类
  */
 class ExecutionHandler {
+  static day = ''
+
   /**
    * 更新列表
    */
@@ -74,6 +79,97 @@ class ExecutionHandler {
         } else {
           state.todayExecutionCount[date].total = data
         }
+      })
+    )
+  }
+
+  /**
+   * 请求列表
+   */
+  static async getList({ isFinished = false }: { isFinished?: boolean }) {
+    const {
+      data: { list, total }
+    } = await globalNxController.getDayView({
+      day: ExecutionHandler.day,
+      queryType: isFinished ? QueryType.completed : QueryType.participate,
+      tabType: TabType.TODAY
+    })
+
+    ExecutionHandler.updateList({
+      date: ExecutionHandler.day,
+      list: list,
+      isInit: true,
+      isFinished: isFinished
+    })
+    ExecutionHandler.updateCount({
+      date: ExecutionHandler.day,
+      isFinished: isFinished,
+      data: total || 0
+    })
+
+    return { list, total }
+  }
+
+  /**
+   * 重新加载列表
+   * 未完成 和 已完成
+   */
+  static async reloadList() {
+    await ExecutionHandler.getList({ isFinished: false })
+    await ExecutionHandler.getList({ isFinished: true })
+  }
+
+  /**
+   * 创建新事项
+   */
+  static createTasks(tasks: ILocalTask[]) {
+    ExecutionHandler.updateList({
+      date: ExecutionHandler.day,
+      list: tasks,
+      isInit: false,
+      isFinished: false
+    })
+  }
+
+  /**
+   * 移除事项
+   * 从所有未完成/完成列表移除事项
+   */
+  static removeTasks(
+    ids: string[],
+    options?: {
+      type?: 'schedule' | 'finishSchedule'
+    }
+  ) {
+    const type = options?.type
+
+    if (!type) {
+      this.removeTasks(ids, { type: 'finishSchedule' })
+      this.removeTasks(ids, { type: 'schedule' })
+      return
+    }
+
+    const { todayExecution, todayCompletedExecution } =
+      useScheduleStore.getState()
+    const l =
+      type === 'finishSchedule' ? todayCompletedExecution : todayExecution
+
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        Object.entries(l).forEach(([date, list]) => {
+          const updatedList = list.filter((i) => !ids.includes(i))
+
+          state[type][date] = updatedList
+
+          if (date === getDateOfToday()) {
+            const len = updatedList.length
+            if (type === 'finishSchedule') {
+              state.todayExecutionCount[date].completeTotal = len
+            } else {
+              state.todayExecutionCount[date].total = len
+            }
+          }
+        })
       })
     )
   }

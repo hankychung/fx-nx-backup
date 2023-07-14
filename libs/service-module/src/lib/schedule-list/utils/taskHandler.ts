@@ -4,6 +4,7 @@ import { ListHandler } from './listHandler'
 import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { ILocalTask } from '@flyele-nx/service'
+import { ExecutionHandler } from './executionHandler'
 
 interface IReloadTasksParams {
   task: ILocalTask[]
@@ -225,6 +226,7 @@ class TaskHandler {
     const { bingoTasks } = this.getTasksByCondition(handler)
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
+    ExecutionHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
   }
 }
 

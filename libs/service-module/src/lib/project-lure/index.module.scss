@@ -188,3 +188,22 @@
     margin: 8px 0;
   }
 }
+
+.review {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .review_avatar {
+    margin-top: 95px;
+  }
+  .review_name {
+    margin-top: 14px;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .review_desc {
+    margin-top: 17px;
+    font-size: 16px;
+    color: #b4b4b4;
+  }
+}

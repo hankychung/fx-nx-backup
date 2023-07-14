@@ -53,6 +53,14 @@ class Payment {
       url: `payment/v2/indent/${indent_id}`
     })
   }
+  /**
+   * 查询支付人数假数据
+   */
+  async getCountPaymentUser() {
+    return service.get({
+      url: `payment/v2/payment/count_payment_user`
+    })
+  }
   getToken() {
     return service.getToken()
   }

@@ -24,7 +24,8 @@ const PayQrCode = ({
   memberList,
   onClose,
   goProtocol,
-  domain
+  domain,
+  senConfirm
 }: {
   isPaySuccess: boolean
   vipMeal?: IActiveGoods
@@ -32,6 +33,7 @@ const PayQrCode = ({
   memberList: IFlyeleAvatarItem[]
   onClose?: () => void
   goProtocol: () => void
+  senConfirm?: () => void
 }) => {
   const [qrCode, setQrCode] = useState('')
   const isInit = useRef(false)
@@ -73,11 +75,12 @@ const PayQrCode = ({
       console.log(vipMeal, 'vipMeal')
 
       qrCodeFunction()
+      senConfirm?.()
     }
     if (vipMeal) {
       isInit.current = true
     }
-  }, [qrCodeFunction, vipMeal])
+  }, [qrCodeFunction, vipMeal, senConfirm])
   const txt = useMemo(() => {
     if (memberList[0].corp_id) return '该用户为企业版用户，无法为其开通会员'
     return '该用户已注销，无法为其开通会员'

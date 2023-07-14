@@ -62,6 +62,7 @@ import * as ProjectType from './lib/typings/project'
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
 import * as OrderSystemConst from './lib/typings/order-system/const'
+import { projectApi } from './lib/project'
 
 export * from './lib/service'
 export * from './lib/env'
@@ -83,6 +84,7 @@ export {
   TagConst,
   LabelApi,
   workspaceApi,
+  projectApi,
   SpaceTypeConst,
   AuthConst,
   VipTypeEnum,

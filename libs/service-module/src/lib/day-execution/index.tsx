@@ -12,8 +12,6 @@ import { TimelineTaskList } from './components/timeline-task-list'
 import { Nodata } from './components/no-data'
 import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
 import { useScheduleStore } from '../store/useScheduleStore'
-import { globalNxController } from '../global/nxController'
-import { QueryType } from '@flyele-nx/sql-store'
 
 interface IProps {
   date: number
@@ -52,24 +50,8 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
     setLoading(true)
 
     try {
-      const {
-        data: { list, total }
-      } = await globalNxController.getDayView({
-        day: day,
-        queryType: isFinished ? QueryType.completed : QueryType.participate
-      })
-
-      ExecutionHandler.updateList({
-        date: day,
-        list: list,
-        isInit: true,
-        isFinished: isFinished
-      })
-      ExecutionHandler.updateCount({
-        date: day,
-        isFinished: isFinished,
-        data: total || 0
-      })
+      ExecutionHandler.day = day
+      await ExecutionHandler.getList({ isFinished })
     } catch (e) {
       console.error('获取日程列表失败', e)
     } finally {
@@ -108,8 +90,6 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   const todayList = useMemo(() => {
     const idList = todayExecution[day] || []
     const list = idList.map((id) => taskDict[id])
-
-    console.log('@check list', idList, list, taskDict)
 
     return disposalTodayList(list)
   }, [day, taskDict, todayExecution])
@@ -199,7 +179,11 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
               >
                 {day !== 0 && (
                   <>
-                    <TimelineTaskList timeList={todayList} day={day} />
+                    {todayList.length > 0 ? (
+                      <TimelineTaskList timeList={todayList} day={day} />
+                    ) : (
+                      <Nodata total={taskTotal} />
+                    )}
                     <TimelineTaskList
                       timeList={todayCompletedList}
                       day={day}

@@ -158,6 +158,23 @@ class GlobalNxController {
       console.log('showMsg 未注册')
     }
   }
+
+  /**
+   * electronShell shell控制器
+   */
+  electronShell(): any {
+    if (nxControllerRegister.electronShell) {
+      try {
+        return nxControllerRegister.electronShell
+      } catch (e) {
+        console.log('shell.publish 失败', e)
+        return null
+      }
+    } else {
+      console.log('shell 未注册')
+      return null
+    }
+  }
 }
 
 export const globalNxController = new GlobalNxController()

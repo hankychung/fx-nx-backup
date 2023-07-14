@@ -129,6 +129,12 @@ class ExecutionHandler {
       isInit: false,
       isFinished: false
     })
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        state.todayExecutionCount[ExecutionHandler.day].total =
+          state.todayExecutionCount[ExecutionHandler.day].total + 1
+      })
+    )
   }
 
   /**
@@ -138,21 +144,23 @@ class ExecutionHandler {
   static removeTasks(
     ids: string[],
     options?: {
-      type?: 'schedule' | 'finishSchedule'
+      type?: 'todayExecution' | 'todayCompletedExecution'
     }
   ) {
     const type = options?.type
 
     if (!type) {
-      this.removeTasks(ids, { type: 'finishSchedule' })
-      this.removeTasks(ids, { type: 'schedule' })
+      this.removeTasks(ids, { type: 'todayCompletedExecution' })
+      this.removeTasks(ids, { type: 'todayExecution' })
       return
     }
 
     const { todayExecution, todayCompletedExecution } =
       useScheduleStore.getState()
     const l =
-      type === 'finishSchedule' ? todayCompletedExecution : todayExecution
+      type === 'todayCompletedExecution'
+        ? todayCompletedExecution
+        : todayExecution
 
     useScheduleStore.setState(
       produce((state: IState) => {
@@ -163,7 +171,7 @@ class ExecutionHandler {
 
           if (date === getDateOfToday()) {
             const len = updatedList.length
-            if (type === 'finishSchedule') {
+            if (type === 'todayCompletedExecution') {
               state.todayExecutionCount[date].completeTotal = len
             } else {
               state.todayExecutionCount[date].total = len

@@ -59,7 +59,7 @@ const VipPackage = (props: Iprops) => {
   const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
   const [couponList, setCouponList] = useState<ICoupon[]>()
   const service = useContext(SelectMemberContext)
-  const telephone = +useUserInfoStore((state) => state.userInfo.telephone)
+  const user_id = +useUserInfoStore((state) => state.userInfo.user_id)
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
@@ -174,7 +174,7 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        {telephone % 2 !== 0 ? (
+        {user_id % 2 !== 0 ? (
           <PersonVip
             memberList={memberList}
             mineId={mineId}

@@ -3,11 +3,15 @@ import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import { produce } from 'immer'
 import { getKeyOfList } from './index'
 import { uniq } from 'lodash'
+import { globalNxController } from '../../global/nxController'
+import { QueryType, TabType } from '@flyele-nx/sql-store'
 
 /**
  * 今日执行日程的控制类
  */
 class ExecutionHandler {
+  static day = ''
+
   /**
    * 更新列表
    */
@@ -76,6 +80,42 @@ class ExecutionHandler {
         }
       })
     )
+  }
+
+  /**
+   * 请求列表
+   */
+  static async getList({ isFinished = false }: { isFinished?: boolean }) {
+    const {
+      data: { list, total }
+    } = await globalNxController.getDayView({
+      day: ExecutionHandler.day,
+      queryType: isFinished ? QueryType.completed : QueryType.participate,
+      tabType: TabType.TODAY
+    })
+
+    ExecutionHandler.updateList({
+      date: ExecutionHandler.day,
+      list: list,
+      isInit: true,
+      isFinished: isFinished
+    })
+    ExecutionHandler.updateCount({
+      date: ExecutionHandler.day,
+      isFinished: isFinished,
+      data: total || 0
+    })
+
+    return { list, total }
+  }
+
+  /**
+   * 重新加载列表
+   * 未完成 和 已完成
+   */
+  static async reloadList() {
+    await ExecutionHandler.getList({ isFinished: false })
+    await ExecutionHandler.getList({ isFinished: true })
   }
 }
 

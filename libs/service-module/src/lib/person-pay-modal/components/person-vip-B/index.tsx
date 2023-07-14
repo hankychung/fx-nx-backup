@@ -1,4 +1,5 @@
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { paymentApi as paymentCountApi } from '@flyele-nx/service'
 import React, { useContext, useState, useEffect, useMemo } from 'react'
 import { ReactComponent as CountDownA } from '../../../../assets/payImg/count_down_a.svg'
 
@@ -122,18 +123,13 @@ const PersonVipB = ({
     })
   }
   const getPerson = () => {
-    const startDate = new Date('2023-07-10')
-    const now = new Date()
-    const diffTime = now.getTime() - startDate.getTime()
-    const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    const base = 11289
-    const span = 100 * days
-    const random = Math.floor(Math.random() * span) + base
-    return random
+    paymentCountApi.getCountPaymentUser().then((res: any) => {
+      setPersons(res.data.user_count)
+    })
   }
+
   useEffect(() => {
-    setPersons(getPerson())
+    getPerson()
     if (
       vipMealType === VipMealType.PERSON &&
       couponList &&

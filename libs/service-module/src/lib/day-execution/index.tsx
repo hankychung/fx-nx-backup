@@ -18,9 +18,16 @@ interface IProps {
   onShow?: (show: boolean) => void
   onMount?: () => void
   rootClassName?: string
+  contentHeight?: number
 }
 
-const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
+const _DayExecution = ({
+  date,
+  onShow,
+  onMount,
+  rootClassName,
+  contentHeight = 0
+}: IProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
 
@@ -66,6 +73,15 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
     await fetchDayList()
     await fetchDayList(true)
   })
+
+  /**
+   * 内容区样式
+   */
+  const contentStyle = useMemo(() => {
+    return {
+      height: show ? `calc(100% - ${contentHeight}px)` : 0
+    }
+  }, [contentHeight, show])
 
   /**
    * 统计数量
@@ -164,7 +180,7 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
           </div>
         </div>
       </div>
-      <div className={cs(styles.content, { [styles.contentHide]: !show })}>
+      <div className={cs(styles.content)} style={contentStyle}>
         {total ? (
           <>
             <div className={styles.scroller}>

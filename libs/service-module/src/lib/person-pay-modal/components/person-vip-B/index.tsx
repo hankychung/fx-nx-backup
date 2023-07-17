@@ -1,13 +1,11 @@
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { paymentApi as paymentCountApi } from '@flyele-nx/service'
 import React, { useContext, useState, useEffect, useMemo } from 'react'
-import { ReactComponent as CountDownA } from '../../../../assets/payImg/count_down_a.svg'
 
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { VipMealType } from '../controller'
 import cs from 'classnames'
 import style from './index.module.scss'
-import price_box_BG from '../../../../assets/payImg/price_box_bg.svg'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { getResidueTime, regFenToYuan } from './utils'

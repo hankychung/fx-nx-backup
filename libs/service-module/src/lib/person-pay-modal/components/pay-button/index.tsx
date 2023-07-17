@@ -22,26 +22,9 @@ const PayButton = (props: Iprops) => {
     resultArr = [],
     goProtocol
   } = props
-  const [isShow, setIsShow] = useState(false)
 
   const activeItem = activeGood[0]
-  const service = useContext(SelectMemberContext)
 
-  useEffect(() => {
-    service.addListener((ev) => {
-      const { event } = ev
-      if (event === 'showPay') {
-        const isPayFinish = service.getData('showPay').isPayUnFinish
-        if (isPayFinish) {
-          setIsShow(isPayFinish)
-        }
-      }
-    })
-
-    return () => {
-      service.dispose()
-    }
-  }, [service])
   return (
     <div className={style.payButton}>
       {activeItem && (
@@ -101,11 +84,6 @@ const PayButton = (props: Iprops) => {
           《飞项会员协议》
         </span>
       </div>
-      {/* <PayUnfinish
-        isShow={isShow}
-        onClose={() => setIsShow(false)}
-        payClick={payClick}
-      /> */}
     </div>
   )
 }

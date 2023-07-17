@@ -127,7 +127,7 @@ const PersonPayModal = (props: Iprops) => {
               onClose()
             }}
             isPaySuccess={isPaySuccess}
-          ></RetrievePayModal>
+          />
         )
       ) : (
         <RetrievePayModalTeam

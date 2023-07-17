@@ -126,7 +126,7 @@ const _DayExecution = ({
         tTimeTxt: '已完成',
         taskItems: list.sort(
           (a, b) =>
-            (a.finish_time || a.create_at) - (b.finish_time || b.create_at)
+            (b.finish_time || b.create_at) - (a.finish_time || a.create_at)
         )
       }
     ]

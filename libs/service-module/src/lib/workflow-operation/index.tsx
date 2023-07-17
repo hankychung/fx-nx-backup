@@ -39,6 +39,7 @@ import {
 import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
 import { globalNxController } from '../global/nxController'
+import { useScheduleStore } from '../store/useScheduleStore'
 
 const { TextArea } = Input
 
@@ -66,6 +67,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   },
   ref
 ) => {
+  const taskDict = useScheduleStore().taskDict
   const ctrl = useController(new FlyBasePopperCtrl())
   const [showModal, setShowModal] = useState(false)
   const [showPopper, setShowPopper] = useState(false)
@@ -78,11 +80,18 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const getStepsLoading = useRef(false)
   const { contactDict } = useContactStore()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const [outdated, setOutdated] = useState(false)
 
   const stepList = useMemo(
     () => stepsFormatter(steps, curStepId, !!addUser),
     [steps, curStepId, addUser]
   )
+
+  const task = taskDict[taskId]
+
+  useEffect(() => {
+    setOutdated(true)
+  }, [task])
 
   const openSteps = useMemoizedFn(() => {
     if (isHovering && steps.length) {
@@ -228,7 +237,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     handleHover && handleHover(true)
     setIsHovering(true)
 
-    if (!steps.length) {
+    if (!steps.length || outdated) {
+      setOutdated(false)
       getSteps()
     } else {
       setShowPopper(true)

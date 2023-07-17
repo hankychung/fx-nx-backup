@@ -64,6 +64,13 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
       question: '员工离职后会员权益可以转移吗？',
       answer: '可以，请联系客服处理',
       expanded: false
+    },
+    {
+      key: 6,
+      question: '团队会员跟个人会员的区别？',
+      answer:
+        '个人会员适合个人用户使用，提供面向个人的高级能力与简单的协作能力。团队会员拥有<span  style="color: #5D7BFF;">专业空间的使用权</span>，只有团队会员才能使用专业空间的所有高级协作能力，适合团队型用户使用',
+      expanded: false
     }
   ])
 

@@ -18,7 +18,7 @@ interface IProps {
   onShow?: (show: boolean) => void
   onMount?: () => void
   rootClassName?: string
-  contentHeight?: number
+  subtractHeight?: number
 }
 
 const _DayExecution = ({
@@ -26,7 +26,7 @@ const _DayExecution = ({
   onShow,
   onMount,
   rootClassName,
-  contentHeight = 0
+  subtractHeight = 0
 }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
@@ -79,9 +79,9 @@ const _DayExecution = ({
    */
   const contentStyle = useMemo(() => {
     return {
-      height: show ? `calc(100% - ${contentHeight}px)` : 0
+      height: show ? `calc(100% - ${subtractHeight}px)` : 0
     }
-  }, [contentHeight, show])
+  }, [subtractHeight, show])
 
   /**
    * 统计数量

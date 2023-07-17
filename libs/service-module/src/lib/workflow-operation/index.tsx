@@ -273,12 +273,14 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepRollback({ reason: inputVal, taskId, curStepId })
       .then(() => {
         changeStatus?.()
+        globalNxController.updateWorkflowStep({ taskId })
         globalNxController.showMsg({
           msgType: '成功',
           content: '操作成功，该事项已退回上一步'
         })
       })
       .catch((err: any) => {
+        globalNxController.updateWorkflowStep({ taskId })
         if (err?.response?.data && err?.response?.data?.code === 40050) {
           // 他人已处理说明当前的操作不对,可能同时多人操作,
           // 也可能会存在数据不同等问题,最好还是走一次成功流程刷新一次数据
@@ -322,12 +324,14 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepComplete({ curStepId, taskId })
       .then(() => {
         changeStatus?.()
+        globalNxController.updateWorkflowStep({ taskId })
         globalNxController.showMsg({
           msgType: '成功',
           content: getHandleNextTxt()
         })
       })
       .catch((err) => {
+        globalNxController.updateWorkflowStep({ taskId })
         if (err?.response?.data && err?.response?.data?.code === 40050) {
           // 他人已处理说明当前的操作不对,可能同时多人操作,
           // 也可能会存在数据不同等问题,最好还是走一次成功流程刷新一次数据

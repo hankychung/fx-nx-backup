@@ -155,6 +155,7 @@ const _ScheduleList: ForwardRefRenderFunction<
           noTask={!finishList?.length && !list?.length}
           allFinished={!!finishTotal && !list?.length}
           loading={loading}
+          date={date}
         />
       )}
     </div>

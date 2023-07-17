@@ -1,4 +1,4 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
 import dayjs from 'dayjs'
 
 export interface IScheduleTaskTime {
@@ -186,4 +186,49 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
   })
 
   return temp
+}
+
+/**
+ * 判断是否要更新
+ */
+export const isUpdateList = (tasks: ILocalTask[]) => {
+  const result: ILocalTask[] = []
+
+  tasks.forEach((item) => {
+    const { start_time, end_time, execute_at, flow_step_id, create_at } = item
+
+    //如果是工作流
+    const flowIsToday =
+      !start_time && !end_time && dayjs().isSame(dayjs.unix(create_at), 'day')
+
+    const startTimeToday = start_time
+      ? dayjs().isSame(dayjs.unix(start_time), 'day')
+      : false
+    const endTimeToday = end_time
+      ? dayjs().isSame(dayjs.unix(end_time), 'day')
+      : false
+    const executeAtToday = execute_at
+      ? dayjs().isSame(dayjs.unix(execute_at), 'day')
+      : false
+    // 跨天
+    const isCoverDay =
+      start_time && end_time
+        ? !dayjs.unix(start_time).isSame(dayjs.unix(end_time), 'day')
+        : false
+
+    /**
+     * 事项是否需要更新
+     * 是否今日
+     * 是否跨天
+     */
+    const isUpdate = flow_step_id
+      ? flowIsToday
+      : startTimeToday || endTimeToday || executeAtToday || isCoverDay
+
+    if (isUpdate) {
+      result.push(item)
+    }
+  })
+
+  return result
 }

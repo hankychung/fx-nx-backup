@@ -175,6 +175,17 @@ class GlobalNxController {
       return null
     }
   }
+
+  updateWorkflowStep(option: { taskId: string }) {
+    const { updateWorkflowStep } = nxControllerRegister
+
+    if (!updateWorkflowStep) {
+      console.error(`updateWorkflowStep 未注册`)
+      return
+    }
+
+    updateWorkflowStep(option)
+  }
 }
 
 export const globalNxController = new GlobalNxController()

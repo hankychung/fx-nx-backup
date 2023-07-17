@@ -17,6 +17,7 @@ interface Iprops {
   goProtocol: () => void
   goInterests: () => void
   handleModalType: () => void
+  senConfirm?: () => void
 }
 const QuickPayPerson = (props: Iprops) => {
   const {
@@ -27,7 +28,8 @@ const QuickPayPerson = (props: Iprops) => {
     goProtocol,
     goInterests,
     domain,
-    handleModalType
+    handleModalType,
+    senConfirm
   } = props
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   return (
@@ -65,6 +67,7 @@ const QuickPayPerson = (props: Iprops) => {
               isPaySuccess={isPaySuccess}
               onClose={onClose}
               domain={domain}
+              senConfirm={senConfirm}
             />
           </div>
         </div>

@@ -31,6 +31,7 @@ const Landing = () => {
             onClick={() => {
               handleClick('下载使用-顶部')
             }}
+            data-agl-cvt="6"
           >
             下载使用
           </div>
@@ -50,6 +51,7 @@ const Landing = () => {
             onClick={() => {
               handleClick('下载使用-今日面板')
             }}
+            data-agl-cvt="6"
           >
             下载使用
             <Arrow />
@@ -68,6 +70,7 @@ const Landing = () => {
             onClick={() => {
               handleClick('下载使用-多平台云同步')
             }}
+            data-agl-cvt="6"
           >
             下载使用
             <Arrow />
@@ -88,6 +91,7 @@ const Landing = () => {
             onClick={() => {
               handleClick('下载使用-多种桌面小组件')
             }}
+            data-agl-cvt="6"
           >
             下载使用
             <Arrow />
@@ -107,6 +111,7 @@ const Landing = () => {
             onClick={() => {
               handleClick('下载使用-多种视图')
             }}
+            data-agl-cvt="6"
           >
             下载使用
             <Arrow />
@@ -128,6 +133,7 @@ const Landing = () => {
             onClick={() => {
               handleClick('下载使用-目标及项目管理')
             }}
+            data-agl-cvt="6"
           >
             下载使用
             <Arrow />
@@ -153,6 +159,7 @@ const Landing = () => {
           onClick={() => {
             handleClick('下载使用-底部')
           }}
+          data-agl-cvt="6"
         >
           下载使用
         </div>

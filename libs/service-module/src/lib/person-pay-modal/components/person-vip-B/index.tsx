@@ -1,12 +1,11 @@
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { paymentApi as paymentCountApi } from '@flyele-nx/service'
 import React, { useContext, useState, useEffect, useMemo } from 'react'
-import { ReactComponent as CountDownA } from '../../../../assets/payImg/count_down_a.svg'
 
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { VipMealType } from '../controller'
 import cs from 'classnames'
 import style from './index.module.scss'
-import price_box_BG from '../../../../assets/payImg/price_box_bg.svg'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { getResidueTime, regFenToYuan } from './utils'
@@ -49,7 +48,7 @@ const PersonVipB = ({
       if (res.code === 0) {
         const new_arr = res.data.map((item, index) => {
           const arr = getItem(item.id, couponList || [])
-          if (index === 0) {
+          if (index === 2) {
             if (arr.length > 0) {
               const num = arr[0].end_at
                 ? dayjs.unix(arr[0].end_at).valueOf() / 1000
@@ -122,18 +121,13 @@ const PersonVipB = ({
     })
   }
   const getPerson = () => {
-    const startDate = new Date('2023-07-10')
-    const now = new Date()
-    const diffTime = now.getTime() - startDate.getTime()
-    const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    const base = 11289
-    const span = 100 * days
-    const random = Math.floor(Math.random() * span) + base
-    return random
+    paymentCountApi.getCountPaymentUser().then((res: any) => {
+      setPersons(res.data.user_count)
+    })
   }
+
   useEffect(() => {
-    setPersons(getPerson())
+    getPerson()
     if (
       vipMealType === VipMealType.PERSON &&
       couponList &&

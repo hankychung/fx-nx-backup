@@ -1,4 +1,4 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
 import dayjs from 'dayjs'
 
 export interface IScheduleTaskTime {
@@ -15,6 +15,9 @@ export interface IScheduleTaskTime {
  * _t3 仅开始时间
  * _t4 仅截止时间
  * _t5 区间时间
+ * 跨天的时间，如果是开始时间是今天 以开始时间
+ * 如果开始时间不是今天的话，且 结束时间不是今日的话 取为 全天
+ * 结束时间是今日的话，取结束时间
  * **/
 export const disposalTodayList = (todayList: IScheduleTask[]) => {
   const temp: IScheduleTaskTime[] = []
@@ -100,8 +103,44 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
       return
     }
 
-    // 区间时间
     if (start_time && end_time) {
+      // 跨天事项
+      if (!dayjs.unix(start_time).isSame(dayjs.unix(end_time), 'day')) {
+        const startDay = dayjs.unix(start_time).startOf('day')
+        const endDay = dayjs.unix(end_time).startOf('day')
+        // 开始时间是今天
+        if (startDay.isSame(dayjs().startOf('day'))) {
+          updateArr({
+            time: start_time,
+            timeTxt: dayjs.unix(start_time).format('HH:mm'),
+            task: e
+          })
+          return
+        }
+        // 开始时间不是今天且结束时间不是今天
+        if (
+          !startDay.isSame(dayjs().startOf('day')) &&
+          !endDay.isSame(dayjs().startOf('day'))
+        ) {
+          updateArr({
+            time: 0,
+            timeTxt: '全天',
+            task: e
+          })
+          return
+        }
+        // 结束时间是今天
+        if (endDay.isSame(dayjs().startOf('day'))) {
+          updateArr({
+            time: end_time,
+            timeTxt: dayjs.unix(end_time).format('HH:mm'),
+            task: e
+          })
+          return
+        }
+      }
+
+      // 区间时间
       updateArr({
         time: start_time,
         timeTxt: dayjs.unix(start_time).format('HH:mm'),
@@ -147,4 +186,49 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
   })
 
   return temp
+}
+
+/**
+ * 判断是否要更新
+ */
+export const isUpdateList = (tasks: ILocalTask[]) => {
+  const result: ILocalTask[] = []
+
+  tasks.forEach((item) => {
+    const { start_time, end_time, execute_at, flow_step_id, create_at } = item
+
+    //如果是工作流
+    const flowIsToday =
+      !start_time && !end_time && dayjs().isSame(dayjs.unix(create_at), 'day')
+
+    const startTimeToday = start_time
+      ? dayjs().isSame(dayjs.unix(start_time), 'day')
+      : false
+    const endTimeToday = end_time
+      ? dayjs().isSame(dayjs.unix(end_time), 'day')
+      : false
+    const executeAtToday = execute_at
+      ? dayjs().isSame(dayjs.unix(execute_at), 'day')
+      : false
+    // 跨天
+    const isCoverDay =
+      start_time && end_time
+        ? !dayjs.unix(start_time).isSame(dayjs.unix(end_time), 'day')
+        : false
+
+    /**
+     * 事项是否需要更新
+     * 是否今日
+     * 是否跨天
+     */
+    const isUpdate = flow_step_id
+      ? flowIsToday
+      : startTimeToday || endTimeToday || executeAtToday || isCoverDay
+
+    if (isUpdate) {
+      result.push(item)
+    }
+  })
+
+  return result
 }

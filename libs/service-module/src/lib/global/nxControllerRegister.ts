@@ -7,6 +7,8 @@ import {
 } from './types/controller'
 import { Msg } from '@flyele-nx/ui'
 
+type UpdateWorkflowStep = (option: { taskId: string }) => void
+
 /**
  * nxController 控制器的注册器
  * 用于 注册外部方法 进 nx
@@ -22,6 +24,7 @@ class NxControllerRegister {
   openTaskDetail: ((data: IOpenTaskDetail) => void) | null = null
   handlerTaskAddTaker: ((data: IHandlerTaskAddTaker) => void) | null = null
   showMsg: ((v: Msg) => void) | null = null
+  updateWorkflowStep: UpdateWorkflowStep | null = null
 
   getDayView: (params: DayViewParamsProps) => {
     code: number
@@ -112,6 +115,13 @@ class NxControllerRegister {
    */
   shellRegister(electronShell: any) {
     this.electronShell = electronShell
+  }
+
+  /**
+   * 工作流状态更新
+   */
+  updateWorkflowStepRegister(fn: UpdateWorkflowStep) {
+    this.updateWorkflowStep = fn
   }
 }
 

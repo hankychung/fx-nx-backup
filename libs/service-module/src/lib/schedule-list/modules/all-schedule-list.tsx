@@ -145,6 +145,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
             noTask={!finishList?.length && !list?.length}
             allFinished={!!finishTotal && !list?.length}
             loading={loading}
+            date={date}
           />
         )}
       </InfiniteScroll>

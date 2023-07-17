@@ -39,6 +39,7 @@ import {
 import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
 import { globalNxController } from '../global/nxController'
+import { useScheduleStore } from '../store/useScheduleStore'
 
 const { TextArea } = Input
 
@@ -66,6 +67,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   },
   ref
 ) => {
+  const taskDict = useScheduleStore().taskDict
   const ctrl = useController(new FlyBasePopperCtrl())
   const [showModal, setShowModal] = useState(false)
   const [showPopper, setShowPopper] = useState(false)
@@ -78,11 +80,18 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const getStepsLoading = useRef(false)
   const { contactDict } = useContactStore()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const [outdated, setOutdated] = useState(false)
 
   const stepList = useMemo(
     () => stepsFormatter(steps, curStepId, !!addUser),
     [steps, curStepId, addUser]
   )
+
+  const task = taskDict[taskId]
+
+  useEffect(() => {
+    setOutdated(true)
+  }, [task])
 
   const openSteps = useMemoizedFn(() => {
     if (isHovering && steps.length) {
@@ -228,7 +237,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     handleHover && handleHover(true)
     setIsHovering(true)
 
-    if (!steps.length) {
+    if (!steps.length || outdated) {
+      setOutdated(false)
       getSteps()
     } else {
       setShowPopper(true)
@@ -263,12 +273,14 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepRollback({ reason: inputVal, taskId, curStepId })
       .then(() => {
         changeStatus?.()
+        globalNxController.updateWorkflowStep({ taskId })
         globalNxController.showMsg({
           msgType: '成功',
           content: '操作成功，该事项已退回上一步'
         })
       })
       .catch((err: any) => {
+        globalNxController.updateWorkflowStep({ taskId })
         if (err?.response?.data && err?.response?.data?.code === 40050) {
           // 他人已处理说明当前的操作不对,可能同时多人操作,
           // 也可能会存在数据不同等问题,最好还是走一次成功流程刷新一次数据
@@ -312,12 +324,14 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     TaskApi.flowStepComplete({ curStepId, taskId })
       .then(() => {
         changeStatus?.()
+        globalNxController.updateWorkflowStep({ taskId })
         globalNxController.showMsg({
           msgType: '成功',
           content: getHandleNextTxt()
         })
       })
       .catch((err) => {
+        globalNxController.updateWorkflowStep({ taskId })
         if (err?.response?.data && err?.response?.data?.code === 40050) {
           // 他人已处理说明当前的操作不对,可能同时多人操作,
           // 也可能会存在数据不同等问题,最好还是走一次成功流程刷新一次数据

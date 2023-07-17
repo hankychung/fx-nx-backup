@@ -87,6 +87,8 @@ class ExecutionHandler {
    * 请求列表
    */
   static async getList({ isFinished = false }: { isFinished?: boolean }) {
+    const { batchUpdateTask } = useScheduleStore.getState()
+
     const {
       data: { list, total }
     } = await globalNxController.getDayView({
@@ -94,6 +96,8 @@ class ExecutionHandler {
       queryType: isFinished ? QueryType.completed : QueryType.participate,
       tabType: TabType.TODAY
     })
+
+    batchUpdateTask(list, { isFinished })
 
     ExecutionHandler.updateList({
       date: ExecutionHandler.day,

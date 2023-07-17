@@ -6,6 +6,7 @@ import { uniq } from 'lodash'
 import { globalNxController } from '../../global/nxController'
 import { QueryType, TabType } from '@flyele-nx/sql-store'
 import { getDateOfToday } from './tools'
+import { isUpdateList } from '../../day-execution/utils'
 
 /**
  * 今日执行日程的控制类
@@ -123,18 +124,22 @@ class ExecutionHandler {
    * 创建新事项
    */
   static createTasks(tasks: ILocalTask[]) {
-    ExecutionHandler.updateList({
-      date: ExecutionHandler.day,
-      list: tasks,
-      isInit: false,
-      isFinished: false
-    })
-    useScheduleStore.setState(
-      produce((state: IState) => {
-        state.todayExecutionCount[ExecutionHandler.day].total =
-          state.todayExecutionCount[ExecutionHandler.day].total + 1
+    const updateList = isUpdateList(tasks)
+    if (updateList.length) {
+      ExecutionHandler.updateList({
+        date: ExecutionHandler.day,
+        list: updateList,
+        isInit: false,
+        isFinished: false
       })
-    )
+      useScheduleStore.setState(
+        produce((state: IState) => {
+          state.todayExecutionCount[ExecutionHandler.day].total =
+            state.todayExecutionCount[ExecutionHandler.day].total +
+            updateList.length
+        })
+      )
+    }
   }
 
   /**

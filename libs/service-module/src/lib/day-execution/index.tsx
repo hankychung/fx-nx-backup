@@ -124,7 +124,10 @@ const _DayExecution = ({
       {
         tTime: 0,
         tTimeTxt: '已完成',
-        taskItems: list.sort((a, b) => a.create_at - b.create_at)
+        taskItems: list.sort(
+          (a, b) =>
+            (a.finish_time || a.create_at) - (b.finish_time || b.create_at)
+        )
       }
     ]
   }, [day, taskDict, todayCompletedExecution])
@@ -183,7 +186,7 @@ const _DayExecution = ({
         </div>
       </div>
       <div className={cs(styles.content)} style={contentStyle}>
-        {total ? (
+        {taskTotal ? (
           <>
             <div className={styles.scroller}>
               <InfiniteScroll

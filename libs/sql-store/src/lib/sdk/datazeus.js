@@ -9339,10 +9339,16 @@
                     f +
                     "' THEN '" +
                     f +
+                    "'\n          WHEN start_time < " +
+                    e +
+                    ' AND end_time > ' +
+                    d +
+                    " THEN '" +
+                    f +
                     "'\n          WHEN start_time >= " +
                     e +
-                    ' AND start_time < ' +
-                    c +
+                    ' AND start_time <= ' +
+                    d +
                     " THEN '" +
                     f +
                     "'\n          WHEN end_time >= " +

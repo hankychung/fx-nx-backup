@@ -338,7 +338,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         </div>
       </div>
-      {children && isExpanded && (
+      {children && isExpanded && !isTimeLine && (
         <div>
           {children.map((i) => (
             <ChildrenTask

@@ -120,7 +120,7 @@ export const memberPowerStaticData: IInfoType[] = [
     btnBgColor: 'linear-gradient(90deg, #7B5EEF 0%, #6248ED 100%)',
     btnBorderColor: 'none',
     money: '298',
-    unit: '年',
+    unit: '年/人',
     topText: '热门推荐',
     oldPrice: '',
     powerList: [

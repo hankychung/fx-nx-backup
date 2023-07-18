@@ -430,12 +430,16 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     setInputVal('')
   })
 
-  useEffect(() => {
+  const checkBeforeStep = useMemoizedFn(() => {
     if (showModal) {
       closeModal()
       globalNxController.showMsg({ content: '他人已处理' })
     }
-  }, [curStepId, closeModal, showModal])
+  })
+
+  useEffect(() => {
+    checkBeforeStep()
+  }, [curStepId, checkBeforeStep])
 
   const overToast = useMemoizedFn(() => {
     if (isOverDoneVerify()) {

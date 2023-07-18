@@ -23,9 +23,10 @@ const PayButton = (props: Iprops) => {
     service.addListener((ev) => {
       const { event } = ev
       if (event === 'showPay') {
-        const isPayFinish = service.getData('showPay').isPayUnFinish
-        if (isPayFinish) {
-          setIsShow(isPayFinish)
+        const isPayUnFinish = service.getData('showPay').isPayUnFinish
+
+        if (isPayUnFinish) {
+          setIsShow(isPayUnFinish)
         }
       }
     })

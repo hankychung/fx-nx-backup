@@ -79,7 +79,8 @@ const _DayExecution = ({
    */
   const contentStyle = useMemo(() => {
     return {
-      height: show ? `calc(100% - ${subtractHeight}px)` : 0
+      height: show ? `calc(100% - ${subtractHeight}px)` : 0,
+      display: show ? 'block' : 'none'
     }
   }, [subtractHeight, show])
 
@@ -185,7 +186,7 @@ const _DayExecution = ({
           </div>
         </div>
       </div>
-      <div className={cs(styles.content)} style={contentStyle}>
+      <div className={styles.content} style={contentStyle}>
         {taskTotal ? (
           <>
             <div className={styles.scroller}>

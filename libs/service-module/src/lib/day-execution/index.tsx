@@ -185,7 +185,7 @@ const _DayExecution = ({
           </div>
         </div>
       </div>
-      <div className={cs(styles.content)} style={contentStyle}>
+      <div className={styles.content} style={contentStyle}>
         {taskTotal ? (
           <>
             <div className={styles.scroller}>

@@ -9304,7 +9304,7 @@
                     f +
                     "' THEN '" +
                     f +
-                    u.d +
+                    "'\n          WHEN DATE(cycle_date, 'localtime') = '" +
                     f +
                     "' AND end_time > " +
                     c +
@@ -9335,11 +9335,11 @@
                     f +
                     "' THEN '" +
                     f +
-                    u.d +
+                    "'\n          WHEN start_time > 0 AND end_time > 0 AND DATE(cycle_date, 'localtime') = '" +
                     f +
                     "' THEN '" +
                     f +
-                    "'\n          WHEN start_time < " +
+                    "'\n          WHEN start_time > 0 AND end_time > 0 AND start_time < " +
                     e +
                     ' AND end_time > ' +
                     d +
@@ -9454,7 +9454,7 @@
                       o +
                       ')) '
                   )
-                  a0 = 'complete_time'
+                  a0 = 'complete_time ' + (b6.d === 'today' ? 'DESC' : '')
                   break
                 case 4:
                   break
@@ -10515,7 +10515,6 @@
   )
   A.lF(v.typeUniverse, JSON.parse('{"j":1,"br":1,"cO":2,"bx":1}'))
   var u = {
-    d: "'\n          WHEN DATE(cycle_date, 'localtime') = '",
     e: "'\n          WHEN start_time > 0 AND start_time < ",
     c: "Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type"
   }

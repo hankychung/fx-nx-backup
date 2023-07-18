@@ -7,6 +7,7 @@
 import { IActiveGoods } from '@flyele-nx/api'
 import { BaseEventNotify } from '@flyele/flyele-components'
 import { IFlyeleAvatarItem } from '../../pay-modal'
+import { VipMealType } from '../components/controller'
 export type IEvent = {
   show: boolean
   close: undefined
@@ -15,7 +16,7 @@ export type IEvent = {
     show: boolean
     payInfo?: IActiveGoods
     userInfo?: IFlyeleAvatarItem[]
-    isPayUnFinish?: boolean
+    vipMealType?: VipMealType
   }
 }
 export class SelectMemberService extends BaseEventNotify<IEvent> {

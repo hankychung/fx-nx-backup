@@ -14,7 +14,7 @@ export interface IInfoType {
   btnBgColor?: string
   btnBorderColor?: string
   money: number | string
-  unit: '' | '月' | '年'
+  unit: '' | '月' | '年' | '年/人'
   moneyText?: string
   powerList: IPower[]
   isDiyRender?: string
@@ -152,7 +152,7 @@ export const memberPowerStaticData: IInfoType[] = [
     btnBgColor: 'linear-gradient(90deg, #7B5EEF 0%, #6248ED 100%)',
     btnBorderColor: 'none',
     money: 298,
-    unit: '年',
+    unit: '年/人',
     powerList: [
       {
         title: '包含所有个人会员能力',

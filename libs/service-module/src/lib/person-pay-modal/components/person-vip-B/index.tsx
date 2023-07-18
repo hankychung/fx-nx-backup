@@ -28,7 +28,6 @@ const PersonVipB = ({
   goProtocol?: () => void
   goInterests: () => void
 }) => {
-  //设置初始日，用于做假数据，可以自行修改
   const [persons, setPersons] = useState<number>(0)
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const { nowScecond } = useCurrentTime()
@@ -191,7 +190,14 @@ const PersonVipB = ({
                   }}
                 >
                   <div className={style.priceTop}>
-                    <div className={style.mealName}>{_.name}</div>
+                    <div
+                      className={cs(style.mealName, {
+                        [style.mealNameActive]:
+                          _.active && _.name === '终身会员'
+                      })}
+                    >
+                      {_.name}
+                    </div>
                     <div
                       className={cs(style.price, {
                         [style.priceActive]: _.active && _.name === '终身会员'

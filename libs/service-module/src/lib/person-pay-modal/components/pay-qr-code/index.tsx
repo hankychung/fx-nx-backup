@@ -118,7 +118,7 @@ const PayQrCode = ({
               <Close
                 className={style.close}
                 onClick={() => {
-                  service.showPay({ show: false, isPayUnFinish: true })
+                  service.showPay({ show: false, vipMealType: vipMealType })
                 }}
               ></Close>
             </div>

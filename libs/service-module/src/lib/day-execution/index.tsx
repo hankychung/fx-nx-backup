@@ -79,8 +79,7 @@ const _DayExecution = ({
    */
   const contentStyle = useMemo(() => {
     return {
-      height: show ? `calc(100% - ${subtractHeight}px)` : 0,
-      display: show ? 'block' : 'none'
+      height: show ? `calc(100% - ${subtractHeight}px)` : 0
     }
   }, [subtractHeight, show])
 

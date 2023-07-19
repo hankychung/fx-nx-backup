@@ -18,7 +18,7 @@
     // justify-content: center;
     .priceBox {
       height: 170px;
-      width: 570px;
+      width: 516px;
       display: flex;
       justify-content: space-between;
 
@@ -47,6 +47,9 @@
             line-height: 20px;
             opacity: 0.8;
             color: rgba(51, 51, 51, 1);
+          }
+          .mealNameActive {
+            color: white;
           }
           .price {
             font-size: 15px;

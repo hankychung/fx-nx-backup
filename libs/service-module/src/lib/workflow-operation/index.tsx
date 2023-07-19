@@ -252,6 +252,12 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     }
   })
 
+  useEffect(() => {
+    if (task.refreshWorkflow) {
+      getSteps()
+    }
+  }, [task, getSteps])
+
   const showOperation = useMemoizedFn(() => {
     handleHover && handleHover(true)
     setIsHovering(true)

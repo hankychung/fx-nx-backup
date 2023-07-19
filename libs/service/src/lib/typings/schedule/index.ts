@@ -443,6 +443,7 @@ export interface IScheduleTask {
 
 export interface ILocalTask extends IScheduleTask {
   fromExecuate?: boolean
+  refreshWorkflow?: boolean
 }
 
 /**

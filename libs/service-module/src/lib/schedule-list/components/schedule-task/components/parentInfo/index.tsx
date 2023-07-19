@@ -22,7 +22,7 @@ function getType(task?: IScheduleTask) {
     _name = task.project_name
     //2.1 PC-4731 日视图里子孙事项有所属项目时，上级结构优先显示项目，其次再是顶级父事项
   } else if (
-    task.parents?.[0]?.title &&
+    task.parent_name &&
     task.matter_type &&
     [
       ScheduleTaskConst.MatterType.meeting,
@@ -31,7 +31,7 @@ function getType(task?: IScheduleTask) {
     ].includes(task.matter_type)
   ) {
     _type = '事项'
-    _name = task.parents?.[0]?.title
+    _name = task.parent_name
   }
 
   return {

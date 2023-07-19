@@ -30,13 +30,19 @@ const PayButton = (props: Iprops) => {
   const [showTeam, setShowTeam] = useState(false)
 
   const service = useContext(SelectMemberContext)
-
+  const payLife = () => {
+    if (vipMealList) {
+      service.showPay({
+        show: true,
+        payInfo: vipMealList[2]
+      })
+    }
+  }
   const activeItem = activeGood[0]
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
       if (event === 'showPay') {
-        console.log('调用了2222222222')
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)
@@ -114,7 +120,7 @@ const PayButton = (props: Iprops) => {
         <PayUnfinish
           isShow={isShow}
           onClose={() => setIsShow(false)}
-          payClick={payClick}
+          payClick={payLife}
           vipMealList={vipMealList}
         />
       )}

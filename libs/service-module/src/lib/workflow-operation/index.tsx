@@ -144,6 +144,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   }, [statusFromProps])
 
   const refreshStatus = useMemoizedFn(() => {
+    console.log('check refresh', task, complete_at)
+
     // 防止进入的时候steps是空的，当steps是空的时候 所有的判断都会出错
     if (steps.length === 0) {
       updateFlow()
@@ -179,6 +181,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       }
 
       const myStatus = user_ids?.find((i) => i.user_id === userId)
+
+      console.log('check refresh status', task, complete_at)
 
       if (!myStatus) {
         setStatus('pass')

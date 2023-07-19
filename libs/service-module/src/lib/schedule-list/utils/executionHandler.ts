@@ -98,7 +98,7 @@ class ExecutionHandler {
       tabType: TabType.TODAY
     })
 
-    batchUpdateTask(list, { isFinished })
+    batchUpdateTask(list, { isFinished, compare: true })
 
     ExecutionHandler.updateList({
       date: ExecutionHandler.day,

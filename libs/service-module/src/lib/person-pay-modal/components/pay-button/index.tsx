@@ -7,7 +7,6 @@ import { VipMealType } from '../controller'
 import style from './index.module.scss'
 import { SelectMemberContext } from '../../context/context'
 import PayUnfinish from '../person-vip-B/components/pay-unfinish'
-import RetrievePayModalTeam from '../../../retrieve-pay-modal-team'
 
 interface Iprops {
   vipMealType: VipMealType
@@ -46,9 +45,6 @@ const PayButton = (props: Iprops) => {
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)
-        }
-        if (vipMealType === 2) {
-          setShowTeam(true)
         }
       }
     })
@@ -124,12 +120,6 @@ const PayButton = (props: Iprops) => {
           vipMealList={vipMealList}
         />
       )}
-      <RetrievePayModalTeam
-        isShow={showTeam}
-        onClose={() => {
-          setShowTeam(false)
-        }}
-      />
     </div>
   )
 }

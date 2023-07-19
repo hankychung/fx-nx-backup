@@ -5,6 +5,7 @@ import style from './index.module.scss'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
 import { SelectMemberContext } from '../../../../context/context'
 import PayUnfinish from '../pay-unfinish'
+import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
 
 interface Iprops {
   activeGood?: IActiveGoods[]
@@ -12,9 +13,18 @@ interface Iprops {
   goProtocol?: () => void
   goInterests?: () => void
   vipMealList: IActiveGoods[]
+  hasShowRetrieveModal?: boolean
+  setHasShowRetrieveModal?: () => void
 }
 const PayButton = (props: Iprops) => {
-  const { payClick, goProtocol, goInterests, vipMealList } = props
+  const {
+    payClick,
+    goProtocol,
+    goInterests,
+    vipMealList,
+    hasShowRetrieveModal,
+    setHasShowRetrieveModal
+  } = props
   const [isShow, setIsShow] = useState(false)
   const [showTeam, setShowTeam] = useState(false)
   const service = useContext(SelectMemberContext)
@@ -26,6 +36,9 @@ const PayButton = (props: Iprops) => {
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)
+        }
+        if (vipMealType === 2) {
+          setShowTeam(true)
         }
       }
     })
@@ -67,6 +80,17 @@ const PayButton = (props: Iprops) => {
         payClick={payClick}
         vipMealList={vipMealList}
       />
+      {!hasShowRetrieveModal && (
+        <RetrievePayModalTeam
+          isShow={showTeam}
+          onClose={() => {
+            setShowTeam(false)
+            if (setHasShowRetrieveModal) {
+              setHasShowRetrieveModal()
+            }
+          }}
+        />
+      )}
     </div>
   )
 }

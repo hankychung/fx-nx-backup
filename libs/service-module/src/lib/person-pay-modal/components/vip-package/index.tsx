@@ -35,6 +35,8 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
+  hasShowRetrieveModal?: boolean
+  setHasShowRetrieveModal?: () => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -51,7 +53,9 @@ const VipPackage = (props: Iprops) => {
     goProtocol,
     goInterests,
     originRoute,
-    showMsg
+    showMsg,
+    hasShowRetrieveModal,
+    setHasShowRetrieveModal
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -191,6 +195,8 @@ const VipPackage = (props: Iprops) => {
             couponList={couponList}
             vipMealType={vipMealType}
             goInterests={goInterests}
+            hasShowRetrieveModal={hasShowRetrieveModal}
+            setHasShowRetrieveModal={setHasShowRetrieveModal}
           />
         )}
       </div>

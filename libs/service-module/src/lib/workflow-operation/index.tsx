@@ -140,11 +140,16 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   })
 
   useEffect(() => {
+    if (task.title === '回退') {
+      console.log('check refresh outter', task, statusFromProps)
+    }
     setStatus(statusFromProps)
-  }, [statusFromProps])
+  }, [statusFromProps, task])
 
   const refreshStatus = useMemoizedFn(() => {
-    console.log('check refresh', task, complete_at)
+    if (task.title === '回退') {
+      console.log('check refresh', task, complete_at)
+    }
 
     // 防止进入的时候steps是空的，当steps是空的时候 所有的判断都会出错
     if (steps.length === 0) {
@@ -182,7 +187,9 @@ const _WorkflowOperation: ForwardRefRenderFunction<
 
       const myStatus = user_ids?.find((i) => i.user_id === userId)
 
-      console.log('check refresh status', task, complete_at)
+      if (task.title === '回退') {
+        console.log('check refresh status', myStatus, complete_at)
+      }
 
       if (!myStatus) {
         setStatus('pass')
@@ -200,6 +207,12 @@ const _WorkflowOperation: ForwardRefRenderFunction<
 
     setStatus('pass')
   })
+
+  useEffect(() => {
+    if (task.title === '回退') {
+      console.log('check refresh any', status, task)
+    }
+  }, [status, task])
 
   useUpdateEffect(() => {
     refreshStatus()

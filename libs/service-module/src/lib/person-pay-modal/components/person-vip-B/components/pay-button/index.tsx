@@ -3,10 +3,8 @@ import cs from 'classnames'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import style from './index.module.scss'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
-import { useGetState } from 'ahooks'
 import { SelectMemberContext } from '../../../../context/context'
 import PayUnfinish from '../pay-unfinish'
-import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
 
 interface Iprops {
   activeGood?: IActiveGoods[]
@@ -28,9 +26,6 @@ const PayButton = (props: Iprops) => {
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)
-        }
-        if (vipMealType === 2) {
-          setShowTeam(true)
         }
       }
     })
@@ -71,12 +66,6 @@ const PayButton = (props: Iprops) => {
         onClose={() => setIsShow(false)}
         payClick={payClick}
         vipMealList={vipMealList}
-      />
-      <RetrievePayModalTeam
-        isShow={showTeam}
-        onClose={() => {
-          setShowTeam(false)
-        }}
       />
     </div>
   )

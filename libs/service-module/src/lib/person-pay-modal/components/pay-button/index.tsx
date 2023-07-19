@@ -7,7 +7,6 @@ import { VipMealType } from '../controller'
 import style from './index.module.scss'
 import { SelectMemberContext } from '../../context/context'
 import PayUnfinish from '../person-vip-B/components/pay-unfinish'
-import RetrievePayModalTeam from '../../../retrieve-pay-modal-team'
 
 interface Iprops {
   vipMealType: VipMealType
@@ -27,22 +26,24 @@ const PayButton = (props: Iprops) => {
     vipMealList
   } = props
   const [isShow, setIsShow] = useState(false)
-  const [showTeam, setShowTeam] = useState(false)
 
   const service = useContext(SelectMemberContext)
-
+  const payLife = () => {
+    if (vipMealList) {
+      service.showPay({
+        show: true,
+        payInfo: vipMealList[2]
+      })
+    }
+  }
   const activeItem = activeGood[0]
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
       if (event === 'showPay') {
-        console.log('调用了2222222222')
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)
-        }
-        if (vipMealType === 2) {
-          setShowTeam(true)
         }
       }
     })
@@ -114,16 +115,10 @@ const PayButton = (props: Iprops) => {
         <PayUnfinish
           isShow={isShow}
           onClose={() => setIsShow(false)}
-          payClick={payClick}
+          payClick={payLife}
           vipMealList={vipMealList}
         />
       )}
-      <RetrievePayModalTeam
-        isShow={showTeam}
-        onClose={() => {
-          setShowTeam(false)
-        }}
-      />
     </div>
   )
 }

@@ -130,10 +130,7 @@ class Task {
 
   getChildrenProcessRelation(task_id: string) {
     return service.get<CommonResponse<IRelation>>({
-      url: `${this.prefix}/${task_id}/relation`,
-      params: {
-        _forceUpdate: true
-      }
+      url: `${this.prefix}/${task_id}/relation`
     })
   }
 

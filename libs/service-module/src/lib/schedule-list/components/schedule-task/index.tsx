@@ -72,6 +72,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
     return Boolean(dict[taskKey])
   })
+
+  console.log('@task changing', data, isBoard)
+
   const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
     useScheduleStore(
       (state) => ({

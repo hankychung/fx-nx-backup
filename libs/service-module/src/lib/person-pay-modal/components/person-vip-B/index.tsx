@@ -19,9 +19,7 @@ const PersonVipB = ({
   couponList,
   goProtocol,
   vipMealType,
-  goInterests,
-  hasShowRetrieveModal,
-  setHasShowRetrieveModal
+  goInterests
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -29,8 +27,6 @@ const PersonVipB = ({
   vipMealType: VipMealType
   goProtocol?: () => void
   goInterests: () => void
-  hasShowRetrieveModal?: boolean
-  setHasShowRetrieveModal?: () => void
 }) => {
   const [persons, setPersons] = useState<number>(0)
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
@@ -281,8 +277,6 @@ const PersonVipB = ({
             goProtocol={goProtocol}
             goInterests={goInterests}
             vipMealList={vipMealList}
-            hasShowRetrieveModal={hasShowRetrieveModal}
-            setHasShowRetrieveModal={setHasShowRetrieveModal}
           />
         </div>
       )}

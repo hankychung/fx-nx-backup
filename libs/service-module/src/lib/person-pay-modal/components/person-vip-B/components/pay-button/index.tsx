@@ -13,20 +13,10 @@ interface Iprops {
   goProtocol?: () => void
   goInterests?: () => void
   vipMealList: IActiveGoods[]
-  hasShowRetrieveModal?: boolean
-  setHasShowRetrieveModal?: () => void
 }
 const PayButton = (props: Iprops) => {
-  const {
-    payClick,
-    goProtocol,
-    goInterests,
-    vipMealList,
-    hasShowRetrieveModal,
-    setHasShowRetrieveModal
-  } = props
+  const { payClick, goProtocol, goInterests, vipMealList } = props
   const [isShow, setIsShow] = useState(false)
-  const [showTeam, setShowTeam] = useState(false)
   const service = useContext(SelectMemberContext)
 
   useEffect(() => {
@@ -36,9 +26,6 @@ const PayButton = (props: Iprops) => {
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)
-        }
-        if (vipMealType === 2) {
-          setShowTeam(true)
         }
       }
     })
@@ -80,17 +67,6 @@ const PayButton = (props: Iprops) => {
         payClick={payClick}
         vipMealList={vipMealList}
       />
-      {!hasShowRetrieveModal && (
-        <RetrievePayModalTeam
-          isShow={showTeam}
-          onClose={() => {
-            setShowTeam(false)
-            if (setHasShowRetrieveModal) {
-              setHasShowRetrieveModal()
-            }
-          }}
-        />
-      )}
     </div>
   )
 }

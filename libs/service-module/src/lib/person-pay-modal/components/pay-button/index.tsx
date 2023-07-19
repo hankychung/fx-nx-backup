@@ -26,7 +26,6 @@ const PayButton = (props: Iprops) => {
     vipMealList
   } = props
   const [isShow, setIsShow] = useState(false)
-  const [showTeam, setShowTeam] = useState(false)
 
   const service = useContext(SelectMemberContext)
   const payLife = () => {

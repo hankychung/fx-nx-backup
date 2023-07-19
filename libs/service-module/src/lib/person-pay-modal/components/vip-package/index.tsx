@@ -35,8 +35,8 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
-  hasShowRetrieveModal?: boolean
-  setHasShowRetrieveModal?: () => void
+  hasShowRetrieveModal: boolean
+  setHasShowRetrieveModal: () => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -195,8 +195,6 @@ const VipPackage = (props: Iprops) => {
             couponList={couponList}
             vipMealType={vipMealType}
             goInterests={goInterests}
-            hasShowRetrieveModal={hasShowRetrieveModal}
-            setHasShowRetrieveModal={setHasShowRetrieveModal}
           />
         )}
       </div>
@@ -211,6 +209,8 @@ const VipPackage = (props: Iprops) => {
           vipMealType={vipMealType}
           goInterests={goInterests}
           showMsg={showMsg}
+          hasShowRetrieveModal={hasShowRetrieveModal}
+          setHasShowRetrieveModal={setHasShowRetrieveModal}
         />
       </div>
       {/* 支付弹窗 */}

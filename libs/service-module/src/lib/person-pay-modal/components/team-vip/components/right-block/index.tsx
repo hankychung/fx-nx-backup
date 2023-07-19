@@ -21,31 +21,40 @@ import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import * as dayjs from 'dayjs'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 import { useMemoizedFn } from 'ahooks'
+import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
 const RightBlock = ({
   vipMealType,
   goProtocol,
   couponList,
-  showMsg
+  showMsg,
+  hasShowRetrieveModal,
+  setHasShowRetrieveModal
 }: {
   vipMealType: VipMealType
   goProtocol: () => void
   showMsg?: () => void
   couponList?: ICoupon[]
+  hasShowRetrieveModal: boolean
+  setHasShowRetrieveModal: () => void
 }) => {
   const service = useContext(SelectMemberContext)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const { nowScecond } = useCurrentTime()
+  const [showTeam, setShowTeam] = useState(false)
 
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
-
       switch (event) {
         case 'selectMember':
           setResultArr(service.getData('selectMember').list)
           break
-
+        case 'showPay':
+          if (service.getData('showPay').vipMealType === VipMealType.TEAM) {
+            setShowTeam(true)
+          }
+          break
         default:
       }
     })
@@ -227,6 +236,15 @@ const RightBlock = ({
           goProtocol={goProtocol}
         />
       </div>
+      {!hasShowRetrieveModal && (
+        <RetrievePayModalTeam
+          isShow={showTeam}
+          onClose={() => {
+            setShowTeam(false)
+            setHasShowRetrieveModal()
+          }}
+        />
+      )}
     </div>
   )
 }

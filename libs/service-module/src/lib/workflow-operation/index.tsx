@@ -40,6 +40,7 @@ import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
 import { globalNxController } from '../global/nxController'
 import { useScheduleStore } from '../store/useScheduleStore'
+import { SIZE_TYPE_KEY } from '../global/types/channel/SIZE_TYPE'
 
 const { TextArea } = Input
 
@@ -63,7 +64,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     addClickAlwaysHide,
     status: statusFromProps,
     complete_at,
-    changeStatus
+    changeStatus,
+    isVipWin = false
   },
   ref
 ) => {
@@ -362,7 +364,13 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       allTakerIds,
       chosenStep
     }
-    console.log('params***', params)
+
+    if (isVipWin) {
+      globalNxController.ipcRendererInvoke('vipSmallToolsWin-siszable', {
+        sizeType: SIZE_TYPE_KEY.邀请协作人
+      })
+    }
+
     globalNxController.onHandlerTaskAddTaker(params)
   })
 

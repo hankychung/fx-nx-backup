@@ -265,7 +265,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask || isTimeLine} />
           <div className={styles.wrapper}>
-            <StatusBox task={data} />
+            <StatusBox task={data} isVipWin={isVipWin} />
             <div className={styles.main}>
               <div className={styles.head}>
                 <div className={styles.headLeft}>

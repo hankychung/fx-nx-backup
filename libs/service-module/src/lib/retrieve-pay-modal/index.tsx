@@ -67,7 +67,7 @@ const RetrievePayModal = (props: Iprops) => {
     let residueTime =
       '倒计时：' + day + '天 ' + hour + '时 ' + minute + '分 ' + second + '秒'
     if (day >= 1) {
-      residueTime = `${day + 1}`
+      residueTime = `${day + 1}天`
     }
     if (day === 0) {
       residueTime = `${hour}:${minute}:${second}`
@@ -174,7 +174,7 @@ const RetrievePayModal = (props: Iprops) => {
                     </div>
                     <div className={style.left_coupon}>
                       <div className={style.coupon_content}>
-                        限时&nbsp;{mealTime}天
+                        限时&nbsp;{mealTime}
                       </div>
                     </div>
                   </>

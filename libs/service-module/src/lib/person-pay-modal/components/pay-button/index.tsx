@@ -36,6 +36,7 @@ const PayButton = (props: Iprops) => {
     service.addListener((ev) => {
       const { event } = ev
       if (event === 'showPay') {
+        console.log('调用了2222222222')
         const vipMealType = service.getData('showPay').vipMealType
         if (vipMealType === 1) {
           setIsShow(true)

@@ -49,19 +49,19 @@ export const MemberIntroduction = ({
 
   const onClickBtn = async (key: string) => {
     // 方便调试直接放token可以绕过扫码登录
-    // await service.updateToken(
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk2NzA4NjQsImlhdCI6MTY4OTY2Mjk3NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTk3MTA4Njk4MzE2ODA3IiwiRGV2aWNlSUQiOiI4OTc1YzI1ZC1lZDNjLTQwYzctYjA5MS0yODRmM2NlYWZmMjUiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.XDyrSQ0Ld-heMw5OY-sSEtvASjb0T-f2VBapWB2uwOU'
-    // )
-    // setVipType(key)
-    // await fetchTakerList()
-    // setShow(true)
-    if (key === 'personal' || key === 'team') {
-      setVipType(key)
-      setShowLoginModal(true)
-    }
-    if (key === 'custom') {
-      setShowCustomerModal(true)
-    }
+    await service.updateToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk3NjI0NzUsImlhdCI6MTY4OTc1NDcwOCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyMzk5NDQ0NjIxMzI5NjM4IiwiRGV2aWNlSUQiOiJkZjVlYzdjYy03YzBmLTQwNTAtOTBiZC1mZGE3OTY3MGNiZjIiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.0iIUgwDIAjZujayhOEO7Sf9N_d-9zbFWczNVQl1T_pk'
+    )
+    setVipType(key)
+    await fetchTakerList()
+    setShow(true)
+    // if (key === 'personal' || key === 'team') {
+    //   setVipType(key)
+    //   setShowLoginModal(true)
+    // }
+    // if (key === 'custom') {
+    //   setShowCustomerModal(true)
+    // }
   }
 
   const getOrderDetail = useMemoizedFn(() => {

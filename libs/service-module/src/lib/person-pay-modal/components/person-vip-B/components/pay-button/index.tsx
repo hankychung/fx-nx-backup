@@ -5,6 +5,7 @@ import style from './index.module.scss'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
 import { SelectMemberContext } from '../../../../context/context'
 import PayUnfinish from '../pay-unfinish'
+import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
 
 interface Iprops {
   activeGood?: IActiveGoods[]
@@ -16,7 +17,6 @@ interface Iprops {
 const PayButton = (props: Iprops) => {
   const { payClick, goProtocol, goInterests, vipMealList } = props
   const [isShow, setIsShow] = useState(false)
-  const [showTeam, setShowTeam] = useState(false)
   const service = useContext(SelectMemberContext)
 
   useEffect(() => {

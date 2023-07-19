@@ -48,6 +48,7 @@ const PersonPayModal = (props: Iprops) => {
   } = props
   const [vipMealType, setVipMealType] = useState<VipMealType>(payType || 1) // 切换tab
   const [showRetrieveModal, setShowRetrieveModal] = useState(false)
+  const [hasShowRetrieveModal, setHasShowRetrieveModal] = useState(false)
   useEffect(() => {
     if (payType) {
       setVipMealType(payType)
@@ -60,9 +61,15 @@ const PersonPayModal = (props: Iprops) => {
   const RetrieveModal = () => {
     if (isLifeLong && vipMealType === 1) {
       onClose()
+    } else if (hasShowRetrieveModal && vipMealType === 2) {
+      //这个判断主要是做团队会员只弹一次的功能
+      onClose()
     } else {
       setShowRetrieveModal(true)
     }
+  }
+  const handleHasShowRetrieveModal = () => {
+    setHasShowRetrieveModal(true)
   }
   const isLifeLong = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
@@ -114,6 +121,8 @@ const PersonPayModal = (props: Iprops) => {
               goInterests={goInterests}
               domain={domain}
               showMsg={showMsg}
+              hasShowRetrieveModal={hasShowRetrieveModal}
+              setHasShowRetrieveModal={handleHasShowRetrieveModal}
             />
           </div>
         </SelectMemberContext.Provider>
@@ -133,6 +142,7 @@ const PersonPayModal = (props: Iprops) => {
         <RetrievePayModalTeam
           isShow={showRetrieveModal}
           onClose={() => {
+            setHasShowRetrieveModal(true)
             setShowRetrieveModal(false)
             onClose()
           }}

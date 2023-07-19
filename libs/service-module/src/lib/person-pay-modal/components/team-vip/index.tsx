@@ -20,7 +20,9 @@ const TeamVip = ({
   goProtocol,
   couponList,
   goInterests,
-  showMsg
+  showMsg,
+  hasShowRetrieveModal,
+  setHasShowRetrieveModal
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -29,6 +31,8 @@ const TeamVip = ({
   showMsg?: () => void
   goProtocol: () => void
   goInterests: () => void
+  hasShowRetrieveModal: boolean
+  setHasShowRetrieveModal: () => void
 }) => {
   return (
     <div className={style.teamVip}>
@@ -45,6 +49,8 @@ const TeamVip = ({
           goProtocol={goProtocol}
           couponList={couponList}
           showMsg={showMsg}
+          hasShowRetrieveModal={hasShowRetrieveModal}
+          setHasShowRetrieveModal={setHasShowRetrieveModal}
         />
       </div>
     </div>

@@ -38,7 +38,7 @@ export const getResidueTime = (totalSeconds: number, text = '0') => {
     residueTime = `${day + 1}天`
   }
   if (day === 0) {
-    residueTime = `限时 ${hour}:${minute}:${second}`
+    residueTime = `${hour}:${minute}:${second}`
   }
   if (totalSeconds <= 0) {
     residueTime = '0'

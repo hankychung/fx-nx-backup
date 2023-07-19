@@ -1,13 +1,7 @@
-/*
- * @Author: wanghui wanghui@flyele.net
- * @Date: 2023-03-09 09:55:49
- * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-06-27 11:23:17
- */
 import { ReactComponent as Close } from '../../assets/payImg/close.svg'
 import { ReactComponent as Crown } from '../../assets/payImg/crown.svg'
 import { ReactComponent as Listen } from '../../assets/payImg/listen.svg'
-import { ReactComponent as CustomerService } from '../../assets/payImg/customer_service.svg'
+import customerService from '../../assets/payImg/customer_service.png'
 import { ReactComponent as Phone } from '../../assets/payImg/phone.svg'
 import { ReactComponent as CheckQuestion } from '../../assets/payImg/check_question.svg'
 import { ReactComponent as CheckArrow } from '../../assets/payImg/check_arrow.svg'
@@ -63,7 +57,7 @@ const RetrievePayModalTeam = (props: Iprops) => {
               </div>
             </div>
             <div className={style.customer}>
-              <CustomerService />
+              <img src={customerService}></img>
             </div>
             <div className={style.phone}>
               <Phone />

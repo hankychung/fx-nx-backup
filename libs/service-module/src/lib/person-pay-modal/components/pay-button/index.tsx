@@ -6,6 +6,8 @@ import { regFenToYuan } from '../../utils'
 import { VipMealType } from '../controller'
 import style from './index.module.scss'
 import { SelectMemberContext } from '../../context/context'
+import PayUnfinish from '../person-vip-B/components/pay-unfinish'
+import RetrievePayModalTeam from '../../../retrieve-pay-modal-team'
 
 interface Iprops {
   vipMealType: VipMealType
@@ -13,6 +15,7 @@ interface Iprops {
   resultArr?: IFlyeleAvatarItem[]
   payClick: () => void
   goProtocol?: () => void
+  vipMealList?: IActiveGoods[]
 }
 const PayButton = (props: Iprops) => {
   const {
@@ -20,11 +23,33 @@ const PayButton = (props: Iprops) => {
     activeGood = [],
     payClick,
     resultArr = [],
-    goProtocol
+    goProtocol,
+    vipMealList
   } = props
+  const [isShow, setIsShow] = useState(false)
+  const [showTeam, setShowTeam] = useState(false)
+
+  const service = useContext(SelectMemberContext)
 
   const activeItem = activeGood[0]
+  useEffect(() => {
+    service.addListener((ev) => {
+      const { event } = ev
+      if (event === 'showPay') {
+        const vipMealType = service.getData('showPay').vipMealType
+        if (vipMealType === 1) {
+          setIsShow(true)
+        }
+        if (vipMealType === 2) {
+          setShowTeam(true)
+        }
+      }
+    })
 
+    return () => {
+      service.dispose()
+    }
+  }, [service])
   return (
     <div className={style.payButton}>
       {activeItem && (
@@ -84,6 +109,20 @@ const PayButton = (props: Iprops) => {
           《飞项会员协议》
         </span>
       </div>
+      {vipMealList && (
+        <PayUnfinish
+          isShow={isShow}
+          onClose={() => setIsShow(false)}
+          payClick={payClick}
+          vipMealList={vipMealList}
+        />
+      )}
+      <RetrievePayModalTeam
+        isShow={showTeam}
+        onClose={() => {
+          setShowTeam(false)
+        }}
+      />
     </div>
   )
 }

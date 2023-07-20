@@ -114,40 +114,39 @@ const _AllScheduleList: ForwardRefRenderFunction<
           />
         ))}
 
-        {finishTotal ? (
-          <>
-            <FinishNumBtn
-              show={showFinished}
-              count={finishTotal}
-              isDarkMode={isDarkMode}
-              onToggleShow={onToggleShowFinished}
+        <>
+          {!list.length && (
+            <EmptyData
+              isError={isError}
+              listType={isFinished ? 'COMPLETE' : 'NORMAL'}
+              isBoard={!!isBoard}
+              noTask={!finishList?.length}
+              allFinished={!!finishTotal}
+              loading={loading}
+              date={date}
             />
-            {showFinished &&
-              (finishList || []).map((i) => (
-                // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-                <ScheduleTask
-                  date={date}
-                  key={i}
-                  taskKey={i}
-                  topId={i}
-                  curTime={dayjs().unix()}
-                  isVipWin={isVipWin}
-                  isBoard={isBoard}
-                  isDarkMode={isDarkMode}
-                />
-              ))}
-          </>
-        ) : (
-          <EmptyData
-            isError={isError}
-            listType={isFinished ? 'COMPLETE' : 'NORMAL'}
-            isBoard={!!isBoard}
-            noTask={!finishList?.length && !list?.length}
-            allFinished={!!finishTotal && !list?.length}
-            loading={loading}
-            date={date}
+          )}
+          <FinishNumBtn
+            show={showFinished}
+            count={finishTotal}
+            isDarkMode={isDarkMode}
+            onToggleShow={onToggleShowFinished}
           />
-        )}
+          {showFinished &&
+            (finishList || []).map((i) => (
+              // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
+              <ScheduleTask
+                date={date}
+                key={i}
+                taskKey={i}
+                topId={i}
+                curTime={dayjs().unix()}
+                isVipWin={isVipWin}
+                isBoard={isBoard}
+                isDarkMode={isDarkMode}
+              />
+            ))}
+        </>
       </InfiniteScroll>
     </div>
   )

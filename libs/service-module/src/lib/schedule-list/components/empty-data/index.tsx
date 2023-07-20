@@ -55,7 +55,7 @@ export const EmptyData = (props: IProps) => {
 
   const isToday = useMemo(() => dayjs(date).isToday(), [date])
 
-  console.log('isToday', isToday)
+  console.log('isToday', isToday, allFinished, noTask)
 
   // loading
   if (loading && !isError)

@@ -115,7 +115,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
         ))}
 
         <>
-          {!list.length && (
+          {!list?.length && (
             <EmptyData
               isError={isError}
               listType={isFinished ? 'COMPLETE' : 'NORMAL'}

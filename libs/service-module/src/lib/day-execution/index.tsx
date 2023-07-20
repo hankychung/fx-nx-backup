@@ -108,8 +108,6 @@ const _DayExecution = ({
     const idList = todayExecution[day] || []
     const list = idList.map((id) => taskDict[id])
 
-    console.log('@check today', idList, taskDict)
-
     return disposalTodayList(list)
   }, [day, taskDict, todayExecution])
 

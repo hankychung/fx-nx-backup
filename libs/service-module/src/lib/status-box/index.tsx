@@ -199,8 +199,6 @@ const _StatusBox: FC<IProps> = (props) => {
   })
 
   const buildIcon = useMemoizedFn(() => {
-    console.log('@checktask', task)
-
     const { matter_type: matterType, finish_time: finishTime } = task
     if (
       matterType &&

@@ -32,7 +32,7 @@ interface IMutation {
   }) => void
   batchUpdateTask: (
     tasks: ILocalTask[],
-    options?: { isFinished?: boolean }
+    options?: { isFinished?: boolean; compare?: boolean }
   ) => {
     keys: string[]
   }
@@ -133,16 +133,22 @@ const useScheduleStore = create<IState & IMutation>((set) => {
 
       const isFinished = options?.isFinished
 
+      const compare = options?.compare
+
       set(
         produce((state: IState) => {
           const dict: { [k: string]: ILocalTask } = {}
+
+          const { taskDict } = state
 
           arr.forEach((item) => {
             const { ref_task_id, repeat_id } = item
             if (repeat_id) {
               const key = getKey(item)
 
-              dict[key] = item
+              if (!compare || !taskDict[key]) {
+                dict[key] = item
+              }
             }
 
             keys.push(getKeyOfList(item))
@@ -151,7 +157,9 @@ const useScheduleStore = create<IState & IMutation>((set) => {
               // do nothing
               // 不写入纯ref_task_id字典
             } else {
-              dict[ref_task_id] = item
+              if (!compare || !taskDict[ref_task_id]) {
+                dict[ref_task_id] = item
+              }
             }
           })
 

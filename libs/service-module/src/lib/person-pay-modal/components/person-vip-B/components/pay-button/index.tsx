@@ -10,12 +10,13 @@ import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
 interface Iprops {
   activeGood?: IActiveGoods[]
   payClick: () => void
+  payLife: () => void
   goProtocol?: () => void
   goInterests?: () => void
   vipMealList: IActiveGoods[]
 }
 const PayButton = (props: Iprops) => {
-  const { payClick, goProtocol, goInterests, vipMealList } = props
+  const { payClick, goProtocol, goInterests, vipMealList ,payLife} = props
   const [isShow, setIsShow] = useState(false)
   const service = useContext(SelectMemberContext)
 
@@ -64,7 +65,7 @@ const PayButton = (props: Iprops) => {
       <PayUnfinish
         isShow={isShow}
         onClose={() => setIsShow(false)}
-        payClick={payClick}
+        payClick={payLife}
         vipMealList={vipMealList}
       />
     </div>

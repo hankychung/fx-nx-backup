@@ -3,12 +3,20 @@ import { useEffect } from 'react'
 import { RoutePath } from '../routes/const'
 import { getToken } from '../utils'
 
+const validRoutes = Object.values(RoutePath) as string[]
+
 export const useRedirect = () => {
-  const location = useLocation()
+  const { pathname } = useLocation()
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate(getToken() ? location.pathname : RoutePath.login)
-  }, [location, navigate])
+    navigate(
+      getToken()
+        ? validRoutes.includes(pathname)
+          ? pathname
+          : RoutePath.board
+        : RoutePath.login
+    )
+  }, [pathname, navigate])
 }

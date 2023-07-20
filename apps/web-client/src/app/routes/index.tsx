@@ -7,12 +7,12 @@ import { RoutePath } from './const'
 
 const router = createBrowserRouter([
   {
-    path: RoutePath.main,
+    path: '/',
     element: <App />,
     children: [{ path: RoutePath.board, element: <Board /> }]
   },
   { path: RoutePath.login, element: <Login /> },
-  { path: '*', element: <Navigate to={RoutePath.main} /> }
+  { path: '*', element: <Navigate to="/" /> }
 ])
 
 export { router }

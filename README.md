@@ -24,7 +24,7 @@ yarn nx g @nrwl/react:component banner --project=your-ui-project --export
 
 ## 创建工具类库
 
-`yarn nx g @nrwl/js:lib utils`
+`yarn nx g @nrwl/js:lib utils --publishable --importPath @flyele-nx/utils`
 
 ## build
 

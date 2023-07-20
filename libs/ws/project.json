@@ -1,0 +1,36 @@
+{
+  "name": "ws",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ws/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/ws",
+        "main": "libs/ws/src/index.ts",
+        "tsConfig": "libs/ws/tsconfig.lib.json",
+        "assets": ["libs/ws/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs ws {args.ver} {args.tag}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ws/**/*.ts"]
+      }
+    },
+    "tslint": {
+      "command": "tsc --project ./libs/ws/tsconfig.lib.json"
+    }
+  },
+  "tags": []
+}

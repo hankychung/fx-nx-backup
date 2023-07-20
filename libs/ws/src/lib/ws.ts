@@ -1,3 +1,1 @@
-export function ws(): string {
-  return 'ws'
-}
+export * from './socket-handler'

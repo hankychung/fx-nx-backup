@@ -1,12 +1,8 @@
+import { Env } from '@flyele-nx/constant'
+
 class EnvStore {
   private env = 'dev'
 
-  private info: { [k: string]: { host: string } } = {
-    dev: { host: 'https://api.flyele.vip' },
-    test: { host: 'https://api-test.flyele.vip' },
-    pre_prod: { host: 'https://api.pre.flyele.vip' },
-    prod: { host: 'https://api.flyele.net' }
-  }
   private domain: { [k: string]: { host: string } } = {
     dev: { host: 'https://pay-test.flyele.vip' },
     test: { host: 'https://pay-test.flyele.vip' },
@@ -16,12 +12,22 @@ class EnvStore {
 
   initEnv(env: string) {
     this.env = env
+
+    return {
+      url: this.getUrl()
+    }
   }
+
   getDoMain() {
     return this.domain[this.env].host
   }
+
   getHost() {
-    return this.info[this.env].host
+    return Env.api[this.env].host
+  }
+
+  getUrl() {
+    return Env.api[this.env].url
   }
 
   updateEnvByClient(env: 'dev' | 'test' | 'prod') {

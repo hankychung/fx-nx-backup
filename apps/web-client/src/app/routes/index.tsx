@@ -4,7 +4,7 @@ import App from '../app'
 import { Login } from '../pages/login'
 import { Board } from '../pages/board'
 import { RoutePath } from './const'
-import { getToken } from '../utils'
+import { TokenHandler } from '@flyele-nx/utils'
 
 const DefaultPage = () => <Navigate to="/" />
 
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: RoutePath.login,
-    element: getToken() ? <DefaultPage /> : <Login />
+    element: TokenHandler.get() ? <DefaultPage /> : <Login />
   },
   { path: '*', element: <DefaultPage /> }
 ])

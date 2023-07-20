@@ -1,3 +1,7 @@
 const getToken = () => localStorage.getItem('auth')
 
-export { getToken }
+const handleLogin = (token: string) => {
+  localStorage.setItem('auth', token)
+}
+
+export { getToken, handleLogin }

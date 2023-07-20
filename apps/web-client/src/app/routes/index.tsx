@@ -4,15 +4,21 @@ import App from '../app'
 import { Login } from '../pages/login'
 import { Board } from '../pages/board'
 import { RoutePath } from './const'
+import { getToken } from '../utils'
+
+const DefaultPage = () => <Navigate to="/" />
 
 const router = createBrowserRouter([
   {
-    path: RoutePath.main,
+    path: '/',
     element: <App />,
     children: [{ path: RoutePath.board, element: <Board /> }]
   },
-  { path: RoutePath.login, element: <Login /> },
-  { path: '*', element: <Navigate to={RoutePath.main} /> }
+  {
+    path: RoutePath.login,
+    element: getToken() ? <DefaultPage /> : <Login />
+  },
+  { path: '*', element: <DefaultPage /> }
 ])
 
 export { router }

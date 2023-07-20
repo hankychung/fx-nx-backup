@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import style from './app.module.scss'
 import { Slider } from './components/slider'
-import { useAppDirect } from './hooks/useAppDirect'
+import { useRedirect } from './hooks/useRedirect'
 
 export function App() {
-  useAppDirect()
+  useRedirect()
 
   return (
     <div className={style.app}>

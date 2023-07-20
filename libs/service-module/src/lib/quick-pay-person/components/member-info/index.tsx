@@ -49,7 +49,7 @@ const MemberInfo = ({
     return list.filter((item) => +item.ref_goods_id === id)
   }
   const getMealList = useMemoizedFn(async () => {
-    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6, 7] }).then((_) => {
       paymentApi.getPrice({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
           console.log('res', res)

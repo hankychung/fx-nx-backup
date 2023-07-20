@@ -103,7 +103,7 @@ const VipPackage = (props: Iprops) => {
     setTabs(newTab)
   })
   const getCou = useMemoizedFn(() => {
-    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6, 7] }).then((_) => {
       if (_.data) {
         setCouponList(_.data)
       } else {

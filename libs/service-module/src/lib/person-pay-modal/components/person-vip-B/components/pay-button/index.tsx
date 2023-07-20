@@ -16,7 +16,7 @@ interface Iprops {
   vipMealList: IActiveGoods[]
 }
 const PayButton = (props: Iprops) => {
-  const { payClick, goProtocol, goInterests, vipMealList ,payLife} = props
+  const { payClick, goProtocol, goInterests, vipMealList, payLife } = props
   const [isShow, setIsShow] = useState(false)
   const service = useContext(SelectMemberContext)
 

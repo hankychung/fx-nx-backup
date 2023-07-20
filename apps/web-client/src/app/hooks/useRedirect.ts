@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { RoutePath } from '../routes/const'
 import { getToken } from '../utils'
 
-export const useAppDirect = () => {
+export const useRedirect = () => {
   const location = useLocation()
 
   const navigate = useNavigate()

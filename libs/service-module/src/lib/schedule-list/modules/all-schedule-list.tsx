@@ -4,7 +4,8 @@ import React, {
   useImperativeHandle,
   ForwardRefRenderFunction,
   useMemo,
-  useState
+  useState,
+  useRef
 } from 'react'
 import styles from '../schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
@@ -45,6 +46,8 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   const [showFinished, setShowFinished] = useState(false)
 
+  const isInit = useRef(true)
+
   const reloaderId = useMemo(
     () => date + isFinished + isBoard,
     [date, isFinished, isBoard]
@@ -56,7 +59,11 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   const fetchList = useMemoizedFn(async () => {
     if (loading) return
-    setLoading(true)
+
+    if (isInit.current) {
+      setLoading(true)
+      isInit.current = false
+    }
 
     await initTodayList()
 

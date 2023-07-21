@@ -754,7 +754,9 @@ class SqlStore {
   }
 
   async getDayView(params: DayViewParamsProps) {
+    console.time(JSON.stringify(params))
     const dayData = await this.sdk.schedule.dayView(params)
+    console.timeEnd(JSON.stringify(params))
     return dayData
   }
 }

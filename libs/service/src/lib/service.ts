@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios'
 import { IErrorResponse, RequestConfig, IResponse } from './typings'
 import { envStore } from './env'
+import { TokenHandler } from '@flyele-nx/utils'
 
 class Service {
   axios: AxiosInstance
@@ -22,6 +23,8 @@ class Service {
   tokenInvalid() {
     // tokenInvalid失效，使用到的就在自己项目里面覆盖它
     console.log('token失效')
+    // 清除 localstorage 的token
+    TokenHandler.update('')
   }
 
   private requestInterceptors() {

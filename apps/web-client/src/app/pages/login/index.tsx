@@ -3,9 +3,10 @@ import { useMemoizedFn } from 'ahooks'
 import { RoutePath } from '../../routes/const'
 import { TokenHandler } from '@flyele-nx/utils'
 import { SocketHandler } from '@flyele-nx/ws'
+// import {} from '@flyele-nx/service'
 
 const FAKE_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk4NjU4OTEsImlhdCI6MTY4OTg1ODI0NywiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMDk3MTYyNjg4NTYxMjk2IiwiRGV2aWNlSUQiOiJhY2ZiNTlmOS04M2RmLTQ2ZjUtYjc2Yi00MGQwZDM5MzI2NTgiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.XZlMcGNrumOKnRhnBcZ1ezMnVXF2WpODUNJ854DzoiA'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk5MTQ1MTAsImlhdCI6MTY4OTkwNjExOSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMDk3MTYyNjg4NTYxMjk2IiwiRGV2aWNlSUQiOiIwZGU2ZmVkOS1lNzYxLTRmNDItOWIzOC1mMDcwZWU2YzQ4ZWEiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.rZBsivMEdTqvWnZKXs4rf-7ayVCBjj2sTW1fFZV4Oqk'
 
 const Login: React.FC = () => {
   const navigate = useNavigate()

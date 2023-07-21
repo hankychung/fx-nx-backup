@@ -1,5 +1,6 @@
 import { Env } from '@flyele-nx/constant'
 import { TokenHandler } from '@flyele-nx/utils'
+import { UsercApi } from '@flyele-nx/service'
 import { HEART_BEAT, HEART_BEAT_INTERVEL, HEART_BEAT_RETRY_MAX } from './const'
 
 class _SocketHandler {
@@ -53,6 +54,9 @@ class _SocketHandler {
     this.heartbeatCount = 0
 
     if (!this.doNotReconnect) {
+      // 判断是否token失效
+      UsercApi.getWeather()
+
       setTimeout(() => {
         // 2秒后重新连接
         this.connect()

@@ -18,7 +18,7 @@ import { ScheduleListProps, IScheduleListRef } from '../types'
 import { FinishNumBtn } from '../components/finish-num-btn'
 import { useScheduleList } from '../utils/hooks/useScheduleList'
 import { EmptyData } from '../components/empty-data'
-import { initTodayList } from '../utils/initTodayList'
+import { IInitTodayList, initTodayList } from '../utils/initTodayList'
 
 /**
  * 请求全部未完成和已完成事项的列表
@@ -57,7 +57,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     setShowFinished(!show)
   })
 
-  const fetchList = useMemoizedFn(async () => {
+  const fetchList = useMemoizedFn(async (params?: IInitTodayList) => {
     if (loading) return
 
     if (isInit.current) {
@@ -65,14 +65,14 @@ const _AllScheduleList: ForwardRefRenderFunction<
       isInit.current = false
     }
 
-    await initTodayList()
+    await initTodayList(params)
 
     setLoading(false)
   })
 
-  const reload = useMemoizedFn(async () => {
+  const reload = useMemoizedFn(async (params?: IInitTodayList) => {
     try {
-      await fetchList()
+      await fetchList(params)
     } catch {
       setIsError(true)
     }

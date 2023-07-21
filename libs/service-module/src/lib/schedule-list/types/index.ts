@@ -1,3 +1,5 @@
+import { ILocalTask } from '@flyele-nx/service'
+
 export interface ScheduleListProps {
   date: string
   isFinished?: boolean
@@ -9,5 +11,10 @@ export interface ScheduleListProps {
 }
 
 export interface IScheduleListRef {
-  reload: () => Promise<void>
+  reload: () => Promise<
+    | {
+        [k: string]: { tasks: ILocalTask[]; finishTasks: ILocalTask[] }
+      }
+    | undefined
+  >
 }

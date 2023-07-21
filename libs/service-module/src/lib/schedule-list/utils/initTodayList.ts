@@ -58,4 +58,6 @@ export const initTodayList = async (params?: IInitTodayList) => {
   useScheduleStore.setState({
     todayFinishCount: finishTasks.length || 0
   })
+
+  return { today: { tasks, finishTasks } }
 }

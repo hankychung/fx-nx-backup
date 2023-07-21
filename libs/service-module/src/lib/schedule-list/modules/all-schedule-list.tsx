@@ -65,14 +65,16 @@ const _AllScheduleList: ForwardRefRenderFunction<
       isInit.current = false
     }
 
-    await initTodayList(params)
+    const res = await initTodayList(params)
 
     setLoading(false)
+
+    return res
   })
 
   const reload = useMemoizedFn(async (params?: IInitTodayList) => {
     try {
-      await fetchList(params)
+      return await fetchList(params)
     } catch {
       setIsError(true)
     }

@@ -40,13 +40,23 @@ class ListHandler {
 
   // 更新器
   private static listReloader: {
-    [k: string]: (params?: IInitTodayList) => unknown
+    [k: string]: (params?: IInitTodayList) => Promise<
+      | {
+          [k: string]: { tasks: ILocalTask[]; finishTasks: ILocalTask[] }
+        }
+      | undefined
+    >
   } = {}
 
   // 列表更新收集器
   static collectReloader(
     k: string,
-    reloader: (params?: IInitTodayList) => unknown
+    reloader: (params?: IInitTodayList) => Promise<
+      | {
+          [k: string]: { tasks: ILocalTask[]; finishTasks: ILocalTask[] }
+        }
+      | undefined
+    >
   ) {
     this.listReloader[k] = reloader
   }
@@ -57,9 +67,24 @@ class ListHandler {
   }
 
   // 更新所有列表
-  static reloadAllList(params?: IInitTodayList) {
+  static async reloadAllList(params?: IInitTodayList) {
     console.log('reload all')
-    Object.values(this.listReloader).forEach((reloader) => reloader(params))
+    let dict: {
+      [k: string]: { tasks: ILocalTask[]; finishTasks: ILocalTask[] }
+    } = {}
+
+    for (const loader of Object.values(this.listReloader)) {
+      const res = await loader(params)
+
+      if (res) {
+        dict = {
+          ...dict,
+          ...res
+        }
+      }
+    }
+
+    return dict
   }
 
   // 根据改变的事项更新列表排序

@@ -63,7 +63,7 @@ const _ScheduleList: ForwardRefRenderFunction<
   const reloaderId = useRef(date + isFinished + isBoard)
 
   const fetchList = useMemoizedFn(async () => {
-    if (loading) return
+    if (loading) return undefined
 
     if (isInit.current) {
       setLoading(true)
@@ -90,7 +90,7 @@ const _ScheduleList: ForwardRefRenderFunction<
 
   const reload = useMemoizedFn(async () => {
     try {
-      await fetchList()
+      return await fetchList()
     } catch (error) {
       console.error(error)
       setIsError(true)

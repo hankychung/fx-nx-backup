@@ -131,6 +131,15 @@ const RightBlock = ({
     })
   }
 
+  const isOldUser = useMemo(() => {
+    if (!vipMealList) return true
+    const start = dayjs.unix(vipMealList[0]?.create_at || 0).valueOf() / 1000 //结束时间  毫秒数
+    const end = dayjs.unix(vipMealList[0]?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
+    const totalSeconds = end - start
+    const day = parseInt(`${totalSeconds / 3600 / 24}`)
+    return day > 5 ? true : false
+  }, [vipMealList])
+
   return (
     <div className={style.rightBlock}>
       {!isLifeLong && (
@@ -192,7 +201,8 @@ const RightBlock = ({
                           (
                             (_?.now_price - (_.price || 0)) /
                             _?.original_price
-                          ).toFixed(2)
+                          ).toFixed(2),
+                          isOldUser
                         )}
                       </span>
                       <MealTime className={style.mealTime}></MealTime>

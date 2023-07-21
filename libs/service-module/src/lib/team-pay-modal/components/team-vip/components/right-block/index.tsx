@@ -2,7 +2,7 @@
  * @Author: wanghui wanghui@flyele.net
  * @Date: 2023-03-08 09:43:55
  * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-05-04 11:33:29
+ * @LastEditTime: 2023-07-21 16:50:15
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -127,7 +127,13 @@ const RightBlock = ({
       setVipMeal({ ...vipMeal, price: 0, coupon_id: 0 })
     }
   }, [nowScecond, vipMeal, num, setVipMeal])
-
+  const isOldUser = useMemo(() => {
+    const start = dayjs.unix(vipMeal?.create_at || 0).valueOf() / 1000 //结束时间  毫秒数
+    const end = dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
+    const totalSeconds = end - start
+    const day = parseInt(`${totalSeconds / 3600 / 24}`)
+    return day > 5 ? true : false
+  }, [vipMeal])
   return (
     <div className={style.rightBlock}>
       <div>
@@ -166,7 +172,8 @@ const RightBlock = ({
                       (
                         (vipMeal?.now_price - (vipMeal.price || 0)) /
                         vipMeal?.original_price
-                      ).toFixed(2)
+                      ).toFixed(2),
+                      isOldUser
                     )}
                   </span>
                   <MealTime className={style.mealTime}></MealTime>

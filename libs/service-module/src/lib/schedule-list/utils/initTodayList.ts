@@ -6,8 +6,8 @@ import dayjs from 'dayjs'
 import { ILocalTask } from '@flyele-nx/service'
 
 export interface IInitTodayList {
-  list: ILocalTask[]
-  finishedList: ILocalTask[]
+  tasks: ILocalTask[]
+  finishTasks: ILocalTask[]
 }
 
 export const initTodayList = async (params?: IInitTodayList) => {
@@ -16,7 +16,7 @@ export const initTodayList = async (params?: IInitTodayList) => {
   const date = dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')
 
   const tasks =
-    params?.list ||
+    params?.tasks ||
     (
       await globalNxController.getDayView({
         day: date,
@@ -35,7 +35,7 @@ export const initTodayList = async (params?: IInitTodayList) => {
   })
 
   const finishTasks =
-    params?.finishedList ||
+    params?.finishTasks ||
     (
       await globalNxController.getDayView({
         day: date,

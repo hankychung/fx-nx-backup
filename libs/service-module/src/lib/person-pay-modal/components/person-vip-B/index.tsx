@@ -177,8 +177,7 @@ const PersonVipB = ({
                       [style.activeStyle]: _.active && _.name !== '终身会员'
                     },
                     {
-                      [style.activeStyleBstyle]:
-                        _.active && _.name === '终身会员'
+                      [style.activeStyleB]: _.active && _.name === '终身会员'
                     },
                     {
                       [style.priceItemFifstActive]:

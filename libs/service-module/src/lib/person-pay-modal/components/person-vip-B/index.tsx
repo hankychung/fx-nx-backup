@@ -120,6 +120,13 @@ const PersonVipB = ({
     })
   }
 
+  const payClick = () => {
+    service.showPay({
+      show: true,
+      payInfo: activeGood ? activeGood[0] : vipMealList[0]
+    })
+  }
+
   const getPerson = () => {
     paymentCountApi.getCountPaymentUser().then((res: any) => {
       setPersons(res.data.user_count)
@@ -272,7 +279,8 @@ const PersonVipB = ({
           {/* 支付按钮 */}
           <PayButton
             activeGood={activeGood}
-            payClick={payLife}
+            payClick={payClick}
+            payLife={payLife}
             goProtocol={goProtocol}
             goInterests={goInterests}
             vipMealList={vipMealList}

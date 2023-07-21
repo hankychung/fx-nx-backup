@@ -114,3 +114,20 @@ export interface IVip {
   end_time?: number
   recently_type?: 1 | 2 | undefined
 }
+
+export interface IWeather {
+  code: string
+  humidity: string
+  iso_week: number
+  name: string
+  pressure: string
+  temperature: string
+  text: string
+  visibility: string
+  week_day: number
+  wind_direction: string
+  wind_direction_degree: string
+  wind_scale: string
+  wind_describe: string
+  message?: string
+}

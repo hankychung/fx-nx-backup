@@ -49,7 +49,7 @@ const _ScheduleList: ForwardRefRenderFunction<
     date
   })
 
-  const isInit = useRef(false)
+  const isInit = useRef(true)
 
   const isFinished = useMemo(() => {
     const curTime = timeGetter.getDateRoughly()
@@ -64,7 +64,10 @@ const _ScheduleList: ForwardRefRenderFunction<
 
   const fetchList = useMemoizedFn(async () => {
     if (loading) return
-    setLoading(true)
+
+    if (isInit.current) {
+      setLoading(true)
+    }
 
     const r = await globalNxController.getDayView({
       day: date,
@@ -111,8 +114,8 @@ const _ScheduleList: ForwardRefRenderFunction<
   })
 
   useEffect(() => {
-    if (!isInit.current) {
-      isInit.current = true
+    if (isInit.current) {
+      isInit.current = false
 
       reload()
     }
@@ -155,6 +158,7 @@ const _ScheduleList: ForwardRefRenderFunction<
           noTask={!finishList?.length && !list?.length}
           allFinished={!!finishTotal && !list?.length}
           loading={loading}
+          date={date}
         />
       )}
     </div>

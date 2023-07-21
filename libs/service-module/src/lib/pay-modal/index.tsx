@@ -146,7 +146,6 @@ export default function PayModal(props: Iprops) {
             goInterests={goInterests}
             domain={domain}
             handleModalType={handleModalType}
-            senConfirm={senConfirm}
           />
         )
       case 'quick':

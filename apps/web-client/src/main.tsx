@@ -1,14 +1,18 @@
 import { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './app/routes'
+import { SocketHandler } from '@flyele-nx/ws'
 
-import App from './app/app'
+import { envStore } from '@flyele-nx/service'
+
+const env = process.env.NODE_ENV as string
+
+SocketHandler.initUrl(envStore.initEnv(env).url)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </StrictMode>
 )

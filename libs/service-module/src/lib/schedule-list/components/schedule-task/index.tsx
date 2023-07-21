@@ -72,6 +72,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
     return Boolean(dict[taskKey])
   })
+
+  // console.log('@task changing', data, isBoard)
+
   const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
     useScheduleStore(
       (state) => ({
@@ -265,7 +268,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask || isTimeLine} />
           <div className={styles.wrapper}>
-            <StatusBox task={data} />
+            <StatusBox task={data} isVipWin={isVipWin} />
             <div className={styles.main}>
               <div className={styles.head}>
                 <div className={styles.headLeft}>
@@ -338,7 +341,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         </div>
       </div>
-      {children && isExpanded && (
+      {children && isExpanded && !isTimeLine && (
         <div>
           {children.map((i) => (
             <ChildrenTask

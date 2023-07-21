@@ -5,8 +5,17 @@ import styles from './index.module.scss'
 import relaxBg from '../../../../assets/schedule/relax.png'
 import LoadingIcon from '../../../../assets/schedule/loading.gif'
 import classNames from 'classnames'
+import { useMemo } from 'react'
+import dayjs from 'dayjs'
+import isToday from 'dayjs/plugin/isToday'
+
+dayjs.extend(isToday)
 
 interface IProps {
+  /**
+   * 日期
+   */
+  date: string
   /**
    * 列表类型
    * NORMAL 未完成
@@ -41,7 +50,12 @@ interface IProps {
 }
 
 export const EmptyData = (props: IProps) => {
-  const { isError, allFinished, isBoard, listType, noTask, loading } = props
+  const { isError, allFinished, isBoard, listType, noTask, loading, date } =
+    props
+
+  const isToday = useMemo(() => dayjs(date).isToday(), [date])
+
+  console.log('isToday', isToday, allFinished, noTask)
 
   // loading
   if (loading && !isError)
@@ -56,6 +70,7 @@ export const EmptyData = (props: IProps) => {
   if (isError) return <ErrorPage />
 
   if (listType === 'NORMAL') {
+    if (!isToday) return null
     // 有事项（全部完成）
     if (allFinished) return <ListAllFinished isBoard={isBoard} />
 

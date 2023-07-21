@@ -18,9 +18,16 @@ interface IProps {
   onShow?: (show: boolean) => void
   onMount?: () => void
   rootClassName?: string
+  subtractHeight?: number
 }
 
-const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
+const _DayExecution = ({
+  date,
+  onShow,
+  onMount,
+  rootClassName,
+  subtractHeight = 0
+}: IProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
 
@@ -68,6 +75,16 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
   })
 
   /**
+   * 内容区样式
+   */
+  const contentStyle = useMemo(() => {
+    return {
+      height: show ? `calc(100% - ${subtractHeight}px)` : 0,
+      display: show ? 'block' : 'none'
+    }
+  }, [subtractHeight, show])
+
+  /**
    * 统计数量
    */
   const total = useMemo(() => {
@@ -106,7 +123,10 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
       {
         tTime: 0,
         tTimeTxt: '已完成',
-        taskItems: list.sort((a, b) => a.create_at - b.create_at)
+        taskItems: list.sort(
+          (a, b) =>
+            (b.finish_time || b.create_at) - (a.finish_time || a.create_at)
+        )
       }
     ]
   }, [day, taskDict, todayCompletedExecution])
@@ -164,8 +184,8 @@ const _DayExecution = ({ date, onShow, onMount, rootClassName }: IProps) => {
           </div>
         </div>
       </div>
-      <div className={cs(styles.content, { [styles.contentHide]: !show })}>
-        {total ? (
+      <div className={styles.content} style={contentStyle}>
+        {taskTotal ? (
           <>
             <div className={styles.scroller}>
               <InfiniteScroll

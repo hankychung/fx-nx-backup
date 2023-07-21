@@ -18,12 +18,12 @@
     // justify-content: center;
     .priceBox {
       height: 170px;
-      width: 570px;
+      width: 516px;
       display: flex;
       justify-content: space-between;
 
       .priceItem {
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
         margin-top: 20px;
         height: 147px;
@@ -48,12 +48,15 @@
             opacity: 0.8;
             color: rgba(51, 51, 51, 1);
           }
+          .mealNameActive {
+            color: white;
+          }
           .price {
             font-size: 15px;
             font-weight: 700;
             line-height: 17px;
             color: rgba(235, 111, 46, 1);
-
+            margin-left: -4px;
             span {
               font-size: 30px;
               font-weight: 700;

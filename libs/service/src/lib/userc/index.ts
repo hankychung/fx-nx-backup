@@ -5,6 +5,7 @@ import { IUserInfo, ILoginKeyParams, IVipMember } from '../typings'
 import { IContactsAndStatus, EConCheckStatus } from '../typings/taker'
 import { AxiosRequestConfig } from 'axios'
 import { IMemberApi } from '../typings/vip'
+import { IWeather } from '../typings'
 
 class Userc {
   private prefix = 'userc/v2'
@@ -98,6 +99,15 @@ class Userc {
   async taskPower(task_id: string) {
     return await service.get<IMemberApi>({
       url: `${this.prefix}/member/task/${task_id}`
+    })
+  }
+
+  /**
+   * 天气
+   */
+  async getWeather() {
+    return await service.get<IWeather>({
+      url: `${this.prefix}/weather`
     })
   }
 }

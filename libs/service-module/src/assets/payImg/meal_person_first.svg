@@ -1,5 +1,5 @@
 <svg width="162" height="147" viewBox="0 0 162 147" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect x="1" y="1" width="160" height="145" rx="3" fill="url(#paint0_linear_830_25847)" stroke="#F1AA40" stroke-width="2"/>
+<rect width="162" height="147" rx="4" fill="url(#paint0_linear_830_25847)"/>
 <g opacity="0.5">
 <mask id="mask0_830_25847" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="162" height="147">
 <rect x="0.5" y="0.5" width="161" height="146" rx="3.5" fill="url(#paint1_linear_830_25847)" stroke="#F1AA40"/>
@@ -18,7 +18,7 @@
 </mask>
 <g mask="url(#mask1_830_25847)">
 <g opacity="0.08" filter="url(#filter0_f_830_25847)">
-<ellipse cx="84.7088" cy="72.5611" rx="84.7088" ry="72.5611" transform="matrix(0.104804 -0.994493 0.994449 0.105217 28.9424 141.485)" fill="url(#paint3_linear_830_25847)"/>
+<ellipse cx="84.7088" cy="72.5611" rx="84.7088" ry="72.5611" transform="matrix(0.104804 -0.994493 0.994449 0.105217 29 141.485)" fill="url(#paint3_linear_830_25847)"/>
 </g>
 </g>
 </g>
@@ -28,7 +28,7 @@
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_830_25847" transform="matrix(0.00200295 0 0 0.002 -0.000738332 0)"/>
 </pattern>
-<filter id="filter0_f_830_25847" x="17.2687" y="-39.716" width="185.42" height="209.186" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_830_25847" x="17.3263" y="-39.716" width="185.42" height="209.186" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="10" result="effect1_foregroundBlur_830_25847"/>

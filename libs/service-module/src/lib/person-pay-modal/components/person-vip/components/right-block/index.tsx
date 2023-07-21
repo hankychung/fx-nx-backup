@@ -222,6 +222,7 @@ const RightBlock = ({
             activeGood={activeGood}
             payClick={payClick}
             goProtocol={goProtocol}
+            vipMealList={vipMealList}
           />
         </div>
       )}

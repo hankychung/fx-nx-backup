@@ -67,7 +67,7 @@ const RetrievePayModal = (props: Iprops) => {
     let residueTime =
       '倒计时：' + day + '天 ' + hour + '时 ' + minute + '分 ' + second + '秒'
     if (day >= 1) {
-      residueTime = `${day + 1}`
+      residueTime = `${day + 1}天`
     }
     if (day === 0) {
       residueTime = `${hour}:${minute}:${second}`
@@ -80,7 +80,7 @@ const RetrievePayModal = (props: Iprops) => {
   }
   const getMealList = useMemoizedFn(async () => {
     console.log('123getMealList')
-    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6, 7] }).then((_) => {
       paymentApi.getPrice({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
           const list =
@@ -132,13 +132,15 @@ const RetrievePayModal = (props: Iprops) => {
 
   useEffect(() => {
     if (!isShow) return
-    globalNxController.sensorSend('touch_to_pay_rule', {
-      touch_rule: vipMeal?.price
-        ? '退出支付挽回弹窗--优惠期内'
-        : '退出支付挽回弹窗--优惠期外',
-      page_name: user_id % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
-    })
-  }, [isShow, user_id, vipMeal?.price])
+    if (vipMeal) {
+      globalNxController.sensorSend('touch_to_pay_rule', {
+        touch_rule: vipMeal?.price
+          ? '退出套餐挽回弹窗--优惠期内'
+          : '退出套餐挽回弹窗--优惠期外',
+        page_name: user_id % 2 !== 0 ? '个人支付tabA' : '个人支付tabB'
+      })
+    }
+  }, [isShow, user_id, vipMeal])
 
   return (
     <>
@@ -172,7 +174,7 @@ const RetrievePayModal = (props: Iprops) => {
                     </div>
                     <div className={style.left_coupon}>
                       <div className={style.coupon_content}>
-                        限时&nbsp;{mealTime}天
+                        限时&nbsp;{mealTime}
                       </div>
                     </div>
                   </>

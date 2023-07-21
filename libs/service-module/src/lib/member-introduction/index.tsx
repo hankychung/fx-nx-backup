@@ -48,9 +48,9 @@ export const MemberIntroduction = ({
   const [messageApi, contextHolder] = message.useMessage()
 
   const onClickBtn = async (key: string) => {
-    //方便调试直接放token可以绕过扫码登录
+    // 方便调试直接放token可以绕过扫码登录
     // await service.updateToken(
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODkyMjAyOTAsImlhdCI6MTY4OTIxMjA4OSwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTc0NDgxNTM1Nzk1MzYzIiwiRGV2aWNlSUQiOiJjODU3NGM3MS0yM2QxLTRkMWEtYjUyNS0wNjIyODY5NWM3OTAiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.rF7wggKzLPhVYKLs1P8L0ONV7tkMfq5qE-EZxcVGuE8'
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk3NjI0NzUsImlhdCI6MTY4OTc1NDcwOCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyMzk5NDQ0NjIxMzI5NjM4IiwiRGV2aWNlSUQiOiJkZjVlYzdjYy03YzBmLTQwNTAtOTBiZC1mZGE3OTY3MGNiZjIiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.0iIUgwDIAjZujayhOEO7Sf9N_d-9zbFWczNVQl1T_pk'
     // )
     // setVipType(key)
     // await fetchTakerList()

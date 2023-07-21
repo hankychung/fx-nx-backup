@@ -113,18 +113,20 @@ export const ProjectLure = (props: IProps) => {
         </div>
       )
     } else {
-      ;<div className={style.empty}>
-        <img className={style.empty_img} src={EmptyImage} alt="empty" />
-        <span className={style.empty_txt}>你当前没有专业空间</span>
-        <Button
-          onClick={() => {
-            onCreateSpace?.(getList)
-          }}
-          className={style.empty_btn}
-        >
-          创建专业空间
-        </Button>
-      </div>
+      return (
+        <div className={style.empty}>
+          <img className={style.empty_img} src={EmptyImage} alt="empty" />
+          <span className={style.empty_txt}>你当前没有专业空间</span>
+          <Button
+            onClick={() => {
+              onCreateSpace?.(getList)
+            }}
+            className={style.empty_btn}
+          >
+            创建专业空间
+          </Button>
+        </div>
+      )
     }
   }
 

@@ -1,3 +1,2 @@
-export function utils(): string {
-  return 'utils'
-}
+export * from './tokenHandler'
+export * from './timeGetter'

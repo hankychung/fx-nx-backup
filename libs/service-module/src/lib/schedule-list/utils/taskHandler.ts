@@ -5,6 +5,7 @@ import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { ILocalTask } from '@flyele-nx/service'
 import { ExecutionHandler } from './executionHandler'
+import { globalNxController } from '../../global/nxController'
 
 interface IReloadTasksParams {
   task: ILocalTask[]
@@ -38,6 +39,32 @@ class TaskHandler {
 
     // 重新插入事项
     ListHandler.insertTasksByConds(taskIds)
+  }
+
+  static async updateByDatabase(taskIds: string[]) {
+    const {
+      data: { list }
+    } = await globalNxController.getDayView({ task_ids: taskIds })
+
+    const finished: ILocalTask[] = []
+
+    const unfinished: ILocalTask[] = []
+
+    list.forEach((i) => {
+      if (i.finish_time) {
+        finished.push(i)
+      } else {
+        unfinished.push(i)
+      }
+    })
+
+    const { batchUpdateTask } = useScheduleStore.getState()
+
+    batchUpdateTask(finished, { isFinished: true })
+
+    batchUpdateTask(unfinished, { isFinished: false })
+
+    TaskHandler.reloadTasks('id', taskIds)
   }
 
   static allTasksModifier(handler: ITaskModifier) {

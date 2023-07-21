@@ -410,6 +410,7 @@ export interface IScheduleTask {
   original_end_time?: number
   original_start_time?: number
   parent_id?: string
+  parent_name?: string
   parents?: Parents[]
   personal_remind_at?: PersonalRemindAt
   personal_state?: number
@@ -443,6 +444,7 @@ export interface IScheduleTask {
 
 export interface ILocalTask extends IScheduleTask {
   fromExecuate?: boolean
+  refreshWorkflow?: boolean
 }
 
 /**

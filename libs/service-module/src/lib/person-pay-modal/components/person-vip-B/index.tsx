@@ -28,7 +28,6 @@ const PersonVipB = ({
   goProtocol?: () => void
   goInterests: () => void
 }) => {
-  //设置初始日，用于做假数据，可以自行修改
   const [persons, setPersons] = useState<number>(0)
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const { nowScecond } = useCurrentTime()
@@ -114,12 +113,20 @@ const PersonVipB = ({
     if (nowScecond) return vipMealList.filter((item) => item.active)
   }, [vipMealList, nowScecond])
 
+  const payLife = () => {
+    service.showPay({
+      show: true,
+      payInfo: vipMealList[0]
+    })
+  }
+
   const payClick = () => {
     service.showPay({
       show: true,
       payInfo: activeGood ? activeGood[0] : vipMealList[0]
     })
   }
+
   const getPerson = () => {
     paymentCountApi.getCountPaymentUser().then((res: any) => {
       setPersons(res.data.user_count)
@@ -177,8 +184,7 @@ const PersonVipB = ({
                       [style.activeStyle]: _.active && _.name !== '终身会员'
                     },
                     {
-                      [style.activeStyleBstyle]:
-                        _.active && _.name === '终身会员'
+                      [style.activeStyleB]: _.active && _.name === '终身会员'
                     },
                     {
                       [style.priceItemFifstActive]:
@@ -191,7 +197,14 @@ const PersonVipB = ({
                   }}
                 >
                   <div className={style.priceTop}>
-                    <div className={style.mealName}>{_.name}</div>
+                    <div
+                      className={cs(style.mealName, {
+                        [style.mealNameActive]:
+                          _.active && _.name === '终身会员'
+                      })}
+                    >
+                      {_.name}
+                    </div>
                     <div
                       className={cs(style.price, {
                         [style.priceActive]: _.active && _.name === '终身会员'
@@ -267,6 +280,7 @@ const PersonVipB = ({
           <PayButton
             activeGood={activeGood}
             payClick={payClick}
+            payLife={payLife}
             goProtocol={goProtocol}
             goInterests={goInterests}
             vipMealList={vipMealList}

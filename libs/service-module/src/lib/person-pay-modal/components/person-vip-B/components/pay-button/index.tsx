@@ -3,19 +3,20 @@ import cs from 'classnames'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import style from './index.module.scss'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
-import { useGetState } from 'ahooks'
 import { SelectMemberContext } from '../../../../context/context'
 import PayUnfinish from '../pay-unfinish'
+import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
 
 interface Iprops {
   activeGood?: IActiveGoods[]
   payClick: () => void
+  payLife: () => void
   goProtocol?: () => void
   goInterests?: () => void
   vipMealList: IActiveGoods[]
 }
 const PayButton = (props: Iprops) => {
-  const { payClick, goProtocol, goInterests, vipMealList } = props
+  const { payClick, goProtocol, goInterests, vipMealList, payLife } = props
   const [isShow, setIsShow] = useState(false)
   const service = useContext(SelectMemberContext)
 
@@ -23,9 +24,9 @@ const PayButton = (props: Iprops) => {
     service.addListener((ev) => {
       const { event } = ev
       if (event === 'showPay') {
-        const isPayFinish = service.getData('showPay').isPayUnFinish
-        if (isPayFinish) {
-          setIsShow(isPayFinish)
+        const vipMealType = service.getData('showPay').vipMealType
+        if (vipMealType === 1) {
+          setIsShow(true)
         }
       }
     })
@@ -64,7 +65,7 @@ const PayButton = (props: Iprops) => {
       <PayUnfinish
         isShow={isShow}
         onClose={() => setIsShow(false)}
-        payClick={payClick}
+        payClick={payLife}
         vipMealList={vipMealList}
       />
     </div>

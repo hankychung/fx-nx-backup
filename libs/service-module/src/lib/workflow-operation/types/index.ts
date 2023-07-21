@@ -11,6 +11,7 @@ export interface IOperationProps {
   addClickAlwaysHide?: boolean // 控制器点show的时候是否需要加上 addClickAlwaysHide
   status: IOperation
   changeStatus?: () => void
+  isVipWin?: boolean
 }
 
 export type IWorkflowAddUser = {

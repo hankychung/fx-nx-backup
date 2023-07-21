@@ -35,6 +35,8 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
+  hasShowRetrieveModal: boolean
+  setHasShowRetrieveModal: () => void
 }
 
 const VipPackage = (props: Iprops) => {
@@ -51,7 +53,9 @@ const VipPackage = (props: Iprops) => {
     goProtocol,
     goInterests,
     originRoute,
-    showMsg
+    showMsg,
+    hasShowRetrieveModal,
+    setHasShowRetrieveModal
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -99,7 +103,7 @@ const VipPackage = (props: Iprops) => {
     setTabs(newTab)
   })
   const getCou = useMemoizedFn(() => {
-    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6] }).then((_) => {
+    paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6, 7] }).then((_) => {
       if (_.data) {
         setCouponList(_.data)
       } else {
@@ -205,6 +209,8 @@ const VipPackage = (props: Iprops) => {
           vipMealType={vipMealType}
           goInterests={goInterests}
           showMsg={showMsg}
+          hasShowRetrieveModal={hasShowRetrieveModal}
+          setHasShowRetrieveModal={setHasShowRetrieveModal}
         />
       </div>
       {/* 支付弹窗 */}

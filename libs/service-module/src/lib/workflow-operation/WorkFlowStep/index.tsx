@@ -76,7 +76,13 @@ const _WorkFlowStep: React.FC<IProps> = ({
   }, [members, contactDict])
 
   return (
-    <div className={style.container} onClick={handleClick}>
+    <div
+      className={style.container}
+      onClick={(e) => {
+        e.stopPropagation()
+        handleClick()
+      }}
+    >
       <div className={style['badage-wrapper']}>
         <div
           className={cs(style.badage, {

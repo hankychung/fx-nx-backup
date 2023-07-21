@@ -19,7 +19,7 @@ const PayUnfinish = ({
   payClick: () => void
   vipMealList: IActiveGoods[]
 }) => {
-  const userId = parseInt(useUserInfoStore((state) => state.userInfo.user_id))
+  const userId = +useUserInfoStore((state) => state.userInfo.user_id)
 
   const meal = useMemo(() => {
     return vipMealList.find((item) => item.name === '终身会员')
@@ -27,14 +27,15 @@ const PayUnfinish = ({
 
   useEffect(() => {
     if (!isShow) return
-
-    globalNxController.sensorSend('touch_to_pay_rule', {
-      touch_rule: meal?.price
-        ? '退出支付挽回弹窗--优惠期内'
-        : '退出支付挽回弹窗--优惠期外',
-      page_name: userId % 2 === 0 ? '个人支付tabA' : '个人支付tabB'
-    })
-  }, [isShow, userId, meal?.price])
+    if (meal) {
+      globalNxController.sensorSend('touch_to_pay_rule', {
+        touch_rule: meal?.price
+          ? '退出支付挽回弹窗--优惠期内'
+          : '退出支付挽回弹窗--优惠期外',
+        page_name: userId % 2 !== 0 ? '个人支付tabA' : '个人支付tabB'
+      })
+    }
+  }, [isShow, userId, meal])
 
   return (
     <Modal

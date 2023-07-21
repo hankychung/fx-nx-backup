@@ -20,3 +20,5 @@ export type {
   IEqualComparisonData,
   IIdentityData
 }
+
+export * from './lib/env'

@@ -16,7 +16,6 @@ import {
   CalendarFinish,
   MeetingIcon,
   MeetingFinishedIcon,
-  RepeatIcon,
   CycleCardIcon
 } from '@flyele-nx/icon'
 import checkingIcon from '../../assets/schedule/checking.gif'
@@ -36,12 +35,13 @@ interface IProps {
   task: IScheduleTask
   changeStatus?: () => void
   resetStatus?: () => void
+  isVipWin?: boolean
 }
 
 const ANIMATION_DURATION = 950
 
 const _StatusBox: FC<IProps> = (props) => {
-  const { task, changeStatus, resetStatus } = props
+  const { task, changeStatus, resetStatus, isVipWin = false } = props
   const [updating, setUpdating] = useState(false)
   const taskDict = useScheduleStore((state) => state.taskDict)
 
@@ -231,6 +231,7 @@ const _StatusBox: FC<IProps> = (props) => {
             size={14}
             status={getOperationStatus(task, userId)}
             changeStatus={changeStatus}
+            isVipWin={isVipWin}
           />
         )
       }

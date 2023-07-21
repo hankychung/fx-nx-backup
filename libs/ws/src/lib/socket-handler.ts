@@ -11,6 +11,8 @@ class _SocketHandler {
 
   private heartbeatCount = 0
 
+  private doNotReconnect = false
+
   private connect() {
     const token = TokenHandler.get()
 
@@ -21,9 +23,12 @@ class _SocketHandler {
     this.ws.onopen = this.handleOpen.bind(this)
 
     this.ws.onclose = this.handleClose.bind(this)
+
+    this.ws.onmessage = this.handleMsg.bind(this)
   }
 
   private handleOpen() {
+    this.doNotReconnect = false
     this.triggerBeat()
   }
 
@@ -46,6 +51,35 @@ class _SocketHandler {
     this.heartbeatTimer && clearInterval(this.heartbeatTimer)
     this.heartbeatTimer = null
     this.heartbeatCount = 0
+
+    if (!this.doNotReconnect) {
+      setTimeout(() => {
+        // 2秒后重新连接
+        this.connect()
+      }, 2000)
+    }
+  }
+
+  private handleMsg(event: MessageEvent) {
+    const { data } = event
+
+    if (typeof data === 'string') {
+      if (data === '0') {
+        this.heartbeatCount = 0
+        return
+      }
+
+      if (data.includes('goaway')) {
+        // TODO: 被挤下线
+        this.ws?.close()
+        this.doNotReconnect = true
+      }
+      return
+    }
+  }
+
+  initSocket() {
+    this.connect()
   }
 
   initUrl(url: string) {

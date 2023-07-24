@@ -10,12 +10,18 @@ class EnvStore {
     prod: { host: 'https://pay.flyele.net' }
   }
 
+  private nxDev = ''
+
   initEnv(env: string) {
-    this.env = env
+    ;[this.env, this.nxDev] = env.split('-')
 
     return {
       url: this.getUrl()
     }
+  }
+
+  IsNxDev() {
+    return this.nxDev
   }
 
   getDoMain() {

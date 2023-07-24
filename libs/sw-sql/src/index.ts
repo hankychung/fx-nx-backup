@@ -52,12 +52,16 @@ class DBHandler {
 
           const { mode, diffInfo } = res
 
-          responseData = await sqlStore.query({
-            show_model: mode,
-            filter: {
-              task_ids: diffInfo.taskIds
-            }
-          })
+          responseData = {
+            ...diffInfo,
+            list: await sqlStore.query({
+              show_model: mode,
+              filter: {
+                task_ids: diffInfo.taskIds
+              }
+            })
+          }
+
           break
         }
 

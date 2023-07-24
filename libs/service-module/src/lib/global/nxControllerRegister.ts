@@ -6,6 +6,7 @@ import {
   IHandlerTaskAddTaker
 } from './types/controller'
 import { Msg } from '@flyele-nx/ui'
+import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 
 type UpdateWorkflowStep = (option: { taskId: string }) => void
 
@@ -26,19 +27,13 @@ class NxControllerRegister {
   showMsg: ((v: Msg) => void) | null = null
   updateWorkflowStep: UpdateWorkflowStep | null = null
 
-  getDayView: (params: DayViewParamsProps) => {
+  getDayView: (params: DayViewParamsProps) => Promise<{
     code: number
     data: {
       list: ILocalTask[]
       total?: number
     }
-  } = () => ({
-    code: 0,
-    data: {
-      list: [],
-      total: 0
-    }
-  })
+  }> = ServiceWorkerUtils.getDayView.bind(ServiceWorkerUtils)
 
   /**
    * 从缓存数据库获取日程

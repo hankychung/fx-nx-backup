@@ -6,7 +6,9 @@ import { TokenHandler } from '@flyele-nx/utils'
 const initCacheWorker = async ({ userId }: { userId: string }) => {
   await ServiceWorkerUtils.login({
     token: TokenHandler.get() as string,
-    host: envStore.getHost(),
+    host: envStore.IsNxDev()
+      ? 'http://localhost:8888/api/'
+      : envStore.getHost(),
     userId,
     env: envStore.getEnv(),
     wasmUrl: '/assets/wasm/sql-wasm.wasm'

@@ -5,6 +5,14 @@ import {
   NotParamsWorkerKey
 } from '@flyele-nx/sw-sql-client'
 
+type DiffFullInfo = {
+  mode: 1 | 2
+  diffInfo: {
+    taskIds: string[]
+    parentIds: string[]
+  }
+}
+
 class DBHandler {
   constructor() {
     self.onmessage = async ({ data }: MessageEvent<PostData>) => {
@@ -34,6 +42,22 @@ class DBHandler {
 
         case ServiceWorkerKey.UPDATE_TOKEN: {
           sqlStore.updateToken(data.data as string)
+          break
+        }
+
+        case ServiceWorkerKey.QUERY_DIFF_FULL: {
+          const res = data.data as DiffFullInfo
+
+          console.log('全量实时更新', data)
+
+          const { mode, diffInfo } = res
+
+          responseData = await sqlStore.query({
+            show_model: mode,
+            filter: {
+              task_ids: diffInfo.taskIds
+            }
+          })
           break
         }
 

@@ -33,6 +33,10 @@ class EnvStore {
   updateEnvByClient(env: 'dev' | 'test' | 'prod') {
     this.env = env
   }
+
+  getEnv() {
+    return this.env
+  }
 }
 
 export const envStore = new EnvStore()

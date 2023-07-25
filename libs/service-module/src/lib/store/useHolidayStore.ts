@@ -13,16 +13,20 @@ interface IMutation {
   updateData: (data: IHoliday[]) => void
 }
 
+const initHoliday = {
+  /**
+   *  接口返回的全部数据
+   */
+  holidayValue: {
+    all: [],
+    realHolidays: [],
+    dutyHoliday: []
+  }
+}
+
 const useHolidayStore = create<IHolidayState & IMutation>((set) => {
   return {
-    /**
-     *  接口返回的全部数据
-     */
-    holidayValue: {
-      all: [],
-      realHolidays: [],
-      dutyHoliday: []
-    },
+    ...initHoliday,
 
     updateData(data) {
       // 去掉补班的假期, 真放假的时候。
@@ -45,4 +49,4 @@ const useHolidayStore = create<IHolidayState & IMutation>((set) => {
   }
 })
 
-export { useHolidayStore }
+export { useHolidayStore, initHoliday }

@@ -40,7 +40,7 @@ const getUrl = ({
 }
 
 class EnvStore {
-  private env: any = 'dev'
+  private env: IEnv = 'dev'
 
   private nxDev = ''
 
@@ -52,7 +52,7 @@ class EnvStore {
       type: IType
     }
   ) {
-    ;[this.env, this.nxDev] = env.split('-')
+    ;[this.env, this.nxDev] = env.split('-') as [IEnv, string]
 
     this.type = options?.type || 'normal'
 
@@ -77,8 +77,9 @@ class EnvStore {
     return getUrl({ env: this.env, type: this.type })
   }
 
-  updateEnvByClient(env: IEnv) {
+  updateEnvByClient(env: IEnv, type: IType) {
     this.env = env
+    this.type = type
   }
 
   getEnv() {

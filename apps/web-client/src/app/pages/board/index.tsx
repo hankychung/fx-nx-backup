@@ -8,7 +8,7 @@ const Board: React.FC = () => {
   useEffect(() => {
     // TODO: fix it
     initCacheWorker({
-      userId: '1097162688561296'
+      userId: '1113658170015849'
     })
   }, [])
 

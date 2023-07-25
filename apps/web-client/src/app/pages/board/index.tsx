@@ -1,20 +1,24 @@
+import { timeGetter } from '@flyele-nx/utils'
+import { AllScheduleList } from '@flyele-nx/service-module'
+import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { initCacheWorker } from '../../utils/initCacheWorker'
-import { BoardHeader } from './components/header'
-import { Outlet } from 'react-router-dom'
 
 const Board: React.FC = () => {
+  timeGetter.getDate()
+
   useEffect(() => {
     // TODO: fix it
     initCacheWorker({
-      userId: '1113658170015849'
+      userId: '2601680697032715'
     })
   }, [])
 
   return (
     <div>
-      <BoardHeader />
-      <Outlet />
+      <AllScheduleList
+        date={dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')}
+      />
     </div>
   )
 }

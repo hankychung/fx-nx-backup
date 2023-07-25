@@ -31,7 +31,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     isBoard,
     // getFinishListTotal,
     overlayClassName,
-    isDarkMode
+    isDarkMode,
+    opacity
   },
   ref
 ) => {
@@ -147,6 +148,7 @@ const _ScheduleList: ForwardRefRenderFunction<
               isVipWin={isVipWin}
               isBoard={isBoard}
               isDarkMode={isDarkMode}
+              opacity={opacity}
             />
           ))}
         </InfiniteScroll>

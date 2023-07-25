@@ -9,7 +9,9 @@ export function App() {
   return (
     <div className={style.app}>
       <Slider />
-      <Outlet />
+      <div className={style.content}>
+        <Outlet />
+      </div>
     </div>
   )
 }

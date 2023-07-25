@@ -1,6 +1,4 @@
 import { timeGetter } from '@flyele-nx/utils'
-import { AllScheduleList } from '@flyele-nx/service-module'
-import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { initCacheWorker } from '../../utils/initCacheWorker'
 import { BoardHeader } from './components/header'
@@ -13,7 +11,7 @@ const Board: React.FC = () => {
   useEffect(() => {
     // TODO: fix it
     initCacheWorker({
-      userId: '2601680697032715'
+      userId: '1113658170015849'
     })
   }, [])
 

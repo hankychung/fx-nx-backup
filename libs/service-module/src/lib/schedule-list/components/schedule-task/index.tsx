@@ -5,7 +5,8 @@ import React, {
   CSSProperties,
   PropsWithChildren,
   useRef,
-  MouseEvent
+  MouseEvent,
+  useEffect
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
@@ -47,6 +48,7 @@ export interface IProps {
   isVipWin?: boolean // 是否小挂件窗体
   isBoard?: boolean
   isTimeLine?: boolean
+  opacity?: boolean
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -59,7 +61,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isSimple = false,
   isVipWin = false,
   isBoard = false,
-  isTimeLine = false
+  isTimeLine = false,
+  opacity
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -232,10 +235,12 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode
+        [styles.darkMode]: isDarkMode,
+        [styles.darkOpacityHover]: isDarkMode && opacity,
+        [styles.whiteOpacityHover]: !isDarkMode && opacity
       })}
       style={{
-        background: isDarkMode ? '#3b3e4b' : '#fff',
+        backgroundColor: opacity ? 'unset' : isDarkMode ? '#3b3e4b' : '#fff',
         ...style
       }}
       data-id={taskKey}
@@ -244,8 +249,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     >
       <div
         className={cs({
-          [styles.topHover]: !isTimeLine,
-          [styles.darkModeHover]: isDarkMode,
+          [styles.topHover]: !isTimeLine && !opacity,
+          [styles.darkModeHover]: isDarkMode && !opacity,
           [styles.remind]: isRemind,
           [styles.complexSchedulePadding]: !isBoard && !isTimeLine,
           [styles.boardSchedulePadding]: isBoard,
@@ -259,7 +264,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         )}
 
-        {!isSimple && !isTimeLine && <Workflow taskId={taskKey} />}
+        {!isSimple && !isTimeLine && (
+          <Workflow taskId={taskKey} opacity={opacity} />
+        )}
 
         {(!isSimple || isTimeLine) && (
           <ParentInfo taskId={taskKey} isDarkMode />

@@ -1,15 +1,21 @@
 import { FC } from 'react'
-import { AllScheduleList } from '@flyele-nx/service-module'
-import { timeGetter } from '@flyele-nx/utils'
-import dayjs from 'dayjs'
 import style from './index.module.scss'
+import { Schedule } from './components/schedule'
+import { Mood } from './components/mood'
+import { TaskCreator } from './components/task-creator'
 
 export const DayView: FC = () => {
   return (
     <div className={style.dayview}>
-      <AllScheduleList
-        date={dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')}
-      />
+      {/* left */}
+      <div className={style.lft}>
+        <Mood />
+        <TaskCreator />
+        <Schedule />
+      </div>
+
+      {/* right */}
+      <div>rgt</div>
     </div>
   )
 }

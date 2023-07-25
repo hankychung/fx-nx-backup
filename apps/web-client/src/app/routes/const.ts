@@ -1,6 +1,7 @@
 enum RoutePath {
   login = '/login',
-  board = '/board'
+  board = '/board',
+  dayView = '/board/day-view'
 }
 
 export { RoutePath }

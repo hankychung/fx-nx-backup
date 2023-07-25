@@ -9,7 +9,7 @@ export function App() {
   return (
     <div className={style.app}>
       <Slider />
-      <Outlet></Outlet>
+      <Outlet />
     </div>
   )
 }

@@ -11,17 +11,21 @@ interface IMutation {
   updateInteracts: (data: IInteractsData[]) => void
 }
 
+const initContact: IContactState = {
+  /**
+   *  所有联系人字典(含企业微信)
+   */
+  contactDict: {},
+
+  /**
+   * 我的协作人
+   */
+  interacts: []
+}
+
 const useContactStore = create<IContactState & IMutation>((set) => {
   return {
-    /**
-     *  所有联系人字典(含企业微信)
-     */
-    contactDict: {},
-
-    /**
-     * 我的协作人
-     */
-    interacts: [],
+    ...initContact,
 
     updateContactDict(data) {
       set(() => ({
@@ -37,4 +41,4 @@ const useContactStore = create<IContactState & IMutation>((set) => {
   }
 })
 
-export { useContactStore }
+export { useContactStore, initContact }

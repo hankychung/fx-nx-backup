@@ -45,7 +45,7 @@ interface IMutation {
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
 }
 
-const initScheduleState: IState = {
+const initSchedule: IState = {
   /**
    * 日程列表字典, key为日期, value为该日期下事项列表id数组(带排序)
    */
@@ -91,7 +91,7 @@ const initScheduleState: IState = {
 
 const useScheduleStore = create<IState & IMutation>((set) => {
   return {
-    ...initScheduleState,
+    ...initSchedule,
     /**
      * 初始化/更新事项列表
      */
@@ -208,4 +208,4 @@ const useScheduleStore = create<IState & IMutation>((set) => {
   }
 })
 
-export { useScheduleStore, initScheduleState }
+export { useScheduleStore, initSchedule }

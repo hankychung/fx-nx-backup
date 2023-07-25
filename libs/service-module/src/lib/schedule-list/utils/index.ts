@@ -7,11 +7,9 @@ import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
-import {
-  useScheduleStore,
-  initScheduleState
-} from '../../store/useScheduleStore'
+import { useScheduleStore } from '../../store/useScheduleStore'
 import timeGetter from '../../global/timeGetter'
+import { resetState } from '../../store/utils/resetState'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
   compareVal: number
@@ -385,7 +383,7 @@ function getTaskIdsByDispatch(dispatchIds: string[]) {
 }
 
 function handleLogout() {
-  useScheduleStore.setState(initScheduleState)
+  resetState()
 }
 
 function getInsertedFinishTasks(taskIds: string[]) {

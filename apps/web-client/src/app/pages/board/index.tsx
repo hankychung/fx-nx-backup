@@ -3,6 +3,9 @@ import { AllScheduleList } from '@flyele-nx/service-module'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { initCacheWorker } from '../../utils/initCacheWorker'
+import { BoardHeader } from './components/header'
+import { Outlet } from 'react-router-dom'
+import style from './index.module.scss'
 
 const Board: React.FC = () => {
   timeGetter.getDate()
@@ -15,10 +18,11 @@ const Board: React.FC = () => {
   }, [])
 
   return (
-    <div>
-      <AllScheduleList
-        date={dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')}
-      />
+    <div className={style.board}>
+      <BoardHeader />
+      <div className={style.wrapper}>
+        <Outlet />
+      </div>
     </div>
   )
 }

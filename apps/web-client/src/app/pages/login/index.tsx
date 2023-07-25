@@ -3,6 +3,7 @@ import { useMemoizedFn } from 'ahooks'
 import { RoutePath } from '../../routes/const'
 import { TokenHandler } from '@flyele-nx/utils'
 import { SocketHandler } from '@flyele-nx/ws'
+import { service } from '@flyele-nx/service'
 // import {} from '@flyele-nx/service'
 
 const FAKE_TOKEN =
@@ -13,6 +14,8 @@ const Login: React.FC = () => {
 
   const login = useMemoizedFn(() => {
     TokenHandler.update(FAKE_TOKEN)
+
+    service.updateToken(FAKE_TOKEN)
 
     navigate(RoutePath.dayView)
 

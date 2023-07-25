@@ -217,7 +217,7 @@ export const MemberIntroduction = ({
           })
         }}
         originRoute="官网"
-        domain={envStore.getDoMain()}
+        domain={envStore.getPayHost()}
         getOrderCode={(code: string) => {
           setOrderCode(code)
         }}

@@ -265,7 +265,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         )}
 
         {!isSimple && !isTimeLine && (
-          <Workflow taskId={taskKey} opacity={opacity} />
+          <Workflow
+            taskId={taskKey}
+            opacity={opacity}
+            isDarkMode={isDarkMode}
+          />
         )}
 
         {(!isSimple || isTimeLine) && (

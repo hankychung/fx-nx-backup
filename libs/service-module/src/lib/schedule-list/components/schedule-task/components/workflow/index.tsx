@@ -70,7 +70,9 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
   return (
     <div
       className={cs(styles.workflow, { [styles.darkMode]: isDarkMode })}
-      style={{ backgroundColor: opacity ? 'unset' : '#fafafa' }}
+      style={{
+        backgroundColor: opacity ? 'unset' : isDarkMode ? '#383B48' : '#fafafa'
+      }}
     >
       {isFlow && (
         <div className={cs(styles.icon)}>

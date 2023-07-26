@@ -125,7 +125,7 @@ const _ScheduleList: ForwardRefRenderFunction<
   return (
     <div
       className={classNames(styles['container'], overlayClassName)}
-      style={{ backgroundColor: isDarkMode ? 'unset' : '#F6FBFA' }}
+      style={{ backgroundColor: isDarkMode ? 'unset' : '#F6F8FA' }}
     >
       {(decentList ?? []).length ? (
         <InfiniteScroll

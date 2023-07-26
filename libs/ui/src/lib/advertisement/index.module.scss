@@ -1,0 +1,47 @@
+.advertisement_wrap {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  -webkit-app-region: none;
+  background-image: url('https://cdn.flyele.net/resources/PC/login-bg.png');
+  background-size: 100%;
+
+  :global {
+    .ant-carousel {
+      position: relative;
+      top: 50%;
+      transform: translateY(-60%);
+    }
+  }
+}
+
+.dots_class {
+  bottom: 100px;
+}
+
+.slick_dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 70px;
+  // background-color: red;
+
+  li {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(180, 180, 180, 0.3);
+    cursor: pointer;
+    overflow: hidden;
+    margin-right: 12px;
+    transition: all 0.2s;
+  }
+
+  .active {
+    background: #1dd2c1;
+  }
+}

@@ -87,6 +87,15 @@ export interface ILoginKeyParams {
   device: IDevice
   last_login_key: string
 }
+
+export interface IPhoneLoginParams {
+  device: IDevice
+  telephone: string
+  verify_code?: string
+  user_id?: string
+  channel_source?: string
+}
+
 /**
  * 登录相关结束
  */

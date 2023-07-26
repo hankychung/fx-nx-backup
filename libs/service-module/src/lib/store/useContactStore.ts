@@ -1,14 +1,15 @@
 import { create } from 'zustand'
-import { IContactDict, IInteractsData } from './types'
+import { IContactDict } from './types'
+import { IInteract } from '@flyele-nx/service'
 
 export interface IContactState {
   contactDict: IContactDict
-  interacts: IInteractsData[]
+  interacts: IInteract[]
 }
 
 interface IMutation {
   updateContactDict: (data: IContactDict) => void
-  updateInteracts: (data: IInteractsData[]) => void
+  updateInteracts: (data: IInteract[]) => void
 }
 
 const initContact: IContactState = {

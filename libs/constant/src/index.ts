@@ -21,4 +21,6 @@ export type {
   IIdentityData
 }
 
+export * from './lib/vip'
+
 export * from './lib/env'

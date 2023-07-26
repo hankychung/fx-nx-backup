@@ -36,12 +36,13 @@ import { IWorkflowStep, IUserStepInfo } from './lib/typings/workflow'
 import * as WorkflowConst from './lib/typings/workflow/const'
 
 // 协作人
-import {
-  IContactsAndStatus,
-  ITakerAndStatus,
-  VipTypeEnum,
-  EConCheckStatus
-} from './lib/typings/taker'
+// import {
+//   IContactsAndStatus,
+//   ITakerAndStatus,
+//   VipTypeEnum,
+//   EConCheckStatus
+// } from './lib/typings/taker'
+export * from './lib/typings/taker'
 
 // Tag
 import { TagModel, TagObjType } from './lib/typings/tag'
@@ -87,15 +88,15 @@ export {
   projectApi,
   SpaceTypeConst,
   AuthConst,
-  VipTypeEnum,
-  EConCheckStatus,
+  // VipTypeEnum,
+  // EConCheckStatus,
   WorkflowConst
 }
 
 export type {
   ILoginKeyParams,
   IDevice,
-  IContactsAndStatus,
+  // IContactsAndStatus,
   IErrorResponse,
   IUserInfo,
   OrderSystemType,
@@ -106,7 +107,7 @@ export type {
   RepeatList,
   TagModel,
   TagObjType,
-  ITakerAndStatus,
+  // ITakerAndStatus,
   AuthType,
   IVip,
   SpaceType,
@@ -115,3 +116,5 @@ export type {
   IUserStepInfo,
   ILocalTask
 }
+
+export * from './lib/utils'

@@ -1,8 +1,8 @@
 import { produce } from 'immer'
-import { IContactDict, IInteractsData } from '../store/types'
+import { IContactDict } from '../store/types'
 import { IContactState, useContactStore } from '../store/useContactStore'
 import { IUserInfoState, useUserInfoStore } from '../store/useUserInfoStore'
-import { IHoliday, IUserInfo } from '@flyele-nx/service'
+import { IHoliday, IUserInfo, IInteract } from '@flyele-nx/service'
 import { useHolidayStore } from '../store/useHolidayStore'
 
 class GlobalInfoHandler {
@@ -14,7 +14,7 @@ class GlobalInfoHandler {
     )
   }
 
-  static updateInteracts(data: IInteractsData[]) {
+  static updateInteracts(data: IInteract[]) {
     useContactStore.setState(
       produce((state: IContactState) => {
         state.interacts = data

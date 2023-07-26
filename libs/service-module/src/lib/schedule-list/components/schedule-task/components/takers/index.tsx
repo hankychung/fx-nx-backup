@@ -29,6 +29,7 @@ import { globalNxController } from '../../../../../global/nxController'
 import { SIZE_TYPE_KEY } from '../../../../../global/types/channel/SIZE_TYPE'
 import { useMemoizedFn } from 'ahooks'
 import { contextMenuTool } from '../../../../../../index'
+import { VipTypeEnum } from '@flyele-nx/constant'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 
@@ -311,8 +312,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         finish_time: taker?.finish_time || 0,
         is_view: taker?.is_view || 0,
         taker_id: id,
-        isVip: contactDict[id]?.isVip,
-        isTeamVip: contactDict[id]?.isTeamVip
+        isVip: contactDict[id]?.vip_type === VipTypeEnum.Person,
+        isTeamVip: contactDict[id]?.vip_type === VipTypeEnum.Team
       }
     })
 

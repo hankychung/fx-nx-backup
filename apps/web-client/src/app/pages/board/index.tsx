@@ -5,6 +5,7 @@ import { BoardHeader } from './components/header'
 import { Outlet } from 'react-router-dom'
 import style from './index.module.scss'
 import { BizApi } from '@flyele-nx/service'
+import { GlobalInfoHandler } from '@flyele-nx/service-module'
 
 const Board: React.FC = () => {
   const isInit = useRef(false)
@@ -18,10 +19,13 @@ const Board: React.FC = () => {
 
     // TODO: fix it
     initCacheWorker({
-      userId: '1097162688561296'
+      userId: '1113658170015849'
     })
 
-    BizApi.getInteracts()
+    BizApi.getInteracts().then((list) => {
+      console.log('@list', list)
+      GlobalInfoHandler.updateInteracts(list)
+    })
   }, [])
 
   return (

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
-import { IVip, SpaceType, VipTypeEnum } from '@flyele-nx/service'
+import { IVip, SpaceType } from '@flyele-nx/service'
 import duration from 'dayjs/plugin/duration'
+import { VipTypeEnum } from '@flyele-nx/constant'
 dayjs.extend(duration)
 
 export class UserInfoUtils {

@@ -8,6 +8,7 @@ import styles from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
+import { VipTypeEnum } from '@flyele-nx/constant'
 
 export type ISimpleMember = {
   userId: string
@@ -42,11 +43,11 @@ const SimpleMemberList = (props: IProps) => {
   const getVipInfo = useMemoizedFn((id: string) => {
     let isVip = false
     let isTeamVip = false
-    const item = interacts.find((i) => i.userId === id)
+    const item = interacts.find((i) => i.user_id === id)
 
     if (item) {
-      isVip = isEnterprise || !!item.isVip
-      isTeamVip = isEnterprise || !!item.isTeamVip
+      isVip = isEnterprise || item.vip_type === VipTypeEnum.Person
+      isTeamVip = isEnterprise || item.vip_type === VipTypeEnum.Team
     }
     return {
       isVip,

@@ -28,7 +28,8 @@ import {
   TaskApi,
   IWorkflowStep,
   WorkflowConst,
-  ScheduleTaskConst
+  ScheduleTaskConst,
+  VipHandler
 } from '@flyele-nx/service'
 import {
   DisabledIcon,
@@ -220,11 +221,13 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     if (data && data[0] && data[0].creator_id) {
       const user = contactDict[data[0].creator_id]
 
+      const { isTeamVip, isVip } = VipHandler.checkVipType(user)
+
       setAddUser({
         avatar: user?.avatar || '',
         name: user?.original_name || user?.nick_name,
-        isTeamVip: user?.isTeamVip,
-        isVip: user?.isVip
+        isTeamVip,
+        isVip
       })
     }
 

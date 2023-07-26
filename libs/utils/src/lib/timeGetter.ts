@@ -1,9 +1,12 @@
 import dayjs from 'dayjs'
+import { envStore } from '@flyele-nx/constant'
 
 class TimeGetter {
   private timeDiff = 0
 
   private serviceStamp = 0
+
+  private loading = false
 
   constructor() {
     // 每1hour校准一次时间
@@ -13,14 +16,24 @@ class TimeGetter {
   }
 
   private async calibrateTime() {
-    const stamp = (
-      await (await fetch('https://api.flyele.net/userc/v1/system/now')).json()
-    ).data as number
+    if (this.loading) {
+      return dayjs().unix()
+    }
 
-    this.timeDiff = dayjs().unix() - stamp
-    this.serviceStamp = stamp
+    this.loading = true
 
-    return stamp
+    try {
+      const stamp = (
+        await (await fetch(`${envStore.getHost()}/userc/v1/system/now`)).json()
+      ).data as number
+
+      this.timeDiff = dayjs().unix() - stamp
+      this.serviceStamp = stamp
+
+      return stamp
+    } finally {
+      this.loading = false
+    }
   }
 
   async getDate(): Promise<number> {

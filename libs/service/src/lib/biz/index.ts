@@ -1,5 +1,6 @@
 import { service } from '../service'
 import { IDayViewResponse } from '../typings/schedule'
+import { IInteractList } from '../typings/taker/interacts'
 
 type TaskListType = 'history' | 'today' | 'future' | 'invite'
 
@@ -39,6 +40,16 @@ class Biz {
     })
 
     return res
+  }
+
+  async getInteracts() {
+    const res = await service.get<IInteractList>({
+      url: `${this.prefix}/user/interacts`
+    })
+
+    console.log('check ins', res.data)
+
+    return res.data
   }
 }
 

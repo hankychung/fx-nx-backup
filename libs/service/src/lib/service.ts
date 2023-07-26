@@ -79,6 +79,8 @@ class Service {
   updateToken(token: string) {
     console.log('token changing', token)
     this.token = token
+
+    TokenHandler.update(token)
   }
 
   getToken(): string {

@@ -1,0 +1,25 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  -webkit-app-region: drag;
+
+  .wrapContent {
+    flex: 1;
+    color: #000c17;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .wrapRight {
+    height: 100%;
+  }
+}
+
+.feedbackBtn {
+  display: flex;
+  margin: 15px;
+  width: 80px;
+}

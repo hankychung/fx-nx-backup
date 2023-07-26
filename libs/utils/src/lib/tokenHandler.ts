@@ -1,6 +1,6 @@
 class TokenHandler {
   static get() {
-    return localStorage.getItem('auth')
+    return localStorage.getItem('auth') || ''
   }
 
   static update(token: string) {

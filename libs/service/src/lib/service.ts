@@ -15,7 +15,7 @@ class Service {
     this.responseInterceptors()
   }
 
-  token = ''
+  token = TokenHandler.get()
 
   /**
    * token失效

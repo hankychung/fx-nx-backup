@@ -26,6 +26,7 @@ import RetrievePayModal from './lib/retrieve-pay-modal'
 import { service, envStore } from '@flyele-nx/service'
 import { DayExecution } from './lib/day-execution'
 import { ProjectLure } from './lib/project-lure'
+import { LoginInput } from './lib/login-input'
 
 export * from './lib/schedule-list' // 日程列表
 
@@ -47,7 +48,8 @@ export {
   DayExecution,
   RetrievePayModalTeam,
   ProjectLure,
-  RetrievePayModal
+  RetrievePayModal,
+  LoginInput
 }
 
 export * from './lib/map-svg/type/props'

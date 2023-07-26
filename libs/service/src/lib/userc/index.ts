@@ -5,25 +5,15 @@ import { IUserInfo, ILoginKeyParams, IVipMember } from '../typings'
 import { IContactsAndStatus, EConCheckStatus } from '../typings/taker'
 import { AxiosRequestConfig } from 'axios'
 import { IMemberApi } from '../typings/vip'
-import { IWeather } from '../typings'
+import { IWeather, IPhoneLoginParams } from '../typings'
 
 class Userc {
   private prefix = 'userc/v2'
 
-  async phoneLogin(phone?: number) {
-    await service.put<IUserInfo>({
+  async phoneLogin(data: IPhoneLoginParams) {
+    return await service.put<IUserInfo>({
       url: `${this.prefix}/auth/phonelogin/code`,
-      data: {
-        telephone: phone || '13650939928',
-        verify_code: '123456',
-        device: {
-          client_version: 'fake',
-          device_id: 'fake',
-          device_name: 'fake',
-          os: 'fake',
-          platform: 'web'
-        }
-      }
+      data: data
     })
   }
 

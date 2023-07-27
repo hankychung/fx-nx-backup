@@ -77,7 +77,7 @@ class Service {
   }
 
   updateToken(token: string) {
-    console.log('token changing', token)
+    // console.log('token changing', token)
     this.token = token
 
     LocalStore.updateToken(token)

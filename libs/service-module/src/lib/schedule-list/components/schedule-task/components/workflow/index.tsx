@@ -85,7 +85,7 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
         </div>
       )}
       <span
-        // className={styles.appName}
+        className={styles.appName}
         style={{
           color: opacity
             ? isDarkMode

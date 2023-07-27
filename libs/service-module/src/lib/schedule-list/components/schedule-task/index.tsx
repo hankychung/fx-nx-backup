@@ -242,7 +242,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       style={{
         backgroundColor: opacity
           ? isDarkMode
-            ? 'rgba(59, 62, 75, 0.3)'
+            ? 'rgba(59, 62, 75, 0.1)'
             : 'rgba(255, 255, 255, 0.1)'
           : isDarkMode
           ? '#3b3e4b'
@@ -306,7 +306,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     mountNode={() => document.body}
                     isDynamic
                     wrapClassName={cs(styles.title, {
-                      [styles.titleDarkMode]: isDarkMode
+                      [styles.titleDarkMode]: isDarkMode && !opacity
                     })}
                     text={data.title || ''}
                   />

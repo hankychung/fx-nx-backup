@@ -66,12 +66,20 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
   if (!isFlow && !isRepeat) {
     return null
   }
+  console.log('isDarkModeworkflow', isDarkMode)
 
   return (
     <div
       className={cs(styles.workflow, { [styles.darkMode]: isDarkMode })}
       style={{
-        backgroundColor: opacity ? 'unset' : isDarkMode ? '#383B48' : '#fafafa'
+        backgroundColor: opacity ? 'unset' : isDarkMode ? '#383B48' : '#fafafa',
+        color: opacity
+          ? isDarkMode
+            ? 'rgba(255, 255, 255, 0.8)'
+            : 'rgba(51, 51, 51, 0.6)'
+          : isDarkMode
+          ? '#92929d'
+          : '#8f8f8f'
       }}
     >
       {isFlow && (

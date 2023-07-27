@@ -33,6 +33,7 @@ interface IPROPTime {
   dateStr: string
   onlyRepeat?: boolean
   isTimeLine?: boolean
+  opacity?: boolean
 }
 
 export const Time: React.FC<IPROPTime> = ({
@@ -41,7 +42,8 @@ export const Time: React.FC<IPROPTime> = ({
   isDarkMode = false,
   dateStr,
   onlyRepeat = false,
-  isTimeLine = false
+  isTimeLine = false,
+  opacity
 }) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
@@ -281,7 +283,7 @@ export const Time: React.FC<IPROPTime> = ({
       return (
         <div className={styles.repeatDelayTotalBox}>
           <RepeatDelayIcon width="1em" height="1em" />
-          <div style={{ marginLeft: '3px' }}>{repeatDelayTotal}</div>
+          <div>{repeatDelayTotal}</div>
         </div>
       )
     }
@@ -308,7 +310,18 @@ export const Time: React.FC<IPROPTime> = ({
           [styles.darkMode]: isDarkMode
         })}
       >
-        <div className={cs(styles.scheduleTime, styles.scheduleTimeText)}>
+        <div
+          className={cs(styles.scheduleTime, styles.scheduleTimeText)}
+          style={{
+            color: opacity
+              ? isDarkMode
+                ? 'rgba(255, 255, 255, 0.8)'
+                : 'rgba(51, 51, 51, 0.8)'
+              : isDarkMode
+              ? '#92929d'
+              : '#6a6a6a'
+          }}
+        >
           {buildRepeatIcon}
         </div>
       </div>
@@ -334,7 +347,20 @@ export const Time: React.FC<IPROPTime> = ({
       {!!delayTxt && <div className={styles.warnText}>{delayTxt}</div>}
       {task.finish_time ? (
         <div className={styles.scheduleTime}>
-          <div className={styles.scheduleTimeText}>{showTxt}</div>
+          <div
+            className={styles.scheduleTimeText}
+            style={{
+              color: opacity
+                ? isDarkMode
+                  ? 'rgba(255, 255, 255, 0.8)'
+                  : 'rgba(51, 51, 51, 0.8)'
+                : isDarkMode
+                ? '#92929d'
+                : '#6a6a6a'
+            }}
+          >
+            {showTxt}
+          </div>
           {!!repeatType && buildRepeatIcon}
         </div>
       ) : (
@@ -358,7 +384,20 @@ export const Time: React.FC<IPROPTime> = ({
             }}
             className={styles.scheduleTime}
           >
-            <div className={styles.scheduleTimeText}>{showTxt}</div>
+            <div
+              className={styles.scheduleTimeText}
+              style={{
+                color: opacity
+                  ? isDarkMode
+                    ? 'rgba(255, 255, 255, 0.8)'
+                    : 'rgba(51, 51, 51, 0.8)'
+                  : isDarkMode
+                  ? '#92929d'
+                  : '#6a6a6a'
+              }}
+            >
+              {showTxt}
+            </div>
             {!!repeatType && buildRepeatIcon}
           </div>
         </Tooltip>

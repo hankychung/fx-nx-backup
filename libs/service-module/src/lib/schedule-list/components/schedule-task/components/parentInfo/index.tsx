@@ -6,7 +6,8 @@ import { useScheduleStore } from '../../../../../store/useScheduleStore'
 
 interface IPROPParentInfo {
   taskId: string
-  isDarkMode: boolean
+  isDarkMode?: boolean
+  opacity?: boolean
 }
 
 function getType(task?: IScheduleTask) {
@@ -40,7 +41,11 @@ function getType(task?: IScheduleTask) {
   }
 }
 
-const _ParentInfo: React.FC<IPROPParentInfo> = ({ taskId, isDarkMode }) => {
+const _ParentInfo: React.FC<IPROPParentInfo> = ({
+  taskId,
+  isDarkMode,
+  opacity
+}) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const { type, name } = getType(task)
 
@@ -54,12 +59,18 @@ const _ParentInfo: React.FC<IPROPParentInfo> = ({ taskId, isDarkMode }) => {
   if (!type || !name) {
     return null
   }
-
   return (
     <div
-      className={cs(styles.parentInfo, {
-        [styles.darkMode]: isDarkMode
-      })}
+      className={cs(styles.parentInfo)}
+      style={{
+        color: opacity
+          ? isDarkMode
+            ? 'rgba(255, 255, 255, 0.8)'
+            : 'rgba(51, 51, 51, 0.8)'
+          : isDarkMode
+          ? '#92929d'
+          : '#6a6a6a'
+      }}
     >
       {`${type}：${name}`}
     </div>

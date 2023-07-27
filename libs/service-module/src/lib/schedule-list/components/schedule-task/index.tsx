@@ -1,12 +1,11 @@
-import React, {
+import {
   FC,
   memo,
   useMemo,
   CSSProperties,
   PropsWithChildren,
   useRef,
-  MouseEvent,
-  useEffect
+  MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
@@ -133,11 +132,12 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         taskId: ref_task_id
       })
 
-      const queryChildren = await globalNxController.getDayView({
-        parentId: `${data.parent_id ? `${data.parent_id},` : ''}${ref_task_id}`
-      })
+      // TODO: 中台查询子事项数据有偏差, 调用旧借口处理
+      // const queryChildren = await globalNxController.getDayView({
+      //   parentId: `${data.parent_id ? `${data.parent_id},` : ''}${ref_task_id}`
+      // })
 
-      console.log('@querychildren', queryChildren, tasks)
+      // console.log('@querychildren', queryChildren, tasks)
 
       const childrenDict = getChildrenDict({
         tasks,

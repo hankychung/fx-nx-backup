@@ -9,6 +9,7 @@ import {
   useUserInfoStore,
   IContactDict
 } from '@flyele-nx/service-module'
+import { LocalStore } from '@flyele-nx/utils'
 
 const Board: React.FC = () => {
   const isInit = useRef(false)
@@ -18,8 +19,14 @@ const Board: React.FC = () => {
 
     isInit.current = true
 
+    const userId =
+      useUserInfoStore.getState().userInfo.user_id ||
+      LocalStore.getUserInfo()?.user_id
+
+    if (!userId) return
+
     initCacheWorker({
-      userId: useUserInfoStore.getState().userInfo.user_id
+      userId
     })
 
     BizApi.getInteracts().then((list) => {

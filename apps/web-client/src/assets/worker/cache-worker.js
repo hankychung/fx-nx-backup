@@ -11,18 +11,18 @@ var Tr =
     : {}
 function w_(Tt) {
   if (Tt.__esModule) return Tt
-  var ht = Tt.default
-  if (typeof ht == 'function') {
+  var dt = Tt.default
+  if (typeof dt == 'function') {
     var g = function et() {
       if (this instanceof et) {
         var W = [null]
         W.push.apply(W, arguments)
-        var O = Function.bind.apply(ht, W)
+        var O = Function.bind.apply(dt, W)
         return new O()
       }
-      return ht.apply(this, arguments)
+      return dt.apply(this, arguments)
     }
-    g.prototype = ht.prototype
+    g.prototype = dt.prototype
   } else g = {}
   return (
     Object.defineProperty(g, '__esModule', { value: !0 }),
@@ -62,16 +62,16 @@ const L_ = {},
     )
   ),
   Pa = w_(k_)
-;(function (Tt, ht) {
+;(function (Tt, dt) {
   var g = void 0,
     et = function (W) {
       return (
         g ||
         ((g = new Promise(function (O, I) {
           var T = typeof W < 'u' ? W : {},
-            x = T.onAbort
+            R = T.onAbort
           ;(T.onAbort = function (f) {
-            I(new Error(f)), x && x(f)
+            I(new Error(f)), R && R(f)
           }),
             (T.postRun = T.postRun || []),
             T.postRun.push(function () {
@@ -697,7 +697,7 @@ const L_ = {},
               typeof process.versions.node == 'string',
             L = '',
             $,
-            R,
+            x,
             B,
             K,
             ot,
@@ -717,7 +717,7 @@ const L_ = {},
               (B = (f) => (
                 (f = $(f, !0)), f.buffer || (f = new Uint8Array(f)), f
               )),
-              (R = (f, _, S) => {
+              (x = (f, _, S) => {
                 Q(),
                   (f = ot.normalize(f)),
                   K.readFile(f, function (F, z) {
@@ -755,7 +755,7 @@ const L_ = {},
                     new Uint8Array(_.response)
                   )
                 }),
-              (R = (f, _, S) => {
+              (x = (f, _, S) => {
                 var F = new XMLHttpRequest()
                 F.open('GET', f, !0),
                   (F.responseType = 'arraybuffer'),
@@ -879,7 +879,7 @@ const L_ = {},
             var f = y.preRun.shift()
             M.unshift(f)
           }
-          var dt = 0,
+          var ht = 0,
             yt = null
           function nt(f) {
             throw (
@@ -922,9 +922,9 @@ const L_ = {},
                   .catch(function () {
                     return it()
                   })
-              if (R)
+              if (x)
                 return new Promise(function (f, _) {
-                  R(
+                  x(
                     m,
                     function (S) {
                       f(new Uint8Array(S))
@@ -2682,9 +2682,9 @@ const L_ = {},
                 c(),
                 (v = y.asm.Aa),
                 U.unshift(y.asm.J),
-                dt--,
-                y.monitorRunDependencies && y.monitorRunDependencies(dt),
-                dt == 0 && yt && ((z = yt), (yt = null), z())
+                ht--,
+                y.monitorRunDependencies && y.monitorRunDependencies(ht),
+                ht == 0 && yt && ((z = yt), (yt = null), z())
             }
             function _(z) {
               f(z.instance)
@@ -2703,8 +2703,8 @@ const L_ = {},
             }
             var F = { a: Wi }
             if (
-              (dt++,
-              y.monitorRunDependencies && y.monitorRunDependencies(dt),
+              (ht++,
+              y.monitorRunDependencies && y.monitorRunDependencies(ht),
               y.instantiateWasm)
             )
               try {
@@ -2970,7 +2970,7 @@ const L_ = {},
                 Et(Y)
               }
             }
-            if (!(0 < dt)) {
+            if (!(0 < ht)) {
               if (y.preRun)
                 for (
                   typeof y.preRun == 'function' && (y.preRun = [y.preRun]);
@@ -2979,7 +2979,7 @@ const L_ = {},
                 )
                   ut()
               Et(M),
-                0 < dt ||
+                0 < ht ||
                   (y.setStatus
                     ? (y.setStatus('Running...'),
                       setTimeout(function () {
@@ -3429,7 +3429,7 @@ Dual licenced under the MIT license or GPLv3. See https://raw.github.com/Stuk/js
 
 JSZip uses the library pako released under the MIT license :
 https://github.com/nodeca/pako/blob/main/LICENSE
-*/ ;(function (Tt, ht) {
+*/ ;(function (Tt, dt) {
   ;(function (g) {
     Tt.exports = g()
   })(function () {
@@ -3460,8 +3460,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         }
         return W[y].exports
       }
-      for (var T = typeof Ha == 'function' && Ha, x = 0; x < O.length; x++)
-        I(O[x])
+      for (var T = typeof Ha == 'function' && Ha, R = 0; R < O.length; R++)
+        I(O[R])
       return I
     })(
       {
@@ -3471,7 +3471,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               I = g('./support'),
               T =
                 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
-            ;(W.encode = function (x) {
+            ;(W.encode = function (R) {
               for (
                 var y,
                   q,
@@ -3481,21 +3481,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   G,
                   L,
                   $ = [],
-                  R = 0,
-                  B = x.length,
+                  x = 0,
+                  B = R.length,
                   K = B,
-                  ot = O.getTypeOf(x) !== 'string';
-                R < x.length;
+                  ot = O.getTypeOf(R) !== 'string';
+                x < R.length;
 
               )
-                (K = B - R),
+                (K = B - x),
                   (j = ot
-                    ? ((y = x[R++]),
-                      (q = R < B ? x[R++] : 0),
-                      R < B ? x[R++] : 0)
-                    : ((y = x.charCodeAt(R++)),
-                      (q = R < B ? x.charCodeAt(R++) : 0),
-                      R < B ? x.charCodeAt(R++) : 0)),
+                    ? ((y = R[x++]),
+                      (q = x < B ? R[x++] : 0),
+                      x < B ? R[x++] : 0)
+                    : ((y = R.charCodeAt(x++)),
+                      (q = x < B ? R.charCodeAt(x++) : 0),
+                      x < B ? R.charCodeAt(x++) : 0)),
                   (V = y >> 2),
                   (k = ((3 & y) << 4) | (q >> 4)),
                   (G = 1 < K ? ((15 & q) << 2) | (j >> 6) : 64),
@@ -3503,7 +3503,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   $.push(T.charAt(V) + T.charAt(k) + T.charAt(G) + T.charAt(L))
               return $.join('')
             }),
-              (W.decode = function (x) {
+              (W.decode = function (R) {
                 var y,
                   q,
                   j,
@@ -3512,30 +3512,30 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   G,
                   L = 0,
                   $ = 0,
-                  R = 'data:'
-                if (x.substr(0, R.length) === R)
+                  x = 'data:'
+                if (R.substr(0, x.length) === x)
                   throw new Error(
                     'Invalid base64 input, it looks like a data url.'
                   )
                 var B,
-                  K = (3 * (x = x.replace(/[^A-Za-z0-9+/=]/g, '')).length) / 4
+                  K = (3 * (R = R.replace(/[^A-Za-z0-9+/=]/g, '')).length) / 4
                 if (
-                  (x.charAt(x.length - 1) === T.charAt(64) && K--,
-                  x.charAt(x.length - 2) === T.charAt(64) && K--,
+                  (R.charAt(R.length - 1) === T.charAt(64) && K--,
+                  R.charAt(R.length - 2) === T.charAt(64) && K--,
                   K % 1 != 0)
                 )
                   throw new Error('Invalid base64 input, bad content length.')
                 for (
                   B = I.uint8array ? new Uint8Array(0 | K) : new Array(0 | K);
-                  L < x.length;
+                  L < R.length;
 
                 )
                   (y =
-                    (T.indexOf(x.charAt(L++)) << 2) |
-                    ((V = T.indexOf(x.charAt(L++))) >> 4)),
+                    (T.indexOf(R.charAt(L++)) << 2) |
+                    ((V = T.indexOf(R.charAt(L++))) >> 4)),
                     (q =
-                      ((15 & V) << 4) | ((k = T.indexOf(x.charAt(L++))) >> 2)),
-                    (j = ((3 & k) << 6) | (G = T.indexOf(x.charAt(L++)))),
+                      ((15 & V) << 4) | ((k = T.indexOf(R.charAt(L++))) >> 2)),
+                    (j = ((3 & k) << 6) | (G = T.indexOf(R.charAt(L++)))),
                     (B[$++] = y),
                     k !== 64 && (B[$++] = q),
                     G !== 64 && (B[$++] = j)
@@ -3549,7 +3549,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./external'),
               I = g('./stream/DataWorker'),
               T = g('./stream/Crc32Probe'),
-              x = g('./stream/DataLengthProbe')
+              R = g('./stream/DataLengthProbe')
             function y(q, j, V, k, G) {
               ;(this.compressedSize = q),
                 (this.uncompressedSize = j),
@@ -3561,7 +3561,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               getContentWorker: function () {
                 var q = new I(O.Promise.resolve(this.compressedContent))
                     .pipe(this.compression.uncompressWorker())
-                    .pipe(new x('data_length')),
+                    .pipe(new R('data_length')),
                   j = this
                 return (
                   q.on('end', function () {
@@ -3582,9 +3582,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               (y.createWorkerFrom = function (q, j, V) {
                 return q
                   .pipe(new T())
-                  .pipe(new x('uncompressedSize'))
+                  .pipe(new R('uncompressedSize'))
                   .pipe(j.compressWorker(V))
-                  .pipe(new x('compressedSize'))
+                  .pipe(new R('compressedSize'))
                   .withStreamInfo('compression', j)
               }),
               (et.exports = y)
@@ -3616,15 +3616,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             var O = g('./utils'),
               I = (function () {
-                for (var T, x = [], y = 0; y < 256; y++) {
+                for (var T, R = [], y = 0; y < 256; y++) {
                   T = y
                   for (var q = 0; q < 8; q++)
                     T = 1 & T ? 3988292384 ^ (T >>> 1) : T >>> 1
-                  x[y] = T
+                  R[y] = T
                 }
-                return x
+                return R
               })()
-            et.exports = function (T, x) {
+            et.exports = function (T, R) {
               return T !== void 0 && T.length
                 ? O.getTypeOf(T) !== 'string'
                   ? (function (y, q, j, V) {
@@ -3634,7 +3634,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       for (var L = V; L < G; L++)
                         y = (y >>> 8) ^ k[255 & (y ^ q[L])]
                       return -1 ^ y
-                    })(0 | x, T, T.length, 0)
+                    })(0 | R, T, T.length, 0)
                   : (function (y, q, j, V) {
                       var k = I,
                         G = V + j
@@ -3642,7 +3642,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       for (var L = V; L < G; L++)
                         y = (y >>> 8) ^ k[255 & (y ^ q.charCodeAt(L))]
                       return -1 ^ y
-                    })(0 | x, T, T.length, 0)
+                    })(0 | R, T, T.length, 0)
                 : 0
             }
           },
@@ -3679,29 +3679,29 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 typeof Uint32Array < 'u',
               I = g('pako'),
               T = g('./utils'),
-              x = g('./stream/GenericWorker'),
+              R = g('./stream/GenericWorker'),
               y = O ? 'uint8array' : 'array'
             function q(j, V) {
-              x.call(this, 'FlateWorker/' + j),
+              R.call(this, 'FlateWorker/' + j),
                 (this._pako = null),
                 (this._pakoAction = j),
                 (this._pakoOptions = V),
                 (this.meta = {})
             }
             ;(W.magic = '\b\0'),
-              T.inherits(q, x),
+              T.inherits(q, R),
               (q.prototype.processChunk = function (j) {
                 ;(this.meta = j.meta),
                   this._pako === null && this._createPako(),
                   this._pako.push(T.transformTo(y, j.data), !1)
               }),
               (q.prototype.flush = function () {
-                x.prototype.flush.call(this),
+                R.prototype.flush.call(this),
                   this._pako === null && this._createPako(),
                   this._pako.push([], !0)
               }),
               (q.prototype.cleanUp = function () {
-                x.prototype.cleanUp.call(this), (this._pako = null)
+                R.prototype.cleanUp.call(this), (this._pako = null)
               }),
               (q.prototype._createPako = function () {
                 this._pako = new I[this._pakoAction]({
@@ -3731,7 +3731,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 ($ += String.fromCharCode(255 & k)), (k >>>= 8)
               return $
             }
-            function I(k, G, L, $, R, B) {
+            function I(k, G, L, $, x, B) {
               var K,
                 ot,
                 Q = k.file,
@@ -3759,7 +3759,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               var s = 0,
                 l = 0
               t && (s |= 16),
-                R === 'UNIX'
+                x === 'UNIX'
                   ? ((l = 798),
                     (s |= (function (v, M) {
                       var U = v
@@ -3815,12 +3815,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               )
             }
             var T = g('../utils'),
-              x = g('../stream/GenericWorker'),
+              R = g('../stream/GenericWorker'),
               y = g('../utf8'),
               q = g('../crc32'),
               j = g('../signature')
             function V(k, G, L, $) {
-              x.call(this, 'ZipFileWorker'),
+              R.call(this, 'ZipFileWorker'),
                 (this.bytesWritten = 0),
                 (this.zipComment = G),
                 (this.zipPlatform = L),
@@ -3834,7 +3834,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (this.currentFile = null),
                 (this._sources = [])
             }
-            T.inherits(V, x),
+            T.inherits(V, R),
               (V.prototype.push = function (k) {
                 var G = k.meta.percent || 0,
                   L = this.entriesCount,
@@ -3842,7 +3842,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 this.accumulate
                   ? this.contentBuffer.push(k)
                   : ((this.bytesWritten += k.data.length),
-                    x.prototype.push.call(this, {
+                    R.prototype.push.call(this, {
                       data: k.data,
                       meta: {
                         currentFile: this.currentFile,
@@ -3909,13 +3909,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     meta: { percent: 100 }
                   })
                 var L = this.bytesWritten - k,
-                  $ = (function (R, B, K, ot, Q) {
+                  $ = (function (x, B, K, ot, Q) {
                     var vt = T.transformTo('string', Q(ot))
                     return (
                       j.CENTRAL_DIRECTORY_END +
                       '\0\0\0\0' +
-                      O(R, 2) +
-                      O(R, 2) +
+                      O(x, 2) +
+                      O(x, 2) +
                       O(B, 4) +
                       O(K, 4) +
                       O(vt.length, 2) +
@@ -3954,7 +3954,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               }),
               (V.prototype.resume = function () {
                 return (
-                  !!x.prototype.resume.call(this) &&
+                  !!R.prototype.resume.call(this) &&
                   (!this.previous && this._sources.length
                     ? (this.prepareNextSource(), !0)
                     : this.previous ||
@@ -3966,7 +3966,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               }),
               (V.prototype.error = function (k) {
                 var G = this._sources
-                if (!x.prototype.error.call(this, k)) return !1
+                if (!R.prototype.error.call(this, k)) return !1
                 for (var L = 0; L < G.length; L++)
                   try {
                     G[L].error(k)
@@ -3974,7 +3974,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 return !0
               }),
               (V.prototype.lock = function () {
-                x.prototype.lock.call(this)
+                R.prototype.lock.call(this)
                 for (var k = this._sources, G = 0; G < k.length; G++)
                   k[G].lock()
               }),
@@ -3992,8 +3992,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             var O = g('../compressions'),
               I = g('./ZipFileWorker')
-            W.generateWorker = function (T, x, y) {
-              var q = new I(x.streamFiles, y, x.platform, x.encodeFileName),
+            W.generateWorker = function (T, R, y) {
+              var q = new I(R.streamFiles, y, R.platform, R.encodeFileName),
                 j = 0
               try {
                 T.forEach(function (V, k) {
@@ -4006,18 +4006,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                           ot + ' is not a valid compression method !'
                         )
                       return Q
-                    })(k.options.compression, x.compression),
+                    })(k.options.compression, R.compression),
                     L =
                       k.options.compressionOptions ||
-                      x.compressionOptions ||
+                      R.compressionOptions ||
                       {},
                     $ = k.dir,
-                    R = k.date
+                    x = k.date
                   k._compressWorker(G, L)
                     .withStreamInfo('file', {
                       name: V,
                       dir: $,
-                      date: R,
+                      date: x,
                       comment: k.comment || '',
                       unixPermissions: k.unixPermissions,
                       dosPermissions: k.dosPermissions
@@ -4074,7 +4074,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./utils'),
               I = g('./external'),
               T = g('./utf8'),
-              x = g('./zipEntries'),
+              R = g('./zipEntries'),
               y = g('./stream/Crc32Probe'),
               q = g('./nodejsUtils')
             function j(V) {
@@ -4115,23 +4115,23 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       k.base64
                     )
                       .then(function (L) {
-                        var $ = new x(k)
+                        var $ = new R(k)
                         return $.load(L), $
                       })
                       .then(function (L) {
                         var $ = [I.Promise.resolve(L)],
-                          R = L.files
+                          x = L.files
                         if (k.checkCRC32)
-                          for (var B = 0; B < R.length; B++) $.push(j(R[B]))
+                          for (var B = 0; B < x.length; B++) $.push(j(x[B]))
                         return I.Promise.all($)
                       })
                       .then(function (L) {
                         for (
-                          var $ = L.shift(), R = $.files, B = 0;
-                          B < R.length;
+                          var $ = L.shift(), x = $.files, B = 0;
+                          B < x.length;
                           B++
                         ) {
-                          var K = R[B],
+                          var K = x[B],
                             ot = K.fileNameStr,
                             Q = O.resolve(K.fileNameStr)
                           G.file(Q, K.decompressed, {
@@ -4168,19 +4168,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             var O = g('../utils'),
               I = g('../stream/GenericWorker')
-            function T(x, y) {
-              I.call(this, 'Nodejs stream input adapter for ' + x),
+            function T(R, y) {
+              I.call(this, 'Nodejs stream input adapter for ' + R),
                 (this._upstreamEnded = !1),
                 this._bindStream(y)
             }
             O.inherits(T, I),
-              (T.prototype._bindStream = function (x) {
+              (T.prototype._bindStream = function (R) {
                 var y = this
-                ;(this._stream = x).pause(),
-                  x
-                    .on('data', function (q) {
-                      y.push({ data: q, meta: { percent: 0 } })
-                    })
+                ;(this._stream = R).pause(),
+                  R.on('data', function (q) {
+                    y.push({ data: q, meta: { percent: 0 } })
+                  })
                     .on('error', function (q) {
                       y.isPaused ? (this.generatedError = q) : y.error(q)
                     })
@@ -4206,8 +4205,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         13: [
           function (g, et, W) {
             var O = g('readable-stream').Readable
-            function I(T, x, y) {
-              O.call(this, x), (this._helper = T)
+            function I(T, R, y) {
+              O.call(this, R), (this._helper = T)
               var q = this
               T.on('data', function (j, V) {
                 q.push(j) || q._helper.pause(), y && y(V)
@@ -4271,7 +4270,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   (e.unixPermissions = parseInt(e.unixPermissions, 8)),
                 e.unixPermissions && 16384 & e.unixPermissions && (e.dir = !0),
                 e.dosPermissions && 16 & e.dosPermissions && (e.dir = !0),
-                e.dir && (Q = R(Q)),
+                e.dir && (Q = x(Q)),
                 e.createFolders && (kt = $(Q)) && B.call(this, kt, !0)
               var p = lt === 'string' && e.binary === !1 && e.base64 === !1
               ;(pt && pt.binary !== void 0) || (e.binary = !p),
@@ -4286,7 +4285,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   (lt = 'string'))
               var N = null
               N =
-                vt instanceof j || vt instanceof x
+                vt instanceof j || vt instanceof R
                   ? vt
                   : G.isNode && G.isStream(vt)
                   ? new L(Q, vt)
@@ -4302,7 +4301,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             }
             var I = g('./utf8'),
               T = g('./utils'),
-              x = g('./stream/GenericWorker'),
+              R = g('./stream/GenericWorker'),
               y = g('./stream/StreamHelper'),
               q = g('./defaults'),
               j = g('./compressedObject'),
@@ -4315,13 +4314,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 var vt = Q.lastIndexOf('/')
                 return 0 < vt ? Q.substring(0, vt) : ''
               },
-              R = function (Q) {
+              x = function (Q) {
                 return Q.slice(-1) !== '/' && (Q += '/'), Q
               },
               B = function (Q, vt) {
                 return (
                   (vt = vt !== void 0 ? vt : q.createFolders),
-                  (Q = R(Q)),
+                  (Q = x(Q)),
                   this.files[Q] ||
                     O.call(this, Q, null, { dir: !0, createFolders: vt }),
                   this.files[Q]
@@ -4432,7 +4431,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   var kt = pt.comment || this.comment || ''
                   vt = k.generateWorker(this, pt, kt)
                 } catch (lt) {
-                  ;(vt = new x('error')).error(lt)
+                  ;(vt = new R('error')).error(lt)
                 }
                 return new y(vt, pt.type || 'string', pt.mimeType)
               },
@@ -4472,7 +4471,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./DataReader')
             function I(T) {
               O.call(this, T)
-              for (var x = 0; x < this.data.length; x++) T[x] = 255 & T[x]
+              for (var R = 0; R < this.data.length; R++) T[R] = 255 & T[R]
             }
             g('../utils').inherits(I, O),
               (I.prototype.byteAt = function (T) {
@@ -4480,7 +4479,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               }),
               (I.prototype.lastIndexOfSignature = function (T) {
                 for (
-                  var x = T.charCodeAt(0),
+                  var R = T.charCodeAt(0),
                     y = T.charCodeAt(1),
                     q = T.charCodeAt(2),
                     j = T.charCodeAt(3),
@@ -4489,7 +4488,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   --V
                 )
                   if (
-                    this.data[V] === x &&
+                    this.data[V] === R &&
                     this.data[V + 1] === y &&
                     this.data[V + 2] === q &&
                     this.data[V + 3] === j
@@ -4498,20 +4497,20 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 return -1
               }),
               (I.prototype.readAndCheckSignature = function (T) {
-                var x = T.charCodeAt(0),
+                var R = T.charCodeAt(0),
                   y = T.charCodeAt(1),
                   q = T.charCodeAt(2),
                   j = T.charCodeAt(3),
                   V = this.readData(4)
-                return x === V[0] && y === V[1] && q === V[2] && j === V[3]
+                return R === V[0] && y === V[1] && q === V[2] && j === V[3]
               }),
               (I.prototype.readData = function (T) {
                 if ((this.checkOffset(T), T === 0)) return []
-                var x = this.data.slice(
+                var R = this.data.slice(
                   this.zero + this.index,
                   this.zero + this.index + T
                 )
-                return (this.index += T), x
+                return (this.index += T), R
               }),
               (et.exports = I)
           },
@@ -4548,14 +4547,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               },
               byteAt: function () {},
               readInt: function (T) {
-                var x,
+                var R,
                   y = 0
                 for (
-                  this.checkOffset(T), x = this.index + T - 1;
-                  x >= this.index;
-                  x--
+                  this.checkOffset(T), R = this.index + T - 1;
+                  R >= this.index;
+                  R--
                 )
-                  y = (y << 8) + this.byteAt(x)
+                  y = (y << 8) + this.byteAt(R)
                 return (this.index += T), y
               },
               readString: function (T) {
@@ -4591,11 +4590,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             g('../utils').inherits(I, O),
               (I.prototype.readData = function (T) {
                 this.checkOffset(T)
-                var x = this.data.slice(
+                var R = this.data.slice(
                   this.zero + this.index,
                   this.zero + this.index + T
                 )
-                return (this.index += T), x
+                return (this.index += T), R
               }),
               (et.exports = I)
           },
@@ -4619,11 +4618,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               }),
               (I.prototype.readData = function (T) {
                 this.checkOffset(T)
-                var x = this.data.slice(
+                var R = this.data.slice(
                   this.zero + this.index,
                   this.zero + this.index + T
                 )
-                return (this.index += T), x
+                return (this.index += T), R
               }),
               (et.exports = I)
           },
@@ -4638,11 +4637,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             g('../utils').inherits(I, O),
               (I.prototype.readData = function (T) {
                 if ((this.checkOffset(T), T === 0)) return new Uint8Array(0)
-                var x = this.data.subarray(
+                var R = this.data.subarray(
                   this.zero + this.index,
                   this.zero + this.index + T
                 )
-                return (this.index += T), x
+                return (this.index += T), R
               }),
               (et.exports = I)
           },
@@ -4653,7 +4652,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('../utils'),
               I = g('../support'),
               T = g('./ArrayReader'),
-              x = g('./StringReader'),
+              R = g('./StringReader'),
               y = g('./NodeBufferReader'),
               q = g('./Uint8ArrayReader')
             et.exports = function (j) {
@@ -4666,7 +4665,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     : I.uint8array
                     ? new q(O.transformTo('uint8array', j))
                     : new T(O.transformTo('array', j))
-                  : new x(j)
+                  : new R(j)
               )
             }
           },
@@ -4694,14 +4693,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             var O = g('./GenericWorker'),
               I = g('../utils')
-            function T(x) {
-              O.call(this, 'ConvertWorker to ' + x), (this.destType = x)
+            function T(R) {
+              O.call(this, 'ConvertWorker to ' + R), (this.destType = R)
             }
             I.inherits(T, O),
-              (T.prototype.processChunk = function (x) {
+              (T.prototype.processChunk = function (R) {
                 this.push({
-                  data: I.transformTo(this.destType, x.data),
-                  meta: x.meta
+                  data: I.transformTo(this.destType, R.data),
+                  meta: R.meta
                 })
               }),
               (et.exports = T)
@@ -4716,12 +4715,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               O.call(this, 'Crc32Probe'), this.withStreamInfo('crc32', 0)
             }
             g('../utils').inherits(T, O),
-              (T.prototype.processChunk = function (x) {
+              (T.prototype.processChunk = function (R) {
                 ;(this.streamInfo.crc32 = I(
-                  x.data,
+                  R.data,
                   this.streamInfo.crc32 || 0
                 )),
-                  this.push(x)
+                  this.push(R)
               }),
               (et.exports = T)
           },
@@ -4731,18 +4730,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             var O = g('../utils'),
               I = g('./GenericWorker')
-            function T(x) {
-              I.call(this, 'DataLengthProbe for ' + x),
-                (this.propName = x),
-                this.withStreamInfo(x, 0)
+            function T(R) {
+              I.call(this, 'DataLengthProbe for ' + R),
+                (this.propName = R),
+                this.withStreamInfo(R, 0)
             }
             O.inherits(T, I),
-              (T.prototype.processChunk = function (x) {
-                if (x) {
+              (T.prototype.processChunk = function (R) {
+                if (R) {
                   var y = this.streamInfo[this.propName] || 0
-                  this.streamInfo[this.propName] = y + x.data.length
+                  this.streamInfo[this.propName] = y + R.data.length
                 }
-                I.prototype.processChunk.call(this, x)
+                I.prototype.processChunk.call(this, R)
               }),
               (et.exports = T)
           },
@@ -4752,7 +4751,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             var O = g('../utils'),
               I = g('./GenericWorker')
-            function T(x) {
+            function T(R) {
               I.call(this, 'DataWorker')
               var y = this
               ;(this.dataIsReady = !1),
@@ -4761,7 +4760,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (this.data = null),
                 (this.type = ''),
                 (this._tickScheduled = !1),
-                x.then(
+                R.then(
                   function (q) {
                     ;(y.dataIsReady = !0),
                       (y.data = q),
@@ -4799,24 +4798,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               }),
               (T.prototype._tick = function () {
                 if (this.isPaused || this.isFinished) return !1
-                var x = null,
+                var R = null,
                   y = Math.min(this.max, this.index + 16384)
                 if (this.index >= this.max) return this.end()
                 switch (this.type) {
                   case 'string':
-                    x = this.data.substring(this.index, y)
+                    R = this.data.substring(this.index, y)
                     break
                   case 'uint8array':
-                    x = this.data.subarray(this.index, y)
+                    R = this.data.subarray(this.index, y)
                     break
                   case 'array':
                   case 'nodebuffer':
-                    x = this.data.slice(this.index, y)
+                    R = this.data.slice(this.index, y)
                 }
                 return (
                   (this.index = y),
                   this.push({
-                    data: x,
+                    data: R,
                     meta: {
                       percent: this.max ? (this.index / this.max) * 100 : 0
                     }
@@ -4878,8 +4877,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               },
               emit: function (I, T) {
                 if (this._listeners[I])
-                  for (var x = 0; x < this._listeners[I].length; x++)
-                    this._listeners[I][x].call(this, T)
+                  for (var R = 0; R < this._listeners[I].length; R++)
+                    this._listeners[I][R].call(this, T)
               },
               pipe: function (I) {
                 return I.registerPrevious(this)
@@ -4894,14 +4893,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   (this.previous = I)
                 var T = this
                 return (
-                  I.on('data', function (x) {
-                    T.processChunk(x)
+                  I.on('data', function (R) {
+                    T.processChunk(R)
                   }),
                   I.on('end', function () {
                     T.end()
                   }),
-                  I.on('error', function (x) {
-                    T.error(x)
+                  I.on('error', function (R) {
+                    T.error(R)
                   }),
                   this
                 )
@@ -4962,7 +4961,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('../utils'),
               I = g('./ConvertWorker'),
               T = g('./GenericWorker'),
-              x = g('../base64'),
+              R = g('../base64'),
               y = g('../support'),
               q = g('../external'),
               j = null
@@ -4971,7 +4970,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 j = g('../nodejs/NodejsStreamOutputAdapter')
               } catch {}
             function V(G, L) {
-              return new q.Promise(function ($, R) {
+              return new q.Promise(function ($, x) {
                 var B = [],
                   K = G._internalType,
                   ot = G._outputType,
@@ -4980,7 +4979,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   B.push(vt), L && L(pt)
                 })
                   .on('error', function (vt) {
-                    ;(B = []), R(vt)
+                    ;(B = []), x(vt)
                   })
                   .on('end', function () {
                     try {
@@ -4992,7 +4991,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                               lt
                             )
                           case 'base64':
-                            return x.encode(kt)
+                            return R.encode(kt)
                           default:
                             return O.transformTo(pt, kt)
                         }
@@ -5029,7 +5028,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       )
                       $(vt)
                     } catch (pt) {
-                      R(pt)
+                      x(pt)
                     }
                     B = []
                   })
@@ -5037,21 +5036,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               })
             }
             function k(G, L, $) {
-              var R = L
+              var x = L
               switch (L) {
                 case 'blob':
                 case 'arraybuffer':
-                  R = 'uint8array'
+                  x = 'uint8array'
                   break
                 case 'base64':
-                  R = 'string'
+                  x = 'string'
               }
               try {
-                ;(this._internalType = R),
+                ;(this._internalType = x),
                   (this._outputType = L),
                   (this._mimeType = $),
-                  O.checkSupport(R),
-                  (this._worker = G.pipe(new I(R))),
+                  O.checkSupport(x),
+                  (this._worker = G.pipe(new I(x))),
                   G.lock()
               } catch (B) {
                 ;(this._worker = new T('error')), this._worker.error(B)
@@ -5065,8 +5064,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 var $ = this
                 return (
                   G === 'data'
-                    ? this._worker.on(G, function (R) {
-                        L.call($, R.data, R.meta)
+                    ? this._worker.on(G, function (x) {
+                        L.call($, x.data, x.meta)
                       })
                     : this._worker.on(G, function () {
                         O.delay(L, arguments, $)
@@ -5151,7 +5150,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               var O = g('./utils'),
                 I = g('./support'),
                 T = g('./nodejsUtils'),
-                x = g('./stream/GenericWorker'),
+                R = g('./stream/GenericWorker'),
                 y = new Array(256),
                 q = 0;
               q < 256;
@@ -5171,10 +5170,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   : 1
             y[254] = y[254] = 1
             function j() {
-              x.call(this, 'utf-8 decode'), (this.leftOver = null)
+              R.call(this, 'utf-8 decode'), (this.leftOver = null)
             }
             function V() {
-              x.call(this, 'utf-8 encode')
+              R.call(this, 'utf-8 encode')
             }
             ;(W.utf8encode = function (k) {
               return I.nodebuffer
@@ -5182,7 +5181,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 : (function (G) {
                     var L,
                       $,
-                      R,
+                      x,
                       B,
                       K,
                       ot = G.length,
@@ -5190,8 +5189,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     for (B = 0; B < ot; B++)
                       (64512 & ($ = G.charCodeAt(B))) == 55296 &&
                         B + 1 < ot &&
-                        (64512 & (R = G.charCodeAt(B + 1))) == 56320 &&
-                        (($ = 65536 + (($ - 55296) << 10) + (R - 56320)), B++),
+                        (64512 & (x = G.charCodeAt(B + 1))) == 56320 &&
+                        (($ = 65536 + (($ - 55296) << 10) + (x - 56320)), B++),
                         (Q += $ < 128 ? 1 : $ < 2048 ? 2 : $ < 65536 ? 3 : 4)
                     for (
                       L = I.uint8array ? new Uint8Array(Q) : new Array(Q),
@@ -5201,8 +5200,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     )
                       (64512 & ($ = G.charCodeAt(B))) == 55296 &&
                         B + 1 < ot &&
-                        (64512 & (R = G.charCodeAt(B + 1))) == 56320 &&
-                        (($ = 65536 + (($ - 55296) << 10) + (R - 56320)), B++),
+                        (64512 & (x = G.charCodeAt(B + 1))) == 56320 &&
+                        (($ = 65536 + (($ - 55296) << 10) + (x - 56320)), B++),
                         $ < 128
                           ? (L[K++] = $)
                           : ($ < 2048
@@ -5222,27 +5221,27 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   : (function (G) {
                       var L,
                         $,
-                        R,
+                        x,
                         B,
                         K = G.length,
                         ot = new Array(2 * K)
                       for (L = $ = 0; L < K; )
-                        if ((R = G[L++]) < 128) ot[$++] = R
-                        else if (4 < (B = y[R])) (ot[$++] = 65533), (L += B - 1)
+                        if ((x = G[L++]) < 128) ot[$++] = x
+                        else if (4 < (B = y[x])) (ot[$++] = 65533), (L += B - 1)
                         else {
                           for (
-                            R &= B === 2 ? 31 : B === 3 ? 15 : 7;
+                            x &= B === 2 ? 31 : B === 3 ? 15 : 7;
                             1 < B && L < K;
 
                           )
-                            (R = (R << 6) | (63 & G[L++])), B--
+                            (x = (x << 6) | (63 & G[L++])), B--
                           1 < B
                             ? (ot[$++] = 65533)
-                            : R < 65536
-                            ? (ot[$++] = R)
-                            : ((R -= 65536),
-                              (ot[$++] = 55296 | ((R >> 10) & 1023)),
-                              (ot[$++] = 56320 | (1023 & R)))
+                            : x < 65536
+                            ? (ot[$++] = x)
+                            : ((x -= 65536),
+                              (ot[$++] = 55296 | ((x >> 10) & 1023)),
+                              (ot[$++] = 56320 | (1023 & x)))
                         }
                       return (
                         ot.length !== $ &&
@@ -5258,7 +5257,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       ))
                     )
               }),
-              O.inherits(j, x),
+              O.inherits(j, R),
               (j.prototype.processChunk = function (k) {
                 var G = O.transformTo(
                   I.uint8array ? 'uint8array' : 'array',
@@ -5286,14 +5285,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       ot--
                     return ot < 0 || ot === 0 ? K : ot + y[B[ot]] > K ? ot : K
                   })(G),
-                  R = G
+                  x = G
                 $ !== G.length &&
                   (I.uint8array
-                    ? ((R = G.subarray(0, $)),
+                    ? ((x = G.subarray(0, $)),
                       (this.leftOver = G.subarray($, G.length)))
-                    : ((R = G.slice(0, $)),
+                    : ((x = G.slice(0, $)),
                       (this.leftOver = G.slice($, G.length)))),
-                  this.push({ data: W.utf8decode(R), meta: k.meta })
+                  this.push({ data: W.utf8decode(x), meta: k.meta })
               }),
               (j.prototype.flush = function () {
                 this.leftOver &&
@@ -5302,7 +5301,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   (this.leftOver = null))
               }),
               (W.Utf8DecodeWorker = j),
-              O.inherits(V, x),
+              O.inherits(V, R),
               (V.prototype.processChunk = function (k) {
                 this.push({ data: W.utf8encode(k.data), meta: k.meta })
               }),
@@ -5320,12 +5319,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./support'),
               I = g('./base64'),
               T = g('./nodejsUtils'),
-              x = g('./external')
+              R = g('./external')
             function y(L) {
               return L
             }
             function q(L, $) {
-              for (var R = 0; R < L.length; ++R) $[R] = 255 & L.charCodeAt(R)
+              for (var x = 0; x < L.length; ++x) $[x] = 255 & L.charCodeAt(x)
               return $
             }
             g('setimmediate'),
@@ -5335,42 +5334,42 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   return new Blob([L], { type: $ })
                 } catch {
                   try {
-                    var R = new (self.BlobBuilder ||
+                    var x = new (self.BlobBuilder ||
                       self.WebKitBlobBuilder ||
                       self.MozBlobBuilder ||
                       self.MSBlobBuilder)()
-                    return R.append(L), R.getBlob($)
+                    return x.append(L), x.getBlob($)
                   } catch {
                     throw new Error("Bug : can't construct the Blob.")
                   }
                 }
               })
             var j = {
-              stringifyByChunk: function (L, $, R) {
+              stringifyByChunk: function (L, $, x) {
                 var B = [],
                   K = 0,
                   ot = L.length
-                if (ot <= R) return String.fromCharCode.apply(null, L)
+                if (ot <= x) return String.fromCharCode.apply(null, L)
                 for (; K < ot; )
                   $ === 'array' || $ === 'nodebuffer'
                     ? B.push(
                         String.fromCharCode.apply(
                           null,
-                          L.slice(K, Math.min(K + R, ot))
+                          L.slice(K, Math.min(K + x, ot))
                         )
                       )
                     : B.push(
                         String.fromCharCode.apply(
                           null,
-                          L.subarray(K, Math.min(K + R, ot))
+                          L.subarray(K, Math.min(K + x, ot))
                         )
                       ),
-                    (K += R)
+                    (K += x)
                 return B.join('')
               },
               stringifyByChar: function (L) {
-                for (var $ = '', R = 0; R < L.length; R++)
-                  $ += String.fromCharCode(L[R])
+                for (var $ = '', x = 0; x < L.length; x++)
+                  $ += String.fromCharCode(L[x])
                 return $
               },
               applyCanBeUsed: {
@@ -5400,24 +5399,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             }
             function V(L) {
               var $ = 65536,
-                R = W.getTypeOf(L),
+                x = W.getTypeOf(L),
                 B = !0
               if (
-                (R === 'uint8array'
+                (x === 'uint8array'
                   ? (B = j.applyCanBeUsed.uint8array)
-                  : R === 'nodebuffer' && (B = j.applyCanBeUsed.nodebuffer),
+                  : x === 'nodebuffer' && (B = j.applyCanBeUsed.nodebuffer),
                 B)
               )
                 for (; 1 < $; )
                   try {
-                    return j.stringifyByChunk(L, R, $)
+                    return j.stringifyByChunk(L, x, $)
                   } catch {
                     $ = Math.floor($ / 2)
                   }
               return j.stringifyByChar(L)
             }
             function k(L, $) {
-              for (var R = 0; R < L.length; R++) $[R] = L[R]
+              for (var x = 0; x < L.length; x++) $[x] = L[x]
               return $
             }
             W.applyFromCharCode = V
@@ -5494,17 +5493,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               (W.transformTo = function (L, $) {
                 if ((($ = $ || ''), !L)) return $
                 W.checkSupport(L)
-                var R = W.getTypeOf($)
-                return G[R][L]($)
+                var x = W.getTypeOf($)
+                return G[x][L]($)
               }),
               (W.resolve = function (L) {
-                for (var $ = L.split('/'), R = [], B = 0; B < $.length; B++) {
+                for (var $ = L.split('/'), x = [], B = 0; B < $.length; B++) {
                   var K = $[B]
                   K === '.' ||
                     (K === '' && B !== 0 && B !== $.length - 1) ||
-                    (K === '..' ? R.pop() : R.push(K))
+                    (K === '..' ? x.pop() : x.push(K))
                 }
-                return R.join('/')
+                return x.join('/')
               }),
               (W.getTypeOf = function (L) {
                 return typeof L == 'string'
@@ -5527,37 +5526,37 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               (W.MAX_VALUE_32BITS = -1),
               (W.pretty = function (L) {
                 var $,
-                  R,
+                  x,
                   B = ''
-                for (R = 0; R < (L || '').length; R++)
+                for (x = 0; x < (L || '').length; x++)
                   B +=
                     '\\x' +
-                    (($ = L.charCodeAt(R)) < 16 ? '0' : '') +
+                    (($ = L.charCodeAt(x)) < 16 ? '0' : '') +
                     $.toString(16).toUpperCase()
                 return B
               }),
-              (W.delay = function (L, $, R) {
+              (W.delay = function (L, $, x) {
                 setImmediate(function () {
-                  L.apply(R || null, $ || [])
+                  L.apply(x || null, $ || [])
                 })
               }),
               (W.inherits = function (L, $) {
-                function R() {}
-                ;(R.prototype = $.prototype), (L.prototype = new R())
+                function x() {}
+                ;(x.prototype = $.prototype), (L.prototype = new x())
               }),
               (W.extend = function () {
                 var L,
                   $,
-                  R = {}
+                  x = {}
                 for (L = 0; L < arguments.length; L++)
                   for ($ in arguments[L])
                     Object.prototype.hasOwnProperty.call(arguments[L], $) &&
-                      R[$] === void 0 &&
-                      (R[$] = arguments[L][$])
-                return R
+                      x[$] === void 0 &&
+                      (x[$] = arguments[L][$])
+                return x
               }),
-              (W.prepareContent = function (L, $, R, B, K) {
-                return x.Promise.resolve($)
+              (W.prepareContent = function (L, $, x, B, K) {
+                return R.Promise.resolve($)
                   .then(function (ot) {
                     return O.blob &&
                       (ot instanceof Blob ||
@@ -5565,7 +5564,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                           Object.prototype.toString.call(ot)
                         ) !== -1) &&
                       typeof FileReader < 'u'
-                      ? new x.Promise(function (Q, vt) {
+                      ? new R.Promise(function (Q, vt) {
                           var pt = new FileReader()
                           ;(pt.onload = function (kt) {
                             Q(kt.target.result)
@@ -5585,7 +5584,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                           : Q === 'string' &&
                             (K
                               ? (ot = I.decode(ot))
-                              : R &&
+                              : x &&
                                 B !== !0 &&
                                 (ot = (function (vt) {
                                   return q(
@@ -5596,7 +5595,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                                   )
                                 })(ot))),
                         ot)
-                      : x.Promise.reject(
+                      : R.Promise.reject(
                           new Error(
                             "Can't read the data of '" +
                               L +
@@ -5619,7 +5618,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./reader/readerFor'),
               I = g('./utils'),
               T = g('./signature'),
-              x = g('./zipEntry'),
+              R = g('./zipEntry'),
               y = g('./support')
             function q(j) {
               ;(this.files = []), (this.loadOptions = j)
@@ -5704,7 +5703,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   this.reader.readAndCheckSignature(T.CENTRAL_FILE_HEADER);
 
                 )
-                  (j = new x(
+                  (j = new R(
                     { zip64: this.zip64 },
                     this.loadOptions
                   )).readCentralPart(this.reader),
@@ -5812,7 +5811,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./reader/readerFor'),
               I = g('./utils'),
               T = g('./compressedObject'),
-              x = g('./crc32'),
+              R = g('./crc32'),
               y = g('./utf8'),
               q = g('./compressions'),
               j = g('./support')
@@ -5841,12 +5840,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   )
                 if (
                   (G = (function ($) {
-                    for (var R in q)
+                    for (var x in q)
                       if (
-                        Object.prototype.hasOwnProperty.call(q, R) &&
-                        q[R].magic === $
+                        Object.prototype.hasOwnProperty.call(q, x) &&
+                        q[x].magic === $
                       )
-                        return q[R]
+                        return q[x]
                     return null
                   })(this.compressionMethod)) === null
                 )
@@ -5920,17 +5919,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 var G,
                   L,
                   $,
-                  R = k.index + this.extraFieldsLength
+                  x = k.index + this.extraFieldsLength
                 for (
                   this.extraFields || (this.extraFields = {});
-                  k.index + 4 < R;
+                  k.index + 4 < x;
 
                 )
                   (G = k.readInt(2)),
                     (L = k.readInt(2)),
                     ($ = k.readData(L)),
                     (this.extraFields[G] = { id: G, length: L, value: $ })
-                k.setIndex(R)
+                k.setIndex(x)
               },
               handleUTF8: function () {
                 var k = j.uint8array ? 'uint8array' : 'array'
@@ -5947,8 +5946,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   var $ = this.findExtraFieldUnicodeComment()
                   if ($ !== null) this.fileCommentStr = $
                   else {
-                    var R = I.transformTo(k, this.fileComment)
-                    this.fileCommentStr = this.loadOptions.decodeFileName(R)
+                    var x = I.transformTo(k, this.fileComment)
+                    this.fileCommentStr = this.loadOptions.decodeFileName(x)
                   }
                 }
               },
@@ -5956,7 +5955,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 var k = this.extraFields[28789]
                 if (k) {
                   var G = O(k.value)
-                  return G.readInt(1) !== 1 || x(this.fileName) !== G.readInt(4)
+                  return G.readInt(1) !== 1 || R(this.fileName) !== G.readInt(4)
                     ? null
                     : y.utf8decode(G.readData(k.length - 5))
                 }
@@ -5967,7 +5966,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 if (k) {
                   var G = O(k.value)
                   return G.readInt(1) !== 1 ||
-                    x(this.fileComment) !== G.readInt(4)
+                    R(this.fileComment) !== G.readInt(4)
                     ? null
                     : y.utf8decode(G.readData(k.length - 5))
                 }
@@ -6004,7 +6003,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             }
             var I = g('./stream/StreamHelper'),
               T = g('./stream/DataWorker'),
-              x = g('./utf8'),
+              R = g('./utf8'),
               y = g('./compressedObject'),
               q = g('./stream/GenericWorker')
             O.prototype = {
@@ -6013,12 +6012,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   $ = 'string'
                 try {
                   if (!G) throw new Error('No output type specified.')
-                  var R = ($ = G.toLowerCase()) === 'string' || $ === 'text'
+                  var x = ($ = G.toLowerCase()) === 'string' || $ === 'text'
                   ;($ !== 'binarystring' && $ !== 'text') || ($ = 'string'),
                     (L = this._decompressWorker())
                   var B = !this._dataBinary
-                  B && !R && (L = L.pipe(new x.Utf8EncodeWorker())),
-                    !B && R && (L = L.pipe(new x.Utf8DecodeWorker()))
+                  B && !x && (L = L.pipe(new R.Utf8EncodeWorker())),
+                    !B && x && (L = L.pipe(new R.Utf8DecodeWorker()))
                 } catch (K) {
                   ;(L = new q('error')).error(K)
                 }
@@ -6038,7 +6037,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   return this._data.getCompressedWorker()
                 var $ = this._decompressWorker()
                 return (
-                  this._dataBinary || ($ = $.pipe(new x.Utf8EncodeWorker())),
+                  this._dataBinary || ($ = $.pipe(new R.Utf8EncodeWorker())),
                   y.createWorkerFrom($, G, L)
                 )
               },
@@ -6083,10 +6082,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             ;(function (O) {
               var I,
                 T,
-                x = O.MutationObserver || O.WebKitMutationObserver
-              if (x) {
+                R = O.MutationObserver || O.WebKitMutationObserver
+              if (R) {
                 var y = 0,
-                  q = new x(G),
+                  q = new R(G),
                   j = O.document.createTextNode('')
                 q.observe(j, { characterData: !0 }),
                   (I = function () {
@@ -6120,9 +6119,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               function G() {
                 var L, $
                 T = !0
-                for (var R = k.length; R; ) {
-                  for ($ = k, k = [], L = -1; ++L < R; ) $[L]()
-                  R = k.length
+                for (var x = k.length; x; ) {
+                  for ($ = k, k = [], L = -1; ++L < x; ) $[L]()
+                  x = k.length
                 }
                 T = !1
               }
@@ -6147,19 +6146,19 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('immediate')
             function I() {}
             var T = {},
-              x = ['REJECTED'],
+              R = ['REJECTED'],
               y = ['FULFILLED'],
               q = ['PENDING']
-            function j(R) {
-              if (typeof R != 'function')
+            function j(x) {
+              if (typeof x != 'function')
                 throw new TypeError('resolver must be a function')
               ;(this.state = q),
                 (this.queue = []),
                 (this.outcome = void 0),
-                R !== I && L(this, R)
+                x !== I && L(this, x)
             }
-            function V(R, B, K) {
-              ;(this.promise = R),
+            function V(x, B, K) {
+              ;(this.promise = x),
                 typeof B == 'function' &&
                   ((this.onFulfilled = B),
                   (this.callFulfilled = this.otherCallFulfilled)),
@@ -6167,130 +6166,130 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   ((this.onRejected = K),
                   (this.callRejected = this.otherCallRejected))
             }
-            function k(R, B, K) {
+            function k(x, B, K) {
               O(function () {
                 var ot
                 try {
                   ot = B(K)
                 } catch (Q) {
-                  return T.reject(R, Q)
+                  return T.reject(x, Q)
                 }
-                ot === R
+                ot === x
                   ? T.reject(
-                      R,
+                      x,
                       new TypeError('Cannot resolve promise with itself')
                     )
-                  : T.resolve(R, ot)
+                  : T.resolve(x, ot)
               })
             }
-            function G(R) {
-              var B = R && R.then
+            function G(x) {
+              var B = x && x.then
               if (
-                R &&
-                (typeof R == 'object' || typeof R == 'function') &&
+                x &&
+                (typeof x == 'object' || typeof x == 'function') &&
                 typeof B == 'function'
               )
                 return function () {
-                  B.apply(R, arguments)
+                  B.apply(x, arguments)
                 }
             }
-            function L(R, B) {
+            function L(x, B) {
               var K = !1
               function ot(pt) {
-                K || ((K = !0), T.reject(R, pt))
+                K || ((K = !0), T.reject(x, pt))
               }
               function Q(pt) {
-                K || ((K = !0), T.resolve(R, pt))
+                K || ((K = !0), T.resolve(x, pt))
               }
               var vt = $(function () {
                 B(Q, ot)
               })
               vt.status === 'error' && ot(vt.value)
             }
-            function $(R, B) {
+            function $(x, B) {
               var K = {}
               try {
-                ;(K.value = R(B)), (K.status = 'success')
+                ;(K.value = x(B)), (K.status = 'success')
               } catch (ot) {
                 ;(K.status = 'error'), (K.value = ot)
               }
               return K
             }
-            ;((et.exports = j).prototype.finally = function (R) {
-              if (typeof R != 'function') return this
+            ;((et.exports = j).prototype.finally = function (x) {
+              if (typeof x != 'function') return this
               var B = this.constructor
               return this.then(
                 function (K) {
-                  return B.resolve(R()).then(function () {
+                  return B.resolve(x()).then(function () {
                     return K
                   })
                 },
                 function (K) {
-                  return B.resolve(R()).then(function () {
+                  return B.resolve(x()).then(function () {
                     throw K
                   })
                 }
               )
             }),
-              (j.prototype.catch = function (R) {
-                return this.then(null, R)
+              (j.prototype.catch = function (x) {
+                return this.then(null, x)
               }),
-              (j.prototype.then = function (R, B) {
+              (j.prototype.then = function (x, B) {
                 if (
-                  (typeof R != 'function' && this.state === y) ||
-                  (typeof B != 'function' && this.state === x)
+                  (typeof x != 'function' && this.state === y) ||
+                  (typeof B != 'function' && this.state === R)
                 )
                   return this
                 var K = new this.constructor(I)
                 return (
                   this.state !== q
-                    ? k(K, this.state === y ? R : B, this.outcome)
-                    : this.queue.push(new V(K, R, B)),
+                    ? k(K, this.state === y ? x : B, this.outcome)
+                    : this.queue.push(new V(K, x, B)),
                   K
                 )
               }),
-              (V.prototype.callFulfilled = function (R) {
-                T.resolve(this.promise, R)
+              (V.prototype.callFulfilled = function (x) {
+                T.resolve(this.promise, x)
               }),
-              (V.prototype.otherCallFulfilled = function (R) {
-                k(this.promise, this.onFulfilled, R)
+              (V.prototype.otherCallFulfilled = function (x) {
+                k(this.promise, this.onFulfilled, x)
               }),
-              (V.prototype.callRejected = function (R) {
-                T.reject(this.promise, R)
+              (V.prototype.callRejected = function (x) {
+                T.reject(this.promise, x)
               }),
-              (V.prototype.otherCallRejected = function (R) {
-                k(this.promise, this.onRejected, R)
+              (V.prototype.otherCallRejected = function (x) {
+                k(this.promise, this.onRejected, x)
               }),
-              (T.resolve = function (R, B) {
+              (T.resolve = function (x, B) {
                 var K = $(G, B)
-                if (K.status === 'error') return T.reject(R, K.value)
+                if (K.status === 'error') return T.reject(x, K.value)
                 var ot = K.value
-                if (ot) L(R, ot)
+                if (ot) L(x, ot)
                 else {
-                  ;(R.state = y), (R.outcome = B)
-                  for (var Q = -1, vt = R.queue.length; ++Q < vt; )
-                    R.queue[Q].callFulfilled(B)
+                  ;(x.state = y), (x.outcome = B)
+                  for (var Q = -1, vt = x.queue.length; ++Q < vt; )
+                    x.queue[Q].callFulfilled(B)
                 }
-                return R
+                return x
               }),
-              (T.reject = function (R, B) {
-                ;(R.state = x), (R.outcome = B)
-                for (var K = -1, ot = R.queue.length; ++K < ot; )
-                  R.queue[K].callRejected(B)
-                return R
+              (T.reject = function (x, B) {
+                ;(x.state = R), (x.outcome = B)
+                for (var K = -1, ot = x.queue.length; ++K < ot; )
+                  x.queue[K].callRejected(B)
+                return x
               }),
-              (j.resolve = function (R) {
-                return R instanceof this ? R : T.resolve(new this(I), R)
+              (j.resolve = function (x) {
+                return x instanceof this ? x : T.resolve(new this(I), x)
               }),
-              (j.reject = function (R) {
+              (j.reject = function (x) {
                 var B = new this(I)
-                return T.reject(B, R)
+                return T.reject(B, x)
               }),
-              (j.all = function (R) {
+              (j.all = function (x) {
                 var B = this
-                if (Object.prototype.toString.call(R) !== '[object Array]')
+                if (Object.prototype.toString.call(x) !== '[object Array]')
                   return this.reject(new TypeError('must be an array'))
-                var K = R.length,
+                var K = x.length,
                   ot = !1
                 if (!K) return this.resolve([])
                 for (
@@ -6298,7 +6297,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   ++pt < K;
 
                 )
-                  lt(R[pt], pt)
+                  lt(x[pt], pt)
                 return kt
                 function lt(e, p) {
                   B.resolve(e).then(
@@ -6312,15 +6311,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   )
                 }
               }),
-              (j.race = function (R) {
+              (j.race = function (x) {
                 var B = this
-                if (Object.prototype.toString.call(R) !== '[object Array]')
+                if (Object.prototype.toString.call(x) !== '[object Array]')
                   return this.reject(new TypeError('must be an array'))
-                var K = R.length,
+                var K = x.length,
                   ot = !1
                 if (!K) return this.resolve([])
                 for (var Q = -1, vt = new this(I); ++Q < K; )
-                  (pt = R[Q]),
+                  (pt = x[Q]),
                     B.resolve(pt).then(
                       function (kt) {
                         ot || ((ot = !0), T.resolve(vt, kt))
@@ -6358,15 +6357,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./zlib/deflate'),
               I = g('./utils/common'),
               T = g('./utils/strings'),
-              x = g('./zlib/messages'),
+              R = g('./zlib/messages'),
               y = g('./zlib/zstream'),
               q = Object.prototype.toString,
               j = 0,
               V = -1,
               k = 0,
               G = 8
-            function L(R) {
-              if (!(this instanceof L)) return new L(R)
+            function L(x) {
+              if (!(this instanceof L)) return new L(x)
               this.options = I.assign(
                 {
                   level: V,
@@ -6377,7 +6376,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   strategy: k,
                   to: ''
                 },
-                R || {}
+                x || {}
               )
               var B = this.options
               B.raw && 0 < B.windowBits
@@ -6400,7 +6399,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 B.memLevel,
                 B.strategy
               )
-              if (K !== j) throw new Error(x[K])
+              if (K !== j) throw new Error(R[K])
               if (
                 (B.header && O.deflateSetHeader(this.strm, B.header),
                 B.dictionary)
@@ -6415,27 +6414,27 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       : B.dictionary),
                   (K = O.deflateSetDictionary(this.strm, ot)) !== j)
                 )
-                  throw new Error(x[K])
+                  throw new Error(R[K])
                 this._dict_set = !0
               }
             }
-            function $(R, B) {
+            function $(x, B) {
               var K = new L(B)
-              if ((K.push(R, !0), K.err)) throw K.msg || x[K.err]
+              if ((K.push(x, !0), K.err)) throw K.msg || R[K.err]
               return K.result
             }
-            ;(L.prototype.push = function (R, B) {
+            ;(L.prototype.push = function (x, B) {
               var K,
                 ot,
                 Q = this.strm,
                 vt = this.options.chunkSize
               if (this.ended) return !1
               ;(ot = B === ~~B ? B : B === !0 ? 4 : 0),
-                typeof R == 'string'
-                  ? (Q.input = T.string2buf(R))
-                  : q.call(R) === '[object ArrayBuffer]'
-                  ? (Q.input = new Uint8Array(R))
-                  : (Q.input = R),
+                typeof x == 'string'
+                  ? (Q.input = T.string2buf(x))
+                  : q.call(x) === '[object ArrayBuffer]'
+                  ? (Q.input = new Uint8Array(x))
+                  : (Q.input = x),
                 (Q.next_in = 0),
                 (Q.avail_in = Q.input.length)
               do {
@@ -6462,25 +6461,25 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   K === j)
                 : ot !== 2 || (this.onEnd(j), !(Q.avail_out = 0))
             }),
-              (L.prototype.onData = function (R) {
-                this.chunks.push(R)
+              (L.prototype.onData = function (x) {
+                this.chunks.push(x)
               }),
-              (L.prototype.onEnd = function (R) {
-                R === j &&
+              (L.prototype.onEnd = function (x) {
+                x === j &&
                   (this.options.to === 'string'
                     ? (this.result = this.chunks.join(''))
                     : (this.result = I.flattenChunks(this.chunks))),
                   (this.chunks = []),
-                  (this.err = R),
+                  (this.err = x),
                   (this.msg = this.strm.msg)
               }),
               (W.Deflate = L),
               (W.deflate = $),
-              (W.deflateRaw = function (R, B) {
-                return ((B = B || {}).raw = !0), $(R, B)
+              (W.deflateRaw = function (x, B) {
+                return ((B = B || {}).raw = !0), $(x, B)
               }),
-              (W.gzip = function (R, B) {
-                return ((B = B || {}).gzip = !0), $(R, B)
+              (W.gzip = function (x, B) {
+                return ((B = B || {}).gzip = !0), $(x, B)
               })
           },
           {
@@ -6496,7 +6495,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('./zlib/inflate'),
               I = g('./utils/common'),
               T = g('./utils/strings'),
-              x = g('./zlib/constants'),
+              R = g('./zlib/constants'),
               y = g('./zlib/messages'),
               q = g('./zlib/zstream'),
               j = g('./zlib/gzheader'),
@@ -6526,18 +6525,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (this.chunks = []),
                 (this.strm = new q()),
                 (this.strm.avail_out = 0)
-              var R = O.inflateInit2(this.strm, $.windowBits)
-              if (R !== x.Z_OK) throw new Error(y[R])
+              var x = O.inflateInit2(this.strm, $.windowBits)
+              if (x !== R.Z_OK) throw new Error(y[x])
               ;(this.header = new j()),
                 O.inflateGetHeader(this.strm, this.header)
             }
             function G(L, $) {
-              var R = new k($)
-              if ((R.push(L, !0), R.err)) throw R.msg || y[R.err]
-              return R.result
+              var x = new k($)
+              if ((x.push(L, !0), x.err)) throw x.msg || y[x.err]
+              return x.result
             }
             ;(k.prototype.push = function (L, $) {
-              var R,
+              var x,
                 B,
                 K,
                 ot,
@@ -6548,7 +6547,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 lt = this.options.dictionary,
                 e = !1
               if (this.ended) return !1
-              ;(B = $ === ~~$ ? $ : $ === !0 ? x.Z_FINISH : x.Z_NO_FLUSH),
+              ;(B = $ === ~~$ ? $ : $ === !0 ? R.Z_FINISH : R.Z_NO_FLUSH),
                 typeof L == 'string'
                   ? (pt.input = T.binstring2buf(L))
                   : V.call(L) === '[object ArrayBuffer]'
@@ -6562,7 +6561,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     ((pt.output = new I.Buf8(kt)),
                     (pt.next_out = 0),
                     (pt.avail_out = kt)),
-                  (R = O.inflate(pt, x.Z_NO_FLUSH)) === x.Z_NEED_DICT &&
+                  (x = O.inflate(pt, R.Z_NO_FLUSH)) === R.Z_NEED_DICT &&
                     lt &&
                     ((vt =
                       typeof lt == 'string'
@@ -6570,16 +6569,16 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         : V.call(lt) === '[object ArrayBuffer]'
                         ? new Uint8Array(lt)
                         : lt),
-                    (R = O.inflateSetDictionary(this.strm, vt))),
-                  R === x.Z_BUF_ERROR && e === !0 && ((R = x.Z_OK), (e = !1)),
-                  R !== x.Z_STREAM_END && R !== x.Z_OK)
+                    (x = O.inflateSetDictionary(this.strm, vt))),
+                  x === R.Z_BUF_ERROR && e === !0 && ((x = R.Z_OK), (e = !1)),
+                  x !== R.Z_STREAM_END && x !== R.Z_OK)
                 )
-                  return this.onEnd(R), !(this.ended = !0)
+                  return this.onEnd(x), !(this.ended = !0)
                 pt.next_out &&
                   ((pt.avail_out !== 0 &&
-                    R !== x.Z_STREAM_END &&
+                    x !== R.Z_STREAM_END &&
                     (pt.avail_in !== 0 ||
-                      (B !== x.Z_FINISH && B !== x.Z_SYNC_FLUSH))) ||
+                      (B !== R.Z_FINISH && B !== R.Z_SYNC_FLUSH))) ||
                     (this.options.to === 'string'
                       ? ((K = T.utf8border(pt.output, pt.next_out)),
                         (ot = pt.next_out - K),
@@ -6592,24 +6591,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   pt.avail_in === 0 && pt.avail_out === 0 && (e = !0)
               } while (
                 (0 < pt.avail_in || pt.avail_out === 0) &&
-                R !== x.Z_STREAM_END
+                x !== R.Z_STREAM_END
               )
               return (
-                R === x.Z_STREAM_END && (B = x.Z_FINISH),
-                B === x.Z_FINISH
-                  ? ((R = O.inflateEnd(this.strm)),
-                    this.onEnd(R),
+                x === R.Z_STREAM_END && (B = R.Z_FINISH),
+                B === R.Z_FINISH
+                  ? ((x = O.inflateEnd(this.strm)),
+                    this.onEnd(x),
                     (this.ended = !0),
-                    R === x.Z_OK)
-                  : B !== x.Z_SYNC_FLUSH ||
-                    (this.onEnd(x.Z_OK), !(pt.avail_out = 0))
+                    x === R.Z_OK)
+                  : B !== R.Z_SYNC_FLUSH ||
+                    (this.onEnd(R.Z_OK), !(pt.avail_out = 0))
               )
             }),
               (k.prototype.onData = function (L) {
                 this.chunks.push(L)
               }),
               (k.prototype.onEnd = function (L) {
-                L === x.Z_OK &&
+                L === R.Z_OK &&
                   (this.options.to === 'string'
                     ? (this.result = this.chunks.join(''))
                     : (this.result = I.flattenChunks(this.chunks))),
@@ -6640,7 +6639,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               typeof Uint8Array < 'u' &&
               typeof Uint16Array < 'u' &&
               typeof Int32Array < 'u'
-            ;(W.assign = function (x) {
+            ;(W.assign = function (R) {
               for (
                 var y = Array.prototype.slice.call(arguments, 1);
                 y.length;
@@ -6650,45 +6649,45 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 if (q) {
                   if (typeof q != 'object')
                     throw new TypeError(q + 'must be non-object')
-                  for (var j in q) q.hasOwnProperty(j) && (x[j] = q[j])
+                  for (var j in q) q.hasOwnProperty(j) && (R[j] = q[j])
                 }
               }
-              return x
+              return R
             }),
-              (W.shrinkBuf = function (x, y) {
-                return x.length === y
-                  ? x
-                  : x.subarray
-                  ? x.subarray(0, y)
-                  : ((x.length = y), x)
+              (W.shrinkBuf = function (R, y) {
+                return R.length === y
+                  ? R
+                  : R.subarray
+                  ? R.subarray(0, y)
+                  : ((R.length = y), R)
               })
             var I = {
-                arraySet: function (x, y, q, j, V) {
-                  if (y.subarray && x.subarray) x.set(y.subarray(q, q + j), V)
-                  else for (var k = 0; k < j; k++) x[V + k] = y[q + k]
+                arraySet: function (R, y, q, j, V) {
+                  if (y.subarray && R.subarray) R.set(y.subarray(q, q + j), V)
+                  else for (var k = 0; k < j; k++) R[V + k] = y[q + k]
                 },
-                flattenChunks: function (x) {
+                flattenChunks: function (R) {
                   var y, q, j, V, k, G
-                  for (y = j = 0, q = x.length; y < q; y++) j += x[y].length
+                  for (y = j = 0, q = R.length; y < q; y++) j += R[y].length
                   for (
-                    G = new Uint8Array(j), y = V = 0, q = x.length;
+                    G = new Uint8Array(j), y = V = 0, q = R.length;
                     y < q;
                     y++
                   )
-                    (k = x[y]), G.set(k, V), (V += k.length)
+                    (k = R[y]), G.set(k, V), (V += k.length)
                   return G
                 }
               },
               T = {
-                arraySet: function (x, y, q, j, V) {
-                  for (var k = 0; k < j; k++) x[V + k] = y[q + k]
+                arraySet: function (R, y, q, j, V) {
+                  for (var k = 0; k < j; k++) R[V + k] = y[q + k]
                 },
-                flattenChunks: function (x) {
-                  return [].concat.apply([], x)
+                flattenChunks: function (R) {
+                  return [].concat.apply([], R)
                 }
               }
-            ;(W.setTyped = function (x) {
-              x
+            ;(W.setTyped = function (R) {
+              R
                 ? ((W.Buf8 = Uint8Array),
                   (W.Buf16 = Uint16Array),
                   (W.Buf32 = Int32Array),
@@ -6717,8 +6716,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             } catch {
               T = !1
             }
-            for (var x = new O.Buf8(256), y = 0; y < 256; y++)
-              x[y] =
+            for (var R = new O.Buf8(256), y = 0; y < 256; y++)
+              R[y] =
                 252 <= y
                   ? 6
                   : 248 <= y
@@ -6736,24 +6735,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               for (var k = '', G = 0; G < V; G++) k += String.fromCharCode(j[G])
               return k
             }
-            ;(x[254] = x[254] = 1),
+            ;(R[254] = R[254] = 1),
               (W.string2buf = function (j) {
                 var V,
                   k,
                   G,
                   L,
                   $,
-                  R = j.length,
+                  x = j.length,
                   B = 0
-                for (L = 0; L < R; L++)
+                for (L = 0; L < x; L++)
                   (64512 & (k = j.charCodeAt(L))) == 55296 &&
-                    L + 1 < R &&
+                    L + 1 < x &&
                     (64512 & (G = j.charCodeAt(L + 1))) == 56320 &&
                     ((k = 65536 + ((k - 55296) << 10) + (G - 56320)), L++),
                     (B += k < 128 ? 1 : k < 2048 ? 2 : k < 65536 ? 3 : 4)
                 for (V = new O.Buf8(B), L = $ = 0; $ < B; L++)
                   (64512 & (k = j.charCodeAt(L))) == 55296 &&
-                    L + 1 < R &&
+                    L + 1 < x &&
                     (64512 & (G = j.charCodeAt(L + 1))) == 56320 &&
                     ((k = 65536 + ((k - 55296) << 10) + (G - 56320)), L++),
                     k < 128
@@ -6785,13 +6784,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   G,
                   L,
                   $,
-                  R = V || j.length,
-                  B = new Array(2 * R)
-                for (k = G = 0; k < R; )
+                  x = V || j.length,
+                  B = new Array(2 * x)
+                for (k = G = 0; k < x; )
                   if ((L = j[k++]) < 128) B[G++] = L
-                  else if (4 < ($ = x[L])) (B[G++] = 65533), (k += $ - 1)
+                  else if (4 < ($ = R[L])) (B[G++] = 65533), (k += $ - 1)
                   else {
-                    for (L &= $ === 2 ? 31 : $ === 3 ? 15 : 7; 1 < $ && k < R; )
+                    for (L &= $ === 2 ? 31 : $ === 3 ? 15 : 7; 1 < $ && k < x; )
                       (L = (L << 6) | (63 & j[k++])), $--
                     1 < $
                       ? (B[G++] = 65533)
@@ -6811,14 +6810,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
                 )
                   k--
-                return k < 0 || k === 0 ? V : k + x[j[k]] > V ? k : V
+                return k < 0 || k === 0 ? V : k + R[j[k]] > V ? k : V
               })
           },
           { './common': 41 }
         ],
         43: [
           function (g, et, W) {
-            et.exports = function (O, I, T, x) {
+            et.exports = function (O, I, T, R) {
               for (
                 var y = (65535 & O) | 0, q = ((O >>> 16) & 65535) | 0, j = 0;
                 T !== 0;
@@ -6826,7 +6825,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               ) {
                 for (
                   T -= j = 2e3 < T ? 2e3 : T;
-                  (q = (q + (y = (y + I[x++]) | 0)) | 0), --j;
+                  (q = (q + (y = (y + I[R++]) | 0)) | 0), --j;
 
                 );
                 ;(y %= 65521), (q %= 65521)
@@ -6873,17 +6872,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         45: [
           function (g, et, W) {
             var O = (function () {
-              for (var I, T = [], x = 0; x < 256; x++) {
-                I = x
+              for (var I, T = [], R = 0; R < 256; R++) {
+                I = R
                 for (var y = 0; y < 8; y++)
                   I = 1 & I ? 3988292384 ^ (I >>> 1) : I >>> 1
-                T[x] = I
+                T[R] = I
               }
               return T
             })()
-            et.exports = function (I, T, x, y) {
+            et.exports = function (I, T, R, y) {
               var q = O,
-                j = y + x
+                j = y + R
               I ^= -1
               for (var V = y; V < j; V++) I = (I >>> 8) ^ q[255 & (I ^ T[V])]
               return -1 ^ I
@@ -6896,7 +6895,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O,
               I = g('../utils/common'),
               T = g('./trees'),
-              x = g('./adler32'),
+              R = g('./adler32'),
               y = g('./crc32'),
               q = g('./messages'),
               j = 0,
@@ -6905,7 +6904,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               G = -2,
               L = -1,
               $ = 4,
-              R = 2,
+              x = 2,
               B = 8,
               K = 9,
               ot = 286,
@@ -7064,7 +7063,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       : ((Et.avail_in -= xt),
                         I.arraySet(_t, Et.input, Et.next_in, xt, tt),
                         Et.state.wrap === 1
-                          ? (Et.adler = x(Et.adler, _t, xt, tt))
+                          ? (Et.adler = R(Et.adler, _t, xt, tt))
                           : Et.state.wrap === 2 &&
                             (Et.adler = y(Et.adler, _t, xt, tt)),
                         (Et.next_in += xt),
@@ -7241,7 +7240,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (this.max_chain = C),
                 (this.func = A)
             }
-            function dt() {
+            function ht() {
               ;(this.strm = null),
                 (this.status = 0),
                 (this.pending_buf = null),
@@ -7310,7 +7309,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               var st
               return m && m.state
                 ? ((m.total_in = m.total_out = 0),
-                  (m.data_type = R),
+                  (m.data_type = x),
                   ((st = m.state).pending = 0),
                   (st.pending_out = 0),
                   st.wrap < 0 && (st.wrap = -st.wrap),
@@ -7361,7 +7360,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               )
                 return t(m, G)
               C === 8 && (C = 9)
-              var _t = new dt()
+              var _t = new ht()
               return (
                 ((m.state = _t).strm = m),
                 (_t.wrap = Et),
@@ -7808,7 +7807,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 )
                   return G
                 for (
-                  X === 1 && (m.adler = x(m.adler, st, xt, 0)),
+                  X === 1 && (m.adler = R(m.adler, st, xt, 0)),
                     it.wrap = 0,
                     xt >= it.w_size &&
                       (X === 0 &&
@@ -7888,7 +7887,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           function (g, et, W) {
             et.exports = function (O, I) {
               var T,
-                x,
+                R,
                 y,
                 q,
                 j,
@@ -7897,7 +7896,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 G,
                 L,
                 $,
-                R,
+                x,
                 B,
                 K,
                 ot,
@@ -7913,9 +7912,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 h,
                 P
               ;(T = O.state),
-                (x = O.next_in),
+                (R = O.next_in),
                 (h = O.input),
-                (y = x + (O.avail_in - 5)),
+                (y = R + (O.avail_in - 5)),
                 (q = O.next_out),
                 (P = O.output),
                 (j = q - (I - O.avail_out)),
@@ -7924,7 +7923,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (G = T.wsize),
                 (L = T.whave),
                 ($ = T.wnext),
-                (R = T.window),
+                (x = T.window),
                 (B = T.hold),
                 (K = T.bits),
                 (ot = T.lencode),
@@ -7933,7 +7932,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (pt = (1 << T.distbits) - 1)
               t: do {
                 K < 15 &&
-                  ((B += h[x++] << K), (K += 8), (B += h[x++] << K), (K += 8)),
+                  ((B += h[R++] << K), (K += 8), (B += h[R++] << K), (K += 8)),
                   (kt = ot[B & vt])
                 e: for (;;) {
                   if (
@@ -7957,14 +7956,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     }
                     ;(e = 65535 & kt),
                       (lt &= 15) &&
-                        (K < lt && ((B += h[x++] << K), (K += 8)),
+                        (K < lt && ((B += h[R++] << K), (K += 8)),
                         (e += B & ((1 << lt) - 1)),
                         (B >>>= lt),
                         (K -= lt)),
                       K < 15 &&
-                        ((B += h[x++] << K),
+                        ((B += h[R++] << K),
                         (K += 8),
-                        (B += h[x++] << K),
+                        (B += h[R++] << K),
                         (K += 8)),
                       (kt = Q[B & pt])
                     r: for (;;) {
@@ -7983,8 +7982,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       if (
                         ((p = 65535 & kt),
                         K < (lt &= 15) &&
-                          ((B += h[x++] << K),
-                          (K += 8) < lt && ((B += h[x++] << K), (K += 8))),
+                          ((B += h[R++] << K),
+                          (K += 8) < lt && ((B += h[R++] << K), (K += 8))),
                         k < (p += B & ((1 << lt) - 1)))
                       ) {
                         ;(O.msg = 'invalid distance too far back'),
@@ -7997,21 +7996,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                             (T.mode = 30)
                           break t
                         }
-                        if (((Z = R), (N = 0) === $)) {
+                        if (((Z = x), (N = 0) === $)) {
                           if (((N += G - lt), lt < e)) {
-                            for (e -= lt; (P[q++] = R[N++]), --lt; );
+                            for (e -= lt; (P[q++] = x[N++]), --lt; );
                             ;(N = q - p), (Z = P)
                           }
                         } else if ($ < lt) {
                           if (((N += G + $ - lt), (lt -= $) < e)) {
-                            for (e -= lt; (P[q++] = R[N++]), --lt; );
+                            for (e -= lt; (P[q++] = x[N++]), --lt; );
                             if (((N = 0), $ < e)) {
-                              for (e -= lt = $; (P[q++] = R[N++]), --lt; );
+                              for (e -= lt = $; (P[q++] = x[N++]), --lt; );
                               ;(N = q - p), (Z = P)
                             }
                           }
                         } else if (((N += $ - lt), lt < e)) {
-                          for (e -= lt; (P[q++] = R[N++]), --lt; );
+                          for (e -= lt; (P[q++] = x[N++]), --lt; );
                           ;(N = q - p), (Z = P)
                         }
                         for (; 2 < e; )
@@ -8036,12 +8035,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   }
                   break
                 }
-              } while (x < y && q < V)
-              ;(x -= e = K >> 3),
+              } while (R < y && q < V)
+              ;(R -= e = K >> 3),
                 (B &= (1 << (K -= e << 3)) - 1),
-                (O.next_in = x),
+                (O.next_in = R),
                 (O.next_out = q),
-                (O.avail_in = x < y ? y - x + 5 : 5 - (x - y)),
+                (O.avail_in = R < y ? y - R + 5 : 5 - (R - y)),
                 (O.avail_out = q < V ? V - q + 257 : 257 - (q - V)),
                 (T.hold = B),
                 (T.bits = K)
@@ -8054,7 +8053,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('../utils/common'),
               I = g('./adler32'),
               T = g('./crc32'),
-              x = g('./inffast'),
+              R = g('./inffast'),
               y = g('./inftrees'),
               q = 1,
               j = 2,
@@ -8063,7 +8062,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               G = 1,
               L = 852,
               $ = 592
-            function R(N) {
+            function x(N) {
               return (
                 ((N >>> 24) & 255) +
                 ((N >>> 8) & 65280) +
@@ -8239,7 +8238,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                   U,
                   Y,
                   ut,
-                  dt,
+                  ht,
                   yt,
                   nt,
                   St,
@@ -8463,7 +8462,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         if (r === 0) break t
                         r--, (o += P[E++] << s), (s += 8)
                       }
-                      ;(N.adler = h.check = R(o)), (s = o = 0), (h.mode = 11)
+                      ;(N.adler = h.check = x(o)), (s = o = 0), (h.mode = 11)
                     case 11:
                       if (h.havedict === 0)
                         return (
@@ -8586,17 +8585,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                             ((A = h.lencode[o & ((1 << h.lenbits) - 1)]) >>>
                               16) &
                             255),
-                            (dt = 65535 & A),
+                            (ht = 65535 & A),
                             !((Y = A >>> 24) <= s);
 
                         ) {
                           if (r === 0) break t
                           r--, (o += P[E++] << s), (s += 8)
                         }
-                        if (dt < 16)
-                          (o >>>= Y), (s -= Y), (h.lens[h.have++] = dt)
+                        if (ht < 16)
+                          (o >>>= Y), (s -= Y), (h.lens[h.have++] = ht)
                         else {
-                          if (dt === 16) {
+                          if (ht === 16) {
                             for (C = Y + 2; s < C; ) {
                               if (r === 0) break t
                               r--, (o += P[E++] << s), (s += 8)
@@ -8610,7 +8609,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                               (v = 3 + (3 & o)),
                               (o >>>= 2),
                               (s -= 2)
-                          } else if (dt === 17) {
+                          } else if (ht === 17) {
                             for (C = Y + 3; s < C; ) {
                               if (r === 0) break t
                               r--, (o += P[E++] << s), (s += 8)
@@ -8695,7 +8694,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                           (N.avail_in = r),
                           (h.hold = o),
                           (h.bits = s),
-                          x(N, c),
+                          R(N, c),
                           (t = N.next_out),
                           (It = N.output),
                           (n = N.avail_out),
@@ -8712,7 +8711,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         (ut =
                           ((A = h.lencode[o & ((1 << h.lenbits) - 1)]) >>> 16) &
                           255),
-                          (dt = 65535 & A),
+                          (ht = 65535 & A),
                           !((Y = A >>> 24) <= s);
 
                       ) {
@@ -8721,7 +8720,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       }
                       if (ut && !(240 & ut)) {
                         for (
-                          yt = Y, nt = ut, St = dt;
+                          yt = Y, nt = ut, St = ht;
                           (ut =
                             ((A =
                               h.lencode[
@@ -8729,7 +8728,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                               ]) >>>
                               16) &
                             255),
-                            (dt = 65535 & A),
+                            (ht = 65535 & A),
                             !(yt + (Y = A >>> 24) <= s);
 
                         ) {
@@ -8742,7 +8741,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         ((o >>>= Y),
                         (s -= Y),
                         (h.back += Y),
-                        (h.length = dt),
+                        (h.length = ht),
                         ut === 0)
                       ) {
                         h.mode = 26
@@ -8776,7 +8775,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                           ((A = h.distcode[o & ((1 << h.distbits) - 1)]) >>>
                             16) &
                           255),
-                          (dt = 65535 & A),
+                          (ht = 65535 & A),
                           !((Y = A >>> 24) <= s);
 
                       ) {
@@ -8785,7 +8784,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       }
                       if (!(240 & ut)) {
                         for (
-                          yt = Y, nt = ut, St = dt;
+                          yt = Y, nt = ut, St = ht;
                           (ut =
                             ((A =
                               h.distcode[
@@ -8793,7 +8792,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                               ]) >>>
                               16) &
                             255),
-                            (dt = 65535 & A),
+                            (ht = 65535 & A),
                             !(yt + (Y = A >>> 24) <= s);
 
                         ) {
@@ -8806,7 +8805,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         ;(N.msg = 'invalid distance code'), (h.mode = 30)
                         break
                       }
-                      ;(h.offset = dt), (h.extra = 15 & ut), (h.mode = 24)
+                      ;(h.offset = ht), (h.extra = 15 & ut), (h.mode = 24)
                     case 24:
                       if (h.extra) {
                         for (C = h.extra; s < C; ) {
@@ -8866,7 +8865,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                                 ? T(h.check, It, c, t - c)
                                 : I(h.check, It, c, t - c)),
                           (c = n),
-                          (h.flags ? o : R(o)) !== h.check)
+                          (h.flags ? o : x(o)) !== h.check)
                         ) {
                           ;(N.msg = 'incorrect data check'), (h.mode = 30)
                           break
@@ -8977,7 +8976,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
                 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78
               ],
-              x = [
+              R = [
                 1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257,
                 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289,
                 16385, 24577, 0, 0
@@ -8986,7 +8985,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
                 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 64, 64
               ]
-            et.exports = function (q, j, V, k, G, L, $, R) {
+            et.exports = function (q, j, V, k, G, L, $, x) {
               var B,
                 K,
                 ot,
@@ -8996,7 +8995,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 kt,
                 lt,
                 e,
-                p = R.bits,
+                p = x.bits,
                 N = 0,
                 Z = 0,
                 h = 0,
@@ -9017,7 +9016,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               for (Z = 0; Z < k; Z++) c[j[V + Z]]++
               for (It = p, P = 15; 1 <= P && c[P] === 0; P--);
               if ((P < It && (It = P), P === 0))
-                return (G[L++] = 20971520), (G[L++] = 20971520), (R.bits = 1), 0
+                return (G[L++] = 20971520), (G[L++] = 20971520), (x.bits = 1), 0
               for (h = 1; h < P && c[h] === 0; h++);
               for (It < h && (It = h), N = r = 1; N <= 15; N++)
                 if (((r <<= 1), (r -= c[N]) < 0)) return -1
@@ -9030,7 +9029,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     ? ((s = M = $), 19)
                     : q === 1
                     ? ((s = I), (l -= 257), (M = T), (U -= 257), 256)
-                    : ((s = x), (M = y), -1)),
+                    : ((s = R), (M = y), -1)),
                 (N = h),
                 (vt = L),
                 (t = Z = o = 0),
@@ -9081,7 +9080,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               }
               return (
                 o !== 0 && (G[vt + o] = ((N - t) << 24) | (64 << 16) | 0),
-                (R.bits = It),
+                (x.bits = It),
                 0
               )
             }
@@ -9109,7 +9108,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             var O = g('../utils/common'),
               I = 0,
               T = 1
-            function x(A) {
+            function R(A) {
               for (var X = A.length; 0 <= --X; ) A[X] = 0
             }
             var y = 0,
@@ -9120,7 +9119,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
               G = 19,
               L = 2 * V + 1,
               $ = 15,
-              R = 16,
+              x = 16,
               B = 7,
               K = 256,
               ot = 16,
@@ -9139,15 +9138,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
               ],
               p = new Array(2 * (V + 2))
-            x(p)
+            R(p)
             var N = new Array(2 * k)
-            x(N)
+            R(N)
             var Z = new Array(512)
-            x(Z)
+            R(Z)
             var h = new Array(256)
-            x(h)
+            R(h)
             var P = new Array(q)
-            x(P)
+            R(P)
             var It,
               E,
               t,
@@ -9171,11 +9170,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (A.pending_buf[A.pending++] = (X >>> 8) & 255)
             }
             function c(A, X, Et) {
-              A.bi_valid > R - Et
+              A.bi_valid > x - Et
                 ? ((A.bi_buf |= (X << A.bi_valid) & 65535),
                   l(A, A.bi_buf),
-                  (A.bi_buf = X >> (R - A.bi_valid)),
-                  (A.bi_valid += Et - R))
+                  (A.bi_buf = X >> (x - A.bi_valid)),
+                  (A.bi_valid += Et - x))
                 : ((A.bi_buf |= (X << A.bi_valid) & 65535), (A.bi_valid += Et))
             }
             function v(A, X, Et) {
@@ -9216,7 +9215,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 (A.bi_buf = 0),
                 (A.bi_valid = 0)
             }
-            function dt(A, X, Et, _t) {
+            function ht(A, X, Et, _t) {
               var tt = 2 * X,
                 Lt = 2 * Et
               return A[tt] < A[Lt] || (A[tt] === A[Lt] && _t[X] <= _t[Et])
@@ -9226,9 +9225,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                 var _t = A.heap[Et], tt = Et << 1;
                 tt <= A.heap_len &&
                 (tt < A.heap_len &&
-                  dt(X, A.heap[tt + 1], A.heap[tt], A.depth) &&
+                  ht(X, A.heap[tt + 1], A.heap[tt], A.depth) &&
                   tt++,
-                !dt(X, _t, A.heap[tt], A.depth));
+                !ht(X, _t, A.heap[tt], A.depth));
 
               )
                 (A.heap[Et] = A.heap[tt]), (Et = tt), (tt <<= 1)
@@ -9414,7 +9413,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         : ((Rt = 7), 4))
                 }
             }
-            x(r)
+            R(r)
             var it = !1
             function C(A, X, Et, _t) {
               c(A, (y << 1) + (_t ? 1 : 0), 3),
@@ -9581,7 +9580,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             ;(function (O) {
               ;(function (I, T) {
                 if (!I.setImmediate) {
-                  var x,
+                  var R,
                     y,
                     q,
                     j,
@@ -9591,7 +9590,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     L = I.document,
                     $ = Object.getPrototypeOf && Object.getPrototypeOf(I)
                   ;($ = $ && $.setTimeout ? $ : I),
-                    (x =
+                    (R =
                       {}.toString.call(I.process) === '[object process]'
                         ? function (ot) {
                             process.nextTick(function () {
@@ -9651,11 +9650,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                       )
                         Q[vt] = arguments[vt + 1]
                       var pt = { callback: ot, args: Q }
-                      return (k[V] = pt), x(V), V++
+                      return (k[V] = pt), R(V), V++
                     }),
-                    ($.clearImmediate = R)
+                    ($.clearImmediate = x)
                 }
-                function R(ot) {
+                function x(ot) {
                   delete k[ot]
                 }
                 function B(ot) {
@@ -9686,7 +9685,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                           }
                         })(Q)
                       } finally {
-                        R(ot), (G = !1)
+                        x(ot), (G = !1)
                       }
                     }
                   }
@@ -9720,8 +9719,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 const I_ = ts,
   C_ = new I_()
 class U_ {
-  static async init(ht) {
-    const g = await fetch(ht).then((et) => et.blob())
+  static async init(dt) {
+    const g = await fetch(dt).then((et) => et.blob())
     return await C_.loadAsync(g)
   }
 }
@@ -9970,26 +9969,26 @@ const Ko = {
   }
 }
 function is(Tt) {
-  return new Promise((ht, g) => {
-    ;(Tt.oncomplete = Tt.onsuccess = () => ht(Tt.result)),
+  return new Promise((dt, g) => {
+    ;(Tt.oncomplete = Tt.onsuccess = () => dt(Tt.result)),
       (Tt.onabort = Tt.onerror = () => g(Tt.error))
   })
 }
-function x_(Tt, ht) {
+function x_(Tt, dt) {
   const g = indexedDB.open(Tt)
-  g.onupgradeneeded = () => g.result.createObjectStore(ht)
+  g.onupgradeneeded = () => g.result.createObjectStore(dt)
   const et = is(g)
-  return (W, O) => et.then((I) => O(I.transaction(ht, W).objectStore(ht)))
+  return (W, O) => et.then((I) => O(I.transaction(dt, W).objectStore(dt)))
 }
 let Jo
 function el() {
   return Jo || (Jo = x_('keyval-store', 'keyval')), Jo
 }
-function Zu(Tt, ht = el()) {
-  return ht('readonly', (g) => is(g.get(Tt)))
+function Zu(Tt, dt = el()) {
+  return dt('readonly', (g) => is(g.get(Tt)))
 }
-function Qu(Tt, ht, g = el()) {
-  return g('readwrite', (et) => (et.put(ht, Tt), is(et.transaction)))
+function Qu(Tt, dt, g = el()) {
+  return g('readwrite', (et) => (et.put(dt, Tt), is(et.transaction)))
 }
 var es = {},
   R_ = {
@@ -10000,7 +9999,7 @@ var es = {},
       es = Tt
     }
   }
-;(function (Tt, ht) {
+;(function (Tt, dt) {
   ;(function (g, et) {
     Tt.exports = et()
   })(Tr, function () {
@@ -10010,7 +10009,7 @@ var es = {},
       O = 'millisecond',
       I = 'second',
       T = 'minute',
-      x = 'hour',
+      R = 'hour',
       y = 'day',
       q = 'week',
       j = 'month',
@@ -10020,7 +10019,7 @@ var es = {},
       L = 'Invalid Date',
       $ =
         /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,
-      R =
+      x =
         /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,
       B = {
         name: 'en',
@@ -10064,7 +10063,7 @@ var es = {},
         },
         p: function (Z) {
           return (
-            { M: j, y: k, w: q, d: y, D: G, h: x, m: T, s: I, ms: O, Q: V }[
+            { M: j, y: k, w: q, d: y, D: G, h: R, m: T, s: I, ms: O, Q: V }[
               Z
             ] ||
             String(Z || '')
@@ -10194,11 +10193,11 @@ var es = {},
               t = !!e.u(It) || It,
               r = e.p(P),
               n = function (Y, ut) {
-                var dt = e.w(
+                var ht = e.w(
                   E.$u ? Date.UTC(E.$y, ut, Y) : new Date(E.$y, ut, Y),
                   E
                 )
-                return t ? dt : dt.endOf(y)
+                return t ? ht : ht.endOf(y)
               },
               o = function (Y, ut) {
                 return e.w(
@@ -10225,7 +10224,7 @@ var es = {},
               case y:
               case G:
                 return o(v + 'Hours', 0)
-              case x:
+              case R:
                 return o(v + 'Minutes', 1)
               case T:
                 return o(v + 'Seconds', 2)
@@ -10247,7 +10246,7 @@ var es = {},
               (E[G] = r + 'Date'),
               (E[j] = r + 'Month'),
               (E[k] = r + 'FullYear'),
-              (E[x] = r + 'Hours'),
+              (E[R] = r + 'Hours'),
               (E[T] = r + 'Minutes'),
               (E[I] = r + 'Seconds'),
               (E[O] = r + 'Milliseconds'),
@@ -10280,7 +10279,7 @@ var es = {},
             if (r === k) return this.set(k, this.$y + P)
             if (r === y) return n(1)
             if (r === q) return n(7)
-            var o = ((E = {}), (E[T] = et), (E[x] = W), (E[I] = g), E)[r] || 1,
+            var o = ((E = {}), (E[T] = et), (E[R] = W), (E[I] = g), E)[r] || 1,
               s = this.$d.getTime() + P * o
             return e.w(s, this)
           }),
@@ -10298,15 +10297,15 @@ var es = {},
               s = this.$M,
               l = E.weekdays,
               c = E.months,
-              v = function (ut, dt, yt, nt) {
-                return (ut && (ut[dt] || ut(It, t))) || yt[dt].slice(0, nt)
+              v = function (ut, ht, yt, nt) {
+                return (ut && (ut[ht] || ut(It, t))) || yt[ht].slice(0, nt)
               },
               M = function (ut) {
                 return e.s(n % 12 || 12, ut, '0')
               },
               U =
                 E.meridiem ||
-                function (ut, dt, yt) {
+                function (ut, ht, yt) {
                   var nt = ut < 12 ? 'AM' : 'PM'
                   return yt ? nt.toLowerCase() : nt
                 },
@@ -10336,8 +10335,8 @@ var es = {},
                 SSS: e.s(this.$ms, 3, '0'),
                 Z: r
               }
-            return t.replace(R, function (ut, dt) {
-              return dt || Y[ut] || r.replace(':', '')
+            return t.replace(x, function (ut, ht) {
+              return ht || Y[ut] || r.replace(':', '')
             })
           }),
           (h.utcOffset = function () {
@@ -10358,7 +10357,7 @@ var es = {},
                 (t[V] = l / 3),
                 (t[q] = (s - o) / 6048e5),
                 (t[y] = (s - o) / 864e5),
-                (t[x] = s / W),
+                (t[R] = s / W),
                 (t[T] = s / et),
                 (t[I] = s / g),
                 t)[r] || s),
@@ -10402,7 +10401,7 @@ var es = {},
         ['$ms', O],
         ['$s', I],
         ['$m', T],
-        ['$H', x],
+        ['$H', R],
         ['$W', y],
         ['$M', j],
         ['$y', k],
@@ -10449,17 +10448,17 @@ const F_ = ['widget', 'remind_at', 'tags', 'files'],
   },
   G_ = (
     Tt,
-    ht
+    dt
   ) => `SELECT CAST(a.ref_task_id AS text) AS task_id, CAST(a.dispatch_id AS text) AS dispatch_id, CAST(a.ref_task_id AS text) AS ref_task_id, CAST(a.creator_id AS text) AS creator_id, CAST(a.taker_id AS text) AS taker_id, CAST(a.invite_id AS text) AS invite_id, a.invite_type,
   a.identity, a.state, a.operate_state, a.personal_state, a.reason, a.is_admin, a.is_dispatch, a.execute_at,
   a.personal_remind_at, a.accept_at, a.finish_time, a.cancel_at, a.revoke_at, a.exit_at, a.set_admin_at,
   a.topmost_at, a.create_at, a.update_at, a.delete_at, a.is_view, a.status, a.is_valid, 
-  ${ht ? 'e.finish_time' : 'a.finish_time'},
+  ${dt ? 'e.finish_time' : 'a.finish_time'},
   CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view
 FROM task_dispatch a
       ${
-        ht
-          ? `LEFT JOIN task_repeat_finish e ON e.repeat_id = ${ht} AND a.taker_id = e.user_id`
+        dt
+          ? `LEFT JOIN task_repeat_finish e ON e.repeat_id = ${dt} AND a.taker_id = e.user_id`
           : ''
       } 
 WHERE ref_task_id IN (${Tt})
@@ -10469,13 +10468,13 @@ AND identity NOT IN (10804, 10811)
 AND operate_state = 0;`,
   j_ = (
     Tt,
-    ht
+    dt
   ) => `SELECT t.id, COUNT(*) AS task_tree_total, COUNT(CASE WHEN complete_at > 0 THEN t.id END) AS task_tree_complete_total
   FROM task t JOIN (SELECT ref_task_id AS task_id
                       FROM task_dispatch
                      WHERE status = 1
                        AND is_valid = 1
-                       AND taker_id = ${ht}
+                       AND taker_id = ${dt}
                      GROUP BY ref_task_id) td ON t.id = td.task_id
            JOIN    task_config tc
                    ON t.id = tc.id
@@ -10534,7 +10533,7 @@ FROM (SELECT a.id AS task_id, a.taker_id, a.cycle_date, a.start_time, a.end_time
               ON a.id = aa.ref_task_id);`,
   H_ = ({
     limit: Tt,
-    where: ht,
+    where: dt,
     order: g,
     user_id: et,
     LeftJoinRepeatAnd: W
@@ -10707,7 +10706,7 @@ FROM (SELECT a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a
                GROUP BY parent_id) AS zb
                    ON a.id = zb.task_id
     LEFT JOIN real_parent AS zc ON a.id = zc.id)
-${ht || ''} 
+${dt || ''} 
 ${g}
 ${Tt} `
 var Ai = ((Tt) => ((Tt.up = 'up'), (Tt.down = 'down'), Tt))(Ai || {}),
@@ -10730,32 +10729,32 @@ var Ai = ((Tt) => ((Tt.up = 'up'), (Tt.down = 'down'), Tt))(Ai || {}),
     (Tt.default = 'default'),
     Tt
   ))(rs || {})
-const Yo = (Tt, ht) => {
+const Yo = (Tt, dt) => {
     const g = Tt.includes('-1'),
-      et = g ? `${ht} = 0` : `${ht} != 0`,
-      W = Tt.filter((x) => x !== '-1'),
+      et = g ? `${dt} = 0` : `${dt} != 0`,
+      W = Tt.filter((R) => R !== '-1'),
       O = !!W.length
     let I = ''
     g && O ? (I = 'OR') : O && !g && (I = 'AND')
     const T = W.length
-      ? `${ht} IN (${W.map((x) => (x.length > 10 ? `"${x}"` : x)).join(',')})`
+      ? `${dt} IN (${W.map((R) => (R.length > 10 ? `"${R}"` : R)).join(',')})`
       : ''
     return `(${et} ${I} ${T})`
   },
   B_ = ({ user_id: Tt }) => {
-    const ht = P_({ user_id: Tt })
-    return console.log('getFullDoseCountSql', ht), ht
+    const dt = P_({ user_id: Tt })
+    return console.log('getFullDoseCountSql', dt), dt
   },
   W_ = (Tt) => {
     const {
-        user_id: ht,
+        user_id: dt,
         direction: g,
         page_number: et,
         timestamp: W,
         page_record: O,
         show_model: I,
         order_by: T,
-        filter: x
+        filter: R
       } = Tt,
       {
         keywords: y,
@@ -10766,7 +10765,7 @@ const Yo = (Tt, ht) => {
         schedule_hide: G,
         conclusion: L,
         tags: $,
-        priority_levels: R,
+        priority_levels: x,
         matter_states: B,
         show_wait_arrange: K,
         task_ids: ot,
@@ -10785,7 +10784,7 @@ const Yo = (Tt, ht) => {
         update_at: E,
         finish_time: t,
         complete_at: r
-      } = x || {},
+      } = R || {},
       { order_by_key: n, sort: o } = T || {}
     let s = ''
     et && O && (s = `LIMIT ${(et - 1) * O}, ${O}`)
@@ -10793,7 +10792,7 @@ const Yo = (Tt, ht) => {
     const c = [],
       v = []
     let M = `LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 
-  LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${ht}`
+  LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${dt}`
     if (
       (K && c.push('date_idx = 99'),
       y && ((l = 1), c.push(`(title LIKE '%${y}%' OR detail LIKE '%${y}%')`)),
@@ -10810,27 +10809,27 @@ const Yo = (Tt, ht) => {
       WHERE datetime(cycle_date, 'localtime') <= DATETIME('now', 'localtime') OR cycle = 1
       GROUP BY task_id) AS d
       ON c.id = d.task_id AND b.repeat_type > 0
-      LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${ht}`),
+      LEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ${dt}`),
       q && ((s = ''), c.push(`parent_id = '${q}'`)),
       Z)
     ) {
-      const dt = Z.includes('-1'),
+      const ht = Z.includes('-1'),
         yt = Z.filter((m) => m !== '-1'),
-        nt = dt ? "(parent_id = '')" : '',
+        nt = ht ? "(parent_id = '')" : '',
         St = yt.length
           ? `(${yt.map((m) => `INSTR(parent_id, ${m})`).join(' OR ')})`
           : ''
-      c.push(`(${nt} ${dt && yt.length ? 'OR' : ''} ${St ? `(${St})` : ''} )`)
+      c.push(`(${nt} ${ht && yt.length ? 'OR' : ''} ${St ? `(${St})` : ''} )`)
     }
     if (
       (k && c.push(`is_follow = ${Number(Number(k) === 1)}`),
       G && c.push(`schedule_hide = ${Number(Number(G) === 1)}`),
       L)
     ) {
-      const dt = typeof L == 'number' ? L : parseInt(L)
-      dt === 1
+      const ht = typeof L == 'number' ? L : parseInt(L)
+      ht === 1
         ? c.push("conclusion != ''")
-        : dt === 2 && c.push("conclusion = ''")
+        : ht === 2 && c.push("conclusion = ''")
     }
     switch (
       (ot?.length && c.push(`task_id IN (${ot.join(',')})`),
@@ -10839,23 +10838,23 @@ const Yo = (Tt, ht) => {
       V)
     ) {
       case rs.project: {
-        const dt = []
-        dt.push('is_no_project ASC, project_id DESC'),
+        const ht = []
+        ht.push('is_no_project ASC, project_id DESC'),
           n && o
             ? n === 'timestamp'
-              ? dt.push(
+              ? ht.push(
                   `date_idx ${o}, date ${o}, time_idx ${o}, create_at ${
                     o?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
                   }`
                 )
-              : dt.push(`${n} ${o}`)
-            : dt.push('date_idx ASC, create_at DESC'),
-          v.push(...dt)
+              : ht.push(`${n} ${o}`)
+            : ht.push('date_idx ASC, create_at DESC'),
+          v.push(...ht)
         break
       }
       case rs.time: {
-        const dt = n === 'timestamp',
-          yt = dt && o?.toUpperCase() === 'DESC'
+        const ht = n === 'timestamp',
+          yt = ht && o?.toUpperCase() === 'DESC'
         if (typeof W == 'number' && !q) {
           if (g === Ai.up) {
             let nt = '<'
@@ -10881,7 +10880,7 @@ const Yo = (Tt, ht) => {
                   }`
                 )
         } else
-          dt
+          ht
             ? v.unshift(
                 `date_idx ${o}, date ${o}, time_idx ${o}, create_at ${
                   o?.toUpperCase() === 'DESC' ? 'ASC' : 'DESC'
@@ -10900,65 +10899,65 @@ const Yo = (Tt, ht) => {
       }
     }
     if ($?.length) {
-      const dt = $.includes('-1'),
-        yt = dt ? 'tag_str IS NULL' : 'tag_str IS NOT NULL',
+      const ht = $.includes('-1'),
+        yt = ht ? 'tag_str IS NULL' : 'tag_str IS NOT NULL',
         nt = $.filter((it) => it !== '-1'),
         St = !!nt.length
       let m = ''
-      dt && St ? (m = 'OR') : St && !dt && (m = 'AND')
+      ht && St ? (m = 'OR') : St && !ht && (m = 'AND')
       const st = nt.length
         ? `(${nt.map((it) => `INSTR(tag_str, ${it})`).join(' or ')})`
         : ''
       c.push(`(${yt} ${m} ${st})`)
     }
     if (P?.end_time && P.start_time) {
-      const { start_time: dt, end_time: yt } = P
-      c.push(`((start_time BETWEEN ${dt} AND ${yt}) OR (end_time BETWEEN ${dt} AND ${yt}) OR
-    (start_time > 0 AND start_time < ${dt} AND end_time > ${yt}) OR
-    (flow_step_id > 0 AND create_at BETWEEN ${dt} AND ${yt}))`)
+      const { start_time: ht, end_time: yt } = P
+      c.push(`((start_time BETWEEN ${ht} AND ${yt}) OR (end_time BETWEEN ${ht} AND ${yt}) OR
+    (start_time > 0 AND start_time < ${ht} AND end_time > ${yt}) OR
+    (flow_step_id > 0 AND create_at BETWEEN ${ht} AND ${yt}))`)
     }
     if (It?.start_time && It.end_time) {
-      const { end_time: dt, start_time: yt } = It
-      c.push(`create_at >= ${yt} AND create_at <= ${dt}`)
+      const { end_time: ht, start_time: yt } = It
+      c.push(`create_at >= ${yt} AND create_at <= ${ht}`)
     }
     if (E?.end_time && E?.start_time) {
-      const { end_time: dt, start_time: yt } = E
-      c.push(`update_at >= ${yt} AND update_at <= ${dt}`)
+      const { end_time: ht, start_time: yt } = E
+      c.push(`update_at >= ${yt} AND update_at <= ${ht}`)
     }
     if (r?.end_time && r?.start_time) {
-      const { end_time: dt, start_time: yt } = r
-      c.push(`complete_at >= ${yt} AND complete_at <= ${dt}`)
+      const { end_time: ht, start_time: yt } = r
+      c.push(`complete_at >= ${yt} AND complete_at <= ${ht}`)
     }
     if (t?.end_time && t?.start_time) {
-      const { end_time: dt, start_time: yt } = t
-      c.push(`finish_time >= ${yt} AND finish_time <= ${dt}`)
+      const { end_time: ht, start_time: yt } = t
+      c.push(`finish_time >= ${yt} AND finish_time <= ${ht}`)
     }
     if ((lt?.length && c.push(`creator_id IN (${lt.join(',')})`), pt?.length)) {
-      const dt = pt.includes('-1'),
+      const ht = pt.includes('-1'),
         yt = pt.filter((m) => m !== '-1'),
-        nt = dt ? '(takers IS NULL)' : '',
+        nt = ht ? '(takers IS NULL)' : '',
         St = yt ? `(${yt.map((m) => `INSTR(takers, ${m})`).join(' OR ')})` : ''
-      c.push(`(${nt} ${dt && yt.length ? 'OR' : ''} ${St})`)
+      c.push(`(${nt} ${ht && yt.length ? 'OR' : ''} ${St})`)
     }
     if (h?.length) {
-      const dt = h.includes('-2'),
+      const ht = h.includes('-2'),
         yt = 'OR (flow_step_id > 0 AND complete_at > 0)',
         nt = h.findIndex((St) => St === '-1')
       nt !== -1 && (h[nt] = '0'),
-        c.push(`(flow_step_id IN (${h.join(',')}) ${dt ? yt : ''})`)
+        c.push(`(flow_step_id IN (${h.join(',')}) ${ht ? yt : ''})`)
     }
     if (e?.length) {
-      const dt = e.includes('-1'),
+      const ht = e.includes('-1'),
         yt = e.filter((m) => m !== '-1'),
-        nt = dt ? '(admins IS NULL)' : '',
+        nt = ht ? '(admins IS NULL)' : '',
         St = yt.length
           ? `(${yt.map((m) => `INSTR(admins, ${m})`).join(' OR ')})`
           : ''
-      c.push(`(${nt} ${dt && yt.length ? 'OR' : ''} (${St}))`)
+      c.push(`(${nt} ${ht && yt.length ? 'OR' : ''} (${St}))`)
     }
     switch (
       (B?.length && c.push(`matter_state IN (${B.join(',')})`),
-      R?.length && c.push(`priority_level IN (${R.join(',')})`),
+      x?.length && c.push(`priority_level IN (${x.join(',')})`),
       kt?.length && c.push(Yo(kt, 'application_id')),
       N?.length && c.push(Yo(N, 'workspace_id')),
       p && c.push(Yo(p, 'project_id')),
@@ -10973,20 +10972,20 @@ const Yo = (Tt, ht) => {
         break
       }
       case Pr.dispatch: {
-        c.push(`creator_id = ${ht} AND takers != '' AND takers != '${ht}'`)
+        c.push(`creator_id = ${dt} AND takers != '' AND takers != '${dt}'`)
         break
       }
       case Pr.accepted: {
-        c.push(`creator_id != ${ht}`)
+        c.push(`creator_id != ${dt}`)
         break
       }
       case Pr.cooperation: {
-        c.unshift(`takers != '${ht}'`)
+        c.unshift(`takers != '${dt}'`)
         break
       }
       case Pr.personal: {
         c.unshift(
-          `(takers = CAST(${ht} AS text) OR (takers ISNULL AND creator_id = ${ht}))`
+          `(takers = CAST(${dt} AS text) OR (takers ISNULL AND creator_id = ${dt}))`
         )
         break
       }
@@ -11008,7 +11007,7 @@ const Yo = (Tt, ht) => {
       Y = v.length ? `ORDER BY ${v.join(', ')}` : '',
       ut = H_({
         limit: s,
-        user_id: ht,
+        user_id: dt,
         where: U,
         order: Y,
         LeftJoinRepeatAnd: M
@@ -11031,7 +11030,7 @@ var Vn = {},
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */ ;(function (Tt, ht) {
+ */ ;(function (Tt, dt) {
   ;(function () {
     var g,
       et = '4.17.21',
@@ -11039,7 +11038,7 @@ var Vn = {},
       O = 'Unsupported core-js use. Try https://npms.io/search?q=ponyfill.',
       I = 'Expected a function',
       T = 'Invalid `variable` option passed into `_.template`',
-      x = '__lodash_hash_undefined__',
+      R = '__lodash_hash_undefined__',
       y = 500,
       q = '__lodash_placeholder__',
       j = 1,
@@ -11048,7 +11047,7 @@ var Vn = {},
       G = 1,
       L = 2,
       $ = 1,
-      R = 2,
+      x = 2,
       B = 4,
       K = 8,
       ot = 16,
@@ -11074,7 +11073,7 @@ var Vn = {},
       c = [
         ['ary', pt],
         ['bind', $],
-        ['bindKey', R],
+        ['bindKey', x],
         ['curry', K],
         ['curryRight', ot],
         ['flip', lt],
@@ -11087,7 +11086,7 @@ var Vn = {},
       U = '[object AsyncFunction]',
       Y = '[object Boolean]',
       ut = '[object Date]',
-      dt = '[object DOMException]',
+      ht = '[object DOMException]',
       yt = '[object Error]',
       nt = '[object Function]',
       St = '[object GeneratorFunction]',
@@ -11513,7 +11512,7 @@ var Vn = {},
       Vi = typeof Tr == 'object' && Tr && Tr.Object === Object && Tr,
       Xi = typeof self == 'object' && self && self.Object === Object && self,
       ve = Vi || Xi || Function('return this')(),
-      Un = ht && !ht.nodeType && ht,
+      Un = dt && !dt.nodeType && dt,
       Dr = Un && !0 && Tt && !Tt.nodeType && Tt,
       Ki = Dr && Dr.exports === Un,
       si = Ki && Vi.process,
@@ -12016,7 +12015,7 @@ var Vn = {},
           var a = this.__data__
           if (_i) {
             var u = a[i]
-            return u === x ? g : u
+            return u === R ? g : u
           }
           return ue.call(a, i) ? a[i] : g
         }
@@ -12028,7 +12027,7 @@ var Vn = {},
           var u = this.__data__
           return (
             (this.size += this.has(i) ? 0 : 1),
-            (u[i] = _i && a === g ? x : a),
+            (u[i] = _i && a === g ? R : a),
             this
           )
         }
@@ -12115,7 +12114,7 @@ var Vn = {},
           for (this.__data__ = new Ur(); ++a < u; ) this.add(i[a])
         }
         function ef(i) {
-          return this.__data__.set(i, x), this
+          return this.__data__.set(i, R), this
         }
         function rf(i) {
           return this.__data__.has(i)
@@ -13262,7 +13261,7 @@ var Vn = {},
         function Aa(i, a, u, d, b, D, H, J, at, wt) {
           var At = a & pt,
             Ot = a & $,
-            Ft = a & R,
+            Ft = a & x,
             Gt = a & (K | ot),
             Bt = a & lt,
             Yt = Ft ? g : bi(i)
@@ -13378,7 +13377,7 @@ var Vn = {},
             Ft = At ? g : H,
             Gt = At ? D : g,
             Bt = At ? g : D
-          ;(a |= At ? Q : vt), (a &= ~(At ? vt : Q)), a & B || (a &= ~($ | R))
+          ;(a |= At ? Q : vt), (a &= ~(At ? vt : Q)), a & B || (a &= ~($ | x))
           var Yt = [i, a, b, Gt, Ot, Bt, Ft, J, at, wt],
             Wt = u.apply(g, Yt)
           return Io(i) && du(Wt, Yt), (Wt.placeholder = d), pu(Wt, i, a)
@@ -13409,7 +13408,7 @@ var Vn = {},
           }
         }
         function Rr(i, a, u, d, b, D, H, J) {
-          var at = a & R
+          var at = a & x
           if (!at && typeof i != 'function') throw new rr(I)
           var wt = d ? d.length : 0
           if (
@@ -13853,7 +13852,7 @@ var Vn = {},
           var u = i[1],
             d = a[1],
             b = u | d,
-            D = b < ($ | R | pt),
+            D = b < ($ | x | pt),
             H =
               (d == pt && u == K) ||
               (d == pt && u == kt && i[7].length <= a[8]) ||
@@ -14563,7 +14562,7 @@ var Vn = {},
             return Rr(i, d, a, u, b)
           }),
           Du = Zt(function (i, a, u) {
-            var d = $ | R
+            var d = $ | x
             if (u.length) {
               var b = zr(u, Bn(Du))
               d |= Q
@@ -14823,7 +14822,7 @@ var Vn = {},
           var a = Fe(i)
           return (
             a == yt ||
-            a == dt ||
+            a == ht ||
             (typeof i.message == 'string' &&
               typeof i.name == 'string' &&
               !wi(i))
@@ -16129,7 +16128,7 @@ function print() { __p += __j.call(arguments, '') }
               ue.call(Gn, d) || (Gn[d] = []), Gn[d].push({ name: a, func: u })
             }
           }),
-          (Gn[Aa(g, R).name] = [{ name: 'wrapper', func: g }]),
+          (Gn[Aa(g, x).name] = [{ name: 'wrapper', func: g }]),
           (re.prototype.clone = Ml),
           (re.prototype.reverse = $l),
           (re.prototype.value = Gl),
@@ -16157,15 +16156,15 @@ function Xe(Tt) {
   })
 }
 function Ba(Tt) {
-  const { message: ht, name: g, cause: et } = Tt
+  const { message: dt, name: g, cause: et } = Tt
   try {
-    return { error: { message: ht, name: g, cause: et } }
+    return { error: { message: dt, name: g, cause: et } }
   } catch {
     return {}
   }
 }
 ;(function () {
-  function ht(t, r) {
+  function dt(t, r) {
     for (var n = Object.keys(t), o = 0; o < n.length; o++) {
       var s = n[o]
       r[s] = t[s]
@@ -16215,7 +16214,7 @@ function Ba(Tt) {
         return
       }
       var n = Object.create(r.prototype)
-      ht(t.prototype, n), (t.prototype = n)
+      dt(t.prototype, n), (t.prototype = n)
     }
   }
   function I(t, r) {
@@ -16224,7 +16223,7 @@ function Ba(Tt) {
   function T(t, r) {
     et(r.prototype, t.prototype), (t.prototype.constructor = t)
   }
-  function x(t, r) {
+  function R(t, r) {
     g(r.prototype, t.prototype), (t.prototype.constructor = t)
   }
   function y(t, r, n, o) {
@@ -16302,10 +16301,10 @@ function Ba(Tt) {
       return r === null && (r = e.j4(t).prototype), r
     }
   }
-  var R = 0
+  var x = 0
   function B(t, r, n, o, s, l, c, v, M, U) {
     return (
-      typeof v == 'number' && (v += R),
+      typeof v == 'number' && (v += x),
       {
         co: t,
         iS: r,
@@ -16337,7 +16336,7 @@ function Ba(Tt) {
       P.interceptorsByTag = t
       return
     }
-    ht(t, r)
+    dt(t, r)
   }
   function vt(t) {
     var r = P.leafTags
@@ -16345,7 +16344,7 @@ function Ba(Tt) {
       P.leafTags = t
       return
     }
-    ht(t, r)
+    dt(t, r)
   }
   function pt(t) {
     var r = P.types,
@@ -16353,7 +16352,7 @@ function Ba(Tt) {
     return r.push.apply(r, t), n
   }
   function kt(t, r) {
-    return ht(r, t), t
+    return dt(r, t), t
   }
   var lt = (function () {
       var t = function (n, o, s, l, c) {
@@ -16370,7 +16369,7 @@ function Ba(Tt) {
         inherit: O,
         inheritMany: I,
         mixin: T,
-        mixinHard: x,
+        mixinHard: R,
         installStaticTearOff: K,
         installInstanceTearOff: ot,
         _instance_0u: t(0, 0, null, ['$0'], 0),
@@ -16612,7 +16611,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St = Array.isArray(r) ? r : e.iS(r, E.z),
@@ -16651,8 +16650,8 @@ function Ba(Tt) {
             ut < Y.length;
             Y.length === s || (0, e.cC)(Y), ++ut
           ) {
-            if (((dt = l[e.A(Y[ut])]), N.l === dt)) return e.aR(t, St, n)
-            N.a.m(St, dt)
+            if (((ht = l[e.A(Y[ut])]), N.l === ht)) return e.aR(t, St, n)
+            N.a.m(St, ht)
           }
         else {
           for (
@@ -16662,8 +16661,8 @@ function Ba(Tt) {
           )
             if (((nt = e.A(Y[ut])), n.O(0, nt))) ++yt, N.a.m(St, n.j(0, nt))
             else {
-              if (((dt = l[nt]), N.l === dt)) return e.aR(t, St, n)
-              N.a.m(St, dt)
+              if (((ht = l[nt]), N.l === ht)) return e.aR(t, St, n)
+              N.a.m(St, ht)
             }
           if (yt !== n.a) return e.aR(t, St, n)
         }
@@ -16790,7 +16789,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St = null
@@ -16819,7 +16818,7 @@ function Ba(Tt) {
             (Y = h.ky()),
             (ut = h.kw()),
             h.kv(),
-            (dt = h.kA()),
+            (ht = h.kA()),
             (yt = h.kz()),
             (nt = l.E(r)),
             nt != null
@@ -16839,7 +16838,7 @@ function Ba(Tt) {
                                     nt == null
                                       ? ((nt = M.E(r)),
                                         nt == null
-                                          ? ((nt = dt.E(r)),
+                                          ? ((nt = ht.E(r)),
                                             nt == null
                                               ? ((nt = yt.E(r)),
                                                 (s = nt != null))
@@ -16941,7 +16940,7 @@ function Ba(Tt) {
           U,
           Y,
           ut = t.co,
-          dt = t.iS,
+          ht = t.iS,
           yt = t.iI,
           nt = t.nDA,
           St = t.aI,
@@ -16954,12 +16953,12 @@ function Ba(Tt) {
         for (
           X.toString,
             r = Object.create(
-              dt
+              ht
                 ? new e.dI().constructor.prototype
                 : new e.be(null, null).constructor.prototype
             ),
             r.$initialize = r.constructor,
-            dt
+            ht
               ? (n = function () {
                   this.$initialize()
                 })
@@ -16970,9 +16969,9 @@ function Ba(Tt) {
             n.prototype = r,
             r.$_name = it,
             r.$_target = A,
-            o = !dt,
+            o = !ht,
             o ? (s = e.ji(it, A, yt, nt)) : ((r.$static_name = it), (s = A)),
-            r.$S = e.kP(X, dt, yt),
+            r.$S = e.kP(X, ht, yt),
             r[C] = s,
             l = s,
             c = 1;
@@ -17081,14 +17080,14 @@ function Ba(Tt) {
             })(n, l, s)
           case 5:
             return (function (c, v, M) {
-              return function (U, Y, ut, dt) {
-                return v(this)[c](M(this), U, Y, ut, dt)
+              return function (U, Y, ut, ht) {
+                return v(this)[c](M(this), U, Y, ut, ht)
               }
             })(n, l, s)
           case 6:
             return (function (c, v, M) {
-              return function (U, Y, ut, dt, yt) {
-                return v(this)[c](M(this), U, Y, ut, dt, yt)
+              return function (U, Y, ut, ht, yt) {
+                return v(this)[c](M(this), U, Y, ut, ht, yt)
               }
             })(n, l, s)
           default:
@@ -17331,9 +17330,9 @@ function Ba(Tt) {
           M = o ? 'u' : '',
           U = s ? 's' : '',
           Y = l ? 'g' : '',
-          ut = (function (dt, yt) {
+          ut = (function (ht, yt) {
             try {
-              return new RegExp(dt, yt)
+              return new RegExp(ht, yt)
             } catch (nt) {
               return nt
             }
@@ -17505,7 +17504,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St,
@@ -17547,11 +17546,11 @@ function Ba(Tt) {
             )
           case 12:
             return (
-              (dt = r.y),
-              (yt = e.aV(t, dt, n, o)),
+              (ht = r.y),
+              (yt = e.aV(t, ht, n, o)),
               (nt = r.z),
               (St = e.mp(t, nt, n, o)),
-              yt === dt && St === nt ? r : e.jM(t, yt, St)
+              yt === ht && St === nt ? r : e.jM(t, yt, St)
             )
           case 13:
             return (
@@ -17951,7 +17950,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St,
@@ -17976,9 +17975,9 @@ function Ba(Tt) {
           )
             N.a.m(r, 'T' + (l + c))
           for (v = E.X, M = E._, U = '<', Y = '', c = 0; c < o; ++c, Y = Lt) {
-            if (((ut = r.length), (dt = ut - 1 - c), !(dt >= 0)))
-              return e.t(r, dt)
-            ;(U = N.f.a0(U + Y, r[dt])),
+            if (((ut = r.length), (ht = ut - 1 - c), !(ht >= 0)))
+              return e.t(r, ht)
+            ;(U = N.f.a0(U + Y, r[ht])),
               (yt = n[c]),
               (nt = yt.x),
               nt === 2 || nt === 3 || nt === 4 || nt === 5 || yt === v
@@ -18318,12 +18317,12 @@ function Ba(Tt) {
           U = n.a,
           Y = U.length,
           ut = n.b,
-          dt = ut.length,
+          ht = ut.length,
           yt = n.c,
           nt = yt.length,
           St = '(' + e.cp(U)
         return (
-          dt > 0 && ((o = Y > 0 ? ',' : ''), (St += o + '[' + e.cp(ut) + ']')),
+          ht > 0 && ((o = Y > 0 ? ',' : ''), (St += o + '[' + e.cp(ut) + ']')),
           nt > 0 && ((o = Y > 0 ? ',' : ''), (St += o + '{' + e.ly(yt) + '}')),
           (s = M + (St + ')')),
           (l = t.eC.get(s)),
@@ -18345,7 +18344,7 @@ function Ba(Tt) {
         return c ?? ((s = e.lA(t, r, n, l, o)), t.eC.set(l, s), s)
       },
       lA(t, r, n, o, s) {
-        var l, c, v, M, U, Y, ut, dt
+        var l, c, v, M, U, Y, ut, ht
         if (s) {
           for (l = n.length, c = e.i2(l), v = 0, M = 0; M < l; ++M)
             (U = n[M]), U.x === 1 && ((c[M] = U), ++v)
@@ -18357,12 +18356,12 @@ function Ba(Tt) {
             )
         }
         return (
-          (dt = new e.ae(null, null)),
-          (dt.x = 13),
-          (dt.y = r),
-          (dt.z = n),
-          (dt.at = o),
-          e.aE(t, dt)
+          (ht = new e.ae(null, null)),
+          (ht.x = 13),
+          (ht.y = r),
+          (ht.z = n),
+          (ht.at = o),
+          e.aE(t, ht)
         )
       },
       jI(t, r, n, o) {
@@ -18622,7 +18621,7 @@ function Ba(Tt) {
         throw e.b(e.cG('Bad index ' + n + ' for ' + r.k(0)))
       },
       K(t, r, n, o, s) {
-        var l, c, v, M, U, Y, ut, dt, yt, nt, St
+        var l, c, v, M, U, Y, ut, ht, yt, nt, St
         if (
           r === o ||
           (e.aJ(o) ? (l = !0) : o !== E._ ? (l = !1) : (l = !0), l) ||
@@ -18661,14 +18660,14 @@ function Ba(Tt) {
           if (r === E.g) return !0
           if (
             c !== 13 ||
-            ((Y = r.z), (ut = o.z), (dt = Y.length), dt !== ut.length)
+            ((Y = r.z), (ut = o.z), (ht = Y.length), ht !== ut.length)
           )
             return !1
           for (
             n = n == null ? Y : Y.concat(n),
               s = s == null ? ut : ut.concat(s),
               yt = 0;
-            yt < dt;
+            yt < ht;
             ++yt
           )
             if (
@@ -18701,7 +18700,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St,
@@ -18726,9 +18725,9 @@ function Ba(Tt) {
           (Y = M.length),
           U > Y) ||
           ((ut = Y - U),
-          (dt = l.b),
+          (ht = l.b),
           (yt = c.b),
-          (nt = dt.length),
+          (nt = ht.length),
           (St = yt.length),
           U + nt < Y + St)
         )
@@ -18736,9 +18735,9 @@ function Ba(Tt) {
         for (m = 0; m < U; ++m)
           if (((st = v[m]), !e.K(t, M[m], s, st, n))) return !1
         for (m = 0; m < ut; ++m)
-          if (((st = dt[m]), !e.K(t, M[U + m], s, st, n))) return !1
+          if (((st = ht[m]), !e.K(t, M[U + m], s, st, n))) return !1
         for (m = 0; m < St; ++m)
-          if (((st = dt[ut + m]), !e.K(t, yt[m], s, st, n))) return !1
+          if (((st = ht[ut + m]), !e.K(t, yt[m], s, st, n))) return !1
         for (
           it = l.c, C = c.c, A = it.length, X = C.length, Et = 0, _t = 0;
           _t < X;
@@ -18764,10 +18763,10 @@ function Ba(Tt) {
         return !0
       },
       m6(t, r, n, o, s) {
-        for (var l, c, v, M, U, Y, ut, dt = r.y, yt = o.y; dt !== yt; ) {
-          if (((l = t.tR[dt]), l == null)) return !1
+        for (var l, c, v, M, U, Y, ut, ht = r.y, yt = o.y; ht !== yt; ) {
+          if (((l = t.tR[ht]), l == null)) return !1
           if (typeof l == 'string') {
-            dt = l
+            ht = l
             continue
           }
           if (((c = l[yt]), c == null)) return !1
@@ -18947,7 +18946,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St,
@@ -18966,9 +18965,9 @@ function Ba(Tt) {
             (C.a = null), e.bw(it.a, C), (l.a = Y), (ut = Y.a)
           if (
             ((c = it.a),
-            (dt = c.c),
+            (ht = c.c),
             (l.b = M),
-            (l.c = dt),
+            (l.c = ht),
             v
               ? ((yt = C.c), (yt = (yt & 1) !== 0 || (yt & 15) === 8))
               : (yt = !0),
@@ -18979,7 +18978,7 @@ function Ba(Tt) {
               M ? ((c = c.b === nt), (c = !(c || c))) : (c = !1),
               c)
             ) {
-              n.a(dt), e.ic(dt.a, dt.b)
+              n.a(ht), e.ic(ht.a, ht.b)
               return
             }
             if (
@@ -18989,7 +18988,7 @@ function Ba(Tt) {
               (C & 15) === 8
                 ? new e.hO(l, it, M).$0()
                 : v
-                ? C & 1 && new e.hN(l, dt).$0()
+                ? C & 1 && new e.hN(l, ht).$0()
                 : C & 2 && new e.hM(it, l).$0(),
               St != null && (h.E = St),
               (C = l.c),
@@ -19486,7 +19485,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St,
@@ -19512,8 +19511,8 @@ function Ba(Tt) {
             return e.t(n, 8)
           if (n[8] != null) {
             if (9 >= o) return e.t(n, 9)
-            if (((dt = n[9]), dt != null)) {
-              if (((yt = dt === '-' ? -1 : 1), 10 >= o)) return e.t(n, 10)
+            if (((ht = n[9]), ht != null)) {
+              if (((yt = ht === '-' ? -1 : 1), 10 >= o)) return e.t(n, 10)
               if (((o = n[10]), o.toString, (nt = e.f0(o)), 11 >= n.length))
                 return e.t(n, 11)
               M -= yt * (r.$1(n[11]) + 60 * nt)
@@ -20216,7 +20215,7 @@ function Ba(Tt) {
           U,
           Y,
           ut,
-          dt = e.aQ(E.N, E.z)
+          ht = e.aQ(E.N, E.z)
         for (
           r = p.bc(self.Object.keys(t)),
             n = E.W,
@@ -20234,12 +20233,12 @@ function Ba(Tt) {
             (Y = e.mR(U)),
             Y != null && p.kI(Y))
           )
-            dt.l(0, e.A(c), e.it(U))
+            ht.l(0, e.A(c), e.it(U))
           else if (n.b(U)) {
             for (ut = e.O([], l), v = p.bc(U); v.t(); ) N.a.m(ut, e.it(v.gv(v)))
-            dt.l(0, e.A(c), ut)
-          } else dt.l(0, e.A(c), U)
-        return dt
+            ht.l(0, e.A(c), ut)
+          } else ht.l(0, e.A(c), U)
+        return ht
       },
       mR(t) {
         return E.W.b(t)
@@ -24488,7 +24487,7 @@ Arguments: [` +
           U,
           Y,
           ut,
-          dt,
+          ht,
           yt,
           nt,
           St,
@@ -24560,14 +24559,14 @@ Arguments: [` +
                       (l = Y.a),
                       Ut < l ? (t.d = 'history') : Ut > l && (t.d = 'future')),
                     (ut = M.a / 1e3),
-                    (dt = ut + 86399),
+                    (ht = ut + 86399),
                     (yt = []),
                     (Ut = t.c),
                     (l = Ut.length === 0),
                     l
                       ? ((nt = e.w(t.e)),
                         (St = e.w(ut)),
-                        (m = e.w(dt)),
+                        (m = e.w(ht)),
                         (st = e.w(ut + 86400)),
                         (it =
                           `CASE
@@ -24831,7 +24830,7 @@ Arguments: [` +
                       break
                     case 3:
                       ;(Ut = e.w(ut)),
-                        (l = e.w(dt)),
+                        (l = e.w(ht)),
                         yt.push(
                           ' ((complete_time >= ' +
                             Ut +
@@ -28311,24 +28310,23 @@ class V_ {
       (this.token = ''),
       (this.sdk = null)
   }
-  async initDB(ht) {
+  async initDB(dt) {
     ;(this.isReady = !1),
-      (this.userId = ht.userId),
+      (this.userId = dt.userId),
       (this.sdk = new registerDataZeusSDK({
         userId: this.userId,
         platform: 'PC'
-      })),
-      console.log('@@ initdb', this.sdk)
-    const g = ht.wasmUrl || q_
+      }))
+    const g = dt.wasmUrl || q_
     try {
       this.db &&
         (this.db.close(),
         (this.db = null),
         (this.recordInfo = Vn.cloneDeep(Zo))),
-        (this.dbId = `${ht.env}-${ht.userId}`),
+        (this.dbId = `${dt.env}-${dt.userId}`),
         (this.recordKey = `${this.dbId}-record`),
-        ht.host !== 'https://api.flyele.vip' && (this.host = ht.host),
-        (this.token = ht.token)
+        dt.host !== 'https://api.flyele.vip' && (this.host = dt.host),
+        (this.token = dt.token)
       const et = await Qo({ locateFile: () => g }),
         W = await (await fetch(`${this.host}/userc/v2/system/now`)).json()
       W.data && (this.timeDiff = Math.floor(Date.now() / 1e3) - W.data)
@@ -28336,7 +28334,7 @@ class V_ {
       this.recordInfo = (await Zu(this.recordKey)) || this.recordInfo
       const I = await this.getUserData(),
         T = I[0],
-        x = () => {
+        R = () => {
           Xe({ type: 'createDB-start' })
           const y = new et.Database()
           ;(this.db = y),
@@ -28345,10 +28343,10 @@ class V_ {
             Xe({ type: 'createDB-end' })
         }
       T && T.type === 1
-        ? (x(), await this.updateBundle(T))
+        ? (R(), await this.updateBundle(T))
         : O
         ? (this.db = new et.Database(O))
-        : T || x()
+        : T || R()
       for (const y of I.filter(({ type: q }) => q === 2))
         await this.updateBundle(y)
       await this.updateDiff()
@@ -28357,24 +28355,24 @@ class V_ {
     }
     this.isReady = !0
   }
-  updateToken(ht) {
-    this.token = ht
+  updateToken(dt) {
+    this.token = dt
   }
-  async getNeedUpdateTables(ht) {
-    return (await this.request(`datasupport/v1/increment/check_update?${ht}`))
+  async getNeedUpdateTables(dt) {
+    return (await this.request(`datasupport/v1/increment/check_update?${dt}`))
       .data
   }
   async updateDiff() {
-    const ht = this.recordInfo.attach_info,
-      g = Object.entries(ht)
+    const dt = this.recordInfo.attach_info,
+      g = Object.entries(dt)
         .filter(([T]) => tl(T))
-        .map(([T, x]) => (console.log('key', T, x), `${T}=${x.id}`))
+        .map(([T, R]) => `${T}=${R.id}`)
         .join('&'),
       et = [],
       W = [],
       O = await this.getNeedUpdateTables(g),
-      I = async (T, x, y) => {
-        const q = await this.getUpdates(T, y, x)
+      I = async (T, R, y) => {
+        const q = await this.getUpdates(T, y, R)
         if (!q.code && q.data)
           try {
             T === 'task' && et.push(...q.data.list.map((V) => V.keys.id)),
@@ -28401,7 +28399,7 @@ class V_ {
               const V = j[j.length - 1]
               this.recordInfo.attach_info[T] = { id: V.id }
             }
-            j.length >= 20 && (await I(T, x + 1, y))
+            j.length >= 20 && (await I(T, R + 1, y))
           } catch (j) {
             Xe({
               type: 'error',
@@ -28419,34 +28417,34 @@ class V_ {
       }
     )
   }
-  async updateFullDose(ht, g) {
-    const { taskIds: et, parentIds: W } = ht
+  async updateFullDose(dt, g) {
+    const { taskIds: et, parentIds: W } = dt
     if (!et.length) return { taskIds: [], list: [], parentIds: [] }
     const O = this.query({
-      filter: { task_ids: ht.taskIds },
+      filter: { task_ids: dt.taskIds },
       show_model: g.mode
     })
     return { taskIds: et, parentIds: W, list: O }
   }
   async updateDiffForClient() {
-    const ht = await this.updateDiff()
-    return console.log('@DIFF', ht), ht
+    const dt = await this.updateDiff()
+    return console.log('@DIFF', dt), dt
   }
-  async getUpdates(ht, g, et) {
+  async getUpdates(dt, g, et) {
     return await this.request(
-      `datasupport/v1/increment?last_id=${g}&type=${ht}&page_size=20&page_index=${et}`
+      `datasupport/v1/increment?last_id=${g}&type=${dt}&page_size=20&page_index=${et}`
     )
   }
-  async updateBundle(ht) {
-    const { sign_url: g, id: et, attach_info: W, type: O } = ht
-    Xe({ type: 'unzip-start', data: ht }),
+  async updateBundle(dt) {
+    const { sign_url: g, id: et, attach_info: W, type: O } = dt
+    Xe({ type: 'unzip-start', data: dt }),
       await this.fetchZip(g),
-      Xe({ type: 'unzip-end', data: ht }),
+      Xe({ type: 'unzip-end', data: dt }),
       (this.recordInfo = { id: et, attach_info: W }),
       await this.updateTable(O === 2)
   }
-  async request(ht) {
-    const g = `${this.host}/${ht}`
+  async request(dt) {
+    const g = `${this.host}/${dt}`
     try {
       Xe({ type: 'api-start', url: g })
       const et = await Promise.race([
@@ -28465,16 +28463,16 @@ class V_ {
     }
   }
   async getUserData() {
-    const ht = this.recordInfo?.id || 0
-    return (await this.request(`datapandora/v1/packinfo/get?last_id=${ht}`))
+    const dt = this.recordInfo?.id || 0
+    return (await this.request(`datapandora/v1/packinfo/get?last_id=${dt}`))
       .data
   }
-  formatSelectValue({ columns: ht, values: g }) {
-    const et = Object.entries(ht)
+  formatSelectValue({ columns: dt, values: g }) {
+    const et = Object.entries(dt)
     return new Array(g.length).fill('').map((O, I) => {
       const T = {}
-      for (const [x, y] of et) {
-        const q = g[I][Number(x)]
+      for (const [R, y] of et) {
+        const q = g[I][Number(R)]
         F_.includes(y)
           ? (T[y] = JSON.parse(q || '{}'))
           : M_.includes(y)
@@ -28484,18 +28482,18 @@ class V_ {
       return T
     })
   }
-  formatSelectValue1({ columns: ht, values: g }) {
-    const et = Object.entries(ht)
+  formatSelectValue1({ columns: dt, values: g }) {
+    const et = Object.entries(dt)
     return new Array(g.length).fill('').map((O, I) => {
       const T = {}
-      for (const [x, y] of et) T[y] = g[I][Number(x)]
+      for (const [R, y] of et) T[y] = g[I][Number(R)]
       return T
     })
   }
   queryFullDoseCount() {
-    const ht = this.db.exec(B_({ user_id: this.userId }))
+    const dt = this.db.exec(B_({ user_id: this.userId }))
     return (
-      (ht[0] ? this.formatSelectValue(ht[0]) : [])?.[0] || {
+      (dt[0] ? this.formatSelectValue(dt[0]) : [])?.[0] || {
         accepted_total: 0,
         cooperation_total: 0,
         delay_total: 0,
@@ -28508,11 +28506,11 @@ class V_ {
       }
     )
   }
-  query(ht) {
-    console.log('@query', ht), Xe({ type: 'query-start', data: ht })
+  query(dt) {
+    console.log('@query', dt), Xe({ type: 'query-start', data: dt })
     try {
       const g = es().startOf('day').unix() - this.timeDiff,
-        et = this.db.exec(W_({ ...ht, timestamp: g, user_id: this.userId })),
+        et = this.db.exec(W_({ ...dt, timestamp: g, user_id: this.userId })),
         W = (et[0] ? this.formatSelectValue(et[0]) : []).map((O) => ({
           ...O,
           application_id: O.application_id === '0' ? null : O.application_id,
@@ -28522,7 +28520,7 @@ class V_ {
       for (const O of W) {
         const I = O.task_id,
           T = O.repeat_id,
-          x = this.db.exec(G_(I, T)),
+          R = this.db.exec(G_(I, T)),
           y = this.db.exec(j_(I, this.userId)),
           q = y[0] ? this.formatSelectValue(y[0])[0] : {}
         Object.assign(O, {
@@ -28538,9 +28536,9 @@ class V_ {
             quote_total: O.quote_total
           }
         }),
-          (O.takers = x[0] ? this.formatSelectValue(x[0]) : [])
+          (O.takers = R[0] ? this.formatSelectValue(R[0]) : [])
       }
-      if ((Xe({ type: 'query-end', data: ht }), ht.direction === Ai.up)) {
+      if ((Xe({ type: 'query-end', data: dt }), dt.direction === Ai.up)) {
         const O = JSON.parse(JSON.stringify(W)),
           I = W.reverse()
         return (
@@ -28556,39 +28554,39 @@ class V_ {
       return W
     } catch (g) {
       return (
-        Xe({ type: 'error', data: { type: 'query', params: ht, ...Ba(g) } }), []
+        Xe({ type: 'error', data: { type: 'query', params: dt, ...Ba(g) } }), []
       )
     }
   }
-  async fetchZip(ht) {
-    this.zipObj = await U_.init(ht)
+  async fetchZip(dt) {
+    this.zipObj = await U_.init(dt)
   }
-  async parseFile(ht) {
-    return JSON.parse(await this.zipObj.file(ht).async('string'))
+  async parseFile(dt) {
+    return JSON.parse(await this.zipObj.file(dt).async('string'))
   }
-  async updateTable(ht) {
+  async updateTable(dt) {
     Xe({ type: 'update-table-start' })
     const g = await this.parseFile('guide')
     for (const [et, W] of Object.entries(g)) {
       const { data: O } = W
       for (const I of O)
-        (await this.parseFile(I)).forEach((x) => {
+        (await this.parseFile(I)).forEach((R) => {
           try {
-            if (ht) {
-              const { type: y, data: q, keys: j } = x
+            if (dt) {
+              const { type: y, data: q, keys: j } = R
               this.db.run(this.getDelSql(j, et) + ';'),
                 y === 'delete' ||
                   this.db.run(this.getInsertSql(q, et, 'zip-diff') + ';')
               return
             }
-            this.db.run(this.getInsertSql(x, et, 'zip-full') + ';')
+            this.db.run(this.getInsertSql(R, et, 'zip-full') + ';')
           } catch (y) {
             throw (
               (Xe({
                 type: 'error',
                 data: {
                   ...Ba(y),
-                  item: x,
+                  item: R,
                   table: et,
                   type: 'writting-diff-update'
                 }
@@ -28602,46 +28600,46 @@ class V_ {
   }
   updateDB() {
     Qu(this.dbId, this.db.export()).then(() => {
-      console.log('output -->'), Qu(this.recordKey, this.recordInfo)
+      Qu(this.recordKey, this.recordInfo)
     })
   }
-  getDecentItem(ht, g, et) {
+  getDecentItem(dt, g, et) {
     const W = {}
     return (
       et?.isUpdate
-        ? Object.keys(ht).forEach((O) => {
-            O in Ko[g] && (W[O] = ht[O])
+        ? Object.keys(dt).forEach((O) => {
+            O in Ko[g] && (W[O] = dt[O])
           })
         : Object.keys(Ko[g]).forEach((O) => {
-            W[O] = ht[O] || Ko[g][O]
+            W[O] = dt[O] || Ko[g][O]
           }),
       W
     )
   }
-  getSqlValue(ht) {
-    return typeof ht == 'number'
-      ? ht
-      : typeof ht == 'string'
-      ? `'${ht.replace(/'/g, "''")}'`
-      : ht && typeof ht == 'object'
-      ? `'${JSON.stringify(ht)}'`
-      : ht || 'null'
+  getSqlValue(dt) {
+    return typeof dt == 'number'
+      ? dt
+      : typeof dt == 'string'
+      ? `'${dt.replace(/'/g, "''")}'`
+      : dt && typeof dt == 'object'
+      ? `'${JSON.stringify(dt)}'`
+      : dt || 'null'
   }
-  getKeyLinkValue([ht, g]) {
-    return '`' + ht + '`=' + this.getSqlValue(g)
+  getKeyLinkValue([dt, g]) {
+    return '`' + dt + '`=' + this.getSqlValue(g)
   }
-  getDelSql(ht, g) {
-    const et = Object.entries(ht).map((W) => this.getKeyLinkValue(W))
+  getDelSql(dt, g) {
+    const et = Object.entries(dt).map((W) => this.getKeyLinkValue(W))
     return `DELETE FROM ${g} WHERE ${et.join(' AND ')}`
   }
-  getUpdateSql(ht, g) {
-    const et = this.getDecentItem(ht.data, g, { isUpdate: !0 }),
+  getUpdateSql(dt, g) {
+    const et = this.getDecentItem(dt.data, g, { isUpdate: !0 }),
       W = Object.entries(et).map((I) => this.getKeyLinkValue(I)),
-      O = Object.entries(ht.keys).map((I) => this.getKeyLinkValue(I))
+      O = Object.entries(dt.keys).map((I) => this.getKeyLinkValue(I))
     return `UPDATE ${g} SET ${W.join(',')} WHERE ${O.join(' AND ')}`
   }
-  getInsertSql(ht, g, et) {
-    const W = this.getDecentItem(ht, g)
+  getInsertSql(dt, g, et) {
+    const W = this.getDecentItem(dt, g)
     return `INSERT OR REPLACE INTO ${g} (${Object.keys(W).join(
       ' ,'
     )}) VALUES (${Object.values(W)
@@ -28656,25 +28654,23 @@ class V_ {
       )
       .join(' ,')})`
   }
-  querySchedule(ht) {
-    const g = this.db.exec(ht)
+  querySchedule(dt) {
+    const g = this.db.exec(dt)
     return { code: 0, data: g[0] ? this.formatSelectValue1(g[0]) : [] }
   }
-  executeSchedule(ht) {
-    const g = this.db.exec(ht)
+  executeSchedule(dt) {
+    const g = this.db.exec(dt)
     return { code: 0, data: g[0] ? this.formatSelectValue1(g[0]) : [] }
   }
-  async getDayView(ht) {
-    console.time(JSON.stringify(ht)), console.log('@@ sdk', this.sdk)
-    const g = await this.sdk.schedule.dayView(ht)
-    return console.timeEnd(JSON.stringify(ht)), g
+  async getDayView(dt) {
+    return await this.sdk.schedule.dayView(dt)
   }
 }
 const Nr = new V_()
 class X_ {
   constructor() {
-    ;(this.query = (ht) => Nr.querySchedule(ht)),
-      (this.execute = (ht) => Nr.executeSchedule(ht))
+    ;(this.query = (dt) => Nr.querySchedule(dt)),
+      (this.execute = (dt) => Nr.executeSchedule(dt))
   }
 }
 self.JsDataZeusDb = X_
@@ -28695,12 +28691,11 @@ var ns = ((Tt) => (
   ))(qn || {})
 class K_ {
   constructor() {
-    self.onmessage = async ({ data: ht }) => {
-      console.log('from client', ht, ht.data)
+    self.onmessage = async ({ data: dt }) => {
       let g = null
-      switch ((console.log('onmessage'), ht.key)) {
+      switch (dt.key) {
         case qn.INIT_DB: {
-          await Nr.initDB(ht.data)
+          await Nr.initDB(dt.data)
           break
         }
         case qn.QUERY_FULL_VIEW_LIST: {
@@ -28709,16 +28704,16 @@ class K_ {
             await new Promise((W) => {
               setTimeout(W, 1e3)
             })
-          g = Nr.query(ht.data)
+          g = Nr.query(dt.data)
           break
         }
         case qn.UPDATE_TOKEN: {
-          Nr.updateToken(ht.data)
+          Nr.updateToken(dt.data)
           break
         }
         case qn.QUERY_DIFF_FULL: {
-          const et = ht.data
-          console.log('全量实时更新', ht)
+          const et = dt.data
+          console.log('全量实时更新', dt)
           const { mode: W, diffInfo: O } = et
           g = {
             ...O,
@@ -28738,11 +28733,11 @@ class K_ {
           break
         }
         case qn.DAY_VIEW: {
-          g = await Nr.getDayView(ht.data)
+          g = await Nr.getDayView(dt.data)
           break
         }
       }
-      self.postMessage({ uid: ht.uid, data: g })
+      self.postMessage({ uid: dt.uid, data: g })
     }
   }
 }

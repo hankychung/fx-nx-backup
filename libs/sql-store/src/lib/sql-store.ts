@@ -61,6 +61,9 @@ class SqlStore {
       userId: this.userId,
       platform: 'PC'
     })
+
+    console.log('@@ initdb', this.sdk)
+
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
     try {
@@ -755,6 +758,9 @@ class SqlStore {
 
   async getDayView(params: DayViewParamsProps) {
     console.time(JSON.stringify(params))
+
+    console.log('@@ sdk', this.sdk)
+
     const dayData = await this.sdk.schedule.dayView(params)
     console.timeEnd(JSON.stringify(params))
     return dayData

@@ -16,10 +16,7 @@ type DiffFullInfo = {
 class DBHandler {
   constructor() {
     self.onmessage = async ({ data }: MessageEvent<PostData>) => {
-      console.log('from client', data, data.data)
       let responseData: any = null
-
-      console.log('onmessage')
 
       switch (data.key) {
         case ServiceWorkerKey.INIT_DB: {

@@ -1,11 +1,11 @@
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { ScheduleUtils } from '@flyele-nx/service-module'
 import { envStore } from '@flyele-nx/service'
-import { TokenHandler } from '@flyele-nx/utils'
+import { LocalStore } from '@flyele-nx/utils'
 
 const initCacheWorker = async ({ userId }: { userId: string }) => {
   await ServiceWorkerUtils.login({
-    token: TokenHandler.get() as string,
+    token: LocalStore.getToken() as string,
     host: envStore.IsNxDev()
       ? 'http://localhost:8888/api/'
       : envStore.getHost(),

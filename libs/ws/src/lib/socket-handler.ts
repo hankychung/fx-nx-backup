@@ -1,4 +1,4 @@
-import { TokenHandler } from '@flyele-nx/utils'
+import { LocalStore } from '@flyele-nx/utils'
 import { UsercApi, envStore } from '@flyele-nx/service'
 import { HEART_BEAT, HEART_BEAT_INTERVEL, HEART_BEAT_RETRY_MAX } from './const'
 
@@ -14,7 +14,7 @@ class _SocketHandler {
   private doNotReconnect = false
 
   private connect() {
-    const token = TokenHandler.get()
+    const token = LocalStore.getToken()
 
     if (!token || this.ws) return
 

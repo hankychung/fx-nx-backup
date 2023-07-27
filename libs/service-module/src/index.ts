@@ -63,3 +63,7 @@ export const updateNxEnv = envStore.updateEnvByClient.bind(envStore)
 export const updateNxToken = service.updateToken.bind(service)
 
 export const registerPaymentInit = init
+
+export * from './lib/store/useUserInfoStore'
+
+export * from './lib/store/types'

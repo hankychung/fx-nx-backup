@@ -1,7 +1,7 @@
 {
-  "name": "utils",
+  "name": "types",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/utils/src",
+  "sourceRoot": "libs/types/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/utils/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/types/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "build": {
@@ -17,7 +17,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/libs/utils"
+        "outputPath": "dist/libs/types"
       },
       "configurations": {
         "development": {
@@ -29,7 +29,7 @@
       }
     },
     "tslint": {
-      "command": "tsc --project ./libs/utils/tsconfig.lib.json"
+      "command": "tsc --project ./libs/types/tsconfig.lib.json"
     }
   }
 }

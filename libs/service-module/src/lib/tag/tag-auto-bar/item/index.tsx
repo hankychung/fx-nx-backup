@@ -97,7 +97,7 @@ export function AutoTagItem(props: AutoTagItemProps) {
       ref={dom}
       style={{
         color: textColor,
-        opacity: visible ? 1 : 0,
+        opacity: 1,
         order: _proOrder,
         backgroundColor: bgColor,
         width

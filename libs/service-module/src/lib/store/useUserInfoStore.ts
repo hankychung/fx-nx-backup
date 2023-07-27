@@ -1,15 +1,5 @@
 import { create } from 'zustand'
-import { IUserInfo } from '@flyele-nx/service'
-import { produce } from 'immer'
-
-export interface IUserInfoState {
-  userInfo: Omit<IUserInfo, 'Token'>
-  isEnterprise: boolean
-}
-
-interface IMutation {
-  updateUserInfo: (data: Omit<IUserInfo, 'Token'>) => void
-}
+import { IUserInfoState } from '@flyele-nx/types'
 
 const initUserInfo = {
   userInfo: {
@@ -29,16 +19,9 @@ const initUserInfo = {
   isEnterprise: false
 }
 
-const useUserInfoStore = create<IUserInfoState & IMutation>((set) => {
+const useUserInfoStore = create<IUserInfoState>(() => {
   return {
-    ...initUserInfo,
-
-    updateUserInfo(data) {
-      produce((state: IUserInfoState) => {
-        state.userInfo = data
-        state.isEnterprise = !!data.corpid
-      })
-    }
+    ...initUserInfo
   }
 })
 

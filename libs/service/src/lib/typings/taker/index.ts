@@ -62,7 +62,7 @@ export interface IInteract {
   remark?: string
   send_open_remind_at?: number
   species?: number
-  telephone: string
+  telephone?: string
   user_id: string
   user_update_at?: number
   vip_expired_at?: number

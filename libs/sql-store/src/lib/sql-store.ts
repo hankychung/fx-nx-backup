@@ -61,6 +61,7 @@ class SqlStore {
       userId: this.userId,
       platform: 'PC'
     })
+
     const loadWasmUrl = p.wasmUrl || wasmUrl
 
     try {
@@ -166,7 +167,7 @@ class SqlStore {
     const query = Object.entries(info)
       .filter(([k]) => checkDecentTable(k))
       .map(([k, v]) => {
-        console.log('key', k, v)
+        // console.log('key', k, v)
 
         return `${k}=${v.id}`
       })
@@ -633,8 +634,6 @@ class SqlStore {
 
   private updateDB() {
     set(this.dbId, this.db!.export()).then(() => {
-      console.log('output -->')
-
       // record the timestamp
       set(this.recordKey, this.recordInfo)
     })
@@ -754,9 +753,9 @@ class SqlStore {
   }
 
   async getDayView(params: DayViewParamsProps) {
-    console.time(JSON.stringify(params))
+    // console.time(JSON.stringify(params))
     const dayData = await this.sdk.schedule.dayView(params)
-    console.timeEnd(JSON.stringify(params))
+    // console.timeEnd(JSON.stringify(params))
     return dayData
   }
 }

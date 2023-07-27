@@ -1,30 +1,47 @@
-import { timeGetter } from '@flyele-nx/utils'
 import { useEffect, useRef } from 'react'
 import { initCacheWorker } from '../../utils/initCacheWorker'
 import { BoardHeader } from './components/header'
 import { Outlet } from 'react-router-dom'
 import style from './index.module.scss'
 import { BizApi } from '@flyele-nx/service'
-import { GlobalInfoHandler } from '@flyele-nx/service-module'
+import {
+  GlobalInfoHandler,
+  useUserInfoStore,
+  IContactDict
+} from '@flyele-nx/service-module'
 
 const Board: React.FC = () => {
   const isInit = useRef(false)
-
-  timeGetter.getDate()
 
   useEffect(() => {
     if (isInit.current) return
 
     isInit.current = true
 
-    // TODO: fix it
     initCacheWorker({
-      userId: '1113658170015849'
+      userId: useUserInfoStore.getState().userInfo.user_id
     })
 
     BizApi.getInteracts().then((list) => {
       console.log('@list', list)
       GlobalInfoHandler.updateInteracts(list)
+
+      const dict = list.reduce<IContactDict>((pre, cur) => {
+        const { user_id } = cur
+
+        pre[user_id] = cur
+
+        return pre
+      }, {})
+
+      GlobalInfoHandler.updateContactDict(
+        new Proxy(dict, {
+          get(target: IContactDict, p: string) {
+            // TODO: fix here
+            return target[p] || {}
+          }
+        })
+      )
     })
   }, [])
 

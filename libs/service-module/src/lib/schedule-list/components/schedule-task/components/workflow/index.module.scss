@@ -29,7 +29,7 @@
 
   .appName {
     font-size: 10px;
-    color: #8f8f8f;
+    // color: #8f8f8f;
     flex: 2;
     white-space: nowrap;
     overflow: hidden;
@@ -50,8 +50,8 @@
   &.darkMode {
     background-color: #383b48;
 
-    .appName {
-      color: #92929d;
-    }
+    // .appName {
+    //   color: #92929d;
+    // }
   }
 }

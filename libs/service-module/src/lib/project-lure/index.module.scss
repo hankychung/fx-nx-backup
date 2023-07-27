@@ -60,6 +60,7 @@
     display: flex;
     align-items: center;
     height: 44px;
+    margin-bottom: 16px;
     .item_icon {
       width: 28px;
       height: 28px;
@@ -92,6 +93,9 @@
     display: flex;
     align-items: center;
     color: #afafaf;
+    span {
+      margin-left: 8px;
+    }
   }
 }
 .footer {

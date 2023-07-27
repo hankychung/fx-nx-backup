@@ -3,13 +3,9 @@ import { initCacheWorker } from '../../utils/initCacheWorker'
 import { BoardHeader } from './components/header'
 import { Outlet } from 'react-router-dom'
 import style from './index.module.scss'
-import { BizApi } from '@flyele-nx/service'
-import {
-  GlobalInfoHandler,
-  useUserInfoStore,
-  IContactDict
-} from '@flyele-nx/service-module'
+import { useUserInfoStore } from '@flyele-nx/service-module'
 import { LocalStore } from '@flyele-nx/utils'
+import { initInteract } from '../../utils/initInteract'
 
 const Board: React.FC = () => {
   const isInit = useRef(false)
@@ -29,27 +25,7 @@ const Board: React.FC = () => {
       userId
     })
 
-    BizApi.getInteracts().then((list) => {
-      console.log('@list', list)
-      GlobalInfoHandler.updateInteracts(list)
-
-      const dict = list.reduce<IContactDict>((pre, cur) => {
-        const { user_id } = cur
-
-        pre[user_id] = cur
-
-        return pre
-      }, {})
-
-      GlobalInfoHandler.updateContactDict(
-        new Proxy(dict, {
-          get(target: IContactDict, p: string) {
-            // TODO: fix here
-            return target[p] || {}
-          }
-        })
-      )
-    })
+    initInteract()
   }, [])
 
   return (

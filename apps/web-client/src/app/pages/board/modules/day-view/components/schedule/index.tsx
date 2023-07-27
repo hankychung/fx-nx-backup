@@ -8,6 +8,7 @@ const _Schedule: FC = () => {
   return (
     <div className={style.schedule}>
       <AllScheduleList
+        isBoard={true}
         date={dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')}
       />
     </div>

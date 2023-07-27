@@ -66,20 +66,12 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
   if (!isFlow && !isRepeat) {
     return null
   }
-  console.log('isDarkModeworkflow', isDarkMode)
 
   return (
     <div
       className={cs(styles.workflow, { [styles.darkMode]: isDarkMode })}
       style={{
-        backgroundColor: opacity ? 'unset' : isDarkMode ? '#383B48' : '#fafafa',
-        color: opacity
-          ? isDarkMode
-            ? 'rgba(255, 255, 255, 0.8)'
-            : 'rgba(51, 51, 51, 0.6)'
-          : isDarkMode
-          ? '#92929d'
-          : '#8f8f8f'
+        backgroundColor: opacity ? 'unset' : isDarkMode ? '#383B48' : '#fafafa'
       }}
     >
       {isFlow && (
@@ -92,7 +84,20 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
           <RepeatIcon width={16} height={16} />
         </div>
       )}
-      <span className={styles.appName}>{objTxt.t_l}</span>
+      <span
+        // className={styles.appName}
+        style={{
+          color: opacity
+            ? isDarkMode
+              ? 'rgba(255, 255, 255, 0.8)'
+              : 'rgba(51, 51, 51, 0.6)'
+            : isDarkMode
+            ? '#92929d'
+            : '#8f8f8f'
+        }}
+      >
+        {objTxt.t_l}
+      </span>
       <strong className={cs(styles.currentStep, { [styles.blue]: isFlow })}>
         {objTxt.t_r}
       </strong>

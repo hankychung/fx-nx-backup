@@ -111,11 +111,10 @@
         }
 
         .singleLine {
-          overflow: hidden;
+          display: grid;
           align-items: center;
-          flex: 1;
-          display: flex;
-          flex-wrap: nowrap;
+          grid-template-columns: auto auto 1fr;
+          overflow: hidden;
         }
         .reverseSort {
           display: flex;

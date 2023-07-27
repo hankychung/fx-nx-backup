@@ -1,3 +1,5 @@
+import { IUserInfo } from '@flyele-nx/types'
+
 class LocalStore {
   static getToken() {
     return localStorage.getItem('auth') || ''

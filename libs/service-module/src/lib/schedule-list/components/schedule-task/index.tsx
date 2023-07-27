@@ -61,7 +61,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isVipWin = false,
   isBoard = false,
   isTimeLine = false,
-  opacity
+  opacity = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -240,7 +240,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.whiteOpacityHover]: !isDarkMode && opacity
       })}
       style={{
-        backgroundColor: opacity ? 'unset' : isDarkMode ? '#3b3e4b' : '#fff',
+        backgroundColor: opacity
+          ? isDarkMode
+            ? 'rgba(59, 62, 75, 0.3)'
+            : 'rgba(255, 255, 255, 0.1)'
+          : isDarkMode
+          ? '#3b3e4b'
+          : '#fff',
         ...style
       }}
       data-id={taskKey}
@@ -273,7 +279,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         )}
 
         {(!isSimple || isTimeLine) && (
-          <ParentInfo taskId={taskKey} isDarkMode />
+          <ParentInfo
+            taskId={taskKey}
+            isDarkMode={isDarkMode}
+            opacity={opacity}
+          />
         )}
 
         <div className={styles.scheduleInfo}>
@@ -282,7 +292,16 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
             <StatusBox task={data} isVipWin={isVipWin} />
             <div className={styles.main}>
               <div className={styles.head}>
-                <div className={styles.headLeft}>
+                <div
+                  className={styles.headLeft}
+                  style={{
+                    color: opacity
+                      ? isDarkMode
+                        ? 'rgba(255, 255, 255, 0.8)'
+                        : 'rgba(51, 51, 51, 0.8)'
+                      : ''
+                  }}
+                >
                   <FlyTextTooltip
                     mountNode={() => document.body}
                     isDynamic
@@ -322,6 +341,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         dateStr={date}
                         isDarkMode={isDarkMode}
                         isTimeLine={isTimeLine}
+                        opacity={opacity}
                       />
                       {!isBoard && !isTimeLine && (
                         <Tags taskId={taskKey} wrapClassName={styles.tags} />

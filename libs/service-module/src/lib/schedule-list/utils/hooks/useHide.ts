@@ -1,8 +1,8 @@
 import { TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
-import { globalNxController } from '../../../global/nxController'
-import PUB from '../../../global/types/pubsub'
+import { globalNxController } from '@flyele-nx/global-processor'
 import dayjs from 'dayjs'
+import { Pub } from '@flyele-nx/constant'
 
 interface IParams {
   dispatch: string
@@ -20,9 +20,9 @@ export const hide = async (
   show?: boolean
 ) => {
   await TaskApi.hide(dispatchIds)
-  globalNxController.pubJsPublish(PUB.HIDE_SCHEDULE, { ids: taskIds, show })
+  globalNxController.pubJsPublish(Pub.HIDE_SCHEDULE, { ids: taskIds, show })
   ;(taskIds || []).forEach((taskId) => {
-    globalNxController.pubJsPublish(PUB.DB_INCREASE_01_READUX_AND_SQLITEDB, {
+    globalNxController.pubJsPublish(Pub.DB_INCREASE_01_READUX_AND_SQLITEDB, {
       task_id: taskId,
       diffObj: {
         task_dispatch: {

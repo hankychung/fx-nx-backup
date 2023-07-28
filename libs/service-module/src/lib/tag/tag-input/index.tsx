@@ -18,7 +18,7 @@ import cs from 'classnames'
 import { TagUtils } from '../tag_utils'
 import { TagModel, TagConst } from '@flyele-nx/service'
 import css from './index.module.scss'
-import { globalNxController } from '../../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 // 颜色选择器
 interface TagInputProps {

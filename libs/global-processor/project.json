@@ -1,7 +1,7 @@
 {
-  "name": "zustand-store",
+  "name": "global-processor",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/zustand-store/src",
+  "sourceRoot": "libs/global-processor/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/zustand-store/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/global-processor/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "build": {
@@ -17,7 +17,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/libs/zustand-store"
+        "outputPath": "dist/libs/global-processor"
       },
       "configurations": {
         "development": {
@@ -29,7 +29,7 @@
       }
     },
     "tslint": {
-      "command": "tsc --project ./libs/zustand-store/tsconfig.lib.json"
+      "command": "tsc --project ./libs/global-processor/tsconfig.lib.json"
     }
   }
 }

@@ -14,18 +14,19 @@ import dayjs from 'dayjs'
 import { getRepeatDelayTotal } from '../../../../utils'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  useUserInfoStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import {
   RepeatDelayIcon,
   CycleCardIcon,
   CycleCardDarkIcon
 } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
-import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
-import { globalNxController } from '../../../../../global/nxController'
-import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
 import { contextMenuTool } from '../../../../../../index'
-import { MatterType } from '@flyele-nx/constant'
+import { MatterType, VipSmallIpcEvents } from '@flyele-nx/constant'
 
 interface IPROPTime {
   taskId: string

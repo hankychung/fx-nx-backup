@@ -2,7 +2,7 @@ import React from 'react'
 import cs from 'classnames'
 import { IScheduleTask } from '@flyele-nx/types'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 import { MatterType } from '@flyele-nx/constant'
 
 interface IPROPParentInfo {

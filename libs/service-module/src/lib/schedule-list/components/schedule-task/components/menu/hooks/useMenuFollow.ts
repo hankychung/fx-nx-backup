@@ -5,8 +5,8 @@ import { TaskApi } from '@flyele-nx/service'
 import { IScheduleTask } from '@flyele-nx/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
-import { globalNxController } from '../../../../../../global/nxController'
-import PUB from '../../../../../../global/types/pubsub'
+import { globalNxController } from '@flyele-nx/global-processor'
+import { Pub } from '@flyele-nx/constant'
 
 export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
   const getTxt = useMemo(() => {
@@ -56,7 +56,7 @@ export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
     // 然后弹提示
     globalNxController.showMsg({ msgType: '消息', content: changeTo.msg })
     // 最后发通知
-    globalNxController.pubJsPublish(PUB.FOLLOW_TASK, {
+    globalNxController.pubJsPublish(Pub.FOLLOW_TASK, {
       id: data.ref_task_id,
       follow: changeTo.follow
     })

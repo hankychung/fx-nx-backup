@@ -14,16 +14,22 @@ import { RemoveSimpleMemberListPopper } from '../../../../../remove-simple-membe
 import { getAvatarsFromTakers } from '../../../../utils/task'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  useContactStore,
+  useUserInfoStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { AuthType, UsercApi, AuthConst, VipHandler } from '@flyele-nx/service'
 import { IBaseProjectInfo, Taker } from '@flyele-nx/types'
-import { useContactStore } from '../../../../../store/useContactStore'
-import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
-import { globalNxController } from '../../../../../global/nxController'
-import { SIZE_TYPE_KEY } from '../../../../../global/types/channel/SIZE_TYPE'
 import { useMemoizedFn } from 'ahooks'
 import { contextMenuTool } from '../../../../../../index'
-import { MatterType, CATEGORY, IDENTITY } from '@flyele-nx/constant'
+import {
+  MatterType,
+  CATEGORY,
+  IDENTITY,
+  SIZE_TYPE_KEY
+} from '@flyele-nx/constant'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 

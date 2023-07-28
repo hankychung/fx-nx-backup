@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Tree } from 'antd'
 import styles from './index.module.scss'
 import { addKey } from '../utils'
-import { useScheduleStore } from '../../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 
 export enum charsType {
   'accept',

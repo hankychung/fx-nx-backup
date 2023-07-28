@@ -6,9 +6,8 @@ import { FlyAvatar } from '@flyele/flyele-components'
 import cs from 'classnames'
 import styles from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
-import { useContactStore } from '../store/useContactStore'
+import { useContactStore, useUserInfoStore } from '@flyele-nx/global-processor'
 import { VipHandler } from '@flyele-nx/service'
-import { useUserInfoStore } from '../store/useUserInfoStore'
 
 export type ISimpleMember = {
   userId: string

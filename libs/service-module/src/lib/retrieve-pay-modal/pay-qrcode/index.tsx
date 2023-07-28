@@ -18,7 +18,7 @@ import LogOut from './components/log-out'
 import { IFlyeleAvatarItem } from '../../pay-modal'
 import { regFenToYuan } from '../../quick-pay/utils'
 import { envStore } from '@flyele-nx/service'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { useUserInfoStore } from '@flyele-nx/global-processor'
 
 const PayQrCode = ({
   isShowPay,

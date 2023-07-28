@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { IHoliday, ScheduleTaskConst } from '@flyele-nx/service'
+import { IHoliday } from '@flyele-nx/types'
+import { HolidayState } from '@flyele-nx/constant'
 
 export interface IHolidayState {
   holidayValue: {
@@ -31,11 +32,11 @@ const useHolidayStore = create<IHolidayState & IMutation>((set) => {
     updateData(data) {
       // 去掉补班的假期, 真放假的时候。
       const realHolidays = data.filter(
-        (item) => item.state === ScheduleTaskConst.HolidayState.FURLOUGH
+        (item) => item.state === HolidayState.FURLOUGH
       )
       // 补班
       const dutyHoliday = data.filter(
-        (item) => item.state === ScheduleTaskConst.HolidayState.DUTY
+        (item) => item.state === HolidayState.DUTY
       )
 
       set((state) => ({

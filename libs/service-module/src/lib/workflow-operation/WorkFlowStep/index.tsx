@@ -5,7 +5,7 @@ import style from './index.module.scss'
 import { IUserStepInfo } from '@flyele-nx/service'
 import { WorkflowMemberIcon } from '../WorkflowMemberIcon'
 import { LineIcon, UndoGrayIcon } from '@flyele-nx/icon'
-import { useContactStore } from '../../store/useContactStore'
+import { useContactStore } from '@flyele-nx/global-processor'
 import { FlowOperateType } from '@flyele-nx/constant'
 
 export enum OperateStep {

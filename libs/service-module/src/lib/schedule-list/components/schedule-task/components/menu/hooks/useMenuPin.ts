@@ -6,9 +6,9 @@ import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
 import dayjs from 'dayjs'
-import { globalNxController } from '../../../../../../global/nxController'
-import PUB from '../../../../../../global/types/pubsub'
-import timeGetter from '../../../../../../global/timeGetter'
+import { globalNxController } from '@flyele-nx/global-processor'
+import { Pub } from '@flyele-nx/constant'
+import { timeGetter } from '@flyele-nx/utils'
 
 export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
   const action = useMemoizedFn(() => {
@@ -20,7 +20,7 @@ export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
         content: `${topmost_at ? '已取消置顶' : '已置顶'}`
       })
 
-      globalNxController.pubJsPublish(PUB.BOARD_TOPMOST, {
+      globalNxController.pubJsPublish(Pub.BOARD_TOPMOST, {
         ids: [dispatch],
         topmost: topmost_at ? 0 : await timeGetter.getDate()
       })

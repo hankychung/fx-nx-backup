@@ -1,10 +1,13 @@
 import { produce } from 'immer'
-import { IContactDict } from '../store/types'
-import { IContactState, useContactStore } from '../store/useContactStore'
-import { useUserInfoStore } from '../store/useUserInfoStore'
+import { IContactDict } from '@flyele-nx/types'
+import {
+  IContactState,
+  useContactStore,
+  useUserInfoStore,
+  useHolidayStore
+} from '@flyele-nx/zustand-store'
 import { IUserInfoState } from '@flyele-nx/types'
 import { IHoliday, IUserInfo, IInteract } from '@flyele-nx/types'
-import { useHolidayStore } from '../store/useHolidayStore'
 import { LocalStore } from '@flyele-nx/utils'
 
 class GlobalInfoHandler {

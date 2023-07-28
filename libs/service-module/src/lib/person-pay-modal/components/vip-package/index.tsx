@@ -17,7 +17,7 @@ import PayQrCode from '../pay-qr-code'
 import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { useMemoizedFn } from '@flyele/flyele-components'
-import { useUserInfoStore } from '../../../store/useUserInfoStore'
+import { useUserInfoStore } from '@flyele-nx/global-processor'
 import PersonVipB from '../person-vip-B'
 
 const url = `https://cdn.flyele.net/resources/PC/`

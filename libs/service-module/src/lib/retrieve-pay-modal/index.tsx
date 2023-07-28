@@ -26,8 +26,10 @@ import dayjs from 'dayjs'
 import { getResidueTime } from '../quick-pay/utils'
 import { useCurrentTime } from '../quick-pay/hoooks/useCurrentTime'
 import { Modal } from 'antd'
-import { globalNxController } from '../global/nxController'
-import { useUserInfoStore } from '../store/useUserInfoStore'
+import {
+  globalNxController,
+  useUserInfoStore
+} from '@flyele-nx/global-processor'
 
 interface Iprops {
   onClose: () => void

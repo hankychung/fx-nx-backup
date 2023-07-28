@@ -10,11 +10,12 @@ import { useRequest } from 'ahooks'
 import { TakersUtils } from '../utils/takers_utils'
 import { TaskDispatchApi } from '@flyele-nx/service'
 import { ITakerAndStatus } from '@flyele-nx/types'
-import { EConCheckStatus } from '@flyele-nx/constant'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { EConCheckStatus, Pub } from '@flyele-nx/constant'
+import {
+  useUserInfoStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { TaskHandler } from '../../schedule-list'
-import { globalNxController } from '../../global/nxController'
-import PUB from '../../global/types/pubsub'
 
 type IParams = {
   data: {
@@ -70,7 +71,7 @@ export const useTaskMemberRemove = () => {
 
         // 退出事项
         if (exitMap.dispatchId.length > 0) {
-          globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
+          globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, [taskId])
 
           TaskHandler.removeTasks([taskId])
         }
@@ -83,7 +84,7 @@ export const useTaskMemberRemove = () => {
               status: EConCheckStatus.checked
             }
           })
-          globalNxController.pubJsPublish(PUB.TASK_DETAIL_UPDATE, {
+          globalNxController.pubJsPublish(Pub.TASK_DETAIL_UPDATE, {
             taskId,
             type: 'takers',
             action: 'remove',

@@ -38,3 +38,8 @@ export interface IRequestList {
   page_number?: number // 查询页数，默认1
   page_record?: number // 查询条数，默认20
 }
+
+export interface ISize {
+  w: number
+  h: number
+}

@@ -19,7 +19,6 @@
   "dependencies": {
     "@flyele/flyele-components": "^2.15.1",
     "@swc/helpers": "~0.4.11",
-    "@types/react-beautiful-dnd": "^13.1.4",
     "ahooks": "^3.7.5",
     "antd": "^5.3.0",
     "classnames": "^2.3.2",
@@ -93,6 +92,7 @@
     "@types/qrcode": "^1.5.0",
     "@types/react": "18.0.28",
     "@types/react-avatar-editor": "^13.0.0",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "18.0.11",
     "@types/react-infinite-scroller": "^1.2.3",
     "@types/react-router-dom": "5.3.3",

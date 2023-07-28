@@ -19,7 +19,7 @@ import { useScheduleList } from './utils/hooks/useScheduleList'
 import { EmptyData } from './components/empty-data'
 import { globalNxController } from '../global/nxController'
 import { QueryType } from '@flyele-nx/sql-store'
-import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd'
+import { Draggable } from 'react-beautiful-dnd'
 
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
@@ -122,20 +122,6 @@ const _ScheduleList: ForwardRefRenderFunction<
     }
   }, [reload])
 
-  const getItemStyle = (
-    _isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined
-  ): React.CSSProperties => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    background: _isDragging
-      ? 'linear-gradient(180deg, #EDEDED 0%, rgba(237, 237, 237, 0.5) 100%)'
-      : 'transparent',
-
-    // styles we need to apply on draggables
-    ...draggableStyle
-  })
-
   return (
     <div
       className={classNames(styles['container'], overlayClassName)}
@@ -153,34 +139,21 @@ const _ScheduleList: ForwardRefRenderFunction<
         >
           {decentList.map((i, index) => (
             // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-            <Draggable
-              // isDragDisabled={fa}
-              key={i}
-              draggableId={i}
-              index={index}
-            >
+
+            <Draggable key={i} draggableId={`${i}-${date}`} index={index}>
               {(provided, snapshot) => (
-                <div
-                  className={styles.group}
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  // {...provided.dragHandleProps}
-                  style={getItemStyle(
-                    snapshot.isDragging,
-                    provided.draggableProps.style
-                  )}
-                >
-                  <ScheduleTask
-                    date={date}
-                    key={i}
-                    taskKey={i}
-                    topId={i}
-                    curTime={dayjs().unix()}
-                    isVipWin={isVipWin}
-                    isBoard={isBoard}
-                    isDarkMode={isDarkMode}
-                  />
-                </div>
+                <ScheduleTask
+                  date={date}
+                  key={i}
+                  taskKey={i}
+                  topId={i}
+                  curTime={dayjs().unix()}
+                  isVipWin={isVipWin}
+                  isBoard={isBoard}
+                  isDarkMode={isDarkMode}
+                  style={provided.draggableProps.style}
+                  dragProvided={provided}
+                />
               )}
             </Draggable>
           ))}

@@ -6,10 +6,18 @@ import {
   getKey,
   getSortedSchedule,
   isRelated,
-  shouldInsertSchedule
+  shouldInsertSchedule,
+  getModifyTime,
+  resetRemindUnix
 } from '.'
 import { getDateOfToday } from './tools'
 import { IInitTodayList } from './initTodayList'
+import { DropResult } from 'react-beautiful-dnd'
+import dayjs from 'dayjs'
+import PUB from '../../global/types/pubsub'
+import { TaskHandler } from './taskHandler'
+import { globalNxController } from '../../global/nxController'
+import { TaskApi } from '@flyele-nx/service'
 
 class ListHandler {
   // 完成事项
@@ -340,6 +348,56 @@ class ListHandler {
         })
       })
     )
+  }
+
+  //周视图拖拽事项
+  static handleDragEnd(e: DropResult) {
+    console.log(e, '____')
+    const { taskDict } = useScheduleStore.getState()
+    const {
+      draggableId,
+      destination,
+      source: { droppableId: fromDate }
+    } = e
+
+    if (!destination) return
+    const { droppableId: toDate } = destination
+
+    if (toDate === fromDate) return
+    const taskId = draggableId.split('-')[0]
+    const target = taskDict[taskId]
+
+    if (target.repeat_id) {
+      globalNxController.showMsg({
+        content: '循环事项不支持左右拖动'
+      })
+      return
+    }
+
+    const date = dayjs.unix(Number(toDate))
+    const params = getModifyTime(target, date)
+    const newTask = {
+      ...target,
+      ...params
+    }
+    TaskHandler.batchModify({
+      keys: [taskId],
+      diff: { ...params }
+    })
+    TaskApi.updateTask(
+      {
+        ...params,
+        ...resetRemindUnix(newTask),
+        matter_type: newTask.matter_type,
+        start_time_full_day: newTask.start_time_full_day as 1 | 2,
+        end_time_full_day: newTask.end_time_full_day as 1 | 2
+      },
+      newTask.ref_task_id
+    ).catch(() => {
+      console.log('kkk')
+      globalNxController.pubJsPublish(PUB.UPDATE_SCHEDULE, [target])
+    })
+    globalNxController.pubJsPublish(PUB.UPDATE_SCHEDULE, [newTask])
   }
 }
 

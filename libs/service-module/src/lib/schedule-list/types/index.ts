@@ -1,4 +1,4 @@
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 
 export interface ScheduleListProps {
   date: string

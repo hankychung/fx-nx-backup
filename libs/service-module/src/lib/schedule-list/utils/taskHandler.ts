@@ -3,7 +3,7 @@ import { useScheduleStore, IState } from '../../store/useScheduleStore'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 import { ExecutionHandler } from './executionHandler'
 import { globalNxController } from '../../global/nxController'
 

@@ -3,7 +3,7 @@ import { globalNxController } from '../../global/nxController'
 import { useScheduleStore } from '../../store/useScheduleStore'
 import timeGetter from '../../global/timeGetter'
 import dayjs from 'dayjs'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 
 export interface IInitTodayList {
   tasks: ILocalTask[]

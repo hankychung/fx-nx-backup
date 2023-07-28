@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { IContactDict } from './types'
-import { IInteract } from '@flyele-nx/service'
+import { IInteract } from '@flyele-nx/types'
 
 export interface IContactState {
   contactDict: IContactDict

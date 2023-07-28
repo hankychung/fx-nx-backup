@@ -29,7 +29,8 @@
       "@flyele-nx/types": ["libs/types/src/index.ts"],
       "@flyele-nx/ui": ["libs/ui/src/index.ts"],
       "@flyele-nx/utils": ["libs/utils/src/index.ts"],
-      "@flyele-nx/ws": ["libs/ws/src/index.ts"]
+      "@flyele-nx/ws": ["libs/ws/src/index.ts"],
+      "@flyele-nx/zustand-store": ["libs/zustand-store/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

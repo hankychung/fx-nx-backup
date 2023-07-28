@@ -1,4 +1,4 @@
-import { SPACE_TYPE, SPACE_LEVEL, SPACE_STATE } from './const'
+import { SPACE_TYPE, SPACE_LEVEL, SPACE_STATE } from '@flyele-nx/constant'
 /**
  * 空间基础信息
  */

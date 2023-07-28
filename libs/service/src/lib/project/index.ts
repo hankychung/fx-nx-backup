@@ -1,5 +1,5 @@
 import { service } from '../service'
-import { IProjectInfo } from '../typings/project'
+import { IProjectInfo } from '@flyele-nx/types'
 
 class Project {
   private prefix = 'flyele/v2/project'

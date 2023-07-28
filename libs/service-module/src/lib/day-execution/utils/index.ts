@@ -1,4 +1,4 @@
-import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 
 export interface IScheduleTaskTime {

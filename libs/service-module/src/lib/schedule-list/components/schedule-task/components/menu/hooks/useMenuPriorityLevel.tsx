@@ -1,10 +1,11 @@
 import React from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { PriorityLevelPopper } from '../../../../../../priority-level-popper'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
 import { getDiffKeys } from '../../../../../utils'
+import { QuadrantValue } from '@flyele-nx/constant'
 
 export const useMenuPriorityLevel = ({
   data
@@ -14,8 +15,7 @@ export const useMenuPriorityLevel = ({
   const reRender = useMemoizedFn((close: () => void) => {
     const id = data.ref_task_id
     const matter_type = data.matter_type
-    const priority_level =
-      data.priority_level as ScheduleTaskConst.QuadrantValue
+    const priority_level = data.priority_level as QuadrantValue
 
     if (!id || !matter_type) return <div />
 

@@ -22,5 +22,10 @@ export type {
 }
 
 export * from './lib/vip'
-
 export * from './lib/env'
+export * from './lib/schedule'
+export * from './lib/tag'
+export * from './lib/project'
+export * from './lib/space'
+export * from './lib/workflow'
+export * from './lib/taker'

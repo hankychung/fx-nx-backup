@@ -2,12 +2,11 @@ import React, { useMemo } from 'react'
 import cs from 'classnames'
 import { FlyAvatarGroup, FlyTooltip } from '@flyele/flyele-components'
 import style from './index.module.scss'
-import { IUserStepInfo, WorkflowConst } from '@flyele-nx/service'
+import { IUserStepInfo } from '@flyele-nx/service'
 import { WorkflowMemberIcon } from '../WorkflowMemberIcon'
 import { LineIcon, UndoGrayIcon } from '@flyele-nx/icon'
 import { useContactStore } from '../../store/useContactStore'
-
-const { FlowOperateType } = WorkflowConst
+import { FlowOperateType } from '@flyele-nx/constant'
 
 export enum OperateStep {
   START = 'START',
@@ -32,7 +31,7 @@ export interface IStepItem {
   members?: IUserStepInfo[]
   isLastStep?: boolean
   //协作人操作方式：1.或；2.且
-  operateType?: WorkflowConst.FlowOperateType
+  operateType?: FlowOperateType
 }
 
 type IProps = IStepItem & {

@@ -1,8 +1,9 @@
 import React from 'react'
 import cs from 'classnames'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import styles from './index.module.scss'
 import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import { MatterType } from '@flyele-nx/constant'
 
 interface IPROPParentInfo {
   taskId: string
@@ -25,11 +26,9 @@ function getType(task?: IScheduleTask) {
   } else if (
     task.parent_name &&
     task.matter_type &&
-    [
-      ScheduleTaskConst.MatterType.meeting,
-      ScheduleTaskConst.MatterType.todo,
-      ScheduleTaskConst.MatterType.matter
-    ].includes(task.matter_type)
+    [MatterType.meeting, MatterType.todo, MatterType.matter].includes(
+      task.matter_type
+    )
   ) {
     _type = '事项'
     _name = task.parent_name

@@ -1,4 +1,4 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { nxControllerRegister } from './nxControllerRegister'
 import { DayViewParamsProps } from '@flyele-nx/sql-store'
 import {

@@ -1,4 +1,4 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 import timeGetter from '../../global/timeGetter'
 

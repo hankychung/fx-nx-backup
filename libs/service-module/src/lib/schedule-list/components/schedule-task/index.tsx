@@ -8,7 +8,7 @@ import {
   MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
-import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
+import { TaskApi } from '@flyele-nx/service'
 import { useScheduleStore } from '../../../store/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
@@ -35,6 +35,7 @@ import { ChildrenTask } from './children-task'
 import { contextMenuTool } from '../../../../index'
 import { Enter_page_detail } from '../../../global/types/sensor/matter'
 import { globalNxController } from '../../../global/nxController'
+import { MatterType, QuadrantValue } from '@flyele-nx/constant'
 
 export interface IProps {
   taskKey: string
@@ -106,10 +107,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   // 如果以后还有其他条件的话往这上面拼
   const isShowMenu = useMemo(() => {
     return (
-      ![
-        ScheduleTaskConst.MatterType.timeCollect,
-        ScheduleTaskConst.MatterType.calendar
-      ].includes(data.matter_type) && isTopTask
+      ![MatterType.timeCollect, MatterType.calendar].includes(
+        data.matter_type
+      ) && isTopTask
     )
   }, [data.matter_type, isTopTask])
 
@@ -211,13 +211,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const priorityLevelClass = useMemo(() => {
     switch (data?.priority_level) {
-      case ScheduleTaskConst.QuadrantValue.important_urgent: {
+      case QuadrantValue.important_urgent: {
         return styles.ImportantUrgent
       }
-      case ScheduleTaskConst.QuadrantValue.important_no_urgent: {
+      case QuadrantValue.important_no_urgent: {
         return styles.ImportantNoUrgent
       }
-      case ScheduleTaskConst.QuadrantValue.urgent_no_important: {
+      case QuadrantValue.urgent_no_important: {
         return styles.UrgentNoImportant
       }
       default:

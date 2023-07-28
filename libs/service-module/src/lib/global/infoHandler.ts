@@ -3,7 +3,7 @@ import { IContactDict } from '../store/types'
 import { IContactState, useContactStore } from '../store/useContactStore'
 import { useUserInfoStore } from '../store/useUserInfoStore'
 import { IUserInfoState } from '@flyele-nx/types'
-import { IHoliday, IUserInfo, IInteract } from '@flyele-nx/service'
+import { IHoliday, IUserInfo, IInteract } from '@flyele-nx/types'
 import { useHolidayStore } from '../store/useHolidayStore'
 import { LocalStore } from '@flyele-nx/utils'
 

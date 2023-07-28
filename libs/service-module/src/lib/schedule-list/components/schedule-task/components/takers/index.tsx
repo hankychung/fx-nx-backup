@@ -15,21 +15,15 @@ import { getAvatarsFromTakers } from '../../../../utils/task'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
 import { useScheduleStore } from '../../../../../store/useScheduleStore'
-import {
-  AuthType,
-  UsercApi,
-  ScheduleTaskConst,
-  AuthConst,
-  ProjectType,
-  Taker
-} from '@flyele-nx/service'
+import { AuthType, UsercApi, AuthConst, VipHandler } from '@flyele-nx/service'
+import { IBaseProjectInfo, Taker } from '@flyele-nx/types'
 import { useContactStore } from '../../../../../store/useContactStore'
 import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 import { globalNxController } from '../../../../../global/nxController'
 import { SIZE_TYPE_KEY } from '../../../../../global/types/channel/SIZE_TYPE'
 import { useMemoizedFn } from 'ahooks'
 import { contextMenuTool } from '../../../../../../index'
-import { VipTypeEnum } from '@flyele-nx/constant'
+import { MatterType, CATEGORY, IDENTITY } from '@flyele-nx/constant'
 
 const creatorIdentityCodes = [10801, 10802, 10804, 10810, 10811]
 
@@ -78,7 +72,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
 
   const isSmallTool = useMemo(() => {
-    return task.category === ScheduleTaskConst.CATEGORY.smallTool
+    return task.category === CATEGORY.smallTool
   }, [task.category])
 
   const isCreator = useMemo(() => {
@@ -97,7 +91,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   }, [task.workspace_id])
 
   // 项目详细
-  const projectInfo = useMemo<ProjectType.IBaseProjectInfo>(() => {
+  const projectInfo = useMemo<IBaseProjectInfo>(() => {
     return {
       project_id: projectId,
       workspace_id: workspaceId,
@@ -108,10 +102,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
   const notATask = useMemo(
     () =>
-      [
-        ScheduleTaskConst.MatterType.timeCollect,
-        ScheduleTaskConst.MatterType.calendar
-      ].includes(task.matter_type),
+      [MatterType.timeCollect, MatterType.calendar].includes(task.matter_type),
     [task.matter_type]
   )
 
@@ -279,7 +270,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         ?.map((taker) => {
           // 过滤掉创建非参与人
           if (
-            task.identity === ScheduleTaskConst.IDENTITY.matterDistribute &&
+            task.identity === IDENTITY.matterDistribute &&
             taker.taker_id === userId
           ) {
             return null
@@ -306,14 +297,16 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
       if (!id) return taker
 
+      const { isTeamVip, isVip } = VipHandler.checkVipType(contactDict[id])
+
       return {
         ...taker,
         pinyin: contactDict[id]?.pinyin || '',
         finish_time: taker?.finish_time || 0,
         is_view: taker?.is_view || 0,
         taker_id: id,
-        isVip: contactDict[id]?.vip_type === VipTypeEnum.Person,
-        isTeamVip: contactDict[id]?.vip_type === VipTypeEnum.Team
+        isVip,
+        isTeamVip
       }
     })
 

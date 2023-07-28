@@ -4,16 +4,15 @@ import {
   RepeatConfigRepeatType,
   HolidayState,
   LOOP_MATTER,
-  SensorCreateType
-} from './const'
-import { TagModel } from '../tag'
-import { TagWidgetColor } from '../tag/const'
-import { SPACE_TYPE } from '../space/const'
-import { PROJECT_STATE } from '../project/const'
-import { IBaseProjectInfo } from '../project'
-import { ScheduleTaskConst } from '../../../index'
-import { FlowOperateType, FlowRangeType } from '../workflow/const'
-import { ITaskFlowStepData } from '../workflow'
+  SensorCreateType,
+  TagWidgetColor,
+  SPACE_TYPE,
+  PROJECT_STATE,
+  FlowOperateType
+} from '@flyele-nx/constant'
+import { TagModel } from './tag'
+import { IBaseProjectInfo } from './project'
+import { ITaskFlowStepData } from './workflow'
 
 /**
  * proto.day_view.GetDayViewReply
@@ -844,7 +843,7 @@ export interface ICreateParams {
   files?: Array<{ id: string; name: string; origin: string; size: string }>
   is_checkbox?: 0 | 1 // 是否多选 0->否，1->是
   is_dispatch: 0 | 1 // 是否派发 0 -> 否，1 -> 是
-  matter_type: ScheduleTaskConst.MatterType // 任务类型 10701 -> 事项， 10702 -> 会议， 10703 -> 时间征集
+  matter_type: MatterType // 任务类型 10701 -> 事项， 10702 -> 会议， 10703 -> 时间征集
   remind_at?: IScheduleTask['remind_at']
   remind_user_id?: string
   reminder_time?: number[]

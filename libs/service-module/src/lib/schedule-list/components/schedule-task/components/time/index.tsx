@@ -1,5 +1,5 @@
 import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import cs from 'classnames'
 import { Tooltip } from 'antd'
 import {
@@ -25,6 +25,7 @@ import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 import { globalNxController } from '../../../../../global/nxController'
 import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
 import { contextMenuTool } from '../../../../../../index'
+import { MatterType } from '@flyele-nx/constant'
 
 interface IPROPTime {
   taskId: string
@@ -94,10 +95,10 @@ export const Time: React.FC<IPROPTime> = ({
     if (matterType === undefined) return false
 
     return [
-      ScheduleTaskConst.MatterType.timeCollect,
-      ScheduleTaskConst.MatterType.calendar,
-      ScheduleTaskConst.MatterType.meeting,
-      ScheduleTaskConst.MatterType.matter
+      MatterType.timeCollect,
+      MatterType.calendar,
+      MatterType.meeting,
+      MatterType.matter
     ].includes(matterType)
   }, [matterType])
 
@@ -219,7 +220,7 @@ export const Time: React.FC<IPROPTime> = ({
       // 作为创建人可以修改时间
       !isCreator &&
       // ((groupIdCtx && !task.dispatch_id) || memberIdCtx !== userId) &&
-      task.matter_type === ScheduleTaskConst.MatterType.matter &&
+      task.matter_type === MatterType.matter &&
       !task.takers?.find((taker) => taker.taker_id === userId)
     ) {
       globalNxController.showMsg({
@@ -264,9 +265,7 @@ export const Time: React.FC<IPROPTime> = ({
   const showTxt = useMemo(() => {
     return (
       (txt || getTimerStr) +
-      (ScheduleTaskConst.MatterType.calendar === matterType
-        ? ' 来自本地日历'
-        : '')
+      (MatterType.calendar === matterType ? ' 来自本地日历' : '')
     )
   }, [getTimerStr, matterType, txt])
 

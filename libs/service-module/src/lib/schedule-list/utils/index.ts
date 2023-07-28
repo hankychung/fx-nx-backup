@@ -1,8 +1,4 @@
-import {
-  ILocalTask,
-  IScheduleTask,
-  ScheduleTaskConst
-} from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
@@ -10,6 +6,7 @@ import { loopStuff } from './loop/loopStuff'
 import { useScheduleStore } from '../../store/useScheduleStore'
 import timeGetter from '../../global/timeGetter'
 import { resetState } from '../../store/utils/resetState'
+import { LOOP_MATTER_LABEL } from '@flyele-nx/constant'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
   compareVal: number
@@ -293,7 +290,7 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
   const { cycle, repeat_type, end_repeat_at } = task
 
   if (repeat_type) {
-    _obj.t_l = `${ScheduleTaskConst.LOOP_MATTER_LABEL[repeat_type as number]}`
+    _obj.t_l = `${LOOP_MATTER_LABEL[repeat_type as number]}`
 
     if (isAlwaysRepeat(end_repeat_at || 0)) {
       _obj.t_l += '、一直循环'

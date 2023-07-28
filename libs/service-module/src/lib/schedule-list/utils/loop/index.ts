@@ -1,4 +1,4 @@
-import { RepeatList } from '@flyele-nx/service'
+import { RepeatList } from '@flyele-nx/types'
 
 class LoopStore {
   private dict: {

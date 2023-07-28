@@ -8,7 +8,7 @@ import {
 } from './type'
 import { DayViewParamsProps, SqlStore } from '@flyele-nx/sql-store'
 import { Direction, FilterParamsProps } from '@flyele-nx/sql-store'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 import { SqlFilterSplitKeys, SqlFilterTimerkeys } from './const'
 
 let serviceWorker: Worker | undefined

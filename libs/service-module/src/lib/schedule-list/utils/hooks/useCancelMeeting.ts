@@ -2,11 +2,11 @@ import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { useScheduleStore } from '../../../store/useScheduleStore'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
-import { ScheduleTaskConst } from '@flyele-nx/service'
 import { TaskHandler } from '../taskHandler'
 import { globalNxController } from '../../../global/nxController'
 import PUB from '../../../global/types/pubsub'
 import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
+import { CANCEL_TASK_STATE } from '@flyele-nx/constant'
 
 /**
  * 用于退出代办的hook，外部给taskId，其余逻辑在这里完成
@@ -41,7 +41,7 @@ export const useCancelMeeting = ({
 
     const result = await cancelTask({
       dispatch_id,
-      state: ScheduleTaskConst.CANCEL_TASK_STATE.CANCEL_MEETING
+      state: CANCEL_TASK_STATE.CANCEL_MEETING
     })
     if (result) {
       globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
@@ -50,7 +50,7 @@ export const useCancelMeeting = ({
         task_id: taskId, // ↓ 需要更新的部分差量数据
         diffObj: {
           task_dispatch: {
-            state: ScheduleTaskConst.CANCEL_TASK_STATE.CANCEL_MEETING
+            state: CANCEL_TASK_STATE.CANCEL_MEETING
           }
         }
       })

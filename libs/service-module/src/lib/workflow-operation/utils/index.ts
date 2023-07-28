@@ -1,6 +1,7 @@
 import { IStepItem, OperateStep } from '../WorkFlowStep'
 import { IOperation } from '../types'
-import { IScheduleTask, IWorkflowStep } from '@flyele-nx/service'
+import { IWorkflowStep } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 
 export function curStepInfo(flowSteps: IWorkflowStep[], curStepId: string) {
   const targetIdx = flowSteps.findIndex((i) => i.id === curStepId)

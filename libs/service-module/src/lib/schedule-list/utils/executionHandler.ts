@@ -1,4 +1,4 @@
-import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import { produce } from 'immer'
 import { getKeyOfList } from './index'

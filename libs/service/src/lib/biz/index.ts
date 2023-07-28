@@ -1,6 +1,5 @@
 import { service } from '../service'
-import { IDayViewResponse } from '../typings/schedule'
-import { IInteract } from '../typings/taker'
+import { IDayViewResponse, IInteract } from '@flyele-nx/types'
 
 type TaskListType = 'history' | 'today' | 'future' | 'invite'
 

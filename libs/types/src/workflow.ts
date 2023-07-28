@@ -1,5 +1,5 @@
 // 工作流创建入参
-import { FlowOperateType, FlowRangeType, FlowState } from './const'
+import { FlowOperateType, FlowRangeType, FlowState } from '@flyele-nx/constant'
 
 export interface ITaskFlowStepData {
   application_flow_step_id: string

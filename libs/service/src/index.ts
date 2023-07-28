@@ -21,19 +21,7 @@ import {
   IVip
 } from './lib/typings'
 
-import {
-  IScheduleTask,
-  IRepeatConfig,
-  IHoliday,
-  Taker,
-  RepeatList,
-  ILocalTask
-} from './lib/typings/schedule'
-import * as ScheduleTaskConst from './lib/typings/schedule/const'
-import * as CreateTypeMap from './lib/typings/schedule/createTypeMap'
-
-import { IWorkflowStep, IUserStepInfo } from './lib/typings/workflow'
-import * as WorkflowConst from './lib/typings/workflow/const'
+import { IWorkflowStep, IUserStepInfo } from '@flyele-nx/types'
 
 // 协作人
 // import {
@@ -42,7 +30,6 @@ import * as WorkflowConst from './lib/typings/workflow/const'
 //   VipTypeEnum,
 //   EConCheckStatus
 // } from './lib/typings/taker'
-export * from './lib/typings/taker'
 
 // Tag
 import { TagModel, TagObjType } from './lib/typings/tag'
@@ -53,12 +40,7 @@ import * as AuthType from './lib/typings/auth'
 import * as AuthConst from './lib/typings/auth/const'
 
 // 空间
-import * as SpaceType from './lib/typings/space'
-import * as SpaceTypeConst from './lib/typings/space/const'
 import { workspaceApi } from './lib/workspace'
-
-// 项目
-import * as ProjectType from './lib/typings/project'
 
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
@@ -70,8 +52,6 @@ export * from './lib/env'
 export * from './lib/biz'
 export * from './lib/task'
 
-export * as ScheduleType from './lib/typings/schedule'
-
 export {
   service,
   SSe,
@@ -80,17 +60,11 @@ export {
   OrderSystemApi,
   TaskDispatchApi,
   OrderSystemConst,
-  ScheduleTaskConst,
-  CreateTypeMap,
   TagConst,
   LabelApi,
   workspaceApi,
   projectApi,
-  SpaceTypeConst,
-  AuthConst,
-  // VipTypeEnum,
-  // EConCheckStatus,
-  WorkflowConst
+  AuthConst
 }
 
 export type {
@@ -100,21 +74,13 @@ export type {
   IErrorResponse,
   IUserInfo,
   OrderSystemType,
-  IScheduleTask,
-  IRepeatConfig,
-  IHoliday,
-  Taker,
-  RepeatList,
   TagModel,
   TagObjType,
   // ITakerAndStatus,
   AuthType,
   IVip,
-  SpaceType,
-  ProjectType,
   IWorkflowStep,
-  IUserStepInfo,
-  ILocalTask
+  IUserStepInfo
 }
 
 export * from './lib/utils'

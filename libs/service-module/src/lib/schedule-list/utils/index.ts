@@ -1,4 +1,4 @@
-import { IScheduleTask } from '@flyele-nx/types'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import { timeGetter } from '@flyele-nx/utils'
 import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
@@ -271,6 +271,106 @@ function getInsertedFinishTasks(taskIds: string[]) {
   }
 }
 
+function setTime(target: Dayjs, mod: Dayjs) {
+  return target
+    .set('hour', mod.get('hour'))
+    .set('minute', mod.get('minute'))
+    .set('second', mod.get('second'))
+}
+
+function setDate(target: Dayjs, mod: Dayjs) {
+  return target
+    .set('year', mod.year())
+    .set('month', mod.month())
+    .set('date', mod.date())
+}
+
+function getModifyTime(
+  item: Pick<
+    ILocalTask,
+    'start_time' | 'end_time' | 'start_time_full_day' | 'end_time_full_day'
+  >,
+  date: Dayjs
+): {
+  start_time?: number
+  end_time?: number
+  start_time_full_day?: number
+  end_time_full_day?: number
+} {
+  const {
+    start_time = 0,
+    end_time = 0,
+    start_time_full_day,
+    end_time_full_day
+  } = item
+
+  const sDj = dayjs.unix(start_time)
+  const eDj = dayjs.unix(end_time)
+
+  // 区间时间
+  if (start_time && end_time) {
+    const range = eDj.diff(sDj, 'days')
+    const start_time = setTime(date, sDj).unix()
+    const end_time = setTime(date, eDj).add(range, 'day').unix()
+
+    return { start_time, end_time, start_time_full_day, end_time_full_day }
+  }
+
+  if (start_time) {
+    return {
+      start_time: setDate(sDj, date).unix()
+    }
+  }
+
+  if (end_time) {
+    return {
+      end_time: setDate(eDj, date).unix()
+    }
+  }
+
+  return {
+    start_time: date.unix(),
+    end_time: date.add(1, 'day').unix() - 1,
+    start_time_full_day: 2,
+    end_time_full_day: 2
+  }
+}
+
+function resetRemindUnix(
+  item: Pick<
+    ILocalTask,
+    'start_time' | 'end_time' | 'start_time_full_day' | 'end_time_full_day'
+  >
+): { remind_at: any } {
+  const { start_time, end_time, start_time_full_day, end_time_full_day } = item
+
+  const remind_at: any = {}
+
+  if (start_time) {
+    if (start_time_full_day === 1) {
+      // 具体时间，在开始时间提醒
+      remind_at.start_remind = [start_time]
+    } else {
+      // 全天，在开始当天9点提醒
+      remind_at.start_remind = [dayjs.unix(start_time).set('hour', 9).unix()]
+    }
+  }
+
+  if (end_time) {
+    if (end_time_full_day === 1) {
+      // 具体时间，在截止时间前15min提醒
+      remind_at.end_remind = [
+        dayjs.unix(end_time).subtract(15, 'minute').unix()
+      ]
+    } else if (!dayjs.unix(start_time!).isSame(dayjs.unix(end_time), 'date')) {
+      // 全天，且结束与开始不在同一天，在截至当天9点提醒
+      remind_at.end_remind = [dayjs.unix(end_time).set('hour', 9).unix()]
+    }
+  }
+
+  return { remind_at }
+}
+
 export {
   getKey,
   getChildrenDict,
@@ -283,5 +383,7 @@ export {
   getTaskIdsByDispatch,
   handleLogout,
   getInsertedFinishTasks,
-  getKeyOfList
+  getKeyOfList,
+  getModifyTime,
+  resetRemindUnix
 }

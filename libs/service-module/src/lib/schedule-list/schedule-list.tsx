@@ -18,6 +18,7 @@ import { useScheduleList } from './utils/hooks/useScheduleList'
 import { EmptyData } from './components/empty-data'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { QueryType } from '@flyele-nx/sql-store'
+import { Draggable } from 'react-beautiful-dnd'
 import { timeGetter } from '@flyele-nx/utils'
 
 const _ScheduleList: ForwardRefRenderFunction<
@@ -137,19 +138,26 @@ const _ScheduleList: ForwardRefRenderFunction<
           initialLoad={false}
           className={styles.scroller}
         >
-          {decentList.map((i) => (
+          {decentList.map((i, index) => (
             // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-            <ScheduleTask
-              date={date}
-              key={i}
-              taskKey={i}
-              topId={i}
-              curTime={dayjs().unix()}
-              isVipWin={isVipWin}
-              isBoard={isBoard}
-              isDarkMode={isDarkMode}
-              opacity={opacity}
-            />
+
+            <Draggable key={i} draggableId={`${i}-${date}`} index={index}>
+              {(provided, snapshot) => (
+                <ScheduleTask
+                  date={date}
+                  key={i}
+                  taskKey={i}
+                  topId={i}
+                  curTime={dayjs().unix()}
+                  isVipWin={isVipWin}
+                  isBoard={isBoard}
+                  isDarkMode={isDarkMode}
+                  style={provided.draggableProps.style}
+                  dragProvided={provided}
+                  opacity={opacity}
+                />
+              )}
+            </Draggable>
           ))}
         </InfiniteScroll>
       ) : (

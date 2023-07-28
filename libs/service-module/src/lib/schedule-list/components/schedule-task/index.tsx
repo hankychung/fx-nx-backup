@@ -51,6 +51,7 @@ export interface IProps {
   isVipWin?: boolean // 是否小挂件窗体
   isBoard?: boolean
   isTimeLine?: boolean
+  dragProvided?: any
   opacity?: boolean
 }
 
@@ -65,6 +66,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isVipWin = false,
   isBoard = false,
   isTimeLine = false,
+  dragProvided = {},
   opacity = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
@@ -232,7 +234,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   return (
     <div
-      ref={domRef}
+      ref={dragProvided ? dragProvided.innerRef : domRef}
+      {...dragProvided.draggableProps}
+      {...dragProvided.dragHandleProps}
       className={cs(styles.scheduleTaskRoot, {
         [styles.boardSchedule]: isBoard,
         [styles.priorityLevel]: isTopTask,

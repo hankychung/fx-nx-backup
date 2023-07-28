@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/types'
 import { IAction } from '../../../../../../context-menu/types'
-import { globalNxController } from '../../../../../../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
 import { MatterType } from '@flyele-nx/constant'
 
 export const useMenuSummary = ({ data }: { data: IScheduleTask }): IAction => {

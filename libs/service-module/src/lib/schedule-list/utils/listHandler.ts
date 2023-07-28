@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { ILocalTask } from '@flyele-nx/types'
-import { IState, useScheduleStore } from '../../store/useScheduleStore'
+import { IState, useScheduleStore, globalNxController } from '@flyele-nx/global-processor'
 import {
   getInsertedFinishTasks,
   getKey,
@@ -14,10 +14,9 @@ import { getDateOfToday } from './tools'
 import { IInitTodayList } from './initTodayList'
 import { DropResult } from 'react-beautiful-dnd'
 import dayjs from 'dayjs'
-import PUB from '../../global/types/pubsub'
 import { TaskHandler } from './taskHandler'
-import { globalNxController } from '../../global/nxController'
 import { TaskApi } from '@flyele-nx/service'
+import { Pub } from '@flyele-nx/constant'
 
 class ListHandler {
   // 完成事项
@@ -395,9 +394,9 @@ class ListHandler {
       newTask.ref_task_id
     ).catch(() => {
       console.log('kkk')
-      globalNxController.pubJsPublish(PUB.UPDATE_SCHEDULE, [target])
+      globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [target])
     })
-    globalNxController.pubJsPublish(PUB.UPDATE_SCHEDULE, [newTask])
+    globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [newTask])
   }
 }
 

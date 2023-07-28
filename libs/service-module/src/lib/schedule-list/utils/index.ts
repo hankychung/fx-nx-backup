@@ -1,37 +1,18 @@
 import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
+import { timeGetter } from '@flyele-nx/utils'
 import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
-import { useScheduleStore } from '../../store/useScheduleStore'
-import timeGetter from '../../global/timeGetter'
-import { resetState } from '../../store/utils/resetState'
+import { useScheduleStore, zustandUtils } from '@flyele-nx/global-processor'
 import { LOOP_MATTER_LABEL } from '@flyele-nx/constant'
 
-type IScheduleTaskWithCompareVal = IScheduleTask & {
-  compareVal: number
-}
+const { resetState, getDiffKeys, getKey, getKeyOfList, getSortedSchedule } =
+  zustandUtils
 
 interface IGetRepeatDelayTotalParams {
   rawTask?: IScheduleTask
   userId: string
-}
-
-function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
-  return i.repeat_id ? `${i.ref_task_id}-${i.repeat_id}` : i.ref_task_id
-}
-
-function getDiffKeys(arr: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>[]) {
-  return arr.reduce<{ keys: string[]; keysWithRepeatIds: string[] }>(
-    (pre, cur) => {
-      pre.keys.push(cur.ref_task_id)
-
-      pre.keysWithRepeatIds.push(getKey(cur))
-
-      return pre
-    },
-    { keys: [], keysWithRepeatIds: [] }
-  )
 }
 
 /**
@@ -175,110 +156,6 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
   return duringTask || futureStart || futureEnd
 }
 
-/**
- * 日程排序规则
- */
-function getSortedSchedule(params: { date: string; tasks: IScheduleTask[] }) {
-  const pin: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 今天有明确时间
-   * 1、今天某个时间点开始
-   * 2、今天某个时间点截止
-   */
-  const precise: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 今天无明确时间
-   * 1、历史开始，今天全天截止
-   * 2、今天全天
-   * 3、历史开始，未来截止
-   * 4、今天全天开始，未来截止
-   */
-  const unclear: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 已延期
-   * 1、有截止时间（包括全天），截止时间后未完成
-   */
-  const delay: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 流转到当天事项
-   * 1、历史开始，无截止
-   */
-  const startInHistory: IScheduleTaskWithCompareVal[] = []
-
-  const { date, tasks } = params
-
-  const theDate = dayjs(date)
-
-  const today = dayjs()
-
-  tasks.forEach((task) => {
-    const { start_time_full_day, end_time_full_day, finish_time, topmost_at } =
-      task
-    const { startTime, endTime } = getDecentTime(task)
-    const startDj = dayjs.unix(startTime)
-    const endDj = dayjs.unix(endTime)
-    const startFull = start_time_full_day === 2
-    const endFull = end_time_full_day === 2
-
-    // 置顶事项
-    if (topmost_at && !finish_time) {
-      pin.push({ ...task, compareVal: topmost_at })
-      return
-    }
-
-    // 延期事项
-    if (endTime && endDj.isBefore(today, 'date')) {
-      delay.push({ ...task, compareVal: endTime })
-      return
-    }
-
-    // 在该日期有明确时间
-    if (
-      (startDj.isSame(theDate, 'date') && !startFull) ||
-      (endDj.isSame(theDate, 'date') && !endFull)
-    ) {
-      precise.push({ ...task, compareVal: startTime || endTime })
-      return
-    }
-
-    // 无明确时间
-    if (startTime && endTime) {
-      unclear.push({ ...task, compareVal: endTime })
-      return
-    }
-
-    // 流转到该日期
-    startInHistory.push({ ...task, compareVal: startTime })
-  })
-
-  const all = [pin, precise, unclear, delay, startInHistory]
-
-  const result = all.reduce<string[]>((arr, tasks) => {
-    arr.push(...tasks.sort(sortFn).map((task) => task.ref_task_id))
-
-    return arr
-  }, [])
-
-  return result
-}
-
-const sortFn = (
-  a: IScheduleTaskWithCompareVal,
-  b: IScheduleTaskWithCompareVal
-) => {
-  if (a.compareVal === b.compareVal) {
-    return a.create_at - b.create_at
-  }
-
-  return a.topmost_at && !a.finish_time
-    ? b.compareVal - a.compareVal
-    : a.compareVal - b.compareVal
-}
-
 const getRepeatTxt = async (task?: IScheduleTask) => {
   const _obj = {
     t_l: '',
@@ -392,10 +269,6 @@ function getInsertedFinishTasks(taskIds: string[]) {
       .filter((t) => t.finish_time)
       .map((t) => t.ref_task_id)
   }
-}
-
-function getKeyOfList(task: ILocalTask) {
-  return task.finish_time ? getKey(task) : task.ref_task_id
 }
 
 function setTime(target: Dayjs, mod: Dayjs) {

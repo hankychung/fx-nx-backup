@@ -1,11 +1,12 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
 import { TaskHandler } from '../taskHandler'
-import { globalNxController } from '../../../global/nxController'
-import PUB from '../../../global/types/pubsub'
-import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
+import { Pub, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 import { CANCEL_TASK_STATE } from '@flyele-nx/constant'
 
 /**
@@ -44,9 +45,9 @@ export const useCancelMeeting = ({
       state: CANCEL_TASK_STATE.CANCEL_MEETING
     })
     if (result) {
-      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
+      globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, [taskId])
 
-      globalNxController.pubJsPublish(PUB.DB_INCREASE_01_READUX_AND_SQLITEDB, {
+      globalNxController.pubJsPublish(Pub.DB_INCREASE_01_READUX_AND_SQLITEDB, {
         task_id: taskId, // ↓ 需要更新的部分差量数据
         diffObj: {
           task_dispatch: {
@@ -65,7 +66,7 @@ export const useCancelMeeting = ({
       )
       TaskHandler.removeTasks([taskId])
     } else {
-      globalNxController.pubJsPublish(PUB.DB_INCREASE_02_UPDATE_FORCE, taskId)
+      globalNxController.pubJsPublish(Pub.DB_INCREASE_02_UPDATE_FORCE, taskId)
       globalNxController.showMsg({
         content: '取消失败',
         msgType: '错误',

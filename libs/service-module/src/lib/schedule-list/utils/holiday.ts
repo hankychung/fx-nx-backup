@@ -1,4 +1,4 @@
-import { useHolidayStore } from '../../store/useHolidayStore'
+import { useHolidayStore } from '@flyele-nx/global-processor'
 
 /**
  * 获取节假日

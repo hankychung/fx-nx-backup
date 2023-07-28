@@ -5,9 +5,13 @@ import { CheckIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
 import { TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
-import { globalNxController } from '../global/nxController'
-import PUB from '../global/types/pubsub'
-import { QuadrantValue, MatterType, QuadrantText } from '@flyele-nx/constant'
+import { globalNxController } from '@flyele-nx/global-processor'
+import {
+  QuadrantValue,
+  MatterType,
+  QuadrantText,
+  Pub
+} from '@flyele-nx/constant'
 
 interface Props {
   task_id: string
@@ -35,7 +39,7 @@ export const PriorityLevelPopper = (props: Props) => {
       .then(() => {
         globalNxController.showMsg({ content: '修改成功', msgType: '成功' })
         globalNxController.pubJsPublish(
-          PUB.DB_INCREASE_01_READUX_AND_SQLITEDB,
+          Pub.DB_INCREASE_01_READUX_AND_SQLITEDB,
           {
             task_id,
             diffObj: {

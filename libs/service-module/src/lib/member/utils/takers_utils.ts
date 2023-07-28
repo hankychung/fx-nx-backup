@@ -1,5 +1,4 @@
-import { useContactStore } from '../../store/useContactStore'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
+import { useContactStore, useUserInfoStore } from '@flyele-nx/global-processor'
 import { Taker } from '@flyele-nx/types'
 import {
   MATTER_CREATOR_STATE,

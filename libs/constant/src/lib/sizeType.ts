@@ -1,3 +1,8 @@
+interface ISize {
+  w: number
+  h: number
+}
+
 export enum SIZE_TYPE_KEY {
   时间选择 = 'time-selector',
   会议的时间选择 = 'meeting-time-selector',
@@ -7,11 +12,6 @@ export enum SIZE_TYPE_KEY {
   邀请协作人 = 'invite_taker',
   多端提醒 = 'reminder_multiend',
   续费弹窗 = 'pay_modal'
-}
-
-export interface ISize {
-  w: number
-  h: number
 }
 
 export const SIZE_CHOICE: { [key: string]: ISize } = {

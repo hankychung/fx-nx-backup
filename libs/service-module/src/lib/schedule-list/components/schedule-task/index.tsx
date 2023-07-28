@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi } from '@flyele-nx/service'
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
@@ -33,9 +33,12 @@ import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
 import { contextMenuTool } from '../../../../index'
-import { Enter_page_detail } from '../../../global/types/sensor/matter'
-import { globalNxController } from '../../../global/nxController'
-import { MatterType, QuadrantValue } from '@flyele-nx/constant'
+import { globalNxController } from '@flyele-nx/global-processor'
+import {
+  MatterType,
+  QuadrantValue,
+  Enter_page_detail
+} from '@flyele-nx/constant'
 
 export interface IProps {
   taskKey: string
@@ -246,7 +249,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       style={{
         backgroundColor: opacity
           ? isDarkMode
-            ? 'rgba(59, 62, 75, 0.3)'
+            ? 'rgba(59, 62, 75, 0.1)'
             : 'rgba(255, 255, 255, 0.1)'
           : isDarkMode
           ? '#3b3e4b'
@@ -310,7 +313,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     mountNode={() => document.body}
                     isDynamic
                     wrapClassName={cs(styles.title, {
-                      [styles.titleDarkMode]: isDarkMode
+                      [styles.titleDarkMode]: isDarkMode && !opacity
                     })}
                     text={data.title || ''}
                   />

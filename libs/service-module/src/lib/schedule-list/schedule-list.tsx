@@ -12,14 +12,14 @@ import { ScheduleTask } from './components/schedule-task'
 import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
 import { ListHandler } from './utils/listHandler'
-import timeGetter from '../global/timeGetter'
 import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from './types'
 import { useScheduleList } from './utils/hooks/useScheduleList'
 import { EmptyData } from './components/empty-data'
-import { globalNxController } from '../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
 import { QueryType } from '@flyele-nx/sql-store'
 import { Draggable } from 'react-beautiful-dnd'
+import { timeGetter } from '@flyele-nx/utils'
 
 const _ScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,

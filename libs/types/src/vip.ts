@@ -21,3 +21,50 @@ export interface IVip {
   end_time?: number
   recently_type?: 1 | 2 | undefined
 }
+
+export interface ITabs {
+  key: string
+  title: string
+  clickFunc: () => void
+  contextMenuTab: () => void
+  contextMenuTxt: string
+  contextMenuTo: () => void
+  contextMenuMerge: () => void
+}
+
+export interface IOption {
+  type: string
+  pendantCut: string
+  tabArr?: string[]
+}
+
+export interface Ipos {
+  x: number
+  y: number
+}
+export interface IWideHigh {
+  MINI: { w: number; h: number }
+  NOW_VIEW: { w: number; h: number }
+  MONTH_VIEW: { w: number; h: number }
+}
+export interface IlastScreenRate {
+  w: number
+  h: number
+}
+export interface ISettings {
+  isOpen: boolean
+  theme: string
+  isFixed: boolean
+  isAlwaysTop: boolean
+  pos: Ipos
+  lastScreenRate: IlastScreenRate
+  lastScreenNum: number
+  pendantCut: string
+  wideHigh: IWideHigh
+  isMerge: boolean
+  opacity: number
+  opacityFonts: number
+  tabArr: string[]
+  isMini: boolean
+  isShrink: boolean
+}

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/types'
 import { IAction } from '../../../../../../context-menu/types'
-import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
+import { useUserInfoStore } from '@flyele-nx/global-processor'
 
 /**
  * 取消相关hooks

@@ -1,10 +1,12 @@
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask } from '@flyele-nx/types'
-import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
-import { globalNxController } from '../../../../../../global/nxController'
-import timeGetter from '../../../../../../global/timeGetter'
+import {
+  useUserInfoStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { MatterType } from '@flyele-nx/constant'
+import { timeGetter } from '@flyele-nx/utils'
 
 export const useMenuSelectTime = ({
   data

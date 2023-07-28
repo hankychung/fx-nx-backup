@@ -32,12 +32,13 @@ import {
   TaskCheckIcon,
   UncheckIcon
 } from '@flyele-nx/icon'
-import { useContactStore } from '../store/useContactStore'
-import { useUserInfoStore } from '../store/useUserInfoStore'
-import { globalNxController } from '../global/nxController'
-import { useScheduleStore } from '../store/useScheduleStore'
-import { SIZE_TYPE_KEY } from '../global/types/channel/SIZE_TYPE'
-import { MatterType, FlowOperateType } from '@flyele-nx/constant'
+import {
+  useContactStore,
+  useUserInfoStore,
+  globalNxController,
+  useScheduleStore
+} from '@flyele-nx/global-processor'
+import { MatterType, FlowOperateType, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 
 const { TextArea } = Input
 

@@ -7,15 +7,18 @@ import { cloneDeep, uniqBy } from 'lodash'
 import style from './index.module.scss'
 import { LabelApi, TagObjType, TagConst } from '@flyele-nx/service'
 import { IScheduleTask } from '@flyele-nx/types'
-import { globalNxController } from '../../global/nxController'
-import PUB from '../../global/types/pubsub'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
 import {
+  globalNxController,
+  useUserInfoStore
+} from '@flyele-nx/global-processor'
+
+import {
+  MatterTypeLabel,
+  Pub,
   EditTagType,
   MatterStatus,
   PeopleType
-} from '../../global/types/sensor/matter'
-import { MatterTypeLabel } from '@flyele-nx/constant'
+} from '@flyele-nx/constant'
 
 interface ITagContent {
   data: Pick<
@@ -147,7 +150,7 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
               }
             }
 
-            globalNxController.pubJsPublish(PUB.UPDATE_TAGS, {
+            globalNxController.pubJsPublish(Pub.UPDATE_TAGS, {
               task_id: ref_task_id,
               tags: targetTags
             })

@@ -1,9 +1,11 @@
 import { QueryType } from '@flyele-nx/sql-store'
-import { globalNxController } from '../../global/nxController'
-import { useScheduleStore } from '../../store/useScheduleStore'
-import timeGetter from '../../global/timeGetter'
+import {
+  globalNxController,
+  useScheduleStore
+} from '@flyele-nx/global-processor'
 import dayjs from 'dayjs'
 import { ILocalTask } from '@flyele-nx/types'
+import { timeGetter } from '@flyele-nx/utils'
 
 export interface IInitTodayList {
   tasks: ILocalTask[]

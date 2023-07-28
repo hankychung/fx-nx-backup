@@ -1,11 +1,14 @@
 import { produce } from 'immer'
-import { useScheduleStore, IState } from '../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  IState,
+  useUserInfoStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { ILocalTask } from '@flyele-nx/types'
 import { ExecutionHandler } from './executionHandler'
-import { globalNxController } from '../../global/nxController'
 
 interface IReloadTasksParams {
   task: ILocalTask[]

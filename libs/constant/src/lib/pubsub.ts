@@ -1,4 +1,4 @@
-enum Pubs {
+enum Pub {
   // 专门用来测试用的
   TEST_PUBSUB_EVENT = 'TEST_PUBSUB_EVENT',
 
@@ -649,4 +649,4 @@ enum Pubs {
   REFETCH_DATAREPORT_UPDATE_LIST = 'REFETCH_DATAREPORT_UPDATE_LIST'
 }
 
-export default Pubs
+export { Pub }

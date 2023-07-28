@@ -10,7 +10,7 @@ import TagAutoBar from '../../../../../tag/tag-auto-bar'
 import TagContent from '../../../../../tag/tag-content'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
-import { useScheduleStore } from '../../../../../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 import { contextMenuTool } from '../../../../../../index'
 
 interface IPROPTags {

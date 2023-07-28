@@ -54,7 +54,7 @@ export {
 
 export * from './lib/map-svg/type/props'
 
-export * from './lib/global'
+export * from '@flyele-nx/global-processor'
 
 export const SMobjectiveApi = NxObjectiveApi
 
@@ -64,6 +64,6 @@ export const updateNxToken = service.updateToken.bind(service)
 
 export const registerPaymentInit = init
 
-export * from './lib/store/useUserInfoStore'
+// export * from './lib/store/useUserInfoStore'
 
-export * from './lib/store/types'
+// export * from './lib/store/types'

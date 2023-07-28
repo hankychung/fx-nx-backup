@@ -1,4 +1,4 @@
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 import { useRef, useState } from 'react'
 
 interface IProps {

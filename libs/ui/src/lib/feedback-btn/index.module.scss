@@ -1,0 +1,18 @@
+.btn {
+  display: flex;
+  align-items: center;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+
+  &__icon {
+    display: flex;
+    height: 14px;
+    width: 14px;
+    margin-right: 5px;
+  }
+
+  &__text {
+    color: #b4b4b4;
+    font-size: 13px;
+  }
+}

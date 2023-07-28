@@ -29,7 +29,15 @@ const _AllScheduleList: ForwardRefRenderFunction<
   IScheduleListRef,
   ScheduleListProps
 > = (
-  { date, isFinished, isVipWin = false, isBoard, overlayClassName, isDarkMode },
+  {
+    date,
+    isFinished,
+    isVipWin = false,
+    isBoard,
+    overlayClassName,
+    isDarkMode,
+    opacity
+  },
   ref
 ) => {
   const {
@@ -120,6 +128,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
             isVipWin={isVipWin}
             isBoard={isBoard}
             isDarkMode={isDarkMode}
+            opacity={opacity}
           />
         ))}
 
@@ -153,6 +162,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
                 isVipWin={isVipWin}
                 isBoard={isBoard}
                 isDarkMode={isDarkMode}
+                opacity={opacity}
               />
             ))}
         </>

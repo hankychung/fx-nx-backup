@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
-import { IVip, SpaceType, VipTypeEnum } from '@flyele-nx/service'
+import { IVip, IBasicSpace } from '@flyele-nx/types'
 import duration from 'dayjs/plugin/duration'
+import { VipTypeEnum } from '@flyele-nx/constant'
 dayjs.extend(duration)
 
 export class UserInfoUtils {
@@ -68,7 +69,7 @@ export class UserInfoUtils {
   // 判断是否有会员 和 有一些专业版空间
   static getDiamond(
     vip: IVip,
-    list: SpaceType.IBasicSpace[]
+    list: IBasicSpace[]
   ): { isVip: boolean; hasProSpace: boolean } {
     const _isVip = UserInfoUtils.vipCheck(vip)
     const _hasProSpace = list.some((item) => {
@@ -140,7 +141,7 @@ export class UserInfoUtils {
   /**
    * 判断 有多少条基础版 、专业版
    * **/
-  static getSpaceCardInfo(list: SpaceType.IBasicSpace[]): {
+  static getSpaceCardInfo(list: IBasicSpace[]): {
     pro: number
     base: number
   } {

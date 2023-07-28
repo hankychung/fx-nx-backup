@@ -1,5 +1,5 @@
 import { service } from '../service'
-import { IDayViewResponse } from '../typings/schedule'
+import { IDayViewResponse, IInteract } from '@flyele-nx/types'
 
 type TaskListType = 'history' | 'today' | 'future' | 'invite'
 
@@ -39,6 +39,14 @@ class Biz {
     })
 
     return res
+  }
+
+  async getInteracts() {
+    const res = await service.get<IInteract[]>({
+      url: `${this.prefix}/user/interacts`
+    })
+
+    return res.data
   }
 }
 

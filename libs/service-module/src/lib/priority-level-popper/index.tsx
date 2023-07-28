@@ -3,67 +3,66 @@ import { FlyBasePopper } from '@flyele/flyele-components'
 import { getQuadrantBeforeIcon } from './hook/useQuadrantBefore'
 import { CheckIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
-import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
+import { TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { globalNxController } from '../global/nxController'
 import PUB from '../global/types/pubsub'
+import { QuadrantValue, MatterType, QuadrantText } from '@flyele-nx/constant'
 
 interface Props {
   task_id: string
-  priority_level: ScheduleTaskConst.QuadrantValue
-  matter_type: ScheduleTaskConst.MatterType
+  priority_level: QuadrantValue
+  matter_type: MatterType
   close?: () => void
-  onChange?: (level: ScheduleTaskConst.QuadrantValue) => void
+  onChange?: (level: QuadrantValue) => void
 }
 
 const QuadrantColor = {
-  [ScheduleTaskConst.QuadrantValue.important_urgent]: '#E65454',
-  [ScheduleTaskConst.QuadrantValue.important_no_urgent]: '#E69448',
-  [ScheduleTaskConst.QuadrantValue.urgent_no_important]: '#7E7FF8',
-  [ScheduleTaskConst.QuadrantValue.no_important_no_urgent]: '#989F9F'
+  [QuadrantValue.important_urgent]: '#E65454',
+  [QuadrantValue.important_no_urgent]: '#E69448',
+  [QuadrantValue.urgent_no_important]: '#7E7FF8',
+  [QuadrantValue.no_important_no_urgent]: '#989F9F'
 }
 
 export const PriorityLevelPopper = (props: Props) => {
   const { task_id, priority_level, matter_type, close, onChange } = props
 
-  const changeLevel = useMemoizedFn(
-    (level: ScheduleTaskConst.QuadrantValue) => {
-      TaskApi.updateTask(
-        { priority_level: level, matter_type: Number(matter_type) },
-        task_id
-      )
-        .then(() => {
-          globalNxController.showMsg({ content: '修改成功', msgType: '成功' })
-          globalNxController.pubJsPublish(
-            PUB.DB_INCREASE_01_READUX_AND_SQLITEDB,
-            {
-              task_id,
-              diffObj: {
-                task: {
-                  priority_level: level
-                }
-              },
-              type: 'updateDetail'
-            }
-          )
-          onChange?.(level)
-        })
-        .catch(() => {
-          globalNxController.showMsg({ content: '修改失败', msgType: '错误' })
-        })
-        .finally(() => {
-          close?.()
-        })
-    }
-  )
+  const changeLevel = useMemoizedFn((level: QuadrantValue) => {
+    TaskApi.updateTask(
+      { priority_level: level, matter_type: Number(matter_type) },
+      task_id
+    )
+      .then(() => {
+        globalNxController.showMsg({ content: '修改成功', msgType: '成功' })
+        globalNxController.pubJsPublish(
+          PUB.DB_INCREASE_01_READUX_AND_SQLITEDB,
+          {
+            task_id,
+            diffObj: {
+              task: {
+                priority_level: level
+              }
+            },
+            type: 'updateDetail'
+          }
+        )
+        onChange?.(level)
+      })
+      .catch(() => {
+        globalNxController.showMsg({ content: '修改失败', msgType: '错误' })
+      })
+      .finally(() => {
+        close?.()
+      })
+  })
 
   const PriorityLevelMenu = useMemo(() => {
     return (
       <div className={styles.PriorityLevelPopper}>
-        {Object.entries(ScheduleTaskConst.QuadrantText)
+        {Object.entries(QuadrantText)
           .reverse()
           .map(([key, value]) => {
-            const level = Number(key) as ScheduleTaskConst.QuadrantValue
+            const level = Number(key) as QuadrantValue
 
             return (
               <div

@@ -1,24 +1,39 @@
-import { timeGetter } from '@flyele-nx/utils'
-import { AllScheduleList } from '@flyele-nx/service-module'
-import dayjs from 'dayjs'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { initCacheWorker } from '../../utils/initCacheWorker'
+import { BoardHeader } from './components/header'
+import { Outlet } from 'react-router-dom'
+import style from './index.module.scss'
+import { useUserInfoStore } from '@flyele-nx/service-module'
+import { LocalStore } from '@flyele-nx/utils'
+import { initInteract } from '../../utils/initInteract'
 
 const Board: React.FC = () => {
-  timeGetter.getDate()
+  const isInit = useRef(false)
 
   useEffect(() => {
-    // TODO: fix it
+    if (isInit.current) return
+
+    isInit.current = true
+
+    const userId =
+      useUserInfoStore.getState().userInfo.user_id ||
+      LocalStore.getUserInfo()?.user_id
+
+    if (!userId) return
+
     initCacheWorker({
-      userId: '1113658170015849'
+      userId
     })
+
+    initInteract()
   }, [])
 
   return (
-    <div>
-      <AllScheduleList
-        date={dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')}
-      />
+    <div className={style.board}>
+      <BoardHeader />
+      <div className={style.wrapper}>
+        <Outlet />
+      </div>
     </div>
   )
 }

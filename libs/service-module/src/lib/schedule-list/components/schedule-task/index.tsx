@@ -1,4 +1,4 @@
-import React, {
+import {
   FC,
   memo,
   useMemo,
@@ -8,7 +8,7 @@ import React, {
   MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
-import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
+import { TaskApi } from '@flyele-nx/service'
 import { useScheduleStore } from '../../../store/useScheduleStore'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
@@ -35,6 +35,7 @@ import { ChildrenTask } from './children-task'
 import { contextMenuTool } from '../../../../index'
 import { Enter_page_detail } from '../../../global/types/sensor/matter'
 import { globalNxController } from '../../../global/nxController'
+import { MatterType, QuadrantValue } from '@flyele-nx/constant'
 
 export interface IProps {
   taskKey: string
@@ -48,6 +49,7 @@ export interface IProps {
   isBoard?: boolean
   isTimeLine?: boolean
   dragProvided?: any
+  opacity?: boolean
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -61,7 +63,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isVipWin = false,
   isBoard = false,
   isTimeLine = false,
-  dragProvided = {}
+  dragProvided = {},
+  opacity = false
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -106,10 +109,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   // 如果以后还有其他条件的话往这上面拼
   const isShowMenu = useMemo(() => {
     return (
-      ![
-        ScheduleTaskConst.MatterType.timeCollect,
-        ScheduleTaskConst.MatterType.calendar
-      ].includes(data.matter_type) && isTopTask
+      ![MatterType.timeCollect, MatterType.calendar].includes(
+        data.matter_type
+      ) && isTopTask
     )
   }, [data.matter_type, isTopTask])
 
@@ -132,11 +134,12 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         taskId: ref_task_id
       })
 
-      const queryChildren = await globalNxController.getDayView({
-        parentId: `${data.parent_id ? `${data.parent_id},` : ''}${ref_task_id}`
-      })
+      // TODO: 中台查询子事项数据有偏差, 调用旧借口处理
+      // const queryChildren = await globalNxController.getDayView({
+      //   parentId: `${data.parent_id ? `${data.parent_id},` : ''}${ref_task_id}`
+      // })
 
-      console.log('@querychildren', queryChildren, tasks)
+      // console.log('@querychildren', queryChildren, tasks)
 
       const childrenDict = getChildrenDict({
         tasks,
@@ -210,13 +213,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const priorityLevelClass = useMemo(() => {
     switch (data?.priority_level) {
-      case ScheduleTaskConst.QuadrantValue.important_urgent: {
+      case QuadrantValue.important_urgent: {
         return styles.ImportantUrgent
       }
-      case ScheduleTaskConst.QuadrantValue.important_no_urgent: {
+      case QuadrantValue.important_no_urgent: {
         return styles.ImportantNoUrgent
       }
-      case ScheduleTaskConst.QuadrantValue.urgent_no_important: {
+      case QuadrantValue.urgent_no_important: {
         return styles.UrgentNoImportant
       }
       default:
@@ -236,10 +239,18 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode
+        [styles.darkMode]: isDarkMode,
+        [styles.darkOpacityHover]: isDarkMode && opacity,
+        [styles.whiteOpacityHover]: !isDarkMode && opacity
       })}
       style={{
-        background: isDarkMode ? '#3b3e4b' : '#fff',
+        backgroundColor: opacity
+          ? isDarkMode
+            ? 'rgba(59, 62, 75, 0.3)'
+            : 'rgba(255, 255, 255, 0.1)'
+          : isDarkMode
+          ? '#3b3e4b'
+          : '#fff',
         ...style
       }}
       data-id={taskKey}
@@ -248,8 +259,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     >
       <div
         className={cs({
-          [styles.topHover]: !isTimeLine,
-          [styles.darkModeHover]: isDarkMode,
+          [styles.topHover]: !isTimeLine && !opacity,
+          [styles.darkModeHover]: isDarkMode && !opacity,
           [styles.remind]: isRemind,
           [styles.complexSchedulePadding]: !isBoard && !isTimeLine,
           [styles.boardSchedulePadding]: isBoard,
@@ -263,10 +274,20 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         )}
 
-        {!isSimple && !isTimeLine && <Workflow taskId={taskKey} />}
+        {!isSimple && !isTimeLine && (
+          <Workflow
+            taskId={taskKey}
+            opacity={opacity}
+            isDarkMode={isDarkMode}
+          />
+        )}
 
         {(!isSimple || isTimeLine) && (
-          <ParentInfo taskId={taskKey} isDarkMode />
+          <ParentInfo
+            taskId={taskKey}
+            isDarkMode={isDarkMode}
+            opacity={opacity}
+          />
         )}
 
         <div className={styles.scheduleInfo}>
@@ -275,7 +296,16 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
             <StatusBox task={data} isVipWin={isVipWin} />
             <div className={styles.main}>
               <div className={styles.head}>
-                <div className={styles.headLeft}>
+                <div
+                  className={styles.headLeft}
+                  style={{
+                    color: opacity
+                      ? isDarkMode
+                        ? 'rgba(255, 255, 255, 0.8)'
+                        : 'rgba(51, 51, 51, 0.8)'
+                      : ''
+                  }}
+                >
                   <FlyTextTooltip
                     mountNode={() => document.body}
                     isDynamic
@@ -315,6 +345,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         dateStr={date}
                         isDarkMode={isDarkMode}
                         isTimeLine={isTimeLine}
+                        opacity={opacity}
                       />
                       {!isBoard && !isTimeLine && (
                         <Tags taskId={taskKey} wrapClassName={styles.tags} />

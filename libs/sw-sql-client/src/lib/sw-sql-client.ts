@@ -8,7 +8,7 @@ import {
 } from './type'
 import { DayViewParamsProps, SqlStore } from '@flyele-nx/sql-store'
 import { Direction, FilterParamsProps } from '@flyele-nx/sql-store'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 import { SqlFilterSplitKeys, SqlFilterTimerkeys } from './const'
 
 let serviceWorker: Worker | undefined
@@ -33,16 +33,12 @@ function promiseWorkerMessage<
         return reject('ERROR, serviceWorker is not init')
       }
 
-      console.log('promiseWorkerMessage', serviceWorker)
-
       const postUid = `${key}-${String(Math.floor(Math.random() * 100000000))}`
 
       const callBack = ({ data: res }: MessageEvent<WorkerBack<res>>) => {
         const { code, uid, data } = res
 
         if (uid !== postUid) return
-
-        console.log('client get ->', res)
 
         serviceWorker?.removeEventListener('message', callBack)
 

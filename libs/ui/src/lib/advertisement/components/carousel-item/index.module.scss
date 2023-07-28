@@ -1,0 +1,31 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  header {
+    text-align: center;
+
+    .title {
+      margin-top: 45px;
+      font-size: 24px;
+      line-height: 1.5;
+      color: #004841;
+      font-weight: bold;
+    }
+
+    .sub_title {
+      margin-top: 14px;
+      font-size: 15px;
+      color: rgba(6, 6, 6, 0.45);
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  img {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+  }
+}

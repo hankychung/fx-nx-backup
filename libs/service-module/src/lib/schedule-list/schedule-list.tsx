@@ -32,7 +32,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     isBoard,
     // getFinishListTotal,
     overlayClassName,
-    isDarkMode
+    isDarkMode,
+    opacity
   },
   ref
 ) => {
@@ -125,7 +126,7 @@ const _ScheduleList: ForwardRefRenderFunction<
   return (
     <div
       className={classNames(styles['container'], overlayClassName)}
-      style={{ backgroundColor: isDarkMode ? 'unset' : '#f4f4f4' }}
+      style={{ backgroundColor: isDarkMode ? 'unset' : '#F6F8FA' }}
     >
       {(decentList ?? []).length ? (
         <InfiniteScroll
@@ -153,6 +154,7 @@ const _ScheduleList: ForwardRefRenderFunction<
                   isDarkMode={isDarkMode}
                   style={provided.draggableProps.style}
                   dragProvided={provided}
+                  opacity={opacity}
                 />
               )}
             </Draggable>

@@ -8,16 +8,13 @@ import {
 } from '@flyele/flyele-components'
 import { useMemoizedFn, useRequest } from 'ahooks'
 import style from './index.module.scss'
-import {
-  SpaceType,
-  SpaceTypeConst,
-  projectApi,
-  workspaceApi
-} from '@flyele-nx/service'
+import { IBasicSpace } from '@flyele-nx/types'
+import { projectApi, workspaceApi } from '@flyele-nx/service'
 import { SpaceAvatar } from '@flyele-nx/ui'
 import CustomerServicesModal from '../customer-services-modal'
 import { Close, CustomerServiceIcon, WarmingGrayIcon } from '@flyele-nx/icon'
 import EmptyImage from '../../assets/project-lure/empty.png'
+import { SpaceMemberType } from '@flyele-nx/constant'
 
 interface IProps {
   visible: boolean
@@ -25,19 +22,18 @@ interface IProps {
   workspaceId: string
   handleClose?: () => void
   onCreateSpace?: (cb: () => void) => void
-  onImport?: (item: SpaceType.IBasicSpace) => void
+  onImport?: (item: IBasicSpace) => void
 }
 
 export const ProjectLure = (props: IProps) => {
   const { visible, handleClose, onImport, onCreateSpace, projectId } = props
-  const [list, setList] = useState<SpaceType.IBasicSpace[]>([])
+  const [list, setList] = useState<IBasicSpace[]>([])
 
   const getList = useMemoizedFn(async () => {
     const { data } = await workspaceApi.getSpaceList({})
 
     const list = (data.data_list ?? []).filter(
-      (i) =>
-        i.member_type === SpaceTypeConst.SpaceMemberType.SPACE && i.level > 1
+      (i) => i.member_type === SpaceMemberType.SPACE && i.level > 1
     )
 
     setList(list)

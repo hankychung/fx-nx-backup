@@ -1,4 +1,4 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 
 export type IOperation = 'pass' | 'complete' | 'handle'
 

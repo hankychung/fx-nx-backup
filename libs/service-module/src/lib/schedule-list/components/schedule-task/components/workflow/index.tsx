@@ -9,11 +9,13 @@ import { RepeatIcon, WorkflowBlueIcon } from '@flyele-nx/icon'
 interface IPROPWorkflow {
   taskId: string
   isDarkMode?: boolean
+  opacity?: boolean
 }
 
 export const Workflow: React.FC<IPROPWorkflow> = ({
   taskId,
-  isDarkMode = false
+  isDarkMode = false,
+  opacity
 }) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const [objTxt, setObjTxt] = useState<{ t_l: string; t_r: string }>({
@@ -66,7 +68,12 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
   }
 
   return (
-    <div className={cs(styles.workflow, { [styles.darkMode]: isDarkMode })}>
+    <div
+      className={cs(styles.workflow, { [styles.darkMode]: isDarkMode })}
+      style={{
+        backgroundColor: opacity ? 'unset' : isDarkMode ? '#383B48' : '#fafafa'
+      }}
+    >
       {isFlow && (
         <div className={cs(styles.icon)}>
           <WorkflowBlueIcon width={16} height={16} />
@@ -77,7 +84,20 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
           <RepeatIcon width={16} height={16} />
         </div>
       )}
-      <span className={styles.appName}>{objTxt.t_l}</span>
+      <span
+        className={styles.appName}
+        style={{
+          color: opacity
+            ? isDarkMode
+              ? 'rgba(255, 255, 255, 0.8)'
+              : 'rgba(51, 51, 51, 0.6)'
+            : isDarkMode
+            ? '#92929d'
+            : '#8f8f8f'
+        }}
+      >
+        {objTxt.t_l}
+      </span>
       <strong className={cs(styles.currentStep, { [styles.blue]: isFlow })}>
         {objTxt.t_r}
       </strong>

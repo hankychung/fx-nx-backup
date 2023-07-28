@@ -1,9 +1,10 @@
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
 import { globalNxController } from '../../../../../../global/nxController'
 import timeGetter from '../../../../../../global/timeGetter'
+import { MatterType } from '@flyele-nx/constant'
 
 export const useMenuSelectTime = ({
   data
@@ -22,7 +23,7 @@ export const useMenuSelectTime = ({
 
     // 如果是已经开始的会议
     if (
-      matterType === ScheduleTaskConst.MatterType.meeting &&
+      matterType === MatterType.meeting &&
       data.start_time &&
       (await timeGetter.getDate()) >= data.start_time
     ) {
@@ -37,10 +38,10 @@ export const useMenuSelectTime = ({
     if (data.finish_time) {
       let content = ''
 
-      if (matterType === ScheduleTaskConst.MatterType.meeting) {
-        content = `${ScheduleTaskConst.MatterType[matterType]}已结束，无法修改`
+      if (matterType === MatterType.meeting) {
+        content = `${MatterType[matterType]}已结束，无法修改`
       } else {
-        content = `${ScheduleTaskConst.MatterType[matterType]}已完成，无法修改`
+        content = `${MatterType[matterType]}已完成，无法修改`
       }
 
       globalNxController.showMsg({

@@ -26,9 +26,11 @@
       "@flyele-nx/sql-store": ["libs/sql-store/src/index.ts"],
       "@flyele-nx/sw-sql": ["libs/sw-sql/src/index.ts"],
       "@flyele-nx/sw-sql-client": ["libs/sw-sql-client/src/index.ts"],
+      "@flyele-nx/types": ["libs/types/src/index.ts"],
       "@flyele-nx/ui": ["libs/ui/src/index.ts"],
       "@flyele-nx/utils": ["libs/utils/src/index.ts"],
-      "@flyele-nx/ws": ["libs/ws/src/index.ts"]
+      "@flyele-nx/ws": ["libs/ws/src/index.ts"],
+      "@flyele-nx/zustand-store": ["libs/zustand-store/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

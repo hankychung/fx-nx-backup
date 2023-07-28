@@ -38,7 +38,7 @@ const PayQrCode = ({
 }) => {
   const [qrCode, setQrCode] = useState('')
   const isInit = useRef(false)
-  const domain = envStore.getDoMain()
+  const domain = envStore.getPayHost()
   const memberList: string[] = [
     useUserInfoStore((state) => state.userInfo.user_id)
   ]

@@ -1,10 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
-import {
-  IScheduleTask,
-  Taker,
-  ScheduleTaskConst,
-  RepeatList
-} from '@flyele-nx/service'
+import { IScheduleTask, Taker, RepeatList } from '@flyele-nx/types'
+import { MatterType } from '@flyele-nx/constant'
 
 export type MatterTimeSectionType = {
   start_time?: number // 开始时间
@@ -425,15 +421,15 @@ export const getScheduleDate = ({
   }
 
   switch (matterType) {
-    case ScheduleTaskConst.MatterType.calendar:
-    case ScheduleTaskConst.MatterType.matter:
-    case ScheduleTaskConst.MatterType.todo: {
+    case MatterType.calendar:
+    case MatterType.matter:
+    case MatterType.todo: {
       // 已完成
       if (finishTime) {
         const { cycle } = item
 
         const txt =
-          matterType === ScheduleTaskConst.MatterType.calendar
+          matterType === MatterType.calendar
             ? `${formatTime(finishTime, isTeamSchedule)} 已结束`
             : item?.repeat_type && item?.repeat_type !== 0
             ? `${formatTime(finishTime, isTeamSchedule)} 完成所有循环`
@@ -616,7 +612,7 @@ export const getScheduleDate = ({
       return runConditions(conds)
     }
 
-    case ScheduleTaskConst.MatterType.meeting: {
+    case MatterType.meeting: {
       return {
         txt: `${dateRange(startTime, end_time, {
           needAllDate: isTeamSchedule
@@ -624,7 +620,7 @@ export const getScheduleDate = ({
       }
     }
 
-    case ScheduleTaskConst.MatterType.timeCollect: {
+    case MatterType.timeCollect: {
       const conds = new Map([
         [() => !!finishTime, () => `${formatTime(end_time)} 已截止`],
         [
@@ -643,7 +639,7 @@ export const getScheduleDate = ({
       }
     }
 
-    case ScheduleTaskConst.MatterType.notice: {
+    case MatterType.notice: {
       const range = dateRange(startTime, endTime)
 
       const conds = new Map([

@@ -12,5 +12,7 @@ export { PhoneLogin } from './lib/phone-login'
 export { FlySearchInput } from './lib/fly-search-input'
 export { Shake } from './lib/shake'
 export { Loading } from './lib/loading/index'
+export { Advertisement } from './lib/advertisement'
+export { FeedbackBtn } from './lib/feedback-btn'
 
 export type { IPhoneLoginData } from './lib/phone-login/types'

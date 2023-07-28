@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 100%;
   position: relative;
-
+  border-radius: 8px;
   .title {
     overflow: hidden;
     position: relative;
@@ -111,11 +111,10 @@
         }
 
         .singleLine {
-          overflow: hidden;
+          display: grid;
           align-items: center;
-          flex: 1;
-          display: flex;
-          flex-wrap: nowrap;
+          grid-template-columns: auto auto 1fr;
+          overflow: hidden;
         }
         .reverseSort {
           display: flex;
@@ -238,5 +237,18 @@
     &::before {
       background-color: #545c72;
     }
+  }
+}
+
+.darkOpacityHover {
+  :hover {
+    background-color: rgba(58, 65, 86, 0.2);
+    position: relative;
+  }
+}
+
+.whiteOpacityHover {
+  :hover {
+    background-color: rgba(248, 248, 248, 0.2);
   }
 }

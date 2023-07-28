@@ -1,5 +1,5 @@
 import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import cs from 'classnames'
 import { Tooltip } from 'antd'
 import {
@@ -25,6 +25,7 @@ import { useUserInfoStore } from '../../../../../store/useUserInfoStore'
 import { globalNxController } from '../../../../../global/nxController'
 import { VipSmallIpcEvents } from '../../../../../global/types/channel/vipTypes'
 import { contextMenuTool } from '../../../../../../index'
+import { MatterType } from '@flyele-nx/constant'
 
 interface IPROPTime {
   taskId: string
@@ -33,6 +34,7 @@ interface IPROPTime {
   dateStr: string
   onlyRepeat?: boolean
   isTimeLine?: boolean
+  opacity?: boolean
 }
 
 export const Time: React.FC<IPROPTime> = ({
@@ -41,7 +43,8 @@ export const Time: React.FC<IPROPTime> = ({
   isDarkMode = false,
   dateStr,
   onlyRepeat = false,
-  isTimeLine = false
+  isTimeLine = false,
+  opacity
 }) => {
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const task = useScheduleStore((state) => state.taskDict[taskId])
@@ -92,10 +95,10 @@ export const Time: React.FC<IPROPTime> = ({
     if (matterType === undefined) return false
 
     return [
-      ScheduleTaskConst.MatterType.timeCollect,
-      ScheduleTaskConst.MatterType.calendar,
-      ScheduleTaskConst.MatterType.meeting,
-      ScheduleTaskConst.MatterType.matter
+      MatterType.timeCollect,
+      MatterType.calendar,
+      MatterType.meeting,
+      MatterType.matter
     ].includes(matterType)
   }, [matterType])
 
@@ -217,7 +220,7 @@ export const Time: React.FC<IPROPTime> = ({
       // 作为创建人可以修改时间
       !isCreator &&
       // ((groupIdCtx && !task.dispatch_id) || memberIdCtx !== userId) &&
-      task.matter_type === ScheduleTaskConst.MatterType.matter &&
+      task.matter_type === MatterType.matter &&
       !task.takers?.find((taker) => taker.taker_id === userId)
     ) {
       globalNxController.showMsg({
@@ -262,9 +265,7 @@ export const Time: React.FC<IPROPTime> = ({
   const showTxt = useMemo(() => {
     return (
       (txt || getTimerStr) +
-      (ScheduleTaskConst.MatterType.calendar === matterType
-        ? ' 来自本地日历'
-        : '')
+      (MatterType.calendar === matterType ? ' 来自本地日历' : '')
     )
   }, [getTimerStr, matterType, txt])
 
@@ -281,7 +282,7 @@ export const Time: React.FC<IPROPTime> = ({
       return (
         <div className={styles.repeatDelayTotalBox}>
           <RepeatDelayIcon width="1em" height="1em" />
-          <div style={{ marginLeft: '3px' }}>{repeatDelayTotal}</div>
+          <div>{repeatDelayTotal}</div>
         </div>
       )
     }
@@ -308,7 +309,18 @@ export const Time: React.FC<IPROPTime> = ({
           [styles.darkMode]: isDarkMode
         })}
       >
-        <div className={cs(styles.scheduleTime, styles.scheduleTimeText)}>
+        <div
+          className={cs(styles.scheduleTime, styles.scheduleTimeText)}
+          style={{
+            color: opacity
+              ? isDarkMode
+                ? 'rgba(255, 255, 255, 0.8)'
+                : 'rgba(51, 51, 51, 0.8)'
+              : isDarkMode
+              ? '#92929d'
+              : '#6a6a6a'
+          }}
+        >
           {buildRepeatIcon}
         </div>
       </div>
@@ -334,7 +346,20 @@ export const Time: React.FC<IPROPTime> = ({
       {!!delayTxt && <div className={styles.warnText}>{delayTxt}</div>}
       {task.finish_time ? (
         <div className={styles.scheduleTime}>
-          <div className={styles.scheduleTimeText}>{showTxt}</div>
+          <div
+            className={styles.scheduleTimeText}
+            style={{
+              color: opacity
+                ? isDarkMode
+                  ? 'rgba(255, 255, 255, 0.8)'
+                  : 'rgba(51, 51, 51, 0.8)'
+                : isDarkMode
+                ? '#92929d'
+                : '#6a6a6a'
+            }}
+          >
+            {showTxt}
+          </div>
           {!!repeatType && buildRepeatIcon}
         </div>
       ) : (
@@ -358,7 +383,20 @@ export const Time: React.FC<IPROPTime> = ({
             }}
             className={styles.scheduleTime}
           >
-            <div className={styles.scheduleTimeText}>{showTxt}</div>
+            <div
+              className={styles.scheduleTimeText}
+              style={{
+                color: opacity
+                  ? isDarkMode
+                    ? 'rgba(255, 255, 255, 0.8)'
+                    : 'rgba(51, 51, 51, 0.8)'
+                  : isDarkMode
+                  ? '#92929d'
+                  : '#6a6a6a'
+              }}
+            >
+              {showTxt}
+            </div>
             {!!repeatType && buildRepeatIcon}
           </div>
         </Tooltip>

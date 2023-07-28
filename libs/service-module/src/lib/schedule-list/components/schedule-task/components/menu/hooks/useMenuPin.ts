@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { IScheduleTask, TaskDispatchApi } from '@flyele-nx/service'
+import { TaskDispatchApi } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'

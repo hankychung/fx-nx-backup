@@ -4,7 +4,7 @@ import cs from 'classnames'
 // import sub from 'constants/pubsub'
 import { CircleArrowUpIcon, CircleArrowUpDarkIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 
 interface IPROPExpand {
   task: IScheduleTask

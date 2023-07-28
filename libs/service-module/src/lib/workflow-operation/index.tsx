@@ -24,12 +24,8 @@ import { IOperationProps, IOperation, IWorkflowAddUser } from './types'
 import { OperateStep, IStepItem, WorkFlowStep } from './WorkFlowStep'
 import style from './index.module.scss'
 import { getAllTakers, stepsFormatter } from './utils'
-import {
-  TaskApi,
-  IWorkflowStep,
-  WorkflowConst,
-  ScheduleTaskConst
-} from '@flyele-nx/service'
+import { TaskApi, IWorkflowStep, VipHandler } from '@flyele-nx/service'
+
 import {
   DisabledIcon,
   OptionIcon,
@@ -41,10 +37,9 @@ import { useUserInfoStore } from '../store/useUserInfoStore'
 import { globalNxController } from '../global/nxController'
 import { useScheduleStore } from '../store/useScheduleStore'
 import { SIZE_TYPE_KEY } from '../global/types/channel/SIZE_TYPE'
+import { MatterType, FlowOperateType } from '@flyele-nx/constant'
 
 const { TextArea } = Input
-
-const { FlowOperateType } = WorkflowConst
 
 export type WorkflowOperationRef = {
   show: () => void
@@ -220,11 +215,13 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     if (data && data[0] && data[0].creator_id) {
       const user = contactDict[data[0].creator_id]
 
+      const { isTeamVip, isVip } = VipHandler.checkVipType(user)
+
       setAddUser({
         avatar: user?.avatar || '',
         name: user?.original_name || user?.nick_name,
-        isTeamVip: user?.isTeamVip,
-        isVip: user?.isVip
+        isTeamVip,
+        isVip
       })
     }
 
@@ -354,7 +351,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const showAddModal = useMemoizedFn((chosenStep: string) => {
     const { allTakerIds } = getAllTakers(steps)
     const params = {
-      matterType: ScheduleTaskConst.MatterType.matter,
+      matterType: MatterType.matter,
       task: {
         id: taskId,
         title: ''

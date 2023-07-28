@@ -1,4 +1,4 @@
-import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import { DayViewParamsProps } from '@flyele-nx/sql-store'
 import {
   IEditTaskTime,

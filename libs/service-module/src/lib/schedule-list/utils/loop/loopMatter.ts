@@ -1,15 +1,15 @@
-import {
-  IScheduleTask,
-  IRepeatConfig,
-  ScheduleTaskConst,
-  IHoliday
-} from '@flyele-nx/service'
+import { IScheduleTask, IRepeatConfig, IHoliday } from '@flyele-nx/types'
 import dayjs, { Dayjs, ManipulateType } from 'dayjs'
 import { cloneDeep, uniq } from 'lodash'
 import isBetween from 'dayjs/plugin/isBetween'
 import weekday from 'dayjs/plugin/weekday'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { getHoliday } from '../holiday'
+import {
+  RepeatConfigRepeatType,
+  AlwaysFinishTime,
+  LOOP_MATTER
+} from '@flyele-nx/constant'
 dayjs.extend(weekday)
 dayjs.extend(isBetween)
 dayjs.extend(isSameOrAfter)
@@ -55,7 +55,7 @@ interface IIsDateJump extends ICheckHolidayMini {
 
 // 是否是一直循环
 export const isAlwaysRepeat = (finishTime: number) => {
-  return finishTime === ScheduleTaskConst.AlwaysFinishTime.value
+  return finishTime === AlwaysFinishTime.value
 }
 
 // 获取当前循环数据
@@ -88,22 +88,20 @@ function infoIsMoment(res: any): res is Dayjs {
 /**
  * type 转换 timeUnit
  */
-const repeatTypeToUnit = (
-  repeat_type: ScheduleTaskConst.RepeatConfigRepeatType
-) => {
+const repeatTypeToUnit = (repeat_type: RepeatConfigRepeatType) => {
   let timeUnit: ManipulateType = 'day'
 
   switch (repeat_type) {
-    case ScheduleTaskConst.RepeatConfigRepeatType.EVERY_DAY:
+    case RepeatConfigRepeatType.EVERY_DAY:
       timeUnit = 'day'
       break
-    case ScheduleTaskConst.RepeatConfigRepeatType.EVERY_WEEK:
+    case RepeatConfigRepeatType.EVERY_WEEK:
       timeUnit = 'week'
       break
-    case ScheduleTaskConst.RepeatConfigRepeatType.EVERY_MONTH:
+    case RepeatConfigRepeatType.EVERY_MONTH:
       timeUnit = 'month'
       break
-    case ScheduleTaskConst.RepeatConfigRepeatType.EVERY_YEAR:
+    case RepeatConfigRepeatType.EVERY_YEAR:
       timeUnit = 'year'
       break
     default:
@@ -304,8 +302,8 @@ const checkDateRepeatConfig = ({
   // 每周、每月
   if (
     [
-      ScheduleTaskConst.RepeatConfigRepeatType.EVERY_WEEK,
-      ScheduleTaskConst.RepeatConfigRepeatType.EVERY_MONTH
+      RepeatConfigRepeatType.EVERY_WEEK,
+      RepeatConfigRepeatType.EVERY_MONTH
     ].includes(repeat_type)
   ) {
     return isDateJump({
@@ -345,12 +343,12 @@ export const nextLoopRule: {
     ) => Dayjs | { date: Dayjs; isJumpAmount: boolean }
   }
 } = {
-  [ScheduleTaskConst.LOOP_MATTER.noLoop]: {
+  [LOOP_MATTER.noLoop]: {
     getNext: (params: INextLoopRule) => {
       return params.time
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.everDay]: {
+  [LOOP_MATTER.everDay]: {
     getNext: (params: INextLoopRule) => {
       const {
         time,
@@ -384,7 +382,7 @@ export const nextLoopRule: {
       return addTime
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.weekly]: {
+  [LOOP_MATTER.weekly]: {
     getNext: (params: INextLoopRule) => {
       const {
         time,
@@ -426,7 +424,7 @@ export const nextLoopRule: {
       return addTime
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.everyFortnight]: {
+  [LOOP_MATTER.everyFortnight]: {
     getNext: (params: INextLoopRule) => {
       const {
         time,
@@ -462,7 +460,7 @@ export const nextLoopRule: {
       return addTime
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.weekdays]: {
+  [LOOP_MATTER.weekdays]: {
     // 工作日的规则 从2.2版本p2需求后 废除，改为自定义循环
     getNext: (params: INextLoopRule) => {
       const { time, startTime } = params
@@ -486,7 +484,7 @@ export const nextLoopRule: {
         : time.clone().add(1, 'day')
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.nonWork]: {
+  [LOOP_MATTER.nonWork]: {
     // 非工作日的规则 从2.2版本p2需求后 废除，改为自定义循环
     getNext: (params: INextLoopRule) => {
       const { time, startTime } = params
@@ -510,7 +508,7 @@ export const nextLoopRule: {
       return week === 0 ? time.clone().weekday(6) : time.clone().add(1, 'day')
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.monthly]: {
+  [LOOP_MATTER.monthly]: {
     // 如果是月循环必传firstTime字段
     getNext: (params: INextLoopRule) => {
       const {
@@ -561,7 +559,7 @@ export const nextLoopRule: {
       return date
     }
   },
-  [ScheduleTaskConst.LOOP_MATTER.custom]: {
+  [LOOP_MATTER.custom]: {
     getNext: (params: INextLoopRule) => {
       const {
         time,
@@ -606,7 +604,7 @@ export const getLoopDatesAndCount = async (value: {
   startTime: number
   createAt: number
   finnishTime: number
-  loopOpt: ScheduleTaskConst.LOOP_MATTER
+  loopOpt: LOOP_MATTER
   ignoreHoliday?: boolean
   repeat_config?: IRepeatConfig
 }) => {
@@ -640,7 +638,7 @@ export const getLoopDatesAndCount = async (value: {
   // 结束时间小于循环的开始时间或者是不循环
   if (
     _startTime.isAfter(dayjs.unix(finnishTime), 'day') ||
-    loopOpt === ScheduleTaskConst.LOOP_MATTER.noLoop
+    loopOpt === LOOP_MATTER.noLoop
   ) {
     return res
   }
@@ -657,8 +655,7 @@ export const getLoopDatesAndCount = async (value: {
 
   const timeAmount = repeat_config?.repeat_interval || 0
   const timeUnit = repeatTypeToUnit(
-    repeat_config?.repeat_type ||
-      ScheduleTaskConst.RepeatConfigRepeatType.EVERY_DAY
+    repeat_config?.repeat_type || RepeatConfigRepeatType.EVERY_DAY
   )
 
   let isFirst = true

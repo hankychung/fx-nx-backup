@@ -1,4 +1,4 @@
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 
 export interface ScheduleListProps {
   date: string
@@ -8,6 +8,7 @@ export interface ScheduleListProps {
   isVipWin?: boolean // 是否小挂件窗体
   overlayClassName?: string
   isDarkMode?: boolean
+  opacity?: boolean
 }
 
 export interface IScheduleListRef {

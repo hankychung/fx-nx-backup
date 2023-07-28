@@ -1,0 +1,10 @@
+.board {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+
+  .wrapper {
+    background-color: var(--page-background-color);
+    overflow: hidden;
+  }
+}

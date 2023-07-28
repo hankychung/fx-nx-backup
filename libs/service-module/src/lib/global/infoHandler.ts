@@ -1,9 +1,11 @@
 import { produce } from 'immer'
-import { IContactDict, IInteractsData } from '../store/types'
+import { IContactDict } from '../store/types'
 import { IContactState, useContactStore } from '../store/useContactStore'
-import { IUserInfoState, useUserInfoStore } from '../store/useUserInfoStore'
-import { IHoliday, IUserInfo } from '@flyele-nx/service'
+import { useUserInfoStore } from '../store/useUserInfoStore'
+import { IUserInfoState } from '@flyele-nx/types'
+import { IHoliday, IUserInfo, IInteract } from '@flyele-nx/types'
 import { useHolidayStore } from '../store/useHolidayStore'
+import { LocalStore } from '@flyele-nx/utils'
 
 class GlobalInfoHandler {
   static updateContactDict(data: IContactDict) {
@@ -14,7 +16,7 @@ class GlobalInfoHandler {
     )
   }
 
-  static updateInteracts(data: IInteractsData[]) {
+  static updateInteracts(data: IInteract[]) {
     useContactStore.setState(
       produce((state: IContactState) => {
         state.interacts = data
@@ -22,11 +24,13 @@ class GlobalInfoHandler {
     )
   }
 
-  static updateUserInfo(data: Omit<IUserInfo, 'Token'>) {
+  static updateUserInfo(data: IUserInfo) {
     useUserInfoStore.setState(
       produce((state: IUserInfoState) => {
         state.userInfo = data
         state.isEnterprise = !!data.corpid
+
+        LocalStore.setUserInfo(data)
       })
     )
   }

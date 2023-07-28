@@ -8,11 +8,9 @@
  * **/
 import { useRequest } from 'ahooks'
 import { TakersUtils } from '../utils/takers_utils'
-import {
-  EConCheckStatus,
-  ITakerAndStatus,
-  TaskDispatchApi
-} from '@flyele-nx/service'
+import { TaskDispatchApi } from '@flyele-nx/service'
+import { ITakerAndStatus } from '@flyele-nx/types'
+import { EConCheckStatus } from '@flyele-nx/constant'
 import { useUserInfoStore } from '../../store/useUserInfoStore'
 import { TaskHandler } from '../../schedule-list'
 import { globalNxController } from '../../global/nxController'

@@ -1,2 +1,2 @@
-export * from './tokenHandler'
+export * from './localStore'
 export * from './timeGetter'

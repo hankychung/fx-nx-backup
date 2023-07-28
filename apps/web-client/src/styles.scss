@@ -1,4 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 body {
   margin: 0;
+  overscroll-behavior: none;
+}
+
+:root {
+  --black: rgba(6, 6, 6, 0.87);
+  --black-60: rgba(6, 6, 6, 0.6);
+  --black-40: rgba(6, 6, 6, 0.4);
+  --black-45: rgba(6, 6, 6, 0.45);
+  --black-30: rgba(6, 6, 6, 0.3);
+  --black-25: rgba(6, 6, 6, 0.25);
+  --black-20: rgba(6, 6, 6, 0.2);
+  --primary: rgba(29, 210, 193, 1);
+  --red: rgba(254, 77, 77, 1);
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
+  --page-background-color: rgba(246, 248, 250, 1);
 }

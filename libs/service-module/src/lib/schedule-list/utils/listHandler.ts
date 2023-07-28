@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 import { IState, useScheduleStore } from '../../store/useScheduleStore'
 import {
   getInsertedFinishTasks,

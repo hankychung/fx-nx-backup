@@ -1,8 +1,5 @@
-import {
-  IScheduleTask,
-  ProjectType,
-  ScheduleTaskConst
-} from '@flyele-nx/service'
+import { IScheduleTask, IBaseProjectInfo } from '@flyele-nx/types'
+import { MatterType } from '@flyele-nx/constant'
 import { Enter_page_detail } from '../sensor/matter'
 
 export interface IEditTaskTime {
@@ -10,7 +7,7 @@ export interface IEditTaskTime {
   task: IScheduleTask
   isCreator: boolean
   repeatType: number
-  matterType: ScheduleTaskConst.MatterType
+  matterType: MatterType
   remindAt: IScheduleTask['remind_at']
 }
 
@@ -21,12 +18,12 @@ export interface IOpenTaskDetail {
 
 export interface IHandlerTaskAddTaker {
   defaultTakers?: string[]
-  matterType: ScheduleTaskConst.MatterType
+  matterType: MatterType
   task: {
     id: string
     title: string
     parentId?: string
-    project?: ProjectType.IBaseProjectInfo
+    project?: IBaseProjectInfo
   }
   sensor?: any
   conditionModel?: {

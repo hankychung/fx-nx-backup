@@ -1,25 +1,51 @@
+import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMemoizedFn } from 'ahooks'
 import { RoutePath } from '../../routes/const'
-import { TokenHandler } from '@flyele-nx/utils'
 import { SocketHandler } from '@flyele-nx/ws'
-// import {} from '@flyele-nx/service'
+import { Advertisement, FeedbackBtn } from '@flyele-nx/ui'
+import { LoginInput, GlobalInfoHandler } from '@flyele-nx/service-module'
+import { envStore, IUserInfo } from '@flyele-nx/service'
+import styles from './index.module.scss'
 
-const FAKE_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTAxODk0ODUsImlhdCI6MTY5MDE4MTY2NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIxMTEzNjU4MTcwMDE1ODQ5IiwiRGV2aWNlSUQiOiIxYzllNzNiZi1jOGY3LTQwYzMtYTY5Yy1jMzFiMTVmMjBjYzIiLCJQbGF0Zm9ybSI6Im1vYmlsZSIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.eh0dxngaL_9hSVupqx5cBQO5Sv03YBGPGE8O0F-NVJc'
-
-const Login: React.FC = () => {
+const Login: FC = () => {
   const navigate = useNavigate()
 
-  const login = useMemoizedFn(() => {
-    TokenHandler.update(FAKE_TOKEN)
+  const isProdEnv = envStore.getEnv() === 'prod'
 
-    navigate(RoutePath.board)
+  const onLoginSuccess = useMemoizedFn((data?: IUserInfo) => {
+    if (data) {
+      GlobalInfoHandler.updateUserInfo(data)
+    }
+    navigate(RoutePath.dayView)
 
     SocketHandler.initSocket()
   })
 
-  return <div onClick={login}>login</div>
+  const onClickFeedbackNew = () => {
+    window.open(
+      ' https://fxkj15.qiyukf.com/client?k=32dc07afddda5179a2b418a9daa1fbca&wp=1&robotShuntSwitch=0'
+    )
+  }
+
+  return (
+    <div className={styles.wrap}>
+      <div className={styles.wrapContent}>
+        <Advertisement />
+
+        <div className={styles.wrapRight}>
+          <FeedbackBtn
+            customClass={styles.feedbackBtn}
+            clickHandler={onClickFeedbackNew}
+          />
+          <LoginInput
+            usePhoneNumLogin={!isProdEnv}
+            onLoginSuccess={onLoginSuccess}
+          />
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export { Login }

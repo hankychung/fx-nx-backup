@@ -7,14 +7,11 @@ import { message, Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
 import QrCodeLogin from '../qrcode-login'
 import { ReactComponent as LoginTextBg } from '../../assets/login/loginTextBg.svg'
-import { envStore, UsercApi, IUserInfo, service } from '@flyele-nx/service'
+import { envStore, UsercApi, IUserInfo } from '@flyele-nx/service'
 import { ReactComponent as OnlyPersonalImg } from '../../assets/login/onlyPersonal.svg'
 import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
 import { FlyButton } from '@flyele/flyele-components'
-import RetrievePayModal from '../retrieve-pay-modal'
-import RetrievePayModalTeam from '../retrieve-pay-modal-team'
-import { VipMealType } from '../person-pay-modal/components/controller'
 
 /**
  * 0-非会员，1-个人会员，2-团队会员
@@ -217,7 +214,7 @@ export const MemberIntroduction = ({
           })
         }}
         originRoute="官网"
-        domain={envStore.getDoMain()}
+        domain={envStore.getPayHost()}
         getOrderCode={(code: string) => {
           setOrderCode(code)
         }}
@@ -241,18 +238,6 @@ export const MemberIntroduction = ({
       >
         <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
       </Modal>
-      {/* {showPersonModal ? (
-        <RetrievePayModal
-          onClose={() => setIsRetrievePay(false)}
-          isShow={isRetrievePay}
-          isPaySuccess={isShowPay}
-        />
-      ) : (
-        <RetrievePayModalTeam
-          onClose={() => setIsRetrievePay(false)}
-          isShow={isRetrievePay}
-        />
-      )} */}
       <Modal
         open={showLoginModal}
         width={480}

@@ -1,6 +1,10 @@
 import { produce } from 'immer'
 import { ILocalTask } from '@flyele-nx/types'
-import { IState, useScheduleStore, globalNxController } from '@flyele-nx/global-processor'
+import {
+  IState,
+  useScheduleStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import {
   getInsertedFinishTasks,
   getKey,

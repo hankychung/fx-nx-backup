@@ -53,6 +53,7 @@ export interface IProps {
   isTimeLine?: boolean
   dragProvided?: any
   opacity?: boolean
+  scheduleType?: 'WEEKLY'
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -67,7 +68,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isBoard = false,
   isTimeLine = false,
   dragProvided = {},
-  opacity = false
+  opacity = false,
+  scheduleType
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 

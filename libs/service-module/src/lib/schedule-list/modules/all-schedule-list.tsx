@@ -149,6 +149,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
             count={finishTotal}
             isDarkMode={isDarkMode}
             onToggleShow={onToggleShowFinished}
+            opacityModal={opacity}
           />
           {showFinished &&
             (finishList || []).map((i) => (

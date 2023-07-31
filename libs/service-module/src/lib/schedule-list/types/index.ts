@@ -9,6 +9,7 @@ export interface ScheduleListProps {
   overlayClassName?: string
   isDarkMode?: boolean
   opacity?: boolean
+  scheduleType?: 'WEEKLY'
 }
 
 export interface IScheduleListRef {

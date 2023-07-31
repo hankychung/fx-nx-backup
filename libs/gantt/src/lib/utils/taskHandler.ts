@@ -1,0 +1,3 @@
+class TaskTGanTTHandler {}
+
+export { TaskTGanTTHandler }

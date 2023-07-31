@@ -1,6 +1,6 @@
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
+import { timeGetter } from '@flyele-nx/utils'
 import dayjs from 'dayjs'
-import timeGetter from '../../global/timeGetter'
 
 export function isHighlight(item: IScheduleTask, curTime: number) {
   const { start_time, execute_at, end_time = 0 } = item

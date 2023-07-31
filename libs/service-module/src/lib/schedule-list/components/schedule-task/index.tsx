@@ -8,8 +8,8 @@ import {
   MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
-import { TaskApi, ScheduleTaskConst } from '@flyele-nx/service'
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import { TaskApi } from '@flyele-nx/service'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 import { getChildrenDict } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
@@ -33,8 +33,12 @@ import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
 import { contextMenuTool } from '../../../../index'
-import { Enter_page_detail } from '../../../global/types/sensor/matter'
-import { globalNxController } from '../../../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
+import {
+  MatterType,
+  QuadrantValue,
+  Enter_page_detail
+} from '@flyele-nx/constant'
 
 export interface IProps {
   taskKey: string
@@ -47,7 +51,9 @@ export interface IProps {
   isVipWin?: boolean // 是否小挂件窗体
   isBoard?: boolean
   isTimeLine?: boolean
+  dragProvided?: any
   opacity?: boolean
+  scheduleType?: 'WEEKLY'
 }
 
 const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
@@ -61,7 +67,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isVipWin = false,
   isBoard = false,
   isTimeLine = false,
-  opacity = false
+  dragProvided = {},
+  opacity = false,
+  scheduleType
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -106,10 +114,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   // 如果以后还有其他条件的话往这上面拼
   const isShowMenu = useMemo(() => {
     return (
-      ![
-        ScheduleTaskConst.MatterType.timeCollect,
-        ScheduleTaskConst.MatterType.calendar
-      ].includes(data.matter_type) && isTopTask
+      ![MatterType.timeCollect, MatterType.calendar].includes(
+        data.matter_type
+      ) && isTopTask
     )
   }, [data.matter_type, isTopTask])
 
@@ -211,13 +218,13 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   const priorityLevelClass = useMemo(() => {
     switch (data?.priority_level) {
-      case ScheduleTaskConst.QuadrantValue.important_urgent: {
+      case QuadrantValue.important_urgent: {
         return styles.ImportantUrgent
       }
-      case ScheduleTaskConst.QuadrantValue.important_no_urgent: {
+      case QuadrantValue.important_no_urgent: {
         return styles.ImportantNoUrgent
       }
-      case ScheduleTaskConst.QuadrantValue.urgent_no_important: {
+      case QuadrantValue.urgent_no_important: {
         return styles.UrgentNoImportant
       }
       default:
@@ -229,7 +236,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
   return (
     <div
-      ref={domRef}
+      ref={dragProvided ? dragProvided.innerRef : domRef}
+      {...dragProvided.draggableProps}
+      {...dragProvided.dragHandleProps}
       className={cs(styles.scheduleTaskRoot, {
         [styles.boardSchedule]: isBoard,
         [styles.priorityLevel]: isTopTask,

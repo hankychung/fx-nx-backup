@@ -1,40 +1,18 @@
-import {
-  ILocalTask,
-  IScheduleTask,
-  ScheduleTaskConst
-} from '@flyele-nx/service'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
+import { timeGetter } from '@flyele-nx/utils'
 import dayjs, { Dayjs } from 'dayjs'
 import { DateType } from '../typing'
 import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
-import { useScheduleStore } from '../../store/useScheduleStore'
-import timeGetter from '../../global/timeGetter'
-import { resetState } from '../../store/utils/resetState'
+import { useScheduleStore, zustandUtils } from '@flyele-nx/global-processor'
+import { LOOP_MATTER_LABEL } from '@flyele-nx/constant'
 
-type IScheduleTaskWithCompareVal = IScheduleTask & {
-  compareVal: number
-}
+const { resetState, getDiffKeys, getKey, getKeyOfList, getSortedSchedule } =
+  zustandUtils
 
 interface IGetRepeatDelayTotalParams {
   rawTask?: IScheduleTask
   userId: string
-}
-
-function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
-  return i.repeat_id ? `${i.ref_task_id}-${i.repeat_id}` : i.ref_task_id
-}
-
-function getDiffKeys(arr: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>[]) {
-  return arr.reduce<{ keys: string[]; keysWithRepeatIds: string[] }>(
-    (pre, cur) => {
-      pre.keys.push(cur.ref_task_id)
-
-      pre.keysWithRepeatIds.push(getKey(cur))
-
-      return pre
-    },
-    { keys: [], keysWithRepeatIds: [] }
-  )
 }
 
 /**
@@ -178,110 +156,6 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
   return duringTask || futureStart || futureEnd
 }
 
-/**
- * 日程排序规则
- */
-function getSortedSchedule(params: { date: string; tasks: IScheduleTask[] }) {
-  const pin: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 今天有明确时间
-   * 1、今天某个时间点开始
-   * 2、今天某个时间点截止
-   */
-  const precise: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 今天无明确时间
-   * 1、历史开始，今天全天截止
-   * 2、今天全天
-   * 3、历史开始，未来截止
-   * 4、今天全天开始，未来截止
-   */
-  const unclear: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 已延期
-   * 1、有截止时间（包括全天），截止时间后未完成
-   */
-  const delay: IScheduleTaskWithCompareVal[] = []
-
-  /**
-   * 流转到当天事项
-   * 1、历史开始，无截止
-   */
-  const startInHistory: IScheduleTaskWithCompareVal[] = []
-
-  const { date, tasks } = params
-
-  const theDate = dayjs(date)
-
-  const today = dayjs()
-
-  tasks.forEach((task) => {
-    const { start_time_full_day, end_time_full_day, finish_time, topmost_at } =
-      task
-    const { startTime, endTime } = getDecentTime(task)
-    const startDj = dayjs.unix(startTime)
-    const endDj = dayjs.unix(endTime)
-    const startFull = start_time_full_day === 2
-    const endFull = end_time_full_day === 2
-
-    // 置顶事项
-    if (topmost_at && !finish_time) {
-      pin.push({ ...task, compareVal: topmost_at })
-      return
-    }
-
-    // 延期事项
-    if (endTime && endDj.isBefore(today, 'date')) {
-      delay.push({ ...task, compareVal: endTime })
-      return
-    }
-
-    // 在该日期有明确时间
-    if (
-      (startDj.isSame(theDate, 'date') && !startFull) ||
-      (endDj.isSame(theDate, 'date') && !endFull)
-    ) {
-      precise.push({ ...task, compareVal: startTime || endTime })
-      return
-    }
-
-    // 无明确时间
-    if (startTime && endTime) {
-      unclear.push({ ...task, compareVal: endTime })
-      return
-    }
-
-    // 流转到该日期
-    startInHistory.push({ ...task, compareVal: startTime })
-  })
-
-  const all = [pin, precise, unclear, delay, startInHistory]
-
-  const result = all.reduce<string[]>((arr, tasks) => {
-    arr.push(...tasks.sort(sortFn).map((task) => task.ref_task_id))
-
-    return arr
-  }, [])
-
-  return result
-}
-
-const sortFn = (
-  a: IScheduleTaskWithCompareVal,
-  b: IScheduleTaskWithCompareVal
-) => {
-  if (a.compareVal === b.compareVal) {
-    return a.create_at - b.create_at
-  }
-
-  return a.topmost_at && !a.finish_time
-    ? b.compareVal - a.compareVal
-    : a.compareVal - b.compareVal
-}
-
 const getRepeatTxt = async (task?: IScheduleTask) => {
   const _obj = {
     t_l: '',
@@ -293,7 +167,7 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
   const { cycle, repeat_type, end_repeat_at } = task
 
   if (repeat_type) {
-    _obj.t_l = `${ScheduleTaskConst.LOOP_MATTER_LABEL[repeat_type as number]}`
+    _obj.t_l = `${LOOP_MATTER_LABEL[repeat_type as number]}`
 
     if (isAlwaysRepeat(end_repeat_at || 0)) {
       _obj.t_l += '、一直循环'
@@ -397,8 +271,104 @@ function getInsertedFinishTasks(taskIds: string[]) {
   }
 }
 
-function getKeyOfList(task: ILocalTask) {
-  return task.finish_time ? getKey(task) : task.ref_task_id
+function setTime(target: Dayjs, mod: Dayjs) {
+  return target
+    .set('hour', mod.get('hour'))
+    .set('minute', mod.get('minute'))
+    .set('second', mod.get('second'))
+}
+
+function setDate(target: Dayjs, mod: Dayjs) {
+  return target
+    .set('year', mod.year())
+    .set('month', mod.month())
+    .set('date', mod.date())
+}
+
+function getModifyTime(
+  item: Pick<
+    ILocalTask,
+    'start_time' | 'end_time' | 'start_time_full_day' | 'end_time_full_day'
+  >,
+  date: Dayjs
+): {
+  start_time?: number
+  end_time?: number
+  start_time_full_day?: number
+  end_time_full_day?: number
+} {
+  const {
+    start_time = 0,
+    end_time = 0,
+    start_time_full_day,
+    end_time_full_day
+  } = item
+
+  const sDj = dayjs.unix(start_time)
+  const eDj = dayjs.unix(end_time)
+
+  // 区间时间
+  if (start_time && end_time) {
+    const range = eDj.diff(sDj, 'days')
+    const start_time = setTime(date, sDj).unix()
+    const end_time = setTime(date, eDj).add(range, 'day').unix()
+
+    return { start_time, end_time, start_time_full_day, end_time_full_day }
+  }
+
+  if (start_time) {
+    return {
+      start_time: setDate(sDj, date).unix()
+    }
+  }
+
+  if (end_time) {
+    return {
+      end_time: setDate(eDj, date).unix()
+    }
+  }
+
+  return {
+    start_time: date.unix(),
+    end_time: date.add(1, 'day').unix() - 1,
+    start_time_full_day: 2,
+    end_time_full_day: 2
+  }
+}
+
+function resetRemindUnix(
+  item: Pick<
+    ILocalTask,
+    'start_time' | 'end_time' | 'start_time_full_day' | 'end_time_full_day'
+  >
+): { remind_at: any } {
+  const { start_time, end_time, start_time_full_day, end_time_full_day } = item
+
+  const remind_at: any = {}
+
+  if (start_time) {
+    if (start_time_full_day === 1) {
+      // 具体时间，在开始时间提醒
+      remind_at.start_remind = [start_time]
+    } else {
+      // 全天，在开始当天9点提醒
+      remind_at.start_remind = [dayjs.unix(start_time).set('hour', 9).unix()]
+    }
+  }
+
+  if (end_time) {
+    if (end_time_full_day === 1) {
+      // 具体时间，在截止时间前15min提醒
+      remind_at.end_remind = [
+        dayjs.unix(end_time).subtract(15, 'minute').unix()
+      ]
+    } else if (!dayjs.unix(start_time!).isSame(dayjs.unix(end_time), 'date')) {
+      // 全天，且结束与开始不在同一天，在截至当天9点提醒
+      remind_at.end_remind = [dayjs.unix(end_time).set('hour', 9).unix()]
+    }
+  }
+
+  return { remind_at }
 }
 
 export {
@@ -413,5 +383,7 @@ export {
   getTaskIdsByDispatch,
   handleLogout,
   getInsertedFinishTasks,
-  getKeyOfList
+  getKeyOfList,
+  getModifyTime,
+  resetRemindUnix
 }

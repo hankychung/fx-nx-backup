@@ -1,6 +1,7 @@
+import { LOOP_MATTER } from '@flyele-nx/constant'
 import { isAlwaysRepeat } from './loopMatter'
 import { getLoopDatesAndCount, getRepeatStartTime } from './loopMatter'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 
 // 获取当前循环数据
 export const getNowRepeatData = (task: IScheduleTask) => {
@@ -77,7 +78,7 @@ class LoopStuff {
       startTime: getRepeatStartTime(task) || 0,
       createAt: task.create_at || 0,
       finnishTime: task.end_repeat_at as number,
-      loopOpt: task.repeat_type as ScheduleTaskConst.LOOP_MATTER,
+      loopOpt: task.repeat_type as LOOP_MATTER,
       ignoreHoliday: task.repeat_config?.repeat_interval === 1,
       repeat_config: task.repeat_config
     }

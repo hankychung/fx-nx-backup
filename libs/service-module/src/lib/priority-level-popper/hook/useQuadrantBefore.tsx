@@ -5,10 +5,10 @@ import {
   UrgentNoImportant,
   NoImportantNoUrgent
 } from '@flyele-nx/icon'
-import { ScheduleTaskConst } from '@flyele-nx/service'
+import { QuadrantValue } from '@flyele-nx/constant'
 
 interface UseQuadrantBeforeProps {
-  type: ScheduleTaskConst.QuadrantValue
+  type: QuadrantValue
   color?: string
 }
 
@@ -17,13 +17,13 @@ export const getQuadrantBeforeIcon = ({
   color
 }: UseQuadrantBeforeProps) => {
   switch (type) {
-    case ScheduleTaskConst.QuadrantValue.important_urgent: {
+    case QuadrantValue.important_urgent: {
       return <ImportantUrgent color={color || '#E65454'} />
     }
-    case ScheduleTaskConst.QuadrantValue.important_no_urgent: {
+    case QuadrantValue.important_no_urgent: {
       return <ImportantNoUrgent color={color || '#E69448'} />
     }
-    case ScheduleTaskConst.QuadrantValue.urgent_no_important: {
+    case QuadrantValue.urgent_no_important: {
       return <UrgentNoImportant color={color || '#7E7FF8'} />
     }
     default: {

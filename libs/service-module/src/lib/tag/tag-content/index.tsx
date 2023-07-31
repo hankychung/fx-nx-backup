@@ -5,21 +5,20 @@ import TagWidget, { TagWidgetModel } from '../tag-widget'
 import TagAddButton from '../tag-add-button'
 import { cloneDeep, uniqBy } from 'lodash'
 import style from './index.module.scss'
+import { LabelApi, TagObjType, TagConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import {
-  LabelApi,
-  TagObjType,
-  IScheduleTask,
-  ScheduleTaskConst,
-  TagConst
-} from '@flyele-nx/service'
-import { globalNxController } from '../../global/nxController'
-import PUB from '../../global/types/pubsub'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
+  globalNxController,
+  useUserInfoStore
+} from '@flyele-nx/global-processor'
+
 import {
+  MatterTypeLabel,
+  Pub,
   EditTagType,
   MatterStatus,
   PeopleType
-} from '../../global/types/sensor/matter'
+} from '@flyele-nx/constant'
 
 interface ITagContent {
   data: Pick<
@@ -151,14 +150,14 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
               }
             }
 
-            globalNxController.pubJsPublish(PUB.UPDATE_TAGS, {
+            globalNxController.pubJsPublish(Pub.UPDATE_TAGS, {
               task_id: ref_task_id,
               tags: targetTags
             })
 
             setSelectedTags(cloneSelectedTags)
 
-            const business_type = ScheduleTaskConst.MatterTypeLabel[matter_type]
+            const business_type = MatterTypeLabel[matter_type]
 
             globalNxController.sensorSend('SEN__bind_tag', {
               enter_page: EditTagType.full,

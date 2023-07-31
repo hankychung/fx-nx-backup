@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
-import { IScheduleTask, ScheduleTaskConst } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { IAction } from '../../../../../../context-menu/types'
-import { useUserInfoStore } from '../../../../../../store/useUserInfoStore'
+import { useUserInfoStore } from '@flyele-nx/global-processor'
 
 /**
  * 取消相关hooks
@@ -17,6 +17,7 @@ import { useCancelMeeting } from '../../../../../utils/hooks/useCancelMeeting'
 import { useExitTask } from '../../../../../utils/hooks/useExitTask'
 import { useExitTodo } from '../../../../../utils/hooks/useExitTodo'
 import { useExitMeeting } from '../../../../../utils/hooks/useExitMeeting'
+import { MatterType, MatterTypeLabel } from '@flyele-nx/constant'
 
 export const useMenuQuit = ({
   data,
@@ -39,13 +40,13 @@ export const useMenuQuit = ({
     const isCreator = data.creator_id === userId
 
     switch (data.matter_type) {
-      case ScheduleTaskConst.MatterType.matter:
+      case MatterType.matter:
         isCreator ? cancelTask(taskId) : exitTask(taskId)
         break
-      case ScheduleTaskConst.MatterType.todo:
+      case MatterType.todo:
         isCreator ? cancelTodo(taskId) : exitTodo(taskId)
         break
-      case ScheduleTaskConst.MatterType.meeting:
+      case MatterType.meeting:
         isCreator ? cancelMeeting(taskId) : exitMeeting(taskId)
         break
       default:
@@ -57,7 +58,7 @@ export const useMenuQuit = ({
 
     const first = isCreator ? '取消' : '退出'
 
-    const last = ScheduleTaskConst.MatterTypeLabel[data.matter_type]
+    const last = MatterTypeLabel[data.matter_type]
 
     // 兜底不显示 undefined
     return first + (last ?? '')

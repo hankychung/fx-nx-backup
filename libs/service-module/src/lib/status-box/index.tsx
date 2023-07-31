@@ -1,10 +1,7 @@
 import { FC, memo, useMemo, useState } from 'react'
-import {
-  IScheduleTask,
-  ScheduleTaskConst,
-  TaskApi,
-  TaskDispatchApi
-} from '@flyele-nx/service'
+import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
+
 import styles from './index.module.scss'
 import {
   TaskCheckIcon,
@@ -23,13 +20,13 @@ import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
 import AcceptOnceMany from '../accept-once-many'
-import { useScheduleStore } from '../store/useScheduleStore'
+import { useScheduleStore, useUserInfoStore } from '@flyele-nx/global-processor'
 import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
 import { getChildrenDict, getKey } from '../schedule-list/utils'
 import { WorkflowOperation } from '../workflow-operation'
 import { getOperationStatus } from '../workflow-operation/utils'
-import { useUserInfoStore } from '../store/useUserInfoStore'
+import { MatterType } from '@flyele-nx/constant'
 
 interface IProps {
   task: IScheduleTask
@@ -202,10 +199,7 @@ const _StatusBox: FC<IProps> = (props) => {
     const { matter_type: matterType, finish_time: finishTime } = task
     if (
       matterType &&
-      [
-        ScheduleTaskConst.MatterType.matter,
-        ScheduleTaskConst.MatterType.todo
-      ].includes(matterType)
+      [MatterType.matter, MatterType.todo].includes(matterType)
     ) {
       // 非我执行
       if (nonSelfExecution) return <DisabledIcon />
@@ -267,7 +261,7 @@ const _StatusBox: FC<IProps> = (props) => {
       )
     }
 
-    if (ScheduleTaskConst.MatterType.meeting === matterType) {
+    if (MatterType.meeting === matterType) {
       return !finishTime ? (
         <MeetingIcon width={14} height={14} />
       ) : (
@@ -275,7 +269,7 @@ const _StatusBox: FC<IProps> = (props) => {
       )
     }
 
-    if (ScheduleTaskConst.MatterType.timeCollect === matterType) {
+    if (MatterType.timeCollect === matterType) {
       return !finishTime ? (
         <TimeCollectIcon width={14} height={14} />
       ) : (
@@ -283,7 +277,7 @@ const _StatusBox: FC<IProps> = (props) => {
       )
     }
 
-    if (ScheduleTaskConst.MatterType.calendar === matterType) {
+    if (MatterType.calendar === matterType) {
       return !finishTime ? (
         <CalendarIcon width={14} height={14} />
       ) : (

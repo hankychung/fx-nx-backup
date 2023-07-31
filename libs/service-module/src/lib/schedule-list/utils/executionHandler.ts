@@ -1,9 +1,12 @@
-import { ILocalTask, IScheduleTask } from '@flyele-nx/service'
-import { IState, useScheduleStore } from '../../store/useScheduleStore'
+import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
+import {
+  IState,
+  useScheduleStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { produce } from 'immer'
 import { getKeyOfList } from './index'
 import { uniq } from 'lodash'
-import { globalNxController } from '../../global/nxController'
 import { QueryType, TabType } from '@flyele-nx/sql-store'
 import { getDateOfToday } from './tools'
 import { isUpdateList } from '../../day-execution/utils'

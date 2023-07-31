@@ -4,7 +4,7 @@ import SimpleMemberList, { ISimpleMember } from '../simple-member-list'
 import { useTaskMemberRemove } from '../member/hooks/useTaskMemberRemove'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { TaskApi } from '@flyele-nx/service'
-import { globalNxController } from '../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 type IProps = {
   taskId: string

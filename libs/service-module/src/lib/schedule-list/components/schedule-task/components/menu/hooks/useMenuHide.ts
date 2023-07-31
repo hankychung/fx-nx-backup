@@ -1,9 +1,9 @@
 import { useHide } from '../../../../../utils/hooks/useHide'
 import { useMemoizedFn } from 'ahooks'
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { IAction } from '../../../../../../context-menu/types'
 import { TaskHandler } from '../../../../../utils/taskHandler'
-import { globalNxController } from '../../../../../../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
   const { hideOrShow } = useHide()

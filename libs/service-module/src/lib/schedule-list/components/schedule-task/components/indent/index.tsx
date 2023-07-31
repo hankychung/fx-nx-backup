@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react'
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 
 interface IPROPIndent {
   task: IScheduleTask

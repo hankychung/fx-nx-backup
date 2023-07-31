@@ -24,28 +24,23 @@ import { IOperationProps, IOperation, IWorkflowAddUser } from './types'
 import { OperateStep, IStepItem, WorkFlowStep } from './WorkFlowStep'
 import style from './index.module.scss'
 import { getAllTakers, stepsFormatter } from './utils'
-import {
-  TaskApi,
-  IWorkflowStep,
-  WorkflowConst,
-  ScheduleTaskConst,
-  VipHandler
-} from '@flyele-nx/service'
+import { TaskApi, IWorkflowStep, VipHandler } from '@flyele-nx/service'
+
 import {
   DisabledIcon,
   OptionIcon,
   TaskCheckIcon,
   UncheckIcon
 } from '@flyele-nx/icon'
-import { useContactStore } from '../store/useContactStore'
-import { useUserInfoStore } from '../store/useUserInfoStore'
-import { globalNxController } from '../global/nxController'
-import { useScheduleStore } from '../store/useScheduleStore'
-import { SIZE_TYPE_KEY } from '../global/types/channel/SIZE_TYPE'
+import {
+  useContactStore,
+  useUserInfoStore,
+  globalNxController,
+  useScheduleStore
+} from '@flyele-nx/global-processor'
+import { MatterType, FlowOperateType, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 
 const { TextArea } = Input
-
-const { FlowOperateType } = WorkflowConst
 
 export type WorkflowOperationRef = {
   show: () => void
@@ -357,7 +352,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const showAddModal = useMemoizedFn((chosenStep: string) => {
     const { allTakerIds } = getAllTakers(steps)
     const params = {
-      matterType: ScheduleTaskConst.MatterType.matter,
+      matterType: MatterType.matter,
       task: {
         id: taskId,
         title: ''

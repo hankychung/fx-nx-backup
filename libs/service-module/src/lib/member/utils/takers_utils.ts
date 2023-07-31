@@ -1,6 +1,12 @@
-import { useContactStore } from '../../store/useContactStore'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
-import { ScheduleTaskConst, Taker } from '@flyele-nx/service'
+import { useContactStore, useUserInfoStore } from '@flyele-nx/global-processor'
+import { Taker } from '@flyele-nx/types'
+import {
+  MATTER_CREATOR_STATE,
+  MATTER_PERSONAL_STATE,
+  MATTER_TAKER_STATE,
+  IDENTITY,
+  MATTER_OPERATE_STATE
+} from '@flyele-nx/constant'
 
 /**
  author: william   email:362661044@qq.com
@@ -88,35 +94,35 @@ export class TakersUtils {
       if (personal_state) {
         // eslint-disable-next-line default-case
         switch (personal_state) {
-          case ScheduleTaskConst.MATTER_PERSONAL_STATE.wait:
+          case MATTER_PERSONAL_STATE.wait:
             return `${_showVestText}待接受`
-          case ScheduleTaskConst.MATTER_PERSONAL_STATE.refused:
+          case MATTER_PERSONAL_STATE.refused:
             return `${_showVestText}已拒绝`
         }
       }
 
       // 参与人
       switch (state) {
-        case ScheduleTaskConst.MATTER_CREATOR_STATE.dispatched:
+        case MATTER_CREATOR_STATE.dispatched:
           if (showProcessing) {
             return specialText()
           }
           return `${_showVestText}已派发`
-        case ScheduleTaskConst.MATTER_CREATOR_STATE.completed:
+        case MATTER_CREATOR_STATE.completed:
           return `${_showVestText}已完成`
-        case ScheduleTaskConst.MATTER_CREATOR_STATE.canceled:
+        case MATTER_CREATOR_STATE.canceled:
           return `${_showVestText}已取消`
-        case ScheduleTaskConst.MATTER_TAKER_STATE.processing:
+        case MATTER_TAKER_STATE.processing:
           // TODO 交互定义 改来改去 一句如：xxx一样 tm 又不一样 f
           if (!isCreator && !showProcessing) {
             return `${_showVestText}处理中`
           }
           return specialText()
-        case ScheduleTaskConst.MATTER_TAKER_STATE.completed:
+        case MATTER_TAKER_STATE.completed:
           return `${_showVestText}已完成`
-        case ScheduleTaskConst.MATTER_TAKER_STATE.canceled:
+        case MATTER_TAKER_STATE.canceled:
           return `${_showVestText}已取消`
-        case ScheduleTaskConst.MATTER_TAKER_STATE.withdrawn:
+        case MATTER_TAKER_STATE.withdrawn:
           return `${_showVestText}已撤回`
         default:
           return ''
@@ -153,29 +159,27 @@ export class TakersUtils {
       // 有创建人就塞进去
       if (item.taker_id === creatorId) {
         // 有创建人并且参与的
-        if (item.identity === ScheduleTaskConst.IDENTITY.matterCreator) {
+        if (item.identity === IDENTITY.matterCreator) {
           creatorItem = item
           json.take++
         }
 
-        if (item.identity === ScheduleTaskConst.IDENTITY.matterDistribute) {
+        if (item.identity === IDENTITY.matterDistribute) {
           distributeTaker = item
         }
 
         // 创建人完成了事项
-        if (item.state === ScheduleTaskConst.MATTER_CREATOR_STATE.completed) {
+        if (item.state === MATTER_CREATOR_STATE.completed) {
           json.finish++
         }
         continue
       }
 
       // 判断 协助人接受状态
-      if (
-        item.personal_state === ScheduleTaskConst.MATTER_PERSONAL_STATE.accepted
-      ) {
+      if (item.personal_state === MATTER_PERSONAL_STATE.accepted) {
         takeArr.push(item)
         // 判断 协助人完成状态
-        if (item.state === ScheduleTaskConst.MATTER_TAKER_STATE.completed) {
+        if (item.state === MATTER_TAKER_STATE.completed) {
           json.finish++
         } else {
           json.take++
@@ -213,17 +217,17 @@ export class TakersUtils {
       create_at: 0,
       creator_id: '',
       dispatch_id: '',
-      identity: ScheduleTaskConst.IDENTITY.matterTaker,
+      identity: IDENTITY.matterTaker,
       invite_id: '',
       invite_name: '',
       invite_type: 'flyele',
       nick_name: data?.nick_name,
-      operate_state: ScheduleTaskConst.MATTER_OPERATE_STATE.withdrawn,
+      operate_state: MATTER_OPERATE_STATE.withdrawn,
       original_name: '',
-      personal_state: ScheduleTaskConst.MATTER_PERSONAL_STATE.accepted,
+      personal_state: MATTER_PERSONAL_STATE.accepted,
       pinyin: data?.pinyin ?? '',
       species: 1,
-      state: ScheduleTaskConst.MATTER_CREATOR_STATE.dispatched
+      state: MATTER_CREATOR_STATE.dispatched
     }
   }
 
@@ -239,17 +243,17 @@ export class TakersUtils {
         create_at: 0,
         creator_id: '',
         dispatch_id: '',
-        identity: ScheduleTaskConst.IDENTITY.matterTaker,
+        identity: IDENTITY.matterTaker,
         invite_id: '',
         invite_name: '',
         invite_type: 'flyele',
         nick_name: data?.nick_name,
-        operate_state: ScheduleTaskConst.MATTER_OPERATE_STATE.withdrawn,
+        operate_state: MATTER_OPERATE_STATE.withdrawn,
         original_name: '',
-        personal_state: ScheduleTaskConst.MATTER_PERSONAL_STATE.accepted,
+        personal_state: MATTER_PERSONAL_STATE.accepted,
         pinyin: data?.pinyin ?? '',
         species: 1,
-        state: ScheduleTaskConst.MATTER_CREATOR_STATE.dispatched
+        state: MATTER_CREATOR_STATE.dispatched
       }
 
       return obj
@@ -295,8 +299,8 @@ export class TakersUtils {
 
     if (my) {
       const finish = [
-        ScheduleTaskConst.MATTER_TAKER_STATE.completed,
-        ScheduleTaskConst.MATTER_CREATOR_STATE.completed
+        MATTER_TAKER_STATE.completed,
+        MATTER_CREATOR_STATE.completed
       ]
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

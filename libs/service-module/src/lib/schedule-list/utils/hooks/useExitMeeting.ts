@@ -1,10 +1,11 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { TaskDispatchApi } from '@flyele-nx/service'
 import { TaskHandler } from '../taskHandler'
-import { globalNxController } from '../../../global/nxController'
-import PUB from '../../../global/types/pubsub'
-import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
+import { Pub, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 
 export const useExitMeeting = ({
   taskId,
@@ -28,7 +29,7 @@ export const useExitMeeting = ({
     try {
       await TaskDispatchApi.exitTask(dispatch_id)
       // 删除该事项相关的卡片和事项列表数据
-      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, [taskId])
+      globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, [taskId])
 
       globalNxController.showMsg({
         content: '退出成功',

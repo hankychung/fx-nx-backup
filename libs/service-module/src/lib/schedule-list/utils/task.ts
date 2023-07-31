@@ -1,11 +1,12 @@
-import { ScheduleTaskConst, Taker } from '@flyele-nx/service'
+import { MAX_TITLE_LEN } from '@flyele-nx/constant'
+import { Taker } from '@flyele-nx/types'
 
 /** 事项标题 在提交接口之前 去除前后空格、去除换行、限制长度 */
 export const trimTitle = (title: string) =>
   title
     .trim()
     .replace(/[\r\n]/g, '')
-    .slice(0, ScheduleTaskConst.MAX_TITLE_LEN)
+    .slice(0, MAX_TITLE_LEN)
 
 export const getAvatarsFromTakers = (
   takers: Array<Taker & { isTeamVip: boolean; isVip: boolean }>

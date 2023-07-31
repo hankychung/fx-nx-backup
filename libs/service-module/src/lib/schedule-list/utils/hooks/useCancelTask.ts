@@ -1,12 +1,13 @@
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
-import { useScheduleStore } from '../../../store/useScheduleStore'
-import { ScheduleTaskConst, TaskApi } from '@flyele-nx/service'
+import {
+  useScheduleStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
+import { TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { cancelTask } from './utils'
 import { TaskHandler } from '../taskHandler'
-import { globalNxController } from '../../../global/nxController'
-import PUB from '../../../global/types/pubsub'
-import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
+import { CANCEL_TASK_STATE, Pub, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 
 /**
  * 用于退出事项的hook，外部给taskId，其余逻辑在这里完成
@@ -53,12 +54,12 @@ export const useCancelTask = ({
       dispatch_id,
       state:
         identity === 10801
-          ? ScheduleTaskConst.CANCEL_TASK_STATE.CANCEL_DISPATCH
-          : ScheduleTaskConst.CANCEL_TASK_STATE.CANCEL_JOIN
+          ? CANCEL_TASK_STATE.CANCEL_DISPATCH
+          : CANCEL_TASK_STATE.CANCEL_JOIN
     })
     if (result) {
       // 删除该事项相关的卡片和事项列表数据
-      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, taskIds)
+      globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, taskIds)
       globalNxController.showMsg({
         content: '取消成功',
         msgType: '成功',

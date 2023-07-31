@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { IScheduleTask } from '@flyele-nx/service'
+import { IScheduleTask } from '@flyele-nx/types'
 import { useMenuPin } from './useMenuPin'
 import { useMenuFollow } from './useMenuFollow'
 import { useMenuHide } from './useMenuHide'

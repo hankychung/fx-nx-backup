@@ -1,11 +1,14 @@
 import { produce } from 'immer'
-import { useScheduleStore, IState } from '../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  IState,
+  useUserInfoStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { ListHandler } from './listHandler'
 import { getKey } from '.'
-import { useUserInfoStore } from '../../store/useUserInfoStore'
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 import { ExecutionHandler } from './executionHandler'
-import { globalNxController } from '../../global/nxController'
 
 interface IReloadTasksParams {
   task: ILocalTask[]
@@ -254,6 +257,23 @@ class TaskHandler {
 
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
     ExecutionHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
+  }
+
+  // 获取该日期下的数据
+  static getTaskList({
+    date,
+    type
+  }: {
+    date: string
+    type: 'finished' | 'unfinished'
+  }) {
+    const { taskDict, finishSchedule, schedule } = useScheduleStore.getState()
+
+    const list = (type === 'finished' ? finishSchedule : schedule)[date].map(
+      (id) => taskDict[id]
+    )
+
+    return { list }
   }
 }
 

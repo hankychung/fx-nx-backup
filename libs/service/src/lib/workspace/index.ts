@@ -1,5 +1,5 @@
 import { service } from '../service'
-import { ISpaceList } from '../typings/space'
+import { ISpaceList } from '@flyele-nx/types'
 
 export interface SpaceListParams {
   workspace_id?: string

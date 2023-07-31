@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react'
 import { IProps, ScheduleTask } from './index'
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 
 const _ChildrenTask: FC<IProps> = ({
   taskKey,

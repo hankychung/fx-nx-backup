@@ -1,11 +1,12 @@
 import { useMemoizedFn } from 'ahooks'
-import { useScheduleStore } from '../../../store/useScheduleStore'
+import {
+  useScheduleStore,
+  globalNxController
+} from '@flyele-nx/global-processor'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import { TaskHandler } from '../taskHandler'
-import { globalNxController } from '../../../global/nxController'
-import PUB from '../../../global/types/pubsub'
-import { SIZE_TYPE_KEY } from '../../../global/types/channel/SIZE_TYPE'
+import { Pub, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 
 export const useExitTask = ({
   taskId,
@@ -44,7 +45,7 @@ export const useExitTask = ({
       await TaskDispatchApi.exitTask(dispatch_id)
       console.log('删除该事项相关的卡片和事项列表数据', taskIds)
       // 删除该事项相关的卡片和事项列表数据
-      globalNxController.pubJsPublish(PUB.DELETE_MATTER_ITEM, taskIds)
+      globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, taskIds)
 
       // 关闭子窗口
       globalNxController.ipcRendererSend(

@@ -6,9 +6,8 @@ import { FlyAvatar } from '@flyele/flyele-components'
 import cs from 'classnames'
 import styles from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
-import { useContactStore } from '../store/useContactStore'
-import { useUserInfoStore } from '../store/useUserInfoStore'
-import { VipTypeEnum } from '@flyele-nx/constant'
+import { useContactStore, useUserInfoStore } from '@flyele-nx/global-processor'
+import { VipHandler } from '@flyele-nx/service'
 
 export type ISimpleMember = {
   userId: string
@@ -38,20 +37,35 @@ const SimpleMemberList = (props: IProps) => {
   } = props
 
   const { contactDict, interacts } = useContactStore()
-  const { isEnterprise } = useUserInfoStore()
+
+  const {
+    isEnterprise,
+    userInfo: { user_id: myId }
+  } = useUserInfoStore()
 
   const getVipInfo = useMemoizedFn((id: string) => {
-    let isVip = false
-    let isTeamVip = false
+    if (myId === id && isEnterprise) {
+      return {
+        isTeamVip: true,
+        isVip: true
+      }
+    }
+
     const item = interacts.find((i) => i.user_id === id)
 
+    console.log('@check taker', item)
+
     if (item) {
-      isVip = isEnterprise || item.vip_type === VipTypeEnum.Person
-      isTeamVip = isEnterprise || item.vip_type === VipTypeEnum.Team
+      const { isTeamVip, isVip } = VipHandler.checkVipType(item)
+      return {
+        isVip,
+        isTeamVip
+      }
     }
+
     return {
-      isVip,
-      isTeamVip
+      isVip: false,
+      isTeamVip: false
     }
   })
 

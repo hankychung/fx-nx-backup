@@ -5,8 +5,10 @@ import { ReactComponent as Diamond } from '../../../../../../assets/payImg/diamo
 import { ReactComponent as Close } from '../../../../../../assets/payImg/close.svg'
 import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../../../utils'
-import { globalNxController } from '../../../../../../lib/global/nxController'
-import { useUserInfoStore } from '../../../../../../lib/store/useUserInfoStore'
+import {
+  globalNxController,
+  useUserInfoStore
+} from '@flyele-nx/global-processor'
 
 const PayUnfinish = ({
   isShow,

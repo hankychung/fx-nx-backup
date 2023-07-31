@@ -1,4 +1,4 @@
-import { ILocalTask } from '@flyele-nx/service'
+import { ILocalTask } from '@flyele-nx/types'
 
 export interface ScheduleListProps {
   date: string
@@ -9,6 +9,7 @@ export interface ScheduleListProps {
   overlayClassName?: string
   isDarkMode?: boolean
   opacity?: boolean
+  scheduleType?: 'WEEKLY'
 }
 
 export interface IScheduleListRef {

@@ -27,7 +27,7 @@ import { getResidueTime, regFenToYuan } from '../../utils'
 import { useCurrentTime } from '../../hoooks/useCurrentTime'
 import { useMemoizedFn } from 'ahooks'
 import meal_time from '../../../../assets/payImg/meal_time.svg'
-import { globalNxController } from '../../../global/nxController'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 const MemberInfo = ({
   memberList,

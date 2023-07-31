@@ -11,7 +11,7 @@ import { disposalTodayList } from './utils'
 import { TimelineTaskList } from './components/timeline-task-list'
 import { Nodata } from './components/no-data'
 import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
-import { useScheduleStore } from '../store/useScheduleStore'
+import { useScheduleStore } from '@flyele-nx/global-processor'
 
 interface IProps {
   date: number

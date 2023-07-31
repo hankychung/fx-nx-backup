@@ -1,5 +1,6 @@
 import { BizApi } from '@flyele-nx/service'
-import { GlobalInfoHandler, IContactDict } from '@flyele-nx/service-module'
+import { IContactDict } from '@flyele-nx/types'
+import { GlobalInfoHandler } from '@flyele-nx/service-module'
 import { getUserInfoSafely } from './getUserInfo'
 
 export const invalidTaker = {

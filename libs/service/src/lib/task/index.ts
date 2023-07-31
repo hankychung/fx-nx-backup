@@ -5,8 +5,8 @@ import {
   IHoliday,
   IRelation,
   ICreateParams
-} from '../typings/schedule'
-import { IWorkflowStep } from '../typings/workflow'
+} from '@flyele-nx/types'
+import { IWorkflowStep } from '@flyele-nx/types'
 
 interface IGetScheduleTreeParams {
   taskId: string

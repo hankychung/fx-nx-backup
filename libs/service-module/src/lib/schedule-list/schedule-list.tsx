@@ -33,7 +33,8 @@ const _ScheduleList: ForwardRefRenderFunction<
     // getFinishListTotal,
     overlayClassName,
     isDarkMode,
-    opacity
+    opacity,
+    scheduleType
   },
   ref
 ) => {
@@ -138,27 +139,41 @@ const _ScheduleList: ForwardRefRenderFunction<
           initialLoad={false}
           className={styles.scroller}
         >
-          {decentList.map((i, index) => (
+          {decentList.map((i, index) =>
             // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
-
-            <Draggable key={i} draggableId={`${i}-${date}`} index={index}>
-              {(provided, snapshot) => (
-                <ScheduleTask
-                  date={date}
-                  key={i}
-                  taskKey={i}
-                  topId={i}
-                  curTime={dayjs().unix()}
-                  isVipWin={isVipWin}
-                  isBoard={isBoard}
-                  isDarkMode={isDarkMode}
-                  style={provided.draggableProps.style}
-                  dragProvided={provided}
-                  opacity={opacity}
-                />
-              )}
-            </Draggable>
-          ))}
+            scheduleType === 'WEEKLY' ? (
+              <Draggable key={i} draggableId={`${i}-${date}`} index={index}>
+                {(provided, snapshot) => (
+                  <ScheduleTask
+                    date={date}
+                    key={i}
+                    taskKey={i}
+                    topId={i}
+                    curTime={dayjs().unix()}
+                    isVipWin={isVipWin}
+                    isBoard={isBoard}
+                    isDarkMode={isDarkMode}
+                    style={provided.draggableProps.style}
+                    dragProvided={provided}
+                    opacity={opacity}
+                    scheduleType={scheduleType}
+                  />
+                )}
+              </Draggable>
+            ) : (
+              <ScheduleTask
+                date={date}
+                key={i}
+                taskKey={i}
+                topId={i}
+                curTime={dayjs().unix()}
+                isVipWin={isVipWin}
+                isBoard={isBoard}
+                isDarkMode={isDarkMode}
+                opacity={opacity}
+              />
+            )
+          )}
         </InfiniteScroll>
       ) : (
         <EmptyData

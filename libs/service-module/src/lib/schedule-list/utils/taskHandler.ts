@@ -258,6 +258,23 @@ class TaskHandler {
     ListHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
     ExecutionHandler.removeTasks(bingoTasks.map((t) => t.ref_task_id))
   }
+
+  // 获取该日期下的数据
+  static getTaskList({
+    date,
+    type
+  }: {
+    date: string
+    type: 'finished' | 'unfinished'
+  }) {
+    const { taskDict, finishSchedule, schedule } = useScheduleStore.getState()
+
+    const list = (type === 'finished' ? finishSchedule : schedule)[date].map(
+      (id) => taskDict[id]
+    )
+
+    return { list }
+  }
 }
 
 export { TaskHandler }

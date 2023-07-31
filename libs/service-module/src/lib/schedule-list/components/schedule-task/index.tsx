@@ -393,6 +393,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
               isDarkMode={isDarkMode}
               style={style}
               isVipWin={isVipWin}
+              opacity={opacity}
             />
           ))}
         </div>

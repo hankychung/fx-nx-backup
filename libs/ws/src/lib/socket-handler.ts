@@ -1,13 +1,14 @@
 import msgpack from 'msgpack-lite'
-import { LocalStore, convertSocketMsg } from '@flyele-nx/utils'
+import { LocalStore, convertSocketMsg, emitter } from '@flyele-nx/utils'
 import { envStore } from '@flyele-nx/service'
 import { HEART_BEAT, HEART_BEAT_INTERVEL, HEART_BEAT_RETRY_MAX } from './const'
 
 class _SocketHandler {
   private ws: WebSocket | null = null
 
-  public goaway = () => {
-    // 被挤下线, 外部传入
+  // 被挤下线, 可由外部通过 initSocket 传入覆写
+  private goaway = () => {
+    emitter.emit('logout')
   }
 
   private heartbeatTimer: NodeJS.Timer | null = null
@@ -76,9 +77,9 @@ class _SocketHandler {
       }
 
       if (data.includes('goaway')) {
-        // TODO: 被挤下线
         this.ws?.close()
         this.doNotReconnect = true
+        this.goaway()
       }
       return
     }
@@ -98,8 +99,13 @@ class _SocketHandler {
     }
   }
 
-  initSocket({ goaway }: { goaway: () => void }) {
-    this.goaway = goaway
+  initSocket(options?: { goaway: () => void }) {
+    const goaway = options?.goaway
+
+    if (goaway) {
+      this.goaway = goaway
+    }
+
     this.connect()
   }
 

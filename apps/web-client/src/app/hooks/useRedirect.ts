@@ -5,21 +5,16 @@ import { LocalStore } from '@flyele-nx/utils'
 import { SocketHandler } from '@flyele-nx/ws'
 import { checkValidRoute } from '../utils/checkValidRoute'
 import { restoreLocalInfo } from '../utils/restoreLocalInfo'
-import { useLogout } from './useLogout'
 
 export const useRedirect = () => {
   const { pathname } = useLocation()
-
-  const { handleLogout } = useLogout()
 
   const navigate = useNavigate()
 
   useEffect(() => {
     restoreLocalInfo()
 
-    SocketHandler.initSocket({
-      goaway: handleLogout
-    })
+    SocketHandler.initSocket()
 
     navigate(
       LocalStore.getToken()
@@ -28,5 +23,5 @@ export const useRedirect = () => {
           : RoutePath.dayView
         : RoutePath.login
     )
-  }, [pathname, navigate, handleLogout])
+  }, [pathname, navigate])
 }

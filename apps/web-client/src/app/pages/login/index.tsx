@@ -7,14 +7,11 @@ import { Advertisement, FeedbackBtn } from '@flyele-nx/ui'
 import { LoginInput, GlobalInfoHandler } from '@flyele-nx/service-module'
 import { envStore, IUserInfo } from '@flyele-nx/service'
 import styles from './index.module.scss'
-import { useLogout } from '../../hooks/useLogout'
 
 const Login: FC = () => {
   const navigate = useNavigate()
 
   const isProdEnv = envStore.getEnv() === 'prod'
-
-  const { handleLogout } = useLogout()
 
   const onLoginSuccess = useMemoizedFn((data?: IUserInfo) => {
     if (data) {
@@ -22,7 +19,7 @@ const Login: FC = () => {
     }
     navigate(RoutePath.dayView)
 
-    SocketHandler.initSocket({ goaway: handleLogout })
+    SocketHandler.initSocket()
   })
 
   const onClickFeedbackNew = () => {

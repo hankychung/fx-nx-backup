@@ -331,7 +331,9 @@ export const Time: React.FC<IPROPTime> = ({
   return (
     <div
       className={cs(styles.timeRange, styles.board, parentStyle.needLine, {
-        [styles.darkMode]: isDarkMode,
+        [styles.darkMode]: isDarkMode && !opacity,
+        [styles.darkOpacityMode]: isDarkMode && opacity,
+        [styles.whiteOpacityMode]: !isDarkMode && opacity,
         [styles.isFinish]: task.finish_time,
         [styles.notHover]: isTimeLine
       })}

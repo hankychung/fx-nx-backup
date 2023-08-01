@@ -244,9 +244,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode,
-        [styles.darkOpacityHover]: isDarkMode && opacity,
-        [styles.whiteOpacityHover]: !isDarkMode && opacity
+        [styles.darkMode]: isDarkMode
+        // [styles.darkOpacityHover]: isDarkMode && opacity,
+        // [styles.whiteOpacityHover]: !isDarkMode && opacity
       })}
       style={{
         backgroundColor: opacity
@@ -361,6 +361,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                           isDarkMode={isDarkMode}
                           isVipWin={isVipWin}
                           isBoard={isBoard}
+                          opacity={opacity}
                         />
                       )}
                       {isBoard && !isTimeLine && (

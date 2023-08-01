@@ -16,6 +16,7 @@ export * from './utils/taskHandler'
 export * from './utils/listHandler'
 export * from './types/index'
 export * from './utils/executionHandler'
+export * from './utils/workflowOperation'
 
 export const ScheduleUtils = {
   getDiffKeys,

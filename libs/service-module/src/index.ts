@@ -27,7 +27,8 @@ import { service, envStore } from '@flyele-nx/service'
 import { DayExecution } from './lib/day-execution'
 import { ProjectLure } from './lib/project-lure'
 import { LoginInput } from './lib/login-input'
-
+import { WorkflowOperation } from './lib/workflow-operation'
+import { AcceptOnceMany } from './lib/accept-once-many'
 export * from './lib/schedule-list' // 日程列表
 
 export {
@@ -49,7 +50,9 @@ export {
   RetrievePayModalTeam,
   ProjectLure,
   RetrievePayModal,
-  LoginInput
+  LoginInput,
+  WorkflowOperation,
+  AcceptOnceMany
 }
 
 export * from './lib/map-svg/type/props'

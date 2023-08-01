@@ -50,4 +50,4 @@ const PopoverAcceptOnceMany: React.FC<React.PropsWithChildren<Props>> = ({
   )
 }
 
-export default memo(PopoverAcceptOnceMany)
+export const AcceptOnceMany = memo(PopoverAcceptOnceMany)

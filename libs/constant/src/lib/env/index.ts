@@ -87,4 +87,9 @@ class EnvStore {
   }
 }
 
+export const appInfo = {
+  platform: 'pc',
+  version: 'fake version'
+}
+
 export const envStore = new EnvStore()

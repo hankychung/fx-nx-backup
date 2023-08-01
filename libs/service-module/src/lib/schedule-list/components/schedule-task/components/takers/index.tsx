@@ -45,6 +45,7 @@ interface IPROPTakers {
   isDarkMode?: boolean
   isVipWin?: boolean
   isBoard?: boolean
+  opacity?: boolean
 }
 
 interface ICUSTOMAvatar {
@@ -68,7 +69,8 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     taskId,
     isDarkMode = false,
     isVipWin = false,
-    isBoard = false
+    isBoard = false,
+    opacity = false
   } = props
   const task = useScheduleStore((state) => state.taskDict[taskId])
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
@@ -359,7 +361,9 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     >
       <div
         className={cs(styles.takers, {
-          [styles.darkMode]: isDarkMode,
+          [styles.darkMode]: isDarkMode && !opacity,
+          [styles.darkOpacityMode]: isDarkMode && opacity,
+          [styles.whiteOpacityMode]: !isDarkMode && opacity,
           [parentStyle.needLine]: isBoard || isVipWin
         })}
       >

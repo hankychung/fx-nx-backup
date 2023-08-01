@@ -35,9 +35,7 @@ const _FinishNumBtn = ({
         }}
         onClick={onChange}
       >
-        <div className={cs(styles.text, { [styles.btnBoxBlack]: isDarkMode })}>
-          已完成·{count || 0}
-        </div>
+        <div className={cs(styles.text)}>已完成·{count || 0}</div>
         <div className={cs(styles.icon, { [styles.showUp]: show })}>
           <ArrowDownIcon width={8} height={8} color="#B4B4B4" />
         </div>

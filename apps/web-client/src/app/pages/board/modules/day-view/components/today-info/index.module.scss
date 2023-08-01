@@ -1,0 +1,95 @@
+.todayInfoRoot {
+  background: #fff;
+  border-radius: 8px;
+  padding-top: 20px;
+
+  .todayContainer {
+    display: flex;
+    position: relative;
+    padding: 0 20px;
+    margin-bottom: 20px;
+
+    .left {
+      flex: 1;
+
+      .btn {
+        background: var(--primary);
+        color: white;
+        font-size: 11px;
+        height: 24px;
+        width: 60px;
+        border-radius: 12px;
+        text-align: center;
+        line-height: 24px;
+        cursor: pointer;
+        margin-left: 13px;
+        margin-top: 4px;
+      }
+
+      & > div:nth-child(1) {
+        display: flex;
+        align-items: center;
+
+        .arrow {
+          margin-left: 6px;
+          margin-top: 6px;
+          cursor: pointer;
+        }
+      }
+
+      .date {
+        color: #262626;
+        font-size: 28px;
+        margin-top: 8px;
+        margin-bottom: 3px;
+        white-space: nowrap;
+        font-weight: bold;
+      }
+
+      .soup {
+        color: #6a6a6a;
+        font-size: 12px;
+        font-family: PingFangSC-Light PingFangSC-Regular, sans-serif !important;
+        font-weight: 300;
+      }
+    }
+    .right {
+      width: 120px;
+      position: relative;
+
+
+      .weatherBg {
+        position: absolute;
+        right: -18px;
+        top: -32px;
+        height: 140px;
+      }
+
+      .whether {
+        position: absolute;
+        top: 58px;
+        right: 26px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .temp {
+          color: #262626;
+          font-size: 12px;
+          margin-bottom: 3px;
+        }
+
+        .wind {
+          font-size: 8px;
+          color: #92929d;
+        }
+      }
+    }
+  }
+}
+
+.showListHeight {
+  height: calc(100% - 93px);
+  background-color: #fff;
+  border-radius: 0 0 8px 8px;
+}

@@ -156,6 +156,21 @@ class Task {
     })
   }
 
+  getCalendarInfo(
+    start: number,
+    end: number,
+    query_type: 'day' | 'month' = 'day'
+  ) {
+    return service.get<{ data: { [k: string]: { is_task: number } } }>({
+      url: `${this.prefix}/calendar`,
+      params: {
+        start_time: start,
+        end_time: end,
+        query_type
+      }
+    })
+  }
+
   // 修改事项或者会议
   async updateTask(
     data: Partial<ICreateParams>,

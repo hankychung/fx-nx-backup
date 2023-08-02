@@ -3,6 +3,7 @@ import { Tree } from 'antd'
 import styles from './index.module.scss'
 import { addKey } from '../utils'
 import { useScheduleStore } from '@flyele-nx/global-processor'
+import { ILocalTask } from '@flyele-nx/types'
 
 export enum charsType {
   'accept',
@@ -58,7 +59,7 @@ const InfosModalLayer: React.FC<React.PropsWithChildren<PropLayer>> = ({
   handleClickOnlyOne,
   handleClickAll
 }) => {
-  const [taskListInside, setTaskListInside] = useState<Array<any> | any>([])
+  const [taskListInside, setTaskListInside] = useState<Array<ILocalTask>>([])
   const taskDict = useScheduleStore((state) => state.taskDict)
   useEffect(() => {
     const list = taskList.map((i) => taskDict[i])

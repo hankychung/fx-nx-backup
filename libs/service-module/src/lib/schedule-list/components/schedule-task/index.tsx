@@ -68,7 +68,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isBoard = false,
   isTimeLine = false,
   dragProvided = {},
-  opacity = false,
+  opacity,
   scheduleType
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
@@ -233,7 +233,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   }, [data?.priority_level])
 
   if (!data) return null
-
   return (
     <div
       ref={dragProvided ? dragProvided.innerRef : domRef}
@@ -245,8 +244,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
         [styles.darkMode]: isDarkMode
-        // [styles.darkOpacityHover]: isDarkMode && opacity,
-        // [styles.whiteOpacityHover]: !isDarkMode && opacity
       })}
       style={{
         backgroundColor: opacity

@@ -38,20 +38,23 @@
         background-image: linear-gradient(to bottom, #3e4d5b, #3b3e4b);
       }
     }
-    &.opacityHover {
-      &:hover {
-        background-size: 100% 20%;
-        background-repeat: no-repeat;
-        background-image: linear-gradient(
-          to bottom,
-          #1dd2c120 14.83%,
-          rgba(29, 210, 193, 0) 79.94%
-        );
-      }
-    }
+
     &:hover {
       background-image: linear-gradient(to bottom, #eefffd, #fff);
       position: relative;
+    }
+  }
+
+  .opacityHover {
+    border-radius: 8px;
+    &:hover {
+      background-size: 100% 20%;
+      background-repeat: no-repeat;
+      background-image: linear-gradient(
+        to bottom,
+        #1dd2c120 14.83%,
+        rgba(29, 210, 193, 0) 79.94%
+      );
     }
   }
 

@@ -6,6 +6,7 @@ import { SocketHandler } from '@flyele-nx/ws'
 import { envStore } from '@flyele-nx/service'
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
 
 dayjs.locale('zh-cn')
 

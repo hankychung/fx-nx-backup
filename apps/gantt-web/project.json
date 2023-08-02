@@ -84,6 +84,9 @@
           "codeCoverage": true
         }
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./apps/gantt-web/tsconfig.app.json"
     }
   },
   "tags": []

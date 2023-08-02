@@ -130,15 +130,7 @@ const _ScheduleList: ForwardRefRenderFunction<
       style={{ backgroundColor: isDarkMode ? 'unset' : '#F6F8FA' }}
     >
       {(decentList ?? []).length ? (
-        <InfiniteScroll
-          loadMore={() => {
-            // do nothing
-          }}
-          useWindow={false}
-          hasMore
-          initialLoad={false}
-          className={styles.scroller}
-        >
+        <div className={styles.scroller}>
           {decentList.map((i, index) =>
             // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
             scheduleType === 'WEEKLY' ? (
@@ -174,7 +166,7 @@ const _ScheduleList: ForwardRefRenderFunction<
               />
             )
           )}
-        </InfiniteScroll>
+        </div>
       ) : (
         <EmptyData
           isError={isError}

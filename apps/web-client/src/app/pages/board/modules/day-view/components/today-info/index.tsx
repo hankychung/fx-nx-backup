@@ -155,6 +155,7 @@ export const TodayInfo: FC = () => {
           onShow={onShow}
           rootClassName={stepsShow ? styles.showListHeight : ''}
           subtractHeight={70}
+          // subtractHeight={250}
         />
       )}
     </div>

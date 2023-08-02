@@ -23,6 +23,11 @@ class LocalStore {
 
     return _ ? (JSON.parse(_) as IUserInfo) : null
   }
+
+  static clear() {
+    localStorage.removeItem(StoreKey.auth)
+    localStorage.removeItem(StoreKey['user-info'])
+  }
 }
 
 export { LocalStore }

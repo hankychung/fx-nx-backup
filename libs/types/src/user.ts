@@ -64,3 +64,9 @@ export interface IUserInfoState {
   userInfo: Omit<IUserInfo, 'Token'>
   isEnterprise: boolean
 }
+
+export interface IRefreshToken {
+  code: number
+  Token: string
+  max_age: number
+}

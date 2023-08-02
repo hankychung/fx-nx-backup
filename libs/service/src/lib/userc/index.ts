@@ -1,12 +1,18 @@
 import dayjs from 'dayjs'
 import { uid } from '@flyele-nx/utils'
 import { service } from '../service'
-import { IUserInfo, ILoginKeyParams, IVipMember } from '../typings'
-import { EConCheckStatus } from '@flyele-nx/constant'
-import { IContactsAndStatus } from '@flyele-nx/types'
+import { EConCheckStatus, appInfo } from '@flyele-nx/constant'
+import {
+  IContactsAndStatus,
+  IRefreshToken,
+  IUserInfo,
+  ILoginKeyParams,
+  IVipMember,
+  IWeather,
+  IPhoneLoginParams
+} from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
 import { IMemberApi } from '../typings/vip'
-import { IWeather, IPhoneLoginParams } from '../typings'
 
 class Userc {
   private prefix = 'userc/v2'
@@ -93,14 +99,31 @@ class Userc {
     })
   }
 
-  /**
-   * 天气
-   */
   async getWeather() {
     return await service.get<IWeather>({
       url: `${this.prefix}/weather`
     })
   }
+
+  async refreshToken() {
+    const { platform, version } = appInfo
+
+    return await service.post<IRefreshToken>({
+      url: `${this.prefix}/auth/refresh`,
+      data: {
+        client_version: version,
+        platform
+      }
+    })
+  }
 }
 
 export const UsercApi = new Userc()
+
+// eslint-disable-next-line
+// @ts-ignore
+window.__dangerous_refresh_token = async () => {
+  const token = await UsercApi.refreshToken()
+
+  console.log(token)
+}

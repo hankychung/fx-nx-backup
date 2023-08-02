@@ -80,6 +80,7 @@ const _DayExecution = ({
   const contentStyle = useMemo(() => {
     return {
       height: show ? `calc(100% - ${subtractHeight}px)` : 0,
+      // height: show ? `calc(100vh - ${subtractHeight}px)` : 0,
       display: show ? 'block' : 'none'
     }
   }, [subtractHeight, show])
@@ -216,13 +217,15 @@ const _DayExecution = ({
             </div>
             {show && (
               <div className={styles.footer}>
-                <div className={styles.hideBtn}>
+                <div
+                  className={styles.hideBtn}
+                  onClick={() => setShow((show) => !show)}
+                >
                   收起
                   <div
                     className={cs(styles.arrowIcon, {
                       [styles.arrowIconUp]: show
                     })}
-                    onClick={() => setShow((show) => !show)}
                   >
                     <CircleArrowUpIcon width={17} height={17} />
                   </div>

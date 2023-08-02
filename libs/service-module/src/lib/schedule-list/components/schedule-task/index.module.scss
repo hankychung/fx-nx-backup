@@ -45,6 +45,19 @@
     }
   }
 
+  .opacityHover {
+    border-radius: 8px;
+    &:hover {
+      background-size: 100% 20%;
+      background-repeat: no-repeat;
+      background-image: linear-gradient(
+        to bottom,
+        #1dd2c120 14.83%,
+        rgba(29, 210, 193, 0) 79.94%
+      );
+    }
+  }
+
   .iconTop {
     width: 10px;
     height: 10px;

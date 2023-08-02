@@ -1,7 +1,9 @@
 import msgpack from 'msgpack-lite'
-import { LocalStore, convertSocketMsg, emitter } from '@flyele-nx/utils'
+import { LocalStore, emitter } from '@flyele-nx/utils'
 import { envStore } from '@flyele-nx/service'
 import { HEART_BEAT, HEART_BEAT_INTERVEL, HEART_BEAT_RETRY_MAX } from './const'
+import { convertSocketMsg } from './utils/convertSocketMsg'
+import { readCode } from './utils/readCode'
 
 class _SocketHandler {
   private ws: WebSocket | null = null
@@ -94,6 +96,8 @@ class _SocketHandler {
       if (!result || typeof result === 'string') return
 
       const msg = convertSocketMsg(msgpack.decode(new Uint8Array(result)))
+
+      readCode(msg)
 
       console.log('「socket」', msg)
     }

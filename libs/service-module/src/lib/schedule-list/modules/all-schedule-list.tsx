@@ -10,7 +10,6 @@ import React, {
 import styles from '../schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
-import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
 import { ListHandler } from '../utils/listHandler'
 import classNames from 'classnames'

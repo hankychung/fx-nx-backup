@@ -266,6 +266,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         className={cs({
           [styles.topHover]: !isTimeLine && !opacity,
           [styles.darkModeHover]: isDarkMode && !opacity,
+          [styles.opacityHover]: opacity,
           [styles.remind]: isRemind,
           [styles.complexSchedulePadding]: !isBoard && !isTimeLine,
           [styles.boardSchedulePadding]: isBoard,

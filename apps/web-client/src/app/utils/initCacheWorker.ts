@@ -1,7 +1,7 @@
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { ScheduleUtils } from '@flyele-nx/service-module'
 import { envStore } from '@flyele-nx/service'
-import { LocalStore } from '@flyele-nx/utils'
+import { LocalStore, emitter } from '@flyele-nx/utils'
 
 const initCacheWorker = async ({ userId }: { userId: string }) => {
   await ServiceWorkerUtils.login({
@@ -13,6 +13,8 @@ const initCacheWorker = async ({ userId }: { userId: string }) => {
     env: envStore.getEnv(),
     wasmUrl: '/assets/wasm/sql-wasm.wasm'
   })
+
+  emitter.emit('cacheWorkerInited')
 
   await ScheduleUtils.initTodayList()
 }

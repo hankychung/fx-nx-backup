@@ -189,9 +189,10 @@ export const Time: React.FC<IPROPTime> = ({
       item: task,
       selectDate: date,
       curTime,
-      isTeamSchedule
+      isTeamSchedule,
+      userId: userId
     })
-  }, [task, date, curTime])
+  }, [task, date, curTime, userId])
 
   const getCycle = useMemoizedFn(() => {
     if (task.cycle) return task.cycle
@@ -331,7 +332,9 @@ export const Time: React.FC<IPROPTime> = ({
   return (
     <div
       className={cs(styles.timeRange, styles.board, parentStyle.needLine, {
-        [styles.darkMode]: isDarkMode,
+        [styles.darkMode]: isDarkMode && !opacity,
+        [styles.darkOpacityMode]: isDarkMode && opacity,
+        [styles.whiteOpacityMode]: !isDarkMode && opacity,
         [styles.isFinish]: task.finish_time,
         [styles.notHover]: isTimeLine
       })}

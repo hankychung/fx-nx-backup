@@ -29,7 +29,7 @@
       }
     },
     "tslint": {
-      "command": "tsc --project ./libs/sw-sql-client/tsconfig.lib.json"
+      "command": "tsc --project ./libs/gantt/tsconfig.lib.json"
     }
   }
 }

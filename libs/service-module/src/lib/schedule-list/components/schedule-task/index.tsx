@@ -68,7 +68,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   isBoard = false,
   isTimeLine = false,
   dragProvided = {},
-  opacity = false,
+  opacity,
   scheduleType
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
@@ -233,7 +233,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   }, [data?.priority_level])
 
   if (!data) return null
-
   return (
     <div
       ref={dragProvided ? dragProvided.innerRef : domRef}
@@ -244,9 +243,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         [styles.priorityLevel]: isTopTask,
         [priorityLevelClass]: isTopTask,
         [styles.finish]: !!data?.finish_time,
-        [styles.darkMode]: isDarkMode,
-        [styles.darkOpacityHover]: isDarkMode && opacity,
-        [styles.whiteOpacityHover]: !isDarkMode && opacity
+        [styles.darkMode]: isDarkMode
       })}
       style={{
         backgroundColor: opacity
@@ -266,6 +263,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         className={cs({
           [styles.topHover]: !isTimeLine && !opacity,
           [styles.darkModeHover]: isDarkMode && !opacity,
+          [styles.opacityHover]: opacity,
           [styles.remind]: isRemind,
           [styles.complexSchedulePadding]: !isBoard && !isTimeLine,
           [styles.boardSchedulePadding]: isBoard,
@@ -361,6 +359,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                           isDarkMode={isDarkMode}
                           isVipWin={isVipWin}
                           isBoard={isBoard}
+                          opacity={opacity}
                         />
                       )}
                       {isBoard && !isTimeLine && (

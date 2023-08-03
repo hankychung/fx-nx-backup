@@ -2,6 +2,7 @@ const inquirer = require('inquirer')
 const path = require('path')
 const fs = require('fs')
 const concurrently = require('concurrently')
+const { exec } = require('child_process')
 
 // 运行环境选项
 const envChoices = [
@@ -91,6 +92,32 @@ const serve = async () => {
       }
     }
   ])
+  // web-client 项目需要询问是否启动代理
+  if (apps.name === 'web-client') {
+    const { shouldStartProxy } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'shouldStartProxy',
+        message: '是否启动代理?',
+        default: true
+      }
+    ])
+
+    if (shouldStartProxy) {
+      exec('yarn proxy', (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`)
+          return
+        }
+        if (stderr) {
+          console.log(`stderr: ${stderr}`)
+          return
+        }
+        console.log(`stdout: ${stdout}`)
+      })
+    }
+  }
+
   const { command } = generateCommands({
     apps,
     apiEnv

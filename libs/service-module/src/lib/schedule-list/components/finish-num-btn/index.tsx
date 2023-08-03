@@ -31,11 +31,11 @@ const _FinishNumBtn = ({
               : 'rgba(237, 237, 237, 0.1)'
             : isDarkMode
             ? 'rgba(59, 62, 75, 1)'
-            : '#F6F8FA'
+            : '#fbfbfb'
         }}
         onClick={onChange}
       >
-        <div className={cs(styles.text, { [styles.btnBoxBlack]: isDarkMode })}>
+        <div className={cs(isDarkMode ? styles.textBlack : styles.text)}>
           已完成·{count || 0}
         </div>
         <div className={cs(styles.icon, { [styles.showUp]: show })}>

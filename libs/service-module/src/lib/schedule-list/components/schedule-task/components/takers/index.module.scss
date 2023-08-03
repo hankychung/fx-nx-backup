@@ -10,6 +10,18 @@
     }
   }
 
+  &.darkOpacityMode {
+    &:hover::after {
+      background-color: rgba(59, 62, 75, 0.2);
+    }
+  }
+
+  &.whiteOpacityMode {
+    &:hover::after {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
   &:hover::after {
     content: '';
     position: absolute;

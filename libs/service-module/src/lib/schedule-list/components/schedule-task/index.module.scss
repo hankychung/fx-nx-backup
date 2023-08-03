@@ -45,6 +45,19 @@
     }
   }
 
+  .opacityHover {
+    border-radius: 8px;
+    &:hover {
+      background-size: 100% 20%;
+      background-repeat: no-repeat;
+      background-image: linear-gradient(
+        to bottom,
+        #1dd2c120 14.83%,
+        rgba(29, 210, 193, 0) 79.94%
+      );
+    }
+  }
+
   .iconTop {
     width: 10px;
     height: 10px;
@@ -240,15 +253,15 @@
   }
 }
 
-.darkOpacityHover {
-  :hover {
-    background-color: rgba(58, 65, 86, 0.2);
-    position: relative;
-  }
-}
+// .darkOpacityHover {
+//   :hover {
+//     background-color: rgba(58, 65, 86, 0.2);
+//     position: relative;
+//   }
+// }
 
-.whiteOpacityHover {
-  :hover {
-    background-color: rgba(248, 248, 248, 0.2);
-  }
-}
+// .whiteOpacityHover {
+//   :hover {
+//     background-color: rgba(248, 248, 248, 0.2);
+//   }
+// }

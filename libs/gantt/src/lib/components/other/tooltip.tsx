@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Task, BarTask } from '@flyele-nx/types'
+import { Task, IFullViewBarTask } from '@flyele-nx/types'
 import styles from './tooltip.module.css'
-
+import dayjs from 'dayjs'
+import cs from 'classnames'
 export type TooltipProps = {
-  task: BarTask
+  task: IFullViewBarTask
   arrowIndent: number
   rtl: boolean
   svgContainerHeight: number
@@ -43,7 +44,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   useEffect(() => {
     if (tooltipRef.current) {
       const tooltipHeight = tooltipRef.current.offsetHeight * 1.1
-      const tooltipWidth = tooltipRef.current.offsetWidth * 1.1
+      const tooltipWidth = 0
 
       let newRelatedY = task.index * rowHeight - scrollY + headerHeight
       let newRelatedX: number
@@ -58,6 +59,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
           newRelatedY += rowHeight
         }
       } else {
+        console.log(task, taskListWidth, scrollX, tooltipWidth)
+
         newRelatedX = task.x2 + arrowIndent * 1.5 + taskListWidth - scrollX
         const tooltipLeftmostPoint = tooltipWidth + newRelatedX
         const fullChartWidth = taskListWidth + svgContainerWidth
@@ -116,25 +119,31 @@ export const StandardTooltipContent: React.FC<{
     fontSize,
     fontFamily
   }
+  const start = dayjs(task.start).format('MM月DD日')
+  const end = dayjs(task.end).format('MM月DD日')
   return (
-    <div className={styles.tooltipDefaultContainer} style={style}>
-      <b style={{ fontSize: fontSize + 6 }}>{`${
+    <div
+      className={cs(styles.tooltipDefaultContainer, styles.TrBubble)}
+      style={style}
+    >
+      {`${start}-${end}`}
+      {/* <b style={{ fontSize: fontSize + 6 }}>{`${
         task.name
       }: ${task.start.getDate()}-${
         task.start.getMonth() + 1
       }-${task.start.getFullYear()} - ${task.end.getDate()}-${
         task.end.getMonth() + 1
-      }-${task.end.getFullYear()}`}</b>
-      {task.end.getTime() - task.start.getTime() !== 0 && (
+      }-${task.end.getFullYear()}`}</b> */}
+      {/* {task.end.getTime() - task.start.getTime() !== 0 && (
         <p className={styles.tooltipDefaultContainerParagraph}>{`Duration: ${~~(
           (task.end.getTime() - task.start.getTime()) /
           (1000 * 60 * 60 * 24)
         )} day(s)`}</p>
-      )}
+      )} */}
 
-      <p className={styles.tooltipDefaultContainerParagraph}>
+      {/* <p className={styles.tooltipDefaultContainerParagraph}>
         {!!task.progress && `Progress: ${task.progress} %`}
-      </p>
+      </p> */}
     </div>
   )
 }

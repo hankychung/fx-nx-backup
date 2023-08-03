@@ -30,7 +30,7 @@ import {
   FAKE_ID,
   NO_PROJECT_ID
   // TableHeaderTitle,
-} from '@flyele-nx/types'
+} from '@flyele-nx/constant'
 import dayjs from 'dayjs'
 // import { useLocation } from 'react-router-dom'
 import { getWidget } from '../../utils/index'
@@ -48,13 +48,16 @@ import { IconBox } from './IconBox'
 import style from './index.module.scss'
 import { isInTask } from '../../utils/index'
 import AlertPromise from '../../components/AlertPromise'
-import { ICellProps } from '@flyele-nx/types'
+import { IFullViewCellProps } from '@flyele-nx/types'
 import { useMessage } from '@flyele-nx/ui'
 import { getParentNode } from '@flyele-nx/utils'
 import { MAX_TITLE_LEN, MatterType } from '@flyele-nx/constant'
 import { ICreateParams } from '@flyele-nx/types'
 
-const Title: FC<React.PropsWithChildren<ICellProps>> = ({ data, userId }) => {
+const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
+  data,
+  userId
+}) => {
   const {
     title,
     matter_type,

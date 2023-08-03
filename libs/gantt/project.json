@@ -27,6 +27,9 @@
           "mode": "production"
         }
       }
+    },
+    "tslint": {
+      "command": "tsc --project ./libs/sw-sql-client/tsconfig.lib.json"
     }
   }
 }

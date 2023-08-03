@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import {
-  EventOption,
-  BarTask,
-  BarMoveAction,
-  GanttContentMoveAction,
-  GanttEvent
+  IFullViewEventOption,
+  IFullViewBarTask,
+  IFullViewGanttEvent
 } from '@flyele-nx/types'
 import { Arrow } from '../other/arrow'
 import { handleTaskBySVGMouseEvent } from '../../helpers/bar-helper'
 import { isKeyboardEvent } from '../../helpers/other-helper'
 import { TaskItem } from '../task-item/task-item'
+import {
+  FullViewBarMoveAction,
+  FullViewGanttContentMoveAction
+} from '@flyele-nx/constant'
 
 export type TaskGanttContentProps = {
-  tasks: BarTask[]
+  tasks: IFullViewBarTask[]
   dates: Date[]
-  ganttEvent: GanttEvent
-  selectedTask: BarTask | undefined
+  ganttEvent: IFullViewGanttEvent
+  selectedTask: IFullViewBarTask | undefined
   rowHeight: number
   columnWidth: number
   timeStep: number
@@ -27,10 +29,10 @@ export type TaskGanttContentProps = {
   fontSize: string
   fontFamily: string
   rtl: boolean
-  setGanttEvent: (value: GanttEvent) => void
-  setFailedTask: (value: BarTask | null) => void
+  setGanttEvent: (value: IFullViewGanttEvent) => void
+  setFailedTask: (value: IFullViewBarTask | null) => void
   setSelectedTask: (taskId: string) => void
-} & EventOption
+} & IFullViewEventOption
 
 export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   tasks,
@@ -84,7 +86,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
 
       const { isChanged, changedTask } = handleTaskBySVGMouseEvent(
         cursor.x,
-        ganttEvent.action as BarMoveAction,
+        ganttEvent.action as FullViewBarMoveAction,
         ganttEvent.changedTask,
         xStep,
         timeStep,
@@ -108,7 +110,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
       )
       const { changedTask: newChangedTask } = handleTaskBySVGMouseEvent(
         cursor.x,
-        action as BarMoveAction,
+        action as FullViewBarMoveAction,
         changedTask,
         xStep,
         timeStep,
@@ -196,8 +198,8 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
    * Method is Start point of task change
    */
   const handleBarEventStart = async (
-    action: GanttContentMoveAction,
-    task: BarTask,
+    action: FullViewGanttContentMoveAction,
+    task: IFullViewBarTask,
     event?: React.MouseEvent | React.KeyboardEvent
   ) => {
     if (!event) {
@@ -293,6 +295,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
               key={task.id}
               isSelected={!!selectedTask && task.id === selectedTask.id}
               rtl={rtl}
+              svg={svg}
             />
           )
         })}

@@ -13,8 +13,14 @@
   stroke: #e6e4e4;
 }
 
+.calendarTop {
+  text-anchor: middle;
+  line-height: 34px;
+}
+
 .calendarTopText {
   text-anchor: middle;
+  line-height: 34px;
   fill: #555;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -27,5 +33,5 @@
 .calendarHeader {
   fill: #ffffff;
   stroke: #e0e0e0;
-  stroke-width: 1.4;
+  /* stroke-width: 1.4; */
 }

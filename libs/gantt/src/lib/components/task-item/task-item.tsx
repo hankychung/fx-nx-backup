@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { GanttContentMoveAction, BarTask } from '@flyele-nx/types'
+import { IFullViewBarTask } from '@flyele-nx/types'
+import { FullViewGanttContentMoveAction } from '@flyele-nx/constant'
 import { Bar } from './bar/bar'
 import { BarSmall } from './bar/bar-small'
 import { Milestone } from './milestone/milestone'
 import { Project } from './project/project'
 import style from './task-list.module.css'
+// import { createSVG } from '../../utils'
+// import checkboxFinishedIcon from '../../../assets/schedule/check.png'
 
 export type TaskItemProps = {
-  task: BarTask
+  task: IFullViewBarTask
   arrowIndent: number
   taskHeight: number
   isProgressChangeable: boolean
@@ -15,9 +18,10 @@ export type TaskItemProps = {
   isDelete: boolean
   isSelected: boolean
   rtl: boolean
+  svg?: React.RefObject<SVGSVGElement>
   onEventStart: (
-    action: GanttContentMoveAction,
-    selectedTask: BarTask,
+    action: FullViewGanttContentMoveAction,
+    selectedTask: IFullViewBarTask,
     event?: React.MouseEvent | React.KeyboardEvent
   ) => any
 }
@@ -30,13 +34,43 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     taskHeight,
     isSelected,
     rtl,
-    onEventStart
+    onEventStart,
+    svg
   } = {
     ...props
   }
+  // const defaultLayout = {
+  //   bar: null
+  // }
   const textRef = useRef<SVGTextElement>(null)
   const [taskItem, setTaskItem] = useState<JSX.Element>(<div />)
   const [isTextInside, setIsTextInside] = useState(true)
+  // const layout: any = useRef<{
+  //   bar: HTMLElement | null
+  // }>(defaultLayout)
+
+  // const setupLayers = () => {
+  //   layout.current['bar'] = createSVG('g', {
+  //     class: 'bar',
+  //     append_to: svg && svg.current
+  //   })
+  // }
+  // const makeBars = () => {
+  //   if (layout.current && layout.current.bar) {
+  //     const bar = Bar({...props});
+  //     layout.current.bar?.appendChild(bar.group);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (svg && svg.current && layout.current) {
+  //     svg.current.innerHTML = ''
+  //     layout.current = defaultLayout
+  //     setupLayers()
+  //     makeBars()
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [defaultLayout, svg, task])
 
   useEffect(() => {
     switch (task.typeInternal) {
@@ -116,6 +150,7 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
             : style.barLabel && style.barLabelOutside
         }
         ref={textRef}
+        color="#262626"
       >
         {task.name}
       </text>

@@ -1,10 +1,8 @@
+import { Task, IFullViewBarTask } from '@flyele-nx/types'
 import {
-  Task,
-  BarTask,
-  TaskTypeInternal,
-  BarMoveAction
-} from '@flyele-nx/types'
-
+  FullViewTaskTypeInternal,
+  FullViewBarMoveAction
+} from '@flyele-nx/constant'
 export const convertToBarTasks = (
   tasks: Task[],
   dates: Date[],
@@ -84,8 +82,8 @@ const convertToBarTask = (
   projectBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
-): BarTask => {
-  let barTask: BarTask
+): IFullViewBarTask => {
+  let barTask: IFullViewBarTask
   switch (task.type) {
     case 'milestone':
       barTask = convertToMilestone(
@@ -153,7 +151,7 @@ const convertToBar = (
   barProgressSelectedColor: string,
   barBackgroundColor: string,
   barBackgroundSelectedColor: string
-): BarTask => {
+): IFullViewBarTask => {
   let x1: number
   let x2: number
   if (rtl) {
@@ -163,7 +161,7 @@ const convertToBar = (
     x1 = taskXCoordinate(task.start, dates, columnWidth)
     x2 = taskXCoordinate(task.end, dates, columnWidth)
   }
-  let typeInternal: TaskTypeInternal = task.type
+  let typeInternal: FullViewTaskTypeInternal = task.type
   if (typeInternal === 'task' && x2 - x1 < handleWidth * 2) {
     typeInternal = 'smalltask'
     x2 = x1 + handleWidth * 2
@@ -214,7 +212,7 @@ const convertToMilestone = (
   handleWidth: number,
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
-): BarTask => {
+): IFullViewBarTask => {
   const x = taskXCoordinate(task.start, dates, columnWidth)
   const y = taskYCoordinate(index, rowHeight, taskHeight)
 
@@ -294,7 +292,7 @@ export const progressWithByParams = (
 
 export const progressByProgressWidth = (
   progressWidth: number,
-  barTask: BarTask
+  barTask: IFullViewBarTask
 ) => {
   const barWidth = barTask.x2 - barTask.x1
   const progressPercent = Math.round((progressWidth * 100) / barWidth)
@@ -303,7 +301,7 @@ export const progressByProgressWidth = (
   else return progressPercent
 }
 
-const progressByX = (x: number, task: BarTask) => {
+const progressByX = (x: number, task: IFullViewBarTask) => {
   if (x >= task.x2) return 100
   else if (x <= task.x1) return 0
   else {
@@ -312,7 +310,7 @@ const progressByX = (x: number, task: BarTask) => {
     return progressPercent
   }
 }
-const progressByXRTL = (x: number, task: BarTask) => {
+const progressByXRTL = (x: number, task: IFullViewBarTask) => {
   if (x >= task.x2) return 0
   else if (x <= task.x1) return 100
   else {
@@ -338,7 +336,7 @@ export const getProgressPoint = (
   return point.join(',')
 }
 
-const startByX = (x: number, xStep: number, task: BarTask) => {
+const startByX = (x: number, xStep: number, task: IFullViewBarTask) => {
   if (x >= task.x2 - task.handleWidth * 2) {
     x = task.x2 - task.handleWidth * 2
   }
@@ -348,7 +346,7 @@ const startByX = (x: number, xStep: number, task: BarTask) => {
   return newX
 }
 
-const endByX = (x: number, xStep: number, task: BarTask) => {
+const endByX = (x: number, xStep: number, task: IFullViewBarTask) => {
   if (x <= task.x1 + task.handleWidth * 2) {
     x = task.x1 + task.handleWidth * 2
   }
@@ -358,7 +356,7 @@ const endByX = (x: number, xStep: number, task: BarTask) => {
   return newX
 }
 
-const moveByX = (x: number, xStep: number, task: BarTask) => {
+const moveByX = (x: number, xStep: number, task: IFullViewBarTask) => {
   const steps = Math.round((x - task.x1) / xStep)
   const additionalXValue = steps * xStep
   const newX1 = task.x1 + additionalXValue
@@ -386,14 +384,14 @@ const dateByX = (
  */
 export const handleTaskBySVGMouseEvent = (
   svgX: number,
-  action: BarMoveAction,
-  selectedTask: BarTask,
+  action: FullViewBarMoveAction,
+  selectedTask: IFullViewBarTask,
   xStep: number,
   timeStep: number,
   initEventX1Delta: number,
   rtl: boolean
-): { isChanged: boolean; changedTask: BarTask } => {
-  let result: { isChanged: boolean; changedTask: BarTask }
+): { isChanged: boolean; changedTask: IFullViewBarTask } => {
+  let result: { isChanged: boolean; changedTask: IFullViewBarTask }
   switch (selectedTask.type) {
     case 'milestone':
       result = handleTaskBySVGMouseEventForMilestone(
@@ -422,14 +420,14 @@ export const handleTaskBySVGMouseEvent = (
 
 const handleTaskBySVGMouseEventForBar = (
   svgX: number,
-  action: BarMoveAction,
-  selectedTask: BarTask,
+  action: FullViewBarMoveAction,
+  selectedTask: IFullViewBarTask,
   xStep: number,
   timeStep: number,
   initEventX1Delta: number,
   rtl: boolean
-): { isChanged: boolean; changedTask: BarTask } => {
-  const changedTask: BarTask = { ...selectedTask }
+): { isChanged: boolean; changedTask: IFullViewBarTask } => {
+  const changedTask: IFullViewBarTask = { ...selectedTask }
   let isChanged = false
   switch (action) {
     case 'progress':
@@ -557,13 +555,13 @@ const handleTaskBySVGMouseEventForBar = (
 
 const handleTaskBySVGMouseEventForMilestone = (
   svgX: number,
-  action: BarMoveAction,
-  selectedTask: BarTask,
+  action: FullViewBarMoveAction,
+  selectedTask: IFullViewBarTask,
   xStep: number,
   timeStep: number,
   initEventX1Delta: number
-): { isChanged: boolean; changedTask: BarTask } => {
-  const changedTask: BarTask = { ...selectedTask }
+): { isChanged: boolean; changedTask: IFullViewBarTask } => {
+  const changedTask: IFullViewBarTask = { ...selectedTask }
   let isChanged = false
   switch (action) {
     case 'move': {

@@ -1,9 +1,9 @@
 import React from 'react'
-import { BarTask } from '@flyele-nx/types'
+import { IFullViewBarTask } from '@flyele-nx/types'
 
 type ArrowProps = {
-  taskFrom: BarTask
-  taskTo: BarTask
+  taskFrom: IFullViewBarTask
+  taskTo: IFullViewBarTask
   rowHeight: number
   taskHeight: number
   arrowIndent: number
@@ -46,8 +46,8 @@ export const Arrow: React.FC<ArrowProps> = ({
 }
 
 const drownPathAndTriangle = (
-  taskFrom: BarTask,
-  taskTo: BarTask,
+  taskFrom: IFullViewBarTask,
+  taskTo: IFullViewBarTask,
   rowHeight: number,
   taskHeight: number,
   arrowIndent: number
@@ -76,8 +76,8 @@ const drownPathAndTriangle = (
 }
 
 const drownPathAndTriangleRTL = (
-  taskFrom: BarTask,
-  taskTo: BarTask,
+  taskFrom: IFullViewBarTask,
+  taskTo: IFullViewBarTask,
   rowHeight: number,
   taskHeight: number,
   arrowIndent: number

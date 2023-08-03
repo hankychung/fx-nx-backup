@@ -1,6 +1,9 @@
 .barWrapper {
   cursor: pointer;
   outline: none;
+  height: 36;
+  stroke: #e3e3e3;
+  stroke-width: 1;
 }
 
 .barWrapper:hover .barHandle {
@@ -9,7 +12,7 @@
 }
 
 .barHandle {
-  fill: #ddd;
+  fill: #08c698;
   cursor: ew-resize;
   opacity: 0;
   visibility: hidden;
@@ -17,5 +20,6 @@
 
 .barBackground {
   user-select: none;
-  stroke-width: 0;
+  stroke-width: 1;
+  stroke: #e3e3e3;
 }

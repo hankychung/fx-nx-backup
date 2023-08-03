@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { Task, ViewMode } from '@flyele-nx/types'
+import { FullViewModeEnum } from '@flyele-nx/constant'
+import { Task } from '@flyele-nx/types'
 import { Gantt } from '@flyele-nx/gantt'
-import { ViewSwitcher } from '../../components/view-switcher'
+// import { ViewSwitcher } from '../../components/view-switcher'
 // import { getStartEndDateForProject, initTasks } from './helper'
 import { useGanttStore } from '@flyele-nx/zustand-store'
 // import "gantt-task-react/dist/index.css";
@@ -9,16 +10,16 @@ import { projectApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 // Init
 const App = () => {
-  const [view, setView] = React.useState<ViewMode>(ViewMode.Day)
+  const [view, setView] = React.useState<FullViewModeEnum>(FullViewModeEnum.Day)
   const [tasks, setTasks] = React.useState<Task[]>([])
   const [isChecked, setIsChecked] = React.useState(true)
   const { batchUpdateTask, updateList } = useGanttStore.getState()
   let columnWidth = 65
-  if (view === ViewMode.Year) {
+  if (view === FullViewModeEnum.Year) {
     columnWidth = 350
-  } else if (view === ViewMode.Month) {
+  } else if (view === FullViewModeEnum.Month) {
     columnWidth = 300
-  } else if (view === ViewMode.Week) {
+  } else if (view === FullViewModeEnum.Week) {
     columnWidth = 250
   }
 
@@ -111,26 +112,6 @@ const App = () => {
 
   return (
     <div className="Wrapper">
-      <ViewSwitcher
-        onViewModeChange={(viewMode) => setView(viewMode)}
-        onViewListChange={setIsChecked}
-        isChecked={isChecked}
-      />
-      {/* <h3>Gantt With Unlimited Height</h3>
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onDateChange={handleTaskChange}
-        onDelete={handleTaskDelete}
-        onProgressChange={handleProgressChange}
-        onDoubleClick={handleDblClick}
-        onClick={handleClick}
-        onSelect={handleSelect}
-        onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : ""}
-        columnWidth={columnWidth}
-      /> */}
-      <h3>甘特图</h3>
       {tasks.length > 0 && (
         <Gantt
           tasks={tasks}
@@ -143,7 +124,6 @@ const App = () => {
           onSelect={handleSelect}
           onExpanderClick={handleExpanderClick}
           listCellWidth={isChecked ? '155px' : ''}
-          ganttHeight={700}
           columnWidth={columnWidth}
         />
       )}

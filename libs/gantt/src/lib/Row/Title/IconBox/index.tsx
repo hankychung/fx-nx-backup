@@ -46,7 +46,7 @@ import {
   getOperationStatus,
   AcceptOnceMany
 } from '@flyele-nx/service-module'
-import { IRepeatTreeItem, TreeItem } from '@flyele-nx/types'
+import { IFullViewRepeatTreeItem, IFullViewTreeItem } from '@flyele-nx/types'
 
 interface IProps {
   matterType: number
@@ -86,7 +86,7 @@ const IconBox: FC<React.PropsWithChildren<IProps>> = ({
   const [isFinished, setIsFinished] = useState(finished)
   const [isFutureCycle, setIsFutureCycle] = useState(false)
   const [unFinishList, setUnFinishList] = useState<
-    TreeItem<Task>[] | IRepeatTreeItem[]
+    IFullViewTreeItem<Task>[] | IFullViewRepeatTreeItem[]
   >([]) // 未完成列表
   //p2 非我执行
   const nonSelfExecution = useMemo(() => {
@@ -207,7 +207,7 @@ const IconBox: FC<React.PropsWithChildren<IProps>> = ({
 
       if (data.repeat_type && data.repeat_id) {
         const completeList = [
-          ...(unFinishList as IRepeatTreeItem[]).map((v) => {
+          ...(unFinishList as IFullViewRepeatTreeItem[]).map((v) => {
             return {
               task_id: v.task_id,
               repeat_id: v.repeat_id
@@ -229,7 +229,7 @@ const IconBox: FC<React.PropsWithChildren<IProps>> = ({
         //     completeHandle(data)
 
         //     // handleBatchRepeatCompleteTask(
-        //     //   completeList as IRepeatTreeItem[],
+        //     //   completeList as IFullViewRepeatTreeItem[],
         //     //   data.task_id
         //     // )
         //   },
@@ -366,7 +366,9 @@ const IconBox: FC<React.PropsWithChildren<IProps>> = ({
     [isFutureCycle, matterType, notMyBusiness]
   )
 
-  const getUNFinishList = (list: TreeItem<Task>[]): TreeItem<Task>[] => {
+  const getUNFinishList = (
+    list: IFullViewTreeItem<Task>[]
+  ): IFullViewTreeItem<Task>[] => {
     return flatten(
       list.map((item) => {
         if (item.children) {

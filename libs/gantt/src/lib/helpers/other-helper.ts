@@ -1,4 +1,4 @@
-import { Task, BarTask } from '@flyele-nx/types'
+import { Task, IFullViewBarTask } from '@flyele-nx/types'
 
 export function isKeyboardEvent(
   event: React.MouseEvent | React.KeyboardEvent | React.FocusEvent
@@ -12,8 +12,10 @@ export function isMouseEvent(
   return (event as React.MouseEvent).clientX !== undefined
 }
 
-export function isBarTask(task: Task | BarTask): task is BarTask {
-  return (task as BarTask).x1 !== undefined
+export function isBarTask(
+  task: Task | IFullViewBarTask
+): task is IFullViewBarTask {
+  return (task as IFullViewBarTask).x1 !== undefined
 }
 
 export function removeHiddenTasks(tasks: Task[]) {

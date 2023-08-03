@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Task, BarTask } from '@flyele-nx/types'
+import { Task, IFullViewBarTask } from '@flyele-nx/types'
 
 export type TaskListProps = {
   headerHeight: number
@@ -13,14 +13,18 @@ export type TaskListProps = {
   tasks: Task[]
   taskListRef: React.RefObject<HTMLDivElement>
   horizontalContainerClass?: string
-  selectedTask: BarTask | undefined
+  selectedTask: IFullViewBarTask | undefined
   setSelectedTask: (task: string) => void
   onExpanderClick: (task: Task) => void
+  setIsChecked: (data: boolean) => void
+  isChecked: boolean
   TaskListHeader: React.FC<{
     headerHeight: number
     rowWidth: string
     fontFamily: string
     fontSize: string
+    setIsChecked: (data: boolean) => void
+    isChecked: boolean
   }>
   TaskListTable: React.FC<{
     rowHeight: number
@@ -51,7 +55,9 @@ export const TaskList: React.FC<TaskListProps> = ({
   taskListRef,
   horizontalContainerClass,
   TaskListHeader,
-  TaskListTable
+  TaskListTable,
+  setIsChecked,
+  isChecked
 }) => {
   const horizontalContainerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -64,7 +70,9 @@ export const TaskList: React.FC<TaskListProps> = ({
     headerHeight,
     fontFamily,
     fontSize,
-    rowWidth
+    rowWidth,
+    setIsChecked,
+    isChecked
   }
   const selectedTaskId = selectedTask ? selectedTask.id : ''
   const tableProps = {

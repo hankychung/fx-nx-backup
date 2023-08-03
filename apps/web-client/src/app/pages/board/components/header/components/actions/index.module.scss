@@ -1,0 +1,10 @@
+.header {
+  margin-right: 30px;
+  display: flex;
+  column-gap: 20px;
+  align-items: center;
+
+  .item {
+    cursor: pointer;
+  }
+}

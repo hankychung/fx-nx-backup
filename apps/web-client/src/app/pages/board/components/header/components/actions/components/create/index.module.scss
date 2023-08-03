@@ -1,0 +1,48 @@
+.plainTextBtn {
+  width: 71px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  background: linear-gradient(44.77deg, #1dd2c1 25.36%, #00e09d 74.98%);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  position: relative; /* 设置父元素为相对定位 */
+
+  .createBtn {
+    // border-right: 1px solid #69f2d1;
+    width: 55px;
+    border-radius: 6px 0 0 6px;
+    position: relative;
+    font-size: 12px;
+  }
+
+  .dropDownArrow {
+    width: 18px;
+    border-radius: 0 6px 6px 0;
+
+    svg {
+      margin-bottom: 1px;
+      margin-left: 3px;
+    }
+  }
+
+  .createBtn:hover,
+  .dropDownArrow:hover {
+    background: rgba(30, 82, 67, 0.09);
+  }
+}
+
+.plainTextBtn::before {
+  content: '';
+  position: absolute;
+  left: 52px;
+  top: 8px;
+  width: 1px;
+  height: 10px;
+  border-right: 1px solid #69f2d1;
+  z-index: 1;
+}

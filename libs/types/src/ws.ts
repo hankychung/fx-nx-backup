@@ -1,7 +1,7 @@
 import { IScheduleTask } from './schedule'
 
 export interface IWsMsg {
-  co?: number // code
+  co: number // code
   rid: string // 事项ID
   o: string // 消息创建人ID
   file_id?: string // 文件ID, 仅当违规时发送

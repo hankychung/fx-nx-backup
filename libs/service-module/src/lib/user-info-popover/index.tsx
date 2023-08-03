@@ -1,29 +1,30 @@
-import { useUserInfoStore } from '@flyele-nx/zustand-store'
-import { useCheckVip } from '@flyele-nx/utils'
-import { FlyBasePopper, FlyAvatar } from '@flyele/flyele-components'
-import cs from 'classnames'
+import {
+  FlyBasePopper,
+  useController,
+  FlyBasePopperCtrl
+} from '@flyele/flyele-components'
 import { InfoCard } from './components/info-card'
 import styles from './index.module.scss'
 import { ArrowDownIcon } from '@flyele-nx/icon'
+import { useMemoizedFn } from 'ahooks'
+import { Avatar } from './components/avatar'
 
 export const UserInfoPopover = () => {
-  const { avatar } = useUserInfoStore((state) => state.userInfo)
-  const { isVip, isTeamVip, isExpiredVip } = useCheckVip()
+  const ctrl = useController(new FlyBasePopperCtrl())
+
+  const closePopover = useMemoizedFn(() => {
+    ctrl.hide()
+  })
 
   return (
-    <FlyBasePopper trigger="click" placement="top" content={<InfoCard />}>
+    <FlyBasePopper
+      controller={ctrl}
+      trigger="click"
+      placement="top"
+      content={<InfoCard closePopover={closePopover} />}
+    >
       <div className={styles.userInfoPopover}>
-        <FlyAvatar
-          src={avatar}
-          size={26}
-          overlayClassName={cs(
-            isTeamVip && !isExpiredVip
-              ? styles['global-style-team-vip']
-              : isVip && !isExpiredVip
-              ? styles['global-style-person-vip']
-              : ''
-          )}
-        />
+        <Avatar size={26} />
 
         <div className={styles.arrowDown}>
           <ArrowDownIcon width={8} height={8} />

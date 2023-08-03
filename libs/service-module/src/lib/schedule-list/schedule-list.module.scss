@@ -2,21 +2,8 @@
   height: 100%;
   overflow: overlay;
   width: 100%;
-  /* 隐藏非滚动状态下的滚动条 */
-  &::-webkit-scrollbar {
-    display: none;
+
+  & > div {
+    margin-bottom: 8px;
   }
-  &:hover::-webkit-scrollbar {
-    display: block;
-  }
-}
-.scroller {
-  width: 100%;
-  display: flex;
-  row-gap: 8px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  overflow-x: hidden;
-  // background-color: pink;
 }

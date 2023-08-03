@@ -5,7 +5,7 @@ import { ScheduleUtils, ExecutionHandler } from '@flyele-nx/service-module'
 
 export const useSocket = () => {
   useEffect(() => {
-    emitter.on('updateDatabase', async () => {
+    emitter.on('wsUpdateDatabase', async () => {
       // 更新本地缓存数据库
       await ServiceWorkerUtils.updateDiff()
 
@@ -15,5 +15,9 @@ export const useSocket = () => {
       // 刷新当日事项列表
       ExecutionHandler.reloadList()
     })
+
+    return () => {
+      emitter.off('wsUpdateDatabase')
+    }
   }, [])
 }

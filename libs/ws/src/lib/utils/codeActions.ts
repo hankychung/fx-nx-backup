@@ -8,7 +8,7 @@ const codeActions = new Map<number[], (msg: IWsMsg) => void>([
      */
     [10001],
     async () => {
-      emitter.emit('updateDatabase')
+      emitter.emit('wsUpdateDatabase')
     }
   ]
 ])

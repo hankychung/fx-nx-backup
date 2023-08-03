@@ -1,0 +1,38 @@
+.userInfoPopover {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  gap: 8px;
+  .arrowDown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2px;
+    width: 8px;
+    height: 8px;
+    transform: rotate(180deg);
+    transition: transform 0.2s;
+  }
+}
+
+// VIP头像边框
+// 为什么要用important，因为组件库里面Avatar用了style border:none;不敢动。
+.global-style-team-vip {
+  border: 2px solid transparent !important;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  background-image: linear-gradient(135deg, #6171ff, #b0e3ff, #8053ff),
+    linear-gradient(135deg, #6171ff, #b0e3ff, #8053ff);
+}
+.global-style-person-vip {
+  border: 2px solid #ffe9c0 !important;
+}
+
+// VIP头像边框-小号
+.global-style-team-vip-min {
+  border: 1px solid #6171ff !important;
+}
+.global-style-person-vip-min {
+  border: 1px solid #ffe9c0 !important;
+}

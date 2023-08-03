@@ -189,9 +189,10 @@ export const Time: React.FC<IPROPTime> = ({
       item: task,
       selectDate: date,
       curTime,
-      isTeamSchedule
+      isTeamSchedule,
+      userId: userId
     })
-  }, [task, date, curTime])
+  }, [task, date, curTime, userId])
 
   const getCycle = useMemoizedFn(() => {
     if (task.cycle) return task.cycle

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { IVip, IBasicSpace } from '@flyele-nx/types'
+import { IVip, IBasicSpace, IInteract } from '@flyele-nx/types'
 import duration from 'dayjs/plugin/duration'
 import { VipTypeEnum } from '@flyele-nx/constant'
 dayjs.extend(duration)
@@ -49,7 +49,18 @@ export class UserInfoUtils {
     return !!time && time < Math.floor(Date.now() / 1000)
   }
 
-  static checkVipType(vip_type?: VipTypeEnum, vip_next_expired_at?: number) {
+  static checkVipType(
+    options: Pick<IInteract, 'vip_type' | 'vip_next_expired_at'>
+  ) {
+    if (!options) {
+      return {
+        isTeamVip: false,
+        isVip: false
+      }
+    }
+
+    const { vip_type, vip_next_expired_at } = options
+
     if (vip_next_expired_at) {
       return {
         isVip: true,

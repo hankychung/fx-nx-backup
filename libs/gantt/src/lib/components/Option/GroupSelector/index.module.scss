@@ -1,0 +1,17 @@
+.wrapper {
+  width: 154px;
+  padding: 8px 0;
+
+  .item {
+    padding: 12px 14px 12px 20px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(248, 248, 248, 1);
+    }
+  }
+}

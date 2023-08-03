@@ -12,7 +12,6 @@ import {
   IPhoneLoginParams
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
-import { IMemberApi } from '../typings/vip'
 
 class Userc {
   private prefix = 'userc/v2'
@@ -94,7 +93,7 @@ class Userc {
    * 事项权限
    * **/
   async taskPower(task_id: string) {
-    return await service.get<IMemberApi>({
+    return await service.get<IVipMember>({
       url: `${this.prefix}/member/task/${task_id}`
     })
   }

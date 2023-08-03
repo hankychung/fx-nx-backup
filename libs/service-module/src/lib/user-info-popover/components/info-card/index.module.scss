@@ -1,0 +1,17 @@
+.infoCardRoot {
+  width: 320px;
+  padding: 0 20px;
+  background-color: #fff;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer {
+    border-top: 1px solid #ebebeb;
+    height: 50px;
+    display: grid;
+    place-items: center;
+  }
+}

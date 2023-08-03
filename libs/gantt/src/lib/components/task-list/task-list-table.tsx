@@ -11,6 +11,7 @@ import styles from './task-list-table.module.css'
 import { Task } from '@flyele-nx/types'
 import { Title } from '../../Row/Title'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import dayjs from 'dayjs'
 
 const localeDateStringCache: any = {}
 const toLocaleDateStringFactory =
@@ -22,7 +23,9 @@ const toLocaleDateStringFactory =
       lds = date.toLocaleDateString(locale, dateTimeOptions)
       localeDateStringCache[key] = lds
     }
-    return lds
+    const data = dayjs(date).format('YYYY年MM月DD日 HH:mm')
+
+    return data
   }
 const dateTimeOptions: Intl.DateTimeFormatOptions = {
   weekday: 'short',
@@ -70,24 +73,37 @@ export const TaskListTableDefault: React.FC<{
             style={{ height: rowHeight }}
             key={`${t.id}row`}
           >
-            <Title data={t} userId={userId} />
+            <div
+              className={styles.taskListCell}
+              style={{
+                minWidth: 186,
+                maxWidth: 186,
+                paddingLeft: 16
+              }}
+            >
+              <Title data={t} userId={userId} />
+            </div>
+
             <div
               className={styles.taskListCell}
               style={{
                 minWidth: rowWidth,
-                maxWidth: rowWidth
+                maxWidth: rowWidth,
+                paddingLeft: 12
               }}
             >
-              &nbsp;{toLocaleDateString(t.start, dateTimeOptions)}
+              {toLocaleDateString(t.start, dateTimeOptions)}
             </div>
             <div
               className={styles.taskListCell}
               style={{
                 minWidth: rowWidth,
-                maxWidth: rowWidth
+                maxWidth: rowWidth,
+                paddingLeft: 12,
+                borderRight: 'none'
               }}
             >
-              &nbsp;{toLocaleDateString(t.end, dateTimeOptions)}
+              {toLocaleDateString(t.end, dateTimeOptions)}
             </div>
           </div>
         )

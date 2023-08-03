@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
 import { produce } from 'immer'
-import { Task } from '@flyele-nx/types'
+import { IFullViewTask } from '@flyele-nx/types'
 import { getKey } from './utils/gantt'
 
 export interface IGanState {
-  taskDict: { [k: string]: Task }
+  taskDict: { [k: string]: IFullViewTask }
   childrenDict: { [k: string]: string[] }
   taskList: string[]
 }
@@ -13,7 +13,7 @@ export interface IGanState {
 interface IMutation {
   updateList: (options: { list: string[]; isInit?: boolean }) => void
   batchUpdateTask: (
-    tasks: Task[],
+    tasks: IFullViewTask[],
     options?: { isFinished?: boolean }
   ) => {
     keys: string[]
@@ -62,7 +62,7 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
 
       set(
         produce((state: IGanState) => {
-          const dict: { [k: string]: Task } = {}
+          const dict: { [k: string]: IFullViewTask } = {}
 
           arr.forEach((item) => {
             const { repeat_id } = item

@@ -1,5 +1,6 @@
 import {
   IDENTITY,
+  FullViewIdentity,
   LOOP_MATTER,
   MATTER_CREATOR_STATE,
   MATTER_OPERATE_STATE,
@@ -9,22 +10,32 @@ import {
   MEETING_OPERATE_STATE,
   MatterType,
   QuadrantValue,
-  VipTypeEnum
+  VipTypeEnum,
+  FullViewModeEnum,
+  FullViewTaskType,
+  MEETING_TAKER_STATE,
+  MEETING_PERSONAL_STATE,
+  NOTICE_PERSONAL_STATE,
+  FullViewDurationEnum,
+  FullViewGanttContentMoveAction,
+  FullViewTaskTypeInternal,
+  FullViewParamsQueryType,
+  FullViewIsFollowEnum,
+  FullViewScheduleShowEnum,
+  FullViewConclusionEnum,
+  FullViewShowModeEnum,
+  FullViewGroupByEnum
 } from '@flyele-nx/constant'
 import { IRepeatConfig, MatterState } from './schedule'
 import { IBaseProjectInfo } from './project'
 import { TagModel } from './tag'
 
-export interface ICellProps {
+export interface IFullViewCellProps {
   data: Task
   userId?: string
 }
 
-export const FAKE_ID = 'FAKE_ID'
-
-export const NO_PROJECT_ID = '0'
-
-export type IRepeatTreeItem = {
+export type IFullViewRepeatTreeItem = {
   parent_id: string
   repeat_id: string
   task_id: string
@@ -32,12 +43,12 @@ export type IRepeatTreeItem = {
   title: string
 }
 
-type ParentsItem = {
+type IFullViewParentsItem = {
   task_id: string
   title: string
 }
 
-export interface ITaskItem {
+export interface IFullViewTaskItem {
   id?: string
   application_id?: string // 应用ID
   application_name?: string //应用名称
@@ -74,11 +85,11 @@ export interface ITaskItem {
   task_id: string
   invite_id: string
   parent_id?: string
-  parents?: ParentsItem[]
+  parents?: IFullViewParentsItem[]
   realParentId?: string // 直属上级事项
   has_child: boolean
-  children?: ITaskItem[]
-  checkChildren?: ITaskItem[]
+  children?: IFullViewTaskItem[]
+  checkChildren?: IFullViewTaskItem[]
   fromInvite?: boolean
   has_follow?: boolean
   is_follow?: boolean
@@ -87,11 +98,11 @@ export interface ITaskItem {
   start_time_full_day?: 1 | 2
   end_time_full_day?: 1 | 2
   is_admin?: number
-  tags?: ITag[]
+  tags?: IFullViewTag[]
   repeat_delay_total?: number
   // 本地增量更新
   diff?: boolean
-  takers: ITakersItemIds[]
+  takers: IFullViewTakersItemIds[]
   deleteChild?: boolean
 
   repeatCheck?: boolean
@@ -125,7 +136,7 @@ export interface ITaskItem {
   ref_type: 'project' | 'task'
   end_repeat_at?: number // 循环截止时间
   repeat_type?: LOOP_MATTER
-  repeat_list?: IRepeatListItem[]
+  repeat_list?: IFullViewIRepeatListItem[]
   cycle_date?: string
   cycle?: number
   last_cycle?: number
@@ -146,12 +157,11 @@ export interface ITaskItem {
   task_tree_total?: number //子事项总数
   repeat_config?: IRepeatConfig
 }
-export type Identity = 10801 | 10802 | 10803 | 10804 | 10805 | 10806 | 10807
 
-export type ITakersItemIds = {
+export type IFullViewTakersItemIds = {
   taker_id: string
   is_admin?: boolean
-  identity?: Identity
+  identity?: FullViewIdentity
   finish_time?: number
   accept_at?: number
   create_at?: number
@@ -160,7 +170,7 @@ export type ITakersItemIds = {
   state?: number
 }
 
-interface IRepeatListItem {
+interface IFullViewIRepeatListItem {
   change?: boolean
   cycle: number
   repeat_finishes?: Array<{
@@ -182,27 +192,15 @@ interface IRepeatListItem {
   last_cycle?: number
 }
 
-export type TreeItem<T = ITaskItem> = T & {
-  children?: Array<TreeItem<T>>
+export type IFullViewTreeItem<T = IFullViewTaskItem> = T & {
+  children?: Array<IFullViewTreeItem<T>>
   open?: boolean
   cycle?: number
 }
 
-export enum ViewMode {
-  Hour = 'Hour',
-  QuarterDay = 'Quarter Day',
-  HalfDay = 'Half Day',
-  Day = 'Day',
-  /** ISO-8601 week */
-  Week = 'Week',
-  Month = 'Month',
-  QuarterYear = 'QuarterYear',
-  Year = 'Year'
-}
-export type TaskType = 'task' | 'milestone' | 'project'
-export interface Task extends FullViewTask {
+export interface Task extends IFullViewTask {
   id: string
-  type: TaskType
+  type: FullViewTaskType
   name: string
   start: Date
   end: Date
@@ -223,7 +221,7 @@ export interface Task extends FullViewTask {
   displayOrder?: number
 }
 
-export interface EventOption {
+export interface IFullViewEventOption {
   /**
    * Time step value for date changes.
    */
@@ -264,8 +262,8 @@ export interface EventOption {
   onExpanderClick?: (task: Task) => void
 }
 
-export interface DisplayOption {
-  viewMode?: ViewMode
+export interface IFullViewDisplayOption {
+  viewMode?: FullViewModeEnum
   viewDate?: Date
   preStepsCount?: number
   /**
@@ -275,7 +273,7 @@ export interface DisplayOption {
   rtl?: boolean
 }
 
-export interface StylingOption {
+export interface IFullViewStylingOption {
   headerHeight?: number
   columnWidth?: number
   listCellWidth?: string
@@ -330,68 +328,23 @@ export interface StylingOption {
   }>
 }
 
-export interface GanttProps extends EventOption, DisplayOption, StylingOption {
+export interface IFullViewGanttProps
+  extends IFullViewEventOption,
+    IFullViewDisplayOption,
+    IFullViewStylingOption {
   tasks: Task[]
 }
 
-export type FullViewParamsQueryType =
-  | 0
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | ''
-  | undefined
-
-export enum IsFollow {
-  FOLLOW = 1, // 关注
-  UNFOLLOW = 2 // 未关注
-}
-
-export enum ScheduleShow {
-  UN_SHOW = 1, // 不显示
-  SHOW // 显示
-}
-
-export enum Conclusion {
-  EXIST = 1, // 有总结
-  NULL // 无总结
-}
-
-export enum FullShowMode {
-  flat = 1,
-  group
-}
-
-export enum FullGroupBy {
-  time = 'time',
-  group = 'group',
-  project = 'project',
-  default = 'default'
-}
-
-export enum GroupKey {
-  MonthView = 'MonthView',
-  ProjectDialog = 'ProjectDiscuss', // 项目讨论页
-  TaskDialog = 'TaskDialog', // 事项讨论页
-  FilePage = 'FilePage',
-  ProjectList = 'ProjectList'
-}
-
-export interface FullViewParams {
+export interface IFullViewParams {
   projectId?: string // 项目id
   query_type?: FullViewParamsQueryType // - 查询类型，1->未完成，2->已完成，3->我派发，4->我接受，5->协作事项，6->个人事项
   date_type?: 1 | 2 | '' // - 日期类型，1->今天之前，2->今天之后（包含今天）
   keywords?: string // 搜索关键字
   start_time?: number | '' // - 开始时间，时间戳
   end_time?: number | '' // - 截止时间，时间戳
-  is_follow?: IsFollow | '' // - 是否关注 1->关注，2->未关注
-  schedule_show?: ScheduleShow | '' //  - 日程显示 1->显示，2->不显示
-  conclusion?: Conclusion //  总结，1->有总结，2->无总结
+  is_follow?: FullViewIsFollowEnum | '' // - 是否关注 1->关注，2->未关注
+  schedule_show?: FullViewScheduleShowEnum | '' //  - 日程显示 1->显示，2->不显示
+  conclusion?: FullViewConclusionEnum //  总结，1->有总结，2->无总结
   tags_id?: string // - 标签id，多个用逗号隔开
   takers_id?: string // - 参与人id，多个用逗号隔开
   creators_id?: string //  - 创建人id，多个用逗号隔开
@@ -405,49 +358,11 @@ export interface FullViewParams {
   page_number: number // - 查询页数
   page_record?: number // 查询条数
   repeats_id?: string // 循环事项id
-  group_by?: FullGroupBy
-  show_mode?: FullShowMode // 1 平铺 2 收合
+  group_by?: FullViewGroupByEnum
+  show_mode?: FullViewShowModeEnum // 1 平铺 2 收合
 }
 
-export enum Duration {
-  EXIST = 1, // 有时间
-  NULL // 无时间
-}
-
-export enum MATTER_TYPE {
-  matter = 10701,
-  meeting = 10702,
-  timeCollect = 10703,
-  notice = 10704,
-  todo = 10705,
-  //timeRemind = 10706,
-  // calendar = 10707,
-  target = 10001,
-  project = 10708
-}
-
-// 会议参与人状态
-export enum MEETING_TAKER_STATE {
-  wait = 10602, // 待开始
-  processing = 10605, // 会议中
-  completed = 10606, // 已完成
-  canceled = 10607, // 已取消
-  withdrawn = 10608 // 已撤回
-}
-
-// 会议参与人参与状态
-export enum MEETING_PERSONAL_STATE {
-  wait = 10601, // 待接受
-  accepted = 10611, // 已接受
-  refused = 10603, // 已拒绝
-  leave = 10604 // 已请假
-}
-
-export enum NOTICE_PERSONAL_STATE {
-  readed = 10408 // 已读
-}
-
-export interface ITaker {
+export interface IFullViewITaker {
   dispatch_id: string
   ref_task_id?: string
   creator_id: string
@@ -487,7 +402,7 @@ export interface ITaker {
   isTeamVip?: boolean
 }
 
-export interface FullViewTaker extends ITaker {
+export interface IFullViewTaker extends IFullViewITaker {
   accept_at?: number // 接受时间
 
   finish_time?: number // 完成时间
@@ -500,20 +415,13 @@ export interface FullViewTaker extends ITaker {
   update_at?: number // 更新时间
   execute_at?: number // 启动时间
 }
-export enum TagWidgetColor {
-  red = '#FFE7E3',
-  orange = '#FFF2D1',
-  green = '#E1F8F6',
-  blue = '#E4ECFF',
-  purple = '#F3ECFF'
-}
 
-export interface ITag extends TagModel {
+export interface IFullViewTag extends TagModel {
   tag_id?: string
   extType?: string
 }
 
-interface IRepeatListItem {
+interface IFullViewIRepeatListItem {
   change?: boolean
   cycle: number
   repeat_finishes?: Array<{
@@ -534,26 +442,26 @@ interface IRepeatListItem {
   overide?: boolean
   last_cycle?: number
 }
-export enum FileUploadStatus {
+export enum IFullViewFileUploadStatus {
   wait,
   uploading,
   uploadSuccess,
   uploadFail
 }
 
-export type Files = {
+export type IFullViewFiles = {
   id: string
   name: string
   origin: string
   size: string
-  uploadStatus?: FileUploadStatus
+  uploadStatus?: IFullViewFileUploadStatus
   default?: boolean
 }
 
 /**
  * 全量视图默认返回的事项 没有tag
  */
-export type FullViewTask = {
+export type IFullViewTask = {
   timestamp?: number
   // 统计已产生历史所有的循环次数总数量
   repeat_total?: number
@@ -584,13 +492,13 @@ export type FullViewTask = {
   matter_state: MatterState
 
   is_follow?: boolean // 是否关注
-  matter_type: MATTER_TYPE.matter | MATTER_TYPE.meeting | MATTER_TYPE.todo // 事项类型 全量只支持 事项 | 会议| 待办
+  matter_type: MatterType.matter | MatterType.meeting | MatterType.todo // 事项类型 全量只支持 事项 | 会议| 待办
   parent_name?: string // 所属事项名称
 
   schedule_hide?: boolean // 日程是否隐藏
-  takers: FullViewTaker[] // 协作人
+  takers: IFullViewTaker[] // 协作人
 
-  tags?: (ITag & { tag_id?: string })[]
+  tags?: (IFullViewTag & { tag_id?: string })[]
 
   interact_process?: {
     child_total?: number // 子事项数量
@@ -610,7 +518,7 @@ export type FullViewTask = {
   end_repeat_at?: number
   repeat_id?: string // 循环Id
   repeat_type?: LOOP_MATTER // 循环类型
-  repeat_list?: IRepeatListItem[]
+  repeat_list?: IFullViewIRepeatListItem[]
   complete_at?: number
 
   level?: number
@@ -638,7 +546,7 @@ export type FullViewTask = {
   identity?: IDENTITY // 身份
   group_id?: string // 分组Id
   group_name?: string // 分组名称
-  duration?: Duration // 耗时
+  duration?: FullViewDurationEnum // 耗时
   last_active_at?: number //最后一次活跃时间
   personal_state?: number // 个人事项状态
   flow_step_id?: string
@@ -646,7 +554,7 @@ export type FullViewTask = {
   flow_step_join?: boolean // 是否加入当前步骤
   remind_at?: any // ITask['remind_at'] 这里的类型对不上，和 app/hooks/useFollow.ts 的remind_at不统一
   detail?: string // 背景信息
-  files?: Files[] // 背景信息文件
+  files?: IFullViewFiles[] // 背景信息文件
 
   priority_level?: QuadrantValue
 } & Partial<IBaseProjectInfo> &
@@ -658,26 +566,15 @@ export interface IFullFlowStepList {
   flow_step_name: string // 步骤名称
 }
 
-export type BarMoveAction = 'progress' | 'end' | 'start' | 'move'
-export type GanttContentMoveAction =
-  | 'mouseenter'
-  | 'mouseleave'
-  | 'delete'
-  | 'dblclick'
-  | 'click'
-  | 'select'
-  | ''
-  | BarMoveAction
-
-export type GanttEvent = {
-  changedTask?: BarTask
-  originalSelectedTask?: BarTask
-  action: GanttContentMoveAction
+export type IFullViewGanttEvent = {
+  changedTask?: IFullViewBarTask
+  originalSelectedTask?: IFullViewBarTask
+  action: FullViewGanttContentMoveAction
 }
 
-export interface BarTask extends Task {
+export interface IFullViewBarTask extends Task {
   index: number
-  typeInternal: TaskTypeInternal
+  typeInternal: FullViewTaskTypeInternal
   x1: number
   x2: number
   y: number
@@ -686,7 +583,7 @@ export interface BarTask extends Task {
   progressWidth: number
   barCornerRadius: number
   handleWidth: number
-  barChildren: BarTask[]
+  barChildren: IFullViewBarTask[]
   styles: {
     backgroundColor: string
     backgroundSelectedColor: string
@@ -695,9 +592,7 @@ export interface BarTask extends Task {
   }
 }
 
-export type TaskTypeInternal = TaskType | 'smalltask'
-
-export interface DateSetup {
+export interface IFullViewDateSetup {
   dates: Date[]
-  viewMode: ViewMode
+  viewMode: FullViewModeEnum
 }

@@ -1,7 +1,11 @@
 import React from 'react'
 import style from './bar.module.css'
+// import { Popover } from 'antd'
+// import { createSVG } from '../../../utils'
+import { IFullViewBarTask } from '@flyele-nx/types'
 
 type BarDisplayProps = {
+  task?: IFullViewBarTask
   x: number
   y: number
   width: number
@@ -29,18 +33,25 @@ export const BarDisplay: React.FC<BarDisplayProps> = ({
   progressWidth,
   barCornerRadius,
   styles,
-  onMouseDown
+  onMouseDown,
+  task
 }) => {
-  const getProcessColor = () => {
-    return isSelected ? styles.progressSelectedColor : styles.progressColor
-  }
+  // const getProcessColor = () => {
+  //   return isSelected ? styles.progressSelectedColor : styles.progressColor
+  // }
 
   const getBarColor = () => {
-    return isSelected ? styles.backgroundSelectedColor : styles.backgroundColor
+    return '#fff'
   }
+
+  // const group = createSVG("g", {
+  //   class: "bar-wrapper",
+  //   "data-id": task?.task_id,
+  // });
 
   return (
     <g onMouseDown={onMouseDown}>
+      {/* <Popover content={() => <div>999</div>} title="Title" placement='top'> */}
       <rect
         x={x}
         width={width}
@@ -51,7 +62,9 @@ export const BarDisplay: React.FC<BarDisplayProps> = ({
         fill={getBarColor()}
         className={style.barBackground}
       />
-      <rect
+      {/* </Popover> */}
+
+      {/* <rect
         x={progressX}
         width={progressWidth}
         y={y}
@@ -59,7 +72,7 @@ export const BarDisplay: React.FC<BarDisplayProps> = ({
         ry={barCornerRadius}
         rx={barCornerRadius}
         fill={getProcessColor()}
-      />
+      /> */}
     </g>
   )
 }

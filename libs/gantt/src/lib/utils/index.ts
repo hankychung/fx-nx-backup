@@ -1,7 +1,7 @@
 import { find } from 'lodash'
-import { FullViewTask, ITaker, ICreateParams } from '@flyele-nx/types'
+import { IFullViewTask, IFullViewTaker, ICreateParams } from '@flyele-nx/types'
 
-function getKey(i: Pick<FullViewTask, 'task_id' | 'repeat_id'>) {
+function getKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
   return i.repeat_id ? `${i.task_id}-${i.repeat_id}` : i.task_id
 }
 
@@ -9,7 +9,7 @@ function getKey(i: Pick<FullViewTask, 'task_id' | 'repeat_id'>) {
  * 判断是否有参与事项
  */
 export const isInTask = (
-  takers: ITaker[],
+  takers: IFullViewTaker[],
   userId: string,
   creatorId: string
 ) => {
@@ -46,4 +46,20 @@ export const getWidget = (value: TimeParams & { isLoopMatter?: boolean }) => {
   return data
 }
 
-export { getKey }
+function createSVG(tag: string, attrs: { [key: string]: any }): SVGElement {
+  const elem = document.createElementNS('http://www.w3.org/2000/svg', tag)
+  Object.keys(attrs).forEach((attr) => {
+    if (attr === 'append_to') {
+      const parent = attrs.append_to
+      parent.appendChild(elem)
+    } else if (attr === 'innerHTML') {
+      elem.innerHTML = attrs.innerHTML
+    } else {
+      elem.setAttribute(attr, attrs[attr])
+    }
+  })
+
+  return elem
+}
+
+export { getKey, createSVG }

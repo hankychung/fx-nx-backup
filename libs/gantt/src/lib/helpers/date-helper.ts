@@ -1,6 +1,8 @@
-import { Task, ViewMode } from '@flyele-nx/types'
+import { Task } from '@flyele-nx/types'
+import { FullViewModeEnum } from '@flyele-nx/constant'
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions
 import DateTimeFormat = Intl.DateTimeFormat
+import dayjs from 'dayjs'
 
 type DateHelperScales =
   | 'year'
@@ -71,7 +73,7 @@ export const startOfDate = (date: Date, scale: DateHelperScales) => {
 
 export const ganttDateRange = (
   tasks: Task[],
-  viewMode: ViewMode,
+  viewMode: FullViewModeEnum,
   preStepsCount: number
 ) => {
   let newStartDate: Date = tasks[0].start
@@ -85,25 +87,25 @@ export const ganttDateRange = (
     }
   }
   switch (viewMode) {
-    case ViewMode.Year:
+    case FullViewModeEnum.Year:
       newStartDate = addToDate(newStartDate, -1, 'year')
       newStartDate = startOfDate(newStartDate, 'year')
       newEndDate = addToDate(newEndDate, 1, 'year')
       newEndDate = startOfDate(newEndDate, 'year')
       break
-    case ViewMode.QuarterYear:
+    case FullViewModeEnum.QuarterYear:
       newStartDate = addToDate(newStartDate, -3, 'month')
       newStartDate = startOfDate(newStartDate, 'month')
       newEndDate = addToDate(newEndDate, 3, 'year')
       newEndDate = startOfDate(newEndDate, 'year')
       break
-    case ViewMode.Month:
+    case FullViewModeEnum.Month:
       newStartDate = addToDate(newStartDate, -1 * preStepsCount, 'month')
       newStartDate = startOfDate(newStartDate, 'month')
       newEndDate = addToDate(newEndDate, 1, 'year')
       newEndDate = startOfDate(newEndDate, 'year')
       break
-    case ViewMode.Week:
+    case FullViewModeEnum.Week:
       newStartDate = startOfDate(newStartDate, 'day')
       newStartDate = addToDate(
         getMonday(newStartDate),
@@ -113,25 +115,25 @@ export const ganttDateRange = (
       newEndDate = startOfDate(newEndDate, 'day')
       newEndDate = addToDate(newEndDate, 1.5, 'month')
       break
-    case ViewMode.Day:
+    case FullViewModeEnum.Day:
       newStartDate = startOfDate(newStartDate, 'day')
       newStartDate = addToDate(newStartDate, -1 * preStepsCount, 'day')
       newEndDate = startOfDate(newEndDate, 'day')
       newEndDate = addToDate(newEndDate, 19, 'day')
       break
-    case ViewMode.QuarterDay:
+    case FullViewModeEnum.QuarterDay:
       newStartDate = startOfDate(newStartDate, 'day')
       newStartDate = addToDate(newStartDate, -1 * preStepsCount, 'day')
       newEndDate = startOfDate(newEndDate, 'day')
       newEndDate = addToDate(newEndDate, 66, 'hour') // 24(1 day)*3 - 6
       break
-    case ViewMode.HalfDay:
+    case FullViewModeEnum.HalfDay:
       newStartDate = startOfDate(newStartDate, 'day')
       newStartDate = addToDate(newStartDate, -1 * preStepsCount, 'day')
       newEndDate = startOfDate(newEndDate, 'day')
       newEndDate = addToDate(newEndDate, 108, 'hour') // 24(1 day)*5 - 12
       break
-    case ViewMode.Hour:
+    case FullViewModeEnum.Hour:
       newStartDate = startOfDate(newStartDate, 'hour')
       newStartDate = addToDate(newStartDate, -1 * preStepsCount, 'hour')
       newEndDate = startOfDate(newEndDate, 'day')
@@ -144,34 +146,34 @@ export const ganttDateRange = (
 export const seedDates = (
   startDate: Date,
   endDate: Date,
-  viewMode: ViewMode
+  viewMode: FullViewModeEnum
 ) => {
   let currentDate: Date = new Date(startDate)
   const dates: Date[] = [currentDate]
   while (currentDate < endDate) {
     switch (viewMode) {
-      case ViewMode.Year:
+      case FullViewModeEnum.Year:
         currentDate = addToDate(currentDate, 1, 'year')
         break
-      case ViewMode.QuarterYear:
+      case FullViewModeEnum.QuarterYear:
         currentDate = addToDate(currentDate, 3, 'month')
         break
-      case ViewMode.Month:
+      case FullViewModeEnum.Month:
         currentDate = addToDate(currentDate, 1, 'month')
         break
-      case ViewMode.Week:
+      case FullViewModeEnum.Week:
         currentDate = addToDate(currentDate, 7, 'day')
         break
-      case ViewMode.Day:
+      case FullViewModeEnum.Day:
         currentDate = addToDate(currentDate, 1, 'day')
         break
-      case ViewMode.HalfDay:
+      case FullViewModeEnum.HalfDay:
         currentDate = addToDate(currentDate, 12, 'hour')
         break
-      case ViewMode.QuarterDay:
+      case FullViewModeEnum.QuarterDay:
         currentDate = addToDate(currentDate, 6, 'hour')
         break
-      case ViewMode.Hour:
+      case FullViewModeEnum.Hour:
         currentDate = addToDate(currentDate, 1, 'hour')
         break
     }
@@ -181,13 +183,14 @@ export const seedDates = (
 }
 
 export const getLocaleMonth = (date: Date, locale: string) => {
-  let bottomValue = getCachedDateTimeFormat(locale, {
-    month: 'long'
-  }).format(date)
-  bottomValue = bottomValue.replace(
-    bottomValue[0],
-    bottomValue[0].toLocaleUpperCase()
-  )
+  // let bottomValue = getCachedDateTimeFormat(locale, {
+  //   month: 'long'
+  // }).format(date)
+  // bottomValue = bottomValue.replace(
+  //   bottomValue[0],
+  //   bottomValue[0].toLocaleUpperCase()
+  // )
+  const bottomValue = dayjs(date).format('YYYY年MM月')
   return bottomValue
 }
 

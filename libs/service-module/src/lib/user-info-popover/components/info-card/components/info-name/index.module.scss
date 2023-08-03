@@ -1,0 +1,73 @@
+.infoNameRoot {
+  display: flex;
+  width: 100%;
+
+  .infoName {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex: 1;
+  }
+
+  .infoTop {
+    display: flex;
+    width: 100%;
+    margin-left: 8px;
+
+    :global {
+      .ant-input:focus {
+        border: 0.5px solid #1dd2c1;
+        box-shadow: none;
+      }
+    }
+
+    .name {
+      font-size: 16px;
+      font-weight: bold;
+      color: #363636;
+      margin-right: 6px;
+      max-width: 170px;
+      overflow: hidden;
+      white-space: nowrap;
+      border: none;
+      text-overflow: ellipsis;
+      padding: 0;
+    }
+
+    .name:hover {
+      color: #1dd2c1;
+    }
+
+    .hidden {
+      width: 0;
+      padding: 0;
+      margin: 0;
+      transition: none;
+    }
+
+    .companyName {
+      padding: 0 11px;
+      color: #b4b4b4;
+      font-size: 13px;
+      font-weight: 400;
+      position: relative;
+      top: 0;
+      max-width: 150px;
+    }
+
+    .infoDiamond {
+      display: flex;
+      column-gap: 4px;
+      align-items: center;
+      transform: translateY(0.4px);
+    }
+  }
+
+  .infoBottom {
+    font-size: 12px;
+    font-weight: 400;
+    color: #b4b4b4;
+    padding-left: 8px;
+    margin: 0;
+  }
+}

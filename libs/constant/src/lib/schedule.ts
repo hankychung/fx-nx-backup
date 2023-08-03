@@ -193,9 +193,6 @@ export const MAX_TITLE_LEN = 300
 // 最大背景字数
 export const MAX_BACKGROUND_LEN = 1500
 
-// 非法字符
-export const InvaildChar = ['@', '#', '*', '/', '\\', '<', '>']
-
 // 埋点使用
 export enum SensorCreateType {
   detail = '详细创建',

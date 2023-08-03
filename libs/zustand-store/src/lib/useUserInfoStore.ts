@@ -12,7 +12,11 @@ const initUserInfo = {
     pinyin: '',
     create_at: 0
   },
-
+  vip: {
+    level: 0,
+    deadline: 0
+  },
+  vipPower: undefined,
   /**
    * 是否企业版用户
    */

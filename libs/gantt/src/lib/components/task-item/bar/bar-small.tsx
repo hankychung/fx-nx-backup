@@ -34,14 +34,14 @@ export const BarSmall: React.FC<TaskItemProps> = ({
         }}
       />
       <g className="handleGroup">
-        {isProgressChangeable && (
+        {/* {isProgressChangeable && (
           <BarProgressHandle
             progressPoint={progressPoint}
             onMouseDown={(e) => {
               onEventStart('progress', task, e)
             }}
           />
-        )}
+        )} */}
       </g>
     </g>
   )

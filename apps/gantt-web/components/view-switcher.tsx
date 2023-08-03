@@ -7,11 +7,11 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React from 'react'
-import { ViewMode } from '@flyele-nx/types'
+import { FullViewModeEnum } from '@flyele-nx/constant'
 type ViewSwitcherProps = {
   isChecked: boolean
   onViewListChange: (isChecked: boolean) => void
-  onViewModeChange: (viewMode: ViewMode) => void
+  onViewModeChange: (viewMode: FullViewModeEnum) => void
 }
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
   onViewModeChange,
@@ -25,19 +25,19 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
       </button>
       <button
         className="Button"
-        onClick={() => onViewModeChange(ViewMode.Week)}
+        onClick={() => onViewModeChange(FullViewModeEnum.Week)}
       >
         周
       </button>
       <button
         className="Button"
-        onClick={() => onViewModeChange(ViewMode.Month)}
+        onClick={() => onViewModeChange(FullViewModeEnum.Month)}
       >
         月
       </button>
       <button
         className="Button"
-        onClick={() => onViewModeChange(ViewMode.Year)}
+        onClick={() => onViewModeChange(FullViewModeEnum.Year)}
       >
         年
       </button>

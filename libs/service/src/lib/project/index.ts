@@ -1,5 +1,5 @@
 import { service } from '../service'
-import { FullViewParams, FullViewTask, IProjectInfo } from '@flyele-nx/types'
+import { IFullViewParams, IFullViewTask, IProjectInfo } from '@flyele-nx/types'
 class Project {
   private prefix = 'flyele/v2/project'
   /**
@@ -12,12 +12,12 @@ class Project {
   }
 
   // 获取项目事项列表
-  getTaskListOfProject(params: FullViewParams & { projectId?: string }) {
+  getTaskListOfProject(params: IFullViewParams & { projectId?: string }) {
     const { projectId } = params
 
     delete params.projectId
 
-    return service.get<FullViewTask[]>({
+    return service.get<IFullViewTask[]>({
       url: `${this.prefix}/${projectId}/task_view/list`,
       params: { ...params }
     })

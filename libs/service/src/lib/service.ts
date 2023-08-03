@@ -15,7 +15,9 @@ class Service {
     this.responseInterceptors()
   }
 
-  token = LocalStore.getToken()
+  token =
+    LocalStore.getToken() ||
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTA5NzY1MDcsImlhdCI6MTY5MDk2ODI5NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTA5MDQ2MDYzMzAwODgzIiwiRGV2aWNlSUQiOiIzOGVjYmM4OGYwZmVlOTZjODE1ZjRiZTgwY2RkNmMxNjYwZjM2Y2NiZjI0ZTYwMTg1MjNmMmZkZDk5MDU2MmUyIiwiUGxhdGZvcm0iOiJtb2JpbGUiLCJDbGllbnRWZXJzaW9uIjoiMi4zMC4xMCIsIlBob25lIjoiIiwiTmlja05hbWUiOiIiLCJBdmF0YXIiOiIifQ.FQEZUP8MTUY8NuA4qFv7re7c-FxjBiQ96Tj4nQ0KnKc'
 
   /**
    * token失效

@@ -1,3 +1,6 @@
+import { IVip } from './vip'
+import { IAuthBase } from './auth'
+
 export interface IUserInfo {
   Token: string
   create_at: number
@@ -63,6 +66,8 @@ export interface IWeather {
 export interface IUserInfoState {
   userInfo: Omit<IUserInfo, 'Token'>
   isEnterprise: boolean
+  vip: IVip
+  vipPower: IAuthBase | undefined
 }
 
 export interface IRefreshToken {

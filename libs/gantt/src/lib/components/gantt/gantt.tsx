@@ -6,13 +6,13 @@ import React, {
   useMemo
 } from 'react'
 import {
-  ViewMode,
-  GanttProps,
+  IFullViewGanttProps,
   Task,
-  DateSetup,
-  GanttEvent,
-  BarTask
+  IFullViewDateSetup,
+  IFullViewGanttEvent,
+  IFullViewBarTask
 } from '@flyele-nx/types'
+import { FullViewModeEnum } from '@flyele-nx/constant'
 import { GridProps } from '../grid/grid'
 import { ganttDateRange, seedDates } from '../../helpers/date-helper'
 import { CalendarProps } from '../calendar/calendar'
@@ -27,18 +27,19 @@ import { convertToBarTasks } from '../../helpers/bar-helper'
 import { HorizontalScroll } from '../other/horizontal-scroll'
 import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
+import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 
-export const Gantt: React.FunctionComponent<GanttProps> = ({
+export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
-  headerHeight = 50,
-  columnWidth = 60,
-  listCellWidth = '155px',
-  rowHeight = 50,
+  headerHeight = 32,
+  columnWidth = 48,
+
+  rowHeight = 42,
   ganttHeight = 0,
-  viewMode = ViewMode.Day,
+  viewMode = FullViewModeEnum.Day,
   preStepsCount = 1,
   locale = 'en-GB',
-  barFill = 60,
+  barFill = 80,
   barCornerRadius = 3,
   barProgressColor = '#a3a3ff',
   barProgressSelectedColor = '#8282f5',
@@ -56,7 +57,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   arrowColor = 'grey',
   fontFamily = 'Arial, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue',
   fontSize = '14px',
-  arrowIndent = 20,
+  arrowIndent = 0,
   todayColor = 'rgba(252, 248, 227, 0.5)',
   viewDate,
   TooltipContent = StandardTooltipContent,
@@ -72,7 +73,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const taskListRef = useRef<HTMLDivElement>(null)
-  const [dateSetup, setDateSetup] = useState<DateSetup>(() => {
+  const [dateSetup, setDateSetup] = useState<IFullViewDateSetup>(() => {
     const [startDate, endDate] = ganttDateRange(tasks, viewMode, preStepsCount)
     return { viewMode, dates: seedDates(startDate, endDate, viewMode) }
   })
@@ -80,11 +81,13 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     undefined
   )
 
+  const [listCellWidth, setListCellWidth] = useState('155px')
   const [taskListWidth, setTaskListWidth] = useState(0)
+  const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
   const [svgContainerHeight, setSvgContainerHeight] = useState(ganttHeight)
-  const [barTasks, setBarTasks] = useState<BarTask[]>([])
-  const [ganttEvent, setGanttEvent] = useState<GanttEvent>({
+  const [barTasks, setBarTasks] = useState<IFullViewBarTask[]>([])
+  const [ganttEvent, setGanttEvent] = useState<IFullViewGanttEvent>({
     action: ''
   })
   const taskHeight = useMemo(
@@ -92,8 +95,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     [rowHeight, barFill]
   )
 
-  const [selectedTask, setSelectedTask] = useState<BarTask>()
-  const [failedTask, setFailedTask] = useState<BarTask | null>(null)
+  const [selectedTask, setSelectedTask] = useState<IFullViewBarTask>()
+  const [failedTask, setFailedTask] = useState<IFullViewBarTask | null>(null)
 
   const svgWidth = dateSetup.dates.length * columnWidth
   const ganttFullHeight = barTasks.length * rowHeight
@@ -101,7 +104,13 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   const [scrollY, setScrollY] = useState(0)
   const [scrollX, setScrollX] = useState(-1)
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
-
+  useEffect(() => {
+    if (isChecked) {
+      setListCellWidth('155px')
+    } else {
+      setListCellWidth('')
+    }
+  }, [isChecked])
   // task change events
   useEffect(() => {
     let filteredTasks: Task[]
@@ -454,7 +463,9 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     setSelectedTask: handleSelectedTask,
     onExpanderClick: handleExpanderClick,
     TaskListHeader,
-    TaskListTable
+    TaskListTable,
+    setIsChecked,
+    isChecked
   }
   return (
     <div>
@@ -465,6 +476,11 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
         ref={wrapperRef}
       >
         {listCellWidth && <TaskList {...tableProps} />}
+        {!listCellWidth && (
+          <div style={{ width: '40px', height: '100%', padding: '16px' }}>
+            <HideList onClick={() => setIsChecked(!isChecked)}></HideList>
+          </div>
+        )}
         <TaskGantt
           gridProps={gridProps}
           calendarProps={calendarProps}

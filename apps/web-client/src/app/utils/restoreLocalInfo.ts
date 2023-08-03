@@ -6,8 +6,12 @@ const restoreLocalInfo = () => {
 
   if (!userId) {
     const localUserInfo = LocalStore.getUserInfo()
+    const localVip = LocalStore.getUserVip()
+    const localVipPower = LocalStore.getUserVipPower()
 
     localUserInfo && GlobalInfoHandler.updateUserInfo(localUserInfo)
+    localVip && GlobalInfoHandler.updateUserVip(localVip)
+    localVipPower && GlobalInfoHandler.updateUserVipPower(localVipPower)
   }
 }
 

@@ -20,7 +20,7 @@ export const useRedirect = () => {
       LocalStore.getToken()
         ? checkValidRoute(pathname as RoutePath)
           ? pathname
-          : RoutePath.board
+          : RoutePath.dayView
         : RoutePath.login
     )
   }, [pathname, navigate])

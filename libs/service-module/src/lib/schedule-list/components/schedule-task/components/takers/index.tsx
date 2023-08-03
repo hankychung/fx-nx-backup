@@ -5,8 +5,7 @@ import {
   FlyBasePopperCtrl,
   useController
 } from '@flyele/flyele-components'
-import { UserInfoUtils } from '../../../../utils/userInfoUtils'
-import { createInfinite } from '@flyele-nx/utils'
+import { createInfinite, UserInfoUtils } from '@flyele-nx/utils'
 import { AddTakerIcon } from '@flyele-nx/icon'
 import { getOperationStatus } from '../../../../utils/workflowOperation'
 import { ISimpleMember } from '../../../../../simple-member-list'
@@ -20,7 +19,7 @@ import {
   useUserInfoStore,
   globalNxController
 } from '@flyele-nx/global-processor'
-import { AuthType, UsercApi, AuthConst, VipHandler } from '@flyele-nx/service'
+import { AuthType, UsercApi, AuthConst } from '@flyele-nx/service'
 import { IBaseProjectInfo, Taker } from '@flyele-nx/types'
 import { useMemoizedFn } from 'ahooks'
 import { contextMenuTool } from '../../../../../../index'
@@ -305,7 +304,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
       if (!id) return taker
 
-      const { isTeamVip, isVip } = VipHandler.checkVipType(contactDict[id])
+      const { isTeamVip, isVip } = UserInfoUtils.checkVipType(contactDict[id])
 
       return {
         ...taker,

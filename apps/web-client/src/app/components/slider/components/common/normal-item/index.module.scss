@@ -1,0 +1,26 @@
+.normalItemRoot {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding-left: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e6fcf9;
+  }
+
+  .iconBox {
+    width: 20px;
+    height: 20px;
+  }
+  .title {
+    margin-left: 8px;
+    color: #262626;
+    font-size: 13px;
+    line-height: 1;
+  }
+}
+
+.activeItem {
+  background: #cef9f4;
+}

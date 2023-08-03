@@ -378,7 +378,8 @@ export const getScheduleDate = ({
   item,
   selectDate: _date,
   curTime: _curTime,
-  isTeamSchedule
+  isTeamSchedule,
+  userId
 }: {
   item: TaskDateType &
     TAddTakers &
@@ -386,6 +387,7 @@ export const getScheduleDate = ({
   selectDate: number
   curTime: number
   isTeamSchedule?: boolean
+  userId?: string
 }): { txt: string; delayTxt?: string } => {
   const {
     start_time = 0,
@@ -398,12 +400,8 @@ export const getScheduleDate = ({
     takers = []
   } = item
 
-  // 下面的是原代码，2021年12月28日刘奇写的，运行到2022年12月5日开始发现有问题了
-  // const finishTime =
-  //   takers.length > 0 ? takers[takers.length - 1]?.finish_time : finish_time
-
-  const takersFinishedTime =
-    takers.length > 0 ? takers[takers.length - 1]?.finish_time : undefined
+  const mySelf = takers.find((taker) => taker.taker_id === userId)
+  const takersFinishedTime = mySelf ? mySelf.finish_time : undefined
   const finishTime = takersFinishedTime || finish_time
 
   const startTime = execute_at || start_time

@@ -17,7 +17,7 @@ const Login: FC = () => {
     if (data) {
       GlobalInfoHandler.updateUserInfo(data)
     }
-    navigate(RoutePath.dayView)
+    navigate(RoutePath.board)
 
     SocketHandler.initSocket()
   })

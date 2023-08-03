@@ -24,7 +24,7 @@ import { IOperationProps, IOperation, IWorkflowAddUser } from './types'
 import { OperateStep, IStepItem, WorkFlowStep } from './WorkFlowStep'
 import style from './index.module.scss'
 import { getAllTakers, stepsFormatter } from './utils'
-import { TaskApi, IWorkflowStep, VipHandler } from '@flyele-nx/service'
+import { TaskApi, IWorkflowStep } from '@flyele-nx/service'
 
 import {
   DisabledIcon,
@@ -39,6 +39,7 @@ import {
   useScheduleStore
 } from '@flyele-nx/global-processor'
 import { MatterType, FlowOperateType, SIZE_TYPE_KEY } from '@flyele-nx/constant'
+import { UserInfoUtils } from '@flyele-nx/utils'
 
 const { TextArea } = Input
 
@@ -216,7 +217,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     if (data && data[0] && data[0].creator_id) {
       const user = contactDict[data[0].creator_id]
 
-      const { isTeamVip, isVip } = VipHandler.checkVipType(user)
+      const { isTeamVip, isVip } = UserInfoUtils.checkVipType(user)
 
       setAddUser({
         avatar: user?.avatar || '',

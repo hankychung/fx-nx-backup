@@ -12,15 +12,7 @@ import { ReactComponent as OnlyPersonalImg } from '../../assets/login/onlyPerson
 import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
 import { FlyButton } from '@flyele/flyele-components'
-
-/**
- * 0-非会员，1-个人会员，2-团队会员
- */
-export enum VipTypeEnum {
-  Poor = 0,
-  Person = 1,
-  Team = 2
-}
+import { UserInfoUtils } from '@flyele-nx/utils'
 
 export const MemberIntroduction = ({
   widthStyle,
@@ -35,7 +27,6 @@ export const MemberIntroduction = ({
   const [showCorpModal, setShowCorpModal] = useState(false)
 
   const [showCustomerModal, setShowCustomerModal] = useState(false)
-  const [isRetrievePay, setIsRetrievePay] = useState(false)
   const [isShowPay, setIsShowPay] = useState(false)
   const [orderCode, setOrderCode] = useState('')
   const [memberList, setMemberList] = useState<IFlyeleAvatarItem[]>([])
@@ -96,25 +87,6 @@ export const MemberIntroduction = ({
     }
   }, [orderCode, initFn, show])
 
-  const checkVipType = (
-    vip_type?: VipTypeEnum,
-    vip_next_expired_at?: number
-  ) => {
-    if (vip_next_expired_at) {
-      return {
-        isVip: true,
-        isTeamVip: true
-      }
-    }
-
-    const isVip = vip_type === VipTypeEnum.Person
-    const isTeamVip = vip_type === VipTypeEnum.Team
-
-    return {
-      isVip,
-      isTeamVip
-    }
-  }
   /**
    * 请求协作人列表
    */
@@ -124,7 +96,9 @@ export const MemberIntroduction = ({
     const { data: vip } = await UsercApi.getCombo()
 
     const list = data.map((item) => {
-      const { isTeamVip, isVip } = checkVipType(item.vip_type)
+      const { isTeamVip, isVip } = UserInfoUtils.checkVipType({
+        vip_type: item.vip_type
+      })
       return {
         userId: item.user_id,
         name: item.nick_name,
@@ -139,7 +113,9 @@ export const MemberIntroduction = ({
       }
     })
     const { member } = vip
-    const { isTeamVip, isVip } = checkVipType(member.state)
+    const { isTeamVip, isVip } = UserInfoUtils.checkVipType({
+      vip_type: member.state
+    })
     const selfData = {
       userId: selfUserInfo.user_id,
       name: selfUserInfo.nick_name,
@@ -203,9 +179,6 @@ export const MemberIntroduction = ({
         onClose={(modalType) => {
           setShow(false)
           setIsShowPay(false)
-          setIsRetrievePay(true)
-          // setModalType(modalType)
-          // console.log('modaleType', modalType)
         }}
         showMsg={() => {
           messageApi.open({

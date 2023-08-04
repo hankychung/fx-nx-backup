@@ -1,0 +1,23 @@
+.main {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0 12px 0;
+
+  .line {
+    display: inline-block;
+    width: 25%;
+    // background-image: url('assets/icons/Line1203.png');
+    height: 1px;
+  }
+
+  .txt {
+    width: 25%;
+    font-size: 12px;
+    font-weight: 400;
+    color: #1cc29a;
+    vertical-align: -3px;
+  }
+}

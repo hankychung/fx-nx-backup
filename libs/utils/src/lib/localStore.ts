@@ -3,7 +3,8 @@ import {
   IOfficialCorpDetail,
   IUserEnterpriseTakers,
   IUserInfo,
-  IVip
+  IVip,
+  IUserSetting
 } from '@flyele-nx/types'
 
 enum StoreKey {
@@ -11,6 +12,7 @@ enum StoreKey {
   'user-info' = 'user-info',
   'user-vip' = 'user-vip',
   'user-vip-power' = 'user-vip-power',
+  'user-setting' = 'user-setting',
   'user-enterprise-info' = 'user-enterprise-info',
   'user-enterprise-takers' = 'user-enterprise-takers'
 }
@@ -34,6 +36,10 @@ class LocalStore {
 
   static setUserVipPower(params: IAuthBase) {
     localStorage.setItem(StoreKey['user-vip-power'], JSON.stringify(params))
+  }
+
+  static setUserSetting(params: IUserSetting) {
+    localStorage.setItem(StoreKey['user-setting'], JSON.stringify(params))
   }
 
   static setUserEnterpriseInfo(params: IOfficialCorpDetail) {
@@ -68,6 +74,12 @@ class LocalStore {
     return _ ? (JSON.parse(_) as IAuthBase) : null
   }
 
+  static getUserSetting() {
+    const _ = localStorage.getItem(StoreKey['user-setting'])
+
+    return _ ? (JSON.parse(_) as IUserSetting) : null
+  }
+
   static getUserEnterpriseInfo() {
     const _ = localStorage.getItem(StoreKey['user-enterprise-info'])
 
@@ -85,6 +97,7 @@ class LocalStore {
     localStorage.removeItem(StoreKey['user-info'])
     localStorage.removeItem(StoreKey['user-vip'])
     localStorage.removeItem(StoreKey['user-vip-power'])
+    localStorage.removeItem(StoreKey['user-setting'])
     localStorage.removeItem(StoreKey['user-enterprise-info'])
     localStorage.removeItem(StoreKey['user-enterprise-takers'])
   }

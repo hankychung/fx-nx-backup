@@ -60,8 +60,6 @@ export const VipCard = (props: IProps) => {
 
     const endDay = dayjs.unix(vip.deadline).format('YYYY-MM-DD')
     const now = dayjs().format('YYYY-MM-DD')
-    // const endDay = dayjs('2022-04-20').format('YYYY-MM-DD')
-    // const now = dayjs('2022-04-18').format('YYYY-MM-DD')
     const between = dayjs(endDay).diff(now, 'day') + 1
 
     if (between <= 3) return `${between}天后到期`

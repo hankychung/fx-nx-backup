@@ -60,6 +60,11 @@ const Login: FC = () => {
     }
   })
 
+  const updateUserSetting = useMemoizedFn(async () => {
+    const res = await UsercApi.getUserSetting()
+    GlobalInfoHandler.updateUserSetting(res.data)
+  })
+
   const updateEnterpriseInfo = useMemoizedFn(async (corpId: string) => {
     const [enterpriseTakers, enterpriseDetail] = await Promise.all([
       OfficialApi.getAddressBook(corpId).then(
@@ -77,6 +82,7 @@ const Login: FC = () => {
     if (data) {
       GlobalInfoHandler.updateUserInfo(data)
       await updateVipInfo()
+      await updateUserSetting()
 
       if (data.corpid) {
         // 如果是企业

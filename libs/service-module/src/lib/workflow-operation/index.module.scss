@@ -34,7 +34,7 @@
 }
 
 .container {
-  padding: 8px 0;
+  padding-top: 8px;
   width: 220px;
   overflow: hidden;
   display: flex;
@@ -104,6 +104,27 @@
     & ~ .line {
       top: -15px;
       top: 26px;
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    width: 100%;
+    height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+
+    box-shadow: 0px 0px 4px 0px #00000014;
+
+    .btn {
+      width: 90px;
+      display: flex;
+      align-items: center;
+    }
+    .btn-icon {
+      width: 12px;
+      height: 12px;
     }
   }
 }

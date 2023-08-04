@@ -1,7 +1,11 @@
 import { create } from 'zustand'
-import { IUserInfoState } from '@flyele-nx/types'
 import { CorpAppStatus, CorpUserStatus, CorpVersion } from '@flyele-nx/constant'
 import dayjs from 'dayjs'
+import {
+  IUserInfoState,
+  SettingFileSyncPolicy,
+  SettingRobotBindState
+} from '@flyele-nx/types'
 
 const initUserInfo = {
   userInfo: {
@@ -42,7 +46,36 @@ const initUserInfo = {
   /**
    * 企业版协作人
    */
-  enterpriseTakers: []
+  enterpriseTakers: [],
+  // 用户设置
+  // TODO: 用到的时候再补默认值
+  setting: {
+    view_sort: '1,2,3,5',
+    show_mode: '',
+    robot_bind_state: '' as SettingRobotBindState,
+    file_sync_policy: '' as SettingFileSyncPolicy,
+    total_space: '',
+    used_space: '',
+    acc_notify_state: '',
+    early_remind_date: '',
+    early_remind_time: '',
+    enable_early: '',
+    enable_night: '',
+    full_view: '',
+    last_login_time: '',
+    mobile_online: '',
+    new_message_notify: '',
+    night_remind_date: '',
+    night_remind_time: '',
+    official_acc_subscribe: '' as '0' | '1',
+    open_mobile_not_notify: '' as '1' | '2',
+    pc_online: '',
+    robot_state: '',
+    show_message_detail: '',
+    space_directory_sort: '',
+    menu_bar_view: '',
+    menu_bar_item_sort: ''
+  }
 }
 
 const useUserInfoStore = create<IUserInfoState>(() => {

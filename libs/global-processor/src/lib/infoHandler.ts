@@ -4,7 +4,8 @@ import {
   IContactDict,
   IOfficialCorpDetail,
   IUserEnterpriseTakers,
-  IVip
+  IVip,
+  IUserSetting
 } from '@flyele-nx/types'
 import {
   IContactState,
@@ -60,6 +61,16 @@ class GlobalInfoHandler {
         state.vipPower = data
 
         LocalStore.setUserVipPower(data)
+      })
+    )
+  }
+
+  static updateUserSetting(data: IUserSetting) {
+    useUserInfoStore.setState(
+      produce((state: IUserInfoState) => {
+        state.setting = data
+
+        LocalStore.setUserSetting(data)
       })
     )
   }

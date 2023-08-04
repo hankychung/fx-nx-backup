@@ -20,6 +20,11 @@ export interface IExternalListResponse {
   complete_total?: number
 }
 
+export interface CommonListResponse<T> extends CommonResponse<T> {
+  total?: number
+  complete_total?: number
+}
+
 // type ENV = 'normal' | 'dev' | 'test' | 'prod' | 'pre_prod' | 'pre_release'
 
 export interface IErrorResponse {

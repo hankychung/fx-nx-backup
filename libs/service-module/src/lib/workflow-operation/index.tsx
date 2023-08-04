@@ -10,7 +10,7 @@ import React, {
   useDeferredValue,
   useCallback
 } from 'react'
-import { Modal, Input } from 'antd'
+import { Modal, Input, Button } from 'antd'
 import cs from 'classnames'
 import {
   FlyAvatar,
@@ -29,8 +29,10 @@ import { TaskApi, IWorkflowStep } from '@flyele-nx/service'
 import {
   DisabledIcon,
   OptionIcon,
+  RectWhiteIcon,
   TaskCheckIcon,
-  UncheckIcon
+  UncheckIcon,
+  UndoGrayIcon
 } from '@flyele-nx/icon'
 import {
   useContactStore,
@@ -616,6 +618,11 @@ const _Container: FC<{
 
   console.log('addUser', addUser, list)
 
+  const isFirstStep = useMemo(
+    () => list.some((v) => v.step === OperateStep.START),
+    [list]
+  )
+
   return (
     <div className={style.container}>
       {list.map(({ idx, title, step, members, operateType }) => {
@@ -657,6 +664,24 @@ const _Container: FC<{
           />
         )
       })}
+      <div className={style['btn-group']}>
+        <Button
+          className={style.btn}
+          icon={<UndoGrayIcon className={style['btn-icon']} />}
+          onClick={handleBack}
+          disabled={isFirstStep}
+        >
+          上一步
+        </Button>
+        <Button
+          className={style.btn}
+          icon={<RectWhiteIcon className={style['btn-icon']} />}
+          type="primary"
+          onClick={handleNext}
+        >
+          下一步
+        </Button>
+      </div>
     </div>
   )
 }

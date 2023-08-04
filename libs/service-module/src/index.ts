@@ -22,6 +22,7 @@ import { LoginInput } from './lib/login-input'
 import { WorkflowOperation } from './lib/workflow-operation'
 import { AcceptOnceMany } from './lib/accept-once-many'
 import { UserInfoPopover } from './lib/user-info-popover'
+import { StatusBox } from './lib/status-box'
 export * from './lib/schedule-list' // 日程列表
 
 export {
@@ -46,7 +47,8 @@ export {
   LoginInput,
   WorkflowOperation,
   AcceptOnceMany,
-  UserInfoPopover
+  UserInfoPopover,
+  StatusBox
 }
 
 export * from './lib/map-svg/type/props'

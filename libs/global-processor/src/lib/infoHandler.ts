@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import { IAuthBase, IContactDict, IVip } from '@flyele-nx/types'
+import { IAuthBase, IContactDict, IUserSetting, IVip } from '@flyele-nx/types'
 import {
   IContactState,
   useContactStore,
@@ -54,6 +54,16 @@ class GlobalInfoHandler {
         state.vipPower = data
 
         LocalStore.setUserVipPower(data)
+      })
+    )
+  }
+
+  static updateUserSetting(data: IUserSetting) {
+    useUserInfoStore.setState(
+      produce((state: IUserInfoState) => {
+        state.setting = data
+
+        LocalStore.setUserSetting(data)
       })
     )
   }

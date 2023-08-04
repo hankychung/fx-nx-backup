@@ -9,7 +9,8 @@ import {
   ILoginKeyParams,
   IVipMember,
   IWeather,
-  IPhoneLoginParams
+  IPhoneLoginParams,
+  IUserSetting
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
 
@@ -113,6 +114,28 @@ class Userc {
         client_version: version,
         platform
       }
+    })
+  }
+
+  // 更新设置
+  updateSetting(
+    data: {
+      view_sort?: string
+      monthly_config?: string
+      monthly_filter?: string
+      space_directory_sort?: string
+    } & Record<string, any>
+  ) {
+    return service.post({
+      url: `${this.prefix}/user/setting`,
+      data
+    })
+  }
+
+  // 获取用户设置
+  getUserSetting() {
+    return service.get<IUserSetting>({
+      url: `${this.prefix}/user/setting`
     })
   }
 }

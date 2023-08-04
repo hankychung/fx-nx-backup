@@ -60,3 +60,4 @@ export { ReactComponent as MenuTargetIcon } from './assets/menuBar/targetIcon.sv
 export { ReactComponent as MenuViewIcon } from './assets/menuBar/viewIcon.svg'
 export { ReactComponent as WeComWithCircleIcon } from './assets/weComWithCircle.svg'
 export { ReactComponent as MoreIcon } from './assets/more.svg'
+export { ReactComponent as RectWhiteIcon } from './assets/rect-white.svg'

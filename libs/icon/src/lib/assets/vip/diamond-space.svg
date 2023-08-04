@@ -1,0 +1,27 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="&#231;&#169;&#186;&#233;&#151;&#180;&#228;&#188;&#154;&#229;&#145;&#152;">
+<path id="&#232;&#183;&#175;&#229;&#190;&#132;" d="M10 16C9.80932 16 9.62949 15.9224 9.4936 15.7816L2.13008 8.15056C1.95664 7.9708 1.95664 7.67831 2.13008 7.49852L5.91772 3.57338C6.27446 3.20362 6.74796 3 7.25097 3H12.749C13.252 3 13.7255 3.20362 14.0823 3.57338L17.8699 7.49856C18.0434 7.67831 18.0434 7.9708 17.8699 8.15057L10.5064 15.7816C10.3705 15.9224 10.1907 16 10 16Z" fill="url(#paint0_linear_615_134149)"/>
+<g id="&#232;&#183;&#175;&#229;&#190;&#132;_2" filter="url(#filter0_d_615_134149)">
+<path d="M11.3934 6H8.75099C8.44958 6 8.16049 6.12333 7.94731 6.34283L6.12701 8.21759C5.95766 8.39199 5.95766 8.67477 6.12701 8.84915L9.66595 12.4938C9.77277 12.6047 9.91926 12.6672 10.0722 12.6672C10.2252 12.6672 10.3717 12.6047 10.4785 12.4938L14.0174 8.84915C14.1868 8.67475 14.1868 8.39197 14.0174 8.21759L12.1971 6.34283C11.9839 6.12333 11.6948 6 11.3934 6Z" fill="url(#paint1_linear_615_134149)"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_615_134149" x="4" y="5" width="12.1445" height="10.6672" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.404497 0 0 0 0 0.400086 0 0 0 0 1 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_615_134149"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_615_134149" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_615_134149" x1="-2.40957" y1="5.21223" x2="3.22708" y2="20.1601" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A9ADFF"/>
+<stop offset="1" stop-color="#8283FF"/>
+</linearGradient>
+<linearGradient id="paint1_linear_615_134149" x1="6.07371" y1="6.03908" x2="6.07371" y2="12.5856" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#D7D3FF"/>
+</linearGradient>
+</defs>
+</svg>

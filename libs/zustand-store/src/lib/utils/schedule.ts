@@ -147,8 +147,6 @@ function getSortedSchedule(params: { date: string; tasks: IScheduleTask[] }) {
 
   const decentList = [...new Set(result)]
 
-  console.log('[nx] local list', result, decentList)
-
   return decentList
 }
 

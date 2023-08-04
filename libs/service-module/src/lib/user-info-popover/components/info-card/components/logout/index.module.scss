@@ -1,0 +1,24 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2022/5/25 下午 4:20
+**/
+.logoutRoot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .quite {
+    width: 16px;
+    height: 17px;
+  }
+
+  .text {
+    vertical-align: text-top;
+    margin: 0 5px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #363636;
+    font-family: PingFangSC-Light, PingFangSC-Regular, sans-serif;
+  }
+}

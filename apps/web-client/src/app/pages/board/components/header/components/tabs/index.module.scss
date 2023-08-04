@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  align-items: center;
+
+  .item {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: #b4b4b4;
+    margin-left: 30px;
+  }
+
+  .activeItem {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    line-height: 25px;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      background: url('../../../../../../../assets/image/circle.png') no-repeat;
+      background-size: 100% 100%;
+      right: 7px;
+      top: 4px;
+      transform: translateX(100%);
+      z-index: -1;
+    }
+  }
+}

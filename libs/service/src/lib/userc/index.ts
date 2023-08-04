@@ -15,6 +15,7 @@ import { AxiosRequestConfig } from 'axios'
 
 class Userc {
   private prefix = 'userc/v2'
+  private prefixV1 = 'userc/v1'
 
   async phoneLogin(data: IPhoneLoginParams) {
     return await service.put<IUserInfo>({
@@ -114,6 +115,10 @@ class Userc {
         platform
       }
     })
+  }
+
+  async updateUser(data: { avatar?: string; nick_name?: string }) {
+    return await service.put({ url: '/user', data })
   }
 }
 

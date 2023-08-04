@@ -1,3 +1,4 @@
+export * from './lib/index'
 export * from './lib/introductionBox'
 export * from './lib/equalComparison'
 export * from './lib/vip'

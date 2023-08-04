@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMemoizedFn } from 'ahooks'
 import { RoutePath } from '../../routes/const'
@@ -7,9 +7,16 @@ import { Advertisement, FeedbackBtn } from '@flyele-nx/ui'
 import { LoginInput, GlobalInfoHandler } from '@flyele-nx/service-module'
 import { envStore, IUserInfo, UsercApi } from '@flyele-nx/service'
 import styles from './index.module.scss'
+import { LocalStore } from '@flyele-nx/utils'
 
 const Login: FC = () => {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (LocalStore.getToken()) {
+      navigate(RoutePath.board)
+    }
+  }, [navigate])
 
   const isProdEnv = envStore.getEnv() === 'prod'
 

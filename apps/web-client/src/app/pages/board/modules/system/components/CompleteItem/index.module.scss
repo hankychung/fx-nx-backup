@@ -1,0 +1,89 @@
+// @import 'pages/schedule/components/Content/common';
+
+.complete {
+  display: flex;
+  padding: 12px 20px 12px 20px;
+  height: 60px;
+  // padding: 10px 0 10px 16px; // UI 图上右侧没有多余的边距
+  // border-bottom: 1px solid rgba(226, 226, 234, 0.5);
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(146, 146, 157, 1);
+  font-size: 12px;
+  position: relative;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+
+    // @include line();
+  }
+
+  &:hover {
+    background: #f2fdfb;
+  }
+
+  .lft {
+    display: flex;
+    // width: 100%;
+    flex: 1;
+    overflow: hidden;
+
+    & > div:nth-child(1) {
+      margin-top: -1px;
+      width: 24px;
+    }
+
+    .check {
+      padding-top: 3px;
+    }
+  }
+
+  .info {
+    flex: 1;
+    cursor: pointer;
+    overflow: hidden;
+
+    & > div:nth-child(1) {
+      color: rgba(38, 38, 38, 1);
+    }
+
+    &__title {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .time {
+      margin-top: 2px;
+      display: flex;
+      align-items: flex-end;
+      width: 180px;
+
+      .txt {
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span {
+        display: inline-block;
+      }
+
+      .icon {
+        margin-bottom: 2px;
+      }
+
+      .warn {
+        margin-right: 10px;
+        color: rgba(255, 120, 77, 1);
+        white-space: nowrap;
+      }
+    }
+  }
+}

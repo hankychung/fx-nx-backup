@@ -1,10 +1,11 @@
-import { IAuthBase, IUserInfo, IVip } from '@flyele-nx/types'
+import { IAuthBase, IUserInfo, IUserSetting, IVip } from '@flyele-nx/types'
 
 enum StoreKey {
   auth = 'auth',
   'user-info' = 'user-info',
   'user-vip' = 'user-vip',
-  'user-vip-power' = 'user-vip-power'
+  'user-vip-power' = 'user-vip-power',
+  'user-setting' = 'user-setting'
 }
 
 class LocalStore {
@@ -28,6 +29,10 @@ class LocalStore {
     localStorage.setItem(StoreKey['user-vip-power'], JSON.stringify(params))
   }
 
+  static setUserSetting(params: IUserSetting) {
+    localStorage.setItem(StoreKey['user-setting'], JSON.stringify(params))
+  }
+
   static getUserInfo() {
     const _ = localStorage.getItem(StoreKey['user-info'])
 
@@ -44,6 +49,12 @@ class LocalStore {
     const _ = localStorage.getItem(StoreKey['user-vip-power'])
 
     return _ ? (JSON.parse(_) as IAuthBase) : null
+  }
+
+  static getUserSetting() {
+    const _ = localStorage.getItem(StoreKey['user-setting'])
+
+    return _ ? (JSON.parse(_) as IUserSetting) : null
   }
 
   static clear() {

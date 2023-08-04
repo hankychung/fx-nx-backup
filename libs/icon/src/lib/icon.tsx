@@ -59,6 +59,8 @@ export { ReactComponent as MenuReviewIcon } from './assets/menuBar/reviewIcon.sv
 export { ReactComponent as MenuTargetIcon } from './assets/menuBar/targetIcon.svg'
 export { ReactComponent as MenuViewIcon } from './assets/menuBar/viewIcon.svg'
 export { ReactComponent as WeComWithCircleIcon } from './assets/weComWithCircle.svg'
+export { ReactComponent as MoreIcon } from './assets/more.svg'
+export { ReactComponent as RectWhiteIcon } from './assets/rect-white.svg'
 export { ReactComponent as LogoutIcon } from './assets/logout.svg'
 export { ReactComponent as PersonVipIcon } from './assets/vip/person-vip.svg'
 export { ReactComponent as PersonIcon } from './assets/vip/person.svg'

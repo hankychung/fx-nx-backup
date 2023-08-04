@@ -60,10 +60,16 @@ const Login: FC = () => {
     }
   })
 
+  const updateUserSetting = useMemoizedFn(async () => {
+    const res = await UsercApi.getUserSetting()
+    GlobalInfoHandler.updateUserSetting(res.data)
+  })
+
   const onLoginSuccess = useMemoizedFn(async (data?: IUserInfo) => {
     if (data) {
       GlobalInfoHandler.updateUserInfo(data)
       await updateVipInfo()
+      await updateUserSetting()
     }
     navigate(RoutePath.board)
 

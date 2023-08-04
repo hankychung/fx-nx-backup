@@ -1,5 +1,7 @@
 import { IVip } from './vip'
 import { IAuthBase } from './auth'
+import { CorpUserStatus } from '@flyele-nx/constant'
+import { IOfficialCorpDetail } from './official'
 
 export interface IUserInfo {
   Token: string
@@ -63,12 +65,28 @@ export interface IWeather {
   message?: string
 }
 
+export interface IUserEnterpriseTakers {
+  user_id: string
+  corp_userid: string
+  corpid: string
+  avatar: string
+  corp_name: string
+  cu_status: CorpUserStatus
+  nick_name: string
+  pinyin: string
+  remark: string
+  telephone: string
+  stateTxt?: string
+}
+
 export interface IUserInfoState {
   userInfo: Omit<IUserInfo, 'Token'>
   isEnterprise: boolean
   vip: IVip
   vipPower: IAuthBase | undefined
   setting: IUserSetting
+  enterprise: IOfficialCorpDetail
+  enterpriseTakers: IUserEnterpriseTakers[]
 }
 
 export interface IRefreshToken {

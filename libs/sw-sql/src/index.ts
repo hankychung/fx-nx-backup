@@ -72,7 +72,9 @@ class DBHandler {
           break
         }
         case ServiceWorkerKey.DAY_VIEW: {
+          console.log('@nx day params', data.data)
           responseData = await sqlStore.getDayView(data.data as any)
+          console.log('@nx day res', responseData)
           break
         }
       }

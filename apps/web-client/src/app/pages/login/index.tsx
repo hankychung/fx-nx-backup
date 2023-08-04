@@ -5,7 +5,7 @@ import { RoutePath } from '../../routes/const'
 import { SocketHandler } from '@flyele-nx/ws'
 import { Advertisement, FeedbackBtn } from '@flyele-nx/ui'
 import { LoginInput, GlobalInfoHandler } from '@flyele-nx/service-module'
-import { envStore, IUserInfo, UsercApi } from '@flyele-nx/service'
+import { envStore, IUserInfo, UsercApi, OfficialApi } from '@flyele-nx/service'
 import styles from './index.module.scss'
 import { LocalStore } from '@flyele-nx/utils'
 
@@ -60,10 +60,28 @@ const Login: FC = () => {
     }
   })
 
+  const updateEnterpriseInfo = useMemoizedFn(async (corpId: string) => {
+    const [enterpriseTakers, enterpriseDetail] = await Promise.all([
+      OfficialApi.getAddressBook(corpId).then(
+        (res) => res.data.corp_user ?? []
+      ),
+      OfficialApi.getCorpDetail(corpId).then((res) => res.data)
+    ])
+    GlobalInfoHandler.updateUserEnterpriseInfo({
+      ...enterpriseDetail
+    })
+    GlobalInfoHandler.updateUserEnterpriseTakers(enterpriseTakers)
+  })
+
   const onLoginSuccess = useMemoizedFn(async (data?: IUserInfo) => {
     if (data) {
       GlobalInfoHandler.updateUserInfo(data)
       await updateVipInfo()
+
+      if (data.corpid) {
+        // 如果是企业
+        await updateEnterpriseInfo(data.corpid)
+      }
     }
     navigate(RoutePath.board)
 

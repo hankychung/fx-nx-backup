@@ -1,5 +1,11 @@
 import { produce } from 'immer'
-import { IAuthBase, IContactDict, IVip } from '@flyele-nx/types'
+import {
+  IAuthBase,
+  IContactDict,
+  IOfficialCorpDetail,
+  IUserEnterpriseTakers,
+  IVip
+} from '@flyele-nx/types'
 import {
   IContactState,
   useContactStore,
@@ -54,6 +60,26 @@ class GlobalInfoHandler {
         state.vipPower = data
 
         LocalStore.setUserVipPower(data)
+      })
+    )
+  }
+
+  static updateUserEnterpriseInfo(data: IOfficialCorpDetail) {
+    useUserInfoStore.setState(
+      produce((state: IUserInfoState) => {
+        state.enterprise = data
+
+        LocalStore.setUserEnterpriseInfo(data)
+      })
+    )
+  }
+
+  static updateUserEnterpriseTakers(data: IUserEnterpriseTakers[]) {
+    useUserInfoStore.setState(
+      produce((state: IUserInfoState) => {
+        state.enterpriseTakers = data
+
+        LocalStore.setUserEnterpriseTakers(data)
       })
     )
   }

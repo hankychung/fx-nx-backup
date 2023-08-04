@@ -1,4 +1,4 @@
-import { UsercApi, service } from '@flyele-nx/service'
+import { UsercApi } from '@flyele-nx/service'
 
 export const useRefreshToken = () => {
   UsercApi.refreshToken()

@@ -30237,9 +30237,7 @@ class V_ {
     return { code: 0, data: y[0] ? this.formatSelectValue1(y[0]) : [] }
   }
   async getDayView(mt) {
-    console.time(JSON.stringify(mt))
-    const y = await this.sdk.schedule.dayView(mt)
-    return console.timeEnd(JSON.stringify(mt)), y
+    return await this.sdk.schedule.dayView(mt)
   }
 }
 const Nr = new V_()
@@ -30268,52 +30266,58 @@ var ns = ((Nt) => (
 class K_ {
   constructor() {
     self.onmessage = async ({ data: mt }) => {
-      let y = null
-      switch (mt.key) {
-        case zn.INIT_DB: {
-          await Nr.initDB(mt.data)
-          break
-        }
-        case zn.QUERY_FULL_VIEW_LIST: {
-          const at = () => Nr.isReady
-          for (; !at(); )
-            await new Promise((q) => {
-              setTimeout(q, 1e3)
-            })
-          y = Nr.query(mt.data)
-          break
-        }
-        case zn.UPDATE_TOKEN: {
-          Nr.updateToken(mt.data)
-          break
-        }
-        case zn.QUERY_DIFF_FULL: {
-          const at = mt.data
-          console.log('全量实时更新', mt)
-          const { mode: q, diffInfo: x } = at
-          y = {
-            ...x,
-            list: await Nr.query({
-              show_model: q,
-              filter: { task_ids: x.taskIds }
-            })
+      try {
+        let y = null
+        switch (mt.key) {
+          case zn.INIT_DB: {
+            await Nr.initDB(mt.data)
+            break
           }
-          break
+          case zn.QUERY_FULL_VIEW_LIST: {
+            const at = () => Nr.isReady
+            for (; !at(); )
+              await new Promise((q) => {
+                setTimeout(q, 1e3)
+              })
+            y = Nr.query(mt.data)
+            break
+          }
+          case zn.UPDATE_TOKEN: {
+            Nr.updateToken(mt.data)
+            break
+          }
+          case zn.QUERY_DIFF_FULL: {
+            const at = mt.data
+            console.log('全量实时更新', mt)
+            const { mode: q, diffInfo: x } = at
+            y = {
+              ...x,
+              list: await Nr.query({
+                show_model: q,
+                filter: { task_ids: x.taskIds }
+              })
+            }
+            break
+          }
+          case ns.UPDATE_DIFF: {
+            y = await Nr.updateDiffForClient()
+            break
+          }
+          case ns.QUERY_FULL_VIEW_COUNT: {
+            y = Nr.queryFullDoseCount()
+            break
+          }
+          case zn.DAY_VIEW: {
+            console.log('@nx day params', mt.data),
+              (y = await Nr.getDayView(mt.data)),
+              console.log('@nx day res', y)
+            break
+          }
         }
-        case ns.UPDATE_DIFF: {
-          y = await Nr.updateDiffForClient()
-          break
-        }
-        case ns.QUERY_FULL_VIEW_COUNT: {
-          y = Nr.queryFullDoseCount()
-          break
-        }
-        case zn.DAY_VIEW: {
-          y = await Nr.getDayView(mt.data)
-          break
-        }
+        self.postMessage({ uid: mt.uid, data: y })
+      } catch {
+        self.postMessage({ uid: mt.uid, data: null, code: 40088 })
       }
-      self.postMessage({ uid: mt.uid, data: y })
     }
   }
 }

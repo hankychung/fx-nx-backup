@@ -9,6 +9,7 @@ import React, {
   useRef
 } from 'react'
 import { SortableTab } from '@flyele-nx/ui'
+// import { SystemUtils } from './utils'
 import Template from './components/template'
 
 import style from './index.module.scss'
@@ -51,6 +52,12 @@ const initTabs: ISortableTab[] = [
     total: 0
   },
   {
+    id: TabIds.PERSONAL,
+    text: '个人',
+    count: 0,
+    total: 0
+  },
+  {
     id: TabIds.ARRANGED,
     text: '待安排',
     count: 0,
@@ -62,7 +69,7 @@ const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
   const sortedTab = useUserInfoStore.getState().setting.view_sort
   const userId = useUserInfoStore.getState().userInfo.user_id
 
-  const [activeId, setActiveId] = useState<TabIds>(TabIds.ARRANGED)
+  const [activeId, setActiveId] = useState<TabIds>(TabIds.FOLLOW)
 
   const [tabs, setTabs] = useState<ISortableTab[]>(initTabs)
 
@@ -239,7 +246,7 @@ const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
           setActiveId(id as TabIds)
           // SystemUtils.setStoreTabId(id as TabIds)
         }}
-        defaultActiveId={'5'}
+        defaultActiveId={TabIds.FOLLOW}
         itemClass={style['system-tab']}
       />
       {cmps.map(({ id }) => (

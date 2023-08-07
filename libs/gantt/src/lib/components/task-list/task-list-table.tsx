@@ -12,7 +12,9 @@ import { Task } from '@flyele-nx/types'
 import { Title } from '../../Row/Title'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import dayjs from 'dayjs'
-
+import { getId, getTimeTxt } from '../../utils'
+import { useGanttList } from '../../hooks/useScheduleList'
+import cs from 'classnames'
 const localeDateStringCache: any = {}
 const toLocaleDateStringFactory =
   (locale: string) =>
@@ -57,7 +59,10 @@ export const TaskListTableDefault: React.FC<{
     () => toLocaleDateStringFactory(locale),
     [locale]
   )
+  const { batchUpdateHoverId, hoverId, activeCell, batchUpdateActiveCell } =
+    useGanttList()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
   return (
     <div
       className={styles.taskListWrapper}
@@ -67,18 +72,32 @@ export const TaskListTableDefault: React.FC<{
       }}
     >
       {tasks.map((t) => {
+        const id = getId(t)
+        const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
+
         return (
           <div
             className={styles.taskListTableRow}
-            style={{ height: rowHeight }}
+            style={{
+              height: rowHeight,
+              background: id === hoverId ? 'rgba(29, 210, 193, 0.05)' : ''
+            }}
             key={`${t.id}row`}
+            onMouseEnter={() => {
+              batchUpdateHoverId(id)
+            }}
           >
             <div
-              className={styles.taskListCell}
+              className={cs(styles.taskListCell, {
+                [styles.taskListCellactive]: activeCell === `${taskId}-title`
+              })}
               style={{
                 minWidth: 186,
                 maxWidth: 186,
                 paddingLeft: 16
+              }}
+              onClick={() => {
+                batchUpdateActiveCell(`${taskId}-title`)
               }}
             >
               <Title data={t} userId={userId} />
@@ -92,7 +111,7 @@ export const TaskListTableDefault: React.FC<{
                 paddingLeft: 12
               }}
             >
-              {toLocaleDateString(t.start, dateTimeOptions)}
+              {getTimeTxt(t, true)}
             </div>
             <div
               className={styles.taskListCell}
@@ -103,7 +122,7 @@ export const TaskListTableDefault: React.FC<{
                 borderRight: 'none'
               }}
             >
-              {toLocaleDateString(t.end, dateTimeOptions)}
+              {getTimeTxt(t, false)}
             </div>
           </div>
         )

@@ -8,11 +8,17 @@ const restoreLocalInfo = () => {
     const localUserInfo = LocalStore.getUserInfo()
     const localVip = LocalStore.getUserVip()
     const localVipPower = LocalStore.getUserVipPower()
+    const localEnterpriseInfo = LocalStore.getUserEnterpriseInfo()
+    const localEnterpriseTakers = LocalStore.getUserEnterpriseTakers()
     const localSetting = LocalStore.getUserSetting()
 
     localUserInfo && GlobalInfoHandler.updateUserInfo(localUserInfo)
     localVip && GlobalInfoHandler.updateUserVip(localVip)
     localVipPower && GlobalInfoHandler.updateUserVipPower(localVipPower)
+    localEnterpriseInfo &&
+      GlobalInfoHandler.updateUserEnterpriseInfo(localEnterpriseInfo)
+    localEnterpriseTakers &&
+      GlobalInfoHandler.updateUserEnterpriseTakers(localEnterpriseTakers)
     localSetting && GlobalInfoHandler.updateUserSetting(localSetting)
   }
 }

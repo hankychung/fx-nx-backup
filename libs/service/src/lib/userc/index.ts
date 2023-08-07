@@ -141,7 +141,7 @@ class Userc {
   }
 
   async updateUser(data: { avatar?: string; nick_name?: string }) {
-    return await service.put({ url: '/user', data })
+    return await service.put({ url: `${this.prefix}/user`, data })
   }
 }
 

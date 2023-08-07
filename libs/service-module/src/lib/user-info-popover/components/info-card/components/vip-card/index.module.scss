@@ -1,0 +1,93 @@
+.vip-card {
+  width: 280px;
+  height: 117px;
+  overflow: hidden;
+  background-size: 100% 100%;
+  // padding: 16px 20px;
+  padding: 16px 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  letter-spacing: 0.5px;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 4px;
+  position: relative;
+
+  .vip-expired-tip {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba($color: #000, $alpha: 0.4);
+    mix-blend-mode: normal;
+    color: #fff;
+    font-size: 10px;
+    padding: 0 12px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 0 8px;
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: 400;
+    color: #363636;
+  }
+
+  & > footer {
+    display: flex;
+    // justify-content: space-between;
+    align-items: flex-end;
+    // align-items: flex-start;
+    gap: 8px;
+
+    p {
+      font-size: 10px;
+      margin-left: auto;
+      color: #324a7d;
+    }
+
+    .btn {
+      flex-shrink: 0;
+      padding: 0 10px;
+      // min-width: 64px;
+      user-select: none;
+      cursor: pointer;
+      height: 24px;
+      line-height: 23px;
+      text-align: center;
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid #fff;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
+      color: #324a7d;
+    }
+  }
+
+  h1 {
+    font-size: 14px;
+    font-weight: 600;
+    // color: #262626;
+    margin-bottom: 4px;
+  }
+}
+
+.tips {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+// vip 独特样式
+// .vip {
+//   h1 {
+//     color: #402800;
+//   }
+
+//   p {
+//     color: #583f18;
+//   }
+// }

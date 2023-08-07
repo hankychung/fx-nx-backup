@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { CorpAppStatus, CorpUserStatus, CorpVersion } from '@flyele-nx/constant'
+import dayjs from 'dayjs'
 import {
   IUserInfoState,
   SettingFileSyncPolicy,
@@ -25,6 +27,26 @@ const initUserInfo = {
    * 是否企业版用户
    */
   isEnterprise: false,
+  /**
+   * 企业信息
+   */
+  enterprise: {
+    app_status: CorpAppStatus.noPaid,
+    corp_name: '-1',
+    corpid: '-1',
+    cu_status: CorpUserStatus.activated,
+    expired_time: dayjs().add(2, 'month').unix(),
+    user_count: -1,
+    user_id: '-1',
+    user_limit: -1,
+    version: CorpVersion.trial,
+    total_capacity: Number.POSITIVE_INFINITY,
+    used_capacity: 0
+  },
+  /**
+   * 企业版协作人
+   */
+  enterpriseTakers: [],
   // 用户设置
   // TODO: 用到的时候再补默认值
   setting: {

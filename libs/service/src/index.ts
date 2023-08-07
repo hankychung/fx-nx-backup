@@ -9,6 +9,7 @@ import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
 import { TaskDispatchApi } from './lib/task-dispatch'
 import { LabelApi } from './lib/label'
+import { OfficialApi } from './lib/official'
 import SSe from './lib/sse'
 import './lib/payment'
 
@@ -64,7 +65,8 @@ export {
   LabelApi,
   workspaceApi,
   projectApi,
-  AuthConst
+  AuthConst,
+  OfficialApi
 }
 
 export type {

@@ -235,7 +235,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   if (!data) return null
   return (
     <div
-      ref={dragProvided ? dragProvided.innerRef : domRef}
+      ref={dragProvided ? dragProvided.innerRef : undefined}
       {...dragProvided.draggableProps}
       {...dragProvided.dragHandleProps}
       className={cs(styles.scheduleTaskRoot, {
@@ -260,6 +260,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       onClick={onClickTask}
     >
       <div
+        ref={domRef}
         className={cs({
           [styles.topHover]: !isTimeLine && !opacity,
           [styles.darkModeHover]: isDarkMode && !opacity,

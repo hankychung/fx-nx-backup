@@ -53,6 +53,9 @@ import { useMessage } from '@flyele-nx/ui'
 import { getParentNode } from '@flyele-nx/utils'
 import { MAX_TITLE_LEN, MatterType } from '@flyele-nx/constant'
 import { ICreateParams } from '@flyele-nx/types'
+import { useGanttList } from '../../hooks/useScheduleList'
+import { globalNxController } from '@flyele-nx/global-processor'
+import { ApiHandler } from '../../utils/apiHandler'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -92,11 +95,12 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   // const isDoubleRef = useRef(false)
   const isEditRef = useRef(false)
   const isDisableClick = useRef(false)
-  const [showMsg] = useMessage()
+  const { showMsg } = globalNxController
+  const { hoverId } = useGanttList()
   // const location = useLocation()
   // const { operateType: globalOperateType } = useGlobalMatterCondition()
   // const { globalMatterPriority } = useGlobalMatterPriority()
-  const hoverId = ''
+
   // const hoverId = useRecoilValue(hoveredTaskState)
   // const { isValidVip } = useCheckVip()
   // const { project } = useContext(Context)
@@ -267,27 +271,28 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // }
   }, [title])
 
-  // const handleOpen = useMemoizedFn((e) => {
-  //   e.stopPropagation()
+  const handleOpen = useMemoizedFn((e) => {
+    e.stopPropagation()
 
-  //   if (!isGroup) {
-  //     openVenationWin(undefined, {
-  //       p: {
-  //         key: data.parent_id ? data.parent_id.split(',')[0] : data.task_id,
-  //         taskId: data.task_id,
-  //         project_id: fullDoseHandlerRef.current?.options.projectId,
-  //         title: data.title,
-  //       },
-  //     })
+    // if (!isGroup) {
+    //   openVenationWin(undefined, {
+    //     p: {
+    //       key: data.parent_id ? data.parent_id.split(',')[0] : data.task_id,
+    //       taskId: data.task_id,
+    //       project_id: fullDoseHandlerRef.current?.options.projectId,
+    //       title: data.title
+    //     }
+    //   })
 
-  //     return
-  //   }
+    //   return
+    // }
 
-  //   if (has_child) {
-  //     // 拉取子事项
-  //     fullDoseHandlerRef.current?.toggleOpen(data)
-  //   }
-  // })
+    if (has_child) {
+      // TODO: 判断收合情况, 收起操作不需要调用
+      // 拉取子事项更新projectStore
+      ApiHandler.getChildren(task_id)
+    }
+  })
 
   const showCycleDetail = useMemoizedFn(async (e) => {
     e.stopPropagation()
@@ -305,28 +310,26 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // })
   })
 
-  const handleKeyPress = useMemoizedFn(
-    async (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const isEnter = e.key.toLowerCase() === 'enter'
+  const handleKeyPress = useMemoizedFn(async (e) => {
+    const isEnter = e.key.toLowerCase() === 'enter'
 
-      if (isEnter && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-        // blur
-        inputRef.current?.blur()
+    if (isEnter && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+      // blur
+      inputRef.current?.blur()
 
-        // 创建事项
-        if (data.task_id === FAKE_ID) {
-          const isValidCreate = await handleCreateTask()
+      // 创建事项
+      if (data.task_id === FAKE_ID) {
+        const isValidCreate = await handleCreateTask()
 
-          if (isEnter && isValidCreate) {
-            setTimeout(() => {
-              // fullDoseHandlerRef.current?.createNewTask()
-              // fullDoseHandlerRef.current?.createCallback({ creating: true })
-            })
-          }
+        if (isEnter && isValidCreate) {
+          setTimeout(() => {
+            // fullDoseHandlerRef.current?.createNewTask()
+            // fullDoseHandlerRef.current?.createCallback({ creating: true })
+          })
         }
       }
     }
-  )
+  })
 
   useEffect(() => {
     const listenEsc = (e: KeyboardEvent) => {
@@ -350,7 +353,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
 
   const handleDoubleClick = useMemoizedFn(() => {
     // if (isEditRef.current) return
-    // handleClick(taskId, TableHeaderTitle.title)
     // const isProjectPage = location.pathname.includes('/project/detail')
     // globalNxController.openTaskDetailWindow({
     //   task: {
@@ -450,10 +452,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   }, [data.task_id])
 
   const onHandleClick = useMemoizedFn((e) => {
-    if (isDisableClick.current) return
-    e.stopPropagation()
     handleTitleClick()
-    // handleClick(taskId, TableHeaderTitle.title)
   })
 
   // const upperLineStyle = useMemo<React.CSSProperties>(() => {
@@ -483,6 +482,8 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   })
 
   const onInputChange = useMemoizedFn((e) => {
+    console.log(e)
+
     const inputValue = e.target.value
 
     if (task_id === FAKE_ID) {
@@ -553,14 +554,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       />
     </div>
   ) : (
-    <div
-      className={cs(style.title, {
-        [style['title-active']]: false
-        // activeCell === `${taskId}-${TableHeaderTitle.title}`,
-      })}
-
-      // onDoubleClick={handleDoubleClick}
-    >
+    <div className={cs(style.title)}>
       {topParentLine && <div className={style['line-outer']} />}
       <div
         className={cs(style['icon-box'], {
@@ -590,9 +584,12 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
             ref={inputRef}
             type="text"
             value={value}
+            onInput={() => {
+              console.log('iii')
+            }}
             onChange={(e) => onInputChange(e)}
             onBlur={handleConfirm}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
           />
         )}
 
@@ -603,7 +600,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
               <div
                 className={style['edit-icon']}
                 onClick={(e) => {
-                  e.stopPropagation()
                   onHandleClick(e)
                 }}
               >
@@ -633,7 +629,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
                   className={cs(style.box, style['close-box'], {
                     [style['close-box-open']]: isOpen
                   })}
-                  // onClick={handleOpen}
+                  onClick={handleOpen}
                 >
                   {isGroup ? (
                     <>

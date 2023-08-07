@@ -29,7 +29,24 @@ import { getOperationStatus } from '../workflow-operation/utils'
 import { MatterType } from '@flyele-nx/constant'
 
 interface IProps {
-  task: IScheduleTask
+  task: Pick<
+    IScheduleTask,
+    | 'repeat_id'
+    | 'ref_task_id'
+    | 'identity'
+    | 'finish_time'
+    | 'cycle_date'
+    | 'cycle'
+    | 'state'
+    | 'repeat_list'
+    | 'repeat_type'
+    | 'dispatch_id'
+    | 'matter_type'
+    | 'has_child'
+    | 'flow_step_id'
+    | 'creator_id'
+    | 'complete_at'
+  >
   changeStatus?: () => void
   resetStatus?: () => void
   isVipWin?: boolean

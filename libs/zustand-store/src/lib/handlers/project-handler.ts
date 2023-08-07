@@ -1,6 +1,7 @@
 import { IFullViewTask } from '@flyele-nx/types'
 import { IProjectState, useProjectStore } from '../useProjectStore'
 import { produce } from 'immer'
+import { useUserInfoStore } from '../useUserInfoStore'
 
 export class ProjectHandler {
   // 拉取子事项
@@ -31,7 +32,7 @@ export class ProjectHandler {
   }
 
   // 修改事项
-  batchModify({
+  static batchModify({
     keys,
     diff
   }: {
@@ -59,7 +60,7 @@ export class ProjectHandler {
   }
 
   // 删除事项
-  removeTasks(taskIds: string[]) {
+  static removeTasks(taskIds: string[]) {
     const { taskDict, taskList, childrenDict } = useProjectStore.getState()
 
     const tasks = taskIds.map((id) => taskDict[id]).filter(Boolean)
@@ -99,5 +100,36 @@ export class ProjectHandler {
     )
 
     console.log('[projectStore]: removeTasks', useProjectStore.getState())
+  }
+
+  // 移除协作人
+  static removeTakers({
+    taskIds,
+    takerIds
+  }: {
+    takerIds: string[]
+    taskIds: string[]
+  }) {
+    const { user_id } = useUserInfoStore.getState().userInfo
+
+    if (takerIds.includes(user_id)) {
+      this.removeTasks(taskIds)
+
+      return
+    }
+
+    useProjectStore.setState(
+      produce<IProjectState>((state) => {
+        const { taskDict } = state
+
+        taskIds.forEach((id) => {
+          const takers = taskDict[id].takers || []
+
+          taskDict[id].takers = takers.filter(
+            (t) => !takerIds.includes(t.taker_id)
+          )
+        })
+      })
+    )
   }
 }

@@ -27,8 +27,10 @@ import { ReactComponent as ArrDownIcon } from '../../../assets/schedule/arrDownI
 // import { MAX_TITLE_LEN } from '@/constants/const'
 import { FlyTextTooltip, FlyTooltip } from '@flyele/flyele-components'
 import {
+  Enter_page_detail,
   FAKE_ID,
-  NO_PROJECT_ID
+  NO_PROJECT_ID,
+  Pub
   // TableHeaderTitle,
 } from '@flyele-nx/constant'
 import dayjs from 'dayjs'
@@ -55,6 +57,7 @@ import { MAX_TITLE_LEN, MatterType } from '@flyele-nx/constant'
 import { ICreateParams } from '@flyele-nx/types'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { globalNxController } from '@flyele-nx/global-processor'
+import { TaskApi } from '@flyele-nx/service'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -94,7 +97,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   // const isDoubleRef = useRef(false)
   const isEditRef = useRef(false)
   const isDisableClick = useRef(false)
-  const { showMsg } = globalNxController
+  const { showMsg, pubJsPublish } = globalNxController
   const { hoverId } = useGanttList()
   // const location = useLocation()
   // const { operateType: globalOperateType } = useGlobalMatterCondition()
@@ -352,15 +355,15 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   const handleDoubleClick = useMemoizedFn(() => {
     // if (isEditRef.current) return
     // const isProjectPage = location.pathname.includes('/project/detail')
-    // globalNxController.openTaskDetailWindow({
-    //   task: {
-    //     ref_id: task_id,
-    //     matter_type,
-    //     cycle: data.cycle,
-    //     forceOpen: true
-    //   } as any,
-    //   enterPage: Enter_page_detail.甘特图
-    // })
+    globalNxController.openTaskDetailWindow({
+      task: {
+        ref_id: task_id,
+        matter_type,
+        cycle: data.cycle,
+        forceOpen: true
+      } as any,
+      enterPage: Enter_page_detail.日程列表
+    })
     // isDoubleRef.current = true
     // setTimeout(() => {
     //   isDoubleRef.current = false
@@ -370,7 +373,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   const handleConfirm = useMemoizedFn(async () => {
     setEdit(false)
     isEditRef.current = false
-    // handleClick('')
 
     try {
       const title = value.trim()
@@ -382,18 +384,18 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       setVal(title)
       setTempValue(title)
 
-      // await CreateApi.updateTask({ title, matter_type }, task_id)
+      await TaskApi.updateTask({ title, matter_type }, task_id)
 
-      // Pubjs.publish(PUB.DB_INCREASE_01_READUX_AND_SQLITEDB, {
-      //   task_id,
-      //   parent_id,
-      //   diffObj: {
-      //     task: {
-      //       title,
-      //     },
-      //   },
-      //   type: 'updateTitle',
-      // })
+      pubJsPublish(Pub.DB_INCREASE_01_READUX_AND_SQLITEDB, {
+        task_id,
+        parent_id,
+        diffObj: {
+          task: {
+            title
+          }
+        },
+        type: 'updateTitle'
+      })
     } catch (e) {
       console.log('全量更新标题出错')
     }
@@ -452,15 +454,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   const onHandleClick = useMemoizedFn((e) => {
     handleTitleClick()
   })
-
-  // const upperLineStyle = useMemo<React.CSSProperties>(() => {
-  //   const width = 8 + (lineLevel - 1) * 16
-
-  //   return {
-  //     width,
-  //     left: `-${width - lineLevel + 1}px`,
-  //   }
-  // }, [lineLevel])
 
   const titleStyle = useMemo<React.CSSProperties>(() => {
     return level ? { marginLeft: 16 * level } : {}
@@ -582,9 +575,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
             ref={inputRef}
             type="text"
             value={value}
-            onInput={() => {
-              console.log('iii')
-            }}
             onChange={(e) => onInputChange(e)}
             onBlur={handleConfirm}
             onKeyDown={handleKeyPress}

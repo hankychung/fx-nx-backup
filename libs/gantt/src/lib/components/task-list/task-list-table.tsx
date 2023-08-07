@@ -1,40 +1,12 @@
-/*
- * @Author: wanghui wanghui@flyele.net
- * @Date: 2023-07-20 16:17:54
- * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-07-20 17:49:44
- * @FilePath: /fx-nx/libs/service-module/src/lib/gantt/components/task-list/task-list-table.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-import React, { useMemo } from 'react'
+import React from 'react'
 import styles from './task-list-table.module.css'
 import { Task } from '@flyele-nx/types'
 import { Title } from '../../Row/Title'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
-import dayjs from 'dayjs'
 import { getId, getTimeTxt } from '../../utils'
 import { useGanttList } from '../../hooks/useScheduleList'
 import cs from 'classnames'
-const localeDateStringCache: any = {}
-const toLocaleDateStringFactory =
-  (locale: string) =>
-  (date: Date, dateTimeOptions: Intl.DateTimeFormatOptions) => {
-    const key = date.toString()
-    let lds = localeDateStringCache[key]
-    if (!lds) {
-      lds = date.toLocaleDateString(locale, dateTimeOptions)
-      localeDateStringCache[key] = lds
-    }
-    const data = dayjs(date).format('YYYY年MM月DD日 HH:mm')
-
-    return data
-  }
-const dateTimeOptions: Intl.DateTimeFormatOptions = {
-  weekday: 'short',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-}
+import useDomClickToHide from '../../hooks/useDomClickToHide'
 
 export const TaskListTableDefault: React.FC<{
   rowHeight: number
@@ -55,14 +27,13 @@ export const TaskListTableDefault: React.FC<{
   locale,
   onExpanderClick
 }) => {
-  const toLocaleDateString = useMemo(
-    () => toLocaleDateStringFactory(locale),
-    [locale]
-  )
   const { batchUpdateHoverId, hoverId, activeCell, batchUpdateActiveCell } =
     useGanttList()
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
+  useDomClickToHide(['.full-dose-row'], () => {
+    batchUpdateActiveCell('')
+  })
   return (
     <div
       className={styles.taskListWrapper}
@@ -77,7 +48,7 @@ export const TaskListTableDefault: React.FC<{
 
         return (
           <div
-            className={styles.taskListTableRow}
+            className={cs(styles.taskListTableRow, 'full-dose-row')}
             style={{
               height: rowHeight,
               background: id === hoverId ? 'rgba(29, 210, 193, 0.05)' : ''

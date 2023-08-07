@@ -472,7 +472,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     <div>
       <div
         className={styles.wrapper}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
         tabIndex={0}
         ref={wrapperRef}
       >

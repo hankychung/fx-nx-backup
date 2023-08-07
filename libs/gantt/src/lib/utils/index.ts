@@ -1,6 +1,6 @@
 import { find } from 'lodash'
 import { IFullViewTask, IFullViewTaker, ICreateParams } from '@flyele-nx/types'
-
+import dj, { Dayjs } from 'dayjs'
 function getKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
   return i.repeat_id ? `${i.task_id}-${i.repeat_id}` : i.task_id
 }
@@ -62,4 +62,78 @@ function createSVG(tag: string, attrs: { [key: string]: any }): SVGElement {
   return elem
 }
 
-export { getKey, createSVG }
+interface ITimeInfo {
+  sDj: Dayjs
+  eDj: Dayjs
+  fullStart: boolean
+  fullEnd: boolean
+}
+
+function formatYearAndDate(_dj: Dayjs) {
+  if (dj().isSame(_dj, 'year')) {
+    return _dj.format('M月D日')
+  }
+
+  return _dj.format('YYYY年M月D日')
+}
+
+function formatMonthAndDate(dj: Dayjs) {
+  return dj.format('M月D日')
+}
+
+function formatTime(d: Dayjs) {
+  return d.format('HH:mm')
+}
+
+function formatFullTime(d: Dayjs, needYear?: boolean, full?: boolean) {
+  return `${(needYear ? formatYearAndDate : formatMonthAndDate)(d)} ${
+    full ? '' : formatTime(d)
+  }`
+}
+
+const getTimeTxt = (
+  task: Pick<
+    IFullViewTask,
+    'start_time' | 'start_time_full_day' | 'end_time' | 'end_time_full_day'
+  >,
+  isStart: boolean
+) => {
+  const { start_time, start_time_full_day, end_time, end_time_full_day } = task
+
+  const timeInfo: ITimeInfo = {
+    sDj: dj.unix(start_time || 0),
+    eDj: dj.unix(end_time || 0),
+    fullStart: start_time_full_day === 2,
+    fullEnd: end_time_full_day === 2
+  }
+
+  if (isStart && start_time) {
+    return `${formatFullTime(timeInfo.sDj, true, timeInfo.fullStart)}`
+  }
+
+  if (!isStart && end_time) {
+    return `${formatFullTime(timeInfo.eDj, true, timeInfo.fullEnd)}`
+  }
+
+  return '添加时间'
+}
+
+function isTask(task: IFullViewTask | string): task is IFullViewTask {
+  return typeof task !== 'string'
+}
+
+function getId(data: string | IFullViewTask) {
+  if (isTask(data)) {
+    // return `${data.task_id}-${data.repeat_id || ''}-${data.parentKey || ''}`
+    return (
+      data.uniqueKey! ||
+      `${data.task_id}-${data.repeat_id || ''}${
+        data.parentKey ? `-${data.parentKey}` : ''
+      }`
+    )
+  }
+
+  return data
+}
+
+export { getKey, createSVG, getTimeTxt, getId }

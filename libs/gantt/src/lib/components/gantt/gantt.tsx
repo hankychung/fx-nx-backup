@@ -28,7 +28,6 @@ import { HorizontalScroll } from '../other/horizontal-scroll'
 import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
-
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -104,6 +103,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [scrollY, setScrollY] = useState(0)
   const [scrollX, setScrollX] = useState(-1)
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
+
   useEffect(() => {
     if (isChecked) {
       setListCellWidth('155px')
@@ -111,6 +111,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       setListCellWidth('')
     }
   }, [isChecked])
+
   // task change events
   useEffect(() => {
     let filteredTasks: Task[]

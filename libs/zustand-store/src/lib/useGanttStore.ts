@@ -8,6 +8,8 @@ export interface IGanState {
   taskDict: { [k: string]: IFullViewTask }
   childrenDict: { [k: string]: string[] }
   taskList: string[]
+  hoverId: string
+  activeCell: string
 }
 
 interface IMutation {
@@ -20,6 +22,8 @@ interface IMutation {
   }
   // updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
+  batchUpdateHoverId: (id: string) => void
+  batchUpdateActiveCell: (id: string) => void
 }
 
 const initGanttState: IGanState = {
@@ -36,7 +40,13 @@ const initGanttState: IGanState = {
    * key为taskId -> 普通事项/未完成的循环事项
    * key为taskId + repeatId -> 已完成的循环事项
    */
-  taskDict: {}
+  taskDict: {},
+
+  //悬浮id
+  hoverId: '',
+
+  //选中标题
+  activeCell: ''
 }
 
 const useGanttStore = create<IGanState & IMutation>((set) => {
@@ -48,7 +58,7 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
     updateList({ list, isInit }) {
       set(
         produce((state: IGanState) => {
-          state.taskList = []
+          state.taskList = list
         })
       )
     },
@@ -58,20 +68,20 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
     batchUpdateTask(arr, options) {
       const keys: string[] = []
 
-      // const isFinished = options?.isFinished
-
       set(
         produce((state: IGanState) => {
           const dict: { [k: string]: IFullViewTask } = {}
-
+          const { taskDict } = state
           arr.forEach((item) => {
-            const { repeat_id } = item
+            const { repeat_id, task_id } = item
             if (repeat_id) {
               const key = getKey(item)
 
-              dict[key] = item
+              if (!taskDict[key]) {
+                dict[key] = item
+              }
             }
-
+            dict[task_id] = item
             keys.push(getKey(item))
           })
 
@@ -104,6 +114,16 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
           ...state.childrenDict,
           ...info
         }
+      }))
+    },
+    batchUpdateHoverId(id) {
+      set((state) => ({
+        hoverId: id
+      }))
+    },
+    batchUpdateActiveCell(id) {
+      set((state) => ({
+        activeCell: id
       }))
     }
   }

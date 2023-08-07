@@ -8,6 +8,8 @@
   font-size: 13px;
 
   &-active {
+    height: 100%;
+    width: 100%;
     border: 1px solid rgba(29, 210, 193, 1);
   }
 
@@ -98,7 +100,7 @@
 input {
   border: none;
   outline: none;
-
+  background: transparent;
   &::placeholder {
     color: #b4b4b4;
   }

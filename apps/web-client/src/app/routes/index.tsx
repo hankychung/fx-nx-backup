@@ -4,7 +4,6 @@ import App from '../app'
 import { Login } from '../pages/login'
 import { Board } from '../pages/board'
 import { RoutePath } from './const'
-import { LocalStore } from '@flyele-nx/utils'
 import { DayView } from '../pages/board/modules/day-view'
 
 const DefaultPage = () => <Navigate to="/" />
@@ -28,7 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: RoutePath.login,
-    element: LocalStore.getToken() ? <DefaultPage /> : <Login />
+    element: <Login />
   },
   { path: '*', element: <DefaultPage /> }
 ])

@@ -1,0 +1,76 @@
+// @import 'pages/schedule/components/Content/common';
+
+.item {
+  height: 60px;
+  // border-bottom: 1px solid rgba(226, 226, 234, 0.5);
+  padding: 12px 10px 12px 16px;
+  color: rgba(38, 38, 38, 1);
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+
+    // @include line();
+  }
+
+  &:hover {
+    background: #f2fdfb;
+  }
+
+  .lft,
+  .rgt {
+    display: flex;
+  }
+
+  .info {
+    margin-left: 14px;
+    flex: 1;
+    overflow: hidden;
+
+    &__title {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .time {
+      margin-top: 2px;
+      color: rgba(146, 146, 157, 1);
+
+      .delay {
+        color: rgba(255, 120, 77, 1);
+        margin-right: 14px;
+      }
+    }
+  }
+
+  .lft {
+    flex: 1;
+    overflow: hidden;
+    margin-right: 13px;
+
+    &__order {
+      width: 20px;
+    }
+  }
+
+  .rgt {
+    width: 86px;
+    align-items: center;
+    justify-content: flex-end;
+
+    .icon {
+      height: 16px;
+      width: 16px;
+      margin-left: 8px;
+    }
+  }
+}

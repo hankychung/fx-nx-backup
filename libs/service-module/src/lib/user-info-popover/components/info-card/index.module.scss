@@ -1,0 +1,32 @@
+.infoCardRoot {
+  width: 320px;
+  padding: 0 20px;
+  background-color: #fff;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 22px 0;
+  }
+
+  .footer {
+    border-top: 1px solid #ebebeb;
+    height: 50px;
+    display: grid;
+    place-items: center;
+  }
+}
+
+.promotionsCard {
+  font-size: 10px;
+  height: 32px;
+}
+
+.vipCardBox {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  padding-bottom: 20px;
+  margin-top: 12px;
+  align-items: center;
+}

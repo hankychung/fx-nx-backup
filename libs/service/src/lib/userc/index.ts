@@ -9,13 +9,14 @@ import {
   ILoginKeyParams,
   IVipMember,
   IWeather,
-  IPhoneLoginParams
+  IPhoneLoginParams,
+  IUserSetting
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
-import { IMemberApi } from '../typings/vip'
 
 class Userc {
   private prefix = 'userc/v2'
+  private prefixV1 = 'userc/v1'
 
   async phoneLogin(data: IPhoneLoginParams) {
     return await service.put<IUserInfo>({
@@ -94,7 +95,7 @@ class Userc {
    * 事项权限
    * **/
   async taskPower(task_id: string) {
-    return await service.get<IMemberApi>({
+    return await service.get<IVipMember>({
       url: `${this.prefix}/member/task/${task_id}`
     })
   }
@@ -115,6 +116,32 @@ class Userc {
         platform
       }
     })
+  }
+
+  // 更新设置
+  updateSetting(
+    data: {
+      view_sort?: string
+      monthly_config?: string
+      monthly_filter?: string
+      space_directory_sort?: string
+    } & Record<string, any>
+  ) {
+    return service.post({
+      url: `${this.prefix}/user/setting`,
+      data
+    })
+  }
+
+  // 获取用户设置
+  getUserSetting() {
+    return service.get<IUserSetting>({
+      url: `${this.prefix}/user/setting`
+    })
+  }
+
+  async updateUser(data: { avatar?: string; nick_name?: string }) {
+    return await service.put({ url: `${this.prefix}/user`, data })
   }
 }
 

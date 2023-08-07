@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import { IGanState, useGanttStore } from '@flyele-nx/global-processor'
+import { IGanState, useProjectStore } from '@flyele-nx/global-processor'
 // import { ListHandler } from './listHandler'
 
 import { IFullViewTask } from '@flyele-nx/types'
@@ -38,18 +38,18 @@ class TaskHandler {
   }
 
   static allTasksModifier(handler: ITaskModifier) {
-    const { taskDict } = useGanttStore.getState()
+    const { taskDict } = useProjectStore.getState()
 
     this.tasksModifier(Object.keys(taskDict), handler)
   }
 
   static tasksModifier(taskIds: string[], handler: ITaskModifier) {
-    const { taskDict } = useGanttStore.getState()
+    const { taskDict } = useProjectStore.getState()
 
     console.log('NX inner modifier', taskIds, taskDict)
 
     // TODO: 循环事项的更新需要考虑
-    useGanttStore.setState(
+    useProjectStore.setState(
       produce((state: IGanState) => {
         taskIds.forEach((k) => {
           console.log('NX inner taker result', handler(taskDict[k]))
@@ -60,7 +60,7 @@ class TaskHandler {
       })
     )
 
-    console.log('NX inner modifier end', useGanttStore.getState().taskDict)
+    console.log('NX inner modifier end', useProjectStore.getState().taskDict)
   }
 
   static batchModify({
@@ -72,7 +72,7 @@ class TaskHandler {
     diff: Partial<IFullViewTask>
     keysWithRepeatIds?: string[]
   }) {
-    const { taskDict } = useGanttStore.getState()
+    const { taskDict } = useProjectStore.getState()
 
     const newTasks = keys.reduce<IFullViewTask[]>((list, key) => {
       const task = taskDict[key]
@@ -110,7 +110,7 @@ class TaskHandler {
 
   // TODO: 循环事项共享数据更新
   private static updateTaskDict(tasks: IFullViewTask[]) {
-    useGanttStore.setState(
+    useProjectStore.setState(
       produce((state: IGanState) => {
         tasks.forEach((task) => {
           const { task_id, repeat_id } = task
@@ -141,7 +141,7 @@ class TaskHandler {
 
   // 获取符合条件的所有事项
   static getTasksByCondition(handler: IGetBingoTasks) {
-    const { taskDict } = useGanttStore.getState()
+    const { taskDict } = useProjectStore.getState()
 
     const bingoTasks: IFullViewTask[] = []
 

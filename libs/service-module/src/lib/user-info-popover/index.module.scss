@@ -1,0 +1,17 @@
+.userInfoPopover {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  gap: 8px;
+  .arrowDown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2px;
+    width: 8px;
+    height: 8px;
+    transform: rotate(180deg);
+    transition: transform 0.2s;
+  }
+}

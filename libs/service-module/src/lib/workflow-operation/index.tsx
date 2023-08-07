@@ -10,7 +10,7 @@ import React, {
   useDeferredValue,
   useCallback
 } from 'react'
-import { Modal, Input } from 'antd'
+import { Modal, Input, Button } from 'antd'
 import cs from 'classnames'
 import {
   FlyAvatar,
@@ -24,13 +24,15 @@ import { IOperationProps, IOperation, IWorkflowAddUser } from './types'
 import { OperateStep, IStepItem, WorkFlowStep } from './WorkFlowStep'
 import style from './index.module.scss'
 import { getAllTakers, stepsFormatter } from './utils'
-import { TaskApi, IWorkflowStep, VipHandler } from '@flyele-nx/service'
+import { TaskApi, IWorkflowStep } from '@flyele-nx/service'
 
 import {
   DisabledIcon,
   OptionIcon,
+  RectWhiteIcon,
   TaskCheckIcon,
-  UncheckIcon
+  UncheckIcon,
+  UndoGrayIcon
 } from '@flyele-nx/icon'
 import {
   useContactStore,
@@ -39,6 +41,7 @@ import {
   useScheduleStore
 } from '@flyele-nx/global-processor'
 import { MatterType, FlowOperateType, SIZE_TYPE_KEY } from '@flyele-nx/constant'
+import { UserInfoUtils } from '@flyele-nx/utils'
 
 const { TextArea } = Input
 
@@ -216,7 +219,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     if (data && data[0] && data[0].creator_id) {
       const user = contactDict[data[0].creator_id]
 
-      const { isTeamVip, isVip } = VipHandler.checkVipType(user)
+      const { isTeamVip, isVip } = UserInfoUtils.checkVipType(user)
 
       setAddUser({
         avatar: user?.avatar || '',
@@ -615,6 +618,11 @@ const _Container: FC<{
 
   console.log('addUser', addUser, list)
 
+  const isFirstStep = useMemo(
+    () => list.some((v) => v.step === OperateStep.START),
+    [list]
+  )
+
   return (
     <div className={style.container}>
       {list.map(({ idx, title, step, members, operateType }) => {
@@ -656,6 +664,24 @@ const _Container: FC<{
           />
         )
       })}
+      <div className={style['btn-group']}>
+        <Button
+          className={style.btn}
+          icon={<UndoGrayIcon className={style['btn-icon']} />}
+          onClick={handleBack}
+          disabled={isFirstStep}
+        >
+          上一步
+        </Button>
+        <Button
+          className={style.btn}
+          icon={<RectWhiteIcon className={style['btn-icon']} />}
+          type="primary"
+          onClick={handleNext}
+        >
+          下一步
+        </Button>
+      </div>
     </div>
   )
 }

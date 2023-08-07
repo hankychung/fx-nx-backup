@@ -9,7 +9,6 @@ import React, {
 import styles from './schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { ScheduleTask } from './components/schedule-task'
-import InfiniteScroll from 'react-infinite-scroller'
 import dayjs from 'dayjs'
 import { ListHandler } from './utils/listHandler'
 import classNames from 'classnames'
@@ -130,15 +129,7 @@ const _ScheduleList: ForwardRefRenderFunction<
       style={{ backgroundColor: isDarkMode ? 'unset' : '#F6F8FA' }}
     >
       {(decentList ?? []).length ? (
-        <InfiniteScroll
-          loadMore={() => {
-            // do nothing
-          }}
-          useWindow={false}
-          hasMore
-          initialLoad={false}
-          className={styles.scroller}
-        >
+        <>
           {decentList.map((i, index) =>
             // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
             scheduleType === 'WEEKLY' ? (
@@ -174,7 +165,7 @@ const _ScheduleList: ForwardRefRenderFunction<
               />
             )
           )}
-        </InfiniteScroll>
+        </>
       ) : (
         <EmptyData
           isError={isError}

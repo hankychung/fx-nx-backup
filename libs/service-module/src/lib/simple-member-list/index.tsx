@@ -7,7 +7,7 @@ import cs from 'classnames'
 import styles from './index.module.scss'
 import { useMemoizedFn } from 'ahooks'
 import { useContactStore, useUserInfoStore } from '@flyele-nx/global-processor'
-import { VipHandler } from '@flyele-nx/service'
+import { UserInfoUtils } from '@flyele-nx/utils'
 
 export type ISimpleMember = {
   userId: string
@@ -56,7 +56,7 @@ const SimpleMemberList = (props: IProps) => {
     console.log('@check taker', item)
 
     if (item) {
-      const { isTeamVip, isVip } = VipHandler.checkVipType(item)
+      const { isTeamVip, isVip } = UserInfoUtils.checkVipType(item)
       return {
         isVip,
         isTeamVip

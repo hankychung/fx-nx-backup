@@ -1,0 +1,89 @@
+// @import 'pages/schedule/components/Content/common';
+
+.complete {
+  display: flex;
+  padding: 12px 20px 12px 20px;
+  height: 46px;
+  // padding: 10px 0 10px 16px; // UI 图上右侧没有多余的边距
+  // border-bottom: 1px solid rgba(226, 226, 234, 0.5);
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(146, 146, 157, 1);
+  font-size: 12px;
+  position: relative;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+
+    // @include line();
+  }
+
+  &:hover {
+    background: #f6fffc;
+  }
+
+  .lft {
+    display: flex;
+    // width: 100%;
+    flex: 1;
+    overflow: hidden;
+    // align-items: center;
+
+    & > div:nth-child(1) {
+      margin-top: -1px;
+      width: 24px;
+    }
+  }
+
+  .info {
+    flex: 1;
+    cursor: pointer;
+    overflow: hidden;
+
+    & > div:nth-child(1) {
+      color: rgba(38, 38, 38, 1);
+    }
+
+    &__title {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .rgt {
+    display: flex;
+    align-items: center;
+
+    .time {
+      margin-right: 2px;
+      // display: none;
+      .time_icon {
+        color: #1dd2c1;
+        margin-right: 2px;
+      }
+    }
+
+    .timeOpacity {
+      opacity: 0;
+    }
+
+    .avatar {
+      width: 56px;
+    }
+  }
+}
+
+.complete:hover .timeOpacity {
+  transition: all 1s;
+  opacity: 1;
+}
+
+.completeHover {
+  background: #f2fdfb;
+}

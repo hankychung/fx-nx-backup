@@ -707,7 +707,12 @@ class SqlStore {
   ) {
     const item = this.getDecentItem(_item, table)
 
-    // console.log('@store', item, table, type)
+    // if (
+    //   item.ref_task_id == '2680879855174300' ||
+    //   item.id == '2680879855174300'
+    // ) {
+    //   console.log('@store', item, table, _type)
+    // }
 
     const singleSql = `INSERT OR REPLACE INTO ${table} (${Object.keys(
       item

@@ -49,8 +49,10 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
           displayOrder: 1
         }))
 
-        const { keys } = batchUpdateTask(resList)
-        updateList({ list: keys })
+        const { keys } = batchUpdateTask(resList, { isInit: true })
+
+        // 初始化
+        updateList({ list: keys, isInit: true })
         // setLoading(false)
       },
       responseHandler: (res) => {

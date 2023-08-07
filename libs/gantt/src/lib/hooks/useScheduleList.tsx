@@ -1,18 +1,20 @@
-import { useGanttStore } from '@flyele-nx/global-processor'
+import { useProjectStore } from '@flyele-nx/global-processor'
 
 export const useGanttList = () => {
-  const taskList = useGanttStore((state) => state.taskList)
-  const hoverId = useGanttStore((state) => state.hoverId)
-  const activeCell = useGanttStore((state) => state.activeCell)
-  const childrenDict = useGanttStore((state) => state.childrenDict)
-  const taskDict = useGanttStore((state) => state.taskDict)
-  const updateList = useGanttStore((state) => state.updateList)
-  const batchUpdateTask = useGanttStore((state) => state.batchUpdateTask)
-  const batchUpdateChildDict = useGanttStore(
+  const taskList = useProjectStore((state) => state.taskList)
+  const hoverId = useProjectStore((state) => state.hoverId)
+  const activeCell = useProjectStore((state) => state.activeCell)
+  const childrenDict = useProjectStore((state) => state.childrenDict)
+  const taskDict = useProjectStore((state) => state.taskDict)
+  const updateList = useProjectStore((state) => state.updateList)
+  const batchUpdateTask = useProjectStore((state) => state.batchUpdateTask)
+  const batchUpdateChildDict = useProjectStore(
     (state) => state.batchUpdateChildDict
   )
-  const batchUpdateHoverId = useGanttStore((state) => state.batchUpdateHoverId)
-  const batchUpdateActiveCell = useGanttStore(
+  const batchUpdateHoverId = useProjectStore(
+    (state) => state.batchUpdateHoverId
+  )
+  const batchUpdateActiveCell = useProjectStore(
     (state) => state.batchUpdateActiveCell
   )
 

@@ -16,7 +16,7 @@ interface IMutation {
   updateList: (options: { list: string[]; isInit?: boolean }) => void
   batchUpdateTask: (
     tasks: IFullViewTask[],
-    options?: { isFinished?: boolean }
+    options?: { isInit?: boolean }
   ) => {
     keys: string[]
   }
@@ -49,7 +49,7 @@ const initGanttState: IGanState = {
   activeCell: ''
 }
 
-const useGanttStore = create<IGanState & IMutation>((set) => {
+const useProjectStore = create<IGanState & IMutation>((set) => {
   return {
     ...initGanttState,
     /**
@@ -58,7 +58,11 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
     updateList({ list, isInit }) {
       set(
         produce((state: IGanState) => {
-          state.taskList = list
+          if (isInit) {
+            state.taskList = list
+          } else {
+            state.taskList = [...state.taskList, ...list]
+          }
         })
       )
     },
@@ -71,7 +75,8 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
       set(
         produce((state: IGanState) => {
           const dict: { [k: string]: IFullViewTask } = {}
-          const { taskDict } = state
+          const taskDict = options?.isInit ? {} : state.taskDict
+
           arr.forEach((item) => {
             const { repeat_id, task_id } = item
             if (repeat_id) {
@@ -129,4 +134,4 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
   }
 })
 
-export { useGanttStore, initGanttState }
+export { useProjectStore, initGanttState }

@@ -1,5 +1,5 @@
 import { projectApi } from '@flyele-nx/service'
-import { ProjectHandler, useProjectStore } from '@flyele-nx/zustand-store'
+import { ProjectHandler } from '@flyele-nx/zustand-store'
 
 class ApiHandler {
   private static projectId = ''
@@ -18,8 +18,6 @@ class ApiHandler {
     ).data
 
     ProjectHandler.updateChildrenDict({ parentId, children: res })
-
-    console.log('[projectStore]: updateChildren', useProjectStore.getState())
 
     return res
   }

@@ -1,8 +1,6 @@
 import { create } from 'zustand'
-
 import { produce } from 'immer'
 import { IFullViewTask } from '@flyele-nx/types'
-import { getKey } from './utils/gantt'
 
 export interface IProjectState {
   taskDict: { [k: string]: IFullViewTask }
@@ -68,6 +66,7 @@ const useProjectStore = create<IProjectState & IMutation>((set) => {
     },
     /**
      * 批量更新事项字典
+     * 循环事项只会出现一张卡片, 字典中不带repeat_id
      */
     batchUpdateTask(arr, options) {
       const keys: string[] = []
@@ -78,20 +77,13 @@ const useProjectStore = create<IProjectState & IMutation>((set) => {
           const taskDict = options?.isInit ? {} : state.taskDict
 
           arr.forEach((item) => {
-            const { repeat_id, task_id } = item
-            if (repeat_id) {
-              const key = getKey(item)
-
-              if (!taskDict[key]) {
-                dict[key] = item
-              }
-            }
+            const { task_id } = item
             dict[task_id] = item
-            keys.push(getKey(item))
+            keys.push(task_id)
           })
 
           state.taskDict = {
-            ...state.taskDict,
+            ...taskDict,
             ...dict
           }
         })

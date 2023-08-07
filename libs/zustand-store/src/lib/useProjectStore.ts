@@ -4,7 +4,7 @@ import { produce } from 'immer'
 import { IFullViewTask } from '@flyele-nx/types'
 import { getKey } from './utils/gantt'
 
-export interface IGanState {
+export interface IProjectState {
   taskDict: { [k: string]: IFullViewTask }
   childrenDict: { [k: string]: string[] }
   taskList: string[]
@@ -26,7 +26,7 @@ interface IMutation {
   batchUpdateActiveCell: (id: string) => void
 }
 
-const initGanttState: IGanState = {
+const initGanttState: IProjectState = {
   /**
    * 数据
    */
@@ -49,7 +49,7 @@ const initGanttState: IGanState = {
   activeCell: ''
 }
 
-const useProjectStore = create<IGanState & IMutation>((set) => {
+const useProjectStore = create<IProjectState & IMutation>((set) => {
   return {
     ...initGanttState,
     /**
@@ -57,7 +57,7 @@ const useProjectStore = create<IGanState & IMutation>((set) => {
      */
     updateList({ list, isInit }) {
       set(
-        produce((state: IGanState) => {
+        produce((state: IProjectState) => {
           if (isInit) {
             state.taskList = list
           } else {
@@ -73,7 +73,7 @@ const useProjectStore = create<IGanState & IMutation>((set) => {
       const keys: string[] = []
 
       set(
-        produce((state: IGanState) => {
+        produce((state: IProjectState) => {
           const dict: { [k: string]: IFullViewTask } = {}
           const taskDict = options?.isInit ? {} : state.taskDict
 
@@ -105,7 +105,7 @@ const useProjectStore = create<IGanState & IMutation>((set) => {
      */
     // updateChildDict({ parentKey, childrenIds }) {
     //   set(
-    //     produce((state: IGanState) => {
+    //     produce((state: IProjectState) => {
     //       state.childrenDict[parentKey] = childrenIds
     //     })
     //   )

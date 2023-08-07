@@ -6,6 +6,7 @@ import { projectApi } from '@flyele-nx/service'
 import fetchApiAllData from './utils/fetch-api-all-data'
 import { useGanttList } from './hooks/useScheduleList'
 import { Gantt } from './components/gantt/gantt'
+import { ApiHandler } from './utils/apiHandler'
 
 export const GanttList = ({ projectId }: { projectId: string }) => {
   const { updateList, batchUpdateTask, taskDict, taskList } = useGanttList()
@@ -20,6 +21,10 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
   } else if (view === FullViewModeEnum.Week) {
     columnWidth = 250
   }
+
+  useEffect(() => {
+    ApiHandler.updateProjectId(projectId)
+  }, [projectId])
 
   const isInit = useRef(true)
 

@@ -50,7 +50,7 @@ import { IconBox } from './IconBox'
 import style from './index.module.scss'
 import { isInTask } from '../../utils/index'
 import AlertPromise from '../../components/AlertPromise'
-import { IFullViewCellProps } from '@flyele-nx/types'
+import { IFullViewCellProps, IScheduleTask } from '@flyele-nx/types'
 import { useMessage } from '@flyele-nx/ui'
 import { getParentNode } from '@flyele-nx/utils'
 import { MAX_TITLE_LEN, MatterType } from '@flyele-nx/constant'
@@ -58,6 +58,7 @@ import { ICreateParams } from '@flyele-nx/types'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { TaskApi } from '@flyele-nx/service'
+import { StatusBox } from './status-box'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -526,7 +527,12 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     Number(data.task_tree_total) > 99 && !isOpen
       ? '99+'
       : data.task_tree_total || 0
-
+  const _data = useMemo(() => {
+    return {
+      ...data,
+      ref_task_id: data.task_id
+    }
+  }, [data])
   return data.task_id === FAKE_ID ? (
     <div
       className={cs(style.title, style['title-active'], style['title-create'])}
@@ -553,16 +559,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
         })}
         style={titleStyle}
       >
-        <IconBox
-          data={data}
-          matterType={matter_type}
-          finished={!!finish_time}
-          onClick={handleComplete}
-          cycleDate={cycle_date}
-          notMyBusiness={notMyBusiness}
-          userId={userId}
-          batchComplete={batchComplete}
-        />
+        <StatusBox task={_data as IScheduleTask} isVipWin={false} />
       </div>
       <div className={cs(style.txtBox)}>
         {!edit && (

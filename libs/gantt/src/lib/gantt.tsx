@@ -6,6 +6,7 @@ import { projectApi } from '@flyele-nx/service'
 import fetchApiAllData from './utils/fetch-api-all-data'
 import { useGanttList } from './hooks/useScheduleList'
 import { Gantt } from './components/gantt/gantt'
+import { getFakeItem } from './utils'
 
 export const GanttList = ({ projectId }: { projectId: string }) => {
   const { updateList, batchUpdateTask, taskDict, taskList } = useGanttList()
@@ -35,26 +36,6 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
 
     await fetchApiAllData(projectApi, 'getTaskListOfProject', {
       queryParams: params,
-      finishedFirstPageHandler: (res) => {
-        const { data } = res
-
-        resList = data?.map((i: IFullViewTask) => ({
-          ...i,
-          start: i.start_time ? new Date(i.start_time * 1000) : new Date(),
-          end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
-          name: i.title,
-          id: i.task_id,
-          type: 'task',
-          hideChildren: false,
-          displayOrder: 1
-        }))
-
-        const { keys } = batchUpdateTask(resList, { isInit: true })
-
-        // 初始化
-        updateList({ list: keys, isInit: true })
-        // setLoading(false)
-      },
       responseHandler: (res) => {
         let { data } = res
 
@@ -141,13 +122,18 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
   }
 
   const tasks = useMemo(() => {
+    console.log(taskDict, taskList)
+
     const list =
       taskDict &&
       taskList.map((item) => {
         return taskDict[item] as Task
       })
-    return list || []
+
+    return [...list] || []
   }, [taskDict, taskList])
+  console.log(tasks, '[FAKE_ID,...taskList]')
+
   return (
     <div>
       <Gantt

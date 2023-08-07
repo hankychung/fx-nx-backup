@@ -46,3 +46,15 @@
   padding-left: 1rem;
   user-select: none;
 }
+
+.create-wrapper {
+  background-color: rgba(250, 251, 252, 1);
+  height: 42px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  font-size: 12px;
+  color: rgba(143, 143, 143, 1);
+  cursor: pointer;
+}

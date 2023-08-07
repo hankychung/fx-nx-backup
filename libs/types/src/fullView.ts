@@ -24,7 +24,8 @@ import {
   FullViewScheduleShowEnum,
   FullViewConclusionEnum,
   FullViewShowModeEnum,
-  FullViewGroupByEnum
+  FullViewGroupByEnum,
+  FullViewMatterStateEnum
 } from '@flyele-nx/constant'
 import { IRepeatConfig, MatterState } from './schedule'
 import { IBaseProjectInfo } from './project'
@@ -33,6 +34,7 @@ import { TagModel } from './tag'
 export interface IFullViewCellProps {
   data: Task
   userId?: string
+  isStart?: boolean
 }
 
 export type IFullViewRepeatTreeItem = {
@@ -489,7 +491,7 @@ export type IFullViewTask = {
   end_time_full_day?: 1 | 2
   state: number
 
-  matter_state: MatterState
+  matter_state: FullViewMatterStateEnum
 
   is_follow?: boolean // 是否关注
   matter_type: MatterType.matter | MatterType.meeting | MatterType.todo // 事项类型 全量只支持 事项 | 会议| 待办

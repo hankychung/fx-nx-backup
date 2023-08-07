@@ -1,0 +1,18 @@
+.time {
+  font-size: 13px;
+  color: rgba(143, 143, 143, 1);
+  line-height: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.hiddenText {
+  opacity: 0;
+}
+
+.textBox {
+  // padding: 0 19px;
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-export { Gantt } from './components/gantt/gantt'
+export { GanttList } from './gantt'
 
 export { Title } from './Row/Title'
 

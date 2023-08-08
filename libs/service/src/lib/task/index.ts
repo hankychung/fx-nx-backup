@@ -306,6 +306,22 @@ class Task {
       }
     })
   }
+
+  /**
+   * 批量创建任务
+   * is_dispatch 0 我参与 1： 我派发
+   * dispatch_batch 如果是无协作人或只有自己value为0，否则为1
+   */
+  async batchCreateTask(data: {
+    is_dispatch: 0 | 1
+    tasks: ICreateParams[]
+    dispatch_batch?: Record<string, 0 | 1>
+  }) {
+    return await service.post({
+      url: `${this.prefix}`,
+      data
+    })
+  }
 }
 
 export const TaskApi = new Task()

@@ -1,3 +1,4 @@
+export { ReactComponent as AddIcon } from './assets/add.svg'
 export { ReactComponent as Close } from './assets/close.svg'
 export { ReactComponent as CheckIcon } from './assets/check.svg'
 export { ReactComponent as TaskCheckIcon } from './assets/taskCheck.svg'

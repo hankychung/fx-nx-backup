@@ -1,0 +1,62 @@
+.commonPageRoot {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #F6F8FA;
+  padding: 44px 50px;
+  position: relative;
+  transition: all 400ms;
+  opacity: 1;
+  display: block;
+  .titleBox {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    .desc {
+      color: #8F8F8F;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .title {
+      color: #262626;
+      font-size: 28px;
+      font-weight: 500;
+    }
+  }
+
+  .footer {
+    width: calc(100% - 100px);
+    position: absolute;
+    left: 50px;
+    bottom: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .goBackBtn {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: rgba(0, 0, 0, 0.4);
+      font-size: 16px;
+      font-weight: 400;
+      gap: 4px;
+
+      .arrow {
+        width: 20px;
+        height: 20px;
+        transform: rotate(90deg);
+      }
+    }
+
+    .goNextBtn {
+      width: 180px;
+      height: 48px;
+    }
+  }
+}
+
+.unShowPage {
+  opacity: 0;
+  display: none;
+}

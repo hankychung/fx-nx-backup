@@ -10,13 +10,14 @@ import {
   IVipMember,
   IWeather,
   IPhoneLoginParams,
-  IUserSetting
+  IUserSetting,
+  IIndustryListParams,
+  IIndustryList
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
 
 class Userc {
   private prefix = 'userc/v2'
-  private prefixV1 = 'userc/v1'
 
   async phoneLogin(data: IPhoneLoginParams) {
     return await service.put<IUserInfo>({
@@ -142,6 +143,24 @@ class Userc {
 
   async updateUser(data: { avatar?: string; nick_name?: string }) {
     return await service.put({ url: `${this.prefix}/user`, data })
+  }
+
+  /**
+   * 获取行业列表
+   */
+  async getIndustryList(data: IIndustryListParams) {
+    return await service.get<IIndustryList[]>({
+      url: `${this.prefix}/industry/list?member_type=${data.member_type}`
+    })
+  }
+
+  /**
+   * 获取行业详情
+   */
+  async getIndustryInfo(id: string) {
+    return await service.get({
+      url: `${this.prefix}/industry/info?industry_id=${id}`
+    })
   }
 }
 

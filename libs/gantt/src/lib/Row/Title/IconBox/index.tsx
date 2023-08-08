@@ -462,7 +462,10 @@ const IconBox: FC<React.PropsWithChildren<IProps>> = ({
       return (
         <WorkflowOperation
           creator_id={data.creator_id}
-          taskId={data.task_id}
+          task={{
+            ...data,
+            ref_task_id: data.task_id
+          }}
           curStepId={data.flow_step_id}
           complete_at={data.complete_at}
           handleHover={handleCheckboxHover}

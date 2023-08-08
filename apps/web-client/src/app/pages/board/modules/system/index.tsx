@@ -262,7 +262,8 @@ const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
         />
       ))}
       <div id="more-float" className={style['more-float']} />
-      <div id="drawer" />
+      {/* 暂时不做侧拉窗 */}
+      {/* <div id="drawer" /> */}
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { IDashboardItem, IScheduleTask } from '@flyele-nx/types'
 import { useTimeTip } from '@flyele-nx/utils'
 import { StatusBox } from '@flyele-nx/service-module'
 import { RepeatIcon } from '@flyele-nx/icon'
+import { convertToTask } from '../../utils'
 // const unfinishedState = [10301, 10402]
 
 interface Props {
@@ -33,7 +34,7 @@ const CompleteItem: FC<React.PropsWithChildren<Props>> = ({
           }}
           className={cs({ [style.check]: item.flow_step_id })}
         >
-          <StatusBox task={item as unknown as IScheduleTask} />
+          <StatusBox task={convertToTask(item)} />
           {/* {item.flow_step_id && item.task_id ? (
             <WorkflowOperation
               creator_id={item.creator_id}

@@ -219,12 +219,6 @@ class Container extends Component<
 
     this.setState({ actId })
 
-    setTimeout(() => {
-      const ele = document.getElementById(actId)
-
-      ele?.scrollIntoView({ behavior: 'smooth' })
-    }, 50)
-
     handleClickTab(actId)
   }
 

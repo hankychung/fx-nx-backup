@@ -12,6 +12,7 @@ import { StatusBox } from '@flyele-nx/service-module'
 // import { useMessage } from '@flyele-nx/ui'
 import { RepeatIcon } from '@flyele-nx/icon'
 import { IDashboardItem, IScheduleTask } from '@flyele-nx/types'
+import { convertToTask } from '../../utils'
 
 interface IProps {
   item: IDashboardItem
@@ -47,8 +48,7 @@ export const Item: FC<React.PropsWithChildren<IProps>> = ({ item }) => {
         {/* <div className={cs(style.lft__order, 'bold')}>{idx}</div> */}
 
         <div onClick={(e) => e.stopPropagation()}>
-          {/* TODO any */}
-          <StatusBox task={item as unknown as IScheduleTask} />
+          <StatusBox task={convertToTask(item)} />
         </div>
 
         <div className={style.info}>

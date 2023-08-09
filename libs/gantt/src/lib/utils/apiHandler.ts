@@ -1,5 +1,6 @@
 import { projectApi } from '@flyele-nx/service'
 import { GanttHandler } from './ganttHandler'
+import { IFullViewTask } from '@flyele-nx/types'
 
 class ApiHandler {
   private static projectId = ''
@@ -21,7 +22,18 @@ class ApiHandler {
       ? parentId.split(',')[1]
       : parentId.split(',')[0]
 
-    GanttHandler.updateChildrenDict({ parentId: parent_id, children: res })
+    const data = res?.map((i: IFullViewTask) => ({
+      ...i,
+      start: i.start_time ? new Date(i.start_time * 1000) : new Date(),
+      end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
+      name: i.title,
+      id: i.task_id,
+      type: 'task',
+      hideChildren: false,
+      displayOrder: 1
+    }))
+
+    GanttHandler.updateChildrenDict({ parentId: parent_id, children: data })
 
     return res
   }

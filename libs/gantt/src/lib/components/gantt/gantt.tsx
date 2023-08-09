@@ -28,13 +28,14 @@ import { HorizontalScroll } from '../other/horizontal-scroll'
 import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
+import { useGanttList } from '../../hooks/useScheduleList'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
   columnWidth = 48,
 
   rowHeight = 42,
-  ganttHeight = 0,
+  ganttHeight = 640,
   viewMode = FullViewModeEnum.Day,
   preStepsCount = 1,
   locale = 'en-GB',
@@ -103,7 +104,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [scrollY, setScrollY] = useState(0)
   const [scrollX, setScrollX] = useState(-1)
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
-
+  const { taskDict } = useGanttList()
   useEffect(() => {
     if (isChecked) {
       setListCellWidth('155px')
@@ -114,13 +115,11 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
   // task change events
   useEffect(() => {
-    let filteredTasks: Task[]
-    if (onExpanderClick) {
-      filteredTasks = removeHiddenTasks(tasks)
-    } else {
-      filteredTasks = tasks
+    const filteredTasks: Task[] = []
+
+    for (const key in taskDict) {
+      filteredTasks.push(taskDict[key] as Task)
     }
-    filteredTasks = filteredTasks.sort(sortTasks)
     const [startDate, endDate] = ganttDateRange(
       filteredTasks,
       viewMode,
@@ -137,7 +136,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
     setBarTasks(
       convertToBarTasks(
-        filteredTasks,
+        tasks,
         newDates,
         columnWidth,
         rowHeight,
@@ -178,7 +177,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     milestoneBackgroundSelectedColor,
     rtl,
     scrollX,
-    onExpanderClick
+    onExpanderClick,
+    taskDict
   ])
 
   useEffect(() => {

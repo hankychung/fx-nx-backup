@@ -11,7 +11,7 @@ import { ApiHandler } from './utils/apiHandler'
 import dayjs from 'dayjs'
 import { Pub } from '@flyele-nx/constant'
 import { globalNxController } from '@flyele-nx/global-processor'
-import { GanttHandler, updateProjectId } from './utils/ganttHandler'
+import { GanttHandler } from './utils/ganttHandler'
 
 export const GanttList = ({ projectId }: { projectId: string }) => {
   const { updateList, batchUpdateTask, taskDict, taskList } = useGanttList()
@@ -29,7 +29,7 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
 
   useEffect(() => {
     ApiHandler.updateProjectId(projectId)
-    updateProjectId(projectId)
+    GanttHandler.updateProjectId(projectId)
   }, [projectId])
 
   const isInit = useRef(true)

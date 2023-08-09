@@ -10,7 +10,7 @@ import {
 import { shallow } from 'zustand/shallow'
 import { TaskApi } from '@flyele-nx/service'
 import { useScheduleStore } from '@flyele-nx/global-processor'
-import { getChildrenDict } from '../../utils'
+import { getChildrenDict, getKey } from '../../utils'
 import { StatusBox } from '../../../status-box'
 import styles from './index.module.scss'
 import expandStyles from './components/expand/index.module.scss'
@@ -32,13 +32,14 @@ import { Takers } from './components/takers'
 import { MenuBtn } from './components/menu/components/btn'
 import { useMenuActions } from './components/menu/hooks/useMenuActions'
 import { ChildrenTask } from './children-task'
-import { contextMenuTool } from '../../../../index'
+import { TaskHandler, contextMenuTool } from '../../../../index'
 import { globalNxController } from '@flyele-nx/global-processor'
 import {
   MatterType,
   QuadrantValue,
   Enter_page_detail
 } from '@flyele-nx/constant'
+import { changeCompleteState } from '../../../status-box/utils'
 
 export interface IProps {
   taskKey: string
@@ -81,6 +82,17 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     if (!dict) return false
 
     return Boolean(dict[taskKey])
+  })
+
+  const changeStatus = useMemoizedFn(() => {
+    TaskHandler.batchModify({
+      keys: [data.ref_task_id],
+      keysWithRepeatIds: [getKey(data)],
+      diff: {
+        finish_time: data.finish_time ? 0 : dayjs().unix(),
+        state: changeCompleteState(data.state)
+      }
+    })
   })
 
   // console.log('@task changing', data, isBoard)
@@ -297,7 +309,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
         <div className={styles.scheduleInfo}>
           <Indent task={data} isTopTask={isTopTask || isTimeLine} />
           <div className={styles.wrapper}>
-            <StatusBox task={data} isVipWin={isVipWin} />
+            <StatusBox
+              task={data}
+              isVipWin={isVipWin}
+              changeStatus={changeStatus}
+            />
             <div className={styles.main}>
               <div className={styles.head}>
                 <div

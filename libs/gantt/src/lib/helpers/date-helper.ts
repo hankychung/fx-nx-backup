@@ -76,14 +76,16 @@ export const ganttDateRange = (
   viewMode: FullViewModeEnum,
   preStepsCount: number
 ) => {
-  let newStartDate: Date = tasks[0].start
-  let newEndDate: Date = tasks[0].start
-  for (const task of tasks) {
-    if (task.start < newStartDate) {
-      newStartDate = task.start
-    }
-    if (task.end > newEndDate) {
-      newEndDate = task.end
+  let newStartDate: Date = tasks[0]?.start || new Date()
+  let newEndDate: Date = tasks[0]?.start || new Date()
+  if (tasks && tasks.length > 0) {
+    for (const task of tasks) {
+      if (task.start < newStartDate) {
+        newStartDate = task.start
+      }
+      if (task.end > newEndDate) {
+        newEndDate = task.end
+      }
     }
   }
   switch (viewMode) {

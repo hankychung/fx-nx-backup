@@ -24,6 +24,11 @@
   opacity: 1;
   box-sizing: border-box;
 }
+
+.taskListCellactive {
+  border: 1px solid rgba(29, 210, 193, 1) !important;
+}
+
 .taskListNameWrapper {
   display: flex;
 }
@@ -35,6 +40,7 @@
   user-select: none;
   cursor: pointer;
 }
+
 .taskListEmptyExpander {
   font-size: 0.6rem;
   padding-left: 1rem;

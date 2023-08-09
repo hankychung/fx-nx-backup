@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import styles from './index.module.scss'
-import { useMemoizedFn, useMount } from 'ahooks'
+import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { Progress } from 'antd'
@@ -133,7 +133,7 @@ const _DayExecution = ({
   }, [day, taskDict, todayCompletedExecution])
 
   // 切换日期刷新列表
-  useEffect(() => {
+  useUpdateEffect(() => {
     !!day && init()
   }, [day, init])
 

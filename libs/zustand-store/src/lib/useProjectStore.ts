@@ -1,28 +1,30 @@
 import { create } from 'zustand'
-
 import { produce } from 'immer'
 import { IFullViewTask } from '@flyele-nx/types'
-import { getKey } from './utils/gantt'
 
-export interface IGanState {
+export interface IProjectState {
   taskDict: { [k: string]: IFullViewTask }
   childrenDict: { [k: string]: string[] }
   taskList: string[]
+  hoverId: string
+  activeCell: string
 }
 
 interface IMutation {
   updateList: (options: { list: string[]; isInit?: boolean }) => void
   batchUpdateTask: (
     tasks: IFullViewTask[],
-    options?: { isFinished?: boolean }
+    options?: { isInit?: boolean }
   ) => {
     keys: string[]
   }
   // updateChildDict: (info: { parentKey: string; childrenIds: string[] }) => void
   batchUpdateChildDict: (info: { [k: string]: string[] }) => void
+  batchUpdateHoverId: (id: string) => void
+  batchUpdateActiveCell: (id: string) => void
 }
 
-const initGanttState: IGanState = {
+const initGanttState: IProjectState = {
   /**
    * 数据
    */
@@ -36,10 +38,16 @@ const initGanttState: IGanState = {
    * key为taskId -> 普通事项/未完成的循环事项
    * key为taskId + repeatId -> 已完成的循环事项
    */
-  taskDict: {}
+  taskDict: {},
+
+  //悬浮id
+  hoverId: '',
+
+  //选中标题
+  activeCell: ''
 }
 
-const useGanttStore = create<IGanState & IMutation>((set) => {
+const useProjectStore = create<IProjectState & IMutation>((set) => {
   return {
     ...initGanttState,
     /**
@@ -47,36 +55,35 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
      */
     updateList({ list, isInit }) {
       set(
-        produce((state: IGanState) => {
-          state.taskList = []
+        produce((state: IProjectState) => {
+          if (isInit) {
+            state.taskList = list
+          } else {
+            state.taskList = [...state.taskList, ...list]
+          }
         })
       )
     },
     /**
      * 批量更新事项字典
+     * 循环事项只会出现一张卡片, 字典中不带repeat_id
      */
     batchUpdateTask(arr, options) {
       const keys: string[] = []
 
-      // const isFinished = options?.isFinished
-
       set(
-        produce((state: IGanState) => {
+        produce((state: IProjectState) => {
           const dict: { [k: string]: IFullViewTask } = {}
+          const taskDict = options?.isInit ? {} : state.taskDict
 
           arr.forEach((item) => {
-            const { repeat_id } = item
-            if (repeat_id) {
-              const key = getKey(item)
-
-              dict[key] = item
-            }
-
-            keys.push(getKey(item))
+            const { task_id } = item
+            dict[task_id] = item
+            keys.push(task_id)
           })
 
           state.taskDict = {
-            ...state.taskDict,
+            ...taskDict,
             ...dict
           }
         })
@@ -90,7 +97,7 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
      */
     // updateChildDict({ parentKey, childrenIds }) {
     //   set(
-    //     produce((state: IGanState) => {
+    //     produce((state: IProjectState) => {
     //       state.childrenDict[parentKey] = childrenIds
     //     })
     //   )
@@ -105,8 +112,18 @@ const useGanttStore = create<IGanState & IMutation>((set) => {
           ...info
         }
       }))
+    },
+    batchUpdateHoverId(id) {
+      set((state) => ({
+        hoverId: id
+      }))
+    },
+    batchUpdateActiveCell(id) {
+      set((state) => ({
+        activeCell: id
+      }))
     }
   }
 })
 
-export { useGanttStore, initGanttState }
+export { useProjectStore, initGanttState }

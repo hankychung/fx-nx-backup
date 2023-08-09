@@ -54,6 +54,10 @@
         top: 4px;
       }
 
+      &-pre {
+        background-image: url('../../../assets/icons/step-pre.svg');
+      }
+
       &-active {
         background-image: url('../../../assets/icons/step-active.svg');
         color: white;

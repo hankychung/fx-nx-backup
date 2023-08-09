@@ -1,3 +1,0 @@
-class TaskTGanTTHandler {}
-
-export { TaskTGanTTHandler }

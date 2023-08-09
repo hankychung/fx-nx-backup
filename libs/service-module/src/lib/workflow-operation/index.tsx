@@ -54,7 +54,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   IOperationProps
 > = (
   {
-    taskId,
+    task,
     curStepId,
     creator_id,
     handleHover,
@@ -68,7 +68,6 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   },
   ref
 ) => {
-  const taskDict = useScheduleStore().taskDict
   const ctrl = useController(new FlyBasePopperCtrl())
   const [showModal, setShowModal] = useState(false)
   const [showPopper, setShowPopper] = useState(false)
@@ -83,12 +82,12 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const [outdated, setOutdated] = useState(false)
 
+  const taskId = task.ref_task_id
+
   const stepList = useMemo(
     () => stepsFormatter(steps, curStepId, !!addUser),
     [steps, curStepId, addUser]
   )
-
-  const task = taskDict[taskId]
 
   useEffect(() => {
     setOutdated(true)

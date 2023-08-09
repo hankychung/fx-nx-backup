@@ -4,6 +4,7 @@ import cs from 'classnames'
 import style from './index.module.scss'
 import { StatusBox } from '@flyele-nx/service-module'
 import { IDashboardItem } from '@flyele-nx/types'
+import { convertToTask } from '../../pages/board/modules/system/utils'
 // const unfinishedState = [10301, 10402]
 
 interface Props {
@@ -54,7 +55,7 @@ const ToBeArrangedItem: FC<Props> = ({ item, handleClick }) => {
     >
       <div className={style.lft}>
         <div>
-          <StatusBox task={item as any} />
+          <StatusBox task={convertToTask(item)} />
         </div>
 
         <div className={style.info}>

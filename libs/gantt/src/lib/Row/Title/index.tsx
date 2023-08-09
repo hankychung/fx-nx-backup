@@ -59,6 +59,7 @@ import { useGanttList } from '../../hooks/useScheduleList'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { TaskApi } from '@flyele-nx/service'
 import { StatusBox } from './status-box'
+import { ApiHandler } from '../../utils/apiHandler'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -274,27 +275,28 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // }
   }, [title])
 
-  // const handleOpen = useMemoizedFn((e) => {
-  //   e.stopPropagation()
+  const handleOpen = useMemoizedFn((e) => {
+    e.stopPropagation()
 
-  //   if (!isGroup) {
-  //     openVenationWin(undefined, {
-  //       p: {
-  //         key: data.parent_id ? data.parent_id.split(',')[0] : data.task_id,
-  //         taskId: data.task_id,
-  //         project_id: fullDoseHandlerRef.current?.options.projectId,
-  //         title: data.title,
-  //       },
-  //     })
+    // if (!isGroup) {
+    //   openVenationWin(undefined, {
+    //     p: {
+    //       key: data.parent_id ? data.parent_id.split(',')[0] : data.task_id,
+    //       taskId: data.task_id,
+    //       project_id: fullDoseHandlerRef.current?.options.projectId,
+    //       title: data.title
+    //     }
+    //   })
 
-  //     return
-  //   }
+    //   return
+    // }
 
-  //   if (has_child) {
-  //     // 拉取子事项
-  //     fullDoseHandlerRef.current?.toggleOpen(data)
-  //   }
-  // })
+    if (has_child) {
+      // TODO: 判断收合情况, 收起操作不需要调用
+      // 拉取子事项更新projectStore
+      ApiHandler.getChildren(task_id)
+    }
+  })
 
   const showCycleDetail = useMemoizedFn(async (e) => {
     e.stopPropagation()
@@ -614,7 +616,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
                   className={cs(style.box, style['close-box'], {
                     [style['close-box-open']]: isOpen
                   })}
-                  // onClick={handleOpen}
+                  onClick={handleOpen}
                 >
                   {isGroup ? (
                     <>

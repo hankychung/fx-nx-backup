@@ -28,9 +28,9 @@ import {
   WorkflowOperation,
   getChildrenDict,
   getOperationStatus,
-  getKey
+  getKey,
+  TaskHandler
 } from '@flyele-nx/service-module'
-import { TaskHandler } from '../../../utils/taskHandler'
 
 interface IProps {
   task: Pick<
@@ -240,7 +240,7 @@ const _StatusBox: FC<IProps> = (props) => {
         return (
           <WorkflowOperation
             creator_id={task.creator_id}
-            taskId={task.ref_task_id}
+            task={task}
             curStepId={task.flow_step_id}
             complete_at={task.complete_at}
             size={14}

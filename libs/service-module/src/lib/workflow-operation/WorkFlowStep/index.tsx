@@ -47,6 +47,7 @@ const _WorkFlowStep: React.FC<IProps> = ({
   operateType
 }) => {
   const isDone = useMemo(() => step === OperateStep.DONE, [step])
+  const isPre = useMemo(() => step === OperateStep.PRE, [step])
   const isOr = useMemo(() => operateType === FlowOperateType.OR, [operateType])
   const { contactDict } = useContactStore()
 
@@ -86,10 +87,11 @@ const _WorkFlowStep: React.FC<IProps> = ({
         <div
           className={cs(style.badage, {
             [style['badage-done']]: isDone,
-            [style['badage-current']]: step === OperateStep.CUR
+            [style['badage-current']]: step === OperateStep.CUR,
+            [style['badage-pre']]: isPre
           })}
         >
-          {idx}
+          {isPre ? '' : idx}
         </div>
         {!isDone && <LineIcon className={style.line} />}
       </div>

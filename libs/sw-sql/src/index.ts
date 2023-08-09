@@ -81,7 +81,9 @@ class DBHandler {
         }
 
         self.postMessage({ uid: data.uid, data: responseData })
-      } catch {
+      } catch (e) {
+        console.error('「postMessage」', data, e)
+
         self.postMessage({ uid: data.uid, data: null, code: 40088 })
       }
     }

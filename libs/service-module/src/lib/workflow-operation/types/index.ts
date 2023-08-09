@@ -1,7 +1,9 @@
+import { ILocalTask } from '@flyele-nx/types'
+
 export type IOperation = 'pass' | 'complete' | 'handle'
 
 export interface IOperationProps {
-  taskId: string
+  task: Pick<ILocalTask, 'ref_task_id' | 'refreshWorkflow'>
   creator_id: string
   complete_at?: number
   curStepId: string

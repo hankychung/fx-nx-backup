@@ -1,40 +1,19 @@
-/*
- * @Author: wanghui wanghui@flyele.net
- * @Date: 2023-07-20 16:17:54
- * @LastEditors: wanghui wanghui@flyele.net
- * @LastEditTime: 2023-07-20 17:49:44
- * @FilePath: /fx-nx/libs/service-module/src/lib/gantt/components/task-list/task-list-table.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from './task-list-table.module.css'
-import { Task } from '@flyele-nx/types'
+import { IFullViewTask, IScheduleTask, Task } from '@flyele-nx/types'
 import { Title } from '../../Row/Title'
-import { useUserInfoStore } from '@flyele-nx/zustand-store'
-import dayjs from 'dayjs'
-import { getId, getTimeTxt } from '../../utils'
+import { useProjectStore, useUserInfoStore } from '@flyele-nx/zustand-store'
+import { getFakeItem, getId } from '../../utils'
 import { useGanttList } from '../../hooks/useScheduleList'
 import cs from 'classnames'
-const localeDateStringCache: any = {}
-const toLocaleDateStringFactory =
-  (locale: string) =>
-  (date: Date, dateTimeOptions: Intl.DateTimeFormatOptions) => {
-    const key = date.toString()
-    let lds = localeDateStringCache[key]
-    if (!lds) {
-      lds = date.toLocaleDateString(locale, dateTimeOptions)
-      localeDateStringCache[key] = lds
-    }
-    const data = dayjs(date).format('YYYY年MM月DD日 HH:mm')
-
-    return data
-  }
-const dateTimeOptions: Intl.DateTimeFormatOptions = {
-  weekday: 'short',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-}
+import useDomClickToHide from '../../hooks/useDomClickToHide'
+import { Time } from '../../Row/Time'
+import { useMemoizedFn } from 'ahooks'
+import { FAKE_ID } from '@flyele-nx/constant'
+import { getParentNode } from '@flyele-nx/utils'
+import { Indent } from './components/indent'
+import { TaskRow } from './components/task-row'
+import { TaskChildRow } from './components/task-child-row'
 
 export const TaskListTableDefault: React.FC<{
   rowHeight: number
@@ -55,13 +34,31 @@ export const TaskListTableDefault: React.FC<{
   locale,
   onExpanderClick
 }) => {
-  const toLocaleDateString = useMemo(
-    () => toLocaleDateStringFactory(locale),
-    [locale]
-  )
-  const { batchUpdateHoverId, hoverId, activeCell, batchUpdateActiveCell } =
-    useGanttList()
-  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const { batchUpdateActiveCell, taskDict, taskList } = useGanttList()
+  const [showQuickEntry, setShowQuickEntry] = useState<boolean>(true)
+  useDomClickToHide(['.full-dose-row'], () => {
+    batchUpdateActiveCell('')
+    setTimeout(() => {
+      if (!showQuickEntry) {
+        setShowQuickEntry(true)
+      }
+    }, 100)
+  })
+
+  const handleQuickCreate = useMemoizedFn(() => {
+    useProjectStore.setState({
+      taskList: [FAKE_ID, ...taskList]
+    })
+    const dict: { [k: string]: IFullViewTask } = {}
+    dict[FAKE_ID] = getFakeItem()
+    useProjectStore.setState({
+      taskDict: {
+        ...taskDict,
+        ...dict
+      }
+    })
+    setShowQuickEntry(false)
+  })
 
   return (
     <div
@@ -71,60 +68,28 @@ export const TaskListTableDefault: React.FC<{
         fontSize: fontSize
       }}
     >
-      {tasks.map((t) => {
+      {showQuickEntry && (
+        <div
+          className={cs(styles['create-wrapper'])}
+          onClick={handleQuickCreate}
+        >
+          快速创建
+        </div>
+      )}
+      {taskList.map((item) => {
+        const t = taskDict[item] as Task
         const id = getId(t)
         const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
 
         return (
-          <div
-            className={styles.taskListTableRow}
-            style={{
-              height: rowHeight,
-              background: id === hoverId ? 'rgba(29, 210, 193, 0.05)' : ''
-            }}
-            key={`${t.id}row`}
-            onMouseEnter={() => {
-              batchUpdateHoverId(id)
-            }}
-          >
-            <div
-              className={cs(styles.taskListCell, {
-                [styles.taskListCellactive]: activeCell === `${taskId}-title`
-              })}
-              style={{
-                minWidth: 186,
-                maxWidth: 186,
-                paddingLeft: 16
-              }}
-              onClick={() => {
-                batchUpdateActiveCell(`${taskId}-title`)
-              }}
-            >
-              <Title data={t} userId={userId} />
-            </div>
-
-            <div
-              className={styles.taskListCell}
-              style={{
-                minWidth: rowWidth,
-                maxWidth: rowWidth,
-                paddingLeft: 12
-              }}
-            >
-              {getTimeTxt(t, true)}
-            </div>
-            <div
-              className={styles.taskListCell}
-              style={{
-                minWidth: rowWidth,
-                maxWidth: rowWidth,
-                paddingLeft: 12,
-                borderRight: 'none'
-              }}
-            >
-              {getTimeTxt(t, false)}
-            </div>
-          </div>
+          <TaskRow
+            id={id}
+            taskId={taskId}
+            t={t}
+            key={taskId}
+            rowHeight={rowHeight}
+            rowWidth={rowWidth}
+          ></TaskRow>
         )
       })}
     </div>

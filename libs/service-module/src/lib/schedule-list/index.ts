@@ -17,7 +17,7 @@ export * from './utils/listHandler'
 export * from './types/index'
 export * from './utils/executionHandler'
 export * from './utils/workflowOperation'
-
+export { getChildrenDict, getKey } from './utils'
 export const ScheduleUtils = {
   getDiffKeys,
   getTaskIdsByDispatch,

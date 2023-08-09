@@ -1,6 +1,10 @@
 import { find } from 'lodash'
 import { IFullViewTask, IFullViewTaker, ICreateParams } from '@flyele-nx/types'
+
 import dj, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
+import { FAKE_ID, FullViewMatterStateEnum } from '@flyele-nx/constant'
+import { useUserInfoStore } from '@flyele-nx/zustand-store'
 function getKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
   return i.repeat_id ? `${i.task_id}-${i.repeat_id}` : i.task_id
 }
@@ -115,7 +119,7 @@ const getTimeTxt = (
     return `${formatFullTime(timeInfo.eDj, true, timeInfo.fullEnd)}`
   }
 
-  return '添加时间'
+  return ''
 }
 
 function isTask(task: IFullViewTask | string): task is IFullViewTask {
@@ -134,6 +138,39 @@ function getId(data: string | IFullViewTask) {
   }
 
   return data
+}
+
+const FAKE_ITEM: IFullViewTask = {
+  create_at: 0,
+  creator_id: useUserInfoStore.getState().userInfo.user_id,
+  date: '',
+  dispatch_id: '',
+  task_id: FAKE_ID,
+  title: '',
+  state: 10402,
+  update_at: 0,
+  nick_name: 'fake',
+  takers: [],
+  matter_state: FullViewMatterStateEnum.EXECUTION,
+  matter_type: 10701
+}
+
+export const getFakeItem = (options?: { needCurDate?: boolean }) => {
+  const curUnix = dayjs().unix()
+
+  return {
+    ...FAKE_ITEM,
+    create_at: curUnix,
+    update_at: curUnix,
+    date: options?.needCurDate ? dayjs().format('YYYY-MM-DD') : '',
+    start: new Date(),
+    end: new Date(),
+    name: '',
+    id: FAKE_ID,
+    type: 'task',
+    hideChildren: false,
+    displayOrder: 1
+  }
 }
 
 export { getKey, createSVG, getTimeTxt, getId }

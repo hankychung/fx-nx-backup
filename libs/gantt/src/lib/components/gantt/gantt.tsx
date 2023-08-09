@@ -80,7 +80,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     undefined
   )
 
-  const [listCellWidth, setListCellWidth] = useState('155px')
+  const [listCellWidth, setListCellWidth] = useState('150px')
   const [taskListWidth, setTaskListWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
@@ -134,6 +134,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
     }
     setDateSetup({ dates: newDates, viewMode })
+
     setBarTasks(
       convertToBarTasks(
         filteredTasks,
@@ -472,7 +473,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     <div>
       <div
         className={styles.wrapper}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
         tabIndex={0}
         ref={wrapperRef}
       >

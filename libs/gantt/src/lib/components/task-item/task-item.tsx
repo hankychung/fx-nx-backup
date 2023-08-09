@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { IFullViewBarTask } from '@flyele-nx/types'
+import { IFullViewBarTask, Task } from '@flyele-nx/types'
 import { FullViewGanttContentMoveAction } from '@flyele-nx/constant'
 import { Bar } from './bar/bar'
 import { BarSmall } from './bar/bar-small'
@@ -114,46 +114,68 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
   }
 
   return (
-    <g
-      onKeyDown={(e) => {
-        switch (e.key) {
-          case 'Delete': {
-            if (isDelete) onEventStart('delete', task, e)
-            break
+    <>
+      <g
+        onKeyDown={(e) => {
+          switch (e.key) {
+            case 'Delete': {
+              if (isDelete) onEventStart('delete', task, e)
+              break
+            }
           }
-        }
-        e.stopPropagation()
-      }}
-      onMouseEnter={(e) => {
-        onEventStart('mouseenter', task, e)
-      }}
-      onMouseLeave={(e) => {
-        onEventStart('mouseleave', task, e)
-      }}
-      onDoubleClick={(e) => {
-        onEventStart('dblclick', task, e)
-      }}
-      onClick={(e) => {
-        onEventStart('click', task, e)
-      }}
-      onFocus={() => {
-        onEventStart('select', task)
-      }}
-    >
-      {taskItem}
-      <text
-        x={getX()}
-        y={task.y + taskHeight * 0.5}
-        className={
-          isTextInside
-            ? style.barLabel
-            : style.barLabel && style.barLabelOutside
-        }
-        ref={textRef}
-        color="#262626"
+          e.stopPropagation()
+        }}
+        onMouseEnter={(e) => {
+          onEventStart('mouseenter', task, e)
+        }}
+        onMouseLeave={(e) => {
+          onEventStart('mouseleave', task, e)
+        }}
+        onDoubleClick={(e) => {
+          onEventStart('dblclick', task, e)
+        }}
+        onClick={(e) => {
+          onEventStart('click', task, e)
+        }}
+        onFocus={() => {
+          onEventStart('select', task)
+        }}
       >
-        {task.name}
-      </text>
-    </g>
+        {taskItem}
+        <text
+          x={getX()}
+          y={task.y + taskHeight * 0.5}
+          className={
+            isTextInside
+              ? style.barLabel
+              : style.barLabel && style.barLabelOutside
+          }
+          ref={textRef}
+          color="#262626"
+        >
+          {task.name}
+        </text>
+      </g>
+
+      {/* {childrenDict[t.task_id] &&
+        childrenDict[t.task_id].map((item) => {
+          const task = taskDict[item] as Task
+          return (
+            <TaskItem
+              task={task}
+              arrowIndent={arrowIndent}
+              taskHeight={taskHeight}
+              isProgressChangeable={!!onProgressChange && !task.isDisabled}
+              isDateChangeable={!!onDateChange && !task.isDisabled}
+              isDelete={!task.isDisabled}
+              onEventStart={handleBarEventStart}
+              key={task.id}
+              isSelected={!!selectedTask && task.id === selectedTask.id}
+              rtl={rtl}
+              svg={svg}
+            />
+          )
+        })} */}
+    </>
   )
 }

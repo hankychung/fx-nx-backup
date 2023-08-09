@@ -141,7 +141,7 @@ export class ProjectHandler {
 
   // 更新事项
   updateTasksByApi(taskIds: string[]) {
-    const { taskDict } = useProjectStore.getState()
+    const { taskList } = useProjectStore.getState()
 
     const decentIds = [...new Set(taskIds)]
 
@@ -162,7 +162,7 @@ export class ProjectHandler {
                 state.taskDict[task_id] = task
 
                 // 当前列表不存在在插入至顶部
-                if (!taskDict[task_id]) {
+                if (!taskList.includes(task_id)) {
                   state.taskList.unshift(task_id)
                 }
 

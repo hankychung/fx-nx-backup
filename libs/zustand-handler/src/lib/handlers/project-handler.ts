@@ -14,6 +14,10 @@ export class ProjectHandler {
     this.projectId = id
   }
 
+  getProjectId() {
+    return this.projectId
+  }
+
   // 拉取子事项
   updateChildrenDict({
     parentId,

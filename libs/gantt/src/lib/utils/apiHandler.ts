@@ -1,5 +1,5 @@
 import { projectApi } from '@flyele-nx/service'
-import { ProjectHandler } from '@flyele-nx/zustand-store'
+import { ProjectHandler } from '@flyele-nx/zustand-handler'
 
 class ApiHandler {
   private static projectId = ''

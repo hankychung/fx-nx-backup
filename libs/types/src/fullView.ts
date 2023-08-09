@@ -357,7 +357,7 @@ export interface IFullViewParams {
   not_tasks_id?: string // - 不包含事项id，多个用逗号隔开
   sort?: 'asc' | 'desc' | '' // - 排序，asc->正序，desc->倒序， 默认正序
   parent_id?: string
-  page_number: number // - 查询页数
+  page_number?: number // - 查询页数
   page_record?: number // 查询条数
   repeats_id?: string // 循环事项id
   group_by?: FullViewGroupByEnum

@@ -8,6 +8,7 @@ export interface IProjectState {
   taskList: string[]
   hoverId: string
   activeCell: string
+  expandDict: { [k: string]: boolean }
 }
 
 interface IMutation {
@@ -44,7 +45,10 @@ const initGanttState: IProjectState = {
   hoverId: '',
 
   //选中标题
-  activeCell: ''
+  activeCell: '',
+
+  // 展开的事项字典
+  expandDict: {}
 }
 
 const useProjectStore = create<IProjectState & IMutation>((set) => {

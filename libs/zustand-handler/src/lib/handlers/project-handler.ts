@@ -141,6 +141,52 @@ export class ProjectHandler {
 
   // 更新事项
   updateTasksByApi(taskIds: string[]) {
-    // do something
+    const { taskDict } = useProjectStore.getState()
+
+    const decentIds = [...new Set(taskIds)]
+
+    projectApi
+      .getTaskListOfProject({
+        projectId: this.projectId,
+        tasks_id: decentIds.join(','),
+        show_mode: 2
+      })
+      .then(({ data }) => {
+        useProjectStore.setState(
+          produce<IProjectState>((state) => {
+            data.forEach((task) => {
+              const { parent_id, task_id } = task
+
+              // 顶级事项
+              if (!parent_id) {
+                state.taskDict[task_id] = task
+
+                // 当前列表不存在在插入至顶部
+                if (!taskDict[task_id]) {
+                  state.taskList.unshift(task_id)
+                }
+
+                return
+              }
+
+              // 子孙事项 - 重置其父事项收合状态
+              parent_id.split(',').forEach((id) => {
+                state.expandDict[id] = false
+              })
+            })
+          })
+        )
+      })
+  }
+
+  // 收合
+  expand(taskIds: string[], expand: boolean) {
+    useProjectStore.setState(
+      produce<IProjectState>((state) => {
+        taskIds.forEach((id) => {
+          state.expandDict[id] = expand
+        })
+      })
+    )
   }
 }

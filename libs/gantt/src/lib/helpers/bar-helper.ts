@@ -23,6 +23,7 @@ export const convertToBarTasks = (
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
 ) => {
+  // useProjectStore.getState().batchUpdateTask(children)
   let barTasks = tasks.map((t, i) => {
     return convertToBarTask(
       t,

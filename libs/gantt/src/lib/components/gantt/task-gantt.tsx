@@ -3,7 +3,6 @@ import { GridProps, Grid } from '../grid/grid'
 import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
 import styles from './gantt.module.css'
-import { ReactComponent as ShowList } from '../../../assets/icons/show_list.svg'
 
 export type TaskGanttProps = {
   gridProps: GridProps

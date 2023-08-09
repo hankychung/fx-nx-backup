@@ -265,6 +265,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     <g className="content">
       <g className="bar" fontFamily={fontFamily} fontSize={fontSize}>
         {tasks.map((task) => {
+          if (!task.start_time) return null
           return (
             <TaskItem
               task={task}

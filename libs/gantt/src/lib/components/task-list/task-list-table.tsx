@@ -68,14 +68,14 @@ export const TaskListTableDefault: React.FC<{
         fontSize: fontSize
       }}
     >
-      {showQuickEntry && (
+      {/* {showQuickEntry && (
         <div
           className={cs(styles['create-wrapper'])}
           onClick={handleQuickCreate}
         >
           快速创建
         </div>
-      )}
+      )} */}
       {taskList.map((item) => {
         const t = taskDict[item] as Task
         const id = getId(t)

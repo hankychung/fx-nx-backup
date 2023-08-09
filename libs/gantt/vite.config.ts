@@ -55,6 +55,7 @@ export default defineConfig({
         'react-beautiful-dnd',
         '@flyele-nx/service-module',
         '@flyele-nx/zustand-handler',
+        '@flyele-nx/service',
         'dayjs'
       ]
     }

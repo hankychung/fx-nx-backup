@@ -39,8 +39,8 @@ export class ProjectHandler {
   }
 
   // 插入事项
-  createTasks(taskIds: string[]) {
-    // TODO: 写入事项字典 调用接口更新
+  async createTasks(taskIds: string[]) {
+    await this.updateTasksByApi(taskIds)
 
     console.log('[projectStore]: createTasks', useProjectStore.getState())
   }

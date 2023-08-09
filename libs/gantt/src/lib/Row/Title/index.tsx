@@ -60,6 +60,7 @@ import { globalNxController } from '@flyele-nx/global-processor'
 import { TaskApi } from '@flyele-nx/service'
 import { StatusBox } from './status-box'
 import { ApiHandler } from '../../utils/apiHandler'
+import { Indent } from '../../components/task-list/components/indent'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -294,7 +295,8 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     if (has_child) {
       // TODO: 判断收合情况, 收起操作不需要调用
       // 拉取子事项更新projectStore
-      ApiHandler.getChildren(task_id)
+      const parentId = parent_id ? `${parent_id},${task_id}` : task_id
+      ApiHandler.getChildren(parentId)
     }
   })
 
@@ -555,6 +557,10 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   ) : (
     <div className={cs(style.title)}>
       {topParentLine && <div className={style['line-outer']} />}
+      <Indent
+        task={data as unknown as IScheduleTask}
+        isTopTask={!data.parent_id}
+      />
       <div
         className={cs(style['icon-box'], {
           [style['icon-box-open']]: isOpen

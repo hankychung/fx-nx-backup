@@ -134,6 +134,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
     }
     setDateSetup({ dates: newDates, viewMode })
+
     setBarTasks(
       convertToBarTasks(
         filteredTasks,

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styles from './task-list-table.module.css'
-import { IFullViewTask, Task } from '@flyele-nx/types'
+import { IFullViewTask, IScheduleTask, Task } from '@flyele-nx/types'
 import { Title } from '../../Row/Title'
 import { useProjectStore, useUserInfoStore } from '@flyele-nx/zustand-store'
 import { getFakeItem, getId } from '../../utils'
@@ -11,6 +11,9 @@ import { Time } from '../../Row/Time'
 import { useMemoizedFn } from 'ahooks'
 import { FAKE_ID } from '@flyele-nx/constant'
 import { getParentNode } from '@flyele-nx/utils'
+import { Indent } from './components/indent'
+import { TaskRow } from './components/task-row'
+import { TaskChildRow } from './components/task-child-row'
 
 export const TaskListTableDefault: React.FC<{
   rowHeight: number
@@ -31,16 +34,8 @@ export const TaskListTableDefault: React.FC<{
   locale,
   onExpanderClick
 }) => {
-  const {
-    batchUpdateHoverId,
-    hoverId,
-    activeCell,
-    batchUpdateActiveCell,
-    taskDict,
-    taskList
-  } = useGanttList()
+  const { batchUpdateActiveCell, taskDict, taskList } = useGanttList()
   const [showQuickEntry, setShowQuickEntry] = useState<boolean>(true)
-  const userId = useUserInfoStore((state) => state.userInfo.user_id)
   useDomClickToHide(['.full-dose-row'], () => {
     batchUpdateActiveCell('')
     setTimeout(() => {
@@ -65,8 +60,6 @@ export const TaskListTableDefault: React.FC<{
     setShowQuickEntry(false)
   })
 
-  console.log(taskList, 'taskList')
-
   return (
     <div
       className={styles.taskListWrapper}
@@ -89,55 +82,14 @@ export const TaskListTableDefault: React.FC<{
         const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
 
         return (
-          <div
-            className={cs(styles.taskListTableRow, 'full-dose-row')}
-            style={{
-              height: rowHeight,
-              background: id === hoverId ? 'rgba(29, 210, 193, 0.05)' : ''
-            }}
-            key={`${t.task_id}row`}
-            onMouseEnter={() => {
-              batchUpdateHoverId(id)
-            }}
-          >
-            <div
-              className={cs(styles.taskListCell, {
-                [styles.taskListCellactive]: activeCell === `${taskId}-title`
-              })}
-              style={{
-                minWidth: 240,
-                maxWidth: 240,
-                paddingLeft: 16
-              }}
-              onClick={() => {
-                batchUpdateActiveCell(`${taskId}-title`)
-              }}
-            >
-              <Title data={t} userId={userId} />
-            </div>
-
-            <div
-              className={styles.taskListCell}
-              style={{
-                minWidth: rowWidth,
-                maxWidth: rowWidth,
-                paddingLeft: 12
-              }}
-            >
-              <Time data={t} isStart={true}></Time>
-            </div>
-            <div
-              className={styles.taskListCell}
-              style={{
-                minWidth: rowWidth,
-                maxWidth: rowWidth,
-                paddingLeft: 12,
-                borderRight: 'none'
-              }}
-            >
-              <Time data={t} isStart={false}></Time>
-            </div>
-          </div>
+          <TaskRow
+            id={id}
+            taskId={taskId}
+            t={t}
+            key={taskId}
+            rowHeight={rowHeight}
+            rowWidth={rowWidth}
+          ></TaskRow>
         )
       })}
     </div>

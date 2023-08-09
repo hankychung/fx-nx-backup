@@ -13,11 +13,15 @@ class ApiHandler {
       await projectApi.getTaskListOfProject({
         projectId: this.projectId,
         page_number: 1,
-        parent_id: parentId
+        parent_id: parentId,
+        show_mode: 2
       })
     ).data
+    const parent_id = parentId.split(',')[1]
+      ? parentId.split(',')[1]
+      : parentId.split(',')[0]
 
-    ProjectHandler.updateChildrenDict({ parentId, children: res })
+    ProjectHandler.updateChildrenDict({ parentId: parent_id, children: res })
 
     return res
   }

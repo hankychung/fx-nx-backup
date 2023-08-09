@@ -2,12 +2,16 @@ import React, { useRef, useEffect, useMemo } from 'react'
 import { Task, IFullViewTask } from '@flyele-nx/types'
 import { FullViewModeEnum } from '@flyele-nx/constant'
 import { useMemoizedFn } from 'ahooks'
-import { projectApi } from '@flyele-nx/service'
+import { TaskApi, projectApi } from '@flyele-nx/service'
 import fetchApiAllData from './utils/fetch-api-all-data'
 import { useGanttList } from './hooks/useScheduleList'
 import { Gantt } from './components/gantt/gantt'
 // import { getFakeItem } from './utils'
 import { ApiHandler } from './utils/apiHandler'
+import { ProjectHandler } from '@flyele-nx/zustand-store'
+import dayjs from 'dayjs'
+import { Pub } from '@flyele-nx/constant'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 export const GanttList = ({ projectId }: { projectId: string }) => {
   const { updateList, batchUpdateTask, taskDict, taskList } = useGanttList()
@@ -108,27 +112,42 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
   }
 
   const handleTaskChange = (task: Task) => {
-    console.log('On date change Id:' + task.id)
-    // let newTasks = tasks.map((t) => (t.id === task.id ? task : t))
-    // if (task.project) {
-    //   const [start, end] = getStartEndDateForProject(newTasks, task.project)
-    //   const project = newTasks[newTasks.findIndex((t) => t.id === task.project)]
-    //   if (
-    //     project.start.getTime() !== start.getTime() ||
-    //     project.end.getTime() !== end.getTime()
-    //   ) {
-    //     const changedProject = { ...project, start, end }
-    //     newTasks = newTasks.map((t) =>
-    //       t.id === task.project ? changedProject : t
-    //     )
-    //   }
-    // }
-    // setTasks(newTasks)
+    const start = dayjs(task.start).unix()
+    const end = dayjs(task.end).unix()
+    console.log(task, start)
+    const params = {
+      start_time: start,
+      end_time: end,
+      end_time_full_day: task.end_time_full_day,
+      start_time_full_day: task.start_time_full_day,
+      start: task.start,
+      end: task.end
+    }
+    const newTask = {
+      ...task,
+      start_time: start,
+      end_time: end
+    }
+    ProjectHandler.batchModify({
+      keys: [task.id],
+      diff: { ...params }
+    })
+
+    TaskApi.updateTask(
+      {
+        ...params,
+        matter_type: newTask.matter_type,
+        start_time_full_day: 1,
+        end_time_full_day: 1
+      },
+      newTask.task_id
+    ).catch(() => {
+      globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [task])
+    })
+    globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [newTask])
   }
 
   const tasks = useMemo(() => {
-    console.log(taskDict, taskList)
-
     const list =
       taskDict &&
       taskList.map((item) => {
@@ -137,7 +156,6 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
 
     return [...list] || []
   }, [taskDict, taskList])
-  console.log(tasks, '[FAKE_ID,...taskList]')
 
   return (
     <div>

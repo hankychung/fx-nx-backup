@@ -59,8 +59,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
           newRelatedY += rowHeight
         }
       } else {
-        console.log(task, taskListWidth, scrollX, tooltipWidth)
-
         newRelatedX = task.x2 + arrowIndent * 1.5 + taskListWidth - scrollX
         const tooltipLeftmostPoint = tooltipWidth + newRelatedX
         const fullChartWidth = taskListWidth + svgContainerWidth

@@ -19,7 +19,11 @@ import checkingIcon from '../../../../assets/schedule/checking.gif'
 import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
-import { useScheduleStore, useUserInfoStore } from '@flyele-nx/global-processor'
+import {
+  ProjectHandler,
+  useScheduleStore,
+  useUserInfoStore
+} from '@flyele-nx/global-processor'
 import dayjs from 'dayjs'
 
 import { MatterType } from '@flyele-nx/constant'
@@ -178,9 +182,8 @@ const _StatusBox: FC<IProps> = (props) => {
 
       const state = changeCompleteState(task.state)
 
-      TaskHandler.batchModify({
+      ProjectHandler.batchModify({
         keys: [task.ref_task_id],
-        keysWithRepeatIds: [getKey(task)],
         diff: {
           finish_time: task.finish_time ? 0 : dayjs().unix(),
           state

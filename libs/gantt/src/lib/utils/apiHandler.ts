@@ -18,9 +18,9 @@ class ApiHandler {
         show_mode: 2
       })
     ).data
-    const parent_id = parentId.split(',')[1]
-      ? parentId.split(',')[1]
-      : parentId.split(',')[0]
+    const arr = parentId.split(',')
+    const num = arr && arr.length ? arr.length - 1 : 0
+    const parent_id = arr[num]
 
     const data = res?.map((i: IFullViewTask) => ({
       ...i,

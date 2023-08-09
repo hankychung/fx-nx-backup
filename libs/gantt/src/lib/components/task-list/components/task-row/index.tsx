@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './index.module.css'
 import { Task } from '@flyele-nx/types'
 import { Title } from '../../../../Row/Title'
-import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { useProjectStore, useUserInfoStore } from '@flyele-nx/zustand-store'
 import { useGanttList } from '../../../../hooks/useScheduleList'
 import cs from 'classnames'
 import useDomClickToHide from '../../../../hooks/useDomClickToHide'
@@ -27,6 +27,15 @@ export const TaskRow: React.FC<{
   } = useGanttList()
   const [showQuickEntry, setShowQuickEntry] = useState<boolean>(true)
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
+  const isExpanded = useProjectStore((state) => {
+    const dict = state.expandDict
+
+    if (!dict) return false
+
+    return Boolean(dict[taskId])
+  })
+
   useDomClickToHide(['.full-dose-row'], () => {
     batchUpdateActiveCell('')
     setTimeout(() => {
@@ -88,7 +97,7 @@ export const TaskRow: React.FC<{
           <Time data={t} isStart={false}></Time>
         </div>
       </div>
-      {t.has_child && childrenDict[t.task_id] && (
+      {t.has_child && isExpanded && (
         <>
           {childrenDict[t.task_id] &&
             childrenDict[t.task_id].map((item) => {

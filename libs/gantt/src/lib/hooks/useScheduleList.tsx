@@ -8,6 +8,7 @@ export const useGanttList = () => {
   const taskDict = useProjectStore((state) => state.taskDict)
   const updateList = useProjectStore((state) => state.updateList)
   const batchUpdateTask = useProjectStore((state) => state.batchUpdateTask)
+  const expandDict = useProjectStore((state) => state.expandDict)
   const batchUpdateChildDict = useProjectStore(
     (state) => state.batchUpdateChildDict
   )
@@ -25,6 +26,7 @@ export const useGanttList = () => {
     activeCell,
     taskDict,
     updateList,
+    expandDict,
     batchUpdateTask,
     batchUpdateHoverId,
     batchUpdateChildDict,

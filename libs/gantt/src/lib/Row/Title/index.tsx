@@ -56,11 +56,15 @@ import { getParentNode } from '@flyele-nx/utils'
 import { MAX_TITLE_LEN, MatterType } from '@flyele-nx/constant'
 import { ICreateParams } from '@flyele-nx/types'
 import { useGanttList } from '../../hooks/useScheduleList'
-import { globalNxController } from '@flyele-nx/global-processor'
+import {
+  globalNxController,
+  useProjectStore
+} from '@flyele-nx/global-processor'
 import { TaskApi } from '@flyele-nx/service'
 import { StatusBox } from './status-box'
 import { ApiHandler } from '../../utils/apiHandler'
 import { Indent } from '../../components/task-list/components/indent'
+import { GanttHandler } from '../../utils/ganttHandler'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -105,10 +109,17 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   // const location = useLocation()
   // const { operateType: globalOperateType } = useGlobalMatterCondition()
   // const { globalMatterPriority } = useGlobalMatterPriority()
-
+  const taskId = useMemo(() => task_id + repeat_id, [task_id, repeat_id])
   // const hoverId = useRecoilValue(hoveredTaskState)
   // const { isValidVip } = useCheckVip()
   // const { project } = useContext(Context)
+  const isExpanded = useProjectStore((state) => {
+    const dict = state.expandDict
+
+    if (!dict) return false
+
+    return Boolean(dict[taskId])
+  })
 
   const handleEsc = useMemoizedFn(() => {
     const dom = document.querySelector(
@@ -293,7 +304,11 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // }
 
     if (has_child) {
-      // TODO: 判断收合情况, 收起操作不需要调用
+      if (isExpanded) {
+        GanttHandler.expand([taskId], false)
+        return
+      }
+      GanttHandler.expand([taskId], true)
       // 拉取子事项更新projectStore
       const parentId = parent_id ? `${parent_id},${task_id}` : task_id
       ApiHandler.getChildren(parentId)
@@ -405,8 +420,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       console.log('全量更新标题出错')
     }
   })
-
-  const taskId = useMemo(() => task_id + repeat_id, [task_id, repeat_id])
 
   const isGroup = true
 
@@ -620,7 +633,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
               >
                 <div
                   className={cs(style.box, style['close-box'], {
-                    [style['close-box-open']]: isOpen
+                    [style['close-box-open']]: isExpanded
                   })}
                   onClick={handleOpen}
                 >

@@ -104,7 +104,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [scrollY, setScrollY] = useState(0)
   const [scrollX, setScrollX] = useState(-1)
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
-  const { taskDict } = useGanttList()
+  const { taskDict, childrenDict, expandDict, taskList } = useGanttList()
   useEffect(() => {
     if (isChecked) {
       setListCellWidth('155px')
@@ -116,10 +116,28 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   // task change events
   useEffect(() => {
     const filteredTasks: Task[] = []
+    const modifyExpend: string[] = []
 
-    for (const key in taskDict) {
-      filteredTasks.push(taskDict[key] as Task)
+    for (const key in expandDict) {
+      if (expandDict[key]) modifyExpend.push(key)
     }
+    const sum = (key: string) => {
+      childrenDict[key] &&
+        childrenDict[key].forEach((a) => {
+          filteredTasks.push(taskDict[a] as Task)
+          if (childrenDict[a]) {
+            sum(a)
+          }
+        })
+    }
+    taskList.forEach((key) => {
+      if (modifyExpend.includes(key)) {
+        filteredTasks.push(taskDict[key] as Task)
+        sum(key)
+        return
+      }
+      filteredTasks.push(taskDict[key] as Task)
+    })
     const [startDate, endDate] = ganttDateRange(
       filteredTasks,
       viewMode,
@@ -136,7 +154,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
     setBarTasks(
       convertToBarTasks(
-        tasks,
+        filteredTasks,
         newDates,
         columnWidth,
         rowHeight,
@@ -178,7 +196,10 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     rtl,
     scrollX,
     onExpanderClick,
-    taskDict
+    taskDict,
+    expandDict,
+    taskList,
+    childrenDict
   ])
 
   useEffect(() => {
@@ -408,7 +429,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const gridProps: GridProps = {
     columnWidth,
     svgWidth,
-    tasks: tasks,
+    tasks: barTasks,
     rowHeight,
     dates: dateSetup.dates,
     todayColor,

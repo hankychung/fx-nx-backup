@@ -1,7 +1,11 @@
 import { IFullViewTask } from '@flyele-nx/types'
-import { IProjectState, useProjectStore } from '../useProjectStore'
+import {
+  IProjectState,
+  useProjectStore,
+  useUserInfoStore
+} from '@flyele-nx/zustand-store'
 import { produce } from 'immer'
-import { useUserInfoStore } from '../useUserInfoStore'
+import { projectApi } from '@flyele-nx/service'
 
 export class ProjectHandler {
   // 拉取子事项
@@ -131,5 +135,10 @@ export class ProjectHandler {
         })
       })
     )
+  }
+
+  // 更新事项
+  static updateTasksByApi(taskIds: string[]) {
+    // do something
   }
 }

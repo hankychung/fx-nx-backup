@@ -8,7 +8,11 @@ import { produce } from 'immer'
 import { projectApi } from '@flyele-nx/service'
 
 export class ProjectHandler {
-  constructor(private projectId: string) {}
+  private projectId = ''
+
+  updateProjectId(id: string) {
+    this.projectId = id
+  }
 
   // 拉取子事项
   updateChildrenDict({

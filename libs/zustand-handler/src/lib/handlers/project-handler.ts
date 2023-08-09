@@ -8,8 +8,10 @@ import { produce } from 'immer'
 import { projectApi } from '@flyele-nx/service'
 
 export class ProjectHandler {
+  constructor(private projectId: string) {}
+
   // 拉取子事项
-  static updateChildrenDict({
+  updateChildrenDict({
     parentId,
     children
   }: {
@@ -29,14 +31,14 @@ export class ProjectHandler {
   }
 
   // 插入事项
-  static createTasks(taskIds: string[]) {
+  createTasks(taskIds: string[]) {
     // TODO: 写入事项字典 调用接口更新
 
     console.log('[projectStore]: createTasks', useProjectStore.getState())
   }
 
   // 修改事项
-  static batchModify({
+  batchModify({
     keys,
     diff
   }: {
@@ -64,7 +66,7 @@ export class ProjectHandler {
   }
 
   // 删除事项
-  static removeTasks(taskIds: string[]) {
+  removeTasks(taskIds: string[]) {
     const { taskDict, taskList, childrenDict } = useProjectStore.getState()
 
     const tasks = taskIds.map((id) => taskDict[id]).filter(Boolean)
@@ -107,7 +109,7 @@ export class ProjectHandler {
   }
 
   // 移除协作人
-  static removeTakers({
+  removeTakers({
     taskIds,
     takerIds
   }: {
@@ -138,7 +140,7 @@ export class ProjectHandler {
   }
 
   // 更新事项
-  static updateTasksByApi(taskIds: string[]) {
+  updateTasksByApi(taskIds: string[]) {
     // do something
   }
 }

@@ -1,5 +1,5 @@
 import { projectApi } from '@flyele-nx/service'
-import { ProjectHandler } from '@flyele-nx/zustand-handler'
+import { GanttHandler } from './ganttHandler'
 
 class ApiHandler {
   private static projectId = ''
@@ -21,7 +21,7 @@ class ApiHandler {
       ? parentId.split(',')[1]
       : parentId.split(',')[0]
 
-    ProjectHandler.updateChildrenDict({ parentId: parent_id, children: res })
+    GanttHandler.updateChildrenDict({ parentId: parent_id, children: res })
 
     return res
   }

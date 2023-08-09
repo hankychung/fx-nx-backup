@@ -8,10 +8,10 @@ import { useGanttList } from './hooks/useScheduleList'
 import { Gantt } from './components/gantt/gantt'
 // import { getFakeItem } from './utils'
 import { ApiHandler } from './utils/apiHandler'
-import { ProjectHandler } from '@flyele-nx/zustand-store'
 import dayjs from 'dayjs'
 import { Pub } from '@flyele-nx/constant'
 import { globalNxController } from '@flyele-nx/global-processor'
+import { GanttHandler, updateProjectId } from './utils/ganttHandler'
 
 export const GanttList = ({ projectId }: { projectId: string }) => {
   const { updateList, batchUpdateTask, taskDict, taskList } = useGanttList()
@@ -29,6 +29,7 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
 
   useEffect(() => {
     ApiHandler.updateProjectId(projectId)
+    updateProjectId(projectId)
   }, [projectId])
 
   const isInit = useRef(true)
@@ -128,7 +129,7 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
       start_time: start,
       end_time: end
     }
-    ProjectHandler.batchModify({
+    GanttHandler.batchModify({
       keys: [task.id],
       diff: { ...params }
     })

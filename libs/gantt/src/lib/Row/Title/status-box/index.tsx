@@ -19,21 +19,16 @@ import checkingIcon from '../../../../assets/schedule/checking.gif'
 import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
-import {
-  ProjectHandler,
-  useScheduleStore,
-  useUserInfoStore
-} from '@flyele-nx/global-processor'
+import { useScheduleStore, useUserInfoStore } from '@flyele-nx/global-processor'
 import dayjs from 'dayjs'
+import { GanttHandler } from '../../../utils/ganttHandler'
 
 import { MatterType } from '@flyele-nx/constant'
 import {
   AcceptOnceMany,
   WorkflowOperation,
   getChildrenDict,
-  getOperationStatus,
-  getKey,
-  TaskHandler
+  getOperationStatus
 } from '@flyele-nx/service-module'
 
 interface IProps {
@@ -182,7 +177,7 @@ const _StatusBox: FC<IProps> = (props) => {
 
       const state = changeCompleteState(task.state)
 
-      ProjectHandler.batchModify({
+      GanttHandler.batchModify({
         keys: [task.ref_task_id],
         diff: {
           finish_time: task.finish_time ? 0 : dayjs().unix(),

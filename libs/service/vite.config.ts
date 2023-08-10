@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import dts from 'vite-plugin-dts'
 import { join } from 'path'
+import { deps } from '../../scripts/getNxDeps'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/service',
@@ -43,7 +44,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: []
+      external: [...deps]
     }
   }
 })

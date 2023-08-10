@@ -6,6 +6,7 @@ import dts from 'vite-plugin-dts'
 import { join } from 'path'
 import svgr from 'vite-plugin-svgr'
 import VitePluginStyleInject from 'vite-plugin-style-inject'
+import { deps } from '../../scripts/getNxDeps'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/service-module',
@@ -53,7 +54,8 @@ export default defineConfig({
         'react/jsx-runtime',
         '@flyele-nx/api',
         'react-beautiful-dnd',
-        'dayjs'
+        'dayjs',
+        ...deps
       ]
     }
   }

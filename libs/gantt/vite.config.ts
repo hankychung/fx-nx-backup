@@ -51,12 +51,9 @@ export default defineConfig({
         'react',
         'react-dom',
         'react/jsx-runtime',
-        '@flyele-nx/api',
         'react-beautiful-dnd',
-        '@flyele-nx/service-module',
-        '@flyele-nx/zustand-handler',
-        '@flyele-nx/service',
-        'dayjs'
+        'dayjs',
+        '/^@flyele-nx.*/'
       ]
     }
   }

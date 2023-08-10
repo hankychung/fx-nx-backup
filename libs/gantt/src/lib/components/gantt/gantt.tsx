@@ -28,13 +28,14 @@ import { HorizontalScroll } from '../other/horizontal-scroll'
 import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
+import { useGanttList } from '../../hooks/useScheduleList'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
   columnWidth = 48,
 
   rowHeight = 42,
-  ganttHeight = 0,
+  ganttHeight = 640,
   viewMode = FullViewModeEnum.Day,
   preStepsCount = 1,
   locale = 'en-GB',
@@ -80,7 +81,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     undefined
   )
 
-  const [listCellWidth, setListCellWidth] = useState('155px')
+  const [listCellWidth, setListCellWidth] = useState('150px')
   const [taskListWidth, setTaskListWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
@@ -103,7 +104,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [scrollY, setScrollY] = useState(0)
   const [scrollX, setScrollX] = useState(-1)
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
-
+  const { taskDict, childrenDict, expandDict, taskList } = useGanttList()
   useEffect(() => {
     if (isChecked) {
       setListCellWidth('155px')
@@ -114,13 +115,29 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
   // task change events
   useEffect(() => {
-    let filteredTasks: Task[]
-    if (onExpanderClick) {
-      filteredTasks = removeHiddenTasks(tasks)
-    } else {
-      filteredTasks = tasks
+    const filteredTasks: Task[] = []
+    const modifyExpend: string[] = []
+
+    for (const key in expandDict) {
+      if (expandDict[key]) modifyExpend.push(key)
     }
-    filteredTasks = filteredTasks.sort(sortTasks)
+    const sum = (key: string) => {
+      childrenDict[key] &&
+        childrenDict[key].forEach((a) => {
+          filteredTasks.push(taskDict[a] as Task)
+          if (childrenDict[a]) {
+            sum(a)
+          }
+        })
+    }
+    taskList.forEach((key) => {
+      if (modifyExpend.includes(key)) {
+        filteredTasks.push(taskDict[key] as Task)
+        sum(key)
+        return
+      }
+      filteredTasks.push(taskDict[key] as Task)
+    })
     const [startDate, endDate] = ganttDateRange(
       filteredTasks,
       viewMode,
@@ -134,6 +151,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
     }
     setDateSetup({ dates: newDates, viewMode })
+
     setBarTasks(
       convertToBarTasks(
         filteredTasks,
@@ -177,7 +195,11 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     milestoneBackgroundSelectedColor,
     rtl,
     scrollX,
-    onExpanderClick
+    onExpanderClick,
+    taskDict,
+    expandDict,
+    taskList,
+    childrenDict
   ])
 
   useEffect(() => {
@@ -407,7 +429,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const gridProps: GridProps = {
     columnWidth,
     svgWidth,
-    tasks: tasks,
+    tasks: barTasks,
     rowHeight,
     dates: dateSetup.dates,
     todayColor,
@@ -472,7 +494,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     <div>
       <div
         className={styles.wrapper}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
         tabIndex={0}
         ref={wrapperRef}
       >

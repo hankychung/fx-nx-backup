@@ -27,7 +27,7 @@ class Project {
 
     return service.get<IFullViewTask[]>({
       url: `${this.prefix}/${projectId}/task_view/list`,
-      params: { ...params }
+      params: { ...params, page_number: params.page_number || 1 }
     })
   }
 

@@ -47,11 +47,16 @@ import { workspaceApi } from './lib/workspace'
 import * as OrderSystemType from './lib/typings/order-system'
 import * as OrderSystemConst from './lib/typings/order-system/const'
 import { projectApi } from './lib/project'
+import { envStore } from './lib/env'
 
 export * from './lib/service'
 export * from './lib/env'
 export * from './lib/biz'
 export * from './lib/task'
+
+export const updateServiceNxEnv = envStore.updateEnvByClient.bind(envStore)
+
+export const updateServiceNxToken = service.updateToken.bind(service)
 
 export {
   service,

@@ -1,11 +1,25 @@
 import { IFullViewTask } from '@flyele-nx/types'
-import { IProjectState, useProjectStore } from '../useProjectStore'
+import {
+  IProjectState,
+  useProjectStore,
+  useUserInfoStore
+} from '@flyele-nx/zustand-store'
 import { produce } from 'immer'
-import { useUserInfoStore } from '../useUserInfoStore'
+import { projectApi } from '@flyele-nx/service'
 
 export class ProjectHandler {
+  private projectId = ''
+
+  updateProjectId(id: string) {
+    this.projectId = id
+  }
+
+  getProjectId() {
+    return this.projectId
+  }
+
   // 拉取子事项
-  static updateChildrenDict({
+  updateChildrenDict({
     parentId,
     children
   }: {
@@ -25,14 +39,14 @@ export class ProjectHandler {
   }
 
   // 插入事项
-  static createTasks(taskIds: string[]) {
-    // TODO: 写入事项字典 调用接口更新
+  async createTasks(taskIds: string[]) {
+    await this.updateTasksByApi(taskIds)
 
     console.log('[projectStore]: createTasks', useProjectStore.getState())
   }
 
   // 修改事项
-  static batchModify({
+  batchModify({
     keys,
     diff
   }: {
@@ -60,7 +74,7 @@ export class ProjectHandler {
   }
 
   // 删除事项
-  static removeTasks(taskIds: string[]) {
+  removeTasks(taskIds: string[]) {
     const { taskDict, taskList, childrenDict } = useProjectStore.getState()
 
     const tasks = taskIds.map((id) => taskDict[id]).filter(Boolean)
@@ -103,7 +117,7 @@ export class ProjectHandler {
   }
 
   // 移除协作人
-  static removeTakers({
+  removeTakers({
     taskIds,
     takerIds
   }: {
@@ -128,6 +142,57 @@ export class ProjectHandler {
           taskDict[id].takers = takers.filter(
             (t) => !takerIds.includes(t.taker_id)
           )
+        })
+      })
+    )
+  }
+
+  // 更新事项
+  updateTasksByApi(taskIds: string[]) {
+    const { taskList } = useProjectStore.getState()
+
+    const decentIds = [...new Set(taskIds)]
+
+    projectApi
+      .getTaskListOfProject({
+        projectId: this.projectId,
+        tasks_id: decentIds.join(','),
+        show_mode: 2
+      })
+      .then(({ data }) => {
+        useProjectStore.setState(
+          produce<IProjectState>((state) => {
+            data.forEach((task) => {
+              const { parent_id, task_id } = task
+
+              // 顶级事项
+              if (!parent_id) {
+                state.taskDict[task_id] = task
+
+                // 当前列表不存在在插入至顶部
+                if (!taskList.includes(task_id)) {
+                  state.taskList.unshift(task_id)
+                }
+
+                return
+              }
+
+              // 子孙事项 - 重置其父事项收合状态
+              parent_id.split(',').forEach((id) => {
+                state.expandDict[id] = false
+              })
+            })
+          })
+        )
+      })
+  }
+
+  // 收合
+  expand(taskIds: string[], expand: boolean) {
+    useProjectStore.setState(
+      produce<IProjectState>((state) => {
+        taskIds.forEach((id) => {
+          state.expandDict[id] = expand
         })
       })
     )

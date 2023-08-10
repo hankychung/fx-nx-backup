@@ -27,8 +27,10 @@ import { ReactComponent as ArrDownIcon } from '../../../assets/schedule/arrDownI
 // import { MAX_TITLE_LEN } from '@/constants/const'
 import { FlyTextTooltip, FlyTooltip } from '@flyele/flyele-components'
 import {
+  Enter_page_detail,
   FAKE_ID,
-  NO_PROJECT_ID
+  NO_PROJECT_ID,
+  Pub
   // TableHeaderTitle,
 } from '@flyele-nx/constant'
 import dayjs from 'dayjs'
@@ -48,14 +50,21 @@ import { IconBox } from './IconBox'
 import style from './index.module.scss'
 import { isInTask } from '../../utils/index'
 import AlertPromise from '../../components/AlertPromise'
-import { IFullViewCellProps } from '@flyele-nx/types'
+import { IFullViewCellProps, IScheduleTask } from '@flyele-nx/types'
 import { useMessage } from '@flyele-nx/ui'
 import { getParentNode } from '@flyele-nx/utils'
 import { MAX_TITLE_LEN, MatterType } from '@flyele-nx/constant'
 import { ICreateParams } from '@flyele-nx/types'
 import { useGanttList } from '../../hooks/useScheduleList'
-import { globalNxController } from '@flyele-nx/global-processor'
+import {
+  globalNxController,
+  useProjectStore
+} from '@flyele-nx/global-processor'
+import { TaskApi } from '@flyele-nx/service'
+import { StatusBox } from './status-box'
 import { ApiHandler } from '../../utils/apiHandler'
+import { Indent } from '../../components/task-list/components/indent'
+import { GanttHandler } from '../../utils/ganttHandler'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -95,15 +104,22 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   // const isDoubleRef = useRef(false)
   const isEditRef = useRef(false)
   const isDisableClick = useRef(false)
-  const { showMsg } = globalNxController
+  const { showMsg, pubJsPublish } = globalNxController
   const { hoverId } = useGanttList()
   // const location = useLocation()
   // const { operateType: globalOperateType } = useGlobalMatterCondition()
   // const { globalMatterPriority } = useGlobalMatterPriority()
-
+  const taskId = useMemo(() => task_id + repeat_id, [task_id, repeat_id])
   // const hoverId = useRecoilValue(hoveredTaskState)
   // const { isValidVip } = useCheckVip()
   // const { project } = useContext(Context)
+  const isExpanded = useProjectStore((state) => {
+    const dict = state.expandDict
+
+    if (!dict) return false
+
+    return Boolean(dict[taskId])
+  })
 
   const handleEsc = useMemoizedFn(() => {
     const dom = document.querySelector(
@@ -288,9 +304,14 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // }
 
     if (has_child) {
-      // TODO: 判断收合情况, 收起操作不需要调用
+      if (isExpanded) {
+        GanttHandler.expand([taskId], false)
+        return
+      }
+      GanttHandler.expand([taskId], true)
       // 拉取子事项更新projectStore
-      ApiHandler.getChildren(task_id)
+      const parentId = parent_id ? `${parent_id},${task_id}` : task_id
+      ApiHandler.getChildren(parentId)
     }
   })
 
@@ -354,15 +375,15 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   const handleDoubleClick = useMemoizedFn(() => {
     // if (isEditRef.current) return
     // const isProjectPage = location.pathname.includes('/project/detail')
-    // globalNxController.openTaskDetailWindow({
-    //   task: {
-    //     ref_id: task_id,
-    //     matter_type,
-    //     cycle: data.cycle,
-    //     forceOpen: true
-    //   } as any,
-    //   enterPage: Enter_page_detail.甘特图
-    // })
+    globalNxController.openTaskDetailWindow({
+      task: {
+        ref_id: task_id,
+        matter_type,
+        cycle: data.cycle,
+        forceOpen: true
+      } as any,
+      enterPage: Enter_page_detail.日程列表
+    })
     // isDoubleRef.current = true
     // setTimeout(() => {
     //   isDoubleRef.current = false
@@ -372,7 +393,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   const handleConfirm = useMemoizedFn(async () => {
     setEdit(false)
     isEditRef.current = false
-    // handleClick('')
 
     try {
       const title = value.trim()
@@ -384,24 +404,22 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       setVal(title)
       setTempValue(title)
 
-      // await CreateApi.updateTask({ title, matter_type }, task_id)
+      await TaskApi.updateTask({ title, matter_type }, task_id)
 
-      // Pubjs.publish(PUB.DB_INCREASE_01_READUX_AND_SQLITEDB, {
-      //   task_id,
-      //   parent_id,
-      //   diffObj: {
-      //     task: {
-      //       title,
-      //     },
-      //   },
-      //   type: 'updateTitle',
-      // })
+      pubJsPublish(Pub.DB_INCREASE_01_READUX_AND_SQLITEDB, {
+        task_id,
+        parent_id,
+        diffObj: {
+          task: {
+            title
+          }
+        },
+        type: 'updateTitle'
+      })
     } catch (e) {
       console.log('全量更新标题出错')
     }
   })
-
-  const taskId = useMemo(() => task_id + repeat_id, [task_id, repeat_id])
 
   const isGroup = true
 
@@ -454,15 +472,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   const onHandleClick = useMemoizedFn((e) => {
     handleTitleClick()
   })
-
-  // const upperLineStyle = useMemo<React.CSSProperties>(() => {
-  //   const width = 8 + (lineLevel - 1) * 16
-
-  //   return {
-  //     width,
-  //     left: `-${width - lineLevel + 1}px`,
-  //   }
-  // }, [lineLevel])
 
   const titleStyle = useMemo<React.CSSProperties>(() => {
     return level ? { marginLeft: 16 * level } : {}
@@ -535,7 +544,12 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     Number(data.task_tree_total) > 99 && !isOpen
       ? '99+'
       : data.task_tree_total || 0
-
+  const _data = useMemo(() => {
+    return {
+      ...data,
+      ref_task_id: data.task_id
+    }
+  }, [data])
   return data.task_id === FAKE_ID ? (
     <div
       className={cs(style.title, style['title-active'], style['title-create'])}
@@ -556,22 +570,17 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   ) : (
     <div className={cs(style.title)}>
       {topParentLine && <div className={style['line-outer']} />}
+      <Indent
+        task={data as unknown as IScheduleTask}
+        isTopTask={!data.parent_id}
+      />
       <div
         className={cs(style['icon-box'], {
           [style['icon-box-open']]: isOpen
         })}
         style={titleStyle}
       >
-        <IconBox
-          data={data}
-          matterType={matter_type}
-          finished={!!finish_time}
-          onClick={handleComplete}
-          cycleDate={cycle_date}
-          notMyBusiness={notMyBusiness}
-          userId={userId}
-          batchComplete={batchComplete}
-        />
+        <StatusBox task={_data as IScheduleTask} isVipWin={false} />
       </div>
       <div className={cs(style.txtBox)}>
         {!edit && (
@@ -584,9 +593,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
             ref={inputRef}
             type="text"
             value={value}
-            onInput={() => {
-              console.log('iii')
-            }}
             onChange={(e) => onInputChange(e)}
             onBlur={handleConfirm}
             onKeyDown={handleKeyPress}
@@ -627,7 +633,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
               >
                 <div
                   className={cs(style.box, style['close-box'], {
-                    [style['close-box-open']]: isOpen
+                    [style['close-box-open']]: isExpanded
                   })}
                   onClick={handleOpen}
                 >

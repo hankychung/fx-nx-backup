@@ -32,6 +32,7 @@
       "@flyele-nx/ui": ["libs/ui/src/index.ts"],
       "@flyele-nx/utils": ["libs/utils/src/index.ts"],
       "@flyele-nx/ws": ["libs/ws/src/index.ts"],
+      "@flyele-nx/zustand-handler": ["libs/zustand-handler/src/index.ts"],
       "@flyele-nx/zustand-store": ["libs/zustand-store/src/index.ts"]
     }
   },

@@ -120,3 +120,11 @@ export enum FullViewGroupKeyEnum {
   FilePage = 'FilePage',
   ProjectList = 'ProjectList'
 }
+
+export enum FullViewMatterStateEnum {
+  TO_START = 1,
+  EXECUTION,
+  DELAY,
+  COMPLETE_ON_TIME,
+  COMPLETE_DELAY
+}

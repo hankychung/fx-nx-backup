@@ -23,6 +23,8 @@ import { WorkflowOperation } from './lib/workflow-operation'
 import { AcceptOnceMany } from './lib/accept-once-many'
 import { UserInfoPopover } from './lib/user-info-popover'
 import { StatusBox } from './lib/status-box'
+import { NoviceGuide } from './lib/novice-guide'
+
 export * from './lib/schedule-list' // 日程列表
 
 export {
@@ -48,7 +50,8 @@ export {
   WorkflowOperation,
   AcceptOnceMany,
   UserInfoPopover,
-  StatusBox
+  StatusBox,
+  NoviceGuide
 }
 
 export * from './lib/map-svg/type/props'

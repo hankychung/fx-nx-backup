@@ -43,6 +43,8 @@ import * as AuthConst from './lib/typings/auth/const'
 // 空间
 import { workspaceApi } from './lib/workspace'
 
+import { EmptyApi } from './lib/empty'
+
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
 import * as OrderSystemConst from './lib/typings/order-system/const'
@@ -71,7 +73,8 @@ export {
   workspaceApi,
   projectApi,
   AuthConst,
-  OfficialApi
+  OfficialApi,
+  EmptyApi
 }
 
 export type {

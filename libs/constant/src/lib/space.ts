@@ -68,3 +68,23 @@ export enum SPACE_STATE {
   dissolve = 2, // 解散
   disable = 3 // 禁用(待激活)
 }
+
+// 团队人数
+export const TeamSize = [
+  {
+    id: '1',
+    title: '1-10'
+  },
+  {
+    id: '2',
+    title: '11-20'
+  },
+  {
+    id: '3',
+    title: '20-50'
+  },
+  {
+    id: '4',
+    title: '50以上'
+  }
+]

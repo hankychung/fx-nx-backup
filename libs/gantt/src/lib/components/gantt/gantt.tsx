@@ -114,93 +114,93 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   }, [isChecked])
 
   // task change events
-  useEffect(() => {
-    const filteredTasks: Task[] = []
-    const modifyExpend: string[] = []
+  // useEffect(() => {
+  //   const filteredTasks: Task[] = []
+  //   const modifyExpend: string[] = []
 
-    for (const key in expandDict) {
-      if (expandDict[key]) modifyExpend.push(key)
-    }
-    const sum = (key: string) => {
-      childrenDict[key] &&
-        childrenDict[key].forEach((a) => {
-          filteredTasks.push(taskDict[a] as Task)
-          if (childrenDict[a]) {
-            sum(a)
-          }
-        })
-    }
-    taskList.forEach((key) => {
-      if (modifyExpend.includes(key)) {
-        filteredTasks.push(taskDict[key] as Task)
-        sum(key)
-        return
-      }
-      filteredTasks.push(taskDict[key] as Task)
-    })
-    const [startDate, endDate] = ganttDateRange(
-      filteredTasks,
-      viewMode,
-      preStepsCount
-    )
-    let newDates = seedDates(startDate, endDate, viewMode)
-    if (rtl) {
-      newDates = newDates.reverse()
-      if (scrollX === -1) {
-        setScrollX(newDates.length * columnWidth)
-      }
-    }
-    setDateSetup({ dates: newDates, viewMode })
+  //   for (const key in expandDict) {
+  //     if (expandDict[key]) modifyExpend.push(key)
+  //   }
+  //   const sum = (key: string) => {
+  //     childrenDict[key] &&
+  //       childrenDict[key].forEach((a) => {
+  //         filteredTasks.push(taskDict[a] as Task)
+  //         if (childrenDict[a]) {
+  //           sum(a)
+  //         }
+  //       })
+  //   }
+  //   taskList.forEach((key) => {
+  //     if (modifyExpend.includes(key)) {
+  //       filteredTasks.push(taskDict[key] as Task)
+  //       sum(key)
+  //       return
+  //     }
+  //     filteredTasks.push(taskDict[key] as Task)
+  //   })
+  //   const [startDate, endDate] = ganttDateRange(
+  //     filteredTasks,
+  //     viewMode,
+  //     preStepsCount
+  //   )
+  //   let newDates = seedDates(startDate, endDate, viewMode)
+  //   if (rtl) {
+  //     newDates = newDates.reverse()
+  //     if (scrollX === -1) {
+  //       setScrollX(newDates.length * columnWidth)
+  //     }
+  //   }
+  //   setDateSetup({ dates: newDates, viewMode })
 
-    setBarTasks(
-      convertToBarTasks(
-        filteredTasks,
-        newDates,
-        columnWidth,
-        rowHeight,
-        taskHeight,
-        barCornerRadius,
-        handleWidth,
-        rtl,
-        barProgressColor,
-        barProgressSelectedColor,
-        barBackgroundColor,
-        barBackgroundSelectedColor,
-        projectProgressColor,
-        projectProgressSelectedColor,
-        projectBackgroundColor,
-        projectBackgroundSelectedColor,
-        milestoneBackgroundColor,
-        milestoneBackgroundSelectedColor
-      )
-    )
-  }, [
-    tasks,
-    viewMode,
-    preStepsCount,
-    rowHeight,
-    barCornerRadius,
-    columnWidth,
-    taskHeight,
-    handleWidth,
-    barProgressColor,
-    barProgressSelectedColor,
-    barBackgroundColor,
-    barBackgroundSelectedColor,
-    projectProgressColor,
-    projectProgressSelectedColor,
-    projectBackgroundColor,
-    projectBackgroundSelectedColor,
-    milestoneBackgroundColor,
-    milestoneBackgroundSelectedColor,
-    rtl,
-    scrollX,
-    onExpanderClick,
-    taskDict,
-    expandDict,
-    taskList,
-    childrenDict
-  ])
+  //   setBarTasks(
+  //     convertToBarTasks(
+  //       filteredTasks,
+  //       newDates,
+  //       columnWidth,
+  //       rowHeight,
+  //       taskHeight,
+  //       barCornerRadius,
+  //       handleWidth,
+  //       rtl,
+  //       barProgressColor,
+  //       barProgressSelectedColor,
+  //       barBackgroundColor,
+  //       barBackgroundSelectedColor,
+  //       projectProgressColor,
+  //       projectProgressSelectedColor,
+  //       projectBackgroundColor,
+  //       projectBackgroundSelectedColor,
+  //       milestoneBackgroundColor,
+  //       milestoneBackgroundSelectedColor
+  //     )
+  //   )
+  // }, [
+  //   tasks,
+  //   viewMode,
+  //   preStepsCount,
+  //   rowHeight,
+  //   barCornerRadius,
+  //   columnWidth,
+  //   taskHeight,
+  //   handleWidth,
+  //   barProgressColor,
+  //   barProgressSelectedColor,
+  //   barBackgroundColor,
+  //   barBackgroundSelectedColor,
+  //   projectProgressColor,
+  //   projectProgressSelectedColor,
+  //   projectBackgroundColor,
+  //   projectBackgroundSelectedColor,
+  //   milestoneBackgroundColor,
+  //   milestoneBackgroundSelectedColor,
+  //   rtl,
+  //   scrollX,
+  //   onExpanderClick,
+  //   taskDict,
+  //   expandDict,
+  //   taskList,
+  //   childrenDict
+  // ])
 
   useEffect(() => {
     if (

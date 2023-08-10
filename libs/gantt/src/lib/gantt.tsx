@@ -80,7 +80,7 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
 
       reload()
     }
-  }, [reload])
+  }, [reload, projectId])
 
   const handleTaskDelete = (task: Task) => {
     const conf = window.confirm('Are you sure about ' + task.name + ' ?')

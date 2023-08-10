@@ -44,7 +44,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   useEffect(() => {
     if (tooltipRef.current) {
       const tooltipHeight = tooltipRef.current.offsetHeight * 1.1
-      const tooltipWidth = 0
+      const tooltipWidth = tooltipRef.current.offsetWidth * 1.1
 
       let newRelatedY = task.index * rowHeight - scrollY + headerHeight
       let newRelatedX: number

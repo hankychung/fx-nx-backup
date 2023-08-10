@@ -19,6 +19,17 @@ export const useGanttList = () => {
     (state) => state.batchUpdateActiveCell
   )
 
+  const reSet = () => {
+    useProjectStore.setState({
+      expandDict: {},
+      taskDict: {},
+      childrenDict: {},
+      taskList: [],
+      hoverId: '',
+      activeCell: ''
+    })
+  }
+
   return {
     hoverId,
     taskList,
@@ -30,6 +41,7 @@ export const useGanttList = () => {
     batchUpdateTask,
     batchUpdateHoverId,
     batchUpdateChildDict,
-    batchUpdateActiveCell
+    batchUpdateActiveCell,
+    reSet
   }
 }

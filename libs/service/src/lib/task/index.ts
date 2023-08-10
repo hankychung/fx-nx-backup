@@ -1,5 +1,9 @@
 import { service } from '../service'
-import { CommonResponse, IExternalListResponse } from '../typings'
+import {
+  CommonResponse,
+  IBatchCreateParams,
+  IExternalListResponse
+} from '../typings'
 import {
   IScheduleTask,
   IHoliday,
@@ -309,12 +313,12 @@ class Task {
 
   /**
    * 批量创建任务
-   * is_dispatch 0 我参与 1： 我派发
-   * dispatch_batch 如果是无协作人或只有自己value为0，否则为1
+   * is_dispatch 0 我参与 1： 我派发 如果不传 默认会是 0
+   * dispatch_batch 如果是无协作人或只有自己value为0，否则为1， 如果不传但 is_dispatch 传了 默认全部取 is_dispatch
    */
   async batchCreateTask(data: {
-    is_dispatch: 0 | 1
-    tasks: ICreateParams[]
+    tasks: IBatchCreateParams[]
+    is_dispatch?: 0 | 1
     dispatch_batch?: Record<string, 0 | 1>
   }) {
     return await service.post({

@@ -7,7 +7,7 @@ import { AddIcon } from '@flyele-nx/icon'
 import cs from 'classnames'
 import { FlowOperateType, MatterType, QuadrantValue } from '@flyele-nx/constant'
 import { TaskApi } from '@flyele-nx/service'
-import { ICreateParams } from '@flyele-nx/types'
+import { IBatchCreateParams, ICreateParams } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 
 interface ITaskOnlyTitle {
@@ -34,17 +34,18 @@ const _PersonalCreateTask = ({
     if (tasks.length >= 20) {
       messageApi.open({
         type: 'error',
-        content: '新手引导最大支持20个事项'
+        content: '新手引导最多创建20个事项'
       })
       return
     }
     setTasks((prevTasks) => [...prevTasks, { title: '' }])
   })
 
-  const getTaskParams = (data: ITaskOnlyTitle[]): ICreateParams[] => {
+  const getTaskParams = (data: ITaskOnlyTitle[]): IBatchCreateParams[] => {
     const tasksWithValues = data.filter((task) => task.title !== '')
-    return tasksWithValues.map((item) => {
+    return tasksWithValues.map((item, index) => {
       return {
+        temp_id: `task${index}`,
         title: item.title,
         matter_type: MatterType.matter,
         priority_level: QuadrantValue.no_important_no_urgent,
@@ -72,9 +73,7 @@ const _PersonalCreateTask = ({
     try {
       const taskParams = getTaskParams(tasks)
       await TaskApi.batchCreateTask({
-        tasks: taskParams,
-        is_dispatch: 1
-        // dispatch_batch: 0
+        tasks: taskParams
       })
 
       onFinished && onFinished()
@@ -109,6 +108,7 @@ const _PersonalCreateTask = ({
                 setTasks(updatedTasks)
               }}
               bordered={false}
+              maxLength={300}
               style={{
                 fontSize: '16px'
               }}

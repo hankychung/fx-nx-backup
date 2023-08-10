@@ -1,21 +1,25 @@
-import { NoviceGuide } from '@flyele-nx/service-module'
+import { NoviceGuide, useUserInfoStore } from '@flyele-nx/service-module'
 import { usageModeType } from '@flyele-nx/types'
 import styles from './index.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { RoutePath } from '../../routes/const'
 
 export const NoviceGuidePage = () => {
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+
   const navigate = useNavigate()
 
   const onFinished = (type: usageModeType) => {
-    console.log('type', type)
     if (type === 'personal') {
       navigate(RoutePath.board)
+    }
+    if (type === 'team') {
+      console.log('跳')
     }
   }
   return (
     <div className={styles.container}>
-      <NoviceGuide onFinished={onFinished} />
+      <NoviceGuide userId={userId} onFinished={onFinished} />
     </div>
   )
 }

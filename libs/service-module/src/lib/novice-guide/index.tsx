@@ -9,8 +9,10 @@ import { Team } from './components/team'
 type currentStepType = 1 | 2
 
 const _NoviceGuide = ({
+  userId,
   onFinished
 }: {
+  userId: string
   onFinished: (type: usageModeType) => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
@@ -42,6 +44,7 @@ const _NoviceGuide = ({
           />
         ) : (
           <Team
+            userId={userId}
             onBack={() => {
               setCurrentStep(1)
             }}

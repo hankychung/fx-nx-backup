@@ -1,11 +1,16 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useContext } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
 import { useMemoizedFn, useMount } from 'ahooks'
 import { CommonTagList, ITagsList } from '../../../common/tag-list'
 import { UsercApi } from '@flyele-nx/service'
-import { IndustryMemberType, diyIndustryId } from '@flyele-nx/constant'
+import {
+  IndustryMemberType,
+  diyIndustryId,
+  TeamSize
+} from '@flyele-nx/constant'
 import { IIndustryList } from '@flyele-nx/types'
+import { TeamContext } from '../../../../context/team'
 
 const _IndustryType = ({
   visible,
@@ -16,38 +21,26 @@ const _IndustryType = ({
   goBack: () => void
   goNext: () => void
 }) => {
+  const {
+    activeIndustryTag,
+    activeTeamSize,
+    setActiveIndustryTag,
+    setActiveTeamSize,
+    setActiveIndustryTagTitle
+  } = useContext(TeamContext)
+
   // 行业类型
   const [inactiveTags, setInactiveTags] = useState<IIndustryList[]>([])
-  const [activeIndustryTag, setActiveIndustryTag] = useState<number>(0)
-  // 团队人数
-  const teamSize = [
-    {
-      id: '1',
-      title: '1-10'
-    },
-    {
-      id: '2',
-      title: '11-20'
-    },
-    {
-      id: '3',
-      title: '20-50'
-    },
-    {
-      id: '4',
-      title: '50以上'
-    }
-  ]
-  const [activeTeamSize, setActiveTeamSize] = useState('')
 
   const onClickInactiveTags = useMemoizedFn((item: ITagsList) => {
     const { id, title } = item
-    setActiveIndustryTag(id as number)
+    setActiveIndustryTagTitle && setActiveIndustryTagTitle(title)
+    setActiveIndustryTag && setActiveIndustryTag(id as number)
   })
 
   const onClickTeamSize = useMemoizedFn((item: ITagsList) => {
-    const { id, title } = item
-    setActiveTeamSize(id as string)
+    const { id } = item
+    setActiveTeamSize && setActiveTeamSize(id as string)
   })
 
   const onGoBack = useMemoizedFn(() => {
@@ -55,7 +48,6 @@ const _IndustryType = ({
   })
 
   const onGoNext = useMemoizedFn(() => {
-    console.log('@@@ data', activeIndustryTag, activeTeamSize)
     goNext()
   })
 
@@ -112,7 +104,7 @@ const _IndustryType = ({
         />
         <div className={styles.title}>团队人数是？</div>
         <CommonTagList
-          tags={teamSize}
+          tags={TeamSize}
           activeTag={activeTeamSize}
           onClick={onClickTeamSize}
           needAdd={false}

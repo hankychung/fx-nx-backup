@@ -1,7 +1,15 @@
 import { service } from '../service'
-import { IFullViewParams, IFullViewTask, IProjectInfo } from '@flyele-nx/types'
+import {
+  IFullViewParams,
+  IFullViewTask,
+  IProjectCreateParams,
+  IProjectGroup,
+  IProjectInfo,
+  IResponse
+} from '@flyele-nx/types'
 class Project {
   private prefix = 'flyele/v2/project'
+
   /**
    * 获取项目详情
    */
@@ -20,6 +28,25 @@ class Project {
     return service.get<IFullViewTask[]>({
       url: `${this.prefix}/${projectId}/task_view/list`,
       params: { ...params }
+    })
+  }
+
+  /**
+   * 创建项目
+   */
+  createProject(params: IProjectCreateParams) {
+    return service.post<IResponse<{ project_id: string }>>({
+      url: this.prefix,
+      data: params
+    })
+  }
+
+  /**
+   * 查询分组列表
+   */
+  getGroup(projectId: string) {
+    return service.get<IProjectGroup[]>({
+      url: `${this.prefix}/${projectId}/group_list`
     })
   }
 }

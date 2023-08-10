@@ -4,6 +4,7 @@ import { CreateSpace } from './components/create-space'
 import { useMemoizedFn } from 'ahooks'
 import { CreateProject } from './components/create-project'
 import { InviteMember } from './components/invite-member'
+import { TeamContext } from '../../context/team'
 
 /**
  * 1： 选择行业页面
@@ -14,13 +15,24 @@ import { InviteMember } from './components/invite-member'
 type currentStepType = 1 | 2 | 3 | 4
 
 export const Team = ({
+  userId,
   onBack,
   onFinished
 }: {
+  userId: string
   onBack: () => void
   onFinished: () => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
+
+  const [activeIndustryTag, setActiveIndustryTag] = useState<number>(0)
+  const [activeTeamSize, setActiveTeamSize] = useState('')
+  const [activeIndustryTagTitle, setActiveIndustryTagTitle] = useState('')
+  const [spaceInfo, setSpaceInfo] = useState({
+    icon: '',
+    icon_color: ''
+  })
+  const [spaceName, setSpaceName] = useState('')
 
   /**
    * 选择行业页面下一步
@@ -44,7 +56,21 @@ export const Team = ({
   })
 
   return (
-    <>
+    <TeamContext.Provider
+      value={{
+        userId: userId,
+        activeIndustryTag: activeIndustryTag,
+        activeTeamSize: activeTeamSize,
+        spaceInfo: spaceInfo,
+        spaceName: spaceName,
+        activeIndustryTagTitle: activeIndustryTagTitle,
+        setActiveIndustryTag: setActiveIndustryTag,
+        setActiveTeamSize: setActiveTeamSize,
+        setSpaceInfo: setSpaceInfo,
+        setSpaceName: setSpaceName,
+        setActiveIndustryTagTitle: setActiveIndustryTagTitle
+      }}
+    >
       <IndustryType
         visible={currentStep === 1}
         goBack={onBack}
@@ -65,6 +91,6 @@ export const Team = ({
         goNext={onProjectGoNext}
       />
       <InviteMember visible={currentStep === 4} onFinished={onFinished} />
-    </>
+    </TeamContext.Provider>
   )
 }

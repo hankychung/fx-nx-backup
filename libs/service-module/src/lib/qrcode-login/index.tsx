@@ -10,7 +10,6 @@ import {
 import Qc from 'qrcode'
 import { uid } from '@flyele-nx/utils'
 import { message } from 'antd'
-import scanImg from '../../assets/login/scan-qrcode-ses.png'
 import { getUserInfo } from './utils/user'
 import RefreshIcon from '../../assets/login/refresh.png'
 import { debounce } from 'lodash'
@@ -306,7 +305,10 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
         </>
       ) : (
         <div className={style.scan_qrcode_success}>
-          <img alt="" src={scanImg} />
+          <img
+            alt="scan-qrcode-ses"
+            src="https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/advertisement/scan-qrcode-ses.png"
+          />
           <h1>扫码成功</h1>
           <span>请在手机上确认登录</span>
           <button onClick={() => refreshQrCode()} type="button">

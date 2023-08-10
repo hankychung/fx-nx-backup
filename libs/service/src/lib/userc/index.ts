@@ -12,7 +12,8 @@ import {
   IPhoneLoginParams,
   IUserSetting,
   IIndustryListParams,
-  IIndustryList
+  IIndustryList,
+  IIndustryInfo
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
 
@@ -150,16 +151,20 @@ class Userc {
    */
   async getIndustryList(data: IIndustryListParams) {
     return await service.get<IIndustryList[]>({
-      url: `${this.prefix}/industry/list?member_type=${data.member_type}`
+      url: `${this.prefix}/industry/list`,
+      params: data
     })
   }
 
   /**
    * 获取行业详情
    */
-  async getIndustryInfo(id: string) {
-    return await service.get({
-      url: `${this.prefix}/industry/info?industry_id=${id}`
+  async getIndustryInfo(id: number) {
+    return await service.get<IIndustryInfo[]>({
+      url: `${this.prefix}/industry/info`,
+      params: {
+        industry_id: id
+      }
     })
   }
 }

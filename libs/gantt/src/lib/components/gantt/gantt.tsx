@@ -29,6 +29,7 @@ import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
+import { useMemoizedFn } from 'ahooks'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -103,6 +104,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
   const [scrollY, setScrollY] = useState(0)
   const [scrollX, setScrollX] = useState(-1)
+  // const scrollX = use
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
   const { taskDict, childrenDict, expandDict, taskList } = useGanttList()
   useEffect(() => {
@@ -117,7 +119,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   useEffect(() => {
     const filteredTasks: Task[] = []
     const modifyExpend: string[] = []
-    
+
     for (const key in expandDict) {
       if (expandDict[key]) modifyExpend.push(key)
     }
@@ -168,8 +170,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         milestoneBackgroundSelectedColor
       )
     )
-    console.log("oooo");
-    
+    console.log('oooo')
   }, [
     // tasks,
     viewMode,
@@ -286,36 +287,36 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       setSvgContainerHeight(tasks.length * rowHeight + headerHeight)
     }
   }, [ganttHeight, tasks, headerHeight, rowHeight])
+  const handleWheel = useMemoizedFn((event: WheelEvent) => {
+    console.log('wheel')
 
-  // scroll events
-  useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      if (event.shiftKey || event.deltaX) {
-        const scrollMove = event.deltaX ? event.deltaX : event.deltaY
-        let newScrollX = scrollX + scrollMove
-        if (newScrollX < 0) {
-          newScrollX = 0
-        } else if (newScrollX > svgWidth) {
-          newScrollX = svgWidth
-        }
-        setScrollX(newScrollX)
-        event.preventDefault()
-      } else if (ganttHeight) {
-        let newScrollY = scrollY + event.deltaY
-        if (newScrollY < 0) {
-          newScrollY = 0
-        } else if (newScrollY > ganttFullHeight - ganttHeight) {
-          newScrollY = ganttFullHeight - ganttHeight
-        }
-        if (newScrollY !== scrollY) {
-          setScrollY(newScrollY)
-          event.preventDefault()
-        }
+    if (event.shiftKey || event.deltaX) {
+      const scrollMove = event.deltaX ? event.deltaX : event.deltaY
+      let newScrollX = scrollX + scrollMove
+      if (newScrollX < 0) {
+        newScrollX = 0
+      } else if (newScrollX > svgWidth) {
+        newScrollX = svgWidth
       }
-
-      setIgnoreScrollEvent(true)
+      setScrollX(newScrollX)
+      event.preventDefault()
+    } else if (ganttHeight) {
+      let newScrollY = scrollY + event.deltaY
+      if (newScrollY < 0) {
+        newScrollY = 0
+      } else if (newScrollY > ganttFullHeight - ganttHeight) {
+        newScrollY = ganttFullHeight - ganttHeight
+      }
+      if (newScrollY !== scrollY) {
+        setScrollY(newScrollY)
+        event.preventDefault()
+      }
     }
 
+    setIgnoreScrollEvent(true)
+  })
+  // scroll events
+  useEffect(() => {
     // subscribe if scroll is necessary
     wrapperRef.current?.addEventListener('wheel', handleWheel, {
       passive: false
@@ -324,15 +325,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
       wrapperRef.current?.removeEventListener('wheel', handleWheel)
     }
-  }, [
-    wrapperRef,
-    scrollY,
-    scrollX,
-    ganttHeight,
-    svgWidth,
-    rtl,
-    ganttFullHeight
-  ])
+  }, [wrapperRef, handleWheel])
 
   const handleScrollY = (event: SyntheticEvent<HTMLDivElement>) => {
     if (scrollY !== event.currentTarget.scrollTop && !ignoreScrollEvent) {

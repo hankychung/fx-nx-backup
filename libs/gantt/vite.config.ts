@@ -6,6 +6,7 @@ import viteTsConfigPaths from 'vite-tsconfig-paths'
 import dts from 'vite-plugin-dts'
 import VitePluginStyleInject from 'vite-plugin-style-inject'
 import { join } from 'path'
+import { deps } from '../../scripts/getNxDeps'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/gantt',
@@ -53,7 +54,7 @@ export default defineConfig({
         'react/jsx-runtime',
         'react-beautiful-dnd',
         'dayjs',
-        '/^@flyele-nx.*/'
+        ...deps
       ]
     }
   }

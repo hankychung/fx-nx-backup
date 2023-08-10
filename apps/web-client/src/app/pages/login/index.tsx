@@ -11,14 +11,16 @@ import { LocalStore } from '@flyele-nx/utils'
 
 const Login: FC = () => {
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (LocalStore.getToken()) {
-      navigate(RoutePath.board)
-    }
-  }, [navigate])
-
   const isProdEnv = envStore.getEnv() === 'prod'
+
+  const goToBoard = useMemoizedFn(() => {
+    const isNewUser = true
+    if (isNewUser) {
+      navigate(RoutePath.noviceGuide)
+      return
+    }
+    navigate(RoutePath.board)
+  })
 
   const updateVipInfo = useMemoizedFn(async () => {
     const res = await UsercApi.getCombo()
@@ -89,7 +91,7 @@ const Login: FC = () => {
         await updateEnterpriseInfo(data.corpid)
       }
     }
-    navigate(RoutePath.board)
+    goToBoard()
 
     SocketHandler.initSocket()
   })
@@ -99,6 +101,12 @@ const Login: FC = () => {
       ' https://fxkj15.qiyukf.com/client?k=32dc07afddda5179a2b418a9daa1fbca&wp=1&robotShuntSwitch=0'
     )
   }
+
+  useEffect(() => {
+    if (LocalStore.getToken()) {
+      navigate(RoutePath.board)
+    }
+  }, [navigate])
 
   return (
     <div className={styles.wrap}>

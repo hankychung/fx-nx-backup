@@ -1,0 +1,28 @@
+.commonTagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  .tagItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 34px;
+    color: #262626;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 28px;
+    background: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+
+    &:hover {
+      border-color: #1dd2c1;
+    }
+  }
+
+  .activeTag {
+    border-color: #1dd2c1;
+  }
+}

@@ -34,7 +34,12 @@ class Service {
         // before request is sent
         config.headers.Authorization = this.token
 
-        config.baseURL = envStore.getHost()
+        if (config.data && config.data.NxBaseUrl) {
+          config.baseURL = config.data.NxBaseUrl
+          delete config.data.NxBaseUrl
+        } else {
+          config.baseURL = envStore.getHost()
+        }
 
         return config
       },

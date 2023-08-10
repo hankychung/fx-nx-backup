@@ -1,5 +1,6 @@
 export enum RoutePath {
   login = '/login',
+  noviceGuide = '/novice-guide',
   // 侧边栏
   board = '/board',
   view = '/view',

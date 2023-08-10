@@ -13,8 +13,14 @@ interface Props {
 }
 
 const tabsImgArr = [
-  { key: '1', src: 'https://cdn.flyele.net/resources/PC/pc-computer.png' },
-  { key: '2', src: 'https://cdn.flyele.net/resources/PC/pc-qrcode.png' }
+  {
+    key: '1',
+    src: 'https://cdn.flyele.net/resources/PC/advertisement/pc-computer.png'
+  },
+  {
+    key: '2',
+    src: 'https://cdn.flyele.net/resources/PC/advertisement/pc-qrcode.png'
+  }
 ]
 
 const _LoginInput: React.FC<React.PropsWithChildren<Props>> = ({
@@ -62,7 +68,7 @@ const _LoginInput: React.FC<React.PropsWithChildren<Props>> = ({
           <div className={style.qrcodeBox}>
             <div className={style.logo}>
               <img
-                src="https://cdn.flyele.net/resources/PC/logo.png"
+                src="https://cdn.flyele.net/resources/PC/advertisement/logo.png"
                 alt="logo"
               />
             </div>

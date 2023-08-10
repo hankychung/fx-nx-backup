@@ -81,3 +81,27 @@ export enum OpenClose {
   OPEN = 1, // 开
   CLOSE // 关
 }
+
+export interface IProjectCreateParams {
+  files?: {
+    id: string
+    name: string
+    origin: string
+    size: string
+  }[] // 项目文件
+  project_desc?: string // 详细描述
+  project_name: string // 标题
+  target_time?: number // 项目时间
+  workspace_id?: string // 空间id
+  group_names?: string[] // 分组名称
+}
+/**
+ * 项目分组信息
+ */
+export interface IProjectGroup {
+  creator_id: string // 分组创建者
+  id: string // 分组ID
+  is_default: 1 | 2 // 是否未默认 1 默认 2 非默认
+  name: string // 分组名称
+  sort: number // 分组排序
+}

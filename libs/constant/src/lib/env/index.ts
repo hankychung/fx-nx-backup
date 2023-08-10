@@ -8,10 +8,26 @@ const normal: Record<IEnv, string> = {
   prod: 'api.flyele.net'
 }
 
+/**
+ * 邀请链接
+ * 长链接转短链接
+ */
+const normalShortUrl: Record<IEnv, string> = {
+  dev: 'd.flyele.vip',
+  test: 'd-test.flyele.vip',
+  prod: 'd.flyele.net'
+}
+
 const neiMongol: Record<IEnv, string> = {
   dev: 'api.flyele.nm135.cn', // 正式环境的外网放 dev 上
   test: 'api-test.nm10086.p.flyele.vip',
   prod: 'api-intranet.flyele.nm135.cn' // 内网
+}
+
+const neiMongolShortUrl: Record<IEnv, string> = {
+  dev: 'd.flyele.nm135.cn', // 正式环境的外网放 dev 上
+  test: 'd-test.nm10086.p.flyele.vip',
+  prod: 'd-intranet.flyele.nm135.cn' // 内网
 }
 
 const pay: Record<IEnv, string> = {
@@ -19,6 +35,22 @@ const pay: Record<IEnv, string> = {
   test: 'pay-test.flyele.vip',
   // pre_prod: { host: '${prefix}pay.pre.flyele.vip' },
   prod: 'pay.flyele.net'
+}
+
+const normalH5Url: Record<IEnv, string> = {
+  dev: 'https://localhost:8080',
+  test: 'https://h5-test.flyele.vip',
+  prod: 'https://h5.flyele.net'
+}
+
+const neiMongolH5Url: Record<IEnv, string> = {
+  dev: 'https://localhost:8080',
+  test: 'https://h5.nm10086.p.flyele.vip',
+  prod: 'http://h5-intranet.flyele.nm135.cn'
+}
+
+const getHttpInfo = ({ env, type }: { env: IEnv; type: IType }) => {
+  return type === 'neiMongol' && env === 'prod' ? 'http://' : 'https://'
 }
 
 const getUrl = ({
@@ -30,13 +62,26 @@ const getUrl = ({
   type: IType
   fullPath?: boolean
 }) => {
-  const getPrefix = () =>
-    type === 'neiMongol' && env === 'prod' ? 'http://' : 'https://'
+  const httpInfo = getHttpInfo({ env, type })
 
   const urlDict =
     type === 'neiMongol' ? neiMongol : type === 'pay' ? pay : normal
 
-  return `${fullPath ? getPrefix() : ''}${urlDict[env]}`
+  return `${fullPath ? httpInfo : ''}${urlDict[env]}`
+}
+
+const getShortUrl = ({ env, type }: { env: IEnv; type: IType }) => {
+  const httpInfo = getHttpInfo({ env, type })
+
+  const urlDict = type === 'neiMongol' ? neiMongolShortUrl : normalShortUrl
+
+  return `${httpInfo}${urlDict[env]}`
+}
+
+const getH5Url = ({ env, type }: { env: IEnv; type: IType }) => {
+  const urlDict = type === 'neiMongol' ? neiMongolH5Url : normalH5Url
+
+  return `${urlDict[env]}`
 }
 
 class EnvStore {
@@ -75,6 +120,14 @@ class EnvStore {
 
   getUrl() {
     return getUrl({ env: this.env, type: this.type })
+  }
+
+  getShortHost() {
+    return getShortUrl({ env: this.env, type: this.type })
+  }
+
+  getH5Url() {
+    return getH5Url({ env: this.env, type: this.type })
   }
 
   updateEnvByClient(env: IEnv, type: IType) {

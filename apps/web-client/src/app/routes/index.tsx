@@ -5,6 +5,7 @@ import { Login } from '../pages/login'
 import { Board } from '../pages/board'
 import { RoutePath } from './const'
 import { DayView } from '../pages/board/modules/day-view'
+import { NoviceGuidePage } from '../pages/novice-guide-page'
 
 const DefaultPage = () => <Navigate to="/" />
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: RoutePath.login,
     element: <Login />
+  },
+  {
+    path: RoutePath.noviceGuide,
+    element: <NoviceGuidePage />
   },
   { path: '*', element: <DefaultPage /> }
 ])

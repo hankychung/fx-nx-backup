@@ -7,6 +7,7 @@ import { join } from 'path'
 import svgr from 'vite-plugin-svgr'
 import VitePluginStyleInject from 'vite-plugin-style-inject'
 // import viteCompression from 'vite-plugin-compression'
+import { deps } from '../../scripts/getNxDeps'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ui',
@@ -55,7 +56,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: ['react', 'react-dom', 'react/jsx-runtime']
+      external: ['react', 'react-dom', 'react/jsx-runtime', ...deps]
     },
     sourcemap: false,
     reportCompressedSize: false,

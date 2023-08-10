@@ -1,19 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import styles from './task-list-table.module.css'
-import { IFullViewTask, IScheduleTask, Task } from '@flyele-nx/types'
-import { Title } from '../../Row/Title'
-import { useProjectStore, useUserInfoStore } from '@flyele-nx/zustand-store'
+import { IFullViewTask, Task } from '@flyele-nx/types'
+import { useProjectStore } from '@flyele-nx/zustand-store'
 import { getFakeItem, getId } from '../../utils'
 import { useGanttList } from '../../hooks/useScheduleList'
-import cs from 'classnames'
 import useDomClickToHide from '../../hooks/useDomClickToHide'
-import { Time } from '../../Row/Time'
 import { useMemoizedFn } from 'ahooks'
 import { FAKE_ID } from '@flyele-nx/constant'
-import { getParentNode } from '@flyele-nx/utils'
-import { Indent } from './components/indent'
 import { TaskRow } from './components/task-row'
-import { TaskChildRow } from './components/task-child-row'
 
 export const TaskListTableDefault: React.FC<{
   rowHeight: number

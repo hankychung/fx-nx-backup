@@ -12,10 +12,12 @@ type currentStepType = 1 | 2
 
 export const Personal = ({
   onBack,
-  onFinished
+  onFinished,
+  onGoHome
 }: {
   onBack: () => void
   onFinished: () => void
+  onGoHome: () => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
   const [tag, setTag] = useState(0)
@@ -49,6 +51,7 @@ export const Personal = ({
           setCurrentStep(1)
         }}
         onFinished={onFinished}
+        onGoHome={onGoHome}
       />
     </PersonalContext.Provider>
   )

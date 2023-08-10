@@ -11,12 +11,14 @@ export const TeamContext = React.createContext<{
   activeTeamSize: string
   spaceInfo: ISpaceInfo
   spaceName: string
+  spaceId: string
   activeIndustryTagTitle: string
   setActiveIndustryTag?: React.Dispatch<React.SetStateAction<number>>
   setActiveTeamSize?: React.Dispatch<React.SetStateAction<string>>
   setSpaceInfo?: React.Dispatch<React.SetStateAction<ISpaceInfo>>
   setSpaceName?: React.Dispatch<React.SetStateAction<string>>
   setActiveIndustryTagTitle?: React.Dispatch<React.SetStateAction<string>>
+  setSpaceId?: React.Dispatch<React.SetStateAction<string>>
 }>({
   userId: '',
   activeIndustryTag: 0,
@@ -26,5 +28,6 @@ export const TeamContext = React.createContext<{
     icon_color: ''
   },
   spaceName: '',
-  activeIndustryTagTitle: ''
+  activeIndustryTagTitle: '',
+  spaceId: ''
 })

@@ -38,11 +38,13 @@ interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
 const _CreateProject = ({
   visible,
   goBack,
-  goNext
+  goNext,
+  onFinished
 }: {
   visible: boolean
   goBack: () => void
   goNext: () => void
+  onFinished: () => void
 }) => {
   const {
     userId,
@@ -50,7 +52,8 @@ const _CreateProject = ({
     activeTeamSize,
     activeIndustryTagTitle,
     spaceName,
-    spaceInfo
+    spaceInfo,
+    setSpaceId
   } = useContext(TeamContext)
   const oldIndustryId = useRef(0)
 
@@ -93,6 +96,7 @@ const _CreateProject = ({
       }
       const { data } = await workspaceApi.createSpace(params)
       spaceId.current = data
+      setSpaceId && setSpaceId(data)
 
       return data
     } catch (e) {
@@ -204,43 +208,6 @@ const _CreateProject = ({
               await batchCreateTask(allTasksParams)
             }
           }
-          // const allTaskRequests: Promise<any>[] = []
-          // groupIds.forEach((item) => {
-          //   const { tasks } = item
-          //   if (tasks && tasks.length) {
-          //     const allTasksParams: IBatchCreateParams[] = tasks.map(
-          //       (task, index) => {
-          //         return {
-          //           temp_id: `task-${item.group_id}-${index}`,
-          //           title: task.title,
-          //           project_id: projectId,
-          //           group_id: item.group_id,
-          //           matter_type: MatterType.matter,
-          //           priority_level: QuadrantValue.no_important_no_urgent,
-          //           repeat_type: 0,
-          //           is_dispatch: 0,
-          //           operate_type: FlowOperateType.AND,
-          //           start_time_full_day: 2,
-          //           start_time: dayjs().startOf('day').unix(),
-          //           end_time: dayjs().endOf('day').unix(),
-          //           end_time_full_day: 2,
-          //           widget: {
-          //             execute_addr: false,
-          //             remind: true,
-          //             repeat: true,
-          //             time: true
-          //           }
-          //         }
-          //       }
-          //     )
-          //     allTaskRequests.push(
-          //       TaskApi.batchCreateTask({
-          //         tasks: allTasksParams
-          //       })
-          //     )
-          //   }
-          // })
-          // await Promise.all(allTaskRequests)
         }
       }
     } catch (e) {
@@ -266,7 +233,7 @@ const _CreateProject = ({
     } finally {
       setLoading(false)
     }
-    // TODO 还要 告诉后端 新手引导已经完成
+    onFinished()
     goNext()
   })
 

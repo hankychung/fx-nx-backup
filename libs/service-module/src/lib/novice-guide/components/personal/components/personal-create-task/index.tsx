@@ -7,7 +7,7 @@ import { AddIcon } from '@flyele-nx/icon'
 import cs from 'classnames'
 import { FlowOperateType, MatterType, QuadrantValue } from '@flyele-nx/constant'
 import { TaskApi } from '@flyele-nx/service'
-import { IBatchCreateParams, ICreateParams } from '@flyele-nx/types'
+import { IBatchCreateParams } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 
 interface ITaskOnlyTitle {
@@ -17,11 +17,13 @@ interface ITaskOnlyTitle {
 const _PersonalCreateTask = ({
   visible,
   goBack,
-  onFinished
+  onFinished,
+  onGoHome
 }: {
   visible: boolean
   goBack: () => void
   onFinished?: () => void
+  onGoHome?: () => void
 }) => {
   const [messageApi, contextHolder] = message.useMessage()
   const [loading, setLoading] = useState(false)
@@ -77,6 +79,7 @@ const _PersonalCreateTask = ({
       })
 
       onFinished && onFinished()
+      onGoHome && onGoHome()
     } catch (e) {
       console.log('创建事项失败', e)
     } finally {

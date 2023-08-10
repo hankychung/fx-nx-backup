@@ -11,6 +11,15 @@ export const NoviceGuidePage = () => {
 
   const onFinished = (type: usageModeType) => {
     if (type === 'personal') {
+      console.log('wanc')
+    }
+    if (type === 'team') {
+      console.log('跳')
+    }
+  }
+
+  const onGoHome = (type: usageModeType) => {
+    if (type === 'personal') {
       navigate(RoutePath.board)
     }
     if (type === 'team') {
@@ -19,7 +28,11 @@ export const NoviceGuidePage = () => {
   }
   return (
     <div className={styles.container}>
-      <NoviceGuide userId={userId} onFinished={onFinished} />
+      <NoviceGuide
+        userId={userId}
+        onGoHome={onGoHome}
+        onFinished={onFinished}
+      />
     </div>
   )
 }

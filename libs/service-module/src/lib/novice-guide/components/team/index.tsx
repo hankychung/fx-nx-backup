@@ -17,10 +17,12 @@ type currentStepType = 1 | 2 | 3 | 4
 export const Team = ({
   userId,
   onBack,
-  onFinished
+  onFinished,
+  onGoHome
 }: {
   userId: string
   onBack: () => void
+  onGoHome: () => void
   onFinished: () => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
@@ -33,6 +35,7 @@ export const Team = ({
     icon_color: ''
   })
   const [spaceName, setSpaceName] = useState('')
+  const [spaceId, setSpaceId] = useState('')
 
   /**
    * 选择行业页面下一步
@@ -64,6 +67,8 @@ export const Team = ({
         spaceInfo: spaceInfo,
         spaceName: spaceName,
         activeIndustryTagTitle: activeIndustryTagTitle,
+        spaceId: spaceId,
+        setSpaceId: setSpaceId,
         setActiveIndustryTag: setActiveIndustryTag,
         setActiveTeamSize: setActiveTeamSize,
         setSpaceInfo: setSpaceInfo,
@@ -89,8 +94,9 @@ export const Team = ({
           setCurrentStep(2)
         }}
         goNext={onProjectGoNext}
+        onFinished={onFinished}
       />
-      <InviteMember visible={currentStep === 4} onFinished={onFinished} />
+      <InviteMember visible={currentStep === 4} onGoHome={onGoHome} />
     </TeamContext.Provider>
   )
 }

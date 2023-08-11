@@ -30,28 +30,14 @@ const Container = ({
   defaultActiveId,
   sortableElName
 }: Props) => {
-  const [actId, setActId] = useState('')
+  const [actId, setActId] = useState(defaultActiveId)
   const [prev, setPrev] = useState(false)
   const [next, setNext] = useState(false)
-  const [inDrop, setInDrop] = useState(false)
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     checkScroll()
   }, [tabs])
-
-  const onDragStart = () => {
-    setInDrop(true)
-  }
-
-  const onDragEnd = (result: any) => {
-    console.log('onDragEnd')
-    setInDrop(false)
-
-    if (!result.destination) {
-      return
-    }
-  }
 
   const onScroll = (_e: any) => {
     setTimeout(() => {
@@ -133,6 +119,11 @@ const Container = ({
     []
   )
 
+  const onClickTab = (id: string) => {
+    setActId(id)
+    handleClickTab(id)
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles['drop-container']}>
@@ -147,7 +138,7 @@ const Container = ({
               id={item.id}
               text={item.text}
               actId={actId}
-              clickCard={handleClickTab}
+              clickCard={onClickTab}
               showRadius={item.id === defaultActiveId}
               style={getTabStyle(tabs.length)}
             />

@@ -38,6 +38,15 @@ export const CommonTagList = ({
     })
   })
 
+  const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      onClick({
+        id: 0,
+        title: ''
+      })
+    }
+  }
+
   return (
     <div className={styles.commonTagList}>
       {tags.map((tag) => {
@@ -67,6 +76,7 @@ export const CommonTagList = ({
             maxLength={10}
             bordered={false}
             onChange={onChange}
+            onBlur={onBlur}
             style={{ width: '388px', fontSize: '20px' }}
           />
         </div>

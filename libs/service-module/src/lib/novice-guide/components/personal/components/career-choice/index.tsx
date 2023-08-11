@@ -21,6 +21,7 @@ export const CareerChoice = ({
     useContext(PersonalContext)
   // 职业类型
   const [tags, setTags] = useState<IIndustryList[]>([])
+  const [loading, setLoading] = useState(false)
 
   const onClickTags = useMemoizedFn((item: ITagsList) => {
     const { id, title } = item
@@ -37,6 +38,9 @@ export const CareerChoice = ({
   })
 
   const fetchIndustryList = useMemoizedFn(async () => {
+    if (loading) return
+
+    setLoading(true)
     try {
       const { data } = await UsercApi.getIndustryList({
         member_type: IndustryMemberType.PERSONAL
@@ -46,6 +50,8 @@ export const CareerChoice = ({
       }
     } catch (e) {
       console.log(e)
+    } finally {
+      setLoading(false)
     }
   })
 

@@ -1,19 +1,14 @@
-import React, { ChangeEvent, useMemo } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import styles from './index.module.scss'
 import { Input } from 'antd'
 import cs from 'classnames'
 
 const _GroupInput = ({
-  key,
-  editKey,
   value,
   groupIndex,
   index,
-  onChange,
-  onChangeEdit
+  onChange
 }: {
-  key: string
-  editKey: string
   value: string
   groupIndex: number
   index: number
@@ -22,23 +17,21 @@ const _GroupInput = ({
     groupIndex: number,
     index: number
   ) => void
-  onChangeEdit: (key: string, edit: boolean) => void
 }) => {
-  const isEdit = useMemo(() => {
-    return key === editKey
-  }, [editKey, key])
+  const [isEdit, setIsEdit] = useState(false)
 
   return (
     <div className={cs(styles.groupItem, { [styles.pd]: !isEdit })}>
       {isEdit ? (
         <Input
+          autoFocus
           defaultValue={value}
           placeholder="请输入分组名称"
           maxLength={8}
           bordered={false}
           onBlur={(e: ChangeEvent<HTMLInputElement>) => {
             onChange(e, groupIndex, index)
-            onChangeEdit(key, false)
+            setIsEdit(false)
           }}
           style={{
             minWidth: '100px',
@@ -49,7 +42,7 @@ const _GroupInput = ({
           allowClear
         />
       ) : (
-        <div onClick={() => onChangeEdit(key, true)}>{value}</div>
+        <div onClick={() => setIsEdit(true)}>{value}</div>
       )}
     </div>
   )

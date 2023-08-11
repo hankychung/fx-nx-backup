@@ -64,6 +64,13 @@ const _CreateProject = ({
 
   const [loading, setLoading] = useState(false)
   const [template, setTemplate] = useState<ITemplate[]>([])
+  const [updateInfo, setUpdateInfo] = useState<{
+    isUpdate: boolean
+    index: number
+  }>({
+    isUpdate: false,
+    index: 0
+  })
   const spaceId = useRef('')
 
   const groupInputRefs = useRef<IGroupInputRef[][]>([])
@@ -312,7 +319,7 @@ const _CreateProject = ({
     }
   )
 
-  const onAddGroup = (index: number) => {
+  const onAddGroup = useMemoizedFn((index: number) => {
     const newGroup = {
       group_name: '',
       group_id: `${Math.random()}`
@@ -321,16 +328,25 @@ const _CreateProject = ({
     const item = updatedTemplate[index].task_group
     item.push(newGroup)
     setTemplate(updatedTemplate)
+    setUpdateInfo({ isUpdate: true, index: index })
+  })
 
-    // 获取对应的GroupInput组件的ref对象
-    const groupIndex = item.length - 1
-    const groupInputRef = groupInputRefs.current[index][groupIndex]
+  useEffect(() => {
+    if (updateInfo && updateInfo.isUpdate) {
+      const { index } = updateInfo
+      const item = template[index].task_group
+      // 获取对应的GroupInput组件的ref对象
+      const groupIndex = item.length - 1
+      const groupInputRef = groupInputRefs.current[index][groupIndex]
 
-    // 调用changeInEdit方法将其设置为true，进入编辑状态
-    if (groupInputRef) {
-      groupInputRef.changeInEdit(true)
+      // 调用changeInEdit方法将其设置为true，进入编辑状态
+      if (groupInputRef) {
+        groupInputRef.changeInEdit(true)
+      }
+
+      setUpdateInfo({ isUpdate: false, index: 0 })
     }
-  }
+  }, [updateInfo, template])
 
   const onAddProject = useMemoizedFn(() => {
     if (template.length >= 20) {

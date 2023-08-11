@@ -49,7 +49,7 @@ const Option: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
               <span className={style['btn-text']}>分区</span>
             </div>
           </FlyBasePopper>
-          <div className={style.option}>
+          {/* <div className={style.option}>
             <div
               className={style.display}
               onClick={() => {
@@ -58,14 +58,10 @@ const Option: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
                 // })
               }}
             >
-              {/* <img src={displayIcon} alt="" /> */}
               <DisplayIcon />
               <span className={style['btn-text']}>显示</span>
             </div>
-            {/* {showTip && (
-                <img src={helpTip} alt="" className={style['img-tip']} />
-              )} */}
-          </div>
+          </div> */}
         </>
       )}
       <Dropdown

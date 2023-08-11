@@ -10,6 +10,10 @@ import { projectApi } from '@flyele-nx/service'
 export class ProjectHandler {
   private projectId = ''
 
+  private updateTimer: NodeJS.Timeout | null = null
+
+  private updateList: string[] = []
+
   updateProjectId(id: string) {
     this.projectId = id
   }
@@ -149,42 +153,54 @@ export class ProjectHandler {
 
   // 更新事项
   async updateTasksByApi(taskIds: string[]) {
-    const { taskList } = useProjectStore.getState()
+    if (this.updateTimer) {
+      clearTimeout(this.updateTimer)
+    }
 
-    const decentIds = [...new Set(taskIds)]
+    this.updateList.push(...taskIds)
 
-    const { data } = await projectApi.getTaskListOfProject({
-      projectId: this.projectId,
-      tasks_id: decentIds.join(','),
-      show_mode: 2
-    })
+    this.updateTimer = setTimeout(async () => {
+      const { taskList } = useProjectStore.getState()
 
-    useProjectStore.setState(
-      produce<IProjectState>((state) => {
-        data.forEach((task) => {
-          const { parent_id, task_id } = task
+      const decentIds = [...new Set(this.updateList)]
 
-          // 顶级事项
-          if (!parent_id) {
-            state.taskDict[task_id] = task
+      console.log('[updateByApi-ids]', decentIds)
 
-            // 当前列表不存在在插入至顶部
-            if (!taskList.includes(task_id)) {
-              state.taskList.unshift(task_id)
+      const { data } = await projectApi.getTaskListOfProject({
+        projectId: this.projectId,
+        tasks_id: decentIds.join(','),
+        show_mode: 2
+      })
+
+      useProjectStore.setState(
+        produce<IProjectState>((state) => {
+          data.forEach((task) => {
+            const { parent_id, task_id } = task
+
+            // 顶级事项
+            if (!parent_id) {
+              state.taskDict[task_id] = task
+
+              // 当前列表不存在在插入至顶部
+              if (!taskList.includes(task_id)) {
+                state.taskList = [...new Set([task_id, ...taskList])]
+              }
+
+              return
             }
 
-            return
-          }
-
-          // 子孙事项 - 重置其父事项收合状态
-          parent_id.split(',').forEach((id) => {
-            state.expandDict[id] = false
+            // 子孙事项 - 重置其父事项收合状态
+            parent_id.split(',').forEach((id) => {
+              state.expandDict[id] = false
+            })
           })
         })
-      })
-    )
+      )
 
-    console.log('[updateByApi-Gantt]', useProjectStore.getState())
+      this.updateList = []
+
+      console.log('[updateByApi-result]', useProjectStore.getState())
+    }, 500)
   }
 
   // 收合

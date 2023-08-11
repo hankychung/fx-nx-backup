@@ -1,24 +1,40 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, {
+  ChangeEvent,
+  forwardRef,
+  useState,
+  ForwardRefRenderFunction,
+  useImperativeHandle
+} from 'react'
 import styles from './index.module.scss'
 import { Input } from 'antd'
 import cs from 'classnames'
 
-const _GroupInput = ({
-  value,
-  groupIndex,
-  index,
-  onChange
-}: {
-  value: string
-  groupIndex: number
-  index: number
-  onChange: (
-    e: ChangeEvent<HTMLInputElement>,
-    groupIndex: number,
+export interface IGroupInputRef {
+  changeInEdit: (value: boolean) => void
+}
+
+const _GroupInput: ForwardRefRenderFunction<
+  IGroupInputRef,
+  {
+    value: string
+    groupIndex: number
     index: number
-  ) => void
-}) => {
+    onChange: (
+      e: ChangeEvent<HTMLInputElement>,
+      groupIndex: number,
+      index: number
+    ) => void
+  }
+> = ({ value, groupIndex, index, onChange }, ref) => {
   const [isEdit, setIsEdit] = useState(false)
+
+  useImperativeHandle(ref, () => {
+    return {
+      changeInEdit: (value: boolean) => {
+        setIsEdit(value)
+      }
+    }
+  })
 
   return (
     <div className={cs(styles.groupItem, { [styles.pd]: !isEdit })}>
@@ -47,4 +63,4 @@ const _GroupInput = ({
     </div>
   )
 }
-export const GroupInput = React.memo(_GroupInput)
+export const GroupInput = React.memo(forwardRef(_GroupInput))

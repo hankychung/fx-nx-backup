@@ -29,6 +29,7 @@ import dayjs from 'dayjs'
 import cs from 'classnames'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GroupInput } from './components/group-input'
+import type { IGroupInputRef } from './components/group-input'
 
 interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
   group_id: string // 分组id
@@ -64,6 +65,8 @@ const _CreateProject = ({
   const [loading, setLoading] = useState(false)
   const [template, setTemplate] = useState<ITemplate[]>([])
   const spaceId = useRef('')
+
+  const groupInputRefs = useRef<IGroupInputRef[][]>([])
 
   const onGoBack = useMemoizedFn(() => {
     goBack()
@@ -318,6 +321,15 @@ const _CreateProject = ({
     const item = updatedTemplate[index].task_group
     item.push(newGroup)
     setTemplate(updatedTemplate)
+
+    // 获取对应的GroupInput组件的ref对象
+    const groupIndex = item.length - 1
+    const groupInputRef = groupInputRefs.current[index][groupIndex]
+
+    // 调用changeInEdit方法将其设置为true，进入编辑状态
+    if (groupInputRef) {
+      groupInputRef.changeInEdit(true)
+    }
   }
 
   const onAddProject = useMemoizedFn(() => {
@@ -333,7 +345,11 @@ const _CreateProject = ({
       group_display: 'default',
       is_edit: true,
       project_name: '',
-      task_group: [],
+      task_group: [
+        { group_name: '待处理', group_id: `${Math.random()}` },
+        { group_name: '进行中', group_id: `${Math.random()}` },
+        { group_name: '已完成', group_id: `${Math.random()}` }
+      ],
       checked: 'normal'
     }
     const updatedTemplate = [...template]
@@ -407,9 +423,16 @@ const _CreateProject = ({
                   <div className={styles.text}>包含</div>
                   <div className={styles.groupBox}>
                     {item.task_group.map((taskGroup, groupIndex) => {
+                      if (!groupInputRefs.current[index]) {
+                        groupInputRefs.current[index] = []
+                      }
                       return (
                         <GroupInput
                           key={taskGroup.group_id}
+                          ref={(ref) =>
+                            ref &&
+                            (groupInputRefs.current[index][groupIndex] = ref)
+                          }
                           value={taskGroup.group_name}
                           groupIndex={groupIndex}
                           index={index}

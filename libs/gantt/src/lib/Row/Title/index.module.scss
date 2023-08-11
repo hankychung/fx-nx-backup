@@ -1,13 +1,14 @@
 .title {
   padding: 0 10px 0 0;
-  border-left: 1px solid rgba(232, 232, 232, 0.5);
+  // border-left: 1px solid rgba(232, 232, 232, 0.5);
   height: 100%;
-  width: 100%;
   display: flex;
   align-items: center;
   font-size: 13px;
-
+  box-sizing: border-box;
   &-active {
+    height: 100%;
+    width: 100%;
     border: 1px solid rgba(29, 210, 193, 1);
   }
 
@@ -98,7 +99,7 @@
 input {
   border: none;
   outline: none;
-
+  background: transparent;
   &::placeholder {
     color: #b4b4b4;
   }
@@ -113,7 +114,7 @@ input {
   padding: 0 5px;
   font-size: 9px;
   color: rgba(138, 138, 138, 1);
-
+  box-sizing: border-box;
   &:hover {
     background-color: rgba(248, 248, 248, 1);
   }
@@ -168,6 +169,7 @@ input {
   justify-content: flex-end;
   flex-shrink: 0;
   padding: 0 1px;
+  box-sizing: border-box;
 }
 
 .modal {

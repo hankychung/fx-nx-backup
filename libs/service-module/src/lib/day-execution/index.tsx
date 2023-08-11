@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import styles from './index.module.scss'
-import { useMemoizedFn, useMount } from 'ahooks'
+import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { Progress } from 'antd'
@@ -12,6 +12,7 @@ import { TimelineTaskList } from './components/timeline-task-list'
 import { Nodata } from './components/no-data'
 import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
 import { useScheduleStore } from '@flyele-nx/global-processor'
+import { emitter } from '@flyele-nx/utils'
 
 interface IProps {
   date: number
@@ -79,8 +80,7 @@ const _DayExecution = ({
    */
   const contentStyle = useMemo(() => {
     return {
-      height: show ? `calc(100% - ${subtractHeight}px)` : 0,
-      // height: show ? `calc(100vh - ${subtractHeight}px)` : 0,
+      height: show ? `calc(100vh - ${subtractHeight}px)` : 0,
       display: show ? 'block' : 'none'
     }
   }, [subtractHeight, show])
@@ -133,7 +133,7 @@ const _DayExecution = ({
   }, [day, taskDict, todayCompletedExecution])
 
   // 切换日期刷新列表
-  useEffect(() => {
+  useUpdateEffect(() => {
     !!day && init()
   }, [day, init])
 
@@ -147,6 +147,9 @@ const _DayExecution = ({
     if (onMount) {
       onMount()
     }
+    emitter.on('cacheWorkerInited', () => {
+      !!day && init()
+    })
   })
 
   return (

@@ -1,10 +1,18 @@
 import { service } from '../service'
-import { CommonResponse, IExternalListResponse } from '../typings'
+import {
+  CommonResponse,
+  IBatchCreateParams,
+  IExternalListResponse
+} from '../typings'
 import {
   IScheduleTask,
   IHoliday,
   IRelation,
-  ICreateParams
+  ICreateParams,
+  IDashboardCount,
+  // ITaskItem,
+  CommonListResponse,
+  IDashboard
 } from '@flyele-nx/types'
 import { IWorkflowStep } from '@flyele-nx/types'
 
@@ -130,7 +138,7 @@ class Task {
 
   getChildrenProcessRelation(task_id: string) {
     return service.get<CommonResponse<IRelation>>({
-      url: `${this.prefix}/${task_id}/relation`
+      url: `${this.prefixTask}/${task_id}/relation`
     })
   }
 
@@ -226,6 +234,96 @@ class Task {
         task_flow_step_id: curStepId,
         task_id: taskId
       }
+    })
+  }
+
+  getDashboradCountFinish() {
+    return service.get<IDashboardCount>({
+      url: `${this.prefix}/system/dashboard/count/type`,
+      params: {
+        finish_type: 2,
+        is_merge: 1
+      }
+    })
+  }
+
+  getDashboradCountNotFinish(options?: { doNotMerge?: boolean }) {
+    return service.get<IDashboardCount>({
+      url: `${this.prefix}/system/dashboard/count/type`,
+      params: {
+        finish_type: 1,
+        // 应该都不需要
+        // is_merge: 1,
+        is_merge: options?.doNotMerge ? undefined : 1
+      }
+    })
+  }
+
+  // 待安排
+  getToBeArranged({
+    pageRecord = 20,
+    pageNumber = 1,
+    project_id
+  }: {
+    pageRecord?: number
+    pageNumber?: number
+    project_id?: string
+  }) {
+    // return service.get<CommonListResponse<ITaskItem[]>>({
+    return service.get<any>({
+      url: `${this.prefix}/schedule/wait_arrange`,
+      params: {
+        page_record: pageRecord,
+        page_number: pageNumber,
+        project_id
+      }
+    })
+  }
+
+  getDashboard({
+    queryType,
+    state,
+    pageNumber = 1,
+    pageRecord = 20,
+    id,
+    doNotMerge
+  }: {
+    // 1->我关注的, 2->我派发的, 3->派发给我, 4->个人
+    queryType: number
+    /** 0-> 所有的 1->未完成, 2->已完成 */
+    state?: 0 | 1 | 2
+    pageNumber?: number
+    pageRecord?: number
+    id?: string
+    doNotMerge?: boolean
+  }) {
+    // return service.get<CommonResponse<IDashboard>>({
+    return service.get<any>({
+      url: `${this.prefix}/system/dashboard`,
+      params: {
+        query_type: queryType,
+        state,
+        page_number: pageNumber,
+        page_record: pageRecord,
+        task_id: id,
+        is_merge: doNotMerge ? undefined : queryType === 1 ? 1 : undefined
+      }
+    })
+  }
+
+  /**
+   * 批量创建任务
+   * is_dispatch 0 我参与 1： 我派发 如果不传 默认会是 0
+   * dispatch_batch 如果是无协作人或只有自己value为0，否则为1， 如果不传但 is_dispatch 传了 默认全部取 is_dispatch
+   */
+  async batchCreateTask(data: {
+    tasks: IBatchCreateParams[]
+    is_dispatch?: 0 | 1
+    dispatch_batch?: Record<string, 0 | 1>
+  }) {
+    return await service.post({
+      url: `${this.prefix}`,
+      data
     })
   }
 }

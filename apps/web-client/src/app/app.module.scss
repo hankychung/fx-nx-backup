@@ -8,3 +8,27 @@
     flex-grow: 1;
   }
 }
+
+// 全局滚动条样式
+::-webkit-scrollbar-track-piece {
+  position: relative;
+  right: 2px;
+}
+
+::-webkit-scrollbar {
+  padding-left: 12px;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 6px;
+  background: rgba(106, 106, 106, 0.7);
+
+  border: 1px solid #fff;
+  border-radius: 27px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(216, 216, 216, 1);
+}

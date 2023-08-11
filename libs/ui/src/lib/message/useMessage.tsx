@@ -18,7 +18,7 @@ declare type MsgType =
   | '上传错误'
   | '个人会员'
   | '团队会员'
-  | '应用发布'
+  | '模版发布'
 
 export type Msg = {
   msgType?: MsgType
@@ -136,7 +136,7 @@ export const useMessage = (): [
               />
             )
           })
-        case '应用发布':
+        case '模版发布':
           return messageApi.open({
             content: ' ',
             key,

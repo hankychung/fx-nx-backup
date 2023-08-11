@@ -9,6 +9,7 @@ import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
 import { TaskDispatchApi } from './lib/task-dispatch'
 import { LabelApi } from './lib/label'
+import { OfficialApi } from './lib/official'
 import SSe from './lib/sse'
 import './lib/payment'
 
@@ -42,15 +43,22 @@ import * as AuthConst from './lib/typings/auth/const'
 // 空间
 import { workspaceApi } from './lib/workspace'
 
+import { EmptyApi } from './lib/empty'
+
 // 订单管理系统
 import * as OrderSystemType from './lib/typings/order-system'
 import * as OrderSystemConst from './lib/typings/order-system/const'
 import { projectApi } from './lib/project'
+import { envStore } from './lib/env'
 
 export * from './lib/service'
 export * from './lib/env'
 export * from './lib/biz'
 export * from './lib/task'
+
+export const updateServiceNxEnv = envStore.updateEnvByClient.bind(envStore)
+
+export const updateServiceNxToken = service.updateToken.bind(service)
 
 export {
   service,
@@ -64,7 +72,9 @@ export {
   LabelApi,
   workspaceApi,
   projectApi,
-  AuthConst
+  AuthConst,
+  OfficialApi,
+  EmptyApi
 }
 
 export type {

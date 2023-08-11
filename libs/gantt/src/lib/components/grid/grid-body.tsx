@@ -1,8 +1,10 @@
-import React, { ReactChild } from 'react'
-import { Task } from '@flyele-nx/types'
+import React, { ReactChild, useRef } from 'react'
 import { addToDate } from '../../helpers/date-helper'
 import styles from './grid.module.css'
-
+import { Task } from '@flyele-nx/types'
+import { useGanttList } from '../../hooks/useScheduleList'
+import { getId } from '../../utils'
+import cs from 'classnames'
 export type GridBodyProps = {
   tasks: Task[]
   dates: Date[]
@@ -21,6 +23,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   todayColor,
   rtl
 }) => {
+  const { hoverId, batchUpdateHoverId } = useGanttList()
   let y = 0
   const gridRows: ReactChild[] = []
   const rowLines: ReactChild[] = [
@@ -33,15 +36,23 @@ export const GridBody: React.FC<GridBodyProps> = ({
       className={styles.gridRowLine}
     />
   ]
+  const domRef = useRef<SVGRectElement>(null)
   for (const task of tasks) {
+    const id = getId(task)
     gridRows.push(
       <rect
+        onMouseEnter={() => {
+          batchUpdateHoverId(id)
+        }}
+        ref={domRef}
         key={'Row' + task.id}
         x="0"
         y={y}
         width={svgWidth}
         height={rowHeight}
-        className={styles.gridRow}
+        className={cs(styles.gridRow, {
+          [styles.gridHoverRow]: id === hoverId
+        })}
       />
     )
     rowLines.push(

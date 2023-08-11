@@ -129,7 +129,7 @@ const _ScheduleList: ForwardRefRenderFunction<
       style={{ backgroundColor: isDarkMode ? 'unset' : '#F6F8FA' }}
     >
       {(decentList ?? []).length ? (
-        <div>
+        <>
           {decentList.map((i, index) =>
             // curTime 应该读取后端的，参考原来的代码 app/utils/timeGetter.ts
             scheduleType === 'WEEKLY' ? (
@@ -165,7 +165,7 @@ const _ScheduleList: ForwardRefRenderFunction<
               />
             )
           )}
-        </div>
+        </>
       ) : (
         <EmptyData
           isError={isError}

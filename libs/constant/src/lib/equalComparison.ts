@@ -129,8 +129,8 @@ export const identityEqualComparisonData: IEqualComparison = {
       },
       {
         key: 'personalApplication',
-        title: '个人应用库',
-        desc: '会员可快速制作事项应用，规范事项工作流。',
+        title: '个人模版库',
+        desc: '会员可快速制作事项模版，规范事项工作流。',
         free: false,
         personal: true,
         team: true
@@ -297,7 +297,7 @@ export const spaceEqualComparisonData: IEqualComparison = {
       },
       {
         key: 'applicationTemplateNum',
-        title: '应用模版数量',
+        title: '模版模版数量',
         free: '2个',
         personal: '2个',
         team: true

@@ -876,3 +876,7 @@ export interface ICreateParams {
   operate_type?: FlowOperateType
   execute_at?: number
 }
+
+export interface IBatchCreateParams extends ICreateParams {
+  temp_id: string // 临时id 没有这个东西 后端接口会跳过
+}

@@ -1,0 +1,33 @@
+.system-container {
+  // width: 395px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  position: relative;
+}
+
+.hideXScrollbar > div {
+  overflow-x: hidden !important;
+}
+
+.system-tab > div {
+  width: 100px;
+}
+
+.more-float {
+  width: 77px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: rgba(239, 240, 241, 1);
+  color: rgba(106, 106, 106, 1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  bottom: 14px;
+  position: absolute;
+  transform: translate(-50%);
+  left: 50%;
+  cursor: pointer;
+}

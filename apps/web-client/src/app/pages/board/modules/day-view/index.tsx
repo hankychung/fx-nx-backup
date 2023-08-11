@@ -8,6 +8,7 @@ import { CurTimeContext } from './context/current-time'
 import { timeGetter, useCurTime } from '@flyele-nx/utils'
 import { useMount } from 'ahooks'
 import dayjs from 'dayjs'
+import System from '../system'
 
 export const DayView: FC = () => {
   const defaultDate = timeGetter.getDateRoughly()
@@ -41,7 +42,9 @@ export const DayView: FC = () => {
         </div>
 
         {/* right */}
-        <div>rgt</div>
+        <div className={style.right}>
+          <System />
+        </div>
       </div>
     </CurTimeContext.Provider>
   )

@@ -1,17 +1,26 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMemoizedFn } from 'ahooks'
 import { RoutePath } from '../../routes/const'
 import { SocketHandler } from '@flyele-nx/ws'
 import { Advertisement, FeedbackBtn } from '@flyele-nx/ui'
 import { LoginInput, GlobalInfoHandler } from '@flyele-nx/service-module'
-import { envStore, IUserInfo, UsercApi } from '@flyele-nx/service'
+import { envStore, IUserInfo, UsercApi, OfficialApi } from '@flyele-nx/service'
 import styles from './index.module.scss'
+import { LocalStore } from '@flyele-nx/utils'
 
 const Login: FC = () => {
   const navigate = useNavigate()
-
   const isProdEnv = envStore.getEnv() === 'prod'
+
+  const goToBoard = useMemoizedFn(() => {
+    const isNewUser = true
+    if (isNewUser) {
+      navigate(RoutePath.noviceGuide)
+      return
+    }
+    navigate(RoutePath.board)
+  })
 
   const updateVipInfo = useMemoizedFn(async () => {
     const res = await UsercApi.getCombo()
@@ -53,12 +62,36 @@ const Login: FC = () => {
     }
   })
 
+  const updateUserSetting = useMemoizedFn(async () => {
+    const res = await UsercApi.getUserSetting()
+    GlobalInfoHandler.updateUserSetting(res.data)
+  })
+
+  const updateEnterpriseInfo = useMemoizedFn(async (corpId: string) => {
+    const [enterpriseTakers, enterpriseDetail] = await Promise.all([
+      OfficialApi.getAddressBook(corpId).then(
+        (res) => res.data.corp_user ?? []
+      ),
+      OfficialApi.getCorpDetail(corpId).then((res) => res.data)
+    ])
+    GlobalInfoHandler.updateUserEnterpriseInfo({
+      ...enterpriseDetail
+    })
+    GlobalInfoHandler.updateUserEnterpriseTakers(enterpriseTakers)
+  })
+
   const onLoginSuccess = useMemoizedFn(async (data?: IUserInfo) => {
     if (data) {
       GlobalInfoHandler.updateUserInfo(data)
       await updateVipInfo()
+      await updateUserSetting()
+
+      if (data.corpid) {
+        // 如果是企业
+        await updateEnterpriseInfo(data.corpid)
+      }
     }
-    navigate(RoutePath.board)
+    goToBoard()
 
     SocketHandler.initSocket()
   })
@@ -68,6 +101,12 @@ const Login: FC = () => {
       ' https://fxkj15.qiyukf.com/client?k=32dc07afddda5179a2b418a9daa1fbca&wp=1&robotShuntSwitch=0'
     )
   }
+
+  useEffect(() => {
+    if (LocalStore.getToken()) {
+      navigate(RoutePath.board)
+    }
+  }, [navigate])
 
   return (
     <div className={styles.wrap}>

@@ -17,8 +17,7 @@ class Service {
 
   token =
     LocalStore.getToken() ||
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTA5NzY1MDcsImlhdCI6MTY5MDk2ODI5NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTA5MDQ2MDYzMzAwODgzIiwiRGV2aWNlSUQiOiIzOGVjYmM4OGYwZmVlOTZjODE1ZjRiZTgwY2RkNmMxNjYwZjM2Y2NiZjI0ZTYwMTg1MjNmMmZkZDk5MDU2MmUyIiwiUGxhdGZvcm0iOiJtb2JpbGUiLCJDbGllbnRWZXJzaW9uIjoiMi4zMC4xMCIsIlBob25lIjoiIiwiTmlja05hbWUiOiIiLCJBdmF0YXIiOiIifQ.FQEZUP8MTUY8NuA4qFv7re7c-FxjBiQ96Tj4nQ0KnKc'
-
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE3MjU4MjUsImlhdCI6MTY5MTcxNzE4NiwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTA5MDQ2MDYzMzAwODgzIiwiRGV2aWNlSUQiOiIzOGVjYmM4OGYwZmVlOTZjODE1ZjRiZTgwY2RkNmMxNjYwZjM2Y2NiZjI0ZTYwMTg1MjNmMmZkZDk5MDU2MmUyIiwiUGxhdGZvcm0iOiJwYyIsIkNsaWVudFZlcnNpb24iOiIyLjMwLjEwIiwiUGhvbmUiOiIiLCJOaWNrTmFtZSI6IiIsIkF2YXRhciI6IiJ9.fP67I2ePM9gUj9oMLeHB5LwGvnAFccAb4ZKmSS3jIAE'
   /**
    * token失效
    */
@@ -35,7 +34,12 @@ class Service {
         // before request is sent
         config.headers.Authorization = this.token
 
-        config.baseURL = envStore.getHost()
+        if (config.data && config.data.NxBaseUrl) {
+          config.baseURL = config.data.NxBaseUrl
+          delete config.data.NxBaseUrl
+        } else {
+          config.baseURL = envStore.getHost()
+        }
 
         return config
       },

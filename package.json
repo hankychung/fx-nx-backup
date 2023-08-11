@@ -35,6 +35,7 @@
     "d3-transition": "^2.0.0",
     "d3-zoom": "^2.0.0",
     "dayjs": "^1.11.7",
+    "html2canvas": "^1.4.1",
     "idb-keyval": "^6.2.0",
     "immer": "^10.0.2",
     "jszip": "^3.10.1",

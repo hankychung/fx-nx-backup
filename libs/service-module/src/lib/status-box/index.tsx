@@ -21,15 +21,31 @@ import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
 import { AcceptOnceMany } from '../accept-once-many'
 import { useScheduleStore, useUserInfoStore } from '@flyele-nx/global-processor'
-import { TaskHandler } from '../schedule-list/utils/taskHandler'
 import dayjs from 'dayjs'
-import { getChildrenDict, getKey } from '../schedule-list/utils'
+import { getChildrenDict } from '../schedule-list/utils'
 import { WorkflowOperation } from '../workflow-operation'
 import { getOperationStatus } from '../workflow-operation/utils'
 import { MatterType } from '@flyele-nx/constant'
 
 interface IProps {
-  task: IScheduleTask
+  task: Pick<
+    IScheduleTask,
+    | 'repeat_id'
+    | 'ref_task_id'
+    | 'identity'
+    | 'finish_time'
+    | 'cycle_date'
+    | 'cycle'
+    | 'state'
+    | 'repeat_list'
+    | 'repeat_type'
+    | 'dispatch_id'
+    | 'matter_type'
+    | 'has_child'
+    | 'flow_step_id'
+    | 'creator_id'
+    | 'complete_at'
+  >
   changeStatus?: () => void
   resetStatus?: () => void
   isVipWin?: boolean
@@ -140,8 +156,8 @@ const _StatusBox: FC<IProps> = (props) => {
    * @param isBatch 是否批量完成
    */
   const handleComplete = async (isBatch?: boolean) => {
-    changeStatus?.()
     setVisible(false)
+
     try {
       if (!task.finish_time) {
         setUpdating(true)
@@ -150,24 +166,16 @@ const _StatusBox: FC<IProps> = (props) => {
           timer: ANIMATION_DURATION
         })
 
+        changeStatus?.()
+
         setUpdating(false)
       }
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 
-      const state = changeCompleteState(task.state)
-
-      TaskHandler.batchModify({
-        keys: [task.ref_task_id],
-        keysWithRepeatIds: [getKey(task)],
-        diff: {
-          finish_time: task.finish_time ? 0 : dayjs().unix(),
-          state
-        }
-      })
-
       await dispatchApi(isBatch)
     } catch (error) {
+      console.error('「complete error」', error)
       resetStatus?.()
     }
   }
@@ -219,7 +227,7 @@ const _StatusBox: FC<IProps> = (props) => {
         return (
           <WorkflowOperation
             creator_id={task.creator_id}
-            taskId={task.ref_task_id}
+            task={task}
             curStepId={task.flow_step_id}
             complete_at={task.complete_at}
             size={14}

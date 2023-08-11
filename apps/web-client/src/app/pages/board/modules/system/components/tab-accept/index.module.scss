@@ -1,0 +1,16 @@
+.avatar {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 1px solid #f1f1f5;
+  overflow: hidden;
+  background-size: cover;
+  opacity: 0.5;
+}
+
+div.done {
+  div,
+  span {
+    color: #b4b4b4 !important; // 根据 UI 图需要将文字设置置灰颜色
+  }
+}

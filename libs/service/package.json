@@ -1,5 +1,12 @@
 {
   "name": "@flyele-nx/service",
-  "version": "1.0.1",
-  "type": "commonjs"
+  "version": "1.0.6",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  }
 }

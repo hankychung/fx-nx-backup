@@ -3,7 +3,6 @@ import { GridProps, Grid } from '../grid/grid'
 import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
 import styles from './gantt.module.css'
-import { ReactComponent as ShowList } from '../../../assets/icons/show_list.svg'
 
 export type TaskGanttProps = {
   gridProps: GridProps
@@ -47,7 +46,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={gridProps.svgWidth - 42}
-        height={42}
+        height={41}
         fontFamily={barProps.fontFamily}
       >
         <Calendar {...calendarProps} isTop={true} headerHeight={40} />
@@ -66,7 +65,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
         className={styles.horizontalContainer}
         style={
           ganttHeight
-            ? { height: ganttHeight, width: gridProps.svgWidth }
+            ? { height: `calc(100% - 74px)`, width: gridProps.svgWidth }
             : { width: gridProps.svgWidth }
         }
       >

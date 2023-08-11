@@ -15,4 +15,9 @@
     grid-template-rows: repeat(2, auto) 1fr;
     row-gap: 8px;
   }
+  .right {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 20px;
+  }
 }

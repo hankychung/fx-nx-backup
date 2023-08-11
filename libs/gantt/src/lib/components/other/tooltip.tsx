@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Task, IFullViewBarTask } from '@flyele-nx/types'
 import styles from './tooltip.module.css'
+import { IFullViewBarTask, Task } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 export type TooltipProps = {
@@ -44,7 +44,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   useEffect(() => {
     if (tooltipRef.current) {
       const tooltipHeight = tooltipRef.current.offsetHeight * 1.1
-      const tooltipWidth = 0
+      const tooltipWidth = tooltipRef.current.offsetWidth * 1.1
 
       let newRelatedY = task.index * rowHeight - scrollY + headerHeight
       let newRelatedX: number
@@ -59,8 +59,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
           newRelatedY += rowHeight
         }
       } else {
-        console.log(task, taskListWidth, scrollX, tooltipWidth)
-
         newRelatedX = task.x2 + arrowIndent * 1.5 + taskListWidth - scrollX
         const tooltipLeftmostPoint = tooltipWidth + newRelatedX
         const fullChartWidth = taskListWidth + svgContainerWidth
@@ -109,6 +107,38 @@ export const Tooltip: React.FC<TooltipProps> = ({
     </div>
   )
 }
+
+// export const StandardTooltipContent: React.FC<{
+//   task: Task;
+//   fontSize: string;
+//   fontFamily: string;
+// }> = ({ task, fontSize, fontFamily }) => {
+//   const style = {
+//     fontSize,
+//     fontFamily,
+//   };
+//   return (
+//     <div className={styles.tooltipDefaultContainer} style={style}>
+//       <b style={{ fontSize: fontSize + 6 }}>{`${
+//         task.name
+//       }: ${task.start.getDate()}-${
+//         task.start.getMonth() + 1
+//       }-${task.start.getFullYear()} - ${task.end.getDate()}-${
+//         task.end.getMonth() + 1
+//       }-${task.end.getFullYear()}`}</b>
+//       {task.end.getTime() - task.start.getTime() !== 0 && (
+//         <p className={styles.tooltipDefaultContainerParagraph}>{`Duration: ${~~(
+//           (task.end.getTime() - task.start.getTime()) /
+//           (1000 * 60 * 60 * 24)
+//         )} day(s)`}</p>
+//       )}
+
+//       <p className={styles.tooltipDefaultContainerParagraph}>
+//         {!!task.progress && `Progress: ${task.progress} %`}
+//       </p>
+//     </div>
+//   );
+// };
 
 export const StandardTooltipContent: React.FC<{
   task: Task

@@ -120,26 +120,50 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     const filteredTasks: Task[] = []
     const modifyExpend: string[] = []
 
-    for (const key in expandDict) {
-      if (expandDict[key]) modifyExpend.push(key)
-    }
-    const sum = (key: string) => {
-      childrenDict[key] &&
-        childrenDict[key].forEach((a) => {
-          filteredTasks.push(taskDict[a] as Task)
-          if (childrenDict[a]) {
-            sum(a)
-          }
-        })
-    }
-    taskList.forEach((key) => {
-      if (modifyExpend.includes(key)) {
-        filteredTasks.push(taskDict[key] as Task)
-        sum(key)
-        return
+    if (tasks && tasks.length > 0) {
+      for (const key in expandDict) {
+        if (expandDict[key]) modifyExpend.push(key)
       }
-      filteredTasks.push(taskDict[key] as Task)
-    })
+      const sum = (key: string) => {
+        childrenDict[key] &&
+          childrenDict[key].forEach((a) => {
+            const i = taskDict[a]
+            const item = {
+              ...taskDict[a],
+              start: i.start_time ? new Date(i.start_time * 1000) : new Date(),
+              end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
+              name: i.title,
+              id: i.task_id,
+              type: 'task',
+              hideChildren: false,
+              displayOrder: 1
+            }
+            filteredTasks.push(item as Task)
+            if (childrenDict[a]) {
+              sum(a)
+            }
+          })
+      }
+      taskList.forEach((key) => {
+        const i = taskDict[key]
+        const item = {
+          ...taskDict[key],
+          start: i.start_time ? new Date(i.start_time * 1000) : new Date(),
+          end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
+          name: i.title,
+          id: i.task_id,
+          type: 'task',
+          hideChildren: false,
+          displayOrder: 1
+        }
+        if (modifyExpend.includes(key)) {
+          filteredTasks.push(item as Task)
+          sum(key)
+          return
+        }
+        filteredTasks.push(item as Task)
+      })
+    }
     const [startDate, endDate] = ganttDateRange(
       filteredTasks,
       viewMode,
@@ -172,7 +196,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     )
     console.log('oooo')
   }, [
-    // tasks,
     viewMode,
     preStepsCount,
     rowHeight,
@@ -191,11 +214,11 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     milestoneBackgroundColor,
     milestoneBackgroundSelectedColor,
     rtl,
-    // scrollX,
     taskDict,
     expandDict,
     taskList,
-    childrenDict
+    childrenDict,
+    tasks
   ])
 
   useEffect(() => {

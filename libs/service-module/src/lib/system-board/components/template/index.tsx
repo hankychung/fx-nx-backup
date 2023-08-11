@@ -1,5 +1,5 @@
 import React, {
-  useState,
+  // useState,
   // useCallback,
   useEffect,
   useRef,
@@ -10,14 +10,14 @@ import React, {
 } from 'react'
 import { Empty } from '../empty'
 // import useSubscribe from 'hooks/useSubscribe'
-import { useUpdateBoard } from '../../hooks/useUpdateBoard'
+// import { useUpdateBoard } from '../../hooks/useUpdateBoard'
 import { Item as LikeItem } from '../tab-like'
 import { Item as DispatchItem } from '../tab-dispatch'
 import { Item as AcceptItem } from '../tab-accept'
 import { ToBeArrangedItem } from '../tab-tobe-arranged'
 
-import { cloneDeep } from 'lodash'
-import { SortableContent } from '@flyele-nx/ui'
+// import { cloneDeep } from 'lodash'
+// import { SortableContent } from '@flyele-nx/ui'
 import { useInfiniteScroll, useMemoizedFn } from 'ahooks'
 import style from './index.module.scss'
 // import More from '../More'
@@ -33,19 +33,19 @@ import { TaskApi } from '@flyele-nx/service'
 import classNames from 'classnames'
 import { MoreIcon } from '@flyele-nx/icon'
 
-const initPage = {
-  finished: { page: 1, done: false },
-  unFinished: { page: 1, done: false }
-}
+// const initPage = {
+//   finished: { page: 1, done: false },
+//   unFinished: { page: 1, done: false }
+// }
 
 const PAGE_RECORD = 20
 
-const uselessChange = (show: boolean, dom: HTMLDivElement) => {
-  return (
-    (show && dom.style.display === 'flex') ||
-    (!show && dom.style.display === 'none')
-  )
-}
+// const uselessChange = (show: boolean, dom: HTMLDivElement) => {
+//   return (
+//     (show && dom.style.display === 'flex') ||
+//     (!show && dom.style.display === 'none')
+//   )
+// }
 
 // let timer: NodeJS.Timeout | null = null
 
@@ -65,10 +65,10 @@ const TabPersonal: ForwardRefRenderFunction<
 
   // const [newTask, setNewTask] = useState<string[]>([]) //待安排新增数据
 
-  const showMoreBtn = useMemo(
-    () => (nowTab && nowTab.count && nowTab.count > 20) || !!nowTab.total,
-    [nowTab]
-  )
+  // const showMoreBtn = useMemo(
+  //   () => (nowTab && nowTab.count && nowTab.count > 20) || !!nowTab.total,
+  //   [nowTab]
+  // )
 
   /**
    * 取消事项后更新 newTask

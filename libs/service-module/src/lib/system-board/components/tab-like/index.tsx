@@ -8,11 +8,11 @@ import cs from 'classnames'
 import { FlyTextTooltip } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import Takers from '../takers'
-import { StatusBox } from '@flyele-nx/service-module'
 // import { useMessage } from '@flyele-nx/ui'
 import { RepeatIcon } from '@flyele-nx/icon'
 import { IDashboardItem, IScheduleTask } from '@flyele-nx/types'
 import { convertToTask } from '../../utils'
+import { StatusBox } from '../../../status-box'
 
 interface IProps {
   item: IDashboardItem

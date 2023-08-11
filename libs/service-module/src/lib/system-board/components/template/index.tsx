@@ -8,13 +8,13 @@ import React, {
   ForwardRefRenderFunction,
   useMemo
 } from 'react'
-import { Empty } from '../../../../../board/components/empty'
+import { Empty } from '../Empty'
 // import useSubscribe from 'hooks/useSubscribe'
-import { useUpdateBoard } from '../../../../hooks/useUpdateBoard'
+import { useUpdateBoard } from '../../hooks/useUpdateBoard'
 import { Item as LikeItem } from '../tab-like'
 import { Item as DispatchItem } from '../TabDispatch'
 import { Item as AcceptItem } from '../tab-accept'
-import { Item as ToBeArrangedItem } from '../TabToBeArranged'
+import { ToBeArrangedItem } from '../TabToBeArranged'
 
 import { cloneDeep } from 'lodash'
 import { SortableContent } from '@flyele-nx/ui'

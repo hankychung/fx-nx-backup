@@ -14,7 +14,7 @@ import Template from './components/template'
 
 import style from './index.module.scss'
 import { ISortableTab, ISystemBoardNormalRef } from '@flyele-nx/types'
-import { useUpdateBoard } from '../../hooks/useUpdateBoard'
+import { useUpdateBoard } from './hooks/useUpdateBoard'
 import { TaskApi, UsercApi } from '@flyele-nx/service'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 

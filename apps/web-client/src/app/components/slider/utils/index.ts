@@ -67,7 +67,7 @@ export const menuObj: Record<string, IMenuIconType> = {
     icon: MenuApplicationIcon,
     defaultColor: '#6C6C6C',
     activeColor: '#262626',
-    name: '应用'
+    name: '模版'
   },
   [RoutePath.review]: {
     icon: MenuReviewIcon,

@@ -179,7 +179,7 @@ export const seedDates = (
         currentDate = addToDate(currentDate, 1, 'hour')
         break
     }
-    dates.push(currentDate)
+    dates.push(currentDate || new Date())
   }
   return dates
 }

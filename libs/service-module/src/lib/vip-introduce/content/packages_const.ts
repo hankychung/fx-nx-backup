@@ -163,7 +163,7 @@ export const memberPowerStaticData: IInfoType[] = [
         active: true
       },
       {
-        title: '团队目标、团队应用库',
+        title: '团队目标、团队模版库',
         active: true
       }
     ]

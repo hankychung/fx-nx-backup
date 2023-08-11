@@ -130,7 +130,7 @@ export const createVipMealText = (): TemIProps => {
         },
         { title: '目标', desc: '制定团队目标，拆解到团队成员', icon: target },
         {
-          title: '应用库',
+          title: '模版库',
           desc: '搭建事项模板、业务流程，提高协作效率',
           icon: application
         }

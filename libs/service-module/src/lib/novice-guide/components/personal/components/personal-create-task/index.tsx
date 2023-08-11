@@ -69,9 +69,9 @@ const _PersonalCreateTask = ({
   }
 
   const goNext = useMemoizedFn(async () => {
-    console.log('@@ goNext tasks', tasks)
     if (loading) return
     setLoading(true)
+
     try {
       const taskParams = getTaskParams(tasks)
       await TaskApi.batchCreateTask({

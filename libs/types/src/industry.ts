@@ -25,6 +25,7 @@ export interface IIndustryTask {
 
 export interface IIndustryTaskGroup {
   group_name: string // 分组名称
+  add_month?: number // 当前时间上 加几个月，替换上面 group_name 的文字用的 group_name 的格式为 '+x 月'
   tasks?: IIndustryTask[] // 事项
 }
 

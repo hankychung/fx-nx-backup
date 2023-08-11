@@ -30,12 +30,13 @@ import cs from 'classnames'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GroupInput } from './components/group-input'
 
-interface ITemplate extends IIndustryInfo {
-  checked: 'checked' | 'normal'
-}
-
 interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
   group_id: string // 分组id
+}
+
+interface ITemplate extends IIndustryInfo {
+  checked: 'checked' | 'normal'
+  task_group: IIndustryTaskGroupWithId[]
 }
 
 const _CreateProject = ({
@@ -63,8 +64,6 @@ const _CreateProject = ({
   const [loading, setLoading] = useState(false)
   const [template, setTemplate] = useState<ITemplate[]>([])
   const spaceId = useRef('')
-
-  const [editGroupKey, setEditGroupKey] = useState('')
 
   const onGoBack = useMemoizedFn(() => {
     goBack()
@@ -259,8 +258,22 @@ const _CreateProject = ({
 
   const makeData = (data: IIndustryInfo[]): ITemplate[] => {
     return data.map((item, index) => {
+      const taskGroup = item.task_group
       return {
         ...item,
+        task_group: taskGroup.map((group) => {
+          // 对于name的特殊处理
+          let name = group.group_name
+          if (group.add_month) {
+            name = dayjs().add(group.add_month, 'month').format('MM月')
+          }
+
+          return {
+            ...group,
+            group_name: name,
+            group_id: `${Math.random()}`
+          }
+        }),
         checked: index > 1 ? 'normal' : 'checked'
       }
     })
@@ -296,17 +309,10 @@ const _CreateProject = ({
     }
   )
 
-  const onChangeEdit = useMemoizedFn((key: string, edit: boolean) => {
-    if (edit) {
-      setEditGroupKey(key)
-    } else {
-      setEditGroupKey('')
-    }
-  })
-
   const onAddGroup = (index: number) => {
     const newGroup = {
-      group_name: ''
+      group_name: '',
+      group_id: `${Math.random()}`
     }
     const updatedTemplate = [...template]
     const item = updatedTemplate[index].task_group
@@ -345,6 +351,7 @@ const _CreateProject = ({
     if (visible) {
       if (oldIndustryId.current === activeIndustryTag) return
 
+      setTemplate([])
       fetchTemplate(activeIndustryTag)
     }
   }, [visible, activeIndustryTag, fetchTemplate])
@@ -400,16 +407,13 @@ const _CreateProject = ({
                   <div className={styles.text}>包含</div>
                   <div className={styles.groupBox}>
                     {item.task_group.map((taskGroup, groupIndex) => {
-                      const key = `${Math.random()}-${groupIndex}`
                       return (
                         <GroupInput
-                          key={key}
-                          editKey={editGroupKey}
+                          key={taskGroup.group_id}
                           value={taskGroup.group_name}
                           groupIndex={groupIndex}
                           index={index}
                           onChange={onChangeGroupName}
-                          onChangeEdit={onChangeEdit}
                         />
                       )
                     })}

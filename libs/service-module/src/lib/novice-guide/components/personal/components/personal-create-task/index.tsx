@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { CommonPage } from '../../../common/page'
 import { useMemoizedFn } from 'ahooks'
 import styles from './index.module.scss'
-import { Input, message } from 'antd'
+import { Input } from 'antd'
 import { AddIcon } from '@flyele-nx/icon'
 import cs from 'classnames'
 import { FlowOperateType, MatterType, QuadrantValue } from '@flyele-nx/constant'
 import { TaskApi } from '@flyele-nx/service'
 import { IBatchCreateParams } from '@flyele-nx/types'
 import dayjs from 'dayjs'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 interface ITaskOnlyTitle {
   title: string
@@ -25,7 +26,6 @@ const _PersonalCreateTask = ({
   onFinished?: () => void
   onGoHome?: () => void
 }) => {
-  const [messageApi, contextHolder] = message.useMessage()
   const [loading, setLoading] = useState(false)
   const [tasks, setTasks] = useState<ITaskOnlyTitle[]>([
     { title: '' },
@@ -34,8 +34,8 @@ const _PersonalCreateTask = ({
 
   const addMoreTask = useMemoizedFn(() => {
     if (tasks.length >= 20) {
-      messageApi.open({
-        type: 'error',
+      globalNxController.showMsg({
+        msgType: '错误',
         content: '新手引导最多创建20个事项'
       })
       return
@@ -97,7 +97,6 @@ const _PersonalCreateTask = ({
       loadingNext={loading}
       nextBtnText="开始使用"
     >
-      {contextHolder}
       <div className={styles.personalCreateTaskRoot}>
         {tasks.map((task, index) => (
           <div key={index} className={styles.itemBox}>

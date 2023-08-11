@@ -1,7 +1,8 @@
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
 import { ScheduleUtils } from '@flyele-nx/service-module'
 import { envStore } from '@flyele-nx/service'
-import { LocalStore, emitter } from '@flyele-nx/utils'
+import { LocalStore, emitter, timeGetter } from '@flyele-nx/utils'
+import dayjs from 'dayjs'
 
 const initCacheWorker = async ({ userId }: { userId: string }) => {
   await ServiceWorkerUtils.login({
@@ -16,7 +17,9 @@ const initCacheWorker = async ({ userId }: { userId: string }) => {
 
   emitter.emit('cacheWorkerInited')
 
-  await ScheduleUtils.initTodayList()
+  await ScheduleUtils.initTodayList({
+    date: dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')
+  })
 }
 
 export { initCacheWorker }

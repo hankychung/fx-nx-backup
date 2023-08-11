@@ -64,7 +64,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     setShowFinished(!show)
   })
 
-  const fetchList = useMemoizedFn(async (params?: IInitTodayList) => {
+  const fetchList = useMemoizedFn(async (params: IInitTodayList) => {
     if (loading) return
 
     if (isInit.current) {
@@ -81,7 +81,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   const reload = useMemoizedFn(async (params?: IInitTodayList) => {
     try {
-      return await fetchList(params)
+      return await fetchList(params ? { ...params, date } : { date })
     } catch {
       setIsError(true)
     }
@@ -93,7 +93,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     return () => {
       ListHandler.removeReloader(reloaderId)
     }
-  }, [reload, reloaderId])
+  }, [reload, reloaderId, date])
 
   useImperativeHandle(ref, () => {
     return {

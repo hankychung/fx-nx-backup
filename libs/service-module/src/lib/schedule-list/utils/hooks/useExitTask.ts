@@ -111,6 +111,8 @@ export const useExitTask = ({
         }
       })
     } catch (_) {
+      console.error('exist', _)
+
       globalNxController.showMsg({
         content: '网络暂时不可用',
         msgType: '错误',

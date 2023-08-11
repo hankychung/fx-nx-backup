@@ -3,19 +3,18 @@ import {
   globalNxController,
   useScheduleStore
 } from '@flyele-nx/global-processor'
-import dayjs from 'dayjs'
 import { ILocalTask } from '@flyele-nx/types'
-import { timeGetter } from '@flyele-nx/utils'
 
 export interface IInitTodayList {
-  tasks: ILocalTask[]
-  finishTasks: ILocalTask[]
+  tasks?: ILocalTask[]
+  finishTasks?: ILocalTask[]
+  date: string
 }
 
-export const initTodayList = async (params?: IInitTodayList) => {
+export const initTodayList = async (params: IInitTodayList) => {
   const { batchUpdateTask, updateList } = useScheduleStore.getState()
 
-  const date = dayjs.unix(timeGetter.getDateRoughly()).format('YYYY-MM-DD')
+  const { date } = params
 
   const tasks =
     params?.tasks ||

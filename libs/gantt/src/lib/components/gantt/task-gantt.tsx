@@ -65,7 +65,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
         className={styles.horizontalContainer}
         style={
           ganttHeight
-            ? { height: ganttHeight, width: gridProps.svgWidth }
+            ? { height: `calc(100% - 74px)`, width: gridProps.svgWidth }
             : { width: gridProps.svgWidth }
         }
       >

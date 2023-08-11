@@ -518,14 +518,14 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             svgWidth={svgWidth}
           />
         )}
-        <VerticalScroll
+        {/* <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}
           headerHeight={headerHeight}
           scroll={scrollY}
           onScroll={handleScrollY}
           rtl={rtl}
-        />
+        /> */}
       </div>
       {/* <HorizontalScroll
         svgWidth={svgWidth}

@@ -90,14 +90,12 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
   })
   useEffect(() => {
     a()
-    console.log('fff')
   }, [a, task])
 
   useEffect(() => {
     if (textRef.current) {
       setIsTextInside(textRef.current.getBBox().width < task.x2 - task.x1)
     }
-    console.log('ppp')
   }, [textRef, task])
 
   const getX = () => {

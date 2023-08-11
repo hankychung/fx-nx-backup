@@ -14,7 +14,8 @@ import { globalNxController } from '@flyele-nx/global-processor'
 import { GanttHandler } from './utils/ganttHandler'
 
 export const GanttList = ({ projectId }: { projectId: string }) => {
-  const { updateList, batchUpdateTask, taskDict, taskList } = useGanttList()
+  const { updateList, batchUpdateTask, taskDict, taskList, reSet } =
+    useGanttList()
   const [view, _setView] = React.useState<FullViewModeEnum>(
     FullViewModeEnum.Day
   )
@@ -77,10 +78,10 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
   useEffect(() => {
     if (isInit.current) {
       isInit.current = false
-
+      reSet()
       reload()
     }
-  }, [reload, projectId])
+  }, [reload, projectId, reSet])
 
   const handleTaskDelete = (task: Task) => {
     const conf = window.confirm('Are you sure about ' + task.name + ' ?')

@@ -667,7 +667,7 @@
         if ('number' in a && typeof a.number == 'number') {
           r = a.number
           q = r & 65535
-          if ((B.e.aS(r, 16) & 8191) === 10)
+          if ((B.e.aT(r, 16) & 8191) === 10)
             switch (q) {
               case 438:
                 return A.bg(a, A.jE(A.z(s) + ' (Error ' + q + ')', e))
@@ -2955,7 +2955,7 @@
           r,
           q = new A.iV(b),
           p = new A.iW(b)
-        if (a instanceof A.I) a.aT(q, p, t.z)
+        if (a instanceof A.I) a.aU(q, p, t.z)
         else {
           s = t.z
           if (t.d.b(a)) a.a_(0, q, p, s)
@@ -2963,7 +2963,7 @@
             r = new A.I($.F, t.c)
             r.a = 8
             r.c = a
-            r.aT(q, p, s)
+            r.aU(q, p, s)
           }
         }
       },
@@ -3064,7 +3064,7 @@
           q = t.F.a(b.c)
           b.a = (b.a & 1) | 4
           b.c = a
-          a.aR(q)
+          a.aS(q)
         }
       },
       bO(a, a0) {
@@ -3243,7 +3243,7 @@
           A.bs(r, r, q, t.M.a(a))
           return
         }
-        A.bs(r, r, q, t.M.a(q.aX(a)))
+        A.bs(r, r, q, t.M.a(q.aY(a)))
       },
       oo(a, b) {
         A.bt(a, 'stream', t.K)
@@ -3328,7 +3328,7 @@
       },
       bs(a, b, c, d) {
         t.M.a(d)
-        if (B.b !== c) d = c.aX(d)
+        if (B.b !== c) d = c.aY(d)
         A.kX(d)
       },
       il: function il(a) {
@@ -4045,7 +4045,7 @@
       iq(a, b, c, d, e) {
         var s = c == null ? null : A.kZ(new A.ir(c), t.A)
         s = new A.cu(a, b, s, !1, e.i('cu<0>'))
-        s.aU()
+        s.aV()
         return s
       },
       kZ(a, b) {
@@ -4592,7 +4592,7 @@
           s = J.aw(s, new A.ib(), t.cp)
           s = A.as(s, !0, s.$ti.i('R.E'))
         }
-        q.saC(s)
+        q.saD(s)
         A.d(p.h(a, 'operate_type'))
         A.d(p.h(a, 'sort'))
         return q
@@ -5161,7 +5161,7 @@
       cq(a, b, c) {
         var s, r
         try {
-          s = c.a(B.c.aZ(0, a))
+          s = c.a(B.c.b_(0, a))
           return s
         } catch (r) {
           if (b != null) return c.i('0?').a(b)
@@ -5329,7 +5329,7 @@
         return J.aZ(a).gv(a)
       },
       lv(a) {
-        return J.O(a).gb1(a)
+        return J.O(a).gb2(a)
       },
       bh(a) {
         return J.cW(a).gB(a)
@@ -5506,7 +5506,7 @@
       var s = A.aK(a)
       return new A.aB(a, s.q(c).i('1(2)').a(b), s.i('@<1>').q(c).i('aB<1,2>'))
     },
-    b2(a, b) {
+    aB(a, b) {
       var s,
         r = A.jH(a.length, '', !1, t.N)
       for (s = 0; s < a.length; ++s) this.l(r, s, A.z(a[s]))
@@ -5516,7 +5516,7 @@
       if (!(b < a.length)) return A.u(a, b)
       return a[b]
     },
-    gb1(a) {
+    gb2(a) {
       return a.length !== 0
     },
     k(a) {
@@ -5563,14 +5563,14 @@
       }
       s = r.c
       if (s >= p) {
-        r.saL(null)
+        r.saM(null)
         return !1
       }
-      r.saL(q[s])
+      r.saM(q[s])
       ++r.c
       return !0
     },
-    saL(a) {
+    saM(a) {
       this.d = this.$ti.i('1?').a(a)
     },
     $iaH: 1
@@ -5627,7 +5627,7 @@
         )
       )
     },
-    aS(a, b) {
+    aT(a, b) {
       var s
       if (a > 0) s = this.bu(a, b)
       else {
@@ -6136,9 +6136,9 @@
         r = p[b]
         q = r == null ? o : r.b
         return q
-      } else return this.b_(b)
+      } else return this.b0(b)
     },
-    b_(a) {
+    b0(a) {
       var s,
         r,
         q = this.d
@@ -6157,13 +6157,13 @@
       p.z[1].a(c)
       if (typeof b == 'string') {
         s = q.b
-        q.aG(s == null ? (q.b = q.aq()) : s, b, c)
+        q.aH(s == null ? (q.b = q.aq()) : s, b, c)
       } else if (typeof b == 'number' && (b & 0x3fffffff) === b) {
         r = q.c
-        q.aG(r == null ? (q.c = q.aq()) : r, b, c)
-      } else q.b0(b, c)
+        q.aH(r == null ? (q.c = q.aq()) : r, b, c)
+      } else q.b1(b, c)
     },
-    b0(a, b) {
+    b1(a, b) {
       var s,
         r,
         q,
@@ -6200,7 +6200,7 @@
         s = s.c
       }
     },
-    aG(a, b, c) {
+    aH(a, b, c) {
       var s,
         r = A.a_(this)
       r.c.a(b)
@@ -6218,7 +6218,7 @@
       delete a[b]
       return s.b
     },
-    aP() {
+    aQ() {
       this.r = (this.r + 1) & 1073741823
     },
     ar(a, b) {
@@ -6233,7 +6233,7 @@
         s.f = r.c = q
       }
       ++s.a
-      s.aP()
+      s.aQ()
       return q
     },
     bx(a) {
@@ -6245,7 +6245,7 @@
       if (q == null) s.f = r
       else q.d = r
       --s.a
-      s.aP()
+      s.aQ()
     },
     aw(a) {
       return J.jz(a) & 0x3fffffff
@@ -6303,15 +6303,15 @@
       if (r.b !== q.r) throw A.b(A.ar(q))
       s = r.c
       if (s == null) {
-        r.saE(null)
+        r.saF(null)
         return !1
       } else {
-        r.saE(s.a)
+        r.saF(s.a)
         r.c = s.c
         return !0
       }
     },
-    saE(a) {
+    saF(a) {
       this.d = this.$ti.i('1?').a(a)
     },
     $iaH: 1
@@ -6597,7 +6597,7 @@
       if (!r.b) r.a.ai(b)
       else {
         s = r.a
-        if (q.i('ak<1>').b(b)) s.aI(b)
+        if (q.i('ak<1>').b(b)) s.aJ(b)
         else s.U(b)
       }
     },
@@ -6713,7 +6713,7 @@
   A.aU.prototype = {
     bQ(a) {
       if ((this.c & 15) !== 6) return !0
-      return this.b.b.aB(t.bN.a(this.d), a.a, t.y, t.K)
+      return this.b.b.aC(t.bN.a(this.d), a.a, t.y, t.K)
     },
     bP(a) {
       var s,
@@ -6725,7 +6725,7 @@
         m = a.a,
         l = r.b.b
       if (t.C.b(q)) p = l.bY(q, m, a.b, o, n, t.l)
-      else p = l.aB(t.v.a(q), m, o, n)
+      else p = l.aC(t.v.a(q), m, o, n)
       try {
         o = r.$ti.i('2/').a(p)
         return o
@@ -6771,7 +6771,7 @@
     b6(a, b, c) {
       return this.a_(a, b, null, c)
     },
-    aT(a, b, c) {
+    aU(a, b, c) {
       var s,
         r = this.$ti
       r.q(c).i('1/(2)').a(a)
@@ -6806,7 +6806,7 @@
         A.bs(null, null, r.b, t.M.a(new A.iu(r, a)))
       }
     },
-    aR(a) {
+    aS(a) {
       var s,
         r,
         q,
@@ -6830,7 +6830,7 @@
         if ((s & 4) !== 0) {
           n = t.c.a(m.c)
           if ((n.a & 24) === 0) {
-            n.aR(a)
+            n.aS(a)
             return
           }
           m.ak(n)
@@ -6852,7 +6852,7 @@
       }
       return r
     },
-    aH(a) {
+    aI(a) {
       var s,
         r,
         q,
@@ -6873,7 +6873,7 @@
       q.i('1/').a(a)
       if (q.i('ak<1>').b(a))
         if (q.b(a)) A.ix(a, r)
-        else r.aH(a)
+        else r.aI(a)
       else {
         s = r.aa()
         q.c.a(a)
@@ -6902,7 +6902,7 @@
       var s = this.$ti
       s.i('1/').a(a)
       if (s.i('ak<1>').b(a)) {
-        this.aI(a)
+        this.aJ(a)
         return
       }
       this.bm(a)
@@ -6913,7 +6913,7 @@
       s.a ^= 2
       A.bs(null, null, s.b, t.M.a(new A.iw(s, a)))
     },
-    aI(a) {
+    aJ(a) {
       var s = this,
         r = s.$ti
       r.i('ak<1>').a(a)
@@ -6924,7 +6924,7 @@
         } else A.ix(a, s)
         return
       }
-      s.aH(a)
+      s.aI(a)
     },
     aj(a, b) {
       t.l.a(b)
@@ -7047,7 +7047,7 @@
         o = p.$ti
         n = o.c
         m = n.a(this.b)
-        q.c = p.b.b.aB(o.i('2/(1)').a(p.d), m, o.i('2/'), n)
+        q.c = p.b.b.aC(o.i('2/(1)').a(p.d), m, o.i('2/'), n)
       } catch (l) {
         s = A.aq(l)
         r = A.aD(l)
@@ -7210,7 +7210,7 @@
         A.j3(t.K.a(s), t.l.a(r))
       }
     },
-    aX(a) {
+    aY(a) {
       return new A.iL(this, t.M.a(a))
     },
     bA(a, b) {
@@ -7224,7 +7224,7 @@
       if ($.F === B.b) return a.$0()
       return A.kU(null, null, this, a, b)
     },
-    aB(a, b, c, d) {
+    aC(a, b, c, d) {
       c.i('@<0>').q(d).i('1(2)').a(a)
       d.a(b)
       if ($.F === B.b) return a.$1(b)
@@ -7276,7 +7276,7 @@
     bo(a) {
       var s = this.d
       if (s == null) return !1
-      return this.ap(this.aM(s, a), a) >= 0
+      return this.ap(this.aN(s, a), a) >= 0
     },
     h(a, b) {
       var s, r, q
@@ -7295,7 +7295,7 @@
         r,
         q = this.d
       if (q == null) return null
-      s = this.aM(q, b)
+      s = this.aN(q, b)
       r = this.ap(s, b)
       return r < 0 ? null : s[r + 1]
     },
@@ -7393,7 +7393,7 @@
       }
       return (i.e = h)
     },
-    aM(a, b) {
+    aN(a, b) {
       return a[A.fr(b) & 1073741823]
     }
   }
@@ -7440,15 +7440,15 @@
         p = s.a
       if (r !== p.e) throw A.b(A.ar(p))
       else if (q >= r.length) {
-        s.saK(null)
+        s.saL(null)
         return !1
       } else {
-        s.saK(r[q])
+        s.saL(r[q])
         s.c = q + 1
         return !0
       }
     },
-    saK(a) {
+    saL(a) {
       this.d = this.$ti.i('1?').a(a)
     },
     $iaH: 1
@@ -7496,7 +7496,7 @@
         if (s !== this.gj(a)) throw A.b(A.ar(a))
       }
     },
-    gb1(a) {
+    gb2(a) {
       return this.gj(a) !== 0
     },
     ae(a, b, c) {
@@ -7662,7 +7662,7 @@
       var s = A.nf(b, this.gbF().a)
       return s
     },
-    aZ(a, b) {
+    b_(a, b) {
       return this.F(a, b, null)
     },
     gbF() {
@@ -7695,7 +7695,7 @@
     },
     gv(a) {
       var s = this.a
-      return (s ^ B.e.aS(s, 30)) & 1073741823
+      return (s ^ B.e.aT(s, 30)) & 1073741823
     },
     k(a) {
       var s = this,
@@ -8119,19 +8119,19 @@
       s.toString
       return A.kn(r, s, this.gR(a), this.gP(a))
     },
-    gaN(a) {
+    gaO(a) {
       return a.height
     },
     gP(a) {
-      var s = this.gaN(a)
+      var s = this.gaO(a)
       s.toString
       return s
     },
-    gaW(a) {
+    gaX(a) {
       return a.width
     },
     gR(a) {
-      var s = this.gaW(a)
+      var s = this.gaX(a)
       s.toString
       return s
     },
@@ -8866,7 +8866,7 @@
       q.toString
       return A.kn(p, s, r, q)
     },
-    gaN(a) {
+    gaO(a) {
       return a.height
     },
     gP(a) {
@@ -8874,7 +8874,7 @@
       s.toString
       return s
     },
-    gaW(a) {
+    gaX(a) {
       return a.width
     },
     gR(a) {
@@ -9019,9 +9019,9 @@
     bC(a) {
       var s = this
       if (s.b == null) return $.jy()
-      s.aV()
+      s.aW()
       s.b = null
-      s.saQ(null)
+      s.saR(null)
       return $.jy()
     },
     bT(a) {
@@ -9029,12 +9029,12 @@
         r = this
       r.$ti.i('~(1)?').a(a)
       if (r.b == null) throw A.b(A.e2('Subscription has been canceled.'))
-      r.aV()
+      r.aW()
       s = A.kZ(new A.is(a), t.A)
-      r.saQ(s)
-      r.aU()
+      r.saR(s)
+      r.aV()
     },
-    aU() {
+    aV() {
       var s,
         r = this.d
       if (r != null && !0) {
@@ -9043,7 +9043,7 @@
         J.ls(s, this.c, r, !1)
       }
     },
-    aV() {
+    aW() {
       var s,
         r = this.d
       if (r != null) {
@@ -9052,7 +9052,7 @@
         J.lr(s, this.c, t.o.a(r), !1)
       }
     },
-    saQ(a) {
+    saR(a) {
       this.d = t.o.a(a)
     },
     $imc: 1
@@ -9084,11 +9084,11 @@
         r = s.c + 1,
         q = s.b
       if (r < q) {
-        s.saO(J.ai(s.a, r))
+        s.saP(J.ai(s.a, r))
         s.c = r
         return !0
       }
-      s.saO(null)
+      s.saP(null)
       s.c = q
       return !1
     },
@@ -9096,7 +9096,7 @@
       var s = this.d
       return s == null ? this.$ti.c.a(s) : s
     },
-    saO(a) {
+    saP(a) {
       this.d = this.$ti.i('1?').a(a)
     },
     $iaH: 1
@@ -9347,7 +9347,7 @@
         n = null
       try {
         s = null
-        if (n != null) s = this.aF(a, b, n)
+        if (n != null) s = this.aG(a, b, n)
         else s = this.bj(a, b)
         p = A.mT(t.al.a(s), t.z)
         return p
@@ -9358,13 +9358,13 @@
         return p
       }
     },
-    aF(a, b, c) {
+    aG(a, b, c) {
       var s = a.add(new A.iO([], []).J(b))
       s.toString
       return s
     },
     bj(a, b) {
-      return this.aF(a, b, null)
+      return this.aG(a, b, null)
     }
   }
   A.aQ.prototype = { $iaQ: 1 }
@@ -9448,18 +9448,18 @@
   }
   A.c9.prototype = {}
   A.bn.prototype = {
-    aJ(a) {
+    aK(a) {
       var s = this,
         r = a < 0 || a >= s.gj(s)
       if (r) throw A.b(A.hp(a, 0, s.gj(s), null, null))
     },
     h(a, b) {
-      if (A.j2(b)) this.aJ(b)
+      if (A.j2(b)) this.aK(b)
       return this.$ti.c.a(this.be(0, b))
     },
     l(a, b, c) {
-      this.aJ(b)
-      this.aD(0, b, c)
+      this.aK(b)
+      this.aE(0, b, c)
     },
     gj(a) {
       var s = this.a.length
@@ -9467,7 +9467,7 @@
       throw A.b(A.e2('Bad JsArray length'))
     },
     sj(a, b) {
-      this.aD(0, 'length', b)
+      this.aE(0, 'length', b)
     },
     m(a, b) {
       this.bB('push', [this.$ti.c.a(b)])
@@ -9779,13 +9779,13 @@
     sb8(a) {
       t.bk.a(a)
     },
-    saC(a) {
+    saD(a) {
       t.a8.a(a)
     }
   }
   A.bk.prototype = {}
   A.e8.prototype = {
-    saC(a) {
+    saD(a) {
       t.gE.a(a)
     }
   }
@@ -9922,13 +9922,13 @@
       s === $ && A.W()
       return s
     },
-    saY(a, b) {
+    saZ(a, b) {
       this.b = this.$ti.i('1?').a(b)
     }
   }
   A.hx.prototype = {}
   A.hw.prototype = {
-    N(b8) {
+    N(c0) {
       var s = 0,
         r = A.af(t.Y),
         q,
@@ -9965,30 +9965,32 @@
         b4,
         b5,
         b6,
-        b7
-      var $async$N = A.ah(function (b9, c0) {
-        if (b9 === 1) return A.ac(c0, r)
+        b7,
+        b8,
+        b9
+      var $async$N = A.ah(function (c1, c2) {
+        if (c1 === 1) return A.ac(c2, r)
         while (true)
           switch (s) {
             case 0:
-              b7 = b8.a
-              b8.a = b7 == null ? p.a : b7
-              b7 = b8.d
-              if (b7 == null) b7 = ''
-              b8.d = b7
-              o = b8.f
-              b8.f = o == null ? 0 : o
-              o = b8.x
+              b9 = c0.a
+              c0.a = b9 == null ? p.a : b9
+              b9 = c0.d
+              if (b9 == null) b9 = ''
+              c0.d = b9
+              o = c0.f
+              c0.f = o == null ? 0 : o
+              o = c0.x
               if (o == null) o = -1
-              b8.x = o
-              n = b8.w
+              c0.x = o
+              n = c0.w
               m = ((n == null ? 1 : n) - 1) * o
-              o = b8.b
-              b8.b = o == null ? '' : o
-              o = b8.c
+              o = c0.b
+              c0.b = o == null ? '' : o
+              o = c0.c
               if (o == null) o = ''
-              b8.c = o
-              if (b7 === 'today' && o.length !== 0) {
+              c0.c = o
+              if (b9 === 'today' && o.length !== 0) {
                 q = new A.a6(
                   40000001,
                   null,
@@ -9998,10 +10000,10 @@
                 s = 1
                 break
               }
-              b7 = b8.e
-              if (b7 == null) b7 = new A.ay(Date.now(), !1).k(0)
-              b8.e = b7
-              l = A.lK(b7)
+              b9 = c0.e
+              if (b9 == null) b9 = new A.ay(Date.now(), !1).k(0)
+              c0.e = b9
+              l = A.lK(b9)
               k = new A.ay(Date.now(), !1)
               j = A.kd(A.dU(k), A.dT(k), A.dS(k), 0, 0, 0)
               k = new A.ay(Date.now(), !1)
@@ -10012,33 +10014,34 @@
                   A.dS(k) === A.dS(l)
                 )
               ) {
-                b7 = l.a
+                b9 = l.a
                 o = j.a
-                if (b7 < o) b8.d = 'history'
-                else if (b7 > o) b8.d = 'future'
+                if (b9 < o) c0.d = 'history'
+                else if (b9 > o) c0.d = 'future'
               }
               i = l.a / 1000
               h = i + 86399
               g = []
               f = []
-              b7 = b8.f
-              if (b7 !== 3)
-                if (b8.c.length === 0) {
-                  o = A.z(b8.e)
-                  e = A.z(i)
-                  d = A.z(h)
-                  c = A.z(i + 86400)
-                  b =
+              e = []
+              b9 = c0.f
+              if (b9 !== 3)
+                if (c0.c.length === 0) {
+                  o = A.z(c0.e)
+                  d = A.z(i)
+                  c = A.z(h)
+                  b = A.z(i + 86400)
+                  a =
                     "CASE\n          WHEN flow_step_id > 0 AND start_time = 0 AND end_time = 0 THEN '" +
                     o +
                     "'\n          WHEN execute_at > 0 THEN CASE\n                       WHEN execute_at >= " +
-                    e +
-                    ' AND execute_at <= ' +
                     d +
+                    ' AND execute_at <= ' +
+                    c +
                     " THEN '" +
                     o +
                     "'\n                        WHEN execute_at > 0 AND execute_at < " +
-                    c +
+                    b +
                     " THEN '" +
                     o +
                     "'\n                   END\n          WHEN DATE(cycle_date, 'localtime') = '" +
@@ -10046,29 +10049,29 @@
                     "' THEN '" +
                     o +
                     "'\n          WHEN start_time >= " +
-                    e +
+                    d +
                     ' AND start_time < ' +
+                    b +
+                    " THEN '" +
+                    o +
+                    u.e +
+                    d +
+                    " AND end_time = 0 THEN '" +
+                    o +
+                    "'\n          WHEN end_time >= " +
+                    d +
+                    ' AND end_time <= ' +
                     c +
                     " THEN '" +
                     o +
                     u.e +
-                    e +
-                    " AND end_time = 0 THEN '" +
-                    o +
-                    "'\n          WHEN end_time >= " +
-                    e +
-                    ' AND end_time <= ' +
+                    d +
+                    ' AND end_time > ' +
                     d +
                     " THEN '" +
                     o +
-                    u.e +
-                    e +
-                    ' AND end_time > ' +
-                    e +
-                    " THEN '" +
-                    o +
                     "'\n          WHEN end_time > 0 AND end_time < " +
-                    e +
+                    d +
                     " THEN '" +
                     o +
                     "'\n          WHEN repeat_type > 0 AND start_time = 0 AND end_time = 0 THEN '" +
@@ -10076,12 +10079,12 @@
                     "'\n          WHEN flow_step_id > 0 ANd flow_step_join = 1 AND start_time = 0 AND end_time = 0 THEN '" +
                     o +
                     "'\n    END AS date"
-                  a = b8.d
-                  if (a === 'history') {
-                    b8.f = 3
-                    b7 = 3
-                  } else if (a === 'future')
-                    b =
+                  a0 = c0.d
+                  if (a0 === 'history') {
+                    c0.f = 3
+                    b9 = 3
+                  } else if (a0 === 'future')
+                    a =
                       "CASE\n          WHEN execute_at > 0 AND DATE(execute_at, 'unixepoch', 'localtime') = '" +
                       o +
                       "' THEN '" +
@@ -10089,30 +10092,30 @@
                       "'\n          WHEN DATE(cycle_date, 'localtime') = '" +
                       o +
                       "' AND end_time > " +
-                      c +
+                      b +
                       " THEN '" +
                       o +
                       "'\n          WHEN start_time >= " +
-                      e +
+                      d +
                       ' AND start_time < ' +
-                      c +
+                      b +
                       " THEN '" +
                       o +
                       "'\n          WHEN end_time >= " +
-                      e +
-                      ' AND end_time <= ' +
                       d +
+                      ' AND end_time <= ' +
+                      c +
                       " THEN '" +
                       o +
                       u.e +
-                      e +
+                      d +
                       ' AND end_time > ' +
-                      e +
+                      d +
                       " THEN '" +
                       o +
                       "'\n    END AS date"
-                  else if (a === 'today')
-                    b =
+                  else if (a0 === 'today')
+                    a =
                       "CASE\n          WHEN execute_at > 0 AND DATE(execute_at, 'localtime') = '" +
                       o +
                       "' THEN '" +
@@ -10122,33 +10125,33 @@
                       "' THEN '" +
                       o +
                       "'\n          WHEN start_time > 0 AND end_time > 0 AND start_time < " +
-                      e +
-                      ' AND end_time > ' +
                       d +
+                      ' AND end_time > ' +
+                      c +
                       " THEN '" +
                       o +
                       "'\n          WHEN start_time >= " +
-                      e +
-                      ' AND start_time <= ' +
                       d +
+                      ' AND start_time <= ' +
+                      c +
                       " THEN '" +
                       o +
                       "'\n          WHEN end_time >= " +
-                      e +
-                      ' AND end_time <= ' +
                       d +
+                      ' AND end_time <= ' +
+                      c +
                       " THEN '" +
                       o +
                       "'\n          WHEN flow_step_id > 0 AND start_time = 0 AND end_time = 0 AND create_at >= " +
-                      e +
-                      ' AND create_at < ' +
                       d +
+                      ' AND create_at < ' +
+                      c +
                       " THEN '" +
                       o +
                       "'\n    END AS date"
-                  if (a === 'today') {
-                    e = p.a
-                    e =
+                  if (a0 === 'today') {
+                    d = p.a
+                    d =
                       " CASE WHEN DATE(execute_at, 'unixepoch', 'localtime') = '" +
                       o +
                       "'\n                THEN 0\n            WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
@@ -10156,15 +10159,15 @@
                       "' AND start_time_full_day = 1\n                THEN 0\n            WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND end_time_full_day = 1\n                THEN 0\n            WHEN creator_id != " +
-                      e +
+                      d +
                       "\n                THEN 1000000000.0 / accept_at\n            ELSE 1000000000.0 / create_at\n       END AS sort_idx, CASE\n    WHEN execute_at > 0 THEN execute_at\n    WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND start_time_full_day = 1 THEN start_time\n    WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND end_time_full_day = 1 THEN end_time\n    WHEN creator_id != " +
-                      e +
+                      d +
                       ' THEN accept_at\n    ELSE create_at\n       END AS timestamp,'
-                    o = e
+                    o = d
                   } else
                     o =
                       "CASE\n           WHEN topmost_at THEN 0\n           WHEN DATE(execute_at, 'unixepoch', 'localtime') = '" +
@@ -10174,7 +10177,7 @@
                       "' AND start_time_full_day = 1\n               THEN 1\n           WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND end_time_full_day = 1\n               THEN 1\n           WHEN start_time < " +
-                      e +
+                      d +
                       " AND DATE(end_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "'\n               THEN 2\n           WHEN start_time_full_day = 2 AND\n                end_time_full_day = 2 AND\n                DATE(start_time, 'unixepoch', 'localtime') =\n                '" +
@@ -10182,301 +10185,304 @@
                       "' AND\n                DATE(end_time, 'unixepoch', 'localtime') =\n                '" +
                       o +
                       "' THEN 2\n           WHEN start_time < " +
-                      e +
-                      ' AND end_time > ' +
                       d +
+                      ' AND end_time > ' +
+                      c +
                       "\n               THEN 2\n           WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND end_time > " +
-                      d +
+                      c +
                       "\n               THEN 2\n           WHEN matter_state = 3 AND end_time > 0 THEN 3\n           WHEN execute_at = 0 AND start_time = 0 AND end_time = 0 THEN 5\n           ELSE 4\n    END AS sort_idx\n    , CASE\n          WHEN execute_at > 0 THEN execute_at\n          WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND start_time_full_day = 1 THEN start_time\n          WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
                       o +
                       "' AND end_time_full_day = 1 THEN end_time\n          WHEN end_time = 0 AND start_time < " +
-                      e +
+                      d +
                       ' THEN start_time\n          ELSE end_time\n    END AS timestamp,'
-                  b = ' ' + o + b
-                } else b = ''
-              else b = ''
-              o = b8.c
+                  a = ' ' + o + a
+                } else a = ''
+              else a = ''
+              o = c0.c
               if (o.length !== 0) {
                 g.push(" parent_id = '" + o + "' ")
-                a0 = 'sort, ref_task_id'
+                a1 = 'sort, ref_task_id'
               } else {
-                if (b8.d !== 'today' && b7 !== 3) g.push(" parent_id = '' ")
-                if (b8.f !== 3) f.push(" date = '" + A.z(b8.e) + "' ")
-                a0 = 'sort_idx, timestamp, create_at, ref_task_id'
+                if (c0.d !== 'today' && b9 !== 3) g.push(" parent_id = '' ")
+                if (c0.f !== 3) f.push(" date = '" + A.z(c0.e) + "' ")
+                a1 = 'sort_idx, timestamp, create_at, ref_task_id'
               }
-              switch (b8.f) {
+              switch (c0.f) {
                 case 1:
                   g.push(
                     "complete_at = 0 AND ((flow_step_id = '' AND finish_time = 0) OR (flow_step_id != '' AND flow_step_complete_at = 0)) "
                   )
-                  f.push('finish_time = 0')
+                  e.push('finish_time = 0')
                   break
                 case 2:
-                  b7 = p.a
+                  b9 = p.a
                   g.push(
                     " creator_id = '" +
-                      b7 +
+                      b9 +
                       "' AND takers != '' AND takers != '" +
-                      b7 +
+                      b9 +
                       "' "
                   )
                   break
                 case 3:
-                  b7 = A.z(i)
+                  b9 = A.z(i)
                   o = A.z(h)
                   g.push(
                     ' ((complete_time >= ' +
-                      b7 +
+                      b9 +
                       ' AND complete_time <= ' +
                       o +
                       " AND flow_step_id = '' ) OR (flow_step_id != '' AND complete_at >= " +
-                      b7 +
+                      b9 +
                       ' AND complete_at <= ' +
                       o +
                       ')) '
                   )
-                  a0 = 'complete_time ' + (b8.d === 'today' ? 'DESC' : '')
+                  a1 = 'complete_time ' + (c0.d === 'today' ? 'DESC' : '')
                   break
                 case 4:
                   break
               }
-              if (b8.f === 1) {
-                b7 = p.a
-                if (b8.d === 'future') {
-                  o = A.z(b8.e)
-                  a1 =
+              if (c0.f === 1) {
+                b9 = p.a
+                if (c0.d === 'future') {
+                  o = A.z(c0.e)
+                  a2 =
                     "LEFT JOIN (SELECT tr.task_id, repeat_id, tr.start_time, tr.end_time\n                                           , tr.start_time_full_day\n                                           , tr.end_time_full_day\n                                           , tr.complete_at, tr.cycle, MAX(tr.create_at) AS create_at\n                                           , cycle_date\n                                        FROM task_repeat tr JOIN task t2 ON tr.task_id = t2.id AND\n                                                                            DATE(t2.start_time, 'unixepoch', 'localtime') !=\n                                                                            DATE(t2.end_time, 'unixepoch', 'localtime')\n                                       WHERE DATETIME(tr.cycle_date, 'localtime') <=\n                                             DATETIME('" +
                     o +
-                    " 23:59:59')\n                                          OR tr.cycle = 1\n                                       GROUP BY tr.task_id\n                                       UNION\n                                      SELECT tr.task_id, repeat_id, start_time, end_time, start_time_full_day\n                                           , end_time_full_day\n                                           , complete_at, tr.cycle, MAX(create_at) AS create_at, cycle_date\n                                        FROM task_repeat tr\n                                                 JOIN (SELECT MAX(id) AS id, trf.task_id, tr.cycle + 1 AS cycle\n                                                         FROM task_repeat_finish trf\n                                                                  JOIN task_repeat tr ON trf.repeat_id = tr.repeat_id\n                                                        GROUP BY trf.task_id) tt\n                                                      ON tr.task_id = tt.task_id AND tr.cycle = tt.cycle\n                                       WHERE DATETIME(tr.cycle_date, 'localtime') <=\n                                             DATETIME('" +
+                    " 23:59:59')\n                                          OR tr.cycle = 1\n                                       GROUP BY tr.task_id\n                                       UNION\n                                      SELECT tr.task_id, MAX(repeat_id) AS repeat_id, start_time, end_time, start_time_full_day\n                                           , end_time_full_day\n                                           , complete_at, tr.cycle, cycle_date\n                                        FROM task_repeat tr\n                                                 JOIN (SELECT MAX(id) AS id, trf.task_id, tr.cycle + 1 AS cycle\n                                                         FROM task_repeat_finish trf\n                                                                  JOIN task_repeat tr ON trf.repeat_id = tr.repeat_id\n                                                        GROUP BY trf.task_id) tt\n                                                      ON tr.task_id = tt.task_id AND tr.cycle = tt.cycle\n                                       WHERE DATETIME(tr.cycle_date, 'localtime') <=\n                                             DATETIME('" +
                     o +
                     " 23:59:59.000')\n                                       GROUP BY tr.task_id) d ON d.task_id = c.id AND b.repeat_type > 0\n                                        LEFT JOIN task_repeat_finish AS e\n                           ON d.repeat_id = e.repeat_id AND e.user_id = " +
-                    b7 +
+                    b9 +
                     ' '
                 } else
-                  a1 =
+                  a2 =
                     "LEFT JOIN (SELECT tr.task_id, repeat_id, start_time, end_time, start_time_full_day, end_time_full_day\n                                 , complete_at, tr.cycle, MAX(create_at) AS create_at, cycle_date\n                            FROM task_repeat tr\n                            WHERE DATETIME(tr.cycle_date, 'localtime') <= DATETIME('" +
                     A.kd(A.dU(l), A.dT(l), A.dS(l), 23, 59, 59).k(0) +
                     "') OR tr.cycle = 1\n                            GROUP BY tr.task_id) AS d\n                           ON c.id = d.task_id AND b.repeat_type > 0\n                 LEFT JOIN task_repeat_finish AS e\n                           ON d.repeat_id = e.repeat_id AND e.user_id = " +
-                    b7
+                    b9
               } else {
-                b7 = p.a
-                a1 =
+                b9 = p.a
+                a2 =
                   'LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 \nLEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ' +
-                  b7
+                  b9
               }
-              o = b === '' ? '' : b + ', '
-              e = b8.e
-              d = b8.d === 'today' ? '' : 'AND delete_at = 0'
-              c = f.length !== 0 ? 'WHERE (' + B.a.b2(f, ' AND ') + ')' : ''
-              a = b8.f
-              a2 = a === 3
-              if (!a2) a3 = b8.c.length !== 0 ? '' : 'sort_idx, timestamp,'
-              else a3 = ''
-              a = a === 1
-              a4 = a
+              o = a === '' ? '' : a + ', '
+              d = c0.e
+              c = c0.d === 'today' ? '' : 'AND delete_at = 0'
+              b = e.length !== 0 ? 'WHERE (' + B.a.aB(e, ' AND ') + ')' : ''
+              a0 = f.length !== 0 ? 'WHERE (' + B.a.aB(f, ' AND ') + ')' : ''
+              a3 = c0.f
+              a4 = a3 === 3
+              if (!a4) a5 = c0.c.length !== 0 ? '' : 'sort_idx, timestamp,'
+              else a5 = ''
+              a3 = a3 === 1
+              a6 = a3
                 ? ', CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child'
                 : ''
-              if (a2)
-                a2 =
+              if (a4)
+                a4 =
                   'SELECT ref_task_id, GROUP_CONCAT(taker_id) AS takers\n    FROM task_dispatch\n   WHERE is_valid = 1 AND status = 1 ' +
-                  (b8.d === 'today' ? '' : 'AND delete_at = 0') +
+                  (c0.d === 'today' ? '' : 'AND delete_at = 0') +
                   '\n   GROUP BY ref_task_id'
               else
-                a2 =
+                a4 =
                   'SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id\n                                FROM task_dispatch td\n                                         JOIN      task_config tc ON td.ref_task_id = tc.id\n                                         LEFT JOIN (SELECT MAX(tr.id) AS id, user_id, delete_at, task_id\n                                                      FROM task_flow_step_relation tr\n                                                               JOIN task_config tc ON tr.step_id = tc.flow_step_id\n                                                     WHERE delete_at = 0\n                                                     GROUP BY task_id,user_id) tfsr\n                                                   ON td.ref_task_id = tfsr.task_id AND tfsr.user_id=td.taker_id\n                               WHERE (is_valid = 1\n                                   AND status = 1\n                                   AND td.identity NOT IN (10804, 10811)\n                                   ' +
-                  (b8.d === 'today' ? '' : 'AND td.delete_at = 0') +
+                  (c0.d === 'today' ? '' : 'AND td.delete_at = 0') +
                   '\n                                   AND tc.flow_step_id = 0\n                                   AND personal_state IN (0, 10409, 10604, 10611)\n                                   AND operate_state = 0 AND tfsr.id IS NULL)\n                                  OR (tfsr.id IS NOT NULL)\n                               GROUP BY ref_task_id'
-              a = a
-                ? "LEFT JOIN (SELECT CAST(CASE WHEN INSTR(parent_id, ',') > 0\n                                                   THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)\n                                               ELSE parent_id\n                                          END AS bigint) AS task_id\n                                   , COUNT(*) AS child_count\n                                FROM task_config\n                               GROUP BY parent_id) AS zb\n                             ON a.id = zb.task_id"
+              a3 = a3
+                ? "LEFT JOIN (SELECT CAST(CASE WHEN INSTR(parent_id, ',') > 0\n                                                   THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)\n                                               ELSE parent_id\n                                          END AS bigint) AS task_id\n                                   , COUNT(*) AS child_count\n                                FROM task_view\n                                WHERE category != 1\n                               GROUP BY parent_id) AS zb\n                             ON a.id = zb.task_id"
                 : ''
-              a5 = g.length !== 0 ? 'AND (' + B.a.b2(g, ' AND ') + ')' : ''
-              a6 =
-                '  WITH td AS (SELECT ' +
+              a7 = g.length !== 0 ? 'AND (' + B.a.aB(g, ' AND ') + ')' : ''
+              a8 =
+                '  WITH task_view AS (SELECT ' +
                 o +
                 " *\n                  FROM (SELECT sub_a.*, CASE\n                 WHEN sub_a.complete_at = 0 AND\n                      (DATETIME(sub_a.start_time, 'unixepoch', 'localtime') >\n                       DATETIME('now', 'localtime') OR cycle_date > '" +
-                A.z(e) +
-                "') THEN 1\n                 WHEN sub_a.complete_at = 0 AND (sub_a.end_time = 0 OR\n                                             DATETIME(sub_a.end_time, 'unixepoch', 'localtime') >\n                                             DATETIME('now', 'localtime'))\n                     THEN 2\n                 WHEN sub_a.complete_at = 0 AND (sub_a.end_time > 0 AND\n                                             DATETIME(sub_a.end_time, 'unixepoch', 'localtime') <\n                                             DATETIME('now', 'localtime'))\n                     THEN 3\n                 WHEN sub_a.complete_at > 0 AND (sub_a.complete_at <= sub_a.end_time OR sub_a.end_time = 0)\n                     THEN 4\n                 WHEN sub_a.complete_at > 0 AND sub_a.end_time > 0 AND sub_a.complete_at > sub_a.end_time\n                     THEN 5\n             END AS matter_state\n                             , CASE WHEN z.user_id != '' THEN 1 ELSE 0 END AS flow_step_join, flow_step_name\n                             , flow_step_complete_at, flow_step_user_count\n                          FROM (SELECT b.id, a.dispatch_id, a.identity, a.taker_id, a.state, a.personal_state, a.is_view, a.operate_state\n                 , a.personal_remind_at, a.invite_id, a.delete_at, b.matter_type, b.title, b.detail, b.priority_level\n                 , b.update_at, b.start_time AS original_start_time, b.end_time AS original_end_time, flow_step_id\n                 , CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files, IFNULL(b.remind_at, '{}') AS remind_at\n                 , IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at, b.creator_id, b.create_at, accept_at\n                 , a.execute_at, c.project_id, topmost_at, sort                \n                 , IFNULL(d.repeat_id, '') AS repeat_id, IFNULL(d.cycle, 0) AS cycle, CASE\n                                                                                          WHEN d.cycle_date IS NOT NULL\n                                                                                              THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')\n                                                                                          ELSE ''\n                                                                                      END AS cycle_date\n                 , IFNULL(d.start_time, b.start_time) AS start_time\n                 , IFNULL(d.start_time_full_day, b.start_time_full_day) AS start_time_full_day\n                 , IFNULL(d.end_time, b.end_time) AS end_time\n                 , IFNULL(d.end_time_full_day, b.end_time_full_day) AS end_time_full_day\n                 , IFNULL(d.complete_at, b.complete_at) AS complete_at\n                 , IFNULL(e.finish_time, a.finish_time) AS finish_time\n                 , parent_id, CASE WHEN b1.id > 0 THEN b1.title ELSE '' END AS parent_name, c.application_json\n            FROM (SELECT ref_task_id, dispatch_id, identity, taker_id, state, personal_state, operate_state, delete_at\n                       , finish_time, is_view, invite_id, personal_remind_at, execute_at, topmost_at, accept_at\n                  FROM task_dispatch\n                  WHERE taker_id = " +
-                b7 +
+                A.z(d) +
+                "') THEN 1\n                 WHEN sub_a.complete_at = 0 AND (sub_a.end_time = 0 OR\n                                             DATETIME(sub_a.end_time, 'unixepoch', 'localtime') >\n                                             DATETIME('now', 'localtime'))\n                     THEN 2\n                 WHEN sub_a.complete_at = 0 AND (sub_a.end_time > 0 AND\n                                             DATETIME(sub_a.end_time, 'unixepoch', 'localtime') <\n                                             DATETIME('now', 'localtime'))\n                     THEN 3\n                 WHEN sub_a.complete_at > 0 AND (sub_a.complete_at <= sub_a.end_time OR sub_a.end_time = 0)\n                     THEN 4\n                 WHEN sub_a.complete_at > 0 AND sub_a.end_time > 0 AND sub_a.complete_at > sub_a.end_time\n                     THEN 5\n             END AS matter_state\n                             , CASE WHEN z.user_id != '' THEN 1 ELSE 0 END AS flow_step_join, flow_step_name\n                             , flow_step_complete_at, flow_step_user_count\n                          FROM (SELECT b.id, a.dispatch_id, a.identity, c.category, a.taker_id, a.state, a.personal_state, a.is_view, a.operate_state\n                 , a.personal_remind_at, a.invite_id, a.delete_at, b.matter_type, b.title, b.detail, b.priority_level\n                 , b.update_at, b.start_time AS original_start_time, b.end_time AS original_end_time, flow_step_id\n                 , CASE WHEN b.files != '' THEN b.files ELSE '[]' END AS files, IFNULL(b.remind_at, '{}') AS remind_at\n                 , IFNULL(b.widget, '{}') AS widget, b.repeat_type, b.end_repeat_at, b.creator_id, b.create_at, accept_at\n                 , a.execute_at, c.project_id, topmost_at, sort                \n                 , IFNULL(d.repeat_id, '') AS repeat_id, IFNULL(d.cycle, 0) AS cycle, CASE\n                                                                                          WHEN d.cycle_date IS NOT NULL\n                                                                                              THEN STRFTIME('%Y-%m-%d', d.cycle_date, 'localtime')\n                                                                                          ELSE ''\n                                                                                      END AS cycle_date\n                 , IFNULL(d.start_time, b.start_time) AS start_time\n                 , IFNULL(d.start_time_full_day, b.start_time_full_day) AS start_time_full_day\n                 , IFNULL(d.end_time, b.end_time) AS end_time\n                 , IFNULL(d.end_time_full_day, b.end_time_full_day) AS end_time_full_day\n                 , IFNULL(d.complete_at, b.complete_at) AS complete_at\n                 , IFNULL(e.finish_time, a.finish_time) AS finish_time\n                 , parent_id, CASE WHEN b1.id > 0 THEN b1.title ELSE '' END AS parent_name, c.application_json\n            FROM (SELECT ref_task_id, dispatch_id, identity, taker_id, state, personal_state, operate_state, delete_at\n                       , finish_time, is_view, invite_id, personal_remind_at, execute_at, topmost_at, accept_at\n                  FROM task_dispatch\n                  WHERE taker_id = " +
+                b9 +
                 '\n                      AND is_valid = 1\n                      ' +
-                d +
-                '\n                      AND personal_state IN (0, 10409, 10604, 10611)\n                      AND operate_state = 0) AS a\n                 LEFT JOIN task AS b\n                           ON a.ref_task_id = b.id\n                 LEFT JOIN task_config AS c\n                           ON b.id = c.id\n               ' +
-                a1 +
-                "\n                 LEFT JOIN task b1\n                           ON c.parent_id != '' AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id\n            WHERE a.ref_task_id = b.id\n                AND b.state = 10201\n                AND b.matter_type IN (10701, 10702, 10705, 10707)) AS sub_a LEFT JOIN (SELECT tc.id, IFNULL(tfs.name, '') AS flow_step_name,\n                          IFNULL(tfsr.complete_at, 0) AS flow_step_complete_at,\n                          IFNULL(tfsr.user_id, '') AS user_id,\n                          CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS flow_step_user_count\n                      FROM task_config AS tc\n                               LEFT JOIN task_flow_step tfs\n                                         ON tfs.id = tc.flow_step_id\n                               LEFT JOIN task_flow_step_relation AS tfsr\n                                         ON tfsr.step_id = tfs.id AND tfsr.delete_at = 0 AND\n                                            tfsr.user_id = " +
-                b7 +
-                '\n                               LEFT JOIN task_flow_step_relation AS r\n                                         ON r.step_id = tfs.id AND r.delete_at = 0\n                      GROUP BY tc.id, tfs.id) z\n                     ON sub_a.id = z.id)\n                 ' +
                 c +
-                ')\n     , real_parent AS (SELECT tc1.id, GROUP_CONCAT(td.id) AS parent_id\n                         FROM (SELECT tc1.id, td.parent_id, category FROM task_config tc1 JOIN td ON tc1.id = td.id) tc1\n                                  LEFT JOIN td ON INSTR(tc1.parent_id, td.id)\n                        WHERE tc1.category = 2 AND td.id IS NOT NULL\n                        GROUP BY tc1.id)\n    SELECT tt.*\nFROM (SELECT ' +
-                a3 +
-                " CAST(a.id AS TEXT) AS ref_task_id, a.title, CAST(a.taker_id AS TEXT) AS taker_id, takers, a.identity\n           , CASE WHEN a.repeat_id > 0 THEN CAST(a.repeat_id AS TEXT) ELSE '' END AS repeat_id\n           , a.state, CASE WHEN a.creator_id > 0 THEN CAST(a.creator_id AS TEXT) ELSE '' END AS creator_id\n           , CASE WHEN a.invite_id > 0 THEN CAST(a.invite_id AS TEXT) ELSE '' END AS invite_id\n           , CASE WHEN a.flow_step_id > 0 THEN CAST(a.flow_step_id AS TEXT) ELSE '' END AS flow_step_id, a.create_at\n           , a.update_at, a.complete_at, a.finish_time, a.original_start_time, a.original_end_time, a.start_time\n           , a.start_time_full_day, a.end_time, a.end_time_full_day, a.end_repeat_at, execute_at, accept_at\n           , IFNULL(finish_time, complete_at) AS complete_time, sort\n           , CASE WHEN a.dispatch_id > 0 THEN CAST(a.dispatch_id AS TEXT) ELSE '' END AS dispatch_id, a.cycle\n           , a.cycle_date, a.widget, a.priority_level, topmost_at\n           , CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS has_follow, a.personal_remind_at, IFNULL(repeat_delay_total, 0) AS repeat_delay_total\n           , CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide, a.matter_type, a.repeat_type, a.remind_at\n           , IFNULL(k.taker_total, 0) AS taker_total, IFNULL(k.child_total, 0) AS child_total\n           " +
-                a4 +
-                "\n           , CASE WHEN a.project_id > 0 THEN CAST(a.project_id AS TEXT) ELSE '' END AS project_id\n           , IFNULL(p.project_name, '') AS project_name, IFNULL(rp.parent_id, '') AS parent_id, parent_name, IFNULL(a.application_json,'{}') AS application_json\n           , flow_step_join, flow_step_name, flow_step_complete_at, flow_step_user_count, matter_state, IFNULL(tags, '') AS tags\n      FROM (td) AS a\n           LEFT JOIN task_follow AS j\n                     ON j.user_id = " +
-                b7 +
-                ' AND j.task_id = a.id\n           LEFT JOIN task_relation AS k\n                     ON a.id = k.task_id AND k.user_id = ' +
-                b7 +
-                '\n            LEFT JOIN project p\n                     ON a.project_id = p.id\n           LEFT JOIN ( ' +
+                '\n                      AND personal_state IN (0, 10409, 10604, 10611)\n                      AND operate_state = 0) AS a\n                 LEFT JOIN task AS b\n                           ON a.ref_task_id = b.id\n                 LEFT JOIN task_config AS c\n                           ON b.id = c.id\n               ' +
                 a2 +
-                ' ) aa\n                             ON a.id = aa.ref_task_id\n                 LEFT JOIN (SELECT object_id AS task_id, \'[\' ||\n                                                         GROUP_CONCAT(\'{"tag_id":"\' || CAST(tag_id AS TEXT) ||\n                                                                      \'","name":"\' || name ||\n                                                                      \'","color":"\' || color || \'"}\') || \']\' AS tags\n                              FROM tag ft\n                                       JOIN tag_bind ftb\n                                            ON ft.id = ftb.tag_id\n                             WHERE ftb.user_id = ' +
-                b7 +
-                '\n                               AND ftb.state = 1\n                             GROUP BY object_id) ff2\n                           ON a.id = ff2.task_id                                         \n           ' +
-                a +
-                '\n           LEFT JOIN (SELECT a.task_id, COUNT(1) AS repeat_delay_total\n                      FROM task_repeat AS a\n                           LEFT JOIN task_repeat_finish AS b\n                                     ON a.repeat_id = b.repeat_id AND b.user_id = ' +
-                b7 +
-                "\n                      WHERE b.id IS NULL AND a.end_time > 0 AND a.end_time < STRFTIME('%s', 'now')\n                      GROUP BY a.task_id) zc ON a.id = zc.task_id  \n           LEFT JOIN real_parent AS rp ON a.id = rp.id         \n ) AS tt\nWHERE INSTR(takers, '" +
-                b7 +
-                "') " +
+                "\n                 LEFT JOIN task b1\n                           ON c.parent_id != '' AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id\n            WHERE a.ref_task_id = b.id\n                AND b.state = 10201\n                AND b.matter_type IN (10701, 10702, 10705, 10707)) AS sub_a LEFT JOIN (SELECT tc.id, IFNULL(tfs.name, '') AS flow_step_name,\n                          IFNULL(tfsr.complete_at, 0) AS flow_step_complete_at,\n                          IFNULL(tfsr.user_id, '') AS user_id,\n                          CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS flow_step_user_count\n                      FROM task_config AS tc\n                               LEFT JOIN task_flow_step tfs\n                                         ON tfs.id = tc.flow_step_id\n                               LEFT JOIN task_flow_step_relation AS tfsr\n                                         ON tfsr.step_id = tfs.id AND tfsr.delete_at = 0 AND\n                                            tfsr.user_id = " +
+                b9 +
+                '\n                               LEFT JOIN task_flow_step_relation AS r\n                                         ON r.step_id = tfs.id AND r.delete_at = 0\n                      GROUP BY tc.id, tfs.id) z\n                     ON sub_a.id = z.id)\n                 ' +
+                b +
+                ')\n     , td AS (SELECT * FROM task_view ' +
+                a0 +
+                ')\n     , real_parent AS (SELECT tc1.id, GROUP_CONCAT(tv.id) AS parent_id\n                         FROM (SELECT tc1.id, tv.parent_id, tc1.category FROM task_config tc1 JOIN td tv ON tc1.id = tv.id) tc1\n                                  LEFT JOIN td tv ON INSTR(tc1.parent_id, tv.id)\n                        WHERE tc1.category = 2 AND tv.id IS NOT NULL\n                        GROUP BY tc1.id)\n    SELECT tt.*\nFROM (SELECT ' +
                 a5 +
+                " CAST(a.id AS TEXT) AS ref_task_id, a.title, CAST(a.taker_id AS TEXT) AS taker_id, takers, a.identity\n           , CASE WHEN a.repeat_id > 0 THEN CAST(a.repeat_id AS TEXT) ELSE '' END AS repeat_id\n           , a.state, CASE WHEN a.creator_id > 0 THEN CAST(a.creator_id AS TEXT) ELSE '' END AS creator_id\n           , CASE WHEN a.invite_id > 0 THEN CAST(a.invite_id AS TEXT) ELSE '' END AS invite_id\n           , CASE WHEN a.flow_step_id > 0 THEN CAST(a.flow_step_id AS TEXT) ELSE '' END AS flow_step_id, a.create_at\n           , a.update_at, a.complete_at, a.finish_time, a.original_start_time, a.original_end_time, a.start_time\n           , a.start_time_full_day, a.end_time, a.end_time_full_day, a.end_repeat_at, execute_at, accept_at\n           , IFNULL(finish_time, complete_at) AS complete_time, sort\n           , CASE WHEN a.dispatch_id > 0 THEN CAST(a.dispatch_id AS TEXT) ELSE '' END AS dispatch_id, a.cycle\n           , a.cycle_date, a.widget, a.priority_level, topmost_at\n           , CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS has_follow, a.personal_remind_at, IFNULL(repeat_delay_total, 0) AS repeat_delay_total\n           , CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide, a.matter_type, a.repeat_type, a.remind_at\n           , IFNULL(k.taker_total, 0) AS taker_total, IFNULL(k.child_total, 0) AS child_total\n           " +
+                a6 +
+                "\n           , CASE WHEN a.project_id > 0 THEN CAST(a.project_id AS TEXT) ELSE '' END AS project_id\n           , IFNULL(p.project_name, '') AS project_name, IFNULL(rp.parent_id, '') AS parent_id, parent_name, IFNULL(a.application_json,'{}') AS application_json\n           , flow_step_join, flow_step_name, flow_step_complete_at, flow_step_user_count, matter_state, IFNULL(tags, '') AS tags\n      FROM (td) AS a\n           LEFT JOIN task_follow AS j\n                     ON j.user_id = " +
+                b9 +
+                ' AND j.task_id = a.id\n           LEFT JOIN task_relation AS k\n                     ON a.id = k.task_id AND k.user_id = ' +
+                b9 +
+                '\n            LEFT JOIN project p\n                     ON a.project_id = p.id\n           LEFT JOIN ( ' +
+                a4 +
+                ' ) aa\n                             ON a.id = aa.ref_task_id\n                 LEFT JOIN (SELECT object_id AS task_id, \'[\' ||\n                                                         GROUP_CONCAT(\'{"tag_id":"\' || CAST(tag_id AS TEXT) ||\n                                                                      \'","name":"\' || name ||\n                                                                      \'","color":"\' || color || \'"}\') || \']\' AS tags\n                              FROM tag ft\n                                       JOIN tag_bind ftb\n                                            ON ft.id = ftb.tag_id\n                             WHERE ftb.user_id = ' +
+                b9 +
+                '\n                               AND ftb.state = 1\n                             GROUP BY object_id) ff2\n                           ON a.id = ff2.task_id                                         \n           ' +
+                a3 +
+                '\n           LEFT JOIN (SELECT a.task_id, COUNT(1) AS repeat_delay_total\n                      FROM task_repeat AS a\n                           LEFT JOIN task_repeat_finish AS b\n                                     ON a.repeat_id = b.repeat_id AND b.user_id = ' +
+                b9 +
+                "\n                      WHERE b.id IS NULL AND a.end_time > 0 AND a.end_time < STRFTIME('%s', 'now')\n                      GROUP BY a.task_id) zc ON a.id = zc.task_id  \n           LEFT JOIN real_parent AS rp ON a.id = rp.id         \n ) AS tt\nWHERE INSTR(takers, '" +
+                b9 +
+                "') " +
+                a7 +
                 ' \n  '
-              b7 = $.aC.I()
-              o = a0 === '' ? '' : 'ORDER BY ' + a0
-              e = b8.x
-              e.toString
-              e = e > 0 ? 'LIMIT ' + e : ''
-              d = m > 0 ? 'OFFSET ' + m : ''
+              b9 = $.aC.I()
+              o = a1 === '' ? '' : 'ORDER BY ' + a1
+              d = c0.x
+              d.toString
+              d = d > 0 ? 'LIMIT ' + d : ''
+              c = m > 0 ? 'OFFSET ' + m : ''
               s = 3
-              return A.T(b7.E(0, a6 + (o + ' ' + e + ' ' + d + ' ')), $async$N)
+              return A.T(b9.E(0, a8 + (o + ' ' + d + ' ' + c + ' ')), $async$N)
             case 3:
-              a7 = c0
-              b7 = a7.a
-              b7 === $ && A.W()
-              if (b7 !== 0) {
-                o = a7.c
+              a9 = c2
+              b9 = a9.a
+              b9 === $ && A.W()
+              if (b9 !== 0) {
+                o = a9.c
                 o === $ && A.W()
-                q = new A.a6(b7, null, o, t.Y)
+                q = new A.a6(b9, null, o, t.Y)
                 s = 1
                 break
               }
-              a8 = A.J([], t.t)
-              b7 = a7.b
-              s = b7 != null && t.j.b(b7) && J.U(b7) > 0 ? 4 : 6
+              b0 = A.J([], t.t)
+              b9 = a9.b
+              s = b9 != null && t.j.b(b9) && J.U(b9) > 0 ? 4 : 6
               break
             case 4:
-              ;(b7 = t.N), (o = t.z), (e = $.aC.a), (a9 = 0)
+              ;(b9 = t.N), (o = t.z), (d = $.aC.a), (b1 = 0)
             case 7:
-              if (!(a9 < A.fo(J.U(a7.b)))) {
+              if (!(b1 < A.fo(J.U(a9.b)))) {
                 s = 9
                 break
               }
-              if (J.ai(a7.b, a9) == null) {
+              if (J.ai(a9.b, b1) == null) {
                 s = 8
                 break
               }
-              b0 = A.b7(b7, o)
-              J.b0(J.ai(a7.b, a9), new A.hy(b0))
-              b0.l(0, 'tags', A.cq(A.B(b0.h(0, 'tags')), [], o))
-              b0.l(
+              b2 = A.b7(b9, o)
+              J.b0(J.ai(a9.b, b1), new A.hy(b2))
+              b2.l(0, 'tags', A.cq(A.B(b2.h(0, 'tags')), [], o))
+              b2.l(
                 0,
                 'remind_at',
-                A.cq(A.B(b0.h(0, 'remind_at')), A.b7(o, o), o)
+                A.cq(A.B(b2.h(0, 'remind_at')), A.b7(o, o), o)
               )
-              b0.l(
+              b2.l(
                 0,
                 'personal_remind_at',
-                A.cq(A.B(b0.h(0, 'personal_remind_at')), A.b7(o, o), o)
+                A.cq(A.B(b2.h(0, 'personal_remind_at')), A.b7(o, o), o)
               )
-              b0.l(0, 'widget', A.cq(A.B(b0.h(0, 'widget')), A.b7(o, o), o))
-              s = b0.h(0, 'takers') != null ? 10 : 11
+              b2.l(0, 'widget', A.cq(A.B(b2.h(0, 'widget')), A.b7(o, o), o))
+              s = b2.h(0, 'takers') != null ? 10 : 11
               break
             case 10:
-              d = A.B(b0.h(0, 'repeat_id'))
-              b1 = d.length !== 0
-              d = b1 ? ' e.finish_time ' : ' a.finish_time '
-              c = b1
+              c = A.B(b2.h(0, 'repeat_id'))
+              b3 = c.length !== 0
+              c = b3 ? ' e.finish_time ' : ' a.finish_time '
+              b = b3
                 ? ' LEFT JOIN task_repeat_finish e  ON e.repeat_id = ' +
-                  A.z(b0.h(0, 'repeat_id')) +
+                  A.z(b2.h(0, 'repeat_id')) +
                   ' AND a.taker_id = e.user_id '
                 : ' '
-              a = A.z(b0.h(0, 'ref_task_id'))
-              a2 = $.aC.b
-              if (a2 === $.aC) A.aE(A.jF(e))
+              a0 = A.z(b2.h(0, 'ref_task_id'))
+              a3 = $.aC.b
+              if (a3 === $.aC) A.aE(A.jF(d))
               s = 12
               return A.T(
-                a2.E(
+                a3.E(
                   0,
                   '          SELECT CAST(a.ref_task_id AS TEXT) AS task_id, CAST(a.dispatch_id AS TEXT) AS dispatch_id\n     , CAST(a.creator_id AS TEXT) AS creator_id, CAST(a.taker_id AS TEXT) AS taker_id\n     , CAST(a.invite_id AS TEXT) AS invite_id, a.invite_type\n     , a.identity, a.state, a.operate_state, a.personal_state, a.reason, a.is_admin, a.is_dispatch, a.execute_at\n     , a.personal_remind_at, a.accept_at, a.finish_time, a.cancel_at, a.revoke_at, a.exit_at, a.set_admin_at\n     , a.topmost_at, a.create_at, a.update_at, a.delete_at, a.is_view, a.status, a.is_valid\n     , IFNULL(' +
-                    d +
-                    ', 0) AS finish_time\n     , CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view\n  FROM task_dispatch a\n      ' +
                     c +
+                    ', 0) AS finish_time\n     , CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view\n  FROM task_dispatch a\n      ' +
+                    b +
                     '\n WHERE ref_task_id = ' +
-                    a +
+                    a0 +
                     '\n AND is_valid = 1\n AND status = 1\n AND identity NOT IN (10804, 10811)\n AND operate_state = 0'
                 ),
                 $async$N
               )
             case 12:
-              b2 = c0
-              b0.l(0, 'takers', [])
-              d = b2.a
-              d === $ && A.W()
-              if (d === 0)
-                for (b3 = 0; b3 < A.fo(J.U(b2.b)); ++b3) {
-                  b4 = A.b7(b7, o)
-                  J.b0(J.ai(b2.b, b3), new A.hz(b4))
-                  b4.l(
+              b4 = c2
+              b2.l(0, 'takers', [])
+              c = b4.a
+              c === $ && A.W()
+              if (c === 0)
+                for (b5 = 0; b5 < A.fo(J.U(b4.b)); ++b5) {
+                  b6 = A.b7(b9, o)
+                  J.b0(J.ai(b4.b, b5), new A.hz(b6))
+                  b6.l(
                     0,
                     'personal_remind_at',
-                    A.cq(A.B(b4.h(0, 'personal_remind_at')), A.b7(o, o), o)
+                    A.cq(A.B(b6.h(0, 'personal_remind_at')), A.b7(o, o), o)
                   )
-                  J.k6(b0.h(0, 'takers'), b4)
+                  J.k6(b2.h(0, 'takers'), b6)
                 }
             case 11:
-              if (A.B(b0.h(0, 'application_json')).length !== 0) {
-                d = J.ai(
-                  A.cq(A.B(b0.h(0, 'application_json')), null, o),
+              if (A.B(b2.h(0, 'application_json')).length !== 0) {
+                c = J.ai(
+                  A.cq(A.B(b2.h(0, 'application_json')), null, o),
                   'name'
                 )
-                b0.l(0, 'application_name', d == null ? '' : d)
+                b2.l(0, 'application_name', c == null ? '' : c)
               }
-              b0.af(0, 'application_json')
-              b0.af(0, 'sort_idx')
-              b0.af(0, 'timestamp')
-              b0.af(0, 'update_at')
-              B.a.m(a8, b0)
+              b2.af(0, 'application_json')
+              b2.af(0, 'sort_idx')
+              b2.af(0, 'timestamp')
+              b2.af(0, 'update_at')
+              B.a.m(b0, b2)
             case 8:
-              ++a9
+              ++b1
               s = 7
               break
             case 9:
-              b5 = a8.length
+              b7 = b0.length
               s = 5
               break
             case 6:
-              b5 = 0
+              b7 = 0
             case 5:
-              if (!b8.r) {
-                b7 = b8.x
-                b7.toString
-                b7 = b7 > 0 && n === 1
-              } else b7 = !0
-              s = b7 ? 13 : 14
+              if (!c0.r) {
+                b9 = c0.x
+                b9.toString
+                b9 = b9 > 0 && n === 1
+              } else b9 = !0
+              s = b9 ? 13 : 14
               break
             case 13:
               s = 15
               return A.T(
-                $.aC.I().E(0, 'SELECT COUNT(*) AS total\nFROM (' + a6 + ') tc'),
+                $.aC.I().E(0, 'SELECT COUNT(*) AS total\nFROM (' + a8 + ') tc'),
                 $async$N
               )
             case 15:
-              b6 = c0
-              b7 = b6.a
-              b7 === $ && A.W()
-              if (b7 !== 0) {
-                o = b6.c
+              b8 = c2
+              b9 = b8.a
+              b9 === $ && A.W()
+              if (b9 !== 0) {
+                o = b8.c
                 o === $ && A.W()
-                q = new A.a6(b7, null, o, t.Y)
+                q = new A.a6(b9, null, o, t.Y)
                 s = 1
                 break
               }
-              b7 = a7.b
-              if (b7 != null && t.j.b(b7) && J.U(b7) > 0)
-                b5 = A.y(J.ai(J.ai(b6.b, 0), 'total'))
+              b9 = a9.b
+              if (b9 != null && t.j.b(b9) && J.U(b9) > 0)
+                b7 = A.y(J.ai(J.ai(b8.b, 0), 'total'))
             case 14:
               q = new A.a6(
                 0,
-                A.h7(['list', a8, 'total', b5], t.N, t.K),
+                A.h7(['list', b0, 'total', b7], t.N, t.K),
                 'ok',
                 t.Y
               )
@@ -10613,7 +10619,7 @@
             case 6:
               f.sc1(c)
               m = h.b.fr
-              m = B.c.aZ(0, m == null ? '' : m)
+              m = B.c.b_(0, m == null ? '' : m)
               l = t.P
               i = typeof m == 'string' ? l.a(B.c.F(0, m, null)) : l.a(m)
               m = J.O(i)
@@ -10836,7 +10842,7 @@
                   f = A.J([], m)
                   i = b.h(0, h)
                   if (i != null) J.b0(i, new A.hS(k, p, d, f))
-                  g.saC(f)
+                  g.saD(f)
                 }
                 B.a.m(e, g)
               }
@@ -11340,7 +11346,7 @@
               o = new A.a6($, null, $, t.Y)
               n = p.h(0, 'code')
               o.a = A.y(n == null ? 0 : n)
-              o.saY(0, p.h(0, 'data'))
+              o.saZ(0, p.h(0, 'data'))
               n = p.h(0, 'message')
               o.c = A.B(n == null ? 'ok' : n)
               q = o
@@ -11358,7 +11364,7 @@
     $1(a) {
       var s, r, q
       t.Y.a(a)
-      a.saY(0, A.ju(a.b))
+      a.saZ(0, A.ju(a.b))
       s = a.a
       s === $ && A.W()
       r = a.b
@@ -11462,15 +11468,15 @@
     s = J.t.prototype
     s.bg = s.k
     s = A.a2.prototype
-    s.bc = s.b_
-    s.bd = s.b0
+    s.bc = s.b0
+    s.bd = s.b1
     s = A.r.prototype
     s.bh = s.k
     s = A.aP.prototype
     s.be = s.h
     s.bf = s.l
     s = A.bP.prototype
-    s.aD = s.l
+    s.aE = s.l
   })()
   ;(function installTearOffs() {
     var s = hunkHelpers._static_1,

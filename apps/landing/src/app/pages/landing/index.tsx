@@ -20,7 +20,7 @@ const Landing = () => {
       <div className={styles.header}>
         <div className={styles.header_box}>
           <div className={styles.header_title}>
-            飞项-可协同的时间、任务管理应用
+            飞项-可协同的时间、任务管理模版
           </div>
           <span className={styles.header_body}>
             基于PDCA、四象限时间管理、目标管理法为职场人量身打造，适合时间管理、任务管理、工作管理的多种管理需求，最终实现效率提升、工作精进、成长晋升。

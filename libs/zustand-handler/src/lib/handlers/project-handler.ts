@@ -148,43 +148,43 @@ export class ProjectHandler {
   }
 
   // 更新事项
-  updateTasksByApi(taskIds: string[]) {
+  async updateTasksByApi(taskIds: string[]) {
     const { taskList } = useProjectStore.getState()
 
     const decentIds = [...new Set(taskIds)]
 
-    projectApi
-      .getTaskListOfProject({
-        projectId: this.projectId,
-        tasks_id: decentIds.join(','),
-        show_mode: 2
-      })
-      .then(({ data }) => {
-        useProjectStore.setState(
-          produce<IProjectState>((state) => {
-            data.forEach((task) => {
-              const { parent_id, task_id } = task
+    const { data } = await projectApi.getTaskListOfProject({
+      projectId: this.projectId,
+      tasks_id: decentIds.join(','),
+      show_mode: 2
+    })
 
-              // 顶级事项
-              if (!parent_id) {
-                state.taskDict[task_id] = task
+    useProjectStore.setState(
+      produce<IProjectState>((state) => {
+        data.forEach((task) => {
+          const { parent_id, task_id } = task
 
-                // 当前列表不存在在插入至顶部
-                if (!taskList.includes(task_id)) {
-                  state.taskList.unshift(task_id)
-                }
+          // 顶级事项
+          if (!parent_id) {
+            state.taskDict[task_id] = task
 
-                return
-              }
+            // 当前列表不存在在插入至顶部
+            if (!taskList.includes(task_id)) {
+              state.taskList.unshift(task_id)
+            }
 
-              // 子孙事项 - 重置其父事项收合状态
-              parent_id.split(',').forEach((id) => {
-                state.expandDict[id] = false
-              })
-            })
+            return
+          }
+
+          // 子孙事项 - 重置其父事项收合状态
+          parent_id.split(',').forEach((id) => {
+            state.expandDict[id] = false
           })
-        )
+        })
       })
+    )
+
+    console.log('[updateByApi-Gantt]', useProjectStore.getState())
   }
 
   // 收合

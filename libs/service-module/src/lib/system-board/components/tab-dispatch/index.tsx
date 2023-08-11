@@ -10,7 +10,7 @@ import { Button } from 'antd'
 
 import { FlyBasePopper } from '@flyele/flyele-components'
 import style from './index.module.scss'
-import CompleteItem from '../CompleteItem'
+import CompleteItem from '../complete-item'
 import { IDashboardItem } from '@flyele-nx/types'
 
 interface Props {

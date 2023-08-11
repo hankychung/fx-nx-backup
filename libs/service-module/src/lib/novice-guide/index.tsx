@@ -5,12 +5,9 @@ import { UsageMode } from './components/usage-mode'
 import { usageModeType } from '@flyele-nx/types'
 import { Personal } from './components/personal'
 import { Team } from './components/team'
+import { IGoHomeParams } from './types'
 
 type currentStepType = 1 | 2
-
-export interface IGoHomeParams {
-  spaceId: string
-}
 
 const _NoviceGuide = ({
   userId,

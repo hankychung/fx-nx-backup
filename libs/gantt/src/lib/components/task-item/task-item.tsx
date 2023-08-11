@@ -6,6 +6,7 @@ import { BarSmall } from './bar/bar-small'
 import { Milestone } from './milestone/milestone'
 import { Project } from './project/project'
 import style from './task-list.module.css'
+import { useMemoizedFn } from 'ahooks'
 // import { createSVG } from '../../utils'
 // import checkboxFinishedIcon from '../../../assets/schedule/check.png'
 
@@ -71,8 +72,7 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
   //   }
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [defaultLayout, svg, task])
-
-  useEffect(() => {
+  const a = useMemoizedFn(() => {
     switch (task.typeInternal) {
       case 'milestone':
         setTaskItem(<Milestone {...props} />)
@@ -87,7 +87,10 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
         setTaskItem(<Bar {...props} />)
         break
     }
-  }, [task, isSelected, props])
+  })
+  useEffect(() => {
+    a()
+  }, [a, task])
 
   useEffect(() => {
     if (textRef.current) {

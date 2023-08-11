@@ -15,12 +15,12 @@
 
 .calendarTop {
   text-anchor: middle;
-  line-height: 34px;
+  line-height: 32px;
 }
 
 .calendarTopText {
   text-anchor: middle;
-  line-height: 34px;
+  line-height: 32px;
   fill: #555;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

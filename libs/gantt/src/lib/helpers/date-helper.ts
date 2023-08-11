@@ -81,10 +81,10 @@ export const ganttDateRange = (
   if (tasks && tasks.length > 0) {
     for (const task of tasks) {
       if (task.start < newStartDate) {
-        newStartDate = task.start
+        newStartDate = task.start || new Date()
       }
       if (task.end > newEndDate) {
-        newEndDate = task.end
+        newEndDate = task.end || new Date()
       }
     }
   }
@@ -179,7 +179,7 @@ export const seedDates = (
         currentDate = addToDate(currentDate, 1, 'hour')
         break
     }
-    dates.push(currentDate)
+    dates.push(currentDate || new Date())
   }
   return dates
 }

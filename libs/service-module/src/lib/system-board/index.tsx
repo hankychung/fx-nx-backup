@@ -17,6 +17,7 @@ import { ISortableTab, ISystemBoardNormalRef } from '@flyele-nx/types'
 import { useUpdateBoard } from './hooks/useUpdateBoard'
 import { TaskApi, UsercApi } from '@flyele-nx/service'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { GlobalInfoHandler } from '@flyele-nx/global-processor'
 
 function getTxt(count?: number) {
   return `·${count}`
@@ -67,7 +68,6 @@ const initTabs: ISortableTab[] = [
 
 const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
   const sortedTab = useUserInfoStore.getState().setting.view_sort
-  const userId = useUserInfoStore.getState().userInfo.user_id
 
   const [activeId, setActiveId] = useState<TabIds>(TabIds.FOLLOW)
 
@@ -224,14 +224,14 @@ const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
   //   emitter.on()
   // })
 
-  const handleDragEnd = (sortedItems: ISortableTab[]) => {
-    UsercApi.updateSetting({
+  const handleDragEnd = async (sortedItems: ISortableTab[]) => {
+    await UsercApi.updateSetting({
       view_sort: sortedItems.map((item) => item.id).join(',')
     })
-    const newSortedTab = sortedItems.map((item) => item.id).join(',')
 
-    // 本端记录排序
-    localStorage.setItem(`sortedTab${userId}`, newSortedTab)
+    UsercApi.getUserSetting().then((res) => {
+      GlobalInfoHandler.updateUserSetting(res.data)
+    })
 
     setTabs(sortedItems)
   }

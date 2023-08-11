@@ -238,7 +238,6 @@ const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
 
   return (
     <div className={style['system-container']}>
-      {/* TODO: 这个拖动不知道怎么用不了 */}
       <SortableTab
         tabs={tabs}
         handleDragEnd={(sortedItems) => handleDragEnd(sortedItems)}
@@ -248,6 +247,7 @@ const System: ForwardRefRenderFunction<ISystemBoardNormalRef> = (_, ref) => {
         }}
         defaultActiveId={TabIds.FOLLOW}
         itemClass={style['system-tab']}
+        sortableElName={'board_system_tab'}
       />
       {cmps.map(({ id }) => (
         <Template

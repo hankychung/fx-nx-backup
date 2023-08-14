@@ -4,6 +4,7 @@ import { SortableTab } from '@flyele-nx/ui'
 import { useRequest } from 'ahooks'
 import { CustomPanelValue } from '@flyele-nx/types'
 import { useMemo, useState } from 'react'
+import DefaultPanel from './components/default-panel'
 
 export const boardCustomPanelId = 'board-custom-panel'
 const defaultId = '1111111'
@@ -88,8 +89,8 @@ export const CustomPanel = () => {
             sortableElName={'board-custom-panel'}
           />
           <div className={style.content_box}>
-            {/* {memoTabs === defaultTabs && <DefaultPanel />}
-            {tabs.map((item) =>
+            {memoTabs === defaultTabs && <DefaultPanel />}
+            {/* {tabs.map((item) =>
               activeTab === item.id ? (
                 <List
                   key={item.id}

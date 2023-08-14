@@ -1,22 +1,32 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { FlyAvatarGroup, FlyTextTooltip } from '@flyele/flyele-components'
 import cs from 'classnames'
 import style from './index.module.scss'
-import { StatusBox } from '@flyele-nx/service-module'
 import { IDashboardItem } from '@flyele-nx/types'
-import { convertToTask } from '../../pages/board/modules/system/utils'
+import { convertToTask } from '../../utils'
+import { StatusBox } from '../../../status-box'
 // const unfinishedState = [10301, 10402]
 
 interface Props {
   item: IDashboardItem
-  handleClick: () => void
 }
 
-const ToBeArrangedItem: FC<Props> = ({ item, handleClick }) => {
+export const ToBeArrangedItem: FC<Props> = ({ item }) => {
   const [showTimeSelector, setShowTimeSelector] = useState(false)
   // const [needChooseTime, setNeedChooseTime] = useState(true)
   // const { getAvatar } = useInteractsInfo()
   const [sortedTakersList, setSortedTakersList] = useState([])
+
+  const handleClick = useCallback(() => {
+    // TODO: createToolWin
+    console.log('createToolWin')
+    // createToolWin({
+    //   ref_id: item.task_id,
+    //   matter_type: item.matter_type,
+    //   cycle: item?.cycle,
+    //   from: '今日看板'
+    // })
+  }, [])
 
   /**
    * 获取头像
@@ -93,5 +103,3 @@ const ToBeArrangedItem: FC<Props> = ({ item, handleClick }) => {
     </div>
   )
 }
-
-export default ToBeArrangedItem

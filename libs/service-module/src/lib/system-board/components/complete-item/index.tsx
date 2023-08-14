@@ -4,9 +4,9 @@ import { FlyTextTooltip } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import { IDashboardItem } from '@flyele-nx/types'
 import { useTimeTip } from '@flyele-nx/utils'
-import { StatusBox } from '@flyele-nx/service-module'
 import { RepeatIcon } from '@flyele-nx/icon'
 import { convertToTask } from '../../utils'
+import { StatusBox } from '../../../status-box'
 // const unfinishedState = [10301, 10402]
 
 interface Props {

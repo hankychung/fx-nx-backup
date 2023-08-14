@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import CompleteItem from '../CompleteItem'
+import CompleteItem from '../complete-item'
 import style from './index.module.scss'
 import { useContactStore } from '@flyele-nx/zustand-store'
 import { IDashboardItem } from '@flyele-nx/types'

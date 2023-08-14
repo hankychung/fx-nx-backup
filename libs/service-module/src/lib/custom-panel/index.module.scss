@@ -1,9 +1,15 @@
-/**
-   author: william   email:362661044@qq.com
-   create_at:2021/11/19 下午 4:37
-**/
-
 $p-m-bottom: 12px;
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
+.content_box {
+  flex: 1;
+  height: 100%;
+  background-color: #fff;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
 
 // 蒙层
 .mask {
@@ -71,10 +77,4 @@ $p-m-bottom: 12px;
   p {
     margin-bottom: $p-m-bottom;
   }
-}
-.content_box {
-  height: 100%;
-  background-color: #fff;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
 }

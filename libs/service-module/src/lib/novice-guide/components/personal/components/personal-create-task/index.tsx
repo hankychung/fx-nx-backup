@@ -46,7 +46,7 @@ const _PersonalCreateTask = ({
   })
 
   const getTaskParams = (data: ITaskOnlyTitle[]): IBatchCreateParams[] => {
-    const tasksWithValues = data.filter((task) => task.title !== '')
+    const tasksWithValues = data.filter((task) => task.title.trim() !== '')
     return tasksWithValues.map((item, index) => {
       return {
         temp_id: `task${index}`,

@@ -5,7 +5,8 @@ import React, {
   ForwardRefRenderFunction,
   useMemo,
   useState,
-  useRef
+  useRef,
+  useContext
 } from 'react'
 import styles from '../schedule-list.module.scss'
 import { useMemoizedFn } from 'ahooks'
@@ -18,6 +19,7 @@ import { FinishNumBtn } from '../components/finish-num-btn'
 import { useScheduleList } from '../utils/hooks/useScheduleList'
 import { EmptyData } from '../components/empty-data'
 import { IInitTodayList, initTodayList } from '../utils/initTodayList'
+import { useCurTime } from '@flyele-nx/utils'
 
 /**
  * 请求全部未完成和已完成事项的列表
@@ -52,6 +54,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   const [showFinished, setShowFinished] = useState(false)
+  const curTime = useCurTime({ needRefresh: true })
 
   const isInit = useRef(true)
 
@@ -114,7 +117,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
           key={i}
           taskKey={i}
           topId={i}
-          curTime={dayjs().unix()}
+          curTime={curTime.unix()}
           isVipWin={isVipWin}
           isBoard={isBoard}
           isDarkMode={isDarkMode}
@@ -148,7 +151,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
             key={i}
             taskKey={i}
             topId={i}
-            curTime={dayjs().unix()}
+            curTime={curTime.unix()}
             isVipWin={isVipWin}
             isBoard={isBoard}
             isDarkMode={isDarkMode}

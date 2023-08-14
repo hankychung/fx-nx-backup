@@ -1,0 +1,74 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2021/11/19 下午 4:37
+**/
+
+$p-m-bottom: 12px;
+
+// 蒙层
+.mask {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 0 0 0 999px rgba(30, 28, 41, 0.2);
+}
+
+// 创建事项
+.create-matter {
+  height: 109px;
+  width: 238px;
+  // left: 280px;
+  // top: 490px;
+  // @include BgHandle('create-matter.png');
+  padding-bottom: 19px;
+}
+.create-matter-body {
+  margin-bottom: 10px;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: sub;
+  }
+  p:nth-child(1) {
+    margin-bottom: 2px;
+  }
+}
+
+// 日程
+.schedule {
+  // top: 280px;
+  // left: 500px;
+  height: 80px;
+  width: 315px;
+  // @include BgHandle('board-schedule.png');
+  padding-left: 20px;
+  p {
+    margin-bottom: $p-m-bottom;
+  }
+}
+
+// 关注
+.follow {
+  height: 80px;
+  width: 315px;
+  // top: 165px;
+  // left: 206px;
+  // @include BgHandle('board-follow.png');
+  padding-right: 20px;
+  p {
+    margin-bottom: $p-m-bottom;
+  }
+}
+
+// 自定义
+.custom {
+  height: 100px;
+  width: 315px;
+  // top: 485px;
+  // left: 205px;
+  // @include BgHandle('board-custom.png');
+  padding-right: 20px;
+  p {
+    margin-bottom: $p-m-bottom;
+  }
+}

@@ -1,5 +1,5 @@
 import React, {
-  useState,
+  // useState,
   // useCallback,
   useEffect,
   useRef,
@@ -8,41 +8,44 @@ import React, {
   ForwardRefRenderFunction,
   useMemo
 } from 'react'
-import { Empty } from '../../../../../board/components/empty'
+import { Empty } from '../empty'
 // import useSubscribe from 'hooks/useSubscribe'
-import { useUpdateBoard } from '../../../../hooks/useUpdateBoard'
+// import { useUpdateBoard } from '../../hooks/useUpdateBoard'
 import { Item as LikeItem } from '../tab-like'
-import { Item as DispatchItem } from '../TabDispatch'
+import { Item as DispatchItem } from '../tab-dispatch'
 import { Item as AcceptItem } from '../tab-accept'
-import { Item as ToBeArrangedItem } from '../TabToBeArranged'
+import { ToBeArrangedItem } from '../tab-tobe-arranged'
 
-import { cloneDeep } from 'lodash'
-import { SortableContent } from '@flyele-nx/ui'
-import { useMemoizedFn } from 'ahooks'
+// import { cloneDeep } from 'lodash'
+// import { SortableContent } from '@flyele-nx/ui'
+import { useInfiniteScroll, useMemoizedFn } from 'ahooks'
 import style from './index.module.scss'
 // import More from '../More'
 // import NewItemDom from '../NewItemDom'
 import {
   CommonResponse,
   IDashboard,
+  IDashboardItem,
   ISystemBoardNormalRef,
   SystemBoardCommonCtn
 } from '@flyele-nx/types'
 import { TaskApi } from '@flyele-nx/service'
+import classNames from 'classnames'
+import { MoreIcon } from '@flyele-nx/icon'
 
-const initPage = {
-  finished: { page: 1, done: false },
-  unFinished: { page: 1, done: false }
-}
+// const initPage = {
+//   finished: { page: 1, done: false },
+//   unFinished: { page: 1, done: false }
+// }
 
 const PAGE_RECORD = 20
 
-const uselessChange = (show: boolean, dom: HTMLDivElement) => {
-  return (
-    (show && dom.style.display === 'flex') ||
-    (!show && dom.style.display === 'none')
-  )
-}
+// const uselessChange = (show: boolean, dom: HTMLDivElement) => {
+//   return (
+//     (show && dom.style.display === 'flex') ||
+//     (!show && dom.style.display === 'none')
+//   )
+// }
 
 // let timer: NodeJS.Timeout | null = null
 
@@ -52,20 +55,20 @@ const TabPersonal: ForwardRefRenderFunction<
 > = (props, ref) => {
   const { display, nowTab, queryType } = props
 
-  const [list, setList] = useState<IDashboard>(null)
+  // const [list, setList] = useState<IDashboard>(null)
   // const [unfinishedList, setUnfinishedList] = useState<IDashboard>(null)
   // const [finishedList, setFinishedList] = useState<IDashboard>(null)
   // const [isFinishTagMode, set_isFinishTagMode] = useState<boolean>(false)
-  const pageNumber = useRef(cloneDeep(initPage))
-  const [showMore, setShowMore] = useState(false)
+  // const pageNumber = useRef(cloneDeep(initPage))
+  // const [showMore, setShowMore] = useState(false)
   // const [login, setLogin] = useState<boolean>(false) //数据login
 
   // const [newTask, setNewTask] = useState<string[]>([]) //待安排新增数据
 
-  const showMoreBtn = useMemo(
-    () => (nowTab && nowTab.count && nowTab.count > 20) || !!nowTab.total,
-    [nowTab]
-  )
+  // const showMoreBtn = useMemo(
+  //   () => (nowTab && nowTab.count && nowTab.count > 20) || !!nowTab.total,
+  //   [nowTab]
+  // )
 
   /**
    * 取消事项后更新 newTask
@@ -78,29 +81,15 @@ const TabPersonal: ForwardRefRenderFunction<
   //   }
   // })
 
-  useEffect(() => {
-    const dom = document.querySelector('#more-float') as HTMLDivElement
-
-    if (dom) {
-      if (uselessChange(showMore, dom)) return
-
-      dom.style.display = showMore && showMoreBtn ? 'flex' : 'none'
-    }
-  }, [showMore, showMoreBtn])
-
   // useEffect(() => {
-  //   if (timer) {
-  //     clearTimeout(timer)
-  //     timer = null
-  //   }
+  //   const dom = document.querySelector('#more-float') as HTMLDivElement
 
-  //   if (showMore) {
-  //     timer = setTimeout(() => {
-  //       timer = null
-  //       setShowMore(false)
-  //     }, 1500)
+  //   if (dom) {
+  //     if (uselessChange(showMore, dom)) return
+
+  //     dom.style.display = showMore && showMoreBtn ? 'flex' : 'none'
   //   }
-  // }, [showMore])
+  // }, [showMore, showMoreBtn])
 
   const getList = useMemoizedFn(
     async ({
@@ -127,9 +116,42 @@ const TabPersonal: ForwardRefRenderFunction<
     }
   )
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const { data, reloadAsync: reload } = useInfiniteScroll<{
+    list: IDashboardItem[]
+    hasNextPage: boolean
+    page: number
+  }>(
+    async (d) => {
+      const page = d ? d.page + 1 : 1
+      const res = await getList({
+        state: queryType === 1 ? 0 : 1,
+        pageNumber: page
+      })
+
+      const hasNextPage = !!(res.data && res.data.length)
+      return {
+        list: (res.data ?? []) as IDashboardItem[],
+        hasNextPage,
+        page: page
+      }
+    },
+    {
+      target: containerRef,
+      isNoMore: (d) => {
+        return !d?.hasNextPage
+      }
+    }
+  )
+
+  const list = useMemo(() => {
+    return data?.list ?? []
+  }, [data?.list])
+
   const initRef = useRef(false)
 
-  useImperativeHandle(ref, () => ({ reload: init }))
+  useImperativeHandle(ref, () => ({ reload }))
 
   // const resetFinishedList = useMemoizedFn(async () => {
   //   pageNumber.current = cloneDeep(initPage)
@@ -168,39 +190,38 @@ const TabPersonal: ForwardRefRenderFunction<
   //   resetFinishedList()
   // }, [resetFinishedList, isFinishTagMode, showMore])
 
-  const init = useMemoizedFn(async () => {
-    pageNumber.current = cloneDeep(initPage)
+  // const init = useMemoizedFn(async () => {
+  //   pageNumber.current = cloneDeep(initPage)
 
-    const { data } = await getList({
-      // 我关注的 需要获取所有的（未完成、已完成）的数据
-      state: queryType === 1 ? 0 : 1,
-      pageNumber: pageNumber.current.unFinished.page++
-    })
+  //   const { data } = await getList({
+  //     // 我关注的 需要获取所有的（未完成、已完成）的数据
+  //     state: queryType === 1 ? 0 : 1,
+  //     pageNumber: pageNumber.current.unFinished.page++
+  //   })
 
-    if (!data || data.length < PAGE_RECORD) {
-      pageNumber.current.unFinished.done = true
-    }
+  //   if (!data || data.length < PAGE_RECORD) {
+  //     pageNumber.current.unFinished.done = true
+  //   }
 
-    setList(data)
-    // setLogin(false)
-  })
+  //   setList(data)
+  //   // setLogin(false)
+  // })
 
   useEffect(() => {
-    console.log('display && initRef.current', display, initRef.current)
     if (!display && initRef.current) return
     initRef.current = true
-    init()
-  }, [init, display])
+    reload()
+  }, [reload, display])
 
-  useUpdateBoard({
-    handler: () => {
-      if (!display) return
-      init()
-      setTimeout(() => {
-        // resetFinishedList()
-      }, 500)
-    }
-  })
+  // useUpdateBoard({
+  //   handler: () => {
+  //     if (!display) return
+  //     reload()
+  //     setTimeout(() => {
+  //       // resetFinishedList()
+  //     }, 500)
+  //   }
+  // })
   // TODO:订阅
   // 新增事项存值
   // useSubscribe(
@@ -276,15 +297,14 @@ const TabPersonal: ForwardRefRenderFunction<
   // }, [finishedList, isFinishTagMode, unfinishedList])
 
   return display ? (
-    <SortableContent
-      className={style.hideXScrollbar}
-      length={list?.length || 0}
-      setShowMore={setShowMore}
+    <div
+      className={classNames(style.container, style.hideXScrollbar)}
+      ref={containerRef}
     >
       {nowTab.total === 0 && nowTab.count === 0 && (!list || !list.length) ? (
         <Empty />
       ) : (
-        (list || []).map((item, index) => {
+        (list || []).map((item, index: number) => {
           const props = {
             key: `${item?.task_id}-${item?.repeat_id}`,
             item,
@@ -312,33 +332,11 @@ const TabPersonal: ForwardRefRenderFunction<
           )
         })
       )}
-      {/* {showMoreBtn && (
-            <More
-              nowTab={nowTab}
-              typeName={nameArr[queryType] as SystemBoardTypeName}
-              renderList={renderList}
-              queryType={queryType}
-              isFinishTagMode={isFinishTagMode}
-              set_isFinishTagMode={set_isFinishTagMode}
-              loadMore={loadMore}
-              login={login}
-            />
-          )} */}
-
-      {/* {createPortal(
-            <More
-              nowTab={nowTab}
-              typeName={nameArr[queryType] as SystemBoardTypeName}
-              renderList={renderList}
-              queryType={queryType}
-              isFinishTagMode={isFinishTagMode}
-              set_isFinishTagMode={set_isFinishTagMode}
-              loadMore={loadMore}
-              login={login}
-            />,
-            document.querySelector('#more-float') || document.body
-          )} */}
-    </SortableContent>
+      <div className={style.more}>
+        <span>查看全部</span>
+        <MoreIcon className={style['more-icon']} />
+      </div>
+    </div>
   ) : null
 }
 

@@ -1,0 +1,22 @@
+.ghostClass {
+  opacity: 0;
+}
+
+.fallbackClass,
+.fallbackWithPointerNone {
+  transition: none !important;
+}
+
+.fallbackClass {
+  opacity: 1 !important;
+}
+
+.ghostWithPointerNone {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.fallbackWithPointerNone {
+  pointer-events: none;
+  opacity: 1 !important;
+}

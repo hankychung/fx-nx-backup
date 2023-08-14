@@ -22,7 +22,7 @@ export const Team = ({
 }: {
   userId: string
   onBack: () => void
-  onGoHome: () => void
+  onGoHome: (spaceId: string) => void
   onFinished: () => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
@@ -96,7 +96,10 @@ export const Team = ({
         goNext={onProjectGoNext}
         onFinished={onFinished}
       />
-      <InviteMember visible={currentStep === 4} onGoHome={onGoHome} />
+      <InviteMember
+        visible={currentStep === 4}
+        onGoHome={() => onGoHome(spaceId)}
+      />
     </TeamContext.Provider>
   )
 }

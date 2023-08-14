@@ -14,7 +14,7 @@ const Login: FC = () => {
   const isProdEnv = envStore.getEnv() === 'prod'
 
   const goToBoard = useMemoizedFn(() => {
-    const isNewUser = true
+    const isNewUser = false
     if (isNewUser) {
       navigate(RoutePath.noviceGuide)
       return

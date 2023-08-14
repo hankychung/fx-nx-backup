@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CommonPage } from '../../../common/page'
 import { useMemoizedFn } from 'ahooks'
 import styles from './index.module.scss'
 import { Input } from 'antd'
+import type { InputRef } from 'antd'
 import { AddIcon } from '@flyele-nx/icon'
 import cs from 'classnames'
 import { FlowOperateType, MatterType, QuadrantValue } from '@flyele-nx/constant'
@@ -31,6 +32,7 @@ const _PersonalCreateTask = ({
     { title: '' },
     { title: '' }
   ])
+  const inputRefList = useRef<InputRef[]>([])
 
   const addMoreTask = useMemoizedFn(() => {
     if (tasks.length >= 20) {
@@ -87,6 +89,32 @@ const _PersonalCreateTask = ({
     }
   })
 
+  const onPressEnter = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (inputRefList.current[index + 1]) {
+      inputRefList.current[index + 1].focus()
+    } else {
+      addMoreTask()
+    }
+  }
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        inputRefList.current[0]?.focus()
+      }, 800)
+    }
+  }, [visible])
+
+  useEffect(() => {
+    const length = tasks.length
+    if (length) {
+      inputRefList.current[length - 1]?.focus()
+    }
+  }, [tasks.length])
+
   return (
     <CommonPage
       visible={visible}
@@ -102,6 +130,7 @@ const _PersonalCreateTask = ({
           <div key={index} className={styles.itemBox}>
             <div className={styles.no}>{index + 1}、</div>
             <Input
+              ref={(ref) => ref && (inputRefList.current[index] = ref)}
               placeholder="请输入任务名称"
               value={task.title}
               onChange={(e) => {
@@ -113,6 +142,9 @@ const _PersonalCreateTask = ({
               maxLength={300}
               style={{
                 fontSize: '16px'
+              }}
+              onPressEnter={(e) => {
+                onPressEnter(e, index)
               }}
             />
           </div>

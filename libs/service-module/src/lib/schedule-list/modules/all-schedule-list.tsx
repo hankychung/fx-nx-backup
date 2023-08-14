@@ -68,18 +68,22 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   const fetchList = useMemoizedFn(async (params: IInitTodayList) => {
-    if (loading) return
+    try {
+      if (loading) return
 
-    if (isInit.current) {
-      setLoading(true)
-      isInit.current = false
+      if (isInit.current) {
+        setLoading(true)
+        isInit.current = false
+      }
+
+      const res = await initTodayList(params)
+
+      return res
+    } catch (e) {
+      console.error('scheduleList fetch error', e)
+    } finally {
+      setLoading(false)
     }
-
-    const res = await initTodayList(params)
-
-    setLoading(false)
-
-    return res
   })
 
   const reload = useMemoizedFn(async (params?: IInitTodayList) => {
@@ -91,6 +95,8 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   useEffect(() => {
+    reload()
+
     ListHandler.collectReloader(reloaderId, reload)
 
     return () => {

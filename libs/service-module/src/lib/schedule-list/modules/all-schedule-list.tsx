@@ -9,7 +9,7 @@ import React, {
   useContext
 } from 'react'
 import styles from '../schedule-list.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
 import dayjs from 'dayjs'
 import { ListHandler } from '../utils/listHandler'
@@ -94,15 +94,18 @@ const _AllScheduleList: ForwardRefRenderFunction<
     }
   })
 
+  // 更新updator
   useEffect(() => {
-    reload()
-
     ListHandler.collectReloader(reloaderId, reload)
 
     return () => {
       ListHandler.removeReloader(reloaderId)
     }
   }, [reload, reloaderId, date])
+
+  useUpdateEffect(() => {
+    reload()
+  }, [date])
 
   useImperativeHandle(ref, () => {
     return {

@@ -1,0 +1,53 @@
+// @import 'style/variable';
+// @import 'style/mixin';
+
+.cell_wrap {
+  // height: 50px;
+  display: inline-block;
+  background-color: transparent;
+  margin-right: 10px;
+  max-width: 100%;
+
+  .content_wrap {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    height: 40px;
+    margin: 5px 0 5px 0;
+    background-color: #f8f8f8;
+    padding: 0 12px;
+    border-radius: 5px;
+
+    .img_box {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .text {
+      // color: $black-87;
+      font-size: 14px;
+      margin-left: 10px;
+
+      // @include ellipsis(1);
+
+      // &.gray {
+      //   color: $black-30;
+      // }
+    }
+  }
+}
+
+.ov_hidden {
+  overflow: hidden;
+}
+
+// .txt_ellipsis {
+//   @include ellipsis(1);
+// }

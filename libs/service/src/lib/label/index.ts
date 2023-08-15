@@ -14,6 +14,16 @@ class Label {
     return await service.post({ url: `${this.prefix}/tag`, data: params })
   }
 
+  async updateTag(params: { id: string } & ITagParams) {
+    const { id } = params
+
+    return service.put({ url: `${this.prefix}/tag/${id}`, data: params })
+  }
+
+  async deleteTag(id: string) {
+    return service.delete({ url: `${this.prefix}/tag/${id}` })
+  }
+
   // 绑定标签
   async bindTag(model: {
     refId: string

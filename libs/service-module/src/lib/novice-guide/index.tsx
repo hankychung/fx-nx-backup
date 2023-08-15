@@ -53,9 +53,10 @@ const _NoviceGuide = ({
             onBack={() => {
               setCurrentStep(1)
             }}
-            onGoHome={(spaceId) =>
+            onGoHome={({ spaceId, createData }) =>
               onGoHome('team', {
-                spaceId: spaceId
+                spaceId: spaceId,
+                createData: createData
               })
             }
             onFinished={() => onFinished('team')}

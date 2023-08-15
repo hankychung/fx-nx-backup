@@ -37,3 +37,12 @@ export interface IIndustryInfo {
   table_header_title?: number[] // 对应枚举 TableHeaderTitle
   task_group: IIndustryTaskGroup[] // 事项数组
 }
+
+export interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
+  group_id: string // 分组id
+}
+
+export interface IIndustryTemplate extends IIndustryInfo {
+  checked: 'checked' | 'normal'
+  task_group: IIndustryTaskGroupWithId[]
+}

@@ -5,6 +5,9 @@ import { useRequest } from 'ahooks'
 import { CustomPanelValue } from '@flyele-nx/types'
 import { useMemo, useState } from 'react'
 import DefaultPanel from './components/default-panel'
+import { LabelApi } from '@flyele-nx/service'
+import { isEqual } from 'lodash'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 export const boardCustomPanelId = 'board-custom-panel'
 const defaultId = '1111111'
@@ -17,12 +20,18 @@ const defaultTabs: CustomPanelValue[] = [
 
 export const CustomPanel = () => {
   const [activeTab, setActiveTab] = useState(defaultId)
-  const { loading, data: tabs } = useRequest<CustomPanelValue[], any>(
-    async () => {
-      // TODO:  请求接口
-      return []
-    }
-  )
+  const { showMsg } = globalNxController
+  const { loading, data: tabs } = useRequest(async () => {
+    const res = await LabelApi.getCustomPanelList()
+    setActiveTab(res.data[0].id)
+    return res.data.map((item) => {
+      return {
+        id: item.id,
+        content: item.content,
+        text: item.title
+      }
+    })
+  })
 
   const memoTabs = useMemo(() => {
     if (tabs && tabs.length > 0) return tabs
@@ -34,23 +43,16 @@ export const CustomPanel = () => {
   const hideAddTab = tabs?.length === 10
 
   const handleDragEnd = (changeTabs: CustomPanelValue[]) => {
-    // if (memoTabs === defaultTabs) return // 默认tabs无需处理
-    // const isChange = !isEqual(changeTabs, tabs)
-    // if (!isChange) return
-    // setTabs(changeTabs)
-    // const oldTabs = tabs
-    // CustomPanelApi.sortCustomPanel(changeTabs.map((item) => item.id))
-    //   .then((_) => {
-    //     // setTabs(tabs)
-    //   })
-    //   .catch(() => {
-    //     // 恢复
-    //     showMsg({
-    //       msgType: '错误',
-    //       content: '拖动排序失败',
-    //     })
-    //     setTabs(oldTabs)
-    //   })
+    if (memoTabs === defaultTabs) return // 默认tabs无需处理
+    const isChange = !isEqual(changeTabs, tabs)
+    if (!isChange) return
+    LabelApi.sortCustomPanel(changeTabs.map((item) => item.id)).catch(() => {
+      // 恢复
+      showMsg({
+        msgType: '错误',
+        content: '拖动排序失败'
+      })
+    })
   }
 
   const onAdd = () => {
@@ -81,12 +83,12 @@ export const CustomPanel = () => {
             tabs={memoTabs as Omit<CustomPanelValue, 'content'>[]}
             handleDragEnd={handleDragEnd}
             handleClickTab={(id) => {
-              //   setActiveTab(id)
+              setActiveTab(id)
             }}
             defaultActiveId={activeTab}
             moreActions={!hideAddTab}
             onAdd={onAdd}
-            sortableElName={'board-custom-panel'}
+            sortableElName={'board_custom_panel'}
           />
           <div className={style.content_box}>
             {memoTabs === defaultTabs && <DefaultPanel />}

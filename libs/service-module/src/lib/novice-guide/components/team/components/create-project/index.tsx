@@ -327,19 +327,14 @@ const _CreateProject = ({
   })
 
   const onChangeGroupName = useMemoizedFn(
-    (
-      e: ChangeEvent<HTMLInputElement>,
-      groupIndex: number,
-      itemIndex: number
-    ) => {
-      const inputValue = e.target.value
+    (value: string, groupIndex: number, itemIndex: number) => {
       const updatedTemplate = [...template]
       const item = updatedTemplate[itemIndex].task_group
       const updatedGroup = item[groupIndex]
-      if (inputValue === '') {
+      if (value === '') {
         item.splice(groupIndex, 1)
       } else {
-        updatedGroup.group_name = inputValue
+        updatedGroup.group_name = value
       }
       setTemplate(updatedTemplate)
     }

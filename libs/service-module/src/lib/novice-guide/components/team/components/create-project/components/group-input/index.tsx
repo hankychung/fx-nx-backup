@@ -8,6 +8,7 @@ import React, {
 import styles from './index.module.scss'
 import { Input } from 'antd'
 import cs from 'classnames'
+import { Close } from '@flyele-nx/icon'
 
 export interface IGroupInputRef {
   changeInEdit: (value: boolean) => void
@@ -19,11 +20,7 @@ const _GroupInput: ForwardRefRenderFunction<
     value: string
     groupIndex: number
     index: number
-    onChange: (
-      e: ChangeEvent<HTMLInputElement>,
-      groupIndex: number,
-      index: number
-    ) => void
+    onChange: (value: string, groupIndex: number, index: number) => void
   }
 > = ({ value, groupIndex, index, onChange }, ref) => {
   const [isEdit, setIsEdit] = useState(false)
@@ -46,7 +43,7 @@ const _GroupInput: ForwardRefRenderFunction<
           maxLength={8}
           bordered={false}
           onBlur={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(e, groupIndex, index)
+            onChange(e.target.value, groupIndex, index)
             setIsEdit(false)
           }}
           style={{
@@ -58,7 +55,17 @@ const _GroupInput: ForwardRefRenderFunction<
           allowClear
         />
       ) : (
-        <div onClick={() => setIsEdit(true)}>{value}</div>
+        <div className={styles.groupValue} onClick={() => setIsEdit(true)}>
+          {value}
+          <div
+            className={styles.deleteIcon}
+            onClick={() => {
+              onChange('', groupIndex, index)
+            }}
+          >
+            <Close width={10} height={10} color="#D9D9D9" />
+          </div>
+        </div>
       )}
     </div>
   )

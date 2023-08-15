@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CommonPage } from '../../../common/page'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import styles from './index.module.scss'
 import { Input } from 'antd'
 import type { InputRef } from 'antd'
@@ -108,7 +108,7 @@ const _PersonalCreateTask = ({
     }
   }, [visible])
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     const length = tasks.length
     if (length) {
       inputRefList.current[length - 1]?.focus()

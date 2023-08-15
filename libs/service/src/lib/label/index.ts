@@ -32,6 +32,21 @@ class Label {
       }
     })
   }
+
+  // 获取自定义视图列表
+  getCustomPanelList() {
+    return service.get<{ id: string; title: string; content?: string }[]>({
+      url: `${this.prefix}/view/list`
+    })
+  }
+
+  //自定义视图排序，id逗号分割
+  sortCustomPanel(ids: string[]) {
+    return service.post({
+      url: `${this.prefix}/view/item/sort`,
+      data: { ids }
+    })
+  }
 }
 
 export const LabelApi = new Label()

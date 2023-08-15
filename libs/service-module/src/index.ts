@@ -29,6 +29,7 @@ import { CustomPanel } from './lib/custom-panel'
 import type { IGoHomeParams } from './lib/novice-guide/types'
 
 export * from './lib/schedule-list' // 日程列表
+export * from './lib/create-modal'
 
 export {
   MapSvg,

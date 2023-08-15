@@ -17,7 +17,6 @@ import { Item as AcceptItem } from '../tab-accept'
 import { ToBeArrangedItem } from '../tab-tobe-arranged'
 
 // import { cloneDeep } from 'lodash'
-// import { SortableContent } from '@flyele-nx/ui'
 import { useInfiniteScroll, useMemoizedFn } from 'ahooks'
 import style from './index.module.scss'
 // import More from '../More'

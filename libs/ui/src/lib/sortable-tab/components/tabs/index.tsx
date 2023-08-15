@@ -131,6 +131,7 @@ const Container = ({
           className={styles.container}
           onScroll={onScroll}
           id={sortableElName}
+          ref={scrollRef}
         >
           {tabs.map((item, index) => (
             <Card

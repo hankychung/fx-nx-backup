@@ -1,0 +1,15 @@
+.create-modal {
+  width: 780px;
+}
+
+.modal-wrapper {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+
+  .header {
+    height: 56px;
+  }
+}

@@ -5,10 +5,11 @@ import React, {
   ForwardRefRenderFunction,
   useMemo,
   useState,
-  useRef
+  useRef,
+  useContext
 } from 'react'
 import styles from '../schedule-list.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
 import dayjs from 'dayjs'
 import { ListHandler } from '../utils/listHandler'
@@ -18,6 +19,7 @@ import { FinishNumBtn } from '../components/finish-num-btn'
 import { useScheduleList } from '../utils/hooks/useScheduleList'
 import { EmptyData } from '../components/empty-data'
 import { IInitTodayList, initTodayList } from '../utils/initTodayList'
+import { useCurTime } from '@flyele-nx/utils'
 
 /**
  * 请求全部未完成和已完成事项的列表
@@ -52,6 +54,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   const [showFinished, setShowFinished] = useState(false)
+  const curTime = useCurTime({ needRefresh: true })
 
   const isInit = useRef(true)
 
@@ -65,18 +68,22 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   const fetchList = useMemoizedFn(async (params: IInitTodayList) => {
-    if (loading) return
+    try {
+      if (loading) return
 
-    if (isInit.current) {
-      setLoading(true)
-      isInit.current = false
+      if (isInit.current) {
+        setLoading(true)
+        isInit.current = false
+      }
+
+      const res = await initTodayList(params)
+
+      return res
+    } catch (e) {
+      console.error('scheduleList fetch error', e)
+    } finally {
+      setLoading(false)
     }
-
-    const res = await initTodayList(params)
-
-    setLoading(false)
-
-    return res
   })
 
   const reload = useMemoizedFn(async (params?: IInitTodayList) => {
@@ -87,6 +94,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     }
   })
 
+  // 更新updator
   useEffect(() => {
     ListHandler.collectReloader(reloaderId, reload)
 
@@ -94,6 +102,10 @@ const _AllScheduleList: ForwardRefRenderFunction<
       ListHandler.removeReloader(reloaderId)
     }
   }, [reload, reloaderId, date])
+
+  useUpdateEffect(() => {
+    reload()
+  }, [date])
 
   useImperativeHandle(ref, () => {
     return {
@@ -114,7 +126,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
           key={i}
           taskKey={i}
           topId={i}
-          curTime={dayjs().unix()}
+          curTime={curTime.unix()}
           isVipWin={isVipWin}
           isBoard={isBoard}
           isDarkMode={isDarkMode}
@@ -148,7 +160,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
             key={i}
             taskKey={i}
             topId={i}
-            curTime={dayjs().unix()}
+            curTime={curTime.unix()}
             isVipWin={isVipWin}
             isBoard={isBoard}
             isDarkMode={isDarkMode}

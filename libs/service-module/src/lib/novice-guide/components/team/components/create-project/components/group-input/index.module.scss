@@ -9,6 +9,28 @@
   border-radius: 5px;
   cursor: pointer;
   box-sizing: border-box;
+
+  .groupValue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .deleteIcon {
+      width: 10px;
+      height: 10px;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-left: 10px;
+      display: none;
+    }
+
+    &:hover {
+      .deleteIcon {
+        display: flex;
+      }
+    }
+  }
 }
 
 .pd {

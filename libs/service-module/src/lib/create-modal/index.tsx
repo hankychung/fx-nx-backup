@@ -10,15 +10,18 @@ class CreateModalHandler {
 
     this.modal = Modal.info({
       width: 780,
-      content: <CreateModal />,
+      content: <CreateModal close={() => this.close()} />,
       footer: null,
       icon: null,
-      wrapClassName: style['modal-wrapper']
+      wrapClassName: style['modal-wrapper'],
+      closeIcon: true,
+      maskClosable: true
     })
   }
 
   close() {
     this.modal?.destroy()
+    this.modal = null
   }
 }
 

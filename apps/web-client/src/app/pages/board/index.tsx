@@ -3,9 +3,11 @@ import { initCacheWorker } from '../../utils/initCacheWorker'
 import { BoardHeader } from './components/header'
 import { Outlet } from 'react-router-dom'
 import style from './index.module.scss'
-import { useUserInfoStore } from '@flyele-nx/service-module'
+import { useUserInfoStore, createModal } from '@flyele-nx/service-module'
 import { LocalStore } from '@flyele-nx/utils'
 import { initInteract } from '../../utils/initInteract'
+
+createModal.open()
 
 const Board: React.FC = () => {
   const isInit = useRef(false)

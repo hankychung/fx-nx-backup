@@ -30,7 +30,9 @@ interface Iprops {
   getOrderCode?: (str: string) => void
   goProtocol: () => void
   goInterests: () => void
+  needABTab?: boolean
 }
+
 const PersonPayModal = (props: Iprops) => {
   const {
     payType,
@@ -44,7 +46,8 @@ const PersonPayModal = (props: Iprops) => {
     getOrderCode,
     goProtocol,
     goInterests,
-    showMsg
+    showMsg,
+    needABTab
   } = props
   const [vipMealType, setVipMealType] = useState<VipMealType>(payType || 1) // 切换tab
   const [showRetrieveModal, setShowRetrieveModal] = useState(false)
@@ -123,6 +126,7 @@ const PersonPayModal = (props: Iprops) => {
               showMsg={showMsg}
               hasShowRetrieveModal={hasShowRetrieveModal}
               setHasShowRetrieveModal={handleHasShowRetrieveModal}
+              needABTab={needABTab}
             />
           </div>
         </SelectMemberContext.Provider>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { CircleArrowUpDarkIcon, MoreIcon } from '@flyele-nx/icon'
+import { LeftArrowIcon, RightArrowIcon, ViewAddIcon } from '@flyele-nx/icon'
 import { Card } from '../card'
 import { ISortableTab } from '@flyele-nx/types'
 import styles from './index.module.scss'
@@ -15,7 +15,7 @@ interface Props {
   moreActions?: boolean
   onAdd?: () => void
   itemClass?: string
-  /**拖动的元素的id名字，保证全局唯一 */
+  /**拖动的父元素的id名字，保证全局唯一 */
   sortableElName: string
 }
 
@@ -141,19 +141,20 @@ const Container = ({
               clickCard={onClickTab}
               showRadius={item.id === defaultActiveId}
               style={getTabStyle(tabs.length)}
+              className={itemClass}
             />
           ))}
         </div>
       </div>
       {moreActions && (
         <div className={styles.more_actions}>
-          <CircleArrowUpDarkIcon onClick={onAdd} />
+          <ViewAddIcon color="#B4B4B4" onClick={onAdd} />
           <div className={styles.move_box}>
             <div className={styles.arrow_box}>
-              <MoreIcon onClick={onPrev} />
+              <LeftArrowIcon color="#B4B4B4" onClick={onPrev} />
             </div>
             <div className={styles.arrow_box}>
-              <MoreIcon onClick={onNext} />
+              <RightArrowIcon color="#B4B4B4" onClick={onNext} />
             </div>
           </div>
         </div>

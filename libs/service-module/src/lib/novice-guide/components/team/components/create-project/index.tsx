@@ -3,12 +3,13 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useReducer,
   useRef,
   useState
 } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { TeamContext } from '../../../../context/team'
 import { projectApi, TaskApi, UsercApi, workspaceApi } from '@flyele-nx/service'
 import {
@@ -17,7 +18,7 @@ import {
   IIndustryTaskGroup
 } from '@flyele-nx/types'
 import { FlyCircleCheckBox, FlyTheme } from '@flyele/flyele-components'
-import { Input } from 'antd'
+import { Input, InputRef } from 'antd'
 import { AddIcon } from '@flyele-nx/icon'
 import {
   FlowOperateType,
@@ -38,6 +39,16 @@ interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
 interface ITemplate extends IIndustryInfo {
   checked: 'checked' | 'normal'
   task_group: IIndustryTaskGroupWithId[]
+}
+
+type State = {
+  [key: number]: string
+}
+
+type Action = {
+  type: string
+  index: number
+  value: string
 }
 
 const _CreateProject = ({
@@ -63,6 +74,7 @@ const _CreateProject = ({
   const oldIndustryId = useRef(0)
 
   const [loading, setLoading] = useState(false)
+  const [forceFocused, setForceFocused] = useState(-1)
   const [template, setTemplate] = useState<ITemplate[]>([])
   const [updateInfo, setUpdateInfo] = useState<{
     isUpdate: boolean
@@ -72,7 +84,17 @@ const _CreateProject = ({
     index: 0
   })
   const spaceId = useRef('')
+  const oldProjectName = useRef('') // 缓存下当前修改的input值
+  const [inputValues, dispatch] = useReducer((state: State, action: Action) => {
+    switch (action.type) {
+      case 'set':
+        return { ...state, [action.index]: action.value }
+      default:
+        throw new Error()
+    }
+  }, {})
 
+  const projectInputRefs = useRef<InputRef[]>([])
   const groupInputRefs = useRef<IGroupInputRef[][]>([])
 
   const onGoBack = useMemoizedFn(() => {
@@ -114,7 +136,10 @@ const _CreateProject = ({
 
       return data
     } catch (e) {
-      console.log('@@@ 创建空间失败', e)
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: '创建空间失败'
+      })
       return ''
     }
   }
@@ -251,12 +276,13 @@ const _CreateProject = ({
             await getGroupByProjectId(allProjectIds[i].project_id, createData)
           }
         }
+
+        onFinished()
+        goNext()
       }
     } finally {
       setLoading(false)
     }
-    onFinished()
-    goNext()
   })
 
   const toggleCheckbox = (index: number) => {
@@ -301,19 +327,14 @@ const _CreateProject = ({
   })
 
   const onChangeGroupName = useMemoizedFn(
-    (
-      e: ChangeEvent<HTMLInputElement>,
-      groupIndex: number,
-      itemIndex: number
-    ) => {
-      const inputValue = e.target.value
+    (value: string, groupIndex: number, itemIndex: number) => {
       const updatedTemplate = [...template]
       const item = updatedTemplate[itemIndex].task_group
       const updatedGroup = item[groupIndex]
-      if (inputValue === '') {
+      if (value === '') {
         item.splice(groupIndex, 1)
       } else {
-        updatedGroup.group_name = inputValue
+        updatedGroup.group_name = value
       }
       setTemplate(updatedTemplate)
     }
@@ -360,7 +381,7 @@ const _CreateProject = ({
       display_mode: 2,
       group_display: 'default',
       is_edit: true,
-      project_name: '',
+      project_name: '未命名项目',
       task_group: [
         { group_name: '待处理', group_id: `${Math.random()}` },
         { group_name: '进行中', group_id: `${Math.random()}` },
@@ -370,7 +391,9 @@ const _CreateProject = ({
     }
     const updatedTemplate = [...template]
     updatedTemplate.push(newProject)
+    const length = updatedTemplate.length
     setTemplate(updatedTemplate)
+    setForceFocused(length - 1)
   })
 
   const createData = useMemo(() => {
@@ -388,12 +411,19 @@ const _CreateProject = ({
     }
   }, [visible, activeIndustryTag, fetchTemplate])
 
+  useUpdateEffect(() => {
+    if (forceFocused > 0) {
+      projectInputRefs.current[forceFocused]?.focus()
+      setForceFocused(-1)
+    }
+  }, [forceFocused])
+
   return (
     <CommonPage
       visible={visible}
       title="团队有哪些工作项目"
       desc=""
-      disableNext={!createData.length}
+      disableNext={false}
       loadingNext={loading}
       goBack={onGoBack}
       goNext={onGoNext}
@@ -420,17 +450,37 @@ const _CreateProject = ({
 
                 <div className={styles.projectName}>
                   <Input
+                    ref={(ref) =>
+                      ref && (projectInputRefs.current[index] = ref)
+                    }
                     defaultValue={item.project_name}
+                    value={inputValues[index]}
                     placeholder="请输入项目名称"
                     maxLength={16}
                     bordered={false}
+                    style={{ maxWidth: '256px', fontSize: '16px' }}
+                    onFocus={(e) => {
+                      oldProjectName.current = e.target.value
+                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      dispatch({ type: 'set', index, value: e.target.value })
+                    }}
                     onBlur={(e: ChangeEvent<HTMLInputElement>) => {
+                      if (inputValues[index] === '') {
+                        dispatch({
+                          type: 'set',
+                          index,
+                          value: oldProjectName.current
+                        })
+                      }
+
+                      if (!e.target.value) return
+
                       const updatedTemplate = [...template]
                       const item = updatedTemplate[index]
                       item.project_name = e.target.value
                       setTemplate(updatedTemplate)
                     }}
-                    style={{ maxWidth: '256px', fontSize: '16px' }}
                   />
                 </div>
               </div>
@@ -456,7 +506,7 @@ const _CreateProject = ({
                         />
                       )
                     })}
-                    {item.task_group && item.task_group.length <= 12 && (
+                    {item.task_group && item.task_group.length < 12 && (
                       <div
                         className={styles.addBtn}
                         onClick={() => onAddGroup(index)}

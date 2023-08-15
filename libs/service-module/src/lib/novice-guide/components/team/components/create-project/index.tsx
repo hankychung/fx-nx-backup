@@ -136,7 +136,10 @@ const _CreateProject = ({
 
       return data
     } catch (e) {
-      console.log('@@@ 创建空间失败', e)
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: '创建空间失败'
+      })
       return ''
     }
   }
@@ -273,12 +276,13 @@ const _CreateProject = ({
             await getGroupByProjectId(allProjectIds[i].project_id, createData)
           }
         }
+
+        onFinished()
+        goNext()
       }
     } finally {
       setLoading(false)
     }
-    onFinished()
-    goNext()
   })
 
   const toggleCheckbox = (index: number) => {

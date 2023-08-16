@@ -70,22 +70,23 @@ export const TaskListTableDefault: React.FC<{
           快速创建
         </div>
       )} */}
-      {taskList.map((item) => {
-        const t = taskDict[item] as Task
-        const id = getId(t)
-        const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
+      {taskList.length > 0 &&
+        taskList.map((item) => {
+          const t = taskDict[item] as Task
+          const id = getId(t)
+          const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
 
-        return (
-          <TaskRow
-            id={id}
-            taskId={taskId}
-            t={t}
-            key={taskId}
-            rowHeight={rowHeight}
-            rowWidth={rowWidth}
-          ></TaskRow>
-        )
-      })}
+          return (
+            <TaskRow
+              id={id}
+              taskId={taskId}
+              t={t}
+              key={taskId}
+              rowHeight={rowHeight}
+              rowWidth={rowWidth}
+            ></TaskRow>
+          )
+        })}
     </div>
   )
 }

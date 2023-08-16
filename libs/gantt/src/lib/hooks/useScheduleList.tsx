@@ -21,10 +21,11 @@ export const useGanttList = () => {
 
   const reSet = () => {
     useProjectStore.setState({
+      taskList: [],
       expandDict: {},
       taskDict: {},
       childrenDict: {},
-      taskList: [],
+
       hoverId: '',
       activeCell: ''
     })

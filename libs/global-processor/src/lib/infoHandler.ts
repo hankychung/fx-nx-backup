@@ -5,7 +5,8 @@ import {
   IOfficialCorpDetail,
   IUserEnterpriseTakers,
   IVip,
-  IUserSetting
+  IUserSetting,
+  TagModel
 } from '@flyele-nx/types'
 import {
   IContactState,
@@ -16,6 +17,7 @@ import {
 import { IUserInfoState } from '@flyele-nx/types'
 import { IHoliday, IUserInfo, IInteract } from '@flyele-nx/types'
 import { LocalStore } from '@flyele-nx/utils'
+import { TagsHandler } from '@flyele-nx/zustand-handler'
 
 class GlobalInfoHandler {
   static updateContactDict(data: IContactDict) {
@@ -98,6 +100,10 @@ class GlobalInfoHandler {
   static updateHolidayStore(data: IHoliday[]) {
     const updateData = useHolidayStore.getState().updateData
     updateData(data)
+  }
+
+  static updateTagsList(data: TagModel[]) {
+    TagsHandler.updateTagsList(data)
   }
 }
 

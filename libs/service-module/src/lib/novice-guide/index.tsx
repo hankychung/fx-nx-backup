@@ -12,13 +12,20 @@ type currentStepType = 1 | 2
 const _NoviceGuide = ({
   userId,
   onFinished,
-  onGoHome
+  onGoHome,
+  option
 }: {
   userId: string
   onFinished: (type: usageModeType, data: IIndustryUserType) => void // 通知后端，已经完成新手引导
   // 前端用于跳转到首页或者其他页面，因为 onFinished 的时机不同，导致不能统一使用 onFinished
   onGoHome: (type: usageModeType, data?: IGoHomeParams) => void
+  option?: {
+    canvasImgWidth?: number
+    canvasImgHeight?: number
+  }
 }) => {
+  const canvasImgWidth = option?.canvasImgWidth || 210
+  const canvasImgHeight = option?.canvasImgHeight || 210
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
   const [usageMode, setUsageMode] = useState<usageModeType>('')
 
@@ -68,6 +75,8 @@ const _NoviceGuide = ({
                 business_type: business_type
               })
             }
+            canvasImgWidth={canvasImgWidth}
+            canvasImgHeight={canvasImgHeight}
           />
         )
       ) : null}

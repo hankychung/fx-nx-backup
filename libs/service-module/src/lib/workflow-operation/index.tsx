@@ -32,7 +32,8 @@ import {
   RectWhiteIcon,
   TaskCheckIcon,
   UncheckIcon,
-  UndoGrayIcon
+  UndoGrayIcon,
+  UndoIcon
 } from '@flyele-nx/icon'
 import {
   useContactStore,
@@ -666,7 +667,7 @@ const _Container: FC<{
       <div className={style['btn-group']}>
         <Button
           className={style.btn}
-          icon={<UndoGrayIcon className={style['btn-icon']} />}
+          icon={<UndoIcon className={style['btn-icon']} />}
           onClick={handleBack}
           disabled={isFirstStep}
         >

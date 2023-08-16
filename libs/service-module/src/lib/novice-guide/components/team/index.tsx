@@ -5,6 +5,7 @@ import { useMemoizedFn } from 'ahooks'
 import { CreateProject } from './components/create-project'
 import { InviteMember } from './components/invite-member'
 import { TeamContext } from '../../context/team'
+import { IIndustryTemplate, IIndustryUserType } from '@flyele-nx/types'
 
 /**
  * 1： 选择行业页面
@@ -22,8 +23,11 @@ export const Team = ({
 }: {
   userId: string
   onBack: () => void
-  onGoHome: (spaceId: string) => void
-  onFinished: () => void
+  onGoHome: (params: {
+    spaceId: string
+    createData?: IIndustryTemplate[]
+  }) => void
+  onFinished: (data: IIndustryUserType) => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
 
@@ -36,6 +40,8 @@ export const Team = ({
   })
   const [spaceName, setSpaceName] = useState('')
   const [spaceId, setSpaceId] = useState('')
+
+  const [createData, setCreateData] = useState<IIndustryTemplate[]>([])
 
   /**
    * 选择行业页面下一步
@@ -54,9 +60,14 @@ export const Team = ({
   /**
    * 创建项目页面下一步
    */
-  const onProjectGoNext = useMemoizedFn(() => {
-    setCurrentStep(4)
-  })
+  const onProjectGoNext = useMemoizedFn(
+    (params?: { createData?: IIndustryTemplate[] }) => {
+      setCurrentStep(4)
+      if (params && params.createData) {
+        setCreateData(params.createData)
+      }
+    }
+  )
 
   return (
     <TeamContext.Provider
@@ -94,11 +105,20 @@ export const Team = ({
           setCurrentStep(2)
         }}
         goNext={onProjectGoNext}
-        onFinished={onFinished}
+        onFinished={() =>
+          onFinished({
+            business_type: activeIndustryTagTitle
+          })
+        }
       />
       <InviteMember
         visible={currentStep === 4}
-        onGoHome={() => onGoHome(spaceId)}
+        onGoHome={() =>
+          onGoHome({
+            spaceId,
+            createData
+          })
+        }
       />
     </TeamContext.Provider>
   )

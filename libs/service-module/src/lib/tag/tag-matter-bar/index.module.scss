@@ -1,0 +1,40 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2021/10/27 下午 5:05
+**/
+.tag-matter-bar {
+  margin-left: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  max-height: 50px;
+}
+
+.tab-cell {
+  display: flex;
+  align-items: center;
+  max-height: 76px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: unset;
+
+  .cell-content {
+    height: inherit;
+    align-items: flex-start;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+
+    & > div:nth-child(1) {
+      img {
+        display: inline-block;
+        transform: translateY(2px);
+      }
+    }
+  }
+}
+
+.bg_fff {
+  background-color: #fff !important;
+}

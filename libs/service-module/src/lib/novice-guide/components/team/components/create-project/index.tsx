@@ -15,7 +15,8 @@ import { projectApi, TaskApi, UsercApi, workspaceApi } from '@flyele-nx/service'
 import {
   IBatchCreateParams,
   IIndustryInfo,
-  IIndustryTaskGroup
+  IIndustryTemplate,
+  IIndustryTaskGroupWithId
 } from '@flyele-nx/types'
 import { FlyCircleCheckBox, FlyTheme } from '@flyele/flyele-components'
 import { Input, InputRef } from 'antd'
@@ -31,15 +32,6 @@ import cs from 'classnames'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GroupInput } from './components/group-input'
 import type { IGroupInputRef } from './components/group-input'
-
-interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
-  group_id: string // 分组id
-}
-
-interface ITemplate extends IIndustryInfo {
-  checked: 'checked' | 'normal'
-  task_group: IIndustryTaskGroupWithId[]
-}
 
 type State = {
   [key: number]: string
@@ -59,7 +51,7 @@ const _CreateProject = ({
 }: {
   visible: boolean
   goBack: () => void
-  goNext: () => void
+  goNext: (params?: { createData?: IIndustryTemplate[] }) => void
   onFinished: () => void
 }) => {
   const {
@@ -75,7 +67,7 @@ const _CreateProject = ({
 
   const [loading, setLoading] = useState(false)
   const [forceFocused, setForceFocused] = useState(-1)
-  const [template, setTemplate] = useState<ITemplate[]>([])
+  const [template, setTemplate] = useState<IIndustryTemplate[]>([])
   const [updateInfo, setUpdateInfo] = useState<{
     isUpdate: boolean
     index: number
@@ -149,7 +141,7 @@ const _CreateProject = ({
    */
   const batchCreateProject = async (
     spaceId: string,
-    dataParams: ITemplate[]
+    dataParams: IIndustryTemplate[]
   ) => {
     const requestList = dataParams.map((project) => {
       const projectParams = {
@@ -189,7 +181,7 @@ const _CreateProject = ({
    */
   const getGroupByProjectId = async (
     projectId: string,
-    dataParams: ITemplate[]
+    dataParams: IIndustryTemplate[]
   ) => {
     try {
       const { data } = await projectApi.getGroup(projectId)
@@ -278,7 +270,9 @@ const _CreateProject = ({
         }
 
         onFinished()
-        goNext()
+        goNext({
+          createData
+        })
       }
     } finally {
       setLoading(false)
@@ -292,7 +286,7 @@ const _CreateProject = ({
     setTemplate(updatedTemplate)
   }
 
-  const makeData = (data: IIndustryInfo[]): ITemplate[] => {
+  const makeData = (data: IIndustryInfo[]): IIndustryTemplate[] => {
     return data.map((item, index) => {
       const taskGroup = item.task_group
       return {
@@ -377,7 +371,7 @@ const _CreateProject = ({
       })
       return
     }
-    const newProject: ITemplate = {
+    const newProject: IIndustryTemplate = {
       display_mode: 2,
       group_display: 'default',
       is_edit: true,

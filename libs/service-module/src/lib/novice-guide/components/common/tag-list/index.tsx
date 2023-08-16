@@ -44,6 +44,11 @@ export const CommonTagList = ({
         id: 0,
         title: ''
       })
+    } else {
+      onClick({
+        id: diyIndustryId,
+        title: inputValue
+      })
     }
   }
 

@@ -8,6 +8,7 @@
   background-color: white;
   border-radius: 0 8px 8px 8px;
   overflow-x: hidden;
+  position: relative;
 }
 
 .hideXScrollbar > div {
@@ -21,6 +22,11 @@
   align-items: center;
   justify-content: center;
   height: 60px;
+
+  &.float {
+    position: sticky;
+    bottom: 12px;
+  }
 
   span {
     cursor: pointer;

@@ -6,7 +6,8 @@ import React, {
   useImperativeHandle,
   forwardRef,
   ForwardRefRenderFunction,
-  useMemo
+  useMemo,
+  useState
 } from 'react'
 import { Empty } from '../empty'
 // import useSubscribe from 'hooks/useSubscribe'
@@ -53,6 +54,8 @@ const TabPersonal: ForwardRefRenderFunction<
   SystemBoardCommonCtn
 > = (props, ref) => {
   const { display, nowTab, queryType } = props
+  const [scolling, setScolling] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // const [list, setList] = useState<IDashboard>(null)
   // const [unfinishedList, setUnfinishedList] = useState<IDashboard>(null)
@@ -114,8 +117,6 @@ const TabPersonal: ForwardRefRenderFunction<
           })
     }
   )
-
-  const containerRef = useRef<HTMLDivElement>(null)
 
   const { data, reloadAsync: reload } = useInfiniteScroll<{
     list: IDashboardItem[]
@@ -295,6 +296,30 @@ const TabPersonal: ForwardRefRenderFunction<
   //   return (isFinishTagMode ? finishedList : unfinishedList) || []
   // }, [finishedList, isFinishTagMode, unfinishedList])
 
+  useEffect(() => {
+    if (!display) return
+
+    const element = containerRef.current
+    // 滚动开始
+    element?.addEventListener('scroll', () => {
+      setScolling(true)
+    })
+    // 滚动结束
+    element?.addEventListener('scrollend', () => {
+      setTimeout(() => {
+        setScolling(false)
+      }, 2000)
+    })
+    return () => {
+      element?.removeEventListener('scroll', () => {
+        setScolling(false)
+      })
+      element?.removeEventListener('scrollend', () => {
+        setScolling(false)
+      })
+    }
+  }, [display])
+
   return display ? (
     <div
       className={classNames(style.container, style.hideXScrollbar)}
@@ -331,7 +356,7 @@ const TabPersonal: ForwardRefRenderFunction<
           )
         })
       )}
-      <div className={style.more}>
+      <div className={classNames(style.more, scolling && style.float)}>
         <span>查看全部</span>
         <MoreIcon className={style['more-icon']} />
       </div>

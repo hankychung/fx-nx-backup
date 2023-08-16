@@ -8,6 +8,7 @@ import DefaultPanel from './components/default-panel'
 import { LabelApi } from '@flyele-nx/service'
 import { isEqual } from 'lodash'
 import { globalNxController } from '@flyele-nx/global-processor'
+import { List } from './components/list'
 
 export const boardCustomPanelId = 'board-custom-panel'
 const defaultId = '1111111'
@@ -92,19 +93,11 @@ export const CustomPanel = () => {
           />
           <div className={style.content_box}>
             {memoTabs === defaultTabs && <DefaultPanel />}
-            {/* {tabs.map((item) =>
+            {(tabs ?? []).map((item) =>
               activeTab === item.id ? (
-                <List
-                  key={item.id}
-                  show={activeTab === item.id}
-                  id={item.id}
-                  content={item.content || ''}
-                  ref={(ref) => {
-                    listRefs.current[item.id] = ref
-                  }}
-                />
+                <List key={item.id} tabId={item.id} />
               ) : null
-            )} */}
+            )}
           </div>
         </div>
       </Skeleton>

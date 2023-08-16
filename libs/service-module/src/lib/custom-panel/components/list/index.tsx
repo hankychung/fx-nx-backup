@@ -4,6 +4,7 @@ import { BizApi } from '@flyele-nx/service'
 import { ICustomDashboardItem } from '@flyele-nx/types'
 import { useMemo, useRef } from 'react'
 import style from './index.module.scss'
+import ListEmpty from '../list-empty'
 
 interface IProps {
   tabId: string
@@ -47,8 +48,8 @@ export const List = (props: IProps) => {
   }, [data])
   return (
     <div ref={containerRef} className={style.list}>
-      {list.map((item) => {
-        return (
+      {list.length ? (
+        list.map((item) => (
           <Item
             item={item}
             key={item.task_id}
@@ -56,8 +57,10 @@ export const List = (props: IProps) => {
               throw new Error('Function not implemented.')
             }}
           />
-        )
-      })}
+        ))
+      ) : (
+        <ListEmpty />
+      )}
     </div>
   )
 }

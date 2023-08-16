@@ -1,4 +1,4 @@
-export { GanttList } from './gantt'
+export * from './gantt'
 
 export { Title } from './Row/Title'
 

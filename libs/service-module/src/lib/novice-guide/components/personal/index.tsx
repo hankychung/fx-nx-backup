@@ -3,6 +3,7 @@ import { CareerChoice } from './components/career-choice'
 import { useMemoizedFn } from 'ahooks'
 import { PersonalCreateTask } from './components/personal-create-task'
 import { PersonalContext } from '../../context/personal'
+import { IIndustryUserType } from '@flyele-nx/types'
 
 /**
  * 1： 选择职业页面
@@ -16,7 +17,7 @@ export const Personal = ({
   onGoHome
 }: {
   onBack: () => void
-  onFinished: () => void
+  onFinished: (data: IIndustryUserType) => void
   onGoHome: () => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
@@ -50,7 +51,11 @@ export const Personal = ({
         goBack={() => {
           setCurrentStep(1)
         }}
-        onFinished={onFinished}
+        onFinished={() =>
+          onFinished({
+            job: tagName
+          })
+        }
         onGoHome={onGoHome}
       />
     </PersonalContext.Provider>

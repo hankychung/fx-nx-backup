@@ -43,8 +43,6 @@ const fetchApiAllData = async (
   }
 
   do {
-    console.log(query, queryParams)
-
     const result = await fetchClass[fetchFnName]({ ...query, ...queryParams })
 
     if (finishedFirstPageHandler) {

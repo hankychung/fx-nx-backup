@@ -70,12 +70,10 @@ export const useExitTask = ({
     try {
       const {
         data: {
-          data: {
-            gadget_meeting_total: meeting = 0,
-            gadget_notice_total: notice = 0,
-            gadget_time_collect_total: timeCollect = 0,
-            gadget_todo_total: todo = 0
-          }
+          gadget_meeting_total: meeting = 0,
+          gadget_notice_total: notice = 0,
+          gadget_time_collect_total: timeCollect = 0,
+          gadget_todo_total: todo = 0
         }
       } = await TaskApi.getChildrenProcessRelation(taskId)
 

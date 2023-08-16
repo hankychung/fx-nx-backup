@@ -1,4 +1,11 @@
-import React, { useRef, useEffect, useMemo } from 'react'
+import React, {
+  useRef,
+  useEffect,
+  useMemo,
+  useImperativeHandle,
+  ForwardRefRenderFunction,
+  forwardRef
+} from 'react'
 import { Task, IFullViewTask } from '@flyele-nx/types'
 import { FullViewModeEnum } from '@flyele-nx/constant'
 import { useMemoizedFn } from 'ahooks'
@@ -13,7 +20,14 @@ import { Pub } from '@flyele-nx/constant'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GanttHandler } from './utils/ganttHandler'
 
-export const GanttList = ({ projectId }: { projectId: string }) => {
+export interface IGanttListRef {
+  reload: () => void
+}
+
+const _GanttList: ForwardRefRenderFunction<
+  IGanttListRef,
+  { projectId: string }
+> = ({ projectId }: { projectId: string }, ref) => {
   const { updateList, batchUpdateTask, taskDict, taskList, reSet } =
     useGanttList()
   const [view, _setView] = React.useState<FullViewModeEnum>(
@@ -63,25 +77,35 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
         resList = resList.concat(data)
       }
     })
+    console.log(resList, "'___resList")
+
     const { keys } = batchUpdateTask(resList)
 
     updateList({ list: keys })
+    resList = []
   })
 
   const reload = useMemoizedFn(async () => {
     try {
+      reSet()
       return await fetchList()
     } catch (error) {
       console.error(error)
     }
   })
-  useEffect(() => {
-    if (isInit.current) {
-      isInit.current = false
-      reSet()
-      reload()
+
+  useImperativeHandle(ref, () => {
+    return {
+      reload
     }
-  }, [reload, projectId, reSet])
+  })
+
+  // useEffect(() => {
+  //   if (projectId && isInit.current) {
+  //     reload()
+  //     isInit.current = false
+  //   }
+  // }, [reload, projectId, reSet])
 
   const handleTaskDelete = (task: Task) => {
     const conf = window.confirm('Are you sure about ' + task.name + ' ?')
@@ -149,7 +173,6 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
   const handleTaskChange = (task: Task) => {
     const start = dayjs(task.start).unix()
     const end = dayjs(task.end).unix()
-    console.log(task, start)
     const params = {
       start_time: start,
       end_time: end,
@@ -184,12 +207,28 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
 
   const tasks = useMemo(() => {
     const list =
-      taskDict &&
-      taskList.map((item) => {
-        return taskDict[item] as Task
-      })
+      taskList && taskList.length > 0 && Object.keys(taskDict).length > 0
+        ? taskList.map((item) => {
+            const i = taskDict[item] as Task
+            if (!i?.start) {
+              return {
+                ...taskDict[item],
+                start: i.start_time
+                  ? new Date(i.start_time * 1000)
+                  : new Date(),
+                end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
+                name: i.title,
+                id: i.task_id,
+                type: 'task',
+                hideChildren: false,
+                displayOrder: 1
+              } as Task
+            }
+            return taskDict[item] as Task
+          })
+        : []
 
-    return [...list] || []
+    return taskList.length > 0 ? [...list] || [] : []
   }, [taskDict, taskList])
 
   return (
@@ -210,3 +249,5 @@ export const GanttList = ({ projectId }: { projectId: string }) => {
     </div>
   )
 }
+
+export const GanttList = React.memo(forwardRef(_GanttList))

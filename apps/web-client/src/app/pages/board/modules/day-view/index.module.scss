@@ -20,5 +20,9 @@
     grid-template-rows: 1fr 1fr;
     row-gap: 20px;
     width: 50%;
+    & > div {
+      min-height: 400px;
+      overflow-y: hidden;
+    }
   }
 }

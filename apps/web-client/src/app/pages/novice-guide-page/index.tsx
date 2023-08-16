@@ -3,7 +3,7 @@ import {
   useUserInfoStore,
   IGoHomeParams
 } from '@flyele-nx/service-module'
-import { usageModeType } from '@flyele-nx/types'
+import { IIndustryUserType, usageModeType } from '@flyele-nx/types'
 import styles from './index.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { RoutePath } from '../../routes/const'
@@ -13,8 +13,8 @@ export const NoviceGuidePage = () => {
 
   const navigate = useNavigate()
 
-  const onFinished = (type: usageModeType) => {
-    console.log('finished', type)
+  const onFinished = (type: usageModeType, data?: IIndustryUserType) => {
+    console.log('finished', type, data)
   }
 
   const onGoHome = (type: usageModeType, data?: IGoHomeParams) => {
@@ -22,7 +22,7 @@ export const NoviceGuidePage = () => {
       navigate(RoutePath.board)
     }
     if (type === 'team') {
-      console.log('@@@ data', data?.spaceId)
+      console.log('@@@ data', data)
       navigate(RoutePath.board)
     }
   }

@@ -18,7 +18,7 @@ import { Item as AcceptItem } from '../tab-accept'
 import { ToBeArrangedItem } from '../tab-tobe-arranged'
 
 // import { cloneDeep } from 'lodash'
-import { useInfiniteScroll, useMemoizedFn, useMount } from 'ahooks'
+import { useInfiniteScroll, useMemoizedFn } from 'ahooks'
 import style from './index.module.scss'
 // import More from '../More'
 // import NewItemDom from '../NewItemDom'

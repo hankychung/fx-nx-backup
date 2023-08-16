@@ -101,25 +101,26 @@ const RightBlock = ({
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
   const payClick = useMemoizedFn(() => {
-    if (!defaultValue.current) return
-    if (
-      resultArr.length === 0 &&
-      VipPayType.UPSPACE === vipType &&
-      mineInfo?.isTeamVip
-    ) {
-      upSpace && upSpace()
-      return
+    if (defaultValue.current) {
+      if (
+        resultArr.length === 0 &&
+        VipPayType.UPSPACE === vipType &&
+        mineInfo?.isTeamVip
+      ) {
+        upSpace && upSpace()
+        return
+      }
+      if (
+        (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
+        (VipPayType.UPSPACE === vipType &&
+          !mineInfo?.isTeamVip &&
+          resultArr.length === 0)
+      ) {
+        showMsg && showMsg()
+        return
+      }
+      service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
     }
-    if (
-      (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
-      (VipPayType.UPSPACE === vipType &&
-        !mineInfo?.isTeamVip &&
-        resultArr.length === 0)
-    ) {
-      showMsg && showMsg()
-      return
-    }
-    service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
   })
 
   //修改优惠

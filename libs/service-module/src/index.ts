@@ -26,6 +26,7 @@ import { StatusBox } from './lib/status-box'
 import { NoviceGuide } from './lib/novice-guide'
 import SystemBoard from './lib/system-board'
 import { CustomPanel } from './lib/custom-panel'
+import { TagMatterBar } from './lib/tag/tag-matter-bar'
 import type { IGoHomeParams } from './lib/novice-guide/types'
 
 export * from './lib/schedule-list' // 日程列表
@@ -58,6 +59,7 @@ export {
   NoviceGuide,
   SystemBoard,
   CustomPanel,
+  TagMatterBar,
   IGoHomeParams
 }
 

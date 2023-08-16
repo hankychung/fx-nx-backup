@@ -26,8 +26,6 @@ export const List = (props: IProps) => {
         pageNumber: page
       })
 
-      console.log('res', res.data.custom_dashboard)
-
       const hasNextPage = !!(
         res.data.custom_dashboard && res.data.custom_dashboard.length
       )
@@ -51,15 +49,7 @@ export const List = (props: IProps) => {
   const buildContent = () => {
     if (loading) return <Loading />
     else if (list.length) {
-      return list.map((item) => (
-        <Item
-          item={item}
-          key={item.task_id}
-          complete={function (): void {
-            throw new Error('Function not implemented.')
-          }}
-        />
-      ))
+      return list.map((item) => <Item item={item} key={item.task_id} />)
     } else {
       return <ListEmpty />
     }

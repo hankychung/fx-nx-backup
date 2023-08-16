@@ -1,5 +1,10 @@
 import { service } from '../service'
-import { IDayViewResponse, IInteract } from '@flyele-nx/types'
+import {
+  ICustomDashboardItem,
+  IDayViewResponse,
+  IInteract,
+  IResponse
+} from '@flyele-nx/types'
 
 type TaskListType = 'history' | 'today' | 'future' | 'invite'
 
@@ -39,6 +44,33 @@ class Biz {
     })
 
     return res
+  }
+
+  async getCustomDashboardData(args: {
+    filterId: string
+    taskId?: string
+    batchId?: string
+    pageRecord?: number
+    pageNumber?: number
+  }) {
+    const { filterId, taskId, batchId, pageRecord = 20, pageNumber = 1 } = args
+    return service.post<
+      IResponse<{
+        custom_dashboard: ICustomDashboardItem[]
+      }>
+    >({
+      url: `${this.prefix}/day_view`,
+      data: {
+        apis: 'custom_dashboard',
+        custom_dashboard: {
+          filter_id: filterId,
+          page_record: pageRecord,
+          page_number: pageNumber,
+          task_id: taskId,
+          batch_id: batchId
+        }
+      }
+    })
   }
 
   async getInteracts() {

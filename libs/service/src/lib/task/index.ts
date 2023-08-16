@@ -137,7 +137,7 @@ class Task {
   }
 
   getChildrenProcessRelation(task_id: string) {
-    return service.get<CommonResponse<IRelation>>({
+    return service.get<IRelation>({
       url: `${this.prefixTask}/${task_id}/relation`
     })
   }

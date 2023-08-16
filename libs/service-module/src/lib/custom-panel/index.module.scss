@@ -6,7 +6,8 @@ $p-m-bottom: 12px;
 }
 .content_box {
   flex: 1;
-  height: 100%;
+  // 自适应高
+  height: 0;
   background-color: #fff;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;

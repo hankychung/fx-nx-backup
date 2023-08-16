@@ -5,7 +5,7 @@ import { useMemoizedFn } from 'ahooks'
 import { CreateProject } from './components/create-project'
 import { InviteMember } from './components/invite-member'
 import { TeamContext } from '../../context/team'
-import { IIndustryTemplate } from '@flyele-nx/types'
+import { IIndustryTemplate, IIndustryUserType } from '@flyele-nx/types'
 
 /**
  * 1： 选择行业页面
@@ -19,7 +19,9 @@ export const Team = ({
   userId,
   onBack,
   onFinished,
-  onGoHome
+  onGoHome,
+  canvasImgWidth = 210,
+  canvasImgHeight = 210
 }: {
   userId: string
   onBack: () => void
@@ -27,7 +29,9 @@ export const Team = ({
     spaceId: string
     createData?: IIndustryTemplate[]
   }) => void
-  onFinished: () => void
+  onFinished: (data: IIndustryUserType) => void
+  canvasImgWidth?: number
+  canvasImgHeight?: number
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
 
@@ -105,7 +109,11 @@ export const Team = ({
           setCurrentStep(2)
         }}
         goNext={onProjectGoNext}
-        onFinished={onFinished}
+        onFinished={() =>
+          onFinished({
+            business_type: activeIndustryTagTitle
+          })
+        }
       />
       <InviteMember
         visible={currentStep === 4}
@@ -115,6 +123,8 @@ export const Team = ({
             createData
           })
         }
+        canvasImgWidth={canvasImgWidth}
+        canvasImgHeight={canvasImgHeight}
       />
     </TeamContext.Provider>
   )

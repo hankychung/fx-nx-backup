@@ -9,10 +9,9 @@ import { StatusBox } from '../../../status-box'
 
 interface Props {
   item: ICustomDashboardItem
-  complete: () => void
 }
 
-const Item: React.FC<React.PropsWithChildren<Props>> = ({ item, complete }) => {
+const Item: React.FC<React.PropsWithChildren<Props>> = ({ item }) => {
   const openSmallTool = () => {
     // TODO: 打开详情
     // createSmallToolsWin({

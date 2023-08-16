@@ -76,9 +76,11 @@ const _PersonalCreateTask = ({
 
     try {
       const taskParams = getTaskParams(tasks)
-      await TaskApi.batchCreateTask({
-        tasks: taskParams
-      })
+      if (taskParams.length) {
+        await TaskApi.batchCreateTask({
+          tasks: taskParams
+        })
+      }
 
       onFinished && onFinished()
       onGoHome && onGoHome()

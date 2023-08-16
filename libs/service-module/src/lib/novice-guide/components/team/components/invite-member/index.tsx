@@ -14,10 +14,14 @@ import { domToImage } from '@flyele-nx/utils'
 
 const _InviteMember = ({
   visible,
-  onGoHome
+  onGoHome,
+  canvasImgWidth = 210,
+  canvasImgHeight = 210
 }: {
   visible: boolean
   onGoHome: () => void
+  canvasImgWidth?: number
+  canvasImgHeight?: number
 }) => {
   const { userId, spaceId, spaceName } = useContext(TeamContext)
   const [loading, setLoading] = useState(false)
@@ -132,8 +136,8 @@ const _InviteMember = ({
     if (domRef.current) {
       clipboardUrl.current = (await domToImage(domRef.current, {
         needUrl: false,
-        width: 210,
-        height: 210,
+        width: canvasImgWidth,
+        height: canvasImgHeight,
         ignoreElements: (element) => {
           if (domRef.current) {
             const compare = domRef.current.compareDocumentPosition(element)
@@ -169,7 +173,6 @@ const _InviteMember = ({
         await createImgFromHtml()
       }
       try {
-        console.log('@@ clipboardUrl.current', clipboardUrl.current)
         if (clipboardUrl.current) {
           clipboardUrl.current.toBlob(async (blob) => {
             if (blob) {

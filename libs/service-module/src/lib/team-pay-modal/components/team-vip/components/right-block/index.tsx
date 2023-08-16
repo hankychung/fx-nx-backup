@@ -6,7 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
 import style from './index.module.scss'
@@ -37,6 +37,7 @@ const RightBlock = ({
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const { nowScecond } = useCurrentTime()
+  const defaultValue = useRef(false)
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -45,6 +46,9 @@ const RightBlock = ({
       switch (event) {
         case 'selectMember':
           setResultArr(service.getData('selectMember').list)
+          setTimeout(() => {
+            defaultValue.current = true
+          }, 300)
           break
 
         default:
@@ -97,7 +101,7 @@ const RightBlock = ({
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
   const payClick = useMemoizedFn(() => {
-    setTimeout(() => {
+    if (defaultValue.current) {
       if (
         resultArr.length === 0 &&
         VipPayType.UPSPACE === vipType &&
@@ -116,7 +120,7 @@ const RightBlock = ({
         return
       }
       service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
-    }, 100)
+    }
   })
 
   //修改优惠

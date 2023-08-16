@@ -657,7 +657,7 @@ const _Container: FC<{
             idx={idx}
             members={members || []}
             handleClick={() => {
-              clickStep(step)
+              // clickStep(step)
             }}
             operateType={operateType}
           />

@@ -22,7 +22,7 @@ export const NoviceGuidePage = () => {
       navigate(RoutePath.board)
     }
     if (type === 'team') {
-      console.log('@@@ data', data?.spaceId)
+      console.log('@@@ data', data)
       navigate(RoutePath.board)
     }
   }

@@ -1,4 +1,4 @@
-import { IndustryMemberType } from '@flyele-nx/constant'
+import { IndustryMemberType, LOOP_MATTER } from '@flyele-nx/constant'
 import { IRepeatConfig } from './schedule'
 
 export interface IIndustryListParams {
@@ -20,6 +20,7 @@ export interface IIndustryUserType {
 export interface IIndustryTask {
   title: string
   detail?: string
+  repeat_type?: LOOP_MATTER
   repeat_config?: IRepeatConfig
   task_time?: {
     date: string

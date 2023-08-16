@@ -79,7 +79,9 @@ const useProjectStore = create<IProjectState & IMutation>((set) => {
         produce((state: IProjectState) => {
           const dict: { [k: string]: IFullViewTask } = {}
           const taskDict = options?.isInit ? {} : state.taskDict
-
+          if (options?.isInit) {
+            state.taskList = []
+          }
           arr.forEach((item) => {
             const { task_id } = item
             dict[task_id] = item

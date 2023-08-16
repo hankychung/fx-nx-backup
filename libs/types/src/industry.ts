@@ -12,6 +12,11 @@ export interface IIndustryList {
 
 export type usageModeType = 'personal' | 'team' | ''
 
+export interface IIndustryUserType {
+  job?: string
+  business_type?: string
+}
+
 export interface IIndustryTask {
   title: string
   detail?: string
@@ -36,4 +41,13 @@ export interface IIndustryInfo {
   project_name: string
   table_header_title?: number[] // 对应枚举 TableHeaderTitle
   task_group: IIndustryTaskGroup[] // 事项数组
+}
+
+export interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
+  group_id: string // 分组id
+}
+
+export interface IIndustryTemplate extends IIndustryInfo {
+  checked: 'checked' | 'normal'
+  task_group: IIndustryTaskGroupWithId[]
 }

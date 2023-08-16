@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useMemoizedFn, useMount } from 'ahooks'
 import styles from './index.module.scss'
 import { UsageMode } from './components/usage-mode'
-import { usageModeType } from '@flyele-nx/types'
+import { IIndustryUserType, usageModeType } from '@flyele-nx/types'
 import { Personal } from './components/personal'
 import { Team } from './components/team'
 import { IGoHomeParams } from './types'
@@ -12,13 +12,20 @@ type currentStepType = 1 | 2
 const _NoviceGuide = ({
   userId,
   onFinished,
-  onGoHome
+  onGoHome,
+  option
 }: {
   userId: string
-  onFinished: (type: usageModeType) => void // 通知后端，已经完成新手引导
+  onFinished: (type: usageModeType, data: IIndustryUserType) => void // 通知后端，已经完成新手引导
   // 前端用于跳转到首页或者其他页面，因为 onFinished 的时机不同，导致不能统一使用 onFinished
   onGoHome: (type: usageModeType, data?: IGoHomeParams) => void
+  option?: {
+    canvasImgWidth?: number
+    canvasImgHeight?: number
+  }
 }) => {
+  const canvasImgWidth = option?.canvasImgWidth || 210
+  const canvasImgHeight = option?.canvasImgHeight || 210
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
   const [usageMode, setUsageMode] = useState<usageModeType>('')
 
@@ -45,7 +52,11 @@ const _NoviceGuide = ({
               setCurrentStep(1)
             }}
             onGoHome={() => onGoHome('personal')}
-            onFinished={() => onFinished('personal')}
+            onFinished={({ job }) =>
+              onFinished('personal', {
+                job: job
+              })
+            }
           />
         ) : (
           <Team
@@ -53,12 +64,19 @@ const _NoviceGuide = ({
             onBack={() => {
               setCurrentStep(1)
             }}
-            onGoHome={(spaceId) =>
+            onGoHome={({ spaceId, createData }) =>
               onGoHome('team', {
-                spaceId: spaceId
+                spaceId: spaceId,
+                createData: createData
               })
             }
-            onFinished={() => onFinished('team')}
+            onFinished={({ business_type }) =>
+              onFinished('team', {
+                business_type: business_type
+              })
+            }
+            canvasImgWidth={canvasImgWidth}
+            canvasImgHeight={canvasImgHeight}
           />
         )
       ) : null}

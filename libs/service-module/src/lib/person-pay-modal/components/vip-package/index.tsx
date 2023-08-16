@@ -37,6 +37,7 @@ interface Iprops {
   goInterests: () => void
   hasShowRetrieveModal: boolean
   setHasShowRetrieveModal: () => void
+  needABTab?: boolean
 }
 
 const VipPackage = (props: Iprops) => {
@@ -55,7 +56,8 @@ const VipPackage = (props: Iprops) => {
     originRoute,
     showMsg,
     hasShowRetrieveModal,
-    setHasShowRetrieveModal
+    setHasShowRetrieveModal,
+    needABTab = true
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -178,17 +180,28 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        {user_id % 2 !== 0 ? (
-          <PersonVip
-            memberList={memberList}
-            mineId={mineId}
-            goProtocol={goProtocol}
-            couponList={couponList}
-            vipMealType={vipMealType}
-            goInterests={goInterests}
-          />
+        {needABTab ? (
+          user_id % 2 !== 0 ? (
+            <PersonVip
+              memberList={memberList}
+              mineId={mineId}
+              goProtocol={goProtocol}
+              couponList={couponList}
+              vipMealType={vipMealType}
+              goInterests={goInterests}
+            />
+          ) : (
+            <PersonVipB
+              memberList={memberList}
+              mineId={mineId}
+              goProtocol={goProtocol}
+              couponList={couponList}
+              vipMealType={vipMealType}
+              goInterests={goInterests}
+            />
+          )
         ) : (
-          <PersonVipB
+          <PersonVip
             memberList={memberList}
             mineId={mineId}
             goProtocol={goProtocol}

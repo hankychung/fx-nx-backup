@@ -15,13 +15,16 @@ import { projectApi, TaskApi, UsercApi, workspaceApi } from '@flyele-nx/service'
 import {
   IBatchCreateParams,
   IIndustryInfo,
-  IIndustryTaskGroup
+  IIndustryTemplate,
+  IIndustryTaskGroupWithId,
+  IIndustryTask
 } from '@flyele-nx/types'
 import { FlyCircleCheckBox, FlyTheme } from '@flyele/flyele-components'
 import { Input, InputRef } from 'antd'
 import { AddIcon } from '@flyele-nx/icon'
 import {
   FlowOperateType,
+  LOOP_MATTER,
   MatterType,
   QuadrantValue,
   TeamSize
@@ -31,15 +34,6 @@ import cs from 'classnames'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GroupInput } from './components/group-input'
 import type { IGroupInputRef } from './components/group-input'
-
-interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
-  group_id: string // 分组id
-}
-
-interface ITemplate extends IIndustryInfo {
-  checked: 'checked' | 'normal'
-  task_group: IIndustryTaskGroupWithId[]
-}
 
 type State = {
   [key: number]: string
@@ -59,7 +53,7 @@ const _CreateProject = ({
 }: {
   visible: boolean
   goBack: () => void
-  goNext: () => void
+  goNext: (params?: { createData?: IIndustryTemplate[] }) => void
   onFinished: () => void
 }) => {
   const {
@@ -75,7 +69,7 @@ const _CreateProject = ({
 
   const [loading, setLoading] = useState(false)
   const [forceFocused, setForceFocused] = useState(-1)
-  const [template, setTemplate] = useState<ITemplate[]>([])
+  const [template, setTemplate] = useState<IIndustryTemplate[]>([])
   const [updateInfo, setUpdateInfo] = useState<{
     isUpdate: boolean
     index: number
@@ -149,7 +143,7 @@ const _CreateProject = ({
    */
   const batchCreateProject = async (
     spaceId: string,
-    dataParams: ITemplate[]
+    dataParams: IIndustryTemplate[]
   ) => {
     const requestList = dataParams.map((project) => {
       const projectParams = {
@@ -185,11 +179,76 @@ const _CreateProject = ({
   }
 
   /**
+   * 根据数据设置时间
+   */
+  const setTaskTimeByParams = (task_time: IIndustryTask['task_time']) => {
+    const time: {
+      start_time_full_day?: 1 | 2 // 开始时间全天事项，1->否，2->是
+      end_time_full_day?: 1 | 2 // 截止时间全天事项，1->否，2->是
+      start_time?: number
+      end_time?: number
+    } = {}
+
+    if (task_time && task_time.date) {
+      let date
+      if (/^下个月\d+号$/.test(task_time.date)) {
+        const matchResult = task_time.date?.match(/\d+/)
+        if (matchResult) {
+          const dayOfMonth = parseInt(matchResult[0])
+          date = dayjs().add(1, 'month').date(dayOfMonth)
+        }
+      } else if (/^周[一二三四五六日]$/.test(task_time.date)) {
+        const weekMap: { [key: string]: number } = {
+          一: 1,
+          二: 2,
+          三: 3,
+          四: 4,
+          五: 5,
+          六: 6,
+          日: 0
+        }
+        const dayOfWeek = weekMap[task_time.date[1]]
+        date = dayjs().day(
+          dayOfWeek >= dayjs().day() ? dayOfWeek : dayOfWeek + 7
+        )
+      } else {
+        switch (task_time.date) {
+          case '今天':
+            date = dayjs()
+            break
+          case '明天':
+            date = dayjs().add(1, 'day')
+            break
+          default:
+            date = dayjs().date(parseInt(task_time.date))
+            break
+        }
+      }
+      if (date) {
+        time.start_time = date
+          .hour(parseInt(task_time.start_time.split(':')[0]))
+          .minute(parseInt(task_time.start_time.split(':')[1]))
+          .second(0)
+          .unix()
+        time.end_time = date
+          .hour(parseInt(task_time.end_time.split(':')[0]))
+          .minute(parseInt(task_time.end_time.split(':')[1]))
+          .second(0)
+          .unix()
+        time.start_time_full_day = 2
+        time.end_time_full_day = 2
+      }
+    }
+
+    return time
+  }
+
+  /**
    * 根据项目id去查询底下的分组
    */
   const getGroupByProjectId = async (
     projectId: string,
-    dataParams: ITemplate[]
+    dataParams: IIndustryTemplate[]
   ) => {
     try {
       const { data } = await projectApi.getGroup(projectId)
@@ -220,6 +279,8 @@ const _CreateProject = ({
             if (tasks && tasks.length) {
               const allTasksParams: IBatchCreateParams[] = tasks.map(
                 (task, index) => {
+                  const time = setTaskTimeByParams(task.task_time)
+
                   return {
                     temp_id: `task-${item.group_id}-${index}`,
                     title: task.title,
@@ -227,19 +288,20 @@ const _CreateProject = ({
                     group_id: item.group_id,
                     matter_type: MatterType.matter,
                     priority_level: QuadrantValue.no_important_no_urgent,
-                    repeat_type: 0,
                     is_dispatch: 0,
                     operate_type: FlowOperateType.AND,
-                    start_time_full_day: 2,
-                    start_time: dayjs().startOf('day').unix(),
-                    end_time: dayjs().endOf('day').unix(),
-                    end_time_full_day: 2,
+                    detail: task.detail,
+                    repeat_type: task.repeat_config
+                      ? LOOP_MATTER.custom
+                      : LOOP_MATTER.noLoop,
+                    repeat_config: task.repeat_config,
                     widget: {
                       execute_addr: false,
                       remind: true,
                       repeat: true,
                       time: true
-                    }
+                    },
+                    ...time
                   }
                 }
               )
@@ -278,7 +340,9 @@ const _CreateProject = ({
         }
 
         onFinished()
-        goNext()
+        goNext({
+          createData
+        })
       }
     } finally {
       setLoading(false)
@@ -292,7 +356,7 @@ const _CreateProject = ({
     setTemplate(updatedTemplate)
   }
 
-  const makeData = (data: IIndustryInfo[]): ITemplate[] => {
+  const makeData = (data: IIndustryInfo[]): IIndustryTemplate[] => {
     return data.map((item, index) => {
       const taskGroup = item.task_group
       return {
@@ -377,7 +441,7 @@ const _CreateProject = ({
       })
       return
     }
-    const newProject: ITemplate = {
+    const newProject: IIndustryTemplate = {
       display_mode: 2,
       group_display: 'default',
       is_edit: true,
@@ -387,7 +451,7 @@ const _CreateProject = ({
         { group_name: '进行中', group_id: `${Math.random()}` },
         { group_name: '已完成', group_id: `${Math.random()}` }
       ],
-      checked: 'normal'
+      checked: 'checked'
     }
     const updatedTemplate = [...template]
     updatedTemplate.push(newProject)

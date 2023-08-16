@@ -12,6 +12,11 @@ export interface IIndustryList {
 
 export type usageModeType = 'personal' | 'team' | ''
 
+export interface IUserIndustryType {
+  job?: string
+  business_type?: string
+}
+
 export interface IIndustryTask {
   title: string
   detail?: string

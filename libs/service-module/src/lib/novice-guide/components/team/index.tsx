@@ -19,7 +19,9 @@ export const Team = ({
   userId,
   onBack,
   onFinished,
-  onGoHome
+  onGoHome,
+  canvasImgWidth = 210,
+  canvasImgHeight = 210
 }: {
   userId: string
   onBack: () => void
@@ -28,6 +30,8 @@ export const Team = ({
     createData?: IIndustryTemplate[]
   }) => void
   onFinished: (data: IIndustryUserType) => void
+  canvasImgWidth?: number
+  canvasImgHeight?: number
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
 
@@ -119,6 +123,8 @@ export const Team = ({
             createData
           })
         }
+        canvasImgWidth={canvasImgWidth}
+        canvasImgHeight={canvasImgHeight}
       />
     </TeamContext.Provider>
   )

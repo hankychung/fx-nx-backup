@@ -3,21 +3,23 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useReducer,
   useRef,
   useState
 } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { TeamContext } from '../../../../context/team'
 import { projectApi, TaskApi, UsercApi, workspaceApi } from '@flyele-nx/service'
 import {
   IBatchCreateParams,
   IIndustryInfo,
-  IIndustryTaskGroup
+  IIndustryTemplate,
+  IIndustryTaskGroupWithId
 } from '@flyele-nx/types'
 import { FlyCircleCheckBox, FlyTheme } from '@flyele/flyele-components'
-import { Input } from 'antd'
+import { Input, InputRef } from 'antd'
 import { AddIcon } from '@flyele-nx/icon'
 import {
   FlowOperateType,
@@ -26,13 +28,19 @@ import {
   TeamSize
 } from '@flyele-nx/constant'
 import dayjs from 'dayjs'
+import cs from 'classnames'
+import { globalNxController } from '@flyele-nx/global-processor'
+import { GroupInput } from './components/group-input'
+import type { IGroupInputRef } from './components/group-input'
 
-interface ITemplate extends IIndustryInfo {
-  checked: 'checked' | 'normal'
+type State = {
+  [key: number]: string
 }
 
-interface IIndustryTaskGroupWithId extends IIndustryTaskGroup {
-  group_id: string // 分组id
+type Action = {
+  type: string
+  index: number
+  value: string
 }
 
 const _CreateProject = ({
@@ -43,7 +51,7 @@ const _CreateProject = ({
 }: {
   visible: boolean
   goBack: () => void
-  goNext: () => void
+  goNext: (params?: { createData?: IIndustryTemplate[] }) => void
   onFinished: () => void
 }) => {
   const {
@@ -58,8 +66,28 @@ const _CreateProject = ({
   const oldIndustryId = useRef(0)
 
   const [loading, setLoading] = useState(false)
-  const [template, setTemplate] = useState<ITemplate[]>([])
+  const [forceFocused, setForceFocused] = useState(-1)
+  const [template, setTemplate] = useState<IIndustryTemplate[]>([])
+  const [updateInfo, setUpdateInfo] = useState<{
+    isUpdate: boolean
+    index: number
+  }>({
+    isUpdate: false,
+    index: 0
+  })
   const spaceId = useRef('')
+  const oldProjectName = useRef('') // 缓存下当前修改的input值
+  const [inputValues, dispatch] = useReducer((state: State, action: Action) => {
+    switch (action.type) {
+      case 'set':
+        return { ...state, [action.index]: action.value }
+      default:
+        throw new Error()
+    }
+  }, {})
+
+  const projectInputRefs = useRef<InputRef[]>([])
+  const groupInputRefs = useRef<IGroupInputRef[][]>([])
 
   const onGoBack = useMemoizedFn(() => {
     goBack()
@@ -100,7 +128,10 @@ const _CreateProject = ({
 
       return data
     } catch (e) {
-      console.log('@@@ 创建空间失败', e)
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: '创建空间失败'
+      })
       return ''
     }
   }
@@ -110,7 +141,7 @@ const _CreateProject = ({
    */
   const batchCreateProject = async (
     spaceId: string,
-    dataParams: ITemplate[]
+    dataParams: IIndustryTemplate[]
   ) => {
     const requestList = dataParams.map((project) => {
       const projectParams = {
@@ -150,7 +181,7 @@ const _CreateProject = ({
    */
   const getGroupByProjectId = async (
     projectId: string,
-    dataParams: ITemplate[]
+    dataParams: IIndustryTemplate[]
   ) => {
     try {
       const { data } = await projectApi.getGroup(projectId)
@@ -215,6 +246,14 @@ const _CreateProject = ({
     }
   }
 
+  /**
+   * 1、 删除默认空间
+   * 2、 创建新空间
+   * 3、 根据新空间id，批量创建项目，同时把分组也创建好
+   * 4、 循环：根据新项目id，找到底下的分组列表，通过名字匹配找到 分组id
+   * 5、 循环：找到对应的分组id后，如果底下有事项，需要批量创建事项
+   * 6、 结束上面循环后，完成所有事情后，告诉后端新手引导已完成，跳转页面
+   */
   const onGoNext = useMemoizedFn(async () => {
     if (loading) return
     setLoading(true)
@@ -229,12 +268,15 @@ const _CreateProject = ({
             await getGroupByProjectId(allProjectIds[i].project_id, createData)
           }
         }
+
+        onFinished()
+        goNext({
+          createData
+        })
       }
     } finally {
       setLoading(false)
     }
-    onFinished()
-    goNext()
   })
 
   const toggleCheckbox = (index: number) => {
@@ -244,10 +286,24 @@ const _CreateProject = ({
     setTemplate(updatedTemplate)
   }
 
-  const makeData = (data: IIndustryInfo[]): ITemplate[] => {
+  const makeData = (data: IIndustryInfo[]): IIndustryTemplate[] => {
     return data.map((item, index) => {
+      const taskGroup = item.task_group
       return {
         ...item,
+        task_group: taskGroup.map((group) => {
+          // 对于name的特殊处理
+          let name = group.group_name
+          if (group.add_month) {
+            name = dayjs().add(group.add_month, 'month').format('MM月')
+          }
+
+          return {
+            ...group,
+            group_name: name,
+            group_id: `${Math.random()}`
+          }
+        }),
         checked: index > 1 ? 'normal' : 'checked'
       }
     })
@@ -264,24 +320,104 @@ const _CreateProject = ({
     }
   })
 
+  const onChangeGroupName = useMemoizedFn(
+    (value: string, groupIndex: number, itemIndex: number) => {
+      const updatedTemplate = [...template]
+      const item = updatedTemplate[itemIndex].task_group
+      const updatedGroup = item[groupIndex]
+      if (value === '') {
+        item.splice(groupIndex, 1)
+      } else {
+        updatedGroup.group_name = value
+      }
+      setTemplate(updatedTemplate)
+    }
+  )
+
+  const onAddGroup = useMemoizedFn((index: number) => {
+    const newGroup = {
+      group_name: '',
+      group_id: `${Math.random()}`
+    }
+    const updatedTemplate = [...template]
+    const item = updatedTemplate[index].task_group
+    item.push(newGroup)
+    setTemplate(updatedTemplate)
+    setUpdateInfo({ isUpdate: true, index: index })
+  })
+
+  useEffect(() => {
+    if (updateInfo && updateInfo.isUpdate) {
+      const { index } = updateInfo
+      const item = template[index].task_group
+      // 获取对应的GroupInput组件的ref对象
+      const groupIndex = item.length - 1
+      const groupInputRef = groupInputRefs.current[index][groupIndex]
+
+      // 调用changeInEdit方法将其设置为true，进入编辑状态
+      if (groupInputRef) {
+        groupInputRef.changeInEdit(true)
+      }
+
+      setUpdateInfo({ isUpdate: false, index: 0 })
+    }
+  }, [updateInfo, template])
+
+  const onAddProject = useMemoizedFn(() => {
+    if (template.length >= 20) {
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: '最多创建20个项目'
+      })
+      return
+    }
+    const newProject: IIndustryTemplate = {
+      display_mode: 2,
+      group_display: 'default',
+      is_edit: true,
+      project_name: '未命名项目',
+      task_group: [
+        { group_name: '待处理', group_id: `${Math.random()}` },
+        { group_name: '进行中', group_id: `${Math.random()}` },
+        { group_name: '已完成', group_id: `${Math.random()}` }
+      ],
+      checked: 'normal'
+    }
+    const updatedTemplate = [...template]
+    updatedTemplate.push(newProject)
+    const length = updatedTemplate.length
+    setTemplate(updatedTemplate)
+    setForceFocused(length - 1)
+  })
+
   const createData = useMemo(() => {
-    return template.filter((item) => item.checked === 'checked')
+    return template.filter(
+      (item) => item.checked === 'checked' && item.project_name !== ''
+    )
   }, [template])
 
   useEffect(() => {
     if (visible) {
       if (oldIndustryId.current === activeIndustryTag) return
 
+      setTemplate([])
       fetchTemplate(activeIndustryTag)
     }
   }, [visible, activeIndustryTag, fetchTemplate])
+
+  useUpdateEffect(() => {
+    if (forceFocused > 0) {
+      projectInputRefs.current[forceFocused]?.focus()
+      setForceFocused(-1)
+    }
+  }, [forceFocused])
 
   return (
     <CommonPage
       visible={visible}
       title="团队有哪些工作项目"
       desc=""
-      disableNext={!createData.length}
+      disableNext={false}
       loadingNext={loading}
       goBack={onGoBack}
       goNext={onGoNext}
@@ -308,17 +444,37 @@ const _CreateProject = ({
 
                 <div className={styles.projectName}>
                   <Input
-                    value={item.project_name}
+                    ref={(ref) =>
+                      ref && (projectInputRefs.current[index] = ref)
+                    }
+                    defaultValue={item.project_name}
+                    value={inputValues[index]}
                     placeholder="请输入项目名称"
                     maxLength={16}
                     bordered={false}
+                    style={{ maxWidth: '256px', fontSize: '16px' }}
+                    onFocus={(e) => {
+                      oldProjectName.current = e.target.value
+                    }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      dispatch({ type: 'set', index, value: e.target.value })
+                    }}
+                    onBlur={(e: ChangeEvent<HTMLInputElement>) => {
+                      if (inputValues[index] === '') {
+                        dispatch({
+                          type: 'set',
+                          index,
+                          value: oldProjectName.current
+                        })
+                      }
+
+                      if (!e.target.value) return
+
                       const updatedTemplate = [...template]
                       const item = updatedTemplate[index]
                       item.project_name = e.target.value
                       setTemplate(updatedTemplate)
                     }}
-                    style={{ maxWidth: '256px', fontSize: '16px' }}
                   />
                 </div>
               </div>
@@ -326,22 +482,47 @@ const _CreateProject = ({
                 <div className={styles.itemRight}>
                   <div className={styles.text}>包含</div>
                   <div className={styles.groupBox}>
-                    {item.task_group.map((taskGroup, index) => {
+                    {item.task_group.map((taskGroup, groupIndex) => {
+                      if (!groupInputRefs.current[index]) {
+                        groupInputRefs.current[index] = []
+                      }
                       return (
-                        <div key={index} className={styles.groupItem}>
-                          {taskGroup.group_name}
-                        </div>
+                        <GroupInput
+                          key={taskGroup.group_id}
+                          ref={(ref) =>
+                            ref &&
+                            (groupInputRefs.current[index][groupIndex] = ref)
+                          }
+                          value={taskGroup.group_name}
+                          groupIndex={groupIndex}
+                          index={index}
+                          onChange={onChangeGroupName}
+                        />
                       )
                     })}
-                    <div className={styles.addBtn}>
-                      <AddIcon width={10} height={10} color="#B4B4B4" />
-                    </div>
+                    {item.task_group && item.task_group.length < 12 && (
+                      <div
+                        className={styles.addBtn}
+                        onClick={() => onAddGroup(index)}
+                      >
+                        <AddIcon width={10} height={10} color="#B4B4B4" />
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
             </div>
           )
         })}
+        <div
+          className={cs(styles.projectItem, styles.moreBtn)}
+          onClick={onAddProject}
+        >
+          <div className={styles.addBtn}>
+            <AddIcon width={10} height={10} color="#B4B4B4" />
+          </div>
+          自定义
+        </div>
       </div>
     </CommonPage>
   )

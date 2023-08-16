@@ -30,7 +30,10 @@ const _CommonPage: FC<PropsWithChildren<IProps>> = ({
 }) => {
   return (
     <div
-      className={cs(styles.commonPageRoot, { [styles.unShowPage]: !visible })}
+      className={cs(
+        styles.commonPageRoot,
+        visible ? [styles.showPage] : [styles.unShowPage]
+      )}
     >
       <div className={styles.titleBox}>
         <div className={styles.desc}>{desc}</div>

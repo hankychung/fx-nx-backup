@@ -1,4 +1,8 @@
-import { NoviceGuide, useUserInfoStore } from '@flyele-nx/service-module'
+import {
+  NoviceGuide,
+  useUserInfoStore,
+  IGoHomeParams
+} from '@flyele-nx/service-module'
 import { usageModeType } from '@flyele-nx/types'
 import styles from './index.module.scss'
 import { useNavigate } from 'react-router-dom'
@@ -10,20 +14,16 @@ export const NoviceGuidePage = () => {
   const navigate = useNavigate()
 
   const onFinished = (type: usageModeType) => {
-    if (type === 'personal') {
-      console.log('wanc')
-    }
-    if (type === 'team') {
-      console.log('跳')
-    }
+    console.log('finished', type)
   }
 
-  const onGoHome = (type: usageModeType) => {
+  const onGoHome = (type: usageModeType, data?: IGoHomeParams) => {
     if (type === 'personal') {
       navigate(RoutePath.board)
     }
     if (type === 'team') {
-      console.log('跳')
+      console.log('@@@ data', data?.spaceId)
+      navigate(RoutePath.board)
     }
   }
   return (

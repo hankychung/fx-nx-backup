@@ -59,6 +59,7 @@ interface Iprops {
   goProtocol: () => void
   goInterests: () => void
   showMsg?: () => void
+  needABTab?: boolean
 }
 
 export default function PayModal(props: Iprops) {
@@ -80,7 +81,8 @@ export default function PayModal(props: Iprops) {
     goInterests,
     domain,
     originRoute,
-    isPay
+    isPay,
+    needABTab
   } = props
   const [isPaySuccess, setIsPay] = useState<boolean>(false)
   const [_modalType, setModalType] = useState(modalType)
@@ -175,6 +177,7 @@ export default function PayModal(props: Iprops) {
             domain={domain}
             showMsg={showMsg}
             originRoute={originRoute}
+            needABTab={needABTab}
           />
         )
       case 'team':

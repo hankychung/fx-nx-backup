@@ -15,6 +15,7 @@
     padding: 12px 20px;
     border-radius: 23px;
     background: #fff;
+    box-sizing: border-box;
 
     &:hover {
       /* 悬浮样式 */
@@ -42,6 +43,7 @@
     .itemRight {
       display: flex;
       align-items: center;
+      flex: 1;
       .text {
         color: #6a6a6a;
         font-size: 14px;
@@ -55,29 +57,26 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 10px;
-
-        .groupItem {
-          display: flex;
-          padding: 4px 7px;
-          justify-content: center;
-          align-items: center;
-          color: #262626;
-          font-size: 14px;
-          background: #f6f8fa;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-        .addBtn {
-          width: 20px;
-          height: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: #f6f8fa;
-          border-radius: 5px;
-          cursor: pointer;
-        }
       }
+    }
+
+    .addBtn {
+      width: 20px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f6f8fa;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .moreBtn {
+    width: 116px;
+    cursor: pointer;
+    .addBtn {
+      margin-right: 8px;
     }
   }
 }

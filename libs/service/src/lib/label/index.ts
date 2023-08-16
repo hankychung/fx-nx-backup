@@ -14,6 +14,16 @@ class Label {
     return await service.post({ url: `${this.prefix}/tag`, data: params })
   }
 
+  async updateTag(params: { id: string } & ITagParams) {
+    const { id } = params
+
+    return service.put({ url: `${this.prefix}/tag/${id}`, data: params })
+  }
+
+  async deleteTag(id: string) {
+    return service.delete({ url: `${this.prefix}/tag/${id}` })
+  }
+
   // 绑定标签
   async bindTag(model: {
     refId: string
@@ -30,6 +40,21 @@ class Label {
         obj_type: obj_type.toString(),
         is_all_bind
       }
+    })
+  }
+
+  // 获取自定义视图列表
+  getCustomPanelList() {
+    return service.get<{ id: string; title: string; content?: string }[]>({
+      url: `${this.prefix}/view/list`
+    })
+  }
+
+  //自定义视图排序，id逗号分割
+  sortCustomPanel(ids: string[]) {
+    return service.post({
+      url: `${this.prefix}/view/item/sort`,
+      data: { ids }
     })
   }
 }

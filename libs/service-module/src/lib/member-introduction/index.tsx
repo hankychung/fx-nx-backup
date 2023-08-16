@@ -199,6 +199,7 @@ export const MemberIntroduction = ({
             'https://cdn.flyele.net/agreements/service-agreement.html'
           )
         }}
+        needABTab={false}
       ></PayModal>
 
       <Modal

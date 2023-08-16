@@ -235,8 +235,8 @@ const _CreateProject = ({
           .minute(parseInt(task_time.end_time.split(':')[1]))
           .second(0)
           .unix()
-        time.start_time_full_day = 2
-        time.end_time_full_day = 2
+        time.start_time_full_day = 1
+        time.end_time_full_day = 1
       }
     }
 
@@ -291,8 +291,8 @@ const _CreateProject = ({
                     is_dispatch: 0,
                     operate_type: FlowOperateType.AND,
                     detail: task.detail,
-                    repeat_type: task.repeat_config
-                      ? LOOP_MATTER.custom
+                    repeat_type: task.repeat_type
+                      ? task.repeat_type
                       : LOOP_MATTER.noLoop,
                     repeat_config: task.repeat_config,
                     widget: {

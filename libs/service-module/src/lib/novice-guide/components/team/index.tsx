@@ -5,7 +5,7 @@ import { useMemoizedFn } from 'ahooks'
 import { CreateProject } from './components/create-project'
 import { InviteMember } from './components/invite-member'
 import { TeamContext } from '../../context/team'
-import { IIndustryTemplate, IUserIndustryType } from '@flyele-nx/types'
+import { IIndustryTemplate, IIndustryUserType } from '@flyele-nx/types'
 
 /**
  * 1： 选择行业页面
@@ -27,7 +27,7 @@ export const Team = ({
     spaceId: string
     createData?: IIndustryTemplate[]
   }) => void
-  onFinished: (data: IUserIndustryType) => void
+  onFinished: (data: IIndustryUserType) => void
 }) => {
   const [currentStep, setCurrentStep] = useState<currentStepType>(1)
 

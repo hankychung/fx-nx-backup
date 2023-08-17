@@ -1,7 +1,6 @@
-// @import 'pages/schedule/components/Content/common';
-
 .item {
   height: 60px;
+  box-sizing: border-box;
   // border-bottom: 1px solid rgba(226, 226, 234, 0.5);
   padding: 12px 10px 12px 16px;
   color: rgba(38, 38, 38, 1);
@@ -16,8 +15,10 @@
     display: block;
     position: absolute;
     bottom: 0;
-
-    // @include line();
+    width: calc(100% - 40px);
+    margin: auto;
+    height: 0;
+    border-bottom: 0.5px solid #ededed;
   }
 
   &:hover {

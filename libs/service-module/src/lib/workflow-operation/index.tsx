@@ -667,7 +667,13 @@ const _Container: FC<{
       <div className={style['btn-group']}>
         <Button
           className={style.btn}
-          icon={<UndoIcon className={style['btn-icon']} />}
+          icon={
+            isFirstStep ? (
+              <UndoIcon color="#8F8F8F" className={style['btn-icon']} />
+            ) : (
+              <UndoIcon color="#262626" className={style['btn-icon']} />
+            )
+          }
           onClick={handleBack}
           disabled={isFirstStep}
         >

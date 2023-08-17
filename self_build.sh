@@ -51,6 +51,8 @@ elif [ $app == "management-system" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
 elif [ $app == "landing" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileLanding .
+elif [ $app == "web-client" ];then
+docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWebClient .
 else
   echo "  --> 不打镜像..."
   exit 1

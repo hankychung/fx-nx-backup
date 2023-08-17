@@ -39,14 +39,14 @@ compile-landing:
     - ./self_build.sh $CI_COMMIT_BRANCH landing
   when: manual
 compile-web-client:
-tags:
-  - nodejs
-  - mac
-stage: compile
-script:
-  - chmod a+x ./self_build.sh
-  - ./self_build.sh $CI_COMMIT_BRANCH web-client
-when: manual
+  tags:
+    - nodejs
+    - mac
+  stage: compile
+  script:
+    - chmod a+x ./self_build.sh
+    - ./self_build.sh $CI_COMMIT_BRANCH web-client
+  when: manual
 # 构建失败时的通知消息
 notifyFailWeChat:
   stage: notify

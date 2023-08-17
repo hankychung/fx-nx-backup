@@ -230,7 +230,7 @@ const _InviteMember = ({
           </div>
         </div>
         <div className={styles.cardRoot}>
-          <div className={styles.title}>邀请链接</div>
+          <div className={cs(styles.title, styles.fs16)}>邀请链接</div>
           <div className={styles.urlBox}>{shortUrl}</div>
           <div
             className={cs(styles.copy, styles.ml)}

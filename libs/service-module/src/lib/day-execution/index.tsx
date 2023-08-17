@@ -20,6 +20,7 @@ interface IProps {
   onMount?: () => void
   rootClassName?: string
   subtractHeight?: number
+  manualInitInMount?: boolean
 }
 
 const _DayExecution = ({
@@ -27,7 +28,8 @@ const _DayExecution = ({
   onShow,
   onMount,
   rootClassName,
-  subtractHeight = 0
+  subtractHeight = 0,
+  manualInitInMount = false
 }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [show, setShow] = useState(false)
@@ -73,6 +75,10 @@ const _DayExecution = ({
   const init = useMemoizedFn(async () => {
     await fetchDayList()
     await fetchDayList(true)
+  })
+
+  const doInit = useMemoizedFn(() => {
+    !!day && init()
   })
 
   /**
@@ -134,8 +140,8 @@ const _DayExecution = ({
 
   // 切换日期刷新列表
   useUpdateEffect(() => {
-    !!day && init()
-  }, [day, init])
+    doInit()
+  }, [day])
 
   useEffect(() => {
     if (onShow) {
@@ -147,8 +153,11 @@ const _DayExecution = ({
     if (onMount) {
       onMount()
     }
+    if (manualInitInMount) {
+      doInit()
+    }
     emitter.on('cacheWorkerInited', () => {
-      !!day && init()
+      doInit()
     })
   })
 

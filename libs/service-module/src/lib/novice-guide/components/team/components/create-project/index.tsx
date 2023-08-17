@@ -295,6 +295,7 @@ const _CreateProject = ({
                       ? task.repeat_type
                       : LOOP_MATTER.noLoop,
                     repeat_config: task.repeat_config,
+                    end_repeat_at: task.end_repeat_at,
                     widget: {
                       execute_addr: false,
                       remind: true,

@@ -20,6 +20,7 @@ export interface IIndustryUserType {
 export interface IIndustryTask {
   title: string
   detail?: string
+  end_repeat_at?: number
   repeat_type?: LOOP_MATTER
   repeat_config?: IRepeatConfig
   task_time?: {

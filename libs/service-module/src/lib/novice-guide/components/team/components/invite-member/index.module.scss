@@ -10,7 +10,6 @@
 
   .cardRoot {
     width: 575px;
-    height: 160px;
     border-radius: 8px;
     background: #fff;
     padding: 20px 25px 20px 28px;
@@ -28,6 +27,9 @@
       color: #3d3d3d;
       font-size: 18px;
       font-weight: 500;
+    }
+    .fs16 {
+      font-size: 16px;
     }
     .desc {
       color: #cbcbcb;

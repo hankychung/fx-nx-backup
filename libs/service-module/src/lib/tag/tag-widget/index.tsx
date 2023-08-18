@@ -8,6 +8,7 @@ import { TagModel } from '@flyele-nx/service'
 import classNames from 'classnames'
 import { TagUtils } from '../tag_utils'
 import css from './index.module.scss'
+import { DoneIcon } from '@flyele-nx/icon'
 
 export enum TagWidgetSize {
   normal = 'normal',
@@ -87,9 +88,11 @@ export default function TagWidget(props: TagWidgetModel) {
           {name}
         </span>
         {done ? (
-          <span
-            className={`${css['tag-done']} iconfont icon-done`}
-            style={{ color: id !== '-1' ? textColor : '#6A6A6A' }}
+          <DoneIcon
+            width={11}
+            height={11}
+            className={css['tag-done']}
+            color={id !== '-1' ? textColor : '#6A6A6A'}
           />
         ) : null}
       </div>

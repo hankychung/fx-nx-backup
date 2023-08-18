@@ -1,0 +1,20 @@
+.desc_input {
+  outline: none;
+  resize: none;
+  border: 0;
+  font-size: 14px;
+  color: rgba(6, 6, 6, 0.87);
+  overflow-y: hidden;
+  padding: 0;
+  caret-color: #1dd2c1;
+
+  &::-webkit-input-placeholder {
+    color: rgba(6, 6, 6, 0.3);
+    font-size: 14px;
+  }
+
+  &[disabled] {
+    color: rgba(6, 6, 6, 0.87);
+    opacity: 1;
+  }
+}

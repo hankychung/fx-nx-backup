@@ -60,6 +60,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+    }
+
+    .personTask {
+      font-weight: 400;
+      font-size: 12px;
+      color: #535353;
+      opacity: 0.5;
+      white-space: nowrap;
+      text-align: left;
+      margin-left: 2px;
+      margin-bottom: 7px;
     }
 
     .listBox {

@@ -12,10 +12,10 @@ import { InputRef, TagInput } from '../../../tag-input'
 import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
 import { LabelApi } from '@flyele-nx/service'
 import { TagType, TagWidgetColor } from '@flyele-nx/constant'
-import { Pub } from '@flyele-nx/constant'
 import { TagUtils } from '../../../tag_utils'
 import TagWidget from '../../../tag-widget'
 import TagAddButton from '../../../tag-add-button'
+import { TagsHandler } from '@flyele-nx/zustand-handler'
 
 export interface TagEditAreaProps {
   showTagModal: boolean
@@ -60,10 +60,10 @@ export default function TagEditArea(props: TagEditAreaProps) {
   // 标签数据
   const [tags, setTags] = useState<TagModel[]>([])
 
+  const Tags = TagsHandler.getTagsList()
+
   // 选中的数据
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    defaultSelectedKeys ?? []
-  )
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   // // 模态框状态
   // const [visible, setVisible] = useState(false)
@@ -88,18 +88,8 @@ export default function TagEditArea(props: TagEditAreaProps) {
   useEffect(() => {
     // 打开弹窗
     if (showTagModal) {
-      setLoading(true)
-      LabelApi.getTagList()
-        .then((res) => {
-          if (res.code === 0) {
-            const data = res.data as TagModel[]
-
-            setTags([...data])
-          }
-        })
-        .finally(() => {
-          setLoading(false)
-        })
+      // setSelectedTags(Tags)
+      setTags([...Tags])
     }
 
     // 关闭弹窗
@@ -107,7 +97,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
       isChanged.current = false
       setAddVisible(false)
     }
-  }, [showTagModal])
+  }, [showTagModal, Tags])
 
   // 修改对话框 内容
   const buildUpdateAlert = () => {
@@ -137,17 +127,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
       </div>
     )
   }
-
-  // // 修改对话框
-  // const { alertCtx, showAlert, hideAlert } = useAlert({
-  //   message: buildUpdateAlert(),
-  //   cancelTxt: '取消',
-  //   confirmTxt: '保存',
-  //   color: 'red',
-  //   onConfirm: async ({ resolve }) => {
-  //     updateTagEvent(resolve)
-  //   }
-  // })
 
   const updateTagEvent = async (resolve: (v: boolean) => void) => {
     if (currentTag.current) {
@@ -477,7 +456,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
       const newTags = [obj, ...tags]
       const newSelectedTags = [tagId, ...selectedTags]
 
-      console.log('不可能吧？')
       setTags(newTags)
 
       // 自动添加

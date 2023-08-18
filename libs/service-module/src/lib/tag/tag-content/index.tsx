@@ -131,9 +131,7 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
 
       if (cloneSelectedTags.length <= maxSelectedTag) {
         try {
-          const {
-            data: { code }
-          } = await LabelApi.bindTag({
+          const { code } = await LabelApi.bindTag({
             tagKeys: cloneSelectedTags,
             refId: ref_task_id,
             obj_type: type[matter_type]
@@ -196,11 +194,12 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
           color,
           type: TagConst.TagType.ordinary
         })
-        const tagId = data?.data as string
 
-        await fetchTags()
-        // 自动添加
-        onClickItem(tagId, true)
+        if (data) {
+          await fetchTags()
+          // 自动添加
+          onClickItem(data, true)
+        }
 
         return true
       } catch (e) {

@@ -194,7 +194,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         milestoneBackgroundSelectedColor
       )
     )
-    console.log('oooo')
   }, [
     viewMode,
     preStepsCount,

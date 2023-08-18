@@ -76,12 +76,6 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const date = dates[i]
 
     if (i !== 0) {
-      console.log(
-        i + 1 !== dates.length &&
-          date.getTime() < now.getTime() &&
-          dates[i + 1].getTime() >= now.getTime()
-      )
-
       if (
         (i + 1 !== dates.length &&
           date.getTime() > now.getTime() &&

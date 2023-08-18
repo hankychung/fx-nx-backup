@@ -141,6 +141,11 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                 )}
               </div>
               <div className={css.content}>
+                {item.key === 'personal' && (
+                  <div className={css.personTask} style={{ width: '192px' }}>
+                    仅针对&nbsp;个人任务
+                  </div>
+                )}
                 {item.powerList.map((power, index) => (
                   <>
                     <div key={index} className={css.contentItem}>

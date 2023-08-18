@@ -253,7 +253,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
 
     const status = getOperationStatus(task, userId)
 
-    if (status === 'complete') {
+    if (status === 'complete' && task.flow_step_id) {
       globalNxController.showMsg({ content: '已完成的工作流事项不支持添加人' })
       return
     }

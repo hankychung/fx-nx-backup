@@ -3,14 +3,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: rgba(232, 232, 232, 0.5) 1px solid;
-  border-left: rgba(232, 232, 232, 0.5) 1px solid;
+  /* border-top: rgba(232, 232, 232, 0.5) 1px solid; */
+  /* border-left: rgba(232, 232, 232, 0.5) 1px solid; */
 }
 .ganttTable {
   display: table;
   border-bottom: rgba(232, 232, 232, 0.5) 1px solid;
   border-top: rgba(232, 232, 232, 0.5) 1px solid;
-  border-left: rgba(232, 232, 232, 0.5) 1px solid;
+  /* border-left: rgba(232, 232, 232, 0.5) 1px solid; */
 }
 
 .ganttTable_Header {

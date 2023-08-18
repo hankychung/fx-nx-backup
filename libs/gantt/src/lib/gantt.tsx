@@ -50,11 +50,11 @@ const _GanttList: ForwardRefRenderFunction<
   const isInit = useRef(true)
 
   const fetchList = useMemoizedFn(async () => {
+    if (!projectId) return
     let resList: Task[] = []
-
     const params = {
       show_mode: 2,
-      projectId: projectId || '2630602957521067',
+      projectId: projectId,
       query_type: 0,
       sort: 'desc'
     }
@@ -78,16 +78,14 @@ const _GanttList: ForwardRefRenderFunction<
       }
     })
     console.log(resList, "'___resList")
-
+    reSet()
     const { keys } = batchUpdateTask(resList)
 
     updateList({ list: keys })
-    resList = []
   })
 
   const reload = useMemoizedFn(async () => {
     try {
-      reSet()
       return await fetchList()
     } catch (error) {
       console.error(error)
@@ -121,7 +119,7 @@ const _GanttList: ForwardRefRenderFunction<
   }
 
   const handleDblClick = (task: Task) => {
-    alert('On Double Click event Id:' + task.id)
+    // alert('On Double Click event Id:' + task.id)
   }
 
   const handleClick = (task: Task) => {

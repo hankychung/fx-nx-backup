@@ -116,22 +116,27 @@
     padding: 0 16px;
     box-shadow: 0 0 4px 0 #00000014;
 
-    .btn {
-      width: 90px;
-      display: flex;
-      align-items: center;
-    }
-    &:hover {
-      .btn-icon {
-        color: #1dd2c1;
-      }
-    }
-
     .btn-icon {
       width: 12px;
       height: 12px;
       margin-right: 4px;
     }
+
+    .btn {
+      width: 90px;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn:hover .btn-icon {
+      color: #1dd2c1;
+    }
+
+    .btn[disabled]:hover .btn-icon {
+      background-color: #fff !important;
+      color: #8f8f8f !important;
+    }
+
     :global(.ant-btn[disabled]) {
       background-color: #fff !important;
       color: #8f8f8f !important;

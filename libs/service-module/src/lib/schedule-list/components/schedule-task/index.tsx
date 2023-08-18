@@ -368,7 +368,12 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         opacity={opacity}
                       />
                       {!isBoard && !isTimeLine && (
-                        <Tags taskId={taskKey} wrapClassName={styles.tags} />
+                        <Tags
+                          taskId={taskKey}
+                          wrapClassName={styles.tags}
+                          isBoard={isBoard}
+                          isVipSmallTool={isVipWin}
+                        />
                       )}
                       {!isTimeLine && (
                         <Takers
@@ -380,7 +385,12 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                         />
                       )}
                       {isBoard && !isTimeLine && (
-                        <Tags taskId={taskKey} wrapClassName={styles.tags} />
+                        <Tags
+                          taskId={taskKey}
+                          wrapClassName={styles.tags}
+                          isBoard={isBoard}
+                          isVipSmallTool={isVipWin}
+                        />
                       )}
                     </div>
                   </div>

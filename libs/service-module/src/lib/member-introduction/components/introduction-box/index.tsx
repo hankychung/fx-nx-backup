@@ -105,6 +105,11 @@ export const IntroductionBox = ({
         <div className={styles.division}>
           <img src={divisionIcon} alt="" />
         </div>
+        {key === 'personal' && (
+          <div className={styles.personTask} style={{ width: '192px' }}>
+            仅针对&nbsp;个人任务
+          </div>
+        )}
         <div className={styles.listBox}>
           {powerList.map((item, index) => {
             return (

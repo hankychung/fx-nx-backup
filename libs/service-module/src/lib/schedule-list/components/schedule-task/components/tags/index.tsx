@@ -15,13 +15,18 @@ import { contextMenuTool } from '../../../../../../index'
 
 interface IPROPTags {
   taskId: string
+  isBoard?: boolean
+  isVipSmallTool?: boolean
   wrapClassName?: string
 }
 
-export const Tags: React.FC<IPROPTags> = ({ taskId, wrapClassName }) => {
+export const Tags: React.FC<IPROPTags> = ({
+  taskId,
+  wrapClassName,
+  isBoard = true,
+  isVipSmallTool = false
+}) => {
   const task = useScheduleStore((state) => state.taskDict[taskId])
-  const isVipSmallTool = false
-  const isBoard = true
 
   const tags = task?.tags || []
 

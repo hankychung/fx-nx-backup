@@ -15,6 +15,8 @@ import { TagUtils } from '../tag_utils'
 import { LabelApi } from '@flyele-nx/service'
 import Cell from './components/cell'
 import TagEditArea from './components/tag-edit-area'
+import TagWidgetBar from './components/TagWidgetBar'
+import { TagsHandler } from '@flyele-nx/zustand-handler'
 
 // 创建事项tab 专属
 interface TagMatterBarProps {
@@ -34,47 +36,41 @@ export function TagMatterBar(props: TagMatterBarProps) {
   const [_focusUpdate, setFocusUpdate] = useState(1) // 强制刷新
 
   const [showTagModal, isShowTagModal] = useState<boolean>(false)
-  useEffect(() => {
-    if (tagIds && tagIds?.length > 0) {
-      setSelectedTagKeys((v) => (v === tagIds ? v : tagIds))
-      LabelApi.getTagList().then((res) => {
-        if (res.code === 0) {
-          const data = res.data as TagModel[]
 
-          tagListMap.current = TagUtils.transformTagsMap(data)
-          setFocusUpdate((v) => v + 1)
-        }
-      })
+  const Tags = TagsHandler.getTagsList()
+
+  useEffect(() => {
+    if (Tags.length > 0) {
+      tagListMap.current = TagUtils.transformTagsMap(Tags)
+      setFocusUpdate((v) => v + 1)
     } else {
       setSelectedTagKeys([])
     }
-  }, [tagIds])
+  }, [Tags])
 
   const onClick = () => {
-    console.log('点击了！！！！！！！！！！')
     isShowTagModal(true)
   }
 
   const onSure = (tags: TagModel[], selected: string[]) => {
     tagListMap.current = TagUtils.transformTagsMap(tags)
     if (onChange) onChange(selected, tags)
-    setSelectedTagKeys(selected)
+    // TagsHandler.updateTagArr(selected)
   }
 
   const buildContent = () => {
-    // if (selectedTagKeys.length === 0 || tagListMap.current === undefined)
-    //   return null
+    if (selectedTagKeys.length === 0 || tagListMap.current === undefined)
+      return null
 
-    // const _tags: TagModel[] = selectedTagKeys.map((key) => {
-    //   return tagListMap.current!.get(key)!
-    // })
+    const _tags: TagModel[] = selectedTagKeys.map((key) => {
+      return tagListMap.current!.get(key)!
+    })
 
-    // return (
-    //   <div className={css['tag-matter-bar']}>
-    //     <TagWidgetBar tags={_tags} onAdd={onClick} />
-    //   </div>
-    // )
-    return <div>123</div>
+    return (
+      <div className={css['tag-matter-bar']}>
+        <TagWidgetBar tags={_tags} onAdd={onClick} />
+      </div>
+    )
   }
 
   return (

@@ -3,5 +3,6 @@ export * from './lib/useHolidayStore'
 export * from './lib/useScheduleStore'
 export * from './lib/useUserInfoStore'
 export * from './lib/useProjectStore'
+export * from './lib/useTagInfoStore'
 
 export * as zustandUtils from './lib/utils'

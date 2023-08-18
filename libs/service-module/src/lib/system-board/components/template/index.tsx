@@ -296,6 +296,7 @@ const TabPersonal: ForwardRefRenderFunction<
   //   return (isFinishTagMode ? finishedList : unfinishedList) || []
   // }, [finishedList, isFinishTagMode, unfinishedList])
 
+  // 滚动的时候需要显示“查看全部”按钮
   useEffect(() => {
     if (!display) return
 

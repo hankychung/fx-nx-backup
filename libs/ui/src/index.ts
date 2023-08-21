@@ -8,6 +8,7 @@ export * from './lib/customer-services-modal/index'
 export * from './lib/message/useMessage'
 export * from './lib/space-avatar/index'
 export * from './lib/sortable-tab'
+export * from './lib/drop-zone'
 
 export { PhoneLogin } from './lib/phone-login'
 export { FlySearchInput } from './lib/fly-search-input'

@@ -102,18 +102,19 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     const width = task.x2 - task.x1
     const hasChild = task.barChildren.length > 0
     if (isTextInside) {
-      return task.x1 + width * 0.5
+      return task.x1 + 40
     }
-    if (rtl && textRef.current) {
-      return (
-        task.x1 -
-        textRef.current.getBBox().width -
-        arrowIndent * +hasChild -
-        arrowIndent * 0.2
-      )
-    } else {
-      return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
-    }
+    return task.x1 + 20
+    // if (rtl && textRef.current) {
+    //   return (
+    //     task.x1 -
+    //     textRef.current.getBBox().width -
+    //     arrowIndent * +hasChild -
+    //     arrowIndent * 0.2
+    //   )
+    // } else {
+    //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
+    // }
   }
 
   return (
@@ -147,7 +148,11 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
         {taskItem}
         <text
           x={getX()}
-          y={task.y + taskHeight * 0.5}
+          y={
+            isTextInside
+              ? task.y + taskHeight * 0.5
+              : task.y + taskHeight * 0.65
+          }
           className={
             isTextInside
               ? style.barLabel

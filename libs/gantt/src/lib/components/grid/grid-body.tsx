@@ -129,7 +129,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
         ).getTime() >= now.getTime())
     ) {
       today = (
-        <rect x={tickX} y={0} width={columnWidth} height={y} fill={'#fff'} />
+        <rect
+          x={tickX}
+          y={0}
+          width={columnWidth}
+          height={y}
+          fill={'rgba(0,0,0,0)'}
+        />
       )
     }
     // rtl for today

@@ -17,6 +17,8 @@ import { MatterCreateCell } from '@flyele-nx/ui'
 import TagEditArea from './components/tag-edit-area'
 import TagWidgetBar from './components/TagWidgetBar'
 import { TagsHandler } from '@flyele-nx/zustand-handler'
+import tagBlack from '../../../assets/tags/tag-black.png'
+import tagGray from '../../../assets/tags/tag-gray.png'
 
 // 创建事项tab 专属
 interface TagMatterBarProps {
@@ -81,7 +83,7 @@ export function TagMatterBar(props: TagMatterBarProps) {
       <MatterCreateCell
         onClick={() => onClick()}
         placeholder="添加标签"
-        img={selectedTagKeys.length > 0 ? '' : ''}
+        img={selectedTagKeys.length > 0 ? tagBlack : tagGray}
         cellCla={isMatter ? css['tab-cell'] : ''}
         cellContentCla={cs({
           [css.bg_fff]: !isMatter && tagIds && tagIds.length > 0,

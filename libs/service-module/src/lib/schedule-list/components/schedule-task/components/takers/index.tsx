@@ -1,15 +1,14 @@
-import React, { useState, useEffect, MouseEvent, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import cs from 'classnames'
-import {
-  FlyAvatarGroup,
-  FlyBasePopperCtrl,
-  useController
-} from '@flyele/flyele-components'
+import { FlyAvatarGroup } from '@flyele/flyele-components'
 import { createInfinite, UserInfoUtils } from '@flyele-nx/utils'
 import { AddTakerIcon } from '@flyele-nx/icon'
 import { getOperationStatus } from '../../../../utils/workflowOperation'
 import { ISimpleMember } from '../../../../../simple-member-list'
-import { RemoveSimpleMemberListPopper } from '../../../../../remove-simple-member-list-popper'
+import {
+  IHandleMethods,
+  RemoveSimpleMemberListPopper
+} from '../../../../../remove-simple-member-list-popper'
 import { getAvatarsFromTakers } from '../../../../utils/task'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
@@ -77,6 +76,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   const [auth, setAuth] = useState<IAuthWithFetched>(defaultMatterAuthWithFetch)
   const [takers, setTakers] = useState<Taker[]>([])
   const [avatars, setAvatars] = useState<ICUSTOMAvatar[]>([])
+  const removeRef = useRef<IHandleMethods | null>(null)
 
   const isSmallTool = useMemo(() => {
     return task.category === CATEGORY.smallTool
@@ -112,8 +112,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       [MatterType.timeCollect, MatterType.calendar].includes(task.matter_type),
     [task.matter_type]
   )
-
-  const popCtrl = useController(new FlyBasePopperCtrl())
 
   // 获取权限
   const fetchPower = useMemoizedFn(async () => {
@@ -239,28 +237,24 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
   })
 
   // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
-  const editTakers = useMemoizedFn(async (e: MouseEvent) => {
-    e.stopPropagation()
-
+  const editTakers = useMemoizedFn(async () => {
     /**
-     * 如果存在右键菜单，先把菜单关闭了，因为上面阻止冒泡了，所以触发不了关闭右键菜单
+     * 如果存在右键菜单，先把菜单关闭了
      */
     const contextMenuVisible = contextMenuTool.getVisible()
     if (contextMenuVisible) {
       contextMenuTool.close()
-      return
+      return false
     }
 
     const status = getOperationStatus(task, userId)
 
     if (status === 'complete' && task.flow_step_id) {
       globalNxController.showMsg({ content: '已完成的工作流事项不支持添加人' })
-      return
+      return false
     }
 
-    if (await isCanAdd()) {
-      popCtrl.addClickAlwaysHide().show()
-    }
+    return await isCanAdd()
   })
 
   // 检测，获取，写入takers信息
@@ -367,12 +361,13 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
         })}
       >
         <RemoveSimpleMemberListPopper
-          ctrl={popCtrl}
+          ref={removeRef}
           memberList={simpleMemberList}
           onClickAdd={onClickAddModal}
           taskId={taskId}
+          canShow={editTakers}
         >
-          <div className={styles.avatarBox} onClick={editTakers}>
+          <div className={styles.avatarBox}>
             {avatars.length ? (
               <FlyAvatarGroup
                 list={avatars}

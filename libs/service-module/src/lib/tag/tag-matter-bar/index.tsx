@@ -12,7 +12,8 @@ import cs from 'classnames'
 import css from './index.module.scss'
 import { TagModel } from '@flyele-nx/types'
 import { TagUtils } from '../tag_utils'
-import Cell from './components/cell'
+import { LabelApi } from '@flyele-nx/service'
+import { MatterCreateCell } from '@flyele-nx/ui'
 import TagEditArea from './components/tag-edit-area'
 import TagWidgetBar from './components/TagWidgetBar'
 import { TagsHandler } from '@flyele-nx/zustand-handler'
@@ -76,7 +77,7 @@ export function TagMatterBar(props: TagMatterBarProps) {
 
   return (
     <>
-      <Cell
+      <MatterCreateCell
         onClick={() => onClick()}
         placeholder="添加标签"
         content={

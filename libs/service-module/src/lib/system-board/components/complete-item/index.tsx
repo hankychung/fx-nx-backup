@@ -4,7 +4,7 @@ import { FlyTextTooltip } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import { IDashboardItem } from '@flyele-nx/types'
 import { useTimeTip } from '@flyele-nx/utils'
-import { RepeatIcon } from '@flyele-nx/icon'
+import { RepeatWithBgIcon } from '@flyele-nx/icon'
 import { convertToTask } from '../../utils'
 import { StatusBox } from '../../../status-box'
 // const unfinishedState = [10301, 10402]
@@ -53,7 +53,7 @@ const CompleteItem: FC<React.PropsWithChildren<Props>> = ({
                 {txt}
               </span>
               {!!item.repeat_type && (
-                <RepeatIcon className={style.icon} />
+                <RepeatWithBgIcon className={style.icon} />
                 // <Icon svgClassName={style.icon} iconClass="shixiangxunhuan" />
               )}
             </div>

@@ -9,8 +9,8 @@ import { FlyTextTooltip } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import Takers from '../takers'
 // import { useMessage } from '@flyele-nx/ui'
-import { RepeatIcon } from '@flyele-nx/icon'
-import { IDashboardItem, IScheduleTask } from '@flyele-nx/types'
+import { RepeatWithBgIcon } from '@flyele-nx/icon'
+import { IDashboardItem } from '@flyele-nx/types'
 import { convertToTask } from '../../utils'
 import { StatusBox } from '../../../status-box'
 
@@ -62,7 +62,7 @@ export const Item: FC<React.PropsWithChildren<IProps>> = ({ item }) => {
               )}
               <span style={{ marginRight: '5px' }}>{txt}</span>
               {/* {!!item.repeat_type && <Icon iconClass="shixiangxunhuan" />} */}
-              {!!item.repeat_type && <RepeatIcon />}
+              {!!item.repeat_type && <RepeatWithBgIcon />}
             </div>
           )}
         </div>

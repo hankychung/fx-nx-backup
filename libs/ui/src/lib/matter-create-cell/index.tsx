@@ -3,7 +3,7 @@ import cs from 'classnames'
 import styles from './index.module.scss'
 
 interface Props {
-  img: string | (() => React.ReactNode)
+  img?: string | (() => React.ReactNode)
   grayImg?: string
   text?: string
   onClick?: () => void
@@ -12,10 +12,11 @@ interface Props {
   imgBoxCla?: string
   placeholder?: string
   textEllipsis?: boolean
-  content?: () => React.ReactNode // 自定义右边区域
+  isMatterCreate?: boolean
+  showDefaultContent?: boolean
 }
 
-const MatterCreateCell: React.FC<React.PropsWithChildren<Props>> = (props) => {
+const _MatterCreateCell: React.FC<React.PropsWithChildren<Props>> = (props) => {
   const {
     img,
     text,
@@ -24,14 +25,17 @@ const MatterCreateCell: React.FC<React.PropsWithChildren<Props>> = (props) => {
     cellContentCla,
     imgBoxCla,
     placeholder,
-    content,
-    textEllipsis = false
+    textEllipsis = false,
+    isMatterCreate = false,
+    children,
+    showDefaultContent = false
   } = props
 
   return (
     <div
       className={cs(styles.cell_wrap, cellCla, {
-        [styles.ov_hidden]: textEllipsis
+        [styles.ov_hidden]: textEllipsis,
+        [styles.cellBoxCla]: isMatterCreate
       })}
     >
       <div
@@ -41,12 +45,12 @@ const MatterCreateCell: React.FC<React.PropsWithChildren<Props>> = (props) => {
         })}
         onClick={onClick}
       >
-        <div className={cs(styles.img_box, imgBoxCla)}>
-          {typeof img === 'string' ? <img alt="" src={img} /> : img()}
-        </div>
-        {content ? (
-          content()
-        ) : (
+        {img && (
+          <div className={cs(styles.img_box, imgBoxCla)}>
+            {typeof img === 'string' ? <img alt="" src={img} /> : img()}
+          </div>
+        )}
+        {showDefaultContent ? (
           <div
             className={cs(styles.text, {
               [styles.gray]: !text,
@@ -55,10 +59,12 @@ const MatterCreateCell: React.FC<React.PropsWithChildren<Props>> = (props) => {
           >
             {text || placeholder || ''}
           </div>
+        ) : (
+          children
         )}
       </div>
     </div>
   )
 }
 
-export { MatterCreateCell }
+export const MatterCreateCell = React.memo(_MatterCreateCell)

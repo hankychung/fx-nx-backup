@@ -15,7 +15,7 @@ interface Props {
   content?: () => React.ReactNode // 自定义右边区域
 }
 
-const Cell: React.FC<React.PropsWithChildren<Props>> = (props) => {
+const MatterCreateCell: React.FC<React.PropsWithChildren<Props>> = (props) => {
   const {
     img,
     text,
@@ -61,4 +61,4 @@ const Cell: React.FC<React.PropsWithChildren<Props>> = (props) => {
   )
 }
 
-export default Cell
+export { MatterCreateCell }

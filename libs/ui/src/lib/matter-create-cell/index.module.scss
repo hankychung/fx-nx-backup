@@ -34,9 +34,9 @@
       text-overflow: ellipsis;
       white-space: nowrap;
 
-       &.gray {
-         color: rgba(6, 6, 6, 0.3);
-       }
+      &.gray {
+        color: rgba(6, 6, 6, 0.3);
+      }
     }
   }
 }
@@ -45,8 +45,8 @@
   overflow: hidden;
 }
 
- .txt_ellipsis {
-   overflow: hidden;
-   text-overflow: ellipsis;
-   white-space: nowrap;
- }
+.txt_ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

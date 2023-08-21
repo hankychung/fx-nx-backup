@@ -14,5 +14,10 @@
 }
 
 .gridTick {
-  stroke: #e6e4e4;
+  stroke: rgba(232, 232, 232, 0.5);
+}
+
+.gridTodayTick {
+  stroke: #1dd2c1;
+  stroke-width: 2px;
 }

@@ -4,7 +4,7 @@ import cs from 'classnames'
 import style from './index.module.scss'
 import { ICustomDashboardItem } from '@flyele-nx/types'
 import { FlyTextTooltip } from '@flyele/flyele-components'
-import { RepeatIcon } from '@flyele-nx/icon'
+import { RepeatWithBgIcon } from '@flyele-nx/icon'
 import { StatusBox } from '../../../status-box'
 
 interface Props {
@@ -62,7 +62,7 @@ const Item: React.FC<React.PropsWithChildren<Props>> = ({ item }) => {
           </div>
           {/* {item.title} */}
 
-          {item.repeat_type && <RepeatIcon className={style.loop_icon} />}
+          {item.repeat_type && <RepeatWithBgIcon className={style.loop_icon} />}
         </div>
       </div>
       <div

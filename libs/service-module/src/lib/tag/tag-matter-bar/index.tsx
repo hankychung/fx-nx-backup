@@ -3,7 +3,7 @@
  create_at:2021/10/27 下午 4:17
  **/
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 // import tagImg from 'assets/icons/tag/tag-black.png'
 // import tagImgGray from 'assets/icons/tag/tag-gray.png'
 
@@ -60,38 +60,41 @@ export function TagMatterBar(props: TagMatterBarProps) {
     // TagsHandler.updateTagArr(selected)
   }
 
-  const buildContent = () => {
-    if (selectedTagKeys.length === 0 || tagListMap.current === undefined)
-      return null
+  const showDefaultContent = useMemo(() => {
+    if (selectedTagKeys.length > 0 && tagListMap.current) {
+      return true
+    }
+    if (selectedTagKeys.length === 0 || tagListMap.current === undefined) {
+      return true
+    }
+    return false
+  }, [selectedTagKeys.length])
 
-    const _tags: TagModel[] = selectedTagKeys.map((key) => {
+  const showTags = useMemo(() => {
+    if (selectedTagKeys.length === 0 || tagListMap.current === undefined)
+      return []
+    return selectedTagKeys.map((key) => {
       return tagListMap.current!.get(key)!
     })
-
-    return (
-      <div className={css['tag-matter-bar']}>
-        <TagWidgetBar tags={_tags} onAdd={onClick} />
-      </div>
-    )
-  }
+  }, [selectedTagKeys])
 
   return (
     <>
       <MatterCreateCell
         onClick={() => onClick()}
         placeholder="添加标签"
-        content={
-          selectedTagKeys.length > 0 && tagListMap.current
-            ? buildContent
-            : undefined
-        }
         img={selectedTagKeys.length > 0 ? tagBlack : tagGray}
         cellCla={isMatter ? css['tab-cell'] : ''}
         cellContentCla={cs({
           [css.bg_fff]: !isMatter && tagIds && tagIds.length > 0,
           [css['cell-content']]: isMatter
         })}
-      />
+        showDefaultContent={showDefaultContent}
+      >
+        <div className={css['tag-matter-bar']}>
+          <TagWidgetBar tags={showTags} onAdd={onClick} />
+        </div>
+      </MatterCreateCell>
       <TagEditArea
         defaultSelectedKeys={selectedTagKeys}
         showTagModal={showTagModal}

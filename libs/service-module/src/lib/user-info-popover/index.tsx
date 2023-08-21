@@ -1,27 +1,27 @@
-import {
-  FlyBasePopper,
-  useController,
-  FlyBasePopperCtrl
-} from '@flyele/flyele-components'
+import { useState } from 'react'
 import { InfoCard } from './components/info-card'
 import styles from './index.module.scss'
 import { ArrowDownIcon } from '@flyele-nx/icon'
-import { useMemoizedFn } from 'ahooks'
 import { Avatar } from './components/avatar'
+import { Popover } from 'antd'
 
 export const UserInfoPopover = () => {
-  const ctrl = useController(new FlyBasePopperCtrl())
+  const [open, setOpen] = useState(false)
 
-  const closePopover = useMemoizedFn(() => {
-    ctrl.hide()
-  })
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen)
+  }
 
   return (
-    <FlyBasePopper
-      controller={ctrl}
+    <Popover
+      open={open}
       trigger="click"
       placement="top"
-      content={<InfoCard closePopover={closePopover} />}
+      content={() => <InfoCard closePopover={() => handleOpenChange(false)} />}
+      onOpenChange={handleOpenChange}
+      overlayInnerStyle={{
+        padding: 0
+      }}
     >
       <div className={styles.userInfoPopover}>
         <Avatar size={26} />
@@ -30,6 +30,6 @@ export const UserInfoPopover = () => {
           <ArrowDownIcon width={8} height={8} />
         </div>
       </div>
-    </FlyBasePopper>
+    </Popover>
   )
 }

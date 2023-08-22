@@ -27,7 +27,7 @@ export interface TagEditAreaProps {
 
 export default function TagEditArea(props: TagEditAreaProps) {
   const {
-    defaultSelectedKeys,
+    defaultSelectedKeys = [],
     onSure,
     showTagModal,
     onCancel,
@@ -63,8 +63,9 @@ export default function TagEditArea(props: TagEditAreaProps) {
   const Tags = TagsHandler.getTagsList()
 
   // 选中的数据
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    defaultSelectedKeys ?? []
+  )
   // // 模态框状态
   // const [visible, setVisible] = useState(false)
 
@@ -88,7 +89,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
   useEffect(() => {
     // 打开弹窗
     if (showTagModal) {
-      // setSelectedTags(Tags)
+      setSelectedTags(defaultSelectedKeys)
       setTags([...Tags])
     }
 
@@ -97,7 +98,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
       isChanged.current = false
       setAddVisible(false)
     }
-  }, [showTagModal, Tags])
+  }, [defaultSelectedKeys, showTagModal, Tags])
 
   // 修改对话框 内容
   const buildUpdateAlert = () => {

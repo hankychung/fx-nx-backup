@@ -9,15 +9,13 @@ import { cloneDeep } from 'lodash'
 import css from './index.module.scss'
 import { TagModel } from '@flyele-nx/types'
 import { InputRef, TagInput } from '../../../tag-input'
-import { AlertWithOkAndCancel, useMessage } from '@flyele-nx/ui'
 import { LabelApi } from '@flyele-nx/service'
 import { TagType, TagWidgetColor } from '@flyele-nx/constant'
 import { TagUtils } from '../../../tag_utils'
 import TagWidget from '../../../tag-widget'
 import TagAddButton from '../../../tag-add-button'
-import { TagsHandler } from '@flyele-nx/zustand-handler'
 import { useTagInfoStore } from '@flyele-nx/zustand-store'
-
+import { globalNxController } from '@flyele-nx/global-processor'
 export interface TagEditAreaProps {
   showTagModal: boolean
   defaultSelectedKeys?: string[]
@@ -56,8 +54,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
 
   // 是否改变过
   const isChanged = useRef<boolean>(false)
-
-  const [showMsg] = useMessage()
 
   useEffect(() => {
     // 打开弹窗
@@ -136,7 +132,11 @@ export default function TagEditArea(props: TagEditAreaProps) {
       if (selectedTags.length < maxSelectedTag) {
         setSelectedTags([id, ...selectedTags])
       } else {
-        showMsg({ msgType: '消息', content: '最多只能选择5个标签' })
+        console.log('最多只能选择5个标签')
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '最多只能选择5个标签'
+        })
       }
     } else {
       // 移除已选标签
@@ -236,7 +236,10 @@ export default function TagEditArea(props: TagEditAreaProps) {
       const { name } = inputRef.current
 
       if (!text.trim()) {
-        showMsg({ msgType: '消息', content: '请输入标签名称' })
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '请输入标签名称'
+        })
         return
       }
       if (
@@ -245,7 +248,10 @@ export default function TagEditArea(props: TagEditAreaProps) {
         name &&
         selectedTags.length === maxSelectedTag
       ) {
-        showMsg({ msgType: '消息', content: '最多只能选择5个标签' })
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '最多只能选择5个标签'
+        })
         return
       }
 
@@ -270,7 +276,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
 
       callback && callback({ tags: newTags, selectedTags: newSelectedTags })
     } catch (e) {
-      showMsg({
+      globalNxController.showMsg({
         msgType: '消息',
         content: `“${text}” 标签名称已存在`,
         duration: 1.5

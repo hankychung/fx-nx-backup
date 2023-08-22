@@ -11,7 +11,6 @@ interface Params {
   desc?: string
   descStyle?: React.CSSProperties
   onConfirm?: ({ resolve }: { resolve: (value: boolean) => void }) => void
-  onCancel?: any
   color?: any
   confirmAndClose?: boolean
   showCancel?: boolean
@@ -27,7 +26,6 @@ const useAlert = ({
   cancelStyle,
   desc,
   descStyle,
-  onCancel,
   color,
   confirmAndClose,
   showCancel = true,
@@ -70,7 +68,6 @@ const useAlert = ({
         descStyle={descStyle}
         onCancel={() => {
           setVisible(false)
-          onCancel()
         }}
         message={message}
         confirmTxt={confirmTxt}

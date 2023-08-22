@@ -19,6 +19,7 @@ import { TagsHandler } from '@flyele-nx/zustand-handler'
 import { useTagInfoStore } from '@flyele-nx/zustand-store'
 import useAlert from '../tag-matter-bar/hooks/useAlert'
 import { cloneDeep } from 'lodash'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 export enum TagWidgetSize {
   normal = 'normal',
@@ -59,7 +60,6 @@ export default function TagWidget(props: TagWidgetModel) {
 
   // 当前右击的对象
   const currentTag = useRef<TagModel | undefined>(undefined)
-  const [showMsg] = useMessage()
 
   // size 类名 判断
   const sizeClassName = (): string => {
@@ -112,7 +112,10 @@ export default function TagWidget(props: TagWidgetModel) {
       const { id, name, color } = currentTag.current
 
       if (name.trim().length === 0) {
-        showMsg({ msgType: '消息', content: '标签名不能为空' })
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '标签名不能为空'
+        })
         resolve(false)
         return
       }
@@ -126,10 +129,10 @@ export default function TagWidget(props: TagWidgetModel) {
 
       if (res) {
         onUpdateTag(id)
-        showMsg({ msgType: '消息', content: '修改成功' })
+        globalNxController.showMsg({ msgType: '消息', content: '修改成功' })
         resolve(true)
       } else {
-        showMsg({ msgType: '错误', content: '修改失败' })
+        globalNxController.showMsg({ msgType: '错误', content: '修改失败' })
         resolve(false)
       }
     }
@@ -151,7 +154,7 @@ export default function TagWidget(props: TagWidgetModel) {
             updateTagEvent(hideAlert)
           }}
           emptyCallBack={() => {
-            showMsg({
+            globalNxController.showMsg({
               msgType: '消息',
               content: '请输入标签文本1~12个字'
             })
@@ -226,13 +229,13 @@ export default function TagWidget(props: TagWidgetModel) {
               TagsHandler.updateTagsList(_Tags)
               toggleDeleteVisible(false)
             } else {
-              showMsg({
+              globalNxController.showMsg({
                 msgType: '错误',
                 content: '删除标签失败'
               })
             }
           } catch (error) {
-            showMsg({
+            globalNxController.showMsg({
               msgType: '错误',
               content: '删除标签失败'
             })

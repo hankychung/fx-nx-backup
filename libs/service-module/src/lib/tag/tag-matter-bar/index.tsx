@@ -12,13 +12,13 @@ import cs from 'classnames'
 import css from './index.module.scss'
 import { TagModel } from '@flyele-nx/types'
 import { TagUtils } from '../tag_utils'
-import { LabelApi } from '@flyele-nx/service'
 import { MatterCreateCell } from '@flyele-nx/ui'
 import TagEditArea from './components/tag-edit-area'
 import TagWidgetBar from './components/TagWidgetBar'
 import { TagsHandler } from '@flyele-nx/zustand-handler'
 import tagBlack from '../../../assets/tags/tag-black.png'
 import tagGray from '../../../assets/tags/tag-gray.png'
+import { useTagInfoStore } from '@flyele-nx/zustand-store'
 
 // 创建事项tab 专属
 interface TagMatterBarProps {
@@ -35,16 +35,13 @@ export function TagMatterBar(props: TagMatterBarProps) {
 
   const tagListMap = useRef<Map<string, TagModel> | undefined>(undefined)
 
-  const [_focusUpdate, setFocusUpdate] = useState(1) // 强制刷新
-
   const [showTagModal, isShowTagModal] = useState<boolean>(false)
 
-  const Tags = TagsHandler.getTagsList()
+  const Tags = useTagInfoStore((state) => state.tagsList)
 
   useEffect(() => {
     if (Tags.length > 0) {
       tagListMap.current = TagUtils.transformTagsMap(Tags)
-      setFocusUpdate((v) => v + 1)
     } else {
       setSelectedTagKeys([])
     }
@@ -57,7 +54,7 @@ export function TagMatterBar(props: TagMatterBarProps) {
   const onSure = (tags: TagModel[], selected: string[]) => {
     tagListMap.current = TagUtils.transformTagsMap(tags)
     if (onChange) onChange(selected, tags)
-    // TagsHandler.updateTagArr(selected)
+    TagsHandler.updateTagsList(tags)
     setSelectedTagKeys(selected)
   }
 
@@ -82,6 +79,7 @@ export function TagMatterBar(props: TagMatterBarProps) {
   return (
     <>
       <MatterCreateCell
+        isMatterCreate
         onClick={() => onClick()}
         placeholder="添加标签"
         img={selectedTagKeys.length > 0 ? tagBlack : tagGray}

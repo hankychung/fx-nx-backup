@@ -29,17 +29,18 @@ const _DropZone: React.FC<React.PropsWithChildren<Props>> = (props) => {
   useDrop(dropRef, {
     onFiles: (files, e) => {
       console.log(e, files)
-      handle && e && handle(e)
+      if (files.length > 0 && e) {
+        handle?.(e)
+      } else {
+        console.error('拖拽文件失败', e, files)
+      }
       setIsDragOver(false)
     },
     onDragEnter: () => {
       setIsDragOver(true)
-      console.log('setIsDragOver(true)')
     },
-    // 有bug? 这个事件好像不会触发
     onDragLeave: () => {
       setIsDragOver(false)
-      console.log('setIsDragOver(false)')
     }
   })
 

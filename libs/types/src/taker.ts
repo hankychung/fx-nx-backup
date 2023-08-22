@@ -64,3 +64,11 @@ export interface IInteract {
 export interface IContactDict {
   [k: string]: IInteract
 }
+
+export interface IInviteTaker {
+  avatar: string
+  nick_name: string
+  pinyin: string
+  taker_id: string
+  vip_type?: VipTypeEnum
+}

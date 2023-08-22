@@ -3,7 +3,7 @@ import { GridProps, Grid } from '../grid/grid'
 import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
 import styles from './gantt.module.css'
-
+import cs from 'classnames'
 export type TaskGanttProps = {
   gridProps: GridProps
   calendarProps: CalendarProps
@@ -62,7 +62,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       </svg>
       <div
         ref={horizontalContainerRef}
-        className={styles.horizontalContainer}
+        className={cs(styles.horizontalContainer, styles.ganttScroll)}
         style={
           ganttHeight
             ? { height: `calc(100% - 74px)`, width: gridProps.svgWidth }

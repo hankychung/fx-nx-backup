@@ -310,8 +310,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
-    console.log(event)
-
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
       let newScrollX = scrollX + scrollMove
@@ -513,9 +511,10 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           <div
             style={{
               width: '40px',
-              maxHeight: 'calc(100vh - 100px)',
+              height: 'calc(100vh - 100px)',
               padding: '16px',
-              border: '1px solid rgba(232, 232, 232, 0.5)'
+              border: '1px solid rgba(232, 232, 232, 0.5)',
+              boxSizing: 'border-box'
             }}
           >
             <HideList onClick={() => setIsChecked(!isChecked)}></HideList>

@@ -13,6 +13,30 @@
   overflow: hidden;
 }
 
+.ganttScroll {
+  overflow: hidden !important;
+  overflow-x: auto !important;
+}
+/* 设置滚动条的样式 */
+.ganttScroll::-webkit-scrollbar {
+  width: 2px;
+  height: 9px;
+}
+/* 滚动槽 */
+.ganttScroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+  border-radius: 10px;
+}
+/* 滚动条滑块 */
+.ganttScroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #999;
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+}
+.ganttScroll::-webkit-scrollbar-thumb:window-inactive {
+  background: #999;
+}
+
 .wrapper {
   display: flex;
   padding: 0;

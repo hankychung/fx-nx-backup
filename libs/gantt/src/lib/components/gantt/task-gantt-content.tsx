@@ -11,6 +11,9 @@ import {
   FullViewBarMoveAction,
   FullViewGanttContentMoveAction
 } from '@flyele-nx/constant'
+import { isInTask } from '../../utils'
+import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { globalNxController } from '@flyele-nx/global-processor'
 
 export type TaskGanttContentProps = {
   tasks: IFullViewBarTask[]
@@ -61,6 +64,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   const [xStep, setXStep] = useState(0)
   const [initEventX1Delta, setInitEventX1Delta] = useState(0)
   const [isMoving, setIsMoving] = useState(false)
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   // create xStep
   useEffect(() => {
@@ -77,6 +81,29 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     const handleMouseMove = async (event: MouseEvent) => {
       if (!ganttEvent.changedTask || !point || !svg?.current) return
       event.preventDefault()
+
+      const notMyBusiness =
+        !!userId &&
+        !isInTask(
+          ganttEvent.changedTask?.takers,
+          userId,
+          ganttEvent.changedTask?.creator_id
+        )
+      if (ganttEvent.changedTask?.finish_time) {
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '已完成事项不可修改'
+        })
+        return
+      }
+
+      if (notMyBusiness) {
+        globalNxController.showMsg({
+          msgType: '错误',
+          content: '没参与事项不可修改'
+        })
+        return
+      }
 
       point.x = event.clientX
       const cursor = point.matrixTransform(
@@ -116,7 +143,9 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         initEventX1Delta,
         rtl
       )
-
+      const notMyBusiness =
+        !!userId &&
+        !isInTask(newChangedTask.takers, userId, newChangedTask.creator_id)
       const isNotLikeOriginal =
         originalSelectedTask.start !== newChangedTask.start ||
         originalSelectedTask.end !== newChangedTask.end ||
@@ -135,6 +164,14 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         onDateChange &&
         isNotLikeOriginal
       ) {
+        if (newChangedTask.finish_time) {
+          return
+        }
+
+        if (notMyBusiness) {
+          return
+        }
+
         try {
           const result = await onDateChange(
             newChangedTask,
@@ -190,7 +227,8 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     point,
     rtl,
     setFailedTask,
-    setGanttEvent
+    setGanttEvent,
+    userId
   ])
 
   /**

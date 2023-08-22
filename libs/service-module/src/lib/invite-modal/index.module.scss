@@ -1,0 +1,16 @@
+.invite-modal {
+  width: 640px;
+  height: 580px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modal-wrapper {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+}

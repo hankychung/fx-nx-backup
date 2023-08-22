@@ -62,7 +62,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       </svg>
       <div
         ref={horizontalContainerRef}
-        className={cs(styles.horizontalContainer, styles.ganttScroll)}
+        className={cs(styles.horizontalContainer)}
         style={
           ganttHeight
             ? { height: `calc(100% - 74px)`, width: gridProps.svgWidth }

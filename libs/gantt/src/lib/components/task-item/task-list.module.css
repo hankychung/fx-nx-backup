@@ -12,6 +12,10 @@
   line-height: 34px;
 }
 
+.overColor {
+  fill: rgba(189, 189, 189, 1) !important;
+}
+
 .barLabelOutside {
   fill: #262626;
   font-weight: 600;

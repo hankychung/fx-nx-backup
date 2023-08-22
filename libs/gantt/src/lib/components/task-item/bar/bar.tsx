@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 // import { getProgressPoint } from '../../../helpers/bar-helper'
 import { BarDisplay } from './bar-display'
 import { BarDateHandle } from './bar-date-handle'
 // import { BarProgressHandle } from './bar-progress-handle'
 import { TaskItemProps } from '../task-item'
 import styles from './bar.module.css'
+import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { isInTask } from '../../../utils'
 // import { createSVG } from '../../../utils'
 // import { createRoot } from 'react-dom/client'
 
@@ -87,6 +89,12 @@ export const Bar = ({
   //     </g>
   //   </g>
   // )
+
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const notMyBusiness = useMemo(() => {
+    return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
+  }, [userId, task])
+
   return (
     <g className={styles.barWrapper} tabIndex={0}>
       <BarDisplay
@@ -114,6 +122,7 @@ export const Bar = ({
               width={task.handleWidth}
               height={handleHeight}
               barCornerRadius={task.barCornerRadius}
+              isFinish={!!task.finish_time || notMyBusiness}
               onMouseDown={(e) => {
                 onEventStart('start', task, e)
               }}
@@ -125,6 +134,7 @@ export const Bar = ({
               width={task.handleWidth}
               height={handleHeight}
               barCornerRadius={task.barCornerRadius}
+              isFinish={!!task.finish_time || notMyBusiness}
               onMouseDown={(e) => {
                 onEventStart('end', task, e)
               }}

@@ -114,9 +114,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
           defaultValue={currentTag.current?.name}
           defaultColor={currentTag.current?.color}
           onChange={onChange}
-          // onTap={() => {
-          //   updateTagEvent(hideAlert)
-          // }}
           emptyCallBack={() => {
             showMsg({
               msgType: '消息',
@@ -216,22 +213,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
   }
 
   // 右击弹出
-  // useContextMenu({
-  //   targetSelector: '.tag-context-menu',
-  //   actions: [
-  //     {
-  //       txt: '修改',
-  //       callback: (node: any) => {
-  //         currentTag.current = findTag(node.dataset.id as string)
-  //         showAlert()
-  //       }
-  //     },
-  //     {
-  //       txt: '删除',
-  //       callback: handleDelete
-  //     }
-  //   ]
-  // })
 
   // 找当前 tag
   const findTag = (id: string): TagModel | undefined => {
@@ -398,6 +379,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
                   done={selectedTags.includes(item.id)}
                   {...item}
                   onClick={onTogetherTag}
+                  tag_id={item.id}
                 />
               </div>
             )

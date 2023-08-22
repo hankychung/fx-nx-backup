@@ -1,5 +1,18 @@
 .create-modal {
   width: 780px;
+  height: 686px;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    flex: 1;
+    height: 0;
+    overflow-y: auto;
+    padding: 0 20px;
+  }
+  .footer {
+    height: 72px;
+  }
 }
 
 .modal-wrapper {
@@ -7,9 +20,5 @@
     .ant-modal-content {
       padding: 0;
     }
-  }
-
-  .header {
-    height: 56px;
   }
 }

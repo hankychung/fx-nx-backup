@@ -26,5 +26,3 @@ class CreateModalHandler {
 }
 
 export const createModal = new CreateModalHandler()
-
-// createModal.open()

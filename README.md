@@ -38,6 +38,12 @@ yarn nx build web
 npx nx build your-module
 ```
 
+## 同时跑多个模块
+
+```
+npx nx serve icon-display --host 0.0.0.0 --port 3002
+```
+
 ## 注意事项
 
 - 引用的所有图标/图片，都用 svg 文件，并且以 ReactComponent 形式引入(https://www.notion.so/33682717e14847fcb6ffed8ebf4bb89c?pvs=4)

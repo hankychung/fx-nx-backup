@@ -4,7 +4,7 @@ import styles from './index.module.scss'
 import { getRepeatTxt } from '../../../../utils'
 import { useScheduleStore } from '@flyele-nx/global-processor'
 import { useMemoizedFn } from 'ahooks'
-import { RepeatIcon, WorkflowBlueIcon } from '@flyele-nx/icon'
+import { RepeatWithBgIcon, WorkflowBlueIcon } from '@flyele-nx/icon'
 
 interface IPROPWorkflow {
   taskId: string
@@ -81,7 +81,7 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
       )}
       {isRepeat && (
         <div className={cs(styles.repeat_icon)}>
-          <RepeatIcon width={16} height={16} />
+          <RepeatWithBgIcon width={16} height={16} />
         </div>
       )}
       <span

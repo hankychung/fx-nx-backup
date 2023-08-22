@@ -47,6 +47,28 @@
   user-select: none;
 }
 
+.tableScroll {
+  overflow: hidden !important;
+  overflow-y: auto !important;
+}
+/* 设置滚动条的样式 */
+.tableScroll::-webkit-scrollbar {
+  width: 2px;
+}
+/* 滚动槽 */
+.tableScroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+  border-radius: 10px;
+}
+/* 滚动条滑块 */
+.tableScroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: transparent;
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+}
+.tableScroll::-webkit-scrollbar-thumb:window-inactive {
+  background: #999;
+}
 .create-wrapper {
   background-color: rgba(250, 251, 252, 1);
   height: 42px;

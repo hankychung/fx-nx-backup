@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { Task, IFullViewBarTask } from '@flyele-nx/types'
-
+import cs from 'classnames'
+import styles from './task-list-table.module.css'
+import ListEmpty from '../ListEmpty'
 export type TaskListProps = {
   headerHeight: number
   rowWidth: string
@@ -98,11 +100,12 @@ export const TaskList: React.FC<TaskListProps> = ({
       <TaskListHeader {...headerProps} />
       <div
         ref={horizontalContainerRef}
-        className={horizontalContainerClass}
+        className={cs(horizontalContainerClass, styles.tableScroll)}
         style={ganttHeight ? { maxHeight: `calc(100% - 74px)` } : {}}
       >
         <TaskListTable {...tableProps} />
       </div>
+      {tasks.length === 0 && <ListEmpty></ListEmpty>}
     </div>
   )
 }

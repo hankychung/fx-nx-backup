@@ -107,6 +107,7 @@ export const Bar = ({
         progressWidth={task.progressWidth}
         barCornerRadius={task.barCornerRadius}
         styles={task.styles}
+        isFinish={!!task.finish_time || notMyBusiness}
         isSelected={isSelected}
         onMouseDown={(e) => {
           isDateChangeable && onEventStart('move', task, e)

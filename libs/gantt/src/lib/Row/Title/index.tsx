@@ -375,12 +375,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // if (isEditRef.current) return
     // const isProjectPage = location.pathname.includes('/project/detail')
     globalNxController.openTaskDetailWindow({
-      task: {
-        ref_id: task_id,
-        matter_type,
-        cycle: data.cycle,
-        forceOpen: true
-      } as any,
+      task: data as any,
       enterPage: Enter_page_detail.日程列表
     })
     // isDoubleRef.current = true

@@ -13,6 +13,7 @@ export type GridBodyProps = {
   columnWidth: number
   todayColor: string
   rtl: boolean
+  setTodayLine?: (data: ReactChild[]) => void
 }
 export const GridBody: React.FC<GridBodyProps> = ({
   tasks,
@@ -90,6 +91,14 @@ export const GridBody: React.FC<GridBodyProps> = ({
             'millisecond'
           ).getTime() >= now.getTime())
       ) {
+        // setTodayLine && setTodayLine([<line
+        //   key={date.getTime()}
+        //   x1={tickX}
+        //   y1={0}
+        //   x2={tickX}
+        //   y2={y}
+        //   className={styles.gridTodayTick}
+        // />])
         ticks.push(
           <line
             key={date.getTime()}

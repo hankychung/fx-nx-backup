@@ -23,8 +23,9 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   const ganttSVGRef = useRef<SVGSVGElement>(null)
   const horizontalContainerRef = useRef<HTMLDivElement>(null)
   const verticalGanttContainerRef = useRef<HTMLDivElement>(null)
+  // const [todayLine, setTodayLine] = useState<any[]>([])
   const newBarProps = { ...barProps, svg: ganttSVGRef }
-
+  const _gridProps = { ...gridProps }
   useEffect(() => {
     if (horizontalContainerRef.current) {
       horizontalContainerRef.current.scrollTop = scrollY
@@ -76,8 +77,9 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
           fontFamily={barProps.fontFamily}
           ref={ganttSVGRef}
         >
-          <Grid {...gridProps} />
+          <Grid {..._gridProps} />
           <TaskGanttContent {...newBarProps} />
+          {/* <g className="ticks">{todayLine}</g> */}
         </svg>
       </div>
     </div>

@@ -1,8 +1,4 @@
-// @import 'style/variable';
-// @import 'style/mixin';
-
 .cell_wrap {
-  // height: 50px;
   display: inline-block;
   background-color: transparent;
   margin-right: 10px;
@@ -31,15 +27,16 @@
     }
 
     .text {
-      // color: $black-87;
+      color: rgba(6, 6, 6, 0.87);
       font-size: 14px;
       margin-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-      // @include ellipsis(1);
-
-      // &.gray {
-      //   color: $black-30;
-      // }
+      &.gray {
+        color: rgba(6, 6, 6, 0.3);
+      }
     }
   }
 }
@@ -48,6 +45,27 @@
   overflow: hidden;
 }
 
-// .txt_ellipsis {
-//   @include ellipsis(1);
-// }
+.txt_ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellBoxCla {
+  display: flex;
+  align-items: center;
+  min-height: 37px;
+
+  .content_wrap {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+
+    .img_box {
+      align-items: flex-start;
+      margin-right: 10px;
+    }
+  }
+}

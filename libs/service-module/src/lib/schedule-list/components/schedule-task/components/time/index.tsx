@@ -19,11 +19,7 @@ import {
   useUserInfoStore,
   globalNxController
 } from '@flyele-nx/global-processor'
-import {
-  RepeatDelayIcon,
-  CycleCardIcon,
-  CycleCardDarkIcon
-} from '@flyele-nx/icon'
+import { RepeatIcon, CycleCardIcon, CycleCardDarkIcon } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
 import { contextMenuTool } from '../../../../../../index'
 import { MatterType, VipSmallIpcEvents } from '@flyele-nx/constant'
@@ -283,7 +279,7 @@ export const Time: React.FC<IPROPTime> = ({
     if (repeatDelayTotal) {
       return (
         <div className={styles.repeatDelayTotalBox}>
-          <RepeatDelayIcon width="1em" height="1em" />
+          <RepeatIcon width="1em" height="1em" color="#FF784D" />
           <div>{repeatDelayTotal}</div>
         </div>
       )

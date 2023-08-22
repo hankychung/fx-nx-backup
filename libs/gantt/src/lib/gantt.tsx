@@ -50,11 +50,11 @@ const _GanttList: ForwardRefRenderFunction<
   const isInit = useRef(true)
 
   const fetchList = useMemoizedFn(async () => {
+    if (!projectId) return
     let resList: Task[] = []
-
     const params = {
       show_mode: 2,
-      projectId: projectId || '2630602957521067',
+      projectId: projectId,
       query_type: 0,
       sort: 'desc'
     }
@@ -78,16 +78,14 @@ const _GanttList: ForwardRefRenderFunction<
       }
     })
     console.log(resList, "'___resList")
-
+    reSet()
     const { keys } = batchUpdateTask(resList)
 
     updateList({ list: keys })
-    resList = []
   })
 
   const reload = useMemoizedFn(async () => {
     try {
-      reSet()
       return await fetchList()
     } catch (error) {
       console.error(error)
@@ -121,44 +119,44 @@ const _GanttList: ForwardRefRenderFunction<
   }
 
   const handleDblClick = (task: Task) => {
-    alert('On Double Click event Id:' + task.id)
+    // alert('On Double Click event Id:' + task.id)
   }
 
   const handleClick = (task: Task) => {
     console.log('On Click event Id:' + task.id)
-    const start = dayjs(task.start).unix()
-    const end = dayjs(task.end).unix()
-    console.log(task, start)
-    const params = {
-      start_time: start,
-      end_time: end,
-      end_time_full_day: task.end_time_full_day,
-      start_time_full_day: task.start_time_full_day,
-      start: task.start,
-      end: task.end
-    }
-    const newTask = {
-      ...task,
-      start_time: start,
-      end_time: end
-    }
-    GanttHandler.batchModify({
-      keys: [task.id],
-      diff: { ...params }
-    })
+    // const start = dayjs(task.start).unix()
+    // const end = dayjs(task.end).unix()
+    // console.log(task, start)
+    // const params = {
+    //   start_time: start,
+    //   end_time: end,
+    //   end_time_full_day: task.end_time_full_day,
+    //   start_time_full_day: task.start_time_full_day,
+    //   start: task.start,
+    //   end: task.end
+    // }
+    // const newTask = {
+    //   ...task,
+    //   start_time: start,
+    //   end_time: end
+    // }
+    // GanttHandler.batchModify({
+    //   keys: [task.id],
+    //   diff: { ...params }
+    // })
 
-    TaskApi.updateTask(
-      {
-        ...params,
-        matter_type: newTask.matter_type,
-        start_time_full_day: 1,
-        end_time_full_day: 1
-      },
-      newTask.task_id
-    ).catch(() => {
-      globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [task])
-    })
-    globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [newTask])
+    // TaskApi.updateTask(
+    //   {
+    //     ...params,
+    //     matter_type: newTask.matter_type,
+    //     start_time_full_day: 1,
+    //     end_time_full_day: 1
+    //   },
+    //   newTask.task_id
+    // ).catch(() => {
+    //   globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [task])
+    // })
+    // globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [newTask])
   }
 
   const handleSelect = (task: Task, isSelected: boolean) => {

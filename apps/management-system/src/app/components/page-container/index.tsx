@@ -132,7 +132,7 @@ const _PageContainer: React.FC<React.PropsWithChildren<IProps>> = ({
   return (
     <div
       className={styles.pageContainerRoot}
-      style={{ height: `calc(100vh - ${topHeight}px)` }}
+      style={{ maxHeight: `calc(100vh - ${topHeight}px)` }}
     >
       {contextHolder}
       <div className={styles.content}>

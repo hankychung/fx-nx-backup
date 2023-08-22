@@ -53,7 +53,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   milestoneBackgroundColor = '#f1c453',
   milestoneBackgroundSelectedColor = '#f29e4c',
   rtl = false,
-  handleWidth = 8,
+  handleWidth = 12,
   timeStep = 300000,
   arrowColor = 'grey',
   fontFamily = 'Arial, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue',
@@ -194,7 +194,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         milestoneBackgroundSelectedColor
       )
     )
-    console.log('oooo')
   }, [
     viewMode,
     preStepsCount,
@@ -311,8 +310,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
-    console.log('wheel')
-
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
       let newScrollX = scrollX + scrollMove
@@ -511,7 +508,15 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       >
         {listCellWidth && <TaskList {...tableProps} />}
         {!listCellWidth && (
-          <div style={{ width: '40px', height: '100%', padding: '16px' }}>
+          <div
+            style={{
+              width: '40px',
+              height: 'calc(100vh - 100px)',
+              padding: '16px',
+              border: '1px solid rgba(232, 232, 232, 0.5)',
+              boxSizing: 'border-box'
+            }}
+          >
             <HideList onClick={() => setIsChecked(!isChecked)}></HideList>
           </div>
         )}

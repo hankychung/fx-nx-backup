@@ -1,4 +1,4 @@
-import { useProjectStore } from '@flyele-nx/global-processor'
+import { initGanttState, useProjectStore } from '@flyele-nx/global-processor'
 
 export const useGanttList = () => {
   const taskList = useProjectStore((state) => state.taskList)
@@ -20,15 +20,7 @@ export const useGanttList = () => {
   )
 
   const reSet = () => {
-    useProjectStore.setState({
-      taskList: [],
-      expandDict: {},
-      taskDict: {},
-      childrenDict: {},
-
-      hoverId: '',
-      activeCell: ''
-    })
+    useProjectStore.setState(initGanttState)
   }
 
   return {

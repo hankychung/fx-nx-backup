@@ -27,7 +27,7 @@ export interface TagEditAreaProps {
 
 export default function TagEditArea(props: TagEditAreaProps) {
   const {
-    defaultSelectedKeys,
+    defaultSelectedKeys = [],
     onSure,
     showTagModal,
     onCancel,
@@ -63,8 +63,9 @@ export default function TagEditArea(props: TagEditAreaProps) {
   const Tags = TagsHandler.getTagsList()
 
   // 选中的数据
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    defaultSelectedKeys ?? []
+  )
   // // 模态框状态
   // const [visible, setVisible] = useState(false)
 
@@ -88,7 +89,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
   useEffect(() => {
     // 打开弹窗
     if (showTagModal) {
-      // setSelectedTags(Tags)
+      setSelectedTags(defaultSelectedKeys)
       setTags([...Tags])
     }
 
@@ -97,7 +98,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
       isChanged.current = false
       setAddVisible(false)
     }
-  }, [showTagModal, Tags])
+  }, [defaultSelectedKeys, showTagModal, Tags])
 
   // 修改对话框 内容
   const buildUpdateAlert = () => {
@@ -114,9 +115,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
           defaultValue={currentTag.current?.name}
           defaultColor={currentTag.current?.color}
           onChange={onChange}
-          // onTap={() => {
-          //   updateTagEvent(hideAlert)
-          // }}
           emptyCallBack={() => {
             showMsg({
               msgType: '消息',
@@ -216,22 +214,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
   }
 
   // 右击弹出
-  // useContextMenu({
-  //   targetSelector: '.tag-context-menu',
-  //   actions: [
-  //     {
-  //       txt: '修改',
-  //       callback: (node: any) => {
-  //         currentTag.current = findTag(node.dataset.id as string)
-  //         showAlert()
-  //       }
-  //     },
-  //     {
-  //       txt: '删除',
-  //       callback: handleDelete
-  //     }
-  //   ]
-  // })
 
   // 找当前 tag
   const findTag = (id: string): TagModel | undefined => {
@@ -398,6 +380,7 @@ export default function TagEditArea(props: TagEditAreaProps) {
                   done={selectedTags.includes(item.id)}
                   {...item}
                   onClick={onTogetherTag}
+                  tag_id={item.id}
                 />
               </div>
             )

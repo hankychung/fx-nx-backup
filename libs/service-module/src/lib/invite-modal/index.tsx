@@ -1,7 +1,7 @@
 import { Modal } from 'antd'
 import { MatterRelatedPlugin } from './plugins/matter-related-plugin'
 import { InviteModal } from './InviteModal'
-import style from './index.module.scss'
+import style from './inviteModal.module.scss'
 import { InteractPlugin } from './plugins/interact-plugin'
 
 class InviteModalHandler {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { FlyMemberSelector } from '@flyele/flyele-components'
-import style from './index.module.scss'
+import style from './inviteModal.module.scss'
 import { useContactStore } from '@flyele-nx/zustand-store'
 import { invitePlugin } from '.'
 
@@ -23,6 +23,7 @@ const InviteModal: React.FC<IProps> = ({ close }) => {
 
   return (
     <div className={style['invite-modal']}>
+      <div className={style.header}>header</div>
       <div>
         <FlyMemberSelector plugins={plugins} />
       </div>

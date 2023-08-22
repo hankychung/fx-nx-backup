@@ -5,6 +5,10 @@
   flex-direction: column;
   border-radius: 10px;
   overflow: hidden;
+
+  .header {
+    height: 82px;
+  }
 }
 
 .modal-wrapper {

@@ -58,11 +58,12 @@ export function TagMatterBar(props: TagMatterBarProps) {
     tagListMap.current = TagUtils.transformTagsMap(tags)
     if (onChange) onChange(selected, tags)
     // TagsHandler.updateTagArr(selected)
+    setSelectedTagKeys(selected)
   }
 
   const showDefaultContent = useMemo(() => {
     if (selectedTagKeys.length > 0 && tagListMap.current) {
-      return true
+      return false
     }
     if (selectedTagKeys.length === 0 || tagListMap.current === undefined) {
       return true

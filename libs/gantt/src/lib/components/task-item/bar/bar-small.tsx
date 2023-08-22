@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 // import { getProgressPoint } from '../../../helpers/bar-helper'
 import { BarDisplay } from './bar-display'
 // import { BarProgressHandle } from './bar-progress-handle'
 import { TaskItemProps } from '../task-item'
 import styles from './bar.module.css'
 import { BarDateHandle } from './bar-date-handle'
+import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { isInTask } from '../../../utils'
 
 export const BarSmall: React.FC<TaskItemProps> = ({
   task,
@@ -18,6 +20,10 @@ export const BarSmall: React.FC<TaskItemProps> = ({
   //   task.y,
   //   task.height
   // )
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const notMyBusiness = useMemo(() => {
+    return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
+  }, [userId, task])
   const handleHeight = task.height - 2
   return (
     <g className={styles.barWrapper} tabIndex={0}>
@@ -53,6 +59,7 @@ export const BarSmall: React.FC<TaskItemProps> = ({
             width={task.handleWidth}
             height={handleHeight}
             barCornerRadius={task.barCornerRadius}
+            isFinish={!!task.finish_time || notMyBusiness}
             onMouseDown={(e) => {
               onEventStart('start', task, e)
             }}
@@ -64,6 +71,7 @@ export const BarSmall: React.FC<TaskItemProps> = ({
             width={task.handleWidth}
             height={handleHeight}
             barCornerRadius={task.barCornerRadius}
+            isFinish={!!task.finish_time || notMyBusiness}
             onMouseDown={(e) => {
               onEventStart('end', task, e)
             }}

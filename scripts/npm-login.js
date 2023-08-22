@@ -20,6 +20,10 @@ const login = (type) => {
     }
   })
 
+  exec.on('error', (e) => {
+    console.log('login error', e)
+  })
+
   exec.on('close', (code) => {
     console.log(`${type} 用户名设置完毕! \n`)
     // cp.execSync(`${type} config set always-auth true`)

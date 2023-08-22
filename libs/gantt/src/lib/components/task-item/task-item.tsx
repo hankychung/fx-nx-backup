@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { IFullViewBarTask, Task } from '@flyele-nx/types'
 import { FullViewGanttContentMoveAction } from '@flyele-nx/constant'
 import { Bar } from './bar/bar'
@@ -7,6 +7,9 @@ import { Milestone } from './milestone/milestone'
 import { Project } from './project/project'
 import style from './task-list.module.css'
 import { useMemoizedFn } from 'ahooks'
+import cs from 'classnames'
+import { isInTask } from '../../utils'
+import { useUserInfoStore } from '@flyele-nx/zustand-store'
 // import { createSVG } from '../../utils'
 // import checkboxFinishedIcon from '../../../assets/schedule/check.png'
 
@@ -116,6 +119,10 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
     // }
   }
+  const userId = useUserInfoStore((state) => state.userInfo.user_id)
+  const notMyBusiness = useMemo(() => {
+    return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
+  }, [userId, task])
 
   return (
     <>
@@ -153,13 +160,14 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
               ? task.y + taskHeight * 0.5
               : task.y + taskHeight * 0.65
           }
-          className={
+          className={cs(
             isTextInside
               ? style.barLabel
-              : style.barLabel && style.barLabelOutside
-          }
+              : style.barLabel && style.barLabelOutside,
+            { [style.overColor]: !!task.finish_time || notMyBusiness }
+          )}
           ref={textRef}
-          color="#262626"
+          color="rgba(189, 189, 189, 1)"
         >
           {task.name}
         </text>

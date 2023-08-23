@@ -1,5 +1,5 @@
 .modalRoot {
-  :global{
+  :global {
     .ant-modal-content {
       padding: 0;
     }
@@ -7,7 +7,7 @@
 }
 
 .tabsRoot {
-  :global{
+  :global {
     .ant-tabs .ant-tabs-tab .ant-tabs-tab-active .ant-tabs-tab-btn {
       color: #1dd2c1;
     }

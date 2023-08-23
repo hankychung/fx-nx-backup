@@ -4,13 +4,14 @@ import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
 import { DescInput } from './components/desc-input'
 import { DropZone } from '@flyele-nx/ui'
-import { useCreateFiles } from './hooks/useCreateFiles'
 import { DatePicker } from './components/date-picker'
 import { RemindPicker } from './components/remind-picker'
 import { RepeatPicker } from './components/repeat-picker'
 import { TagMatterBar } from '../tag/tag-matter-bar'
 import { QuadrantValue } from '@flyele-nx/constant'
 import { PriorityPicker } from './components/priority-picker/PriorityPicker'
+import { uploadHandler } from '@flyele-nx/zustand-handler'
+import { FileDisplay } from '../file-display'
 
 interface IProps {
   close: () => void
@@ -19,8 +20,6 @@ interface IProps {
 const CreateModal: React.FC<IProps> = ({ close }) => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
-
-  const { fileList, batchUpload } = useCreateFiles()
 
   const [priority_level, setPriority_level] = useState(
     QuadrantValue.no_important_no_urgent
@@ -42,7 +41,8 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
                 file: file
               }
             })
-            batchUpload({ fileList })
+
+            uploadHandler.upload('create', fileList[0].file)
           }}
         >
           <div className={style.content}>
@@ -57,6 +57,9 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               placeholder="背景信息/说明（可拖文件到这里）"
             />
             <TagMatterBar />
+
+            <FileDisplay fileDictId="create" />
+
             <PriorityPicker
               priority_level={priority_level}
               handlePrioritySelectorChange={handlePrioritySelectorChange}

@@ -6,13 +6,21 @@ const UPLOAD_TIMEOUT = 5 * 60 * 1000
 class Storage {
   private prefix = 'disk/v2'
   getUploadToken() {
-    return service.get<OssToken>({
+    return service.getRaw<OssToken>({
       url: `${this.prefix}/storage/token`,
       timeout: 10000
     })
   }
 
-  upload = async ({ file, token }: { file: File; token: OssToken }) => {
+  upload = async ({
+    file,
+    token,
+    uploadProgress
+  }: {
+    file: File
+    token: OssToken
+    uploadProgress: (progress: ProgressEvent) => void
+  }) => {
     const { callback, dir, policy, accessid, signature, host } = token
 
     let name: string = file.name
@@ -49,16 +57,7 @@ class Storage {
         headers: axiosHeader,
         url: host,
         timeout: UPLOAD_TIMEOUT,
-        onUploadProgress(progress) {
-          // 原生获取上传进度的事件
-          console.log('progress', progress)
-          if (progress.lengthComputable) {
-            // 属性lengthComputable主要表明总共需要完成的工作量和已经完成的工作是否可以被测量
-            // 如果lengthComputable为false，就获取不到progressEvent.total和progressEvent.loaded
-            // callback1(progressEvent)
-            //   uploadProgress(progress)
-          }
-        }
+        onUploadProgress: uploadProgress
       })
       .then((res) => {
         return res

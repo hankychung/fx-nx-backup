@@ -1,10 +1,11 @@
 import React, {
-  useRef,
   useEffect,
   useMemo,
   useImperativeHandle,
   ForwardRefRenderFunction,
-  forwardRef
+  forwardRef,
+  useState,
+  useRef
 } from 'react'
 import { Task, IFullViewTask } from '@flyele-nx/types'
 import { Enter_page_detail, FullViewModeEnum } from '@flyele-nx/constant'
@@ -19,6 +20,7 @@ import dayjs from 'dayjs'
 import { Pub } from '@flyele-nx/constant'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GanttHandler } from './utils/ganttHandler'
+import { LoadingPage } from './components/LoadingPage'
 
 export interface IGanttListRef {
   reload: () => void
@@ -33,6 +35,8 @@ const _GanttList: ForwardRefRenderFunction<
   const [view, _setView] = React.useState<FullViewModeEnum>(
     FullViewModeEnum.Day
   )
+  const isinit = useRef(false)
+  const [showLoading, setShowLoading] = useState(true)
   let columnWidth = 65
   if (view === FullViewModeEnum.Year) {
     columnWidth = 350
@@ -46,8 +50,6 @@ const _GanttList: ForwardRefRenderFunction<
     ApiHandler.updateProjectId(projectId)
     GanttHandler.updateProjectId(projectId)
   }, [projectId])
-
-  const isInit = useRef(true)
 
   const fetchList = useMemoizedFn(async () => {
     if (!projectId) return
@@ -74,14 +76,15 @@ const _GanttList: ForwardRefRenderFunction<
           hideChildren: false,
           displayOrder: 1
         }))
+
         resList = resList.concat(data)
       }
     })
-    console.log(resList, "'___resList")
     reSet()
     const { keys } = batchUpdateTask(resList)
 
     updateList({ list: keys })
+    setShowLoading(false)
   })
 
   const reload = useMemoizedFn(async () => {
@@ -99,10 +102,11 @@ const _GanttList: ForwardRefRenderFunction<
   })
 
   // useEffect(() => {
-  //   if (projectId && isInit.current) {
+  //   if(projectId && !isinit.current){
   //     reload()
-  //     isInit.current = false
+  //     isinit.current = true
   //   }
+
   // }, [reload, projectId, reSet])
 
   const handleTaskDelete = (task: Task) => {
@@ -120,14 +124,14 @@ const _GanttList: ForwardRefRenderFunction<
 
   const handleDblClick = (task: Task) => {
     // alert('On Double Click event Id:' + task.id)
-  }
-
-  const handleClick = (task: Task) => {
-    console.log('On Click event Id:' + task.id)
     globalNxController.openTaskDetailWindow({
       task: task as any,
       enterPage: Enter_page_detail.日程列表
     })
+  }
+
+  const handleClick = (task: Task) => {
+    console.log('On Click event Id:' + task.id)
   }
 
   const handleSelect = (task: Task, isSelected: boolean) => {
@@ -202,19 +206,22 @@ const _GanttList: ForwardRefRenderFunction<
 
   return (
     <div>
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onDateChange={handleTaskChange}
-        onDelete={handleTaskDelete}
-        onProgressChange={handleProgressChange}
-        onDoubleClick={handleDblClick}
-        onClick={handleClick}
-        onSelect={handleSelect}
-        onExpanderClick={handleExpanderClick}
-        columnWidth={columnWidth}
-        ganttHeight={640}
-      />
+      {!showLoading && (
+        <Gantt
+          tasks={tasks}
+          viewMode={view}
+          onDateChange={handleTaskChange}
+          onDelete={handleTaskDelete}
+          onProgressChange={handleProgressChange}
+          onDoubleClick={handleDblClick}
+          onClick={handleClick}
+          onSelect={handleSelect}
+          onExpanderClick={handleExpanderClick}
+          columnWidth={columnWidth}
+          ganttHeight={640}
+        />
+      )}
+      {showLoading && <LoadingPage />}
     </div>
   )
 }

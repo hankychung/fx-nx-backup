@@ -64,12 +64,12 @@ const Option: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
           </div> */}
         </>
       )}
-      <Dropdown
+      {/* <Dropdown
         open={showOption}
         onOpenChange={() => {
           console.log('000')
         }}
-        // overlay={buildOptionMain()}
+        overlay={buildOptionMain()}
         trigger={['click']}
         overlayStyle={{
           zIndex: 1000
@@ -77,12 +77,12 @@ const Option: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
       >
         {children || (
           <div className={style.option}>
-            {/* <img src={tableHeader} alt="" /> */}
+            <img src={tableHeader} alt="" />
             <TableHeader />
             <span className={style['btn-text']}>表头</span>
           </div>
         )}
-      </Dropdown>
+      </Dropdown> */}
       {showOption &&
         createPortal(<div className={style['full-mask']} />, document.body)}
     </div>

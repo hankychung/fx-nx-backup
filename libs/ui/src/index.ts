@@ -17,5 +17,6 @@ export { Loading } from './lib/loading/index'
 export { Advertisement } from './lib/advertisement'
 export { FeedbackBtn } from './lib/feedback-btn'
 export { EditSpaceAvatar } from './lib/edit-space-avatar'
+export { MatterCreateCell } from './lib/matter-create-cell'
 
 export type { IPhoneLoginData } from './lib/phone-login/types'

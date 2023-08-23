@@ -5,6 +5,10 @@ import { TitleInput } from './components/title-input'
 import { DescInput } from './components/desc-input'
 import { DropZone } from '@flyele-nx/ui'
 import { useCreateFiles } from './hooks/useCreateFiles'
+import { DatePicker } from './components/date-picker'
+import { RemindPicker } from './components/remind-picker'
+import { RepeatPicker } from './components/repeat-picker'
+import { TagMatterBar } from '../tag/tag-matter-bar'
 
 interface IProps {
   close: () => void
@@ -44,6 +48,10 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               onChange={setDesc}
               placeholder="背景信息/说明（可拖文件到这里）"
             />
+            <TagMatterBar />
+            <DatePicker />
+            <RemindPicker />
+            <RepeatPicker />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

@@ -1,12 +1,14 @@
 import React from 'react'
 import styles from './bar.module.css'
-
+import a from '../../../../assets/icons/bar_handle.png'
+import cs from 'classnames'
 type BarDateHandleProps = {
   x: number
   y: number
   width: number
   height: number
   barCornerRadius: number
+  isFinish: boolean
   onMouseDown: (event: React.MouseEvent<SVGRectElement, MouseEvent>) => void
 }
 export const BarDateHandle: React.FC<BarDateHandleProps> = ({
@@ -15,18 +17,22 @@ export const BarDateHandle: React.FC<BarDateHandleProps> = ({
   width,
   height,
   barCornerRadius,
+  isFinish,
   onMouseDown
 }) => {
   return (
-    <rect
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      className={styles.barHandle}
-      ry={barCornerRadius}
-      rx={barCornerRadius}
-      onMouseDown={onMouseDown}
-    />
+    <>
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        className={cs(styles.barHandle, { [styles.overHandle]: isFinish })}
+        ry={barCornerRadius}
+        rx={barCornerRadius}
+        onMouseDown={onMouseDown}
+      ></rect>
+      <image xlinkHref={a} x={x + 4} y={y + 10} height={10} width={4}></image>
+    </>
   )
 }

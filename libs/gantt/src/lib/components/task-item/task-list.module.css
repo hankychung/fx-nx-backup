@@ -1,7 +1,7 @@
 .barLabel {
   fill: #262626;
   text-anchor: middle;
-  font-weight: 500;
+  font-weight: 600;
   dominant-baseline: central;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -12,8 +12,14 @@
   line-height: 34px;
 }
 
+.overColor {
+  fill: rgba(189, 189, 189, 1) !important;
+}
+
 .barLabelOutside {
-  fill: #555;
+  fill: #262626;
+  font-weight: 600;
+  line-height: 34px;
   text-anchor: start;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

@@ -53,8 +53,6 @@ const SimpleMemberList = (props: IProps) => {
 
     const item = interacts.find((i) => i.user_id === id)
 
-    console.log('@check taker', item)
-
     if (item) {
       const { isTeamVip, isVip } = UserInfoUtils.checkVipType(item)
       return {

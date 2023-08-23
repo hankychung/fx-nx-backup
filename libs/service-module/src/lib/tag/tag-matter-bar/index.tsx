@@ -3,7 +3,7 @@
  create_at:2021/10/27 下午 4:17
  **/
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 // import tagImg from 'assets/icons/tag/tag-black.png'
 // import tagImgGray from 'assets/icons/tag/tag-gray.png'
 
@@ -12,11 +12,13 @@ import cs from 'classnames'
 import css from './index.module.scss'
 import { TagModel } from '@flyele-nx/types'
 import { TagUtils } from '../tag_utils'
-import { LabelApi } from '@flyele-nx/service'
-import Cell from './components/cell'
+import { MatterCreateCell } from '@flyele-nx/ui'
 import TagEditArea from './components/tag-edit-area'
 import TagWidgetBar from './components/TagWidgetBar'
 import { TagsHandler } from '@flyele-nx/zustand-handler'
+import tagBlack from '../../../assets/tags/tag-black.png'
+import tagGray from '../../../assets/tags/tag-gray.png'
+import { useTagInfoStore } from '@flyele-nx/zustand-store'
 
 // 创建事项tab 专属
 interface TagMatterBarProps {
@@ -33,16 +35,13 @@ export function TagMatterBar(props: TagMatterBarProps) {
 
   const tagListMap = useRef<Map<string, TagModel> | undefined>(undefined)
 
-  const [_focusUpdate, setFocusUpdate] = useState(1) // 强制刷新
-
   const [showTagModal, isShowTagModal] = useState<boolean>(false)
 
-  const Tags = TagsHandler.getTagsList()
+  const Tags = useTagInfoStore((state) => state.tagsList)
 
   useEffect(() => {
     if (Tags.length > 0) {
       tagListMap.current = TagUtils.transformTagsMap(Tags)
-      setFocusUpdate((v) => v + 1)
     } else {
       setSelectedTagKeys([])
     }
@@ -55,41 +54,46 @@ export function TagMatterBar(props: TagMatterBarProps) {
   const onSure = (tags: TagModel[], selected: string[]) => {
     tagListMap.current = TagUtils.transformTagsMap(tags)
     if (onChange) onChange(selected, tags)
-    // TagsHandler.updateTagArr(selected)
+    TagsHandler.updateTagsList(tags)
+    setSelectedTagKeys(selected)
   }
 
-  const buildContent = () => {
-    if (selectedTagKeys.length === 0 || tagListMap.current === undefined)
-      return null
+  const showDefaultContent = useMemo(() => {
+    if (selectedTagKeys.length > 0 && tagListMap.current) {
+      return false
+    }
+    if (selectedTagKeys.length === 0 || tagListMap.current === undefined) {
+      return true
+    }
+    return false
+  }, [selectedTagKeys.length])
 
-    const _tags: TagModel[] = selectedTagKeys.map((key) => {
+  const showTags = useMemo(() => {
+    if (selectedTagKeys.length === 0 || tagListMap.current === undefined)
+      return []
+    return selectedTagKeys.map((key) => {
       return tagListMap.current!.get(key)!
     })
-
-    return (
-      <div className={css['tag-matter-bar']}>
-        <TagWidgetBar tags={_tags} onAdd={onClick} />
-      </div>
-    )
-  }
+  }, [selectedTagKeys])
 
   return (
     <>
-      <Cell
+      <MatterCreateCell
+        isMatterCreate
         onClick={() => onClick()}
         placeholder="添加标签"
-        content={
-          selectedTagKeys.length > 0 && tagListMap.current
-            ? buildContent
-            : undefined
-        }
-        img={selectedTagKeys.length > 0 ? '' : ''}
+        img={selectedTagKeys.length > 0 ? tagBlack : tagGray}
         cellCla={isMatter ? css['tab-cell'] : ''}
         cellContentCla={cs({
           [css.bg_fff]: !isMatter && tagIds && tagIds.length > 0,
           [css['cell-content']]: isMatter
         })}
-      />
+        showDefaultContent={showDefaultContent}
+      >
+        <div className={css['tag-matter-bar']}>
+          <TagWidgetBar tags={showTags} onAdd={onClick} />
+        </div>
+      </MatterCreateCell>
       <TagEditArea
         defaultSelectedKeys={selectedTagKeys}
         showTagModal={showTagModal}

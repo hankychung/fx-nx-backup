@@ -49,9 +49,6 @@ export default function TagEditArea(props: TagEditAreaProps) {
   // 添加标签最大值
   const maxSelectedTag = 5
 
-  // 当前右击的对象
-  const currentTag = useRef<TagModel | undefined>(undefined)
-
   // 是否改变过
   const isChanged = useRef<boolean>(false)
 

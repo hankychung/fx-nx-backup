@@ -1,6 +1,5 @@
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import style from './index.module.scss'
-import { useState } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { debounce } from 'lodash'
 import { message } from 'antd'
@@ -11,6 +10,8 @@ interface IProps {
   maxLen?: number
   placeholder?: string
   onEnter?: () => void
+  value: string
+  onChange?: (val: string) => void
 }
 
 export const TitleInput = (props: IProps) => {
@@ -18,9 +19,11 @@ export const TitleInput = (props: IProps) => {
     maxLen = 300,
     inputStyle,
     placeholder = '请输入标题',
-    onEnter
+    onEnter,
+    value,
+    onChange
   } = props
-  const [value, setValue] = useState('')
+  // const [value, setValue] = useState('')
   const [msg, contextHolder] = message.useMessage()
 
   const debounceOnEnter = useMemoizedFn(
@@ -44,7 +47,7 @@ export const TitleInput = (props: IProps) => {
     }
   })
 
-  const onChange = (e: ContentEditableEvent) => {
+  const handleChange = (e: ContentEditableEvent) => {
     if (value.length >= maxLen) {
       // TODO 换showMsg
       msg.error(`最多支持${maxLen}个字符`)
@@ -54,7 +57,7 @@ export const TitleInput = (props: IProps) => {
       })
     }
 
-    setValue(e.target.value)
+    onChange?.(e.target.value)
   }
   return (
     <div className={style.container}>
@@ -65,7 +68,7 @@ export const TitleInput = (props: IProps) => {
         aria-required
         html={value}
         disabled={false}
-        onChange={onChange}
+        onChange={handleChange}
         onKeyPress={onKeyPress}
       />
       {!value.length && (

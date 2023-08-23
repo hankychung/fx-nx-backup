@@ -1,17 +1,18 @@
 import TextArea from 'antd/es/input/TextArea'
-import { useState } from 'react'
 import style from './index.module.scss'
 
 interface IProps {
   descPlaceholderStyle?: React.CSSProperties
   placeholder?: string
   descDisabled?: boolean
+  value: string
   onChange?: (val: string) => void
 }
 
 export const DescInput = (props: IProps) => {
-  const { descPlaceholderStyle, placeholder, descDisabled, onChange } = props
-  const [value, setValue] = useState('')
+  const { descPlaceholderStyle, placeholder, descDisabled, onChange, value } =
+    props
+
   return (
     <TextArea
       style={{ ...descPlaceholderStyle }}
@@ -20,7 +21,7 @@ export const DescInput = (props: IProps) => {
       placeholder={placeholder}
       bordered={false}
       onBlur={() => onChange?.(`${value.trim()}`)}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={(e) => onChange?.(e.target.value)}
       autoSize
       disabled={descDisabled}
     />

@@ -5,8 +5,10 @@ import { router } from './app/routes'
 import { SocketHandler } from '@flyele-nx/ws'
 import { envStore } from '@flyele-nx/service'
 import { ServiceWorkerUtils } from '@flyele-nx/sw-sql-client'
+import { ConfigProvider } from 'antd'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
+import zhCN from 'antd/locale/zh_CN'
 
 dayjs.locale('zh-cn')
 
@@ -21,7 +23,18 @@ ServiceWorkerUtils.registerServiceWorker(
 ).then(() => {
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#1dd2c1'
+          }
+        }}
+        locale={{
+          ...zhCN
+        }}
+      >
+        <RouterProvider router={router} />
+      </ConfigProvider>
     </StrictMode>
   )
 })

@@ -99,7 +99,7 @@ export interface ProtoDayViewGetDayViewReplyCustomDashboard {
   /**
    * 截止时间全天事项
    */
-  end_time_full_day?: number
+  end_time_full_day?: 1 | 2
   /**
    * 启动时间
    */
@@ -165,7 +165,7 @@ export interface ProtoDayViewGetDayViewReplyCustomDashboard {
   /**
    * 开始时间全天事项
    */
-  start_time_full_day?: number
+  start_time_full_day?: 1 | 2
   /**
    * 状态
    */
@@ -282,7 +282,7 @@ export interface RepeatList {
   /**
    * 截止时间全天事项
    */
-  end_time_full_day?: number
+  end_time_full_day?: 1 | 2
   /**
    * 个人完成时间
    */
@@ -303,7 +303,7 @@ export interface RepeatList {
   /**
    * 开始时间全天事项
    */
-  start_time_full_day?: number
+  start_time_full_day?: 1 | 2
 }
 
 /**
@@ -388,7 +388,7 @@ export interface IScheduleTask {
   dispatch_id: string
   end_repeat_at?: number
   end_time?: number
-  end_time_full_day?: number
+  end_time_full_day?: 1 | 2
   execute_at?: number
   finish_time?: number
   flow_step_complete_at?: number
@@ -425,7 +425,7 @@ export interface IScheduleTask {
   repeat_config?: IRepeatConfig
   repeat_type?: number
   start_time?: number
-  start_time_full_day?: number
+  start_time_full_day?: 1 | 2
   state: number
   tags?: ScheduleTag[]
   taker_id?: string
@@ -653,7 +653,7 @@ export interface ProtoDayViewGetDayViewReplySystemDashboard {
   dispatch_id?: string
   end_repeat_at?: number
   end_time?: number
-  end_time_full_day?: number
+  end_time_full_day?: 1 | 2
   execute_at?: number
   finish_time?: number
   flow_step_complete_at?: number
@@ -676,7 +676,7 @@ export interface ProtoDayViewGetDayViewReplySystemDashboard {
   schedule_hide?: boolean
   score?: number
   start_time?: number
-  start_time_full_day?: number
+  start_time_full_day?: 1 | 2
   takers?: Taker[]
   task_id?: string
   title?: string

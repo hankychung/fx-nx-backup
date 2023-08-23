@@ -4,6 +4,7 @@ import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
 import { DescInput } from './components/desc-input'
 import { DropZone } from '@flyele-nx/ui'
+import { useCreateFiles } from './hooks/useCreateFiles'
 
 interface IProps {
   close: () => void
@@ -13,11 +14,25 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
 
+  const { fileList, batchUpload } = useCreateFiles()
+
+  console.log('fileList', fileList)
+
   return (
     <div className={style['create-modal']}>
       <ModalHeader close={close} />
       <div className={style['content-wrap']}>
-        <DropZone>
+        <DropZone
+          onChange={(_, files) => {
+            const fileList = (files ?? []).map((file) => {
+              return {
+                path: file.webkitRelativePath,
+                file: file
+              }
+            })
+            batchUpload({ fileList })
+          }}
+        >
           <div className={style.content}>
             <TitleInput
               value={title}

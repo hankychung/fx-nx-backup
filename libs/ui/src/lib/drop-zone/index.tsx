@@ -7,7 +7,7 @@ import { useDrop } from 'ahooks'
 
 interface Props {
   disabled?: boolean
-  handle?: (e: React.DragEvent) => void
+  onChange?: (e: React.DragEvent, files?: File[]) => void
   customZoneCla?: string
   customZoneInnerCla?: string
   zIndex?: number | 'auto'
@@ -16,7 +16,7 @@ interface Props {
 const _DropZone: React.FC<React.PropsWithChildren<Props>> = (props) => {
   const {
     children,
-    handle,
+    onChange,
     disabled = false,
     customZoneCla,
     customZoneInnerCla,
@@ -30,7 +30,7 @@ const _DropZone: React.FC<React.PropsWithChildren<Props>> = (props) => {
     onFiles: (files, e) => {
       console.log(e, files)
       if (files.length > 0 && e) {
-        handle?.(e)
+        onChange?.(e, files)
       } else {
         console.error('拖拽文件失败', e, files)
       }

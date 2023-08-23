@@ -294,8 +294,8 @@ function getModifyTime(
 ): {
   start_time?: number
   end_time?: number
-  start_time_full_day?: number
-  end_time_full_day?: number
+  start_time_full_day?: 1 | 2
+  end_time_full_day?: 1 | 2
 } {
   const {
     start_time = 0,

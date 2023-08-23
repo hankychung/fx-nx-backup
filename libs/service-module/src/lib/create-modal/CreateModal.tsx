@@ -3,7 +3,7 @@ import style from './createModal.module.scss'
 import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
 import { DescInput } from './components/desc-input'
-import { DatePicker } from './components/date-picker'
+import { TaskTimePicker } from './components/task-time-picker'
 import { RemindPicker } from './components/remind-picker'
 import { RepeatPicker } from './components/repeat-picker'
 
@@ -18,7 +18,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
       <div className={style.content}>
         <TitleInput placeholder="事项标题" />
         <DescInput placeholder="背景信息/说明（可拖文件到这里）" />
-        <DatePicker />
+        <TaskTimePicker />
         <RemindPicker />
         <RepeatPicker />
       </div>

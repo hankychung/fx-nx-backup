@@ -1,10 +1,19 @@
-// import { IAction } from "../../../context-menu/types"
+import { IAction } from '../../../context-menu/types'
 
-// export const useTagUpdate = (): IAction=> {
+interface ITagsActions {
+  showAlert: () => Promise<unknown>
+}
 
-//   return {
-//     txt: '删除',
-//     callback: action,
-//     checkAction: check
-//   }
-// }
+export const useTagUpdate = (props: ITagsActions): IAction => {
+  const { showAlert } = props
+
+  const action = async () => {
+    showAlert()
+  }
+
+  return {
+    txt: '修改',
+    callback: action,
+    checkAction: true
+  }
+}

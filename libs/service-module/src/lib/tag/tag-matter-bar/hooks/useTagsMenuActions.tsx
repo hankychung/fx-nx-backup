@@ -1,21 +1,20 @@
 import { useMemo } from 'react'
-// import { useTagUpdate } from './useTagUpdate'
-import { TagModel } from '@flyele-nx/types'
 import { useTagDelete } from './useTagDelete'
+import { useTagUpdate } from './useTagUpdate'
 
 interface ITagsActions {
   tag_id: string
-  isVipWin?: boolean
   toggleDeleteVisible?: React.Dispatch<React.SetStateAction<boolean>>
+  showAlert: () => Promise<unknown>
 }
 
 export const useTagsMenuActions = (props: ITagsActions) => {
-  const { tag_id, toggleDeleteVisible } = props
+  const { tag_id, toggleDeleteVisible, showAlert } = props
 
-  // /**
-  //  * 菜单功能—修改
-  //  */
-  // const tagUpdate = useTagUpdate()
+  /**
+   * 菜单功能—修改
+   */
+  const tagUpdate = useTagUpdate({ showAlert })
   /**
    * 菜单功能—删除
    */
@@ -25,8 +24,8 @@ export const useTagsMenuActions = (props: ITagsActions) => {
    * 右键菜单
    */
   const menuActions = useMemo(() => {
-    return [tagDelete]
-  }, [tagDelete])
+    return [tagDelete, tagUpdate]
+  }, [tagDelete, tagUpdate])
 
   return {
     menuActions

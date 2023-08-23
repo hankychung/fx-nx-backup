@@ -5,6 +5,7 @@
   padding: 0;
   max-height: calc(100vh - 100px);
   border-bottom: 1px solid rgba(232, 232, 232, 0.5);
+  position: relative;
 }
 
 .horizontalContainer {
@@ -50,4 +51,37 @@
   fill: #ffffff;
   stroke: #e0e0e0;
   /* stroke-width: 1.4; */
+}
+
+.fixedss {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 40px;
+  width: 150px;
+  z-index: 9999;
+  font-size: 12px;
+  color: #363636;
+  background: #fff;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+}
+.currentDate {
+  height: 40px;
+  font-size: 12px;
+  color: #363636;
+  background: #fff;
+  line-height: 40px;
+}
+.today {
+  height: 20px;
+  background: #05c29a;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 2px;
+  margin-left: 20px;
+  line-height: 20px;
+  padding: 0px 5px 0px 5px;
+  cursor: pointer;
 }

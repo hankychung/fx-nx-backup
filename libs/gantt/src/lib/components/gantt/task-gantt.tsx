@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, ReactChild, useState } from 'react'
 import { GridProps, Grid } from '../grid/grid'
 import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
@@ -11,6 +11,8 @@ export type TaskGanttProps = {
   ganttHeight: number
   scrollY: number
   scrollX: number
+  currentDate: string
+  taskListWidth: number
 }
 export const TaskGantt: React.FC<TaskGanttProps> = ({
   gridProps,
@@ -18,14 +20,17 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   barProps,
   ganttHeight,
   scrollY,
-  scrollX
+  scrollX,
+  currentDate,
+  taskListWidth
 }) => {
   const ganttSVGRef = useRef<SVGSVGElement>(null)
   const horizontalContainerRef = useRef<HTMLDivElement>(null)
   const verticalGanttContainerRef = useRef<HTMLDivElement>(null)
-  // const [todayLine, setTodayLine] = useState<any[]>([])
+  // const setTodayLine: ReactChild[] = []
+  const [todayLine, setTodayLine] = useState<ReactChild[]>([])
   const newBarProps = { ...barProps, svg: ganttSVGRef }
-  const _gridProps = { ...gridProps }
+  const _gridProps = { ...gridProps, setTodayLine }
   useEffect(() => {
     if (horizontalContainerRef.current) {
       horizontalContainerRef.current.scrollTop = scrollY
@@ -79,9 +84,17 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
         >
           <Grid {..._gridProps} />
           <TaskGanttContent {...newBarProps} />
-          {/* <g className="ticks">{todayLine}</g> */}
+          <g className="ticks">{todayLine}</g>
         </svg>
       </div>
+      {/* <div
+        className={styles.fixedss}
+        style={{
+          left: `${taskListWidth + 20}px`
+        }}
+      >
+        {currentDate}
+      </div> */}
     </div>
   )
 }

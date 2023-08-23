@@ -7,7 +7,7 @@ import React, {
   forwardRef
 } from 'react'
 import { Task, IFullViewTask } from '@flyele-nx/types'
-import { FullViewModeEnum } from '@flyele-nx/constant'
+import { Enter_page_detail, FullViewModeEnum } from '@flyele-nx/constant'
 import { useMemoizedFn } from 'ahooks'
 import { TaskApi, projectApi } from '@flyele-nx/service'
 import fetchApiAllData from './utils/fetch-api-all-data'
@@ -124,39 +124,10 @@ const _GanttList: ForwardRefRenderFunction<
 
   const handleClick = (task: Task) => {
     console.log('On Click event Id:' + task.id)
-    // const start = dayjs(task.start).unix()
-    // const end = dayjs(task.end).unix()
-    // console.log(task, start)
-    // const params = {
-    //   start_time: start,
-    //   end_time: end,
-    //   end_time_full_day: task.end_time_full_day,
-    //   start_time_full_day: task.start_time_full_day,
-    //   start: task.start,
-    //   end: task.end
-    // }
-    // const newTask = {
-    //   ...task,
-    //   start_time: start,
-    //   end_time: end
-    // }
-    // GanttHandler.batchModify({
-    //   keys: [task.id],
-    //   diff: { ...params }
-    // })
-
-    // TaskApi.updateTask(
-    //   {
-    //     ...params,
-    //     matter_type: newTask.matter_type,
-    //     start_time_full_day: 1,
-    //     end_time_full_day: 1
-    //   },
-    //   newTask.task_id
-    // ).catch(() => {
-    //   globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [task])
-    // })
-    // globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [newTask])
+    globalNxController.openTaskDetailWindow({
+      task: task as any,
+      enterPage: Enter_page_detail.日程列表
+    })
   }
 
   const handleSelect = (task: Task, isSelected: boolean) => {

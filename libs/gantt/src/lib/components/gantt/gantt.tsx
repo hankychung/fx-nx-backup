@@ -20,16 +20,17 @@ import { TaskGanttContentProps } from './task-gantt-content'
 import { TaskListHeaderDefault } from '../task-list/task-list-header'
 import { TaskListTableDefault } from '../task-list/task-list-table'
 import { StandardTooltipContent, Tooltip } from '../other/tooltip'
-import { VerticalScroll } from '../other/vertical-scroll'
+// import { VerticalScroll } from '../other/vertical-scroll'
 import { TaskListProps, TaskList } from '../task-list/task-list'
 import { TaskGantt } from './task-gantt'
 import { convertToBarTasks } from '../../helpers/bar-helper'
-import { HorizontalScroll } from '../other/horizontal-scroll'
-import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
+// import { HorizontalScroll } from '../other/horizontal-scroll'
+// import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
+import dayjs from 'dayjs'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -84,8 +85,10 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
   const [listCellWidth, setListCellWidth] = useState('150px')
   const [taskListWidth, setTaskListWidth] = useState(0)
+  const [taskListHeight, setTaskListHeight] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
+  const [currentDate, setCurrentDate] = useState('')
   const [svgContainerHeight, setSvgContainerHeight] = useState(ganttHeight)
   const [barTasks, setBarTasks] = useState<IFullViewBarTask[]>([])
   const [ganttEvent, setGanttEvent] = useState<IFullViewGanttEvent>({
@@ -107,6 +110,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   // const scrollX = use
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
   const { taskDict, childrenDict, expandDict, taskList } = useGanttList()
+
   useEffect(() => {
     if (isChecked) {
       setListCellWidth('155px')
@@ -293,6 +297,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
     if (taskListRef.current) {
       setTaskListWidth(taskListRef.current.offsetWidth)
+      setTaskListHeight(taskListRef.current.offsetHeight)
     }
   }, [taskListRef, listCellWidth])
 
@@ -303,11 +308,12 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   }, [wrapperRef, taskListWidth])
 
   useEffect(() => {
-    if (ganttHeight) {
-      setSvgContainerHeight(ganttHeight + headerHeight)
-    } else {
-      setSvgContainerHeight(tasks.length * rowHeight + headerHeight)
-    }
+    // if (ganttHeight) {
+    //   setSvgContainerHeight(ganttHeight + headerHeight)
+    // } else {
+    //   setSvgContainerHeight(tasks.length * rowHeight + headerHeight)
+    // }
+    setSvgContainerHeight(tasks.length * rowHeight + headerHeight * 2)
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
     if (event.shiftKey || event.deltaX) {
@@ -324,8 +330,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       let newScrollY = scrollY + event.deltaY
       if (newScrollY < 0) {
         newScrollY = 0
-      } else if (newScrollY > ganttFullHeight - ganttHeight) {
-        newScrollY = ganttFullHeight - ganttHeight
+      } else if (newScrollY > ganttFullHeight) {
+        newScrollY = ganttFullHeight
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
@@ -498,6 +504,37 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     setIsChecked,
     isChecked
   }
+
+  //顶部月份变化
+  useEffect(() => {
+    const res = Math.floor(scrollX / columnWidth)
+
+    const dates = dateSetup.dates
+    if (!dates[res]) return
+    const date = dayjs(dates[res]).format('YYYY-MM')
+
+    setCurrentDate(date)
+  }, [setCurrentDate, columnWidth, dateSetup.dates, scrollX])
+
+  const toTodayView = useMemoizedFn(() => {
+    const initDate = new Date()
+    const dates = dateSetup.dates
+    const index = dates.findIndex(
+      (d, i) =>
+        initDate.valueOf() >= d.valueOf() &&
+        i + 1 !== dates.length &&
+        initDate.valueOf() < dates[i + 1].valueOf()
+    )
+    if (index === -1) {
+      return
+    }
+    setCurrentViewDate(initDate)
+    setScrollX(columnWidth * index - columnWidth * 2)
+  })
+  useEffect(() => {
+    if (!dateSetup.dates || !columnWidth || currentDate) return
+    toTodayView()
+  }, [columnWidth, currentDate, dateSetup.dates, toTodayView])
   return (
     <div>
       <div
@@ -511,7 +548,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           <div
             style={{
               width: '40px',
-              height: 'calc(100vh - 100px)',
+              height: `${taskListHeight}px`,
               padding: '16px',
               border: '1px solid rgba(232, 232, 232, 0.5)',
               boxSizing: 'border-box'
@@ -527,7 +564,10 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           ganttHeight={ganttHeight}
           scrollY={scrollY}
           scrollX={scrollX}
+          currentDate={currentDate}
+          taskListWidth={taskListWidth}
         />
+
         {ganttEvent.changedTask && (
           <Tooltip
             arrowIndent={arrowIndent}
@@ -546,6 +586,19 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             svgWidth={svgWidth}
           />
         )}
+        <div
+          className={styles.fixedss}
+          style={{
+            left: `${listCellWidth ? taskListWidth : taskListWidth + 40}px`
+          }}
+        >
+          <div className={styles.currentDate}>{currentDate}</div>
+          {currentDate && (
+            <div className={styles.today} onClick={toTodayView}>
+              今天
+            </div>
+          )}
+        </div>
         {/* <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}

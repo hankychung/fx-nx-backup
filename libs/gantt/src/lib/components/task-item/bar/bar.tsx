@@ -113,6 +113,7 @@ export const Bar = ({
           isDateChangeable && onEventStart('move', task, e)
         }}
       />
+
       <g className="handleGroup">
         {isDateChangeable && (
           <g>

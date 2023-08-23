@@ -219,7 +219,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   const getCalendarValuesForDay = () => {
     const topValues: ReactChild[] = []
     const bottomValues: ReactChild[] = []
-    const topDefaultHeight = headerHeight * 0.8
+    const topDefaultHeight = headerHeight * 0.7
     const dates = dateSetup.dates
     for (let i = 0; i < dates.length; i++) {
       const date = dates[i]
@@ -228,7 +228,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       bottomValues.push(
         <text
           key={date.getTime()}
-          y={headerHeight * 0.8}
+          y={headerHeight * 0.7}
           x={columnWidth * i + columnWidth * 0.5}
           className={styles.calendarBottomText}
         >
@@ -381,15 +381,31 @@ export const Calendar: React.FC<CalendarProps> = ({
     //   ;[topValues, bottomValues] = getCalendarValuesForHour()
   }
   return (
-    <g className="calendar" fontSize={fontSize} fontFamily={fontFamily}>
-      <rect
-        x={0}
-        y={0}
-        width={columnWidth * dateSetup.dates.length}
-        height={headerHeight + 2}
-        className={styles.calendarHeader}
-      />
-      {isTop ? topValues : bottomValues}
-    </g>
+    <>
+      {isTop && (
+        <g className="calendar" fontSize={fontSize} fontFamily={fontFamily}>
+          <rect
+            x={0}
+            y={0}
+            width={columnWidth * dateSetup.dates.length}
+            height={headerHeight + 2}
+            className={styles.calendarHeader}
+          />
+          {topValues}
+        </g>
+      )}
+      {!isTop && (
+        <g className="calendar" fontSize={fontSize} fontFamily={fontFamily}>
+          <rect
+            x={0}
+            y={0}
+            width={columnWidth * dateSetup.dates.length}
+            height={headerHeight + 2}
+            className={styles.calendarHeader}
+          />
+          {bottomValues}
+        </g>
+      )}
+    </>
   )
 }

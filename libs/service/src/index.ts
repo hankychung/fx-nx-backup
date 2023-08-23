@@ -11,6 +11,7 @@ import { TaskDispatchApi } from './lib/task-dispatch'
 import { LabelApi } from './lib/label'
 import { OfficialApi } from './lib/official'
 import SSe from './lib/sse'
+import { storageApi } from './lib/storage'
 import './lib/payment'
 
 // 全局类型
@@ -74,7 +75,8 @@ export {
   projectApi,
   AuthConst,
   OfficialApi,
-  EmptyApi
+  EmptyApi,
+  storageApi
 }
 
 export type {

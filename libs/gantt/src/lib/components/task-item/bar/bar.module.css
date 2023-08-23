@@ -18,6 +18,10 @@
   visibility: hidden;
 }
 
+.overHandle {
+  fill: rgba(189, 189, 189, 1) !important;
+}
+
 .barBackground {
   user-select: none;
   stroke-width: 1;

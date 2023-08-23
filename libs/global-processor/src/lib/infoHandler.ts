@@ -104,6 +104,7 @@ class GlobalInfoHandler {
 
   static updateTagsList(data: TagModel[]) {
     TagsHandler.updateTagsList(data)
+    LocalStore.setUserTags(data)
   }
 }
 

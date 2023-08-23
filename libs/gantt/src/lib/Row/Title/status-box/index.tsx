@@ -1,6 +1,6 @@
 import { FC, memo, useMemo, useState } from 'react'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
-import { IScheduleTask } from '@flyele-nx/types'
+import { IFullViewTaker, IScheduleTask } from '@flyele-nx/types'
 
 import styles from './index.module.scss'
 import {
@@ -19,7 +19,11 @@ import checkingIcon from '../../../../assets/schedule/checking.gif'
 import { setTimeoutForIdleCallback } from '@flyele-nx/utils'
 import { useMemoizedFn } from 'ahooks'
 import { changeCompleteState, getValuesByKey } from './utils'
-import { useScheduleStore, useUserInfoStore } from '@flyele-nx/global-processor'
+import {
+  globalNxController,
+  useScheduleStore,
+  useUserInfoStore
+} from '@flyele-nx/global-processor'
 import dayjs from 'dayjs'
 import { GanttHandler } from '../../../utils/ganttHandler'
 
@@ -30,6 +34,7 @@ import {
   getChildrenDict,
   getOperationStatus
 } from '@flyele-nx/service-module'
+import { isInTask } from '../../../utils'
 
 interface IProps {
   task: Pick<
@@ -49,6 +54,7 @@ interface IProps {
     | 'flow_step_id'
     | 'creator_id'
     | 'complete_at'
+    | 'takers'
   >
   changeStatus?: () => void
   resetStatus?: () => void
@@ -214,6 +220,29 @@ const _StatusBox: FC<IProps> = (props) => {
     batchUpdateChildDict(childrenDict)
   })
 
+  const notMyBusiness = useMemo(() => {
+    return (
+      !!userId &&
+      !isInTask(task?.takers as IFullViewTaker[], userId, task?.creator_id)
+    )
+  }, [userId, task])
+
+  const handleClick = useMemoizedFn(() => {
+    if (nonSelfExecution || notMyBusiness) {
+      if (nonSelfExecution ? !!task.complete_at : !!task.finish_time) {
+        globalNxController.showMsg({
+          msgType: '错误',
+          content: '你未参与，无法再次打开'
+        })
+      } else {
+        globalNxController.showMsg({
+          msgType: '错误',
+          content: '你未参与，无法完成'
+        })
+      }
+    }
+  })
+
   const buildIcon = useMemoizedFn(() => {
     const { matter_type: matterType, finish_time: finishTime } = task
     if (
@@ -221,7 +250,8 @@ const _StatusBox: FC<IProps> = (props) => {
       [MatterType.matter, MatterType.todo].includes(matterType)
     ) {
       // 非我执行
-      if (nonSelfExecution) return <DisabledIcon />
+      if (nonSelfExecution || notMyBusiness)
+        return <DisabledIcon onClick={handleClick} />
       // 完成动画
       if (updating)
         return (

@@ -4,5 +4,6 @@ export * from './lib/useScheduleStore'
 export * from './lib/useUserInfoStore'
 export * from './lib/useProjectStore'
 export * from './lib/useTagInfoStore'
+export * from './lib/useUploadStore'
 
 export * as zustandUtils from './lib/utils'

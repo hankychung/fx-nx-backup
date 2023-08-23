@@ -4,7 +4,8 @@ import {
   IUserEnterpriseTakers,
   IUserInfo,
   IVip,
-  IUserSetting
+  IUserSetting,
+  TagModel
 } from '@flyele-nx/types'
 
 enum StoreKey {
@@ -14,7 +15,8 @@ enum StoreKey {
   'user-vip-power' = 'user-vip-power',
   'user-setting' = 'user-setting',
   'user-enterprise-info' = 'user-enterprise-info',
-  'user-enterprise-takers' = 'user-enterprise-takers'
+  'user-enterprise-takers' = 'user-enterprise-takers',
+  'user-tags' = 'user-tags'
 }
 
 class LocalStore {
@@ -56,6 +58,10 @@ class LocalStore {
     )
   }
 
+  static setUserTags(params: TagModel[]) {
+    localStorage.setItem(StoreKey['user-tags'], JSON.stringify(params))
+  }
+
   static getUserInfo() {
     const _ = localStorage.getItem(StoreKey['user-info'])
 
@@ -92,6 +98,12 @@ class LocalStore {
     return _ ? (JSON.parse(_) as IUserEnterpriseTakers[]) : []
   }
 
+  static getUserTags() {
+    const _ = localStorage.getItem(StoreKey['user-tags'])
+
+    return _ ? (JSON.parse(_) as TagModel[]) : []
+  }
+
   static clear() {
     localStorage.removeItem(StoreKey.auth)
     localStorage.removeItem(StoreKey['user-info'])
@@ -100,6 +112,7 @@ class LocalStore {
     localStorage.removeItem(StoreKey['user-setting'])
     localStorage.removeItem(StoreKey['user-enterprise-info'])
     localStorage.removeItem(StoreKey['user-enterprise-takers'])
+    localStorage.removeItem(StoreKey['user-tags'])
   }
 }
 

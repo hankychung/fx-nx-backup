@@ -10,17 +10,24 @@ import {
   HeaderRefreshIcon
 } from '@flyele-nx/icon'
 import { HeaderActions } from './const'
+import { inviteModal } from '@flyele-nx/service-module'
 
 const _BoardHeader: FC = () => {
   const [activeTab, setActiveTab] = useState<RoutePath>(RoutePath.board)
 
   const onChange = (key: RoutePath) => {
     if (key === activeTab) return
+
+    inviteModal.open()
+
     setActiveTab(key)
   }
 
   const tabs = [
-    { key: RoutePath.board, txt: '日' },
+    {
+      key: RoutePath.board,
+      txt: '日'
+    },
     {
       key: RoutePath.weekView,
       txt: '周'

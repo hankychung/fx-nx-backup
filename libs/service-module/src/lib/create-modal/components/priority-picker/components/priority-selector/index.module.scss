@@ -1,0 +1,52 @@
+.matter_cell_cla {
+  display: flex;
+  align-items: center;
+  height: 37px;
+
+  .matter__cell_content_cla {
+    height: 37px;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.content {
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 11px;
+  // margin-left: 10px;
+}
+
+.list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  position: relative;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+
+  .item_text {
+    margin-left: 4px;
+  }
+
+  img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -25px;
+    width: 18px;
+  }
+}

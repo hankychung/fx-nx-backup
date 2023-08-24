@@ -34,6 +34,7 @@ class UploadHandler {
     })
   }
 
+  // 重试
   async retry(fileId: string) {
     const { uploadDictId, file } = useUploadStore.getState().fileDict[fileId]
     const {
@@ -50,6 +51,28 @@ class UploadHandler {
       fileId,
       abortSignal
     })
+  }
+
+  // 取消上传
+  cancel(fileId: string) {
+    const { fileDict, uploadDict } = useUploadStore.getState()
+
+    const { status, abortController, uploadDictId } = fileDict[fileId]
+
+    if (status === 'pending') {
+      abortController.abort()
+    }
+
+    const uploadList = uploadDict[uploadDictId]
+
+    useUploadStore.setState(
+      produce((state: IZustandUploadState) => {
+        state.uploadDict[uploadDictId] = uploadList.filter(
+          (id) => id !== fileId
+        )
+        delete state.fileDict[fileId]
+      })
+    )
   }
 
   // 完成或终止, 清除store里的关联数据

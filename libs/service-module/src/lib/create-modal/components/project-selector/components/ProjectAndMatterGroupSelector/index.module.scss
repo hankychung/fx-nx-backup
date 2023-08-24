@@ -1,0 +1,37 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2022/8/12 14:40
+**/
+
+.item {
+  box-sizing: border-box;
+  padding: 0 24px 0 24px;
+  height: 44px;
+  transition: background-color 0.25s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 8px;
+  cursor: pointer;
+  position: relative;
+
+  .title {
+    flex: 1;
+    overflow: hidden;
+
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  i {
+    flex-basis: 0;
+    font-size: 14px;
+  }
+
+  &:hover {
+    background-color: #f8f8f8;
+  }
+}

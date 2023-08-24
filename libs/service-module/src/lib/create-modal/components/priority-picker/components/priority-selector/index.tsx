@@ -123,7 +123,7 @@ export const PrioritySelector: React.FC<React.PropsWithChildren<IProps>> = (
       trigger="click"
       content={popoverContent}
       destroyTooltipOnHide
-      arrowPointAtCenter={false}
+      arrow={false}
       overlayStyle={{
         boxShadow: '0px 1px 10px 0px rgba(6, 6, 6, 0.2)',
         borderRadius: 5,

@@ -1,4 +1,5 @@
 import { PROJECT_STATE, SPACE_TYPE, SPACE_LEVEL } from '@flyele-nx/constant'
+import { IUserInfo } from './user'
 
 // 基础项目信息, 别随便加类型
 export interface IBaseProjectInfo {
@@ -31,6 +32,29 @@ export interface IProjectInfo extends IBaseProjectInfo {
   workspace_level?: SPACE_LEVEL
   target_workspace_id?: string
   target_workspace_name?: string
+}
+
+export interface IProject extends IBaseProjectInfo {
+  members?: IUserInfo[] // TODO: 会员类型-接口文档上写着是这个类型，但是IUser.IUserInfo还没改。
+  sort: number // 排序位置
+  create_at: number // 创建时间
+  creator_id: string // 项目创建者
+  delay_task_total: number //延期事项总数
+  finished_task_total: number // 完成事项总数
+  last_active_at: number //最后一次活跃时间
+  member_total: number // 项目成员总数
+  state: PROJECT_STATE // 项目状态 1 正常 2 解散 3 待激活状态
+  task_total: number // 事项总数
+  today_add_task_total: number // 今日新增事项总数
+  unfinished_task_total: number // 未完成事项总数
+  target_workspace_name?: string // 移动的目标空间名称
+  target_workspace_id?: string // 移动的目标空间id
+  notice_id?: string // 通知id
+  is_join?: boolean // 是否加入
+  is_like?: boolean // 是否收藏
+  today_delay_task_total: number
+  today_finished_task_total: number
+  workspace_level?: SPACE_LEVEL
 }
 
 /** 项目文件 **/
@@ -105,3 +129,13 @@ export interface IProjectGroup {
   name: string // 分组名称
   sort: number // 分组排序
 }
+
+export type CreateSuccessType = (
+  type: 'invite' | 'create',
+  data: CreatedProjectSucData
+) => void
+
+// 项目创建成功
+export type CreatedProjectSucData = {
+  project_id: string
+} & IProjectCreateParams

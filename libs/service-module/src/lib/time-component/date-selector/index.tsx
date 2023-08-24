@@ -13,6 +13,7 @@ import {
 } from '@flyele-nx/utils'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { ITimeProps } from '@flyele-nx/types'
+import { TimeSelector } from '../common/components/time-selector'
 
 export interface IRangeData {
   value: [Dayjs?, Dayjs?]
@@ -43,7 +44,7 @@ const getCloneDate = (date: Dayjs, hour: number, minute: number) => {
   return date.clone().hour(hour).minute(minute).startOf('minute')
 }
 
-const _TimeSelector = ({
+const _DateSelector = ({
   defaultValue,
   onClose,
   onConfirm,
@@ -217,6 +218,15 @@ const _TimeSelector = ({
           headerClass={calendarHeaderClass}
         />
       </div>
+      <TimeSelector
+        startTime={rangeData.value[0]}
+        endTime={rangeData.value[1]}
+        showStartInfoTime={rangeData.showStartInfoTime}
+        showEndInfoTime={rangeData.showEndInfoTime}
+        onTimeChange={rangeData.onRangeTimeChange}
+        onClear={rangeData.onRangePickerClear}
+        disabled={disabled}
+      />
       <BottomBar
         onCancel={onClose}
         onConfirm={onConfirmBtn}
@@ -226,4 +236,4 @@ const _TimeSelector = ({
   )
 }
 
-export const TimeSelector = React.memo(_TimeSelector)
+export const DateSelector = React.memo(_DateSelector)

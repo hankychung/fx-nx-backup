@@ -35,14 +35,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
       <div className={style['content-wrap']}>
         <DropZone
           onChange={(_, files) => {
-            const fileList = (files ?? []).map((file) => {
-              return {
-                path: file.webkitRelativePath,
-                file: file
-              }
-            })
-
-            uploadHandler.upload('create', fileList[0].file)
+            files && uploadHandler.upload('create', files)
           }}
         >
           <div className={style.content}>

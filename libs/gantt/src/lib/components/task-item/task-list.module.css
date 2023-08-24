@@ -1,6 +1,6 @@
 .barLabel {
   fill: #262626;
-  text-anchor: middle;
+  /* text-anchor: middle; */
   font-weight: 600;
   dominant-baseline: central;
   -webkit-touch-callout: none;
@@ -9,7 +9,7 @@
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
-  line-height: 34px;
+  /* line-height: 34px; */
 }
 
 .overColor {

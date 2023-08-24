@@ -10,13 +10,14 @@ class UploadHandler {
     const fileId = file.name + Math.random().toString().substring(3, 8)
 
     // 维护上传字典
-    this.initFileState({ id, fileId, name: file.name })
+    const { abortSignal } = this.initFileState({ id, fileId, name: file.name })
 
     // 调用api上传
     this.handleUpload({
       token: await storageApi.getUploadToken(),
       file,
-      fileId
+      fileId,
+      abortSignal
     })
   }
 
@@ -29,6 +30,10 @@ class UploadHandler {
     fileId: string
     name: string
   }) {
+    const controller = new AbortController()
+
+    const { signal } = controller
+
     useUploadStore.setState(
       produce((state: IZustandUploadState) => {
         if (!state.uploadDict[id]) {
@@ -41,30 +46,36 @@ class UploadHandler {
           status: 'pending',
           fileId,
           progress: 0,
-          name
+          name,
+          abortController: controller
         }
       })
     )
+
+    return { abortSignal: signal }
   }
 
   private handleUpload({
     token,
     file,
-    fileId
+    fileId,
+    abortSignal
   }: {
     token: OssToken
     file: File
     fileId: string
+    abortSignal: AbortSignal
   }) {
     storageApi
       .upload({
+        abortSignal,
         token,
         file,
         uploadProgress: (res) => {
           // 更新进度
-          const { lengthComputable, loaded, total } = res
+          const { loaded, total } = res
 
-          if (lengthComputable) {
+          if (total) {
             const percent = Math.round((loaded / total) * 100)
 
             this.updateProgress({ fileId, percent })

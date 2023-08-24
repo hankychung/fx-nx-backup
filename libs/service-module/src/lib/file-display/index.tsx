@@ -14,13 +14,15 @@ const FileDisplay: React.FC<IProps> = () => {
       <div>file display</div>
       <div className={style.list}>
         {fileList.map((id) => {
-          const { name, progress, status } = fileDict[id]
+          const { name, progress, status, abortController } = fileDict[id]
 
           return (
             <div key={id}>
               <div>{`name: ${name}`}</div>
               <div>{`percent: ${progress}%`}</div>
               <div>{`status: ${status}`}</div>
+              <div onClick={() => abortController.abort()}>cancel</div>
+              {status === 'error' && <div>retry</div>}
             </div>
           )
         })}

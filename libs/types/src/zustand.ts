@@ -3,6 +3,7 @@ interface IUploadFile {
   fileId: string
   name: string
   progress: number
+  abortController: AbortController
 }
 
 interface IZustandUploadState {

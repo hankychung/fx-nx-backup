@@ -1,17 +1,20 @@
 import { useUploadStore } from '@flyele-nx/zustand-store'
-import { IZustandUploadState, OssToken } from '@flyele-nx/types'
+import { IZustandUploadState } from '@flyele-nx/types'
 import { produce } from 'immer'
 import { storageApi } from '@flyele-nx/service'
 
 class UploadHandler {
   // 上传文件
   async upload(id: string, file: File) {
-    // 临时的上传文件id
+    // 用于端上维护的上传文件id
     const fileId = file.name + Math.random().toString().substring(3, 8)
 
-    // 维护上传字典
+    // 将文件添加至对应的上传列表
+    this.addFile(id, fileId)
+
+    // 初始化上传文件/维护上传字典
     const { abortSignal } = this.initFileState({
-      id,
+      uploadDictId: id,
       fileId,
       name: file.name,
       file
@@ -19,8 +22,19 @@ class UploadHandler {
 
     // 调用api上传
     this.handleUpload({
-      token: await storageApi.getUploadToken(),
       file,
+      fileId,
+      abortSignal
+    })
+  }
+
+  async retry(fileId: string) {
+    const fileInfo = useUploadStore.getState().fileDict[fileId]
+    const { abortSignal } = this.initFileState(fileInfo)
+
+    // 调用api上传
+    this.handleUpload({
+      file: fileInfo.file,
       fileId,
       abortSignal
     })
@@ -41,13 +55,25 @@ class UploadHandler {
     )
   }
 
+  private addFile(id: string, fileId: string) {
+    useUploadStore.setState(
+      produce((state: IZustandUploadState) => {
+        if (!state.uploadDict[id]) {
+          state.uploadDict[id] = []
+        }
+
+        state.uploadDict[id].push(fileId)
+      })
+    )
+  }
+
   private initFileState({
-    id,
+    uploadDictId,
     fileId,
     name,
     file
   }: {
-    id: string
+    uploadDictId: string
     fileId: string
     name: string
     file: File
@@ -58,19 +84,14 @@ class UploadHandler {
 
     useUploadStore.setState(
       produce((state: IZustandUploadState) => {
-        if (!state.uploadDict[id]) {
-          state.uploadDict[id] = []
-        }
-
-        state.uploadDict[id].push(fileId)
-
         state.fileDict[fileId] = {
           status: 'pending',
           fileId,
           progress: 0,
           name,
           abortController: controller,
-          file
+          file,
+          uploadDictId
         }
       })
     )
@@ -78,17 +99,17 @@ class UploadHandler {
     return { abortSignal: signal }
   }
 
-  private handleUpload({
-    token,
+  private async handleUpload({
     file,
     fileId,
     abortSignal
   }: {
-    token: OssToken
     file: File
     fileId: string
     abortSignal: AbortSignal
   }) {
+    const token = await storageApi.getUploadToken()
+
     storageApi
       .upload({
         abortSignal,

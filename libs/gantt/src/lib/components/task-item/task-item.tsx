@@ -10,6 +10,8 @@ import { useMemoizedFn } from 'ahooks'
 import cs from 'classnames'
 import { isInTask } from '../../utils'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import dayjs from 'dayjs'
+import { useGanttList } from '../../hooks/useScheduleList'
 // import { createSVG } from '../../utils'
 // import checkboxFinishedIcon from '../../../assets/schedule/check.png'
 
@@ -49,6 +51,7 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
   const textRef = useRef<SVGTextElement>(null)
   const [taskItem, setTaskItem] = useState<JSX.Element>(<div />)
   const [isTextInside, setIsTextInside] = useState(true)
+  const { hoverId } = useGanttList()
   // const layout: any = useRef<{
   //   bar: HTMLElement | null
   // }>(defaultLayout)
@@ -101,7 +104,7 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     }
   }, [textRef, task])
 
-  const getX = () => {
+  const getX = useMemo(() => {
     return task.x1 + 20
     // if (rtl && textRef.current) {
     //   return (
@@ -113,11 +116,16 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     // } else {
     //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
     // }
-  }
+  }, [task.x1])
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
   const notMyBusiness = useMemo(() => {
     return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
   }, [userId, task])
+  const timeTooltip = useMemo(() => {
+    const start = dayjs(task.start).format('MM月DD日 HH:mm')
+    const end = dayjs(task.end).format('MM月DD日 HH:mm')
+    return `${start}-${end}`
+  }, [task])
 
   return (
     <>
@@ -146,10 +154,27 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
         onFocus={() => {
           onEventStart('select', task)
         }}
+        className={style.blockTitle}
       >
+        {
+          <g
+            className={style.timeTip}
+            x={getX}
+            y={task.y < 40 ? task.y + 40 : task.y - 45}
+          >
+            <foreignObject
+              x={getX}
+              y={task.y < 40 ? task.y + 40 : task.y - 45}
+              width="240"
+              height="130"
+            >
+              <div className={style.TrBubble}>{timeTooltip}</div>
+            </foreignObject>
+          </g>
+        }
         {taskItem}
         <text
-          x={getX()}
+          x={getX}
           y={task.y + taskHeight * 0.5}
           className={cs(style.barLabel, {
             [style.overColor]: !!task.finish_time || notMyBusiness

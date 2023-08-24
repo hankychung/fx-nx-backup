@@ -1,11 +1,38 @@
 .ganttVerticalContainer {
-  overflow: hidden;
+  overflow-x: overlay;
+  overflow-y: hidden;
   font-size: 0;
   margin: 0;
   padding: 0;
   max-height: calc(100vh - 100px);
   border-bottom: 1px solid rgba(232, 232, 232, 0.5);
   position: relative;
+  box-sizing: border-box;
+}
+
+.ganttVerticalContainer::-webkit-scrollbar {
+  /* // width: 1.1rem;
+  // height: 1.1rem; */
+  display: block;
+}
+
+.ganttVerticalContainer::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.ganttVerticalContainer::-webkit-scrollbar-thumb {
+  border: 6px solid transparent;
+  background: rgba(0, 0, 0, 0.2);
+  background: var(--palette-black-alpha-20, rgba(0, 0, 0, 0.2));
+  border-radius: 10px;
+  background-clip: padding-box;
+}
+.ganttVerticalContainer::-webkit-scrollbar-thumb:hover {
+  border: 4px solid transparent;
+  background: rgba(0, 0, 0, 0.3);
+  background: var(--palette-black-alpha-30, rgba(0, 0, 0, 0.3));
+  background-clip: padding-box;
+}
+@media only screen and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 .horizontalContainer {
@@ -14,28 +41,29 @@
   overflow: hidden;
 }
 
-.ganttScroll {
-  overflow: hidden !important;
-  overflow-x: auto !important;
+.ganttView {
+  overflow: auto !important;
 }
-/* 设置滚动条的样式 */
-.ganttScroll::-webkit-scrollbar {
-  width: 2px;
-  height: 9px;
+
+.ganttView::-webkit-scrollbar {
+  width: 1.1rem;
+  height: 1.1rem;
 }
-/* 滚动槽 */
-.ganttScroll::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+.ganttView::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.ganttView::-webkit-scrollbar-thumb {
+  border: 6px solid transparent;
+  background: rgba(0, 0, 0, 0.2);
+  background: var(--palette-black-alpha-20, rgba(0, 0, 0, 0.2));
   border-radius: 10px;
+  background-clip: padding-box;
 }
-/* 滚动条滑块 */
-.ganttScroll::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #999;
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
-}
-.ganttScroll::-webkit-scrollbar-thumb:window-inactive {
-  background: #999;
+.ganttView::-webkit-scrollbar-thumb:hover {
+  border: 4px solid transparent;
+  background: rgba(0, 0, 0, 0.3);
+  background: var(--palette-black-alpha-30, rgba(0, 0, 0, 0.3));
+  background-clip: padding-box;
 }
 
 .wrapper {

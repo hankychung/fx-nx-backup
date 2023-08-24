@@ -101,12 +101,12 @@ const _GanttList: ForwardRefRenderFunction<
     }
   })
 
-  useEffect(() => {
-    if (projectId && !isinit.current) {
-      reload()
-      isinit.current = true
-    }
-  }, [reload, projectId, reSet])
+  // useEffect(() => {
+  //   if (projectId && !isinit.current) {
+  //     reload()
+  //     isinit.current = true
+  //   }
+  // }, [reload, projectId, reSet])
 
   const handleTaskDelete = (task: Task) => {
     const conf = window.confirm('Are you sure about ' + task.name + ' ?')

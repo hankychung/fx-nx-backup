@@ -362,14 +362,16 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
   }
 
-  const handleScrollX = (event: SyntheticEvent<HTMLDivElement>) => {
-    if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
-      setScrollX(event.currentTarget.scrollLeft)
-      setIgnoreScrollEvent(true)
-    } else {
-      setIgnoreScrollEvent(false)
+  const handleScrollX = useMemoizedFn(
+    (event: SyntheticEvent<HTMLDivElement>) => {
+      if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
+        setScrollX(event.currentTarget.scrollLeft)
+        setIgnoreScrollEvent(true)
+      } else {
+        setIgnoreScrollEvent(false)
+      }
     }
-  }
+  )
 
   /**
    * Handles arrow keys events and transform it to new scroll
@@ -568,7 +570,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           taskListWidth={taskListWidth}
         />
 
-        {ganttEvent.changedTask && (
+        {/* {ganttEvent.changedTask && (
           <Tooltip
             arrowIndent={arrowIndent}
             rowHeight={rowHeight}
@@ -585,7 +587,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             rtl={rtl}
             svgWidth={svgWidth}
           />
-        )}
+        )} */}
         <div
           className={styles.fixedss}
           style={{
@@ -599,22 +601,22 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             </div>
           )}
         </div>
-        <VerticalScroll
+        {/* <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}
           headerHeight={headerHeight}
           scroll={scrollY}
           onScroll={handleScrollY}
           rtl={rtl}
-        />
+        /> */}
+        {/* <HorizontalScroll
+          svgWidth={svgWidth}
+          taskListWidth={taskListWidth}
+          scroll={scrollX}
+          rtl={rtl}
+          onScroll={handleScrollX}
+        /> */}
       </div>
-      <HorizontalScroll
-        svgWidth={svgWidth}
-        taskListWidth={taskListWidth}
-        scroll={scrollX}
-        rtl={rtl}
-        onScroll={handleScrollX}
-      />
     </div>
   )
 }

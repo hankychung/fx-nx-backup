@@ -104,6 +104,7 @@ export const TaskList: React.FC<TaskListProps> = ({
         style={ganttHeight ? { maxHeight: `calc(100% - 74px)` } : {}}
       >
         <TaskListTable {...tableProps} />
+        <div style={{ height: '1.1rem' }}></div>
       </div>
       {tasks.length === 0 && <ListEmpty></ListEmpty>}
     </div>

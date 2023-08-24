@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './task-list-table.module.css'
 import { IFullViewTask, Task } from '@flyele-nx/types'
-import { useProjectStore } from '@flyele-nx/zustand-store'
+import { useProjectStore, zustandUtils } from '@flyele-nx/zustand-store'
 import { getFakeItem, getId } from '../../utils'
 import { useGanttList } from '../../hooks/useScheduleList'
 import useDomClickToHide from '../../hooks/useDomClickToHide'
@@ -74,7 +74,7 @@ export const TaskListTableDefault: React.FC<{
         taskList.map((item) => {
           const t = taskDict[item] as Task
           const id = getId(t)
-          const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
+          const taskId = zustandUtils.getProjectKey(t)
 
           return (
             <TaskRow

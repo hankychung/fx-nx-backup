@@ -149,8 +149,8 @@ export const StandardTooltipContent: React.FC<{
     fontSize,
     fontFamily
   }
-  const start = dayjs(task.start).format('MM月DD日')
-  const end = dayjs(task.end).format('MM月DD日')
+  const start = dayjs(task.start).format('MM月DD日 HH:mm')
+  const end = dayjs(task.end).format('MM月DD日 HH:mm')
   return (
     <div
       className={cs(styles.tooltipDefaultContainer, styles.TrBubble)}

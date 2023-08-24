@@ -451,12 +451,15 @@ const handleTaskBySVGMouseEventForBar = (
       break
     case 'start': {
       const newX1 = startByX(svgX, xStep, selectedTask)
-      changedTask.x1 = newX1
+      changedTask.x1 =
+        changedTask.x2 - newX1 <= 30 ? changedTask.x2 - 30 : newX1
       isChanged = changedTask.x1 !== selectedTask.x1
       if (isChanged) {
+        const _newX1 =
+          changedTask.x2 - newX1 <= 30 ? changedTask.x2 - 30 : newX1
         if (rtl) {
           changedTask.end = dateByX(
-            newX1,
+            _newX1,
             selectedTask.x1,
             selectedTask.end,
             xStep,
@@ -464,7 +467,7 @@ const handleTaskBySVGMouseEventForBar = (
           )
         } else {
           changedTask.start = dateByX(
-            newX1,
+            _newX1,
             selectedTask.x1,
             selectedTask.start,
             xStep,
@@ -484,12 +487,15 @@ const handleTaskBySVGMouseEventForBar = (
     }
     case 'end': {
       const newX2 = endByX(svgX, xStep, selectedTask)
-      changedTask.x2 = newX2
+      changedTask.x2 =
+        newX2 - changedTask.x1 <= 30 ? changedTask.x1 + 30 : newX2
       isChanged = changedTask.x2 !== selectedTask.x2
       if (isChanged) {
+        const _newX2 =
+          newX2 - changedTask.x1 <= 30 ? changedTask.x1 + 30 : newX2
         if (rtl) {
           changedTask.start = dateByX(
-            newX2,
+            _newX2,
             selectedTask.x2,
             selectedTask.start,
             xStep,
@@ -497,7 +503,7 @@ const handleTaskBySVGMouseEventForBar = (
           )
         } else {
           changedTask.end = dateByX(
-            newX2,
+            _newX2,
             selectedTask.x2,
             selectedTask.end,
             xStep,
@@ -521,6 +527,7 @@ const handleTaskBySVGMouseEventForBar = (
         xStep,
         selectedTask
       )
+
       isChanged = newMoveX1 !== selectedTask.x1
       if (isChanged) {
         changedTask.start = dateByX(

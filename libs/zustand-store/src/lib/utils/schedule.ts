@@ -1,4 +1,4 @@
-import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
+import { IFullViewTask, ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 
 type IScheduleTaskWithCompareVal = IScheduleTask & {
@@ -38,6 +38,10 @@ function getDecentTime(task: IScheduleTask) {
 
 function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
   return i.repeat_id ? `${i.ref_task_id}-${i.repeat_id}` : i.ref_task_id
+}
+
+function getProjectKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
+  return i.repeat_id ? `${i.task_id}-${i.repeat_id}` : i.task_id
 }
 
 function getDiffKeys(arr: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>[]) {
@@ -150,4 +154,4 @@ function getSortedSchedule(params: { date: string; tasks: IScheduleTask[] }) {
   return decentList
 }
 
-export { getDiffKeys, getKey, getKeyOfList, getSortedSchedule }
+export { getDiffKeys, getKey, getProjectKey, getKeyOfList, getSortedSchedule }

@@ -20,11 +20,11 @@ import { TaskGanttContentProps } from './task-gantt-content'
 import { TaskListHeaderDefault } from '../task-list/task-list-header'
 import { TaskListTableDefault } from '../task-list/task-list-table'
 import { StandardTooltipContent, Tooltip } from '../other/tooltip'
-// import { VerticalScroll } from '../other/vertical-scroll'
+import { VerticalScroll } from '../other/vertical-scroll'
 import { TaskListProps, TaskList } from '../task-list/task-list'
 import { TaskGantt } from './task-gantt'
 import { convertToBarTasks } from '../../helpers/bar-helper'
-// import { HorizontalScroll } from '../other/horizontal-scroll'
+import { HorizontalScroll } from '../other/horizontal-scroll'
 // import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
 import styles from './gantt.module.css'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
@@ -599,22 +599,22 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             </div>
           )}
         </div>
-        {/* <VerticalScroll
+        <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}
           headerHeight={headerHeight}
           scroll={scrollY}
           onScroll={handleScrollY}
           rtl={rtl}
-        /> */}
+        />
       </div>
-      {/* <HorizontalScroll
+      <HorizontalScroll
         svgWidth={svgWidth}
         taskListWidth={taskListWidth}
         scroll={scrollX}
         rtl={rtl}
         onScroll={handleScrollX}
-      /> */}
+      />
     </div>
   )
 }

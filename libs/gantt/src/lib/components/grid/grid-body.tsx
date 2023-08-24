@@ -3,9 +3,9 @@ import { addToDate } from '../../helpers/date-helper'
 import styles from './grid.module.css'
 import { Task } from '@flyele-nx/types'
 import { useGanttList } from '../../hooks/useScheduleList'
-import { getId } from '../../utils'
 import cs from 'classnames'
 import { useMemoizedFn } from 'ahooks'
+import { zustandUtils } from '@flyele-nx/zustand-store'
 export type GridBodyProps = {
   tasks: Task[]
   dates: Date[]
@@ -48,7 +48,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     ]
 
     for (const task of tasks) {
-      const id = getId(task)
+      const id = zustandUtils.getProjectKey(task)
       gridRows.push(
         <rect
           onMouseEnter={() => {
@@ -184,7 +184,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   })
   useEffect(() => {
     init()
-  }, [init, tasks, dates])
+  }, [init, tasks, dates, hoverId])
   useEffect(() => {
     setTodayLine && setTodayLine(todayLine)
   }, [setTodayLine, todayLine])

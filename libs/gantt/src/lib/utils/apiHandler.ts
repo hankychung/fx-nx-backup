@@ -9,7 +9,7 @@ class ApiHandler {
     this.projectId = id
   }
 
-  static async getChildren(parentId: string) {
+  static async getChildren(parentId: string, key: string) {
     const res = (
       await projectApi.getTaskListOfProject({
         projectId: this.projectId,
@@ -20,7 +20,7 @@ class ApiHandler {
     ).data
     const arr = parentId.split(',')
     const num = arr && arr.length ? arr.length - 1 : 0
-    const parent_id = arr[num]
+    // const parent_id = arr[num]
 
     const data = res?.map((i: IFullViewTask) => ({
       ...i,
@@ -33,7 +33,7 @@ class ApiHandler {
       displayOrder: 1
     }))
 
-    GanttHandler.updateChildrenDict({ parentId: parent_id, children: data })
+    GanttHandler.updateChildrenDict({ parentId: key, children: data })
 
     return res
   }

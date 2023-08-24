@@ -2,7 +2,8 @@ import { IFullViewTask } from '@flyele-nx/types'
 import {
   IProjectState,
   useProjectStore,
-  useUserInfoStore
+  useUserInfoStore,
+  zustandUtils
 } from '@flyele-nx/zustand-store'
 import { produce } from 'immer'
 import { projectApi } from '@flyele-nx/service'
@@ -35,7 +36,9 @@ export class ProjectHandler {
     // 更新子事项字典
     useProjectStore.setState(
       produce((state: IProjectState) => {
-        state.childrenDict[parentId] = children.map((i) => i.task_id)
+        state.childrenDict[parentId] = children.map((i) =>
+          zustandUtils.getProjectKey(i)
+        )
       })
     )
 
@@ -175,15 +178,15 @@ export class ProjectHandler {
       useProjectStore.setState(
         produce<IProjectState>((state) => {
           data.forEach((task) => {
-            const { parent_id, task_id } = task
-
+            const { parent_id } = task
+            const key = zustandUtils.getProjectKey(task)
             // 顶级事项
             if (!parent_id) {
-              state.taskDict[task_id] = task
+              state.taskDict[key] = task
 
               // 当前列表不存在在插入至顶部
-              if (!taskList.includes(task_id)) {
-                state.taskList = [...new Set([task_id, ...taskList])]
+              if (!taskList.includes(key)) {
+                state.taskList = [...new Set([key, ...taskList])]
               }
 
               return

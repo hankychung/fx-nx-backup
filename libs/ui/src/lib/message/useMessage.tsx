@@ -34,8 +34,8 @@ export type Msg = {
 
 export const useMessage = (): [
   (v: Msg) => void,
-  () => void,
-  React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  React.ReactElement<any, string | React.JSXElementConstructor<any>>,
+  () => void
 ] => {
   message.config({ top: 24 })
 
@@ -159,5 +159,5 @@ export const useMessage = (): [
     messageApi.destroy()
   })
 
-  return [showMsg, clearAllMsg, contextHolder]
+  return [showMsg, contextHolder, clearAllMsg]
 }

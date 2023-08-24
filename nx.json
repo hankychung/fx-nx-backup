@@ -12,7 +12,6 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
     "e2e": {

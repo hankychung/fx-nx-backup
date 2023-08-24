@@ -1,5 +1,6 @@
 import { OssToken } from '@flyele-nx/types'
 import { service } from '../service'
+import { AxiosProgressEvent } from 'axios'
 
 const UPLOAD_TIMEOUT = 5 * 60 * 1000
 
@@ -15,11 +16,13 @@ class Storage {
   upload = async ({
     file,
     token,
-    uploadProgress
+    uploadProgress,
+    abortSignal
   }: {
     file: File
     token: OssToken
-    uploadProgress: (progress: ProgressEvent) => void
+    uploadProgress: (progress: AxiosProgressEvent) => void
+    abortSignal: AbortSignal
   }) => {
     const { callback, dir, policy, accessid, signature, host } = token
 
@@ -31,9 +34,9 @@ class Storage {
     const ext = arr.pop()
 
     if (arr.length) {
-      name = `${arr.join('.').substr(0, 30)}.${ext}`
+      name = `${arr.join('.').substring(0, 30)}.${ext}`
     } else {
-      name = name.substr(0, 30)
+      name = name.substring(0, 30)
     }
 
     formData.append('callback', callback)
@@ -57,7 +60,8 @@ class Storage {
         headers: axiosHeader,
         url: host,
         timeout: UPLOAD_TIMEOUT,
-        onUploadProgress: uploadProgress
+        onUploadProgress: uploadProgress,
+        signal: abortSignal
       })
       .then((res) => {
         return res

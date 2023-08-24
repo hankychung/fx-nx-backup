@@ -1,0 +1,56 @@
+.toBeArranged {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #8f8f8f;
+}
+
+.bar_wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 84px;
+  padding: 0 24px 0 34px;
+
+  .clear_btn {
+    color: #1dd2c1;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .right_btn_box {
+    display: flex;
+
+    button {
+      height: 32px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 8px;
+
+      //&:focus,
+      //&[disabled],
+      &:hover {
+        border: none;
+      }
+    }
+
+    .cancel_btn {
+      width: 88px;
+      color: rgba(6, 6, 6, 0.87);
+      border: 1px solid #c9c9c9;
+
+      &:hover {
+        border: 1px solid #c9c9c9;
+      }
+    }
+
+    .confirm_btn {
+      width: 84px;
+      color: #fff;
+      background-color: #1dd2c1;
+      margin-left: 10px;
+      outline: none;
+      border: none;
+    }
+  }
+}

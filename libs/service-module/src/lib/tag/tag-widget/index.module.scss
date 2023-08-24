@@ -2,6 +2,16 @@
    author: william   email:362661044@qq.com
    create_at:2021/10/20 下午 3:10
 **/
+/** 修改提示框 **/
+.update-alert {
+  h1 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #060606;
+    margin-bottom: 16px;
+  }
+}
+
 .tag-container {
   display: inline-block;
 }

@@ -11,6 +11,7 @@ const restoreLocalInfo = () => {
     const localEnterpriseInfo = LocalStore.getUserEnterpriseInfo()
     const localEnterpriseTakers = LocalStore.getUserEnterpriseTakers()
     const localSetting = LocalStore.getUserSetting()
+    const loaclTags = LocalStore.getUserTags()
 
     localUserInfo && GlobalInfoHandler.updateUserInfo(localUserInfo)
     localVip && GlobalInfoHandler.updateUserVip(localVip)
@@ -20,6 +21,7 @@ const restoreLocalInfo = () => {
     localEnterpriseTakers &&
       GlobalInfoHandler.updateUserEnterpriseTakers(localEnterpriseTakers)
     localSetting && GlobalInfoHandler.updateUserSetting(localSetting)
+    loaclTags && GlobalInfoHandler.updateTagsList(loaclTags)
   }
 }
 

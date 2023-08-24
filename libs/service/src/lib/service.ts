@@ -118,6 +118,17 @@ class Service {
     throw new Error(`error get: ${config.url}`)
   }
 
+  async getRaw<T>(config: RequestConfig): Promise<T> {
+    try {
+      const { data } = await this.axios.get<T>(`${config.url}`, config)
+
+      return data
+    } catch (err) {
+      console.error('getRaw error', err)
+      throw new Error(`error get: ${config.url}`)
+    }
+  }
+
   async post<T = any>(config: RequestConfig): Promise<T> {
     const { data } = await this.axios.post(`${config.url}`, config.data)
 

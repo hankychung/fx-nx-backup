@@ -4,11 +4,6 @@ import { produce } from 'immer'
 
 class TagHandler {
   private static instance: TagHandler
-  private tagsList: TagModel[] = []
-
-  private constructor() {
-    // 私有构造函数，防止直接实例化对象
-  }
 
   static getInstance() {
     if (!TagHandler.instance) {
@@ -22,13 +17,8 @@ class TagHandler {
     useTagInfoStore.setState(
       produce((state: ITagInfoState) => {
         state.tagsList = data
-        this.tagsList = data
       })
     )
-  }
-
-  getTagsList() {
-    return this.tagsList
   }
 }
 

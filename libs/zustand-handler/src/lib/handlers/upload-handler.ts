@@ -10,7 +10,12 @@ class UploadHandler {
     const fileId = file.name + Math.random().toString().substring(3, 8)
 
     // 维护上传字典
-    const { abortSignal } = this.initFileState({ id, fileId, name: file.name })
+    const { abortSignal } = this.initFileState({
+      id,
+      fileId,
+      name: file.name,
+      file
+    })
 
     // 调用api上传
     this.handleUpload({
@@ -21,14 +26,31 @@ class UploadHandler {
     })
   }
 
+  // 完成或终止, 清除store里的关联数据
+  clear(id: string) {
+    useUploadStore.setState(
+      produce((state: IZustandUploadState) => {
+        const fileIds = state.uploadDict[id] || []
+
+        fileIds.forEach((fileId) => {
+          delete state.fileDict[fileId]
+        })
+
+        delete state.uploadDict[id]
+      })
+    )
+  }
+
   private initFileState({
     id,
     fileId,
-    name
+    name,
+    file
   }: {
     id: string
     fileId: string
     name: string
+    file: File
   }) {
     const controller = new AbortController()
 
@@ -47,7 +69,8 @@ class UploadHandler {
           fileId,
           progress: 0,
           name,
-          abortController: controller
+          abortController: controller,
+          file
         }
       })
     )

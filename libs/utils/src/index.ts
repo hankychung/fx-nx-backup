@@ -17,3 +17,17 @@ export { useTimeTip } from './lib/hook/useTimeTip'
 export { getSpaceAvatarUrl } from './lib/space'
 export { getRandomNumberStr, inviteLinkLongUrl } from './lib/invite'
 export { imgToBase64, domToImage } from './lib/picUtils/index'
+export {
+  defaultMinDate,
+  defaultMaxDate,
+  DAY_DICT,
+  getInitMatterTime,
+  getCurOnMin,
+  generateCalendarData,
+  getDate_validity_date,
+  getMatterStartTime,
+  getTaskMatterEndTime,
+  getTaskMatterStartTime,
+  getMatterTimeParams,
+  getTimeKeys
+} from './lib/time'

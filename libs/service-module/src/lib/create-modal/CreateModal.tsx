@@ -4,7 +4,7 @@ import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
 import { DescInput } from './components/desc-input'
 import { DropZone } from '@flyele-nx/ui'
-import { DatePicker } from './components/date-picker'
+import { TaskTimePicker } from './components/task-time-picker'
 import { RemindPicker } from './components/remind-picker'
 import { RepeatPicker } from './components/repeat-picker'
 import { TagMatterBar } from '../tag/tag-matter-bar'
@@ -64,7 +64,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               priority_level={priority_level}
               handlePrioritySelectorChange={handlePrioritySelectorChange}
             />
-            <DatePicker />
+            <TaskTimePicker />
             <RemindPicker />
             <RepeatPicker />
           </div>

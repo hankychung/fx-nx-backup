@@ -1,0 +1,203 @@
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar_wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+
+  .scrollList {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .header_week {
+    display: flex;
+    color: rgba(6, 6, 6, 0.45);
+    font-size: 12px;
+    font-weight: bold;
+    height: 44px;
+    line-height: 12px;
+    align-items: flex-end;
+    padding: 0 10px 16px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: #ededed;
+      transform: scaleY(0.5);
+    }
+
+    .header_week_item {
+      flex: 14.28%;
+      text-align: center;
+    }
+  }
+
+  .month_box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 35px;
+
+    &__title {
+      color: #262626;
+      font-size: 15px;
+      margin-left: 20px;
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+}
+
+.day_box {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 0 10px;
+
+  li {
+    min-width: calc(100% / 7);
+    flex: 1;
+    text-align: center;
+    height: 36px;
+    font-size: 14px;
+    color: rgba(6, 6, 6, 0.87);
+    cursor: pointer;
+
+    @include center;
+
+    .item_hover {
+      &:hover {
+        background-color: rgba(29, 210, 193, 0.2);
+        border-radius: 50%;
+      }
+    }
+
+    .date_item {
+      font-size: 14px;
+      width: 28px;
+      height: 28px;
+      transition: background-color 0.1s;
+      border-radius: 50%;
+
+      @include center;
+
+      &:hover {
+        background-color: rgba(29, 210, 193, 0.2);
+      }
+    }
+
+    .isCurrent {
+      color: #1dd2c1;
+    }
+
+    .sel_item {
+      .date_item {
+        background-color: #1dd2c1;
+        color: #fff;
+      }
+
+      .isCurrent {
+        color: #fff;
+      }
+    }
+
+    & > div {
+      height: 36px;
+      width: 100%;
+
+      @include center;
+    }
+
+    &.invisible {
+      visibility: hidden;
+    }
+
+    // 当前日期之前
+    &.before_cur {
+      color: #979797;
+    }
+
+    // 不可选的日期
+    &.disabled {
+      color: #ededed;
+      cursor: auto;
+
+      .date_item {
+        &:hover {
+          background: none;
+        }
+      }
+    }
+
+    .between {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 28px;
+        background-color: rgba(29, 210, 193, 0.2);
+      }
+    }
+
+    .start_bg {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        left: 50%;
+        right: 0;
+        height: 28px;
+        background-color: rgba(29, 210, 193, 0.2);
+      }
+    }
+
+    .end_bg {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        right: 50%;
+        left: 0;
+        height: 28px;
+        background-color: rgba(29, 210, 193, 0.2);
+      }
+    }
+
+    .be_first {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+
+      &::after {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+    }
+
+    .be_last {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+
+      &::after {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
+  }
+}

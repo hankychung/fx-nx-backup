@@ -5,7 +5,7 @@ import { Tooltip } from 'antd'
 import {
   getDate_validity_low_date,
   getScheduleDate,
-  MatterTimeSectionType
+  ITimeMatterSectionType
 } from '../../../../utils/getDateText'
 import { useMemoizedFn } from 'ahooks'
 import alertIcon from '../../../../../../assets/icons/gif/alert.gif'
@@ -160,7 +160,7 @@ export const Time: React.FC<IPROPTime> = ({
         return { txt: '' }
       }
 
-      let params: MatterTimeSectionType = task
+      let params: ITimeMatterSectionType = task
 
       const target = getNowRepeatData(task)
 

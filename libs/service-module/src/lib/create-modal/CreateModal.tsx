@@ -3,12 +3,15 @@ import style from './createModal.module.scss'
 import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
 import { DescInput } from './components/desc-input'
-import { DatePicker } from './components/date-picker'
+import { DropZone } from '@flyele-nx/ui'
+import { TaskTimePicker } from './components/task-time-picker'
 import { RemindPicker } from './components/remind-picker'
 import { RepeatPicker } from './components/repeat-picker'
 import { TagMatterBar } from '../tag/tag-matter-bar'
 import { QuadrantValue } from '@flyele-nx/constant'
 import { PriorityPicker } from './components/priority-picker/PriorityPicker'
+import { uploadHandler } from '@flyele-nx/zustand-handler'
+import { FileDisplay } from '../file-display'
 import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
 import { IBaseProjectInfo } from '@flyele-nx/types'
@@ -18,6 +21,9 @@ interface IProps {
 }
 
 const CreateModal: React.FC<IProps> = ({ close }) => {
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+
   //TODO
   const [showProjectSelector, setShowProjectSelector] = useState(false)
 
@@ -43,24 +49,42 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
   return (
     <div className={style['create-modal']}>
       <ModalHeader close={close} />
-      <div className={style.content}>
-        <TitleInput placeholder="事项标题" />
-        <DescInput placeholder="背景信息/说明（可拖文件到这里）" />
-        <TagMatterBar />
-        <ProjectSelector
-          onChangeProjectAndGrounp={onChangeProjectAndGrounp}
-          showProjectSelector={showProjectSelector}
-          setShowProjectSelector={setShowProjectSelector}
-        />
-        <PriorityPicker
-          priority_level={priority_level}
-          handlePrioritySelectorChange={handlePrioritySelectorChange}
-        />
-        <DatePicker />
-        <RemindPicker />
-        <RepeatPicker />
+      <div className={style['content-wrap']}>
+        <DropZone
+          onChange={(_, files) => {
+            files && uploadHandler.upload('create', files)
+          }}
+        >
+          <div className={style.content}>
+            <TitleInput
+              value={title}
+              onChange={setTitle}
+              placeholder="事项标题"
+            />
+            <DescInput
+              value={desc}
+              onChange={setDesc}
+              placeholder="背景信息/说明（可拖文件到这里）"
+            />
+            <TagMatterBar />
+            <ProjectSelector
+              onChangeProjectAndGrounp={onChangeProjectAndGrounp}
+              showProjectSelector={showProjectSelector}
+              setShowProjectSelector={setShowProjectSelector}
+            />
+            <FileDisplay fileDictId="create" />
+
+            <PriorityPicker
+              priority_level={priority_level}
+              handlePrioritySelectorChange={handlePrioritySelectorChange}
+            />
+            <TaskTimePicker />
+            <RemindPicker />
+            <RepeatPicker />
+          </div>
+          <div className={style.footer}>footer</div>
+        </DropZone>
       </div>
-      <div className={style.footer}>footer</div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { produce } from 'immer'
 import { IFullViewTask } from '@flyele-nx/types'
+import { getKey, getProjectKey } from './utils'
 
 export interface IProjectState {
   taskDict: { [k: string]: IFullViewTask }
@@ -83,9 +84,9 @@ const useProjectStore = create<IProjectState & IMutation>((set) => {
             state.taskList = []
           }
           arr.forEach((item) => {
-            const { task_id } = item
-            dict[task_id] = item
-            keys.push(task_id)
+            const key = getProjectKey(item)
+            dict[key] = item
+            keys.push(key)
           })
 
           state.taskDict = {

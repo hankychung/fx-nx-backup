@@ -7,6 +7,8 @@
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+  font-size: 12px;
+  color: #262626;
 }
 
 .calendarTopTick {
@@ -14,12 +16,13 @@
 }
 
 .calendarTop {
-  text-anchor: middle;
+  /* text-anchor: middle; */
   line-height: 32px;
 }
 
 .calendarTopText {
-  text-anchor: middle;
+  /* text-anchor: middle; */
+  text-align: center;
   line-height: 32px;
   fill: #555;
   -webkit-touch-callout: none;
@@ -28,6 +31,8 @@
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+  font-size: 12px;
+  color: #262626;
 }
 
 .calendarHeader {

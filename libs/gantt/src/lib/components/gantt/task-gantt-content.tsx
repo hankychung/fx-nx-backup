@@ -154,6 +154,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
       // remove listeners
       svg.current.removeEventListener('mousemove', handleMouseMove)
       svg.current.removeEventListener('mouseup', handleMouseUp)
+      svg.current.removeEventListener('mouseleave', handleMouseUp)
       setGanttEvent({ action: '' })
       setIsMoving(false)
 
@@ -213,6 +214,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     ) {
       svg.current.addEventListener('mousemove', handleMouseMove)
       svg.current.addEventListener('mouseup', handleMouseUp)
+      svg.current.addEventListener('mouseleave', handleMouseUp)
       setIsMoving(true)
     }
   }, [

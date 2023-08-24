@@ -12,10 +12,9 @@ import { CurTimeContext } from '../../context/current-time'
 import dayjs, { Dayjs } from 'dayjs'
 import { getDates, IDateInfo, isActive, IDotDict } from './utils'
 import style from './index.module.scss'
+import { DAY_DICT } from '@flyele-nx/utils'
 
 const minMonth = dayjs('2020-5-1')
-
-const DAY_DICT = ['日', '一', '二', '三', '四', '五', '六']
 
 interface IProps {
   show: boolean

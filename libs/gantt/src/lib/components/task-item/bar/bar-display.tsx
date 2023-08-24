@@ -12,6 +12,7 @@ type BarDisplayProps = {
   height: number
   isSelected: boolean
   /* progress start point */
+  isFinish: boolean
   progressX: number
   progressWidth: number
   barCornerRadius: number
@@ -34,6 +35,7 @@ export const BarDisplay: React.FC<BarDisplayProps> = ({
   barCornerRadius,
   styles,
   onMouseDown,
+  isFinish,
   task
 }) => {
   // const getProcessColor = () => {
@@ -41,7 +43,7 @@ export const BarDisplay: React.FC<BarDisplayProps> = ({
   // }
 
   const getBarColor = () => {
-    return '#fff'
+    return isFinish ? '#F2F2F2' : '#B3CAFB'
   }
 
   // const group = createSVG("g", {

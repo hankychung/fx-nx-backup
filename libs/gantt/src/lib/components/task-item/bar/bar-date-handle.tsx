@@ -21,7 +21,7 @@ export const BarDateHandle: React.FC<BarDateHandleProps> = ({
   onMouseDown
 }) => {
   return (
-    <>
+    <g onMouseDown={onMouseDown}>
       <rect
         x={x}
         y={y}
@@ -32,7 +32,14 @@ export const BarDateHandle: React.FC<BarDateHandleProps> = ({
         rx={barCornerRadius}
         onMouseDown={onMouseDown}
       ></rect>
-      <image xlinkHref={a} x={x + 4} y={y + 10} height={10} width={4}></image>
-    </>
+      <image
+        xlinkHref={a}
+        x={x + 2}
+        y={y + 10}
+        height={10}
+        width={4}
+        className={cs(styles.barHandle)}
+      ></image>
+    </g>
   )
 }

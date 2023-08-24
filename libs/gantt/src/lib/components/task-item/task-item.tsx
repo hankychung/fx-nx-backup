@@ -102,11 +102,6 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
   }, [textRef, task])
 
   const getX = () => {
-    const width = task.x2 - task.x1
-    const hasChild = task.barChildren.length > 0
-    if (isTextInside) {
-      return task.x1 + 40
-    }
     return task.x1 + 20
     // if (rtl && textRef.current) {
     //   return (
@@ -155,17 +150,10 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
         {taskItem}
         <text
           x={getX()}
-          y={
-            isTextInside
-              ? task.y + taskHeight * 0.5
-              : task.y + taskHeight * 0.65
-          }
-          className={cs(
-            isTextInside
-              ? style.barLabel
-              : style.barLabel && style.barLabelOutside,
-            { [style.overColor]: !!task.finish_time || notMyBusiness }
-          )}
+          y={task.y + taskHeight * 0.5}
+          className={cs(style.barLabel, {
+            [style.overColor]: !!task.finish_time || notMyBusiness
+          })}
           ref={textRef}
           color="rgba(189, 189, 189, 1)"
         >

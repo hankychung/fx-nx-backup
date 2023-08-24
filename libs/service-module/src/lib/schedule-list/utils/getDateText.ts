@@ -2,18 +2,18 @@ import dayjs, { Dayjs } from 'dayjs'
 import { IScheduleTask, Taker, RepeatList } from '@flyele-nx/types'
 import { MatterType } from '@flyele-nx/constant'
 
-export type MatterTimeSectionType = {
+export type ITimeMatterSectionType = {
   start_time?: number // 开始时间
-  start_time_full_day?: number // 开始是否为全天
+  start_time_full_day?: 1 | 2 // 开始是否为全天
   end_time?: number // 结束时间
-  end_time_full_day?: number // 结束是否为全天
+  end_time_full_day?: 1 | 2 // 结束是否为全天
 
   flow_step_id?: string
   repeat_type?: number
 }
 
 // 事项时间格式化之后的输出格式
-export type MatterTimeSectionReturn = {
+export type ITimeMatterSectionReturn = {
   output: string // 完成的时间格式输出
   delayTxt?: string // 延期信息
   firstPartOutput: string // 开始时间内容
@@ -189,14 +189,14 @@ const dateRange = (
 
 // v1.6版本事项列表显示(简易)规则
 export const getDate_validity_low_date = (
-  params: MatterTimeSectionType = {},
+  params: ITimeMatterSectionType = {},
   options?: {
     notToday?: boolean
     curTime?: number
     needDelay?: boolean
     SameMonth?: boolean
   }
-): MatterTimeSectionReturn => {
+): ITimeMatterSectionReturn => {
   const {
     start_time = 0,
     start_time_full_day,

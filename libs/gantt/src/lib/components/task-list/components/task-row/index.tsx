@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 import styles from './index.module.css'
 import { Task } from '@flyele-nx/types'
 import { Title } from '../../../../Row/Title'
-import { useProjectStore, useUserInfoStore } from '@flyele-nx/zustand-store'
+import {
+  useProjectStore,
+  useUserInfoStore,
+  zustandUtils
+} from '@flyele-nx/zustand-store'
 import { useGanttList } from '../../../../hooks/useScheduleList'
 import cs from 'classnames'
 import useDomClickToHide from '../../../../hooks/useDomClickToHide'
@@ -52,11 +56,11 @@ export const TaskRow: React.FC<{
         className={cs(styles.taskListTableRow, 'full-dose-row')}
         style={{
           height: rowHeight,
-          background: id === hoverId ? 'rgba(29, 210, 193, 0.05)' : ''
+          background: taskId === hoverId ? 'rgba(29, 210, 193, 0.05)' : ''
         }}
         key={`${t.task_id}row`}
         onMouseEnter={() => {
-          batchUpdateHoverId(id)
+          batchUpdateHoverId(taskId)
         }}
       >
         <div
@@ -99,11 +103,11 @@ export const TaskRow: React.FC<{
       </div>
       {t.has_child && isExpanded && (
         <>
-          {childrenDict[t.task_id] &&
-            childrenDict[t.task_id].map((item) => {
+          {childrenDict[taskId] &&
+            childrenDict[taskId].map((item) => {
               const t = taskDict[item] as Task
               const id = getId(t)
-              const taskId = t?.task_id + (t?.repeat_id ? t?.repeat_id : '')
+              const taskId = zustandUtils.getProjectKey(t)
 
               return (
                 <TaskChildRow

@@ -12,7 +12,7 @@ import { ReactComponent as VenationIcon } from '../../../assets/schedule/venatio
 // import PUB from 'constants/pubsub'
 import { ReactComponent as CycleIcon } from '../../../assets/schedule/cycle.svg'
 import { ReactComponent as EditIcon } from '../../../assets/schedule/edit_icon.svg'
-
+import { zustandUtils } from '@flyele-nx/zustand-store'
 import { useMemoizedFn, useClickAway } from 'ahooks'
 import cs from 'classnames'
 // import { handleCompleteTask } from 'model/utils'
@@ -108,7 +108,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   // const location = useLocation()
   // const { operateType: globalOperateType } = useGlobalMatterCondition()
   // const { globalMatterPriority } = useGlobalMatterPriority()
-  const taskId = useMemo(() => task_id + repeat_id, [task_id, repeat_id])
+  const taskId = useMemo(() => zustandUtils.getProjectKey(data), [data])
   // const hoverId = useRecoilValue(hoveredTaskState)
   // const { isValidVip } = useCheckVip()
   // const { project } = useContext(Context)
@@ -303,14 +303,15 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // }
 
     if (has_child) {
+      const key = zustandUtils.getProjectKey(data)
       if (isExpanded) {
-        GanttHandler.expand([taskId], false)
+        GanttHandler.expand([key], false)
         return
       }
-      GanttHandler.expand([taskId], true)
+      GanttHandler.expand([key], true)
       // 拉取子事项更新projectStore
       const parentId = parent_id ? `${parent_id},${task_id}` : task_id
-      ApiHandler.getChildren(parentId)
+      ApiHandler.getChildren(parentId, key)
     }
   })
 
@@ -375,12 +376,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     // if (isEditRef.current) return
     // const isProjectPage = location.pathname.includes('/project/detail')
     globalNxController.openTaskDetailWindow({
-      task: {
-        ref_id: task_id,
-        matter_type,
-        cycle: data.cycle,
-        forceOpen: true
-      } as any,
+      task: data as any,
       enterPage: Enter_page_detail.日程列表
     })
     // isDoubleRef.current = true

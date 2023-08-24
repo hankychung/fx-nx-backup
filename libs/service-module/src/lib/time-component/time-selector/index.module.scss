@@ -1,0 +1,12 @@
+.timeSelectorRoot {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #fff;
+  border-radius: 6px;
+
+  .calendarBox {
+    flex: 1;
+    overflow: hidden;
+  }
+}

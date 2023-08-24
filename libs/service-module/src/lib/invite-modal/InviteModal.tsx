@@ -6,19 +6,24 @@ import { invitePlugin } from '.'
 import { useMemoizedFn } from 'ahooks'
 import { Header } from './components/header'
 import { Tabs } from 'antd'
-import { InviteMoadlTabKey } from '@flyele-nx/types'
+import { IInviteParams, InviteMoadlTabKey } from '@flyele-nx/types'
 import { InviteLink } from './components/invite-link'
 import { QrcodeInvite } from './components/qrcode-invite'
 
 interface IOuterProps {
   defaultTakers?: string[]
+  inviteParams?: IInviteParams
 }
 
 interface IProps extends IOuterProps {
   close: () => void
 }
 
-const InviteModal: React.FC<IProps> = ({ close, defaultTakers = [] }) => {
+const InviteModal: React.FC<IProps> = ({
+  close,
+  defaultTakers = [],
+  inviteParams = {}
+}) => {
   const plugins = useMemo(() => {
     return [
       new invitePlugin.interact({
@@ -56,7 +61,7 @@ const InviteModal: React.FC<IProps> = ({ close, defaultTakers = [] }) => {
       label: '二维码邀请',
       children: (
         <div className={style.content}>
-          <QrcodeInvite inviteParams={{}} isNote={false} />
+          <QrcodeInvite inviteParams={inviteParams} isNote={false} />
         </div>
       )
     },
@@ -65,7 +70,7 @@ const InviteModal: React.FC<IProps> = ({ close, defaultTakers = [] }) => {
       label: '邀请链接',
       children: (
         <div className={style.content}>
-          <InviteLink inviteParams={{}} />
+          <InviteLink inviteParams={inviteParams} />
         </div>
       )
     }

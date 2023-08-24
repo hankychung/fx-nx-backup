@@ -3,8 +3,9 @@ import styles from './index.module.scss'
 import { IInviteParams } from '@flyele-nx/types'
 import { message } from 'antd'
 import { inviteLinkLongUrl } from '@flyele-nx/utils'
-import { shortUrlApi } from '@flyele-nx/service'
+import { EmptyApi, envStore } from '@flyele-nx/service'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { PromotionsCard } from '@flyele-nx/ui'
 
 interface IProps {
   inviteParams: IInviteParams
@@ -25,11 +26,11 @@ export function InviteLink(props: IProps) {
       userId,
       matterType,
       isExternal,
-      corpId
+      corpId,
+      h5Url: envStore.getH5Url()
     })
 
-    shortUrlApi
-      .getShortUrl(url)
+    EmptyApi.getShortUrl(url)
       .then((res) => {
         setShortUrl(res.data)
       })
@@ -76,6 +77,11 @@ export function InviteLink(props: IProps) {
           </button>
         </div>
       </div>
+      <PromotionsCard
+        width="407px"
+        title="限时活动：每邀请1个新用户注册，免费得5天团队会员"
+        style={{ marginTop: 224 }}
+      />
     </div>
   )
 }

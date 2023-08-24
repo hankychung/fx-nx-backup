@@ -13,6 +13,7 @@ import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import { MatterType } from '@flyele-nx/constant'
 import { domToImage, inviteLinkLongUrl, timeGetter } from '@flyele-nx/utils'
 import { message } from 'antd'
+import { PromotionsCard } from '@flyele-nx/ui'
 
 interface IProps {
   inviteParams: IInviteParams
@@ -370,6 +371,12 @@ export function QrcodeInvite(props: IProps) {
           复制图片
         </FlyButton>
       )}
+
+      <PromotionsCard
+        width="407px"
+        title="限时活动：每邀请1个新用户注册，免费得5天团队会员"
+        style={{ marginTop: 30 }}
+      />
     </div>
   )
 }

@@ -4,6 +4,11 @@ import style from './inviteModal.module.scss'
 import { useContactStore } from '@flyele-nx/zustand-store'
 import { invitePlugin } from '.'
 import { useMemoizedFn } from 'ahooks'
+import { Header } from './components/header'
+import { Tabs } from 'antd'
+import { InviteMoadlTabKey } from '@flyele-nx/types'
+import { InviteLink } from './components/invite-link'
+import { QrcodeInvite } from './components/qrcode-invite'
 
 interface IOuterProps {
   defaultTakers?: string[]
@@ -31,17 +36,45 @@ const InviteModal: React.FC<IProps> = ({ close, defaultTakers = [] }) => {
     close()
   })
 
+  const tabItems = [
+    {
+      key: InviteMoadlTabKey.member,
+      label: '飞项协作人',
+      children: (
+        <div className={style.content}>
+          <FlyMemberSelector
+            plugins={plugins}
+            onConfirm={confirm}
+            onCancel={close}
+            defaultTakers={defaultTakers}
+          />
+        </div>
+      )
+    },
+    {
+      key: InviteMoadlTabKey.qrcode,
+      label: '二维码邀请',
+      children: (
+        <div className={style.content}>
+          <QrcodeInvite inviteParams={{}} isNote={false} />
+        </div>
+      )
+    },
+    {
+      key: InviteMoadlTabKey.link,
+      label: '邀请链接',
+      children: (
+        <div className={style.content}>
+          <InviteLink inviteParams={{}} />
+        </div>
+      )
+    }
+  ]
+
   return (
     <div className={style['invite-modal']}>
-      <div className={style.header}>header</div>
-      <div>
-        <FlyMemberSelector
-          plugins={plugins}
-          onConfirm={confirm}
-          onCancel={close}
-          defaultTakers={defaultTakers}
-        />
-      </div>
+      <Header />
+      <Tabs items={tabItems}></Tabs>
     </div>
   )
 }

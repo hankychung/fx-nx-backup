@@ -1,0 +1,86 @@
+.modalInvite-url {
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  * {
+    box-sizing: border-box;
+  }
+
+  &__header {
+    padding-top: 97px;
+    font-family: PingFangSC-MiddleHei, PingFangSC-Regular, sans-serif !important;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  &__content {
+    padding-top: 34px;
+    padding-bottom: 176px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+    &__left {
+      width: 375px;
+      float: left;
+      padding: 12px 16px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top: 1px solid rgba(29, 210, 193, 1);
+      border-bottom: 1px solid rgba(29, 210, 193, 1);
+      border-left: 1px solid rgba(29, 210, 193, 1);
+      border-right: none;
+      text-align: left;
+      min-height: 48px;
+      // user-select: all;
+      // width: 100%;
+      // input {
+      //   user-select: all;
+      //   padding: 12px 16px;
+      //   border-top-left-radius: 5px;
+      //   border-bottom-left-radius: 5px;
+      //   border-top-right-radius: 0px;
+      //   border-bottom-right-radius: 0px;
+      //   border-top: 1px solid rgba(29, 210, 193, 1);
+      //   border-bottom: 1px solid rgba(29, 210, 193, 1);
+      //   border-left: 1px solid rgba(29, 210, 193, 1);
+      //   border-right: none;
+      //   width: 100%;
+      // }
+      // input:focus {
+      //   outline: none;
+      // }
+    }
+
+    &__right {
+      float: left;
+
+      button {
+        background: rgba(29, 210, 193, 1);
+        text-align: center;
+        padding: 13px 22px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        color: #fff;
+        font-size: 13px;
+        border: 1px solid rgba(29, 210, 193, 1);
+      }
+
+      button:hover {
+        background: rgba(29, 210, 193, 0.7);
+      }
+    }
+  }
+
+  &__footer {
+    font-size: 14px;
+    color: rgba(6, 6, 6, 0.3);
+
+    &.spaceFooter {
+      color: #fe4d4d;
+    }
+  }
+}

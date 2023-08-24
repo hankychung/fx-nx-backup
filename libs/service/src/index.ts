@@ -12,6 +12,7 @@ import { LabelApi } from './lib/label'
 import { OfficialApi } from './lib/official'
 import SSe from './lib/sse'
 import { storageApi } from './lib/storage'
+import { shortUrlApi } from './lib/short-url'
 import './lib/payment'
 
 // 全局类型
@@ -76,7 +77,8 @@ export {
   AuthConst,
   OfficialApi,
   EmptyApi,
-  storageApi
+  storageApi,
+  shortUrlApi
 }
 
 export type {

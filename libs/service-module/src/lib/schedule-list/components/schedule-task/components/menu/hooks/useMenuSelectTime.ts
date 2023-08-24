@@ -5,7 +5,7 @@ import {
   useUserInfoStore,
   globalNxController
 } from '@flyele-nx/global-processor'
-import { MatterType } from '@flyele-nx/constant'
+import { MatterType, MatterTypeLabel } from '@flyele-nx/constant'
 import { timeGetter } from '@flyele-nx/utils'
 
 export const useMenuSelectTime = ({
@@ -41,9 +41,9 @@ export const useMenuSelectTime = ({
       let content = ''
 
       if (matterType === MatterType.meeting) {
-        content = `${MatterType[matterType]}已结束，无法修改`
+        content = `${MatterTypeLabel[matterType]}已结束，无法修改`
       } else {
-        content = `${MatterType[matterType]}已完成，无法修改`
+        content = `${MatterTypeLabel[matterType]}已完成，无法修改`
       }
 
       globalNxController.showMsg({

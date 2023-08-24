@@ -4,7 +4,8 @@ import {
   ISpaceListParams,
   ISpaceMoveToSpaceParams,
   SpaceConfigItem,
-  ISpaceCreateParams
+  ISpaceCreateParams,
+  IProject
 } from '@flyele-nx/types'
 
 class Workspace {
@@ -56,6 +57,38 @@ class Workspace {
   deleteDefaultSpace() {
     return service.post({
       url: `${this.prefix}/default/dissolve`
+    })
+  }
+
+  /**
+   * 获取空间中的项目列表
+   * @param workspace_id
+   * @param params: {query_type:number,is_filter_archive:boolean} 请求参数
+   *  query_type: 0我是谁？  1查询自己的 2查询全部项目，只有管理员能查到 3 查询收藏的项目
+   *  is_filter_archive: 过滤归档
+   */
+  getProjectsBySpace(
+    workspace_id: string,
+    params?: { query_type?: 0 | 1 | 2 | 3; is_filter_archive?: boolean }
+  ) {
+    return service.get<IProject[]>({
+      url: `${this.prefix}/${workspace_id}/projects`,
+      params
+    })
+  }
+
+  /**
+   * 项目列表匹配接口
+   * @param args {{query_type,workspace_id}}
+   * query_type 1 在此空间的项目 2 非此空间的项目（没有个人项目）  3 非此空间的所有项目（个人项目）
+   * workspace_id = '-1' 配合  query_type = 2 获取全部项目
+   * **/
+  getProjectListMatch(args: { query_type: 1 | 2 | 3; workspace_id: string }) {
+    const { query_type, workspace_id } = args
+
+    return service.get<IProject[]>({
+      url: `${this.prefix}/${workspace_id}/projects/match`,
+      params: { query_type }
     })
   }
 }

@@ -1,0 +1,66 @@
+/**
+   author: william   email:362661044@qq.com
+   create_at:2022/8/10 16:46
+**/
+.title {
+  width: 152px;
+  word-break: break-all;
+  overflow: hidden; //超出的文本隐藏
+  text-overflow: ellipsis; //溢出用省略号显示
+}
+
+.wrap {
+  width: 294px;
+  height: 230px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 44px 1fr;
+  text-align: left;
+  // 标题
+  h1 {
+    line-height: 44px;
+    padding: 0 24px 0 24px;
+    font-size: 14px;
+    color: #262626;
+    font-weight: 500;
+    // box-shadow: 0 0 0 #646464;
+    border-bottom: 1px solid white;
+  }
+
+  // 内容
+  .content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    // content-visibility: auto;
+
+    .item {
+      box-sizing: border-box;
+      padding: 0 24px;
+      height: 44px;
+      transition: background-color 0.25s ease;
+
+      .title {
+        flex: 1;
+        overflow: hidden;
+        //
+        //p {
+        //  white-space: nowrap;
+        //  overflow: hidden;
+        //  text-overflow: ellipsis;
+        //}
+      }
+
+      &:hover {
+        background-color: #f8f8f8;
+      }
+    }
+  }
+}
+
+// 空页面
+.empty {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}

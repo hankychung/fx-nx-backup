@@ -48,3 +48,16 @@ export interface ISize {
   w: number
   h: number
 }
+
+// 事项 项目 飞项小姐姐  vip消息  空间消息
+export type RefType =
+  | 'task'
+  | 'project'
+  | 'private_chat'
+  | 'member'
+  | 'record'
+  | 'workspace'
+  | 'target' // 目标 前端用
+  | 'objective' // 目标
+  | 'screen' // 视图
+  | 'flyele' //讨论

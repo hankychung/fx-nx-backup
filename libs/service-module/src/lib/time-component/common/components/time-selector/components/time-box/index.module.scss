@@ -1,0 +1,84 @@
+.timeBoxRoot {
+  width: 80px;
+  height: 40px;
+  color: #262626;
+  align-items: center;
+  background-color: #ededed;
+  border-radius: 6px;
+  position: relative;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-evenly;
+
+  :global {
+    .ant-picker {
+      padding-left: 0;
+      padding-right: 0;
+      color: #262626;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .ant-picker-input {
+      color: #262626;
+      font-size: 18px;
+      font-weight: bold;
+      input {
+        width: 26px;
+        height: 20px;
+        line-height: 20px;
+        outline: none;
+        background-color: transparent;
+        border: none;
+        text-align: center;
+        border-radius: 5px;
+        &[type='number'] {
+          -webkit-appearance: none;
+
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+          }
+        }
+
+        &:focus {
+          background-color: #d8d8d8;
+        }
+      }
+    }
+  }
+}
+
+.pickerPopup {
+  :global {
+    .ant-picker-footer {
+      display: none;
+    }
+    .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+      background-color: #fff !important;
+      color: #1dd2c1 !important;
+    }
+  }
+}
+
+.deleteIcon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.placeholderText {
+  width: 100%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b4b4b4;
+  font-size: 14px;
+  cursor: pointer;
+}

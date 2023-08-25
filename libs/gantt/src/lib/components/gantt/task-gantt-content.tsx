@@ -9,11 +9,13 @@ import { isKeyboardEvent } from '../../helpers/other-helper'
 import { TaskItem } from '../task-item/task-item'
 import {
   FullViewBarMoveAction,
-  FullViewGanttContentMoveAction
+  FullViewGanttContentMoveAction,
+  MatterType
 } from '@flyele-nx/constant'
 import { isInTask } from '../../utils'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import { globalNxController } from '@flyele-nx/global-processor'
+import dayjs from 'dayjs'
 
 export type TaskGanttContentProps = {
   tasks: IFullViewBarTask[]
@@ -89,6 +91,17 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
           userId,
           ganttEvent.changedTask?.creator_id
         )
+      if (
+        ganttEvent.changedTask?.start_time &&
+        ganttEvent.changedTask.matter_type === MatterType.meeting &&
+        dayjs().unix() >= ganttEvent.changedTask?.start_time
+      ) {
+        globalNxController.showMsg({
+          msgType: '消息',
+          content: '会议已开始，无法修改'
+        })
+        return
+      }
       if (ganttEvent.changedTask?.finish_time) {
         globalNxController.showMsg({
           msgType: '消息',

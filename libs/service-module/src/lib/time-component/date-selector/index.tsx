@@ -17,11 +17,8 @@ import { TimeSelector } from '../common/components/time-selector'
 
 export interface IRangeData {
   value: [Dayjs?, Dayjs?]
-  // 以下这两个参数已经和业务绑定，无法分离
   showStartInfoTime: boolean
   showEndInfoTime: boolean
-  onRangeTimeChange: (date: Dayjs, type: 'start' | 'end') => void
-  onRangePickerClear: (type: 'start' | 'end') => void
 }
 
 export interface IRepeatData {
@@ -147,7 +144,7 @@ const _DateSelector = ({
   }
 
   /**
-   * 选择时间
+   * 选择日期
    */
   const onDateSelect = useMemoizedFn((date: Dayjs) => {
     const timeData = computedTimeData(date)
@@ -157,17 +154,65 @@ const _DateSelector = ({
     }
   })
 
+  /**
+   * 修改时间 时分
+   */
   const onTimeChange = useMemoizedFn((date: Dayjs, type: 'start' | 'end') => {
-    console.log('@@@ onTimeChange', date, type)
-    // timeRef.current?.onTimeChange(date, type)
+    const timeData = innerTimeData
+    timeData.isSetTime = true
+    if (type === 'start') {
+      timeData.startTime = date
+      timeData.startTimeFullDay = 1
+    } else {
+      timeData.endTime = date
+      timeData.endTimeFullDay = 1
+    }
+    setInnerTimeData(timeData)
   })
+
+  /**
+   * 获取事项默认时间
+   */
+  const getDefaultMatterTime = async (
+    timeData: ITimeProps,
+    type: 'start' | 'end'
+  ) => {
+    const { startTime, endTime } = timeData
+    const cur = await getCurOnMin()
+    const minHour = cur.hour()
+    const minMinute = cur.minute()
+    const isStart = type === 'start'
+
+    const refDate = isStart ? startTime : endTime
+
+    const value = refDate
+      .clone()
+      .hour(minHour)
+      .minute(minMinute + (isStart ? 30 : 60))
+      .startOf('minute')
+
+    if (!value.isSame(refDate, 'day')) {
+      return value.subtract(1, 'day')
+    }
+
+    return value
+  }
 
   /**
    * 清空时间
    */
-  const onPickerClear = useMemoizedFn((type: 'start' | 'end') => {
-    console.log('@@@ onPickerClear', type)
-    // timeRef.current?.onTimeClear(type)
+  const onPickerClear = useMemoizedFn(async (type: 'start' | 'end') => {
+    const time = await getDefaultMatterTime(innerTimeData, type)
+    const data = {
+      ...innerTimeData,
+      time: time
+    }
+    if (type === 'start') {
+      data.startTimeFullDay = 2
+    } else {
+      data.endTimeFullDay = 2
+    }
+    setInnerTimeData(data)
   })
 
   /**
@@ -187,11 +232,9 @@ const _DateSelector = ({
         isSetTime ? endTime : undefined
       ],
       showStartInfoTime: startTimeFullDay === 1,
-      showEndInfoTime: endTimeFullDay === 1,
-      onRangeTimeChange: onTimeChange,
-      onRangePickerClear: onPickerClear
+      showEndInfoTime: endTimeFullDay === 1
     }
-  }, [innerTimeData, onPickerClear, onTimeChange])
+  }, [innerTimeData])
 
   useEffect(() => {
     if (defaultValue) {
@@ -223,8 +266,8 @@ const _DateSelector = ({
         endTime={rangeData.value[1]}
         showStartInfoTime={rangeData.showStartInfoTime}
         showEndInfoTime={rangeData.showEndInfoTime}
-        onTimeChange={rangeData.onRangeTimeChange}
-        onClear={rangeData.onRangePickerClear}
+        onTimeChange={onTimeChange}
+        onClear={onPickerClear}
         disabled={disabled}
       />
       <BottomBar

@@ -79,10 +79,10 @@ const _TimeSelector: React.FC<React.PropsWithChildren<Props>> = (props) => {
               placeholder="添加开始时间"
               warpClass={styles.mt6}
               date={startTime}
-              // showTimeInfo={showStartInfoTime}
-              // onChange={(date) => onTimeChange(date, 'start')}
-              // onClear={() => onClear('start')}
-              // disabled={disabled}
+              onChange={(time) => onTimeChange(time, 'start')}
+              showTime={showStartInfoTime}
+              onClear={() => onClear('start')}
+              disabled={disabled}
             />
           )}
         </div>
@@ -95,10 +95,10 @@ const _TimeSelector: React.FC<React.PropsWithChildren<Props>> = (props) => {
               placeholder="添加截止时间"
               warpClass={styles.mt6}
               date={endTime}
-              // showTimeInfo={showEndInfoTime}
-              // onTimeChange={(date) => onTimeChange(date, 'end')}
-              // onClear={() => onClear('end')}
-              // disabled={disabled}
+              onChange={(time) => onTimeChange(time, 'end')}
+              showTime={showEndInfoTime}
+              onClear={() => onClear('end')}
+              disabled={disabled}
             />
           )}
         </div>

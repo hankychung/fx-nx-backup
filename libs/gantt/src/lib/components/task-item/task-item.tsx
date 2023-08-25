@@ -160,11 +160,11 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
           <g
             className={style.timeTip}
             x={getX}
-            y={task.y < 40 ? task.y + 40 : task.y - 45}
+            y={task.y < 40 ? task.y + 40 : task.y - 50}
           >
             <foreignObject
               x={getX}
-              y={task.y < 40 ? task.y + 40 : task.y - 45}
+              y={task.y < 40 ? task.y + 40 : task.y - 50}
               width="240"
               height="130"
             >
@@ -177,7 +177,7 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
           x={getX}
           y={task.y + taskHeight * 0.5}
           className={cs(style.barLabel, {
-            [style.overColor]: !!task.finish_time || notMyBusiness
+            [style.overColor]: !!task.finish_time
           })}
           ref={textRef}
           color="rgba(189, 189, 189, 1)"

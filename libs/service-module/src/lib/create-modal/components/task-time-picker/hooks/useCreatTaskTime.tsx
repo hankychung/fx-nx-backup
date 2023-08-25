@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ITimeProps } from '@flyele-nx/types'
 import { useMemoizedFn } from 'ahooks'
 import {
@@ -14,12 +14,35 @@ import dayjs from 'dayjs'
 export const useCreatTaskTime = () => {
   // 事项时间
   const [timeData, setTimeData] = useState<ITimeProps | undefined>()
+  // 事项时间显示文案
+  const [timeText, setTimeText] = useState('')
+
+  /**
+   * 处理事项时间显示文案
+   */
+  const getTimeText = useMemoizedFn((data: ITimeProps | undefined) => {
+    if (data) {
+      const value = getMatterTimeParams(data, [[], []])
+      const { startTimeFullDay, endTimeFullDay } = data
+
+      const { output } = getDate_validity_date({
+        ...value,
+        start_time_full_day: !value.start_time ? 1 : startTimeFullDay,
+        end_time_full_day: !value.end_time ? 1 : endTimeFullDay
+      })
+
+      setTimeText(output)
+    } else {
+      setTimeText('')
+    }
+  })
 
   /**
    * 确认时间
    */
   const onConfirmTime = useMemoizedFn((data: ITimeProps) => {
     setTimeData(data)
+    getTimeText(data)
   })
 
   /**
@@ -52,27 +75,8 @@ export const useCreatTaskTime = () => {
     }
 
     setTimeData(updateValue)
+    getTimeText(updateValue)
   })
-
-  /**
-   * 事项时间显示文案
-   */
-  const timeText = useMemo(() => {
-    if (timeData) {
-      const value = getMatterTimeParams(timeData, [[], []])
-      const { startTimeFullDay, endTimeFullDay } = timeData
-
-      const { output } = getDate_validity_date({
-        ...value,
-        start_time_full_day: !value.start_time ? 1 : startTimeFullDay,
-        end_time_full_day: !value.end_time ? 1 : endTimeFullDay
-      })
-
-      return output
-    } else {
-      return ''
-    }
-  }, [timeData])
 
   return {
     timeData,

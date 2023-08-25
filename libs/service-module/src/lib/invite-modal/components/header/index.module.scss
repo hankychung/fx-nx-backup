@@ -1,0 +1,27 @@
+.header {
+  padding: 14px 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 82px;
+  box-sizing: border-box;
+
+  .title {
+    height: 22px;
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .close {
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+    }
+  }
+}

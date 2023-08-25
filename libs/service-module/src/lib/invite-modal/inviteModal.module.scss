@@ -9,12 +9,30 @@
   .header {
     height: 82px;
   }
+  .content {
+    height: 500px;
+  }
 }
 
 .modal-wrapper {
   :global {
     .ant-modal-content {
       padding: 0;
+    }
+    .ant-tabs-nav {
+      padding: 0 20px;
+      margin: 0;
+    }
+    .ant-tabs-ink-bar {
+      position: absolute;
+      background: #1dd2c1;
+      pointer-events: none;
+    }
+    .ant-tabs .ant-tabs-tab .ant-tabs-tab-btn:hover {
+      color: #060606;
+    }
+    .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #060606;
     }
   }
 }

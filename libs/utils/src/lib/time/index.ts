@@ -540,3 +540,12 @@ export const getTimeKeys = (type: 'start' | 'end') => {
 
   return keys
 }
+
+export const getMatterTimeText = (date: Dayjs, cur: number) => {
+  const curDate = cur === 0 ? dayjs() : dayjs.unix(cur)
+  const weekTxt = date.format(' ddd')
+
+  return `${date.format('M月D日')}${
+    date.isSame(curDate, 'day') ? ' 今天' : weekTxt
+  }`
+}

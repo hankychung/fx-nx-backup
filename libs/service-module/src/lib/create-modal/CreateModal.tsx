@@ -72,6 +72,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               onChange={setDesc}
               placeholder="背景信息/说明（可拖文件到这里）"
             />
+            <FileDisplay fileDictId="create" />
             <TagMatterBar />
             <ProjectSelector
               project={project}
@@ -83,7 +84,6 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
                 onChangeProject(_project)
               }}
             />
-            <FileDisplay fileDictId="create" />
 
             <PriorityPicker
               priority_level={priority_level}

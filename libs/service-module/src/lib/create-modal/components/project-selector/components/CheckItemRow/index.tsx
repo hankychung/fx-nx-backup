@@ -52,7 +52,11 @@ function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
           isClickIcon && onClick(data)
         }}
       >
-        <CircleCheckBox size={20} state={state} colorType={colorType} />
+        <CircleCheckBox
+          size={20}
+          state={state}
+          colorType={CheckColorType.GREEN}
+        />
       </div>
     </div>
   )

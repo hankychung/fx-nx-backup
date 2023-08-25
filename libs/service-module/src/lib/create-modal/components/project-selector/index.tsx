@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState
 } from 'react'
-import { GragArrow, ProjectIcon } from '@flyele-nx/icon'
+import { GrayArrow, ProjectIcon } from '@flyele-nx/icon'
 import { FlyBasePopperCtrl, useController } from '@flyele/flyele-components'
 import { pick } from 'lodash'
 import cs from 'classnames'
@@ -115,10 +115,6 @@ export const ProjectSelector: React.FC<IProps> = (props) => {
 
         if (item) group = { ...item }
       }
-      console.log(
-        project,
-        'setSelProjectAndGroupsetSelProjectAndGroupsetSelProjectAndGroup'
-      )
 
       setSelProjectAndGroup({
         project_id: project.project_id,
@@ -140,11 +136,9 @@ export const ProjectSelector: React.FC<IProps> = (props) => {
   }, [project, groupId, selProjectAndGroup])
 
   const selProject = useMemo(() => {
-    console.log('project', project)
     if (!project) {
       return unsetProject
     }
-    console.log('projectList', projectList)
     const found = projectList.find((i) => i.project_id === project.project_id)
 
     return found ?? unsetProject
@@ -250,7 +244,7 @@ export const ProjectSelector: React.FC<IProps> = (props) => {
               text={selProject.project_name || ''}
               className={style.btn}
             >
-              <GragArrow />
+              <GrayArrow />
             </BuildBtn>
           </SpaceProjectSelector>
         </div>
@@ -266,7 +260,6 @@ export const ProjectSelector: React.FC<IProps> = (props) => {
             onNotProject={onNotProject}
             groupId={selProjectAndGroup.group_id}
             onVisibleChange={onProjectVisibleChange}
-            // wrapClassName={style.wrap_bar}
           >
             <BuildBtn
               disable={disable}
@@ -279,7 +272,7 @@ export const ProjectSelector: React.FC<IProps> = (props) => {
               className={style.btn}
             >
               <div onClick={onShowProject} className={style.arrow}>
-                <GragArrow />
+                <GrayArrow />
               </div>
             </BuildBtn>
           </ProjectAndMatterGroupSelector>
@@ -311,7 +304,7 @@ export const ProjectSelector: React.FC<IProps> = (props) => {
                     groupCtrl.addClickAlwaysHide().show()
                   }}
                 >
-                  <GragArrow />
+                  <GrayArrow />
                 </div>
               </BuildBtn>
             </MatterGroupSelector>

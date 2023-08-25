@@ -48,4 +48,22 @@
       z-index: 100;
     }
   }
+  .add_img_box {
+    width: 43px;
+    height: 43px;
+    margin-right: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaeaea;
+    border-radius: 3px;
+    border: 1px solid #d5d5d5;
+    cursor: pointer;
+
+    .add_img_box_icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }

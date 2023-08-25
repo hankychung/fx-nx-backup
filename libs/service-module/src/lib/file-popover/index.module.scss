@@ -1,0 +1,33 @@
+.content_wrap {
+  background: #fff;
+  padding: 8px 0;
+  width: 120px;
+
+  .item {
+    height: 40px;
+    padding-left: 16px;
+    font-size: 14px;
+    color: rgba(38, 38, 38, 1);
+    line-height: 40px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(239, 240, 241, 1);
+    }
+  }
+}
+
+.custom_popover {
+  :global {
+    .ant-popover-content {
+      .ant-popover-arrow {
+        display: none;
+      }
+
+      .ant-popover-inner {
+        border: none !important;
+        padding: 0;
+      }
+    }
+  }
+}

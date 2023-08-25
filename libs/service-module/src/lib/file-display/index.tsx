@@ -2,13 +2,15 @@ import { uploadHandler } from '@flyele-nx/zustand-handler'
 import style from './index.module.scss'
 import { useUploadStore } from '@flyele-nx/zustand-store'
 import { getFileIcon } from '@flyele-nx/utils'
-import { DeleteOrCloseIcon } from '@flyele-nx/icon'
+import { AddIcon, DeleteOrCloseIcon } from '@flyele-nx/icon'
+import FilePopover from '../file-popover'
 
 interface IProps {
   fileDictId: string
 }
 
-const FileDisplay: React.FC<IProps> = () => {
+const FileDisplay: React.FC<IProps> = (props: IProps) => {
+  const { fileDictId } = props
   const fileList = useUploadStore((state) => state.uploadDict['create']) || []
   const fileDict = useUploadStore((state) => state.fileDict)
 
@@ -35,6 +37,15 @@ const FileDisplay: React.FC<IProps> = () => {
             </div>
           )
         })}
+        <FilePopover
+          onLocalDoc={(files) => {
+            uploadHandler.upload(fileDictId, files)
+          }}
+        >
+          <div className={style.add_img_box}>
+            <AddIcon color="#ccc" className={style.add_img_box_icon} />
+          </div>
+        </FilePopover>
       </div>
     </div>
   )

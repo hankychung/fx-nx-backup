@@ -18,5 +18,6 @@ export { Advertisement } from './lib/advertisement'
 export { FeedbackBtn } from './lib/feedback-btn'
 export { EditSpaceAvatar } from './lib/edit-space-avatar'
 export { MatterCreateCell } from './lib/matter-create-cell'
+export { PromotionsCard } from './lib/promotions-card'
 
 export type { IPhoneLoginData } from './lib/phone-login/types'

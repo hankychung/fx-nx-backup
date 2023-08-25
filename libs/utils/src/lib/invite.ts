@@ -1,6 +1,6 @@
 interface IInviteLinkLongUrl {
   userId: string
-  h5Url: string
+  h5Url?: string
   id?: string
   matterType?: number
   isExternal?: boolean

@@ -41,7 +41,7 @@ function getKey(i: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>) {
 }
 
 function getProjectKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
-  return i.repeat_id ? `${i.task_id}-${i.repeat_id}` : i.task_id
+  return i.task_id
 }
 
 function getDiffKeys(arr: Pick<IScheduleTask, 'ref_task_id' | 'repeat_id'>[]) {

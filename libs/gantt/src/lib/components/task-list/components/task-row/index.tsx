@@ -12,7 +12,7 @@ import cs from 'classnames'
 import useDomClickToHide from '../../../../hooks/useDomClickToHide'
 import { Time } from '../../../../Row/Time'
 import { TaskChildRow } from '../task-child-row'
-import { getId } from '../../../../utils/index'
+// import { getId } from '../../../../utils/index'
 
 export const TaskRow: React.FC<{
   rowHeight: number
@@ -106,12 +106,12 @@ export const TaskRow: React.FC<{
           {childrenDict[taskId] &&
             childrenDict[taskId].map((item) => {
               const t = taskDict[item] as Task
-              const id = getId(t)
+              // const id = getId(t)
               const taskId = zustandUtils.getProjectKey(t)
 
               return (
                 <TaskChildRow
-                  id={id}
+                  id={taskId}
                   taskId={taskId}
                   t={t}
                   key={taskId}

@@ -46,6 +46,7 @@
     background: var(--palette-black-alpha-20, rgba(0, 0, 0, 0.2)) !important;
     border-radius: 10px !important;
     background-clip: padding-box !important;
+    min-width: 50px;
   }
   &::-webkit-scrollbar-thumb:hover {
     border: 4px solid transparent !important;

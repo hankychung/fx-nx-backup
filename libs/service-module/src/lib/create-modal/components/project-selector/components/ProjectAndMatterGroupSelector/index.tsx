@@ -28,6 +28,7 @@ import { CheckBoxState, SPACE_TYPE } from '@flyele-nx/constant'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { ProjectSelectorItem } from '../ProjectSelectorItem'
 import { ProjectSelector } from '../ProjectSelector'
+import { MoreIcon } from '@flyele-nx/icon'
 
 export type IProjectAndMatterGroupProps = {
   project?: IBaseProjectInfo
@@ -247,7 +248,7 @@ const BuildItem = (props: IBuildItem) => {
               text={item.project_name}
             />
           </div>
-          <i className="iconfont icon-right-arrow" />
+          <MoreIcon />
         </div>
       </MatterGroupSelector>
     </div>

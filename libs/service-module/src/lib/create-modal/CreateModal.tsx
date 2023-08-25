@@ -26,6 +26,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
 
   //TODO
   const [showProjectSelector, setShowProjectSelector] = useState(false)
+  const [project, setProject] = useState<IBaseProjectInfo>()
 
   //控制事项选择下拉
   const [priority_level, setPriority_level] = useState(
@@ -43,8 +44,13 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
       //   onChangeProject(project, projectInfo)
       // }
       // setData.setGroupId(groupId)
+      onChangeProject(project)
     }
   )
+
+  const onChangeProject = (project: IBaseProjectInfo) => {
+    setProject(project)
+  }
 
   return (
     <div className={style['create-modal']}>
@@ -69,9 +75,14 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
             <FileDisplay fileDictId="create" />
             <TagMatterBar />
             <ProjectSelector
+              project={project}
               onChangeProjectAndGrounp={onChangeProjectAndGrounp}
               showProjectSelector={showProjectSelector}
               setShowProjectSelector={setShowProjectSelector}
+              onChangeProject={(_project) => {
+                console.log('_project', _project)
+                onChangeProject(_project)
+              }}
             />
 
             <PriorityPicker

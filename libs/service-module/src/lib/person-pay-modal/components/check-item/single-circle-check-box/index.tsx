@@ -13,6 +13,7 @@ import { ReactComponent as IMG_CHECKED_FALSE } from '../../../../../assets/payIm
 // import IMG_CHECKED_FALSE from '../../../../../assets/payImg/un_checked.svg'
 import { ReactComponent as IMG_DISABLED } from '../../../../../assets/payImg/member_disable.svg'
 import { CheckBoxState, CheckColorType } from '@flyele-nx/constant'
+import { SelectedIcon } from '@flyele-nx/icon'
 
 type IProps = {
   state?: CheckBoxState
@@ -28,7 +29,7 @@ function _CircleCheckBox(props: IProps) {
       colorType === CheckColorType.BLUE ? (
         <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE>
       ) : (
-        <IMG_CHECKED_TRUE width={16} height={16}></IMG_CHECKED_TRUE>
+        <SelectedIcon width={16} height={16}></SelectedIcon>
       ),
     unset: <IMG_CHECKED_FALSE width={16} height={16}></IMG_CHECKED_FALSE>,
     disable: <IMG_DISABLED width={16} height={16}></IMG_DISABLED>

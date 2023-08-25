@@ -29,5 +29,6 @@ export {
   getTaskMatterEndTime,
   getTaskMatterStartTime,
   getMatterTimeParams,
-  getTimeKeys
+  getTimeKeys,
+  getMatterTimeText
 } from './lib/time'

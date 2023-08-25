@@ -2,7 +2,7 @@ import { uploadHandler } from '@flyele-nx/zustand-handler'
 import style from './index.module.scss'
 import { useUploadStore } from '@flyele-nx/zustand-store'
 import { getFileIcon } from '@flyele-nx/utils'
-import { Close } from '@flyele-nx/icon'
+import { DeleteOrCloseIcon } from '@flyele-nx/icon'
 
 interface IProps {
   fileDictId: string
@@ -14,7 +14,6 @@ const FileDisplay: React.FC<IProps> = () => {
 
   return (
     <div className={style['file-display']}>
-      <div>file display</div>
       <div className={style.list}>
         {fileList.map((fileId) => {
           const { name } = fileDict[fileId]
@@ -27,7 +26,12 @@ const FileDisplay: React.FC<IProps> = () => {
                 src={getFileIcon(name, 'light')}
               />
               <span className={style.file_info__file_name}>{name}</span>
-              <Close className={style.file_item__close} />
+              <DeleteOrCloseIcon
+                onClick={() => {
+                  uploadHandler.cancel(fileId)
+                }}
+                className={style.file_item__close}
+              />
             </div>
           )
         })}

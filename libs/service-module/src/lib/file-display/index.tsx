@@ -1,3 +1,4 @@
+import { uploadHandler } from '@flyele-nx/zustand-handler'
 import style from './index.module.scss'
 import { useUploadStore } from '@flyele-nx/zustand-store'
 
@@ -13,16 +14,18 @@ const FileDisplay: React.FC<IProps> = () => {
     <div className={style['file-display']}>
       <div>file display</div>
       <div className={style.list}>
-        {fileList.map((id) => {
-          const { name, progress, status, abortController } = fileDict[id]
+        {fileList.map((fileId) => {
+          const { name, progress, status } = fileDict[fileId]
 
           return (
-            <div key={id}>
+            <div key={fileId}>
               <div>{`name: ${name}`}</div>
               <div>{`percent: ${progress}%`}</div>
               <div>{`status: ${status}`}</div>
-              <div onClick={() => abortController.abort()}>cancel</div>
-              {status === 'error' && <div>retry</div>}
+              <div onClick={() => uploadHandler.cancel(fileId)}>cancel</div>
+              {status === 'error' && (
+                <div onClick={() => uploadHandler.retry(fileId)}>retry</div>
+              )}
             </div>
           )
         })}

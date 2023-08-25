@@ -8,12 +8,9 @@
  */
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import {
-  CheckBoxState,
-  CheckColorType,
-  CircleCheckBox
-} from '../single-circle-check-box'
+import { CircleCheckBox } from '../single-circle-check-box'
 import styles from './index.module.scss'
+import { CheckBoxState, CheckColorType } from '@flyele-nx/constant'
 
 /**
  * 纯UI组件

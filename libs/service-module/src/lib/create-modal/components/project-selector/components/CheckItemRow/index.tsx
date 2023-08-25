@@ -1,14 +1,15 @@
 import React, { PropsWithChildren } from 'react'
+
 import classNames from 'classnames'
-import { CircleCheckBox } from '../single-circle-check-box'
 import styles from './index.module.scss'
+import { CircleCheckBox } from '../../../../../person-pay-modal/components/check-item/single-circle-check-box'
 import { CheckBoxState, CheckColorType } from '@flyele-nx/constant'
 
 /**
  * 纯UI组件
  */
 
-type IProps<T> = {
+type IProps<T = any> = {
   id?: string
   data: T
   state?: CheckBoxState
@@ -16,11 +17,21 @@ type IProps<T> = {
   className?: string
   active?: boolean
   colorType?: CheckColorType
+  isClickIcon?: boolean
 }
 
 function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
-  const { data, children, state, onClick, className, id, active, colorType } =
-    props
+  const {
+    data,
+    children,
+    state,
+    onClick,
+    className,
+    id,
+    active,
+    colorType,
+    isClickIcon
+  } = props
 
   return (
     <div
@@ -29,19 +40,22 @@ function _CheckItemRow<T>(props: PropsWithChildren<IProps<T>>) {
       className={classNames(styles.listItem, className, {
         [styles.listItemActive]: active
       })}
-      onClick={(e) => {
-        e.stopPropagation()
-        onClick(data)
+      onClick={() => {
+        if (state === CheckBoxState.disable) return
+        !isClickIcon && onClick(data)
       }}
     >
       {children}
-      <div className={styles.check}>
-        <CircleCheckBox size={16} state={state} colorType={colorType} />
+      <div
+        className={styles.check}
+        onClick={() => {
+          isClickIcon && onClick(data)
+        }}
+      >
+        <CircleCheckBox size={20} state={state} colorType={colorType} />
       </div>
     </div>
   )
 }
 
-export const SingleCheckItemRow = React.memo(
-  _CheckItemRow
-) as typeof _CheckItemRow
+export const CheckItemRow = React.memo(_CheckItemRow) as typeof _CheckItemRow

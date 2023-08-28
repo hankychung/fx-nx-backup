@@ -112,6 +112,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   // const hoverId = useRecoilValue(hoveredTaskState)
   // const { isValidVip } = useCheckVip()
   // const { project } = useContext(Context)
+  const isExitEditRef = useRef(false)
   const isExpanded = useProjectStore((state) => {
     const dict = state.expandDict
 
@@ -332,6 +333,16 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   })
 
   const handleKeyPress = useMemoizedFn(async (e) => {
+    const isEsc = e.key === 'Escape'
+
+    if (isEsc) {
+      // blur
+      isExitEditRef.current = true
+      inputRef.current?.blur()
+      setVal(data.title)
+      setEdit(false)
+      return
+    }
     const isEnter = e.key.toLowerCase() === 'enter'
 
     if (isEnter && !e.altKey && !e.ctrlKey && !e.shiftKey) {
@@ -386,6 +397,11 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   })
 
   const handleConfirm = useMemoizedFn(async () => {
+    if (isExitEditRef.current) {
+      isExitEditRef.current = false
+      return
+    }
+
     setEdit(false)
     isEditRef.current = false
 

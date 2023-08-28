@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { produce } from 'immer'
 import { IFullViewTask } from '@flyele-nx/types'
-import { getKey, getProjectKey } from './utils'
+import { getProjectKey } from './utils'
 
 export interface IProjectState {
   taskDict: { [k: string]: IFullViewTask }

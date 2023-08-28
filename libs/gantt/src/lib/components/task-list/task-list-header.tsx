@@ -10,17 +10,19 @@ export const TaskListHeaderDefault: React.FC<{
   fontSize: string
   isChecked: boolean
   setIsChecked: (data: boolean) => void
+  taskHeaderRef: React.RefObject<HTMLDivElement>
 }> = ({
   headerHeight,
   fontFamily,
   fontSize,
   rowWidth,
   setIsChecked,
-  isChecked
+  isChecked,
+  taskHeaderRef
 }) => {
   return (
     <>
-      <div className={styles.options}>
+      <div className={styles.options} ref={taskHeaderRef}>
         <Option />
         <div
           style={{ marginRight: '16px' }}

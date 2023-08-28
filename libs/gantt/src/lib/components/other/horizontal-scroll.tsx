@@ -20,9 +20,7 @@ export const HorizontalScroll: React.FC<{
     <div
       dir="ltr"
       style={{
-        margin: rtl
-          ? `-16px ${taskListWidth}px 0px 0px`
-          : `-16px 0px 0px ${taskListWidth}px`
+        left: taskListWidth
       }}
       className={styles.scrollWrapper}
       onScroll={onScroll}

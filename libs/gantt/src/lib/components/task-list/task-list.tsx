@@ -14,6 +14,7 @@ export type TaskListProps = {
   locale: string
   tasks: Task[]
   taskListRef: React.RefObject<HTMLDivElement>
+  taskHeaderRef: React.RefObject<HTMLDivElement>
   horizontalContainerClass?: string
   selectedTask: IFullViewBarTask | undefined
   setSelectedTask: (task: string) => void
@@ -27,6 +28,7 @@ export type TaskListProps = {
     fontSize: string
     setIsChecked: (data: boolean) => void
     isChecked: boolean
+    taskHeaderRef: React.RefObject<HTMLDivElement>
   }>
   TaskListTable: React.FC<{
     rowHeight: number
@@ -55,6 +57,7 @@ export const TaskList: React.FC<TaskListProps> = ({
   locale,
   ganttHeight,
   taskListRef,
+  taskHeaderRef,
   horizontalContainerClass,
   TaskListHeader,
   TaskListTable,
@@ -74,7 +77,8 @@ export const TaskList: React.FC<TaskListProps> = ({
     fontSize,
     rowWidth,
     setIsChecked,
-    isChecked
+    isChecked,
+    taskHeaderRef
   }
   const selectedTaskId = selectedTask ? selectedTask.id : ''
   const tableProps = {
@@ -104,6 +108,7 @@ export const TaskList: React.FC<TaskListProps> = ({
         style={ganttHeight ? { maxHeight: `calc(100% - 74px)` } : {}}
       >
         <TaskListTable {...tableProps} />
+        <div style={{ height: '1.1rem' }}></div>
       </div>
       {tasks.length === 0 && <ListEmpty></ListEmpty>}
     </div>

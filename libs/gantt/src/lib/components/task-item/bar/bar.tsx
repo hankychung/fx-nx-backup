@@ -16,7 +16,8 @@ export const Bar = ({
   isDateChangeable,
   rtl,
   onEventStart,
-  isSelected
+  isSelected,
+  isShowDrop
 }: TaskItemProps) => {
   // const progressPoint = getProgressPoint(
   //   +!rtl * task.progressWidth + task.progressX,
@@ -125,6 +126,7 @@ export const Bar = ({
               height={handleHeight}
               barCornerRadius={task.barCornerRadius}
               isFinish={!!task.finish_time}
+              isShowDrop={isShowDrop}
               onMouseDown={(e) => {
                 onEventStart('start', task, e)
               }}
@@ -137,6 +139,7 @@ export const Bar = ({
               height={handleHeight}
               barCornerRadius={task.barCornerRadius}
               isFinish={!!task.finish_time}
+              isShowDrop={isShowDrop}
               onMouseDown={(e) => {
                 onEventStart('end', task, e)
               }}

@@ -31,6 +31,7 @@ import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
+import { useDisplayEffect } from '@flyele/flyele-components'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -87,6 +88,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [listCellWidth, setListCellWidth] = useState('150px')
   const [taskListWidth, setTaskListWidth] = useState(0)
   const [taskListHeight, setTaskListHeight] = useState(0)
+  const [scrollTime, setScrollTime] = useState(0)
   const [taskHeaderWidth, setTaskHeaderWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
@@ -295,13 +297,18 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
   }, [failedTask, barTasks])
 
+  useDisplayEffect(() => {
+    if (taskHeaderRef.current) {
+      setTaskHeaderWidth(taskHeaderRef.current?.offsetWidth)
+    }
+  }, taskHeaderRef.current)
+
   useEffect(() => {
     if (!listCellWidth) {
       setTaskListWidth(0)
     }
     if (taskListRef.current) {
       setTaskListWidth(taskListRef.current.offsetWidth)
-      setTaskListHeight(taskListRef.current.offsetHeight)
     }
     if (taskHeaderRef.current) {
       setTaskHeaderWidth(taskHeaderRef.current?.offsetWidth)
@@ -538,7 +545,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     dateSetup.dates,
     scrollX,
     taskDict,
-    taskList
+    taskList,
+    scrollTime
   ])
 
   const toTodayView = useMemoizedFn(() => {
@@ -576,7 +584,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
               width: '40px',
               height: `${taskListHeight}px`,
               padding: '16px',
-              border: '1px solid rgba(232, 232, 232, 0.5)',
+              border: taskListHeight
+                ? '1px solid rgba(232, 232, 232, 0.5)'
+                : '',
               boxSizing: 'border-box'
             }}
           >
@@ -592,6 +602,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           scrollX={scrollX}
           currentDate={currentDate}
           taskListWidth={taskListWidth}
+          setScrollTime={setScrollTime}
         />
 
         {/* {ganttEvent.changedTask && (
@@ -612,13 +623,11 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             svgWidth={svgWidth}
           />
         )} */}
-        {taskList.length > 0 && (
+        {taskHeaderWidth && (
           <div
             className={styles.fixedss}
             style={{
-              left: `${
-                listCellWidth ? taskHeaderWidth : taskHeaderWidth + 40
-              }px`
+              left: `${isChecked ? taskHeaderWidth || taskListWidth : 40}px`
             }}
           >
             <div className={styles.currentDate}>{currentDate}</div>

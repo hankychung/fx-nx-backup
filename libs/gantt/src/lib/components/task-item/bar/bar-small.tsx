@@ -13,17 +13,9 @@ export const BarSmall: React.FC<TaskItemProps> = ({
   isProgressChangeable,
   isDateChangeable,
   onEventStart,
-  isSelected
+  isSelected,
+  isShowDrop
 }) => {
-  // const progressPoint = getProgressPoint(
-  //   task.progressWidth + task.x1,
-  //   task.y,
-  //   task.height
-  // )
-  const userId = useUserInfoStore((state) => state.userInfo.user_id)
-  const notMyBusiness = useMemo(() => {
-    return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
-  }, [userId, task])
   const handleHeight = task.height - 2
   return (
     <g className={styles.barWrapper} tabIndex={0}>
@@ -61,6 +53,7 @@ export const BarSmall: React.FC<TaskItemProps> = ({
             height={handleHeight}
             barCornerRadius={task.barCornerRadius}
             isFinish={!!task.finish_time}
+            isShowDrop={isShowDrop}
             onMouseDown={(e) => {
               onEventStart('start', task, e)
             }}
@@ -73,6 +66,7 @@ export const BarSmall: React.FC<TaskItemProps> = ({
             height={handleHeight}
             barCornerRadius={task.barCornerRadius}
             isFinish={!!task.finish_time}
+            isShowDrop={isShowDrop}
             onMouseDown={(e) => {
               onEventStart('end', task, e)
             }}

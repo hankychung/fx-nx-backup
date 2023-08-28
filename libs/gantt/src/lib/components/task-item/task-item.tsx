@@ -25,6 +25,7 @@ export type TaskItemProps = {
   isSelected: boolean
   rtl: boolean
   svg?: React.RefObject<SVGSVGElement>
+  isShowDrop: boolean
   onEventStart: (
     action: FullViewGanttContentMoveAction,
     selectedTask: IFullViewBarTask,

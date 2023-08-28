@@ -9,6 +9,7 @@ type BarDateHandleProps = {
   height: number
   barCornerRadius: number
   isFinish: boolean
+  isShowDrop: boolean
   onMouseDown: (event: React.MouseEvent<SVGRectElement, MouseEvent>) => void
 }
 export const BarDateHandle: React.FC<BarDateHandleProps> = ({
@@ -18,7 +19,8 @@ export const BarDateHandle: React.FC<BarDateHandleProps> = ({
   height,
   barCornerRadius,
   isFinish,
-  onMouseDown
+  onMouseDown,
+  isShowDrop
 }) => {
   return (
     <g onMouseDown={onMouseDown}>
@@ -27,7 +29,11 @@ export const BarDateHandle: React.FC<BarDateHandleProps> = ({
         y={y}
         width={width}
         height={height}
-        className={cs(styles.barHandle, { [styles.overHandle]: isFinish })}
+        className={cs(
+          styles.barHandle,
+          { [styles.overHandle]: isFinish },
+          { [styles.isMoveHandle]: isShowDrop }
+        )}
         ry={barCornerRadius}
         rx={barCornerRadius}
         onMouseDown={onMouseDown}
@@ -38,7 +44,7 @@ export const BarDateHandle: React.FC<BarDateHandleProps> = ({
         y={y + 10}
         height={10}
         width={4}
-        className={cs(styles.barHandle)}
+        className={cs(styles.barHandle, { [styles.isMoveHandle]: isShowDrop })}
       ></image>
     </g>
   )

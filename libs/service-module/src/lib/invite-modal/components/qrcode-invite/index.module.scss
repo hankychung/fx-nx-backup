@@ -1,0 +1,169 @@
+.qrcodeInviteRoot {
+  width: 100%;
+  height: 100%;
+  background-color: var(--page-background-color);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 28px;
+
+  .header {
+    text-align: center;
+
+    .headerTitle {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 25px;
+      color: #262626;
+      margin-bottom: 7px;
+    }
+
+    .headerDesc {
+      font-size: 12px;
+      line-height: 17px;
+      color: #8f8f8f;
+    }
+  }
+
+  .content {
+    width: 217px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 0;
+    background: #fff;
+    border-radius: 8px;
+    margin-top: 16px;
+    margin-bottom: 14px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .contentTitle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-size: 12px;
+      color: #363636;
+      margin-bottom: 21px;
+      justify-content: center;
+      text-align: center;
+
+      .matterText {
+        margin: 0 5px;
+      }
+
+      .title {
+        max-width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .lineBox {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .semicircle {
+        width: 8.5px;
+        height: 17px;
+        background: #f8f8f8;
+      }
+
+      .semicircleLeft {
+        border-radius: 0 8.5px 8.5px 0;
+      }
+
+      .semicircleRight {
+        border-radius: 8.5px 0 0 8.5px;
+      }
+
+      .line {
+        width: 176px;
+        height: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .loadingBox {
+      height: 158px;
+      margin-top: 9px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+
+      .imgBox {
+        width: 35px;
+        height: 35px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .text {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 18px;
+        color: #9b9b9b;
+      }
+    }
+
+    .errorBox {
+      height: 158px;
+      margin-top: 9px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .errorImg {
+        width: 86px;
+        height: 86px;
+        margin-bottom: 32px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .errorText {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 17px;
+        color: #363636;
+
+        .reloadText {
+          cursor: pointer;
+          color: var(--primary);
+        }
+      }
+    }
+
+    .qrcodeBox {
+      width: 156px;
+      height: 144px;
+      margin-top: 9px;
+      margin-bottom: 14px;
+    }
+
+    .qrcodeValidityTime {
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 14px;
+      color: #b4b4b4;
+    }
+  }
+}

@@ -3,8 +3,8 @@ import { Modal, Tabs } from 'antd'
 import styles from './index.module.scss'
 import {
   IRepeatData,
-  TimeSelector
-} from '../../../../../time-component/time-selector'
+  DateSelector
+} from '../../../../../time-component/date-selector'
 import { ExecuteAtSelector } from '../../../../../time-component/execute-at-selector'
 import { ITimeProps } from '@flyele-nx/types'
 
@@ -51,7 +51,7 @@ const _MatterTimePicker = ({
               key: TabKey.time,
               label: '事项时间',
               children: (
-                <TimeSelector
+                <DateSelector
                   defaultValue={timeData}
                   repeatData={repeatData}
                   onClose={onClose}

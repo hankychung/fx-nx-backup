@@ -17,6 +17,7 @@ export { useTimeTip } from './lib/hook/useTimeTip'
 export { getSpaceAvatarUrl } from './lib/space'
 export { getRandomNumberStr, inviteLinkLongUrl } from './lib/invite'
 export { imgToBase64, domToImage } from './lib/picUtils/index'
+export { getFileIcon } from './lib/files'
 export {
   defaultMinDate,
   defaultMaxDate,
@@ -29,5 +30,6 @@ export {
   getTaskMatterEndTime,
   getTaskMatterStartTime,
   getMatterTimeParams,
-  getTimeKeys
+  getTimeKeys,
+  getMatterTimeText
 } from './lib/time'

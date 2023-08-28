@@ -113,30 +113,28 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     console.error('taskKey not found', taskKey, useScheduleStore.getState())
   }
 
-  const { menuActions } = useMenuActions({ data, isVipWin })
-
   // 记录是否为卡片顶级事项
   const isTopTask = useMemo(() => {
     return topId === taskKey
   }, [taskKey, topId])
 
-  // 右键的锚点, 只有自己的事项 && 顶级事项卡片才有右键
+  // 右键的锚点, 只有自己的事项
   // 团队卡片没有右键
   // 事项分组没有右键
   // 如果以后还有其他条件的话往这上面拼
   const isShowMenu = useMemo(() => {
-    return (
-      ![MatterType.timeCollect, MatterType.calendar].includes(
-        data.matter_type
-      ) && isTopTask
+    return ![MatterType.timeCollect, MatterType.calendar].includes(
+      data.matter_type
     )
-  }, [data.matter_type, isTopTask])
+  }, [data.matter_type])
 
   // 只有今日，周，小挂件有置顶
   // 目前它的逻辑和是否显示菜单是包含的
   const isTopMost = useMemo(() => {
-    return !!data?.topmost_at && !data?.finish_time && isShowMenu
-  }, [data?.finish_time, data?.topmost_at, isShowMenu])
+    return !!data?.topmost_at && !data?.finish_time && isShowMenu && isTopTask
+  }, [data?.finish_time, data?.topmost_at, isShowMenu, isTopTask])
+
+  const { menuActions } = useMenuActions({ data, isVipWin, isTopTask })
 
   const toggleOpen = useMemoizedFn(async () => {
     if (!data) return
@@ -182,10 +180,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
    */
   const handleContextMenu = useMemoizedFn(
     (event: MouseEvent<HTMLDivElement>) => {
-      if (!isShowMenu) return
-
       event.preventDefault()
       event.stopPropagation()
+
+      if (!isShowMenu) return
 
       contextMenuTool.open({
         x: event.clientX,

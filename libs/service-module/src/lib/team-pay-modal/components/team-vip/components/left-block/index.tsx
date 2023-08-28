@@ -17,14 +17,11 @@ import { ReactComponent as MemberTeamVip } from '../../../../../../assets/payImg
 import MemberList from './components/member-list'
 import { SelectMemberContext } from '../../../../context/context'
 import { SingleCheckItemRow } from '../../../check-item/single-check-item-row'
-import {
-  CheckBoxState,
-  CheckColorType
-} from '../../../check-item/single-circle-check-box'
 import { VipPayType } from '../../../controller'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
 import cs from 'classnames'
 import { sortMap } from '../../../../../person-pay-modal/utils'
+import { CheckBoxState, CheckColorType } from '@flyele-nx/constant'
 
 interface Iprops {
   vipType: VipPayType

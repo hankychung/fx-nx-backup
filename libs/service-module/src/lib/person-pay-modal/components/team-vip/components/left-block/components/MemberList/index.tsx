@@ -18,15 +18,12 @@ import { ReactComponent as MemberTeamVip } from '../../../../../../../../assets/
 import SearchInput from '../../../../../search-input'
 import style from './index.module.scss'
 import { SingleCheckItemRow } from '../../../../../check-item/single-check-item-row'
-import {
-  CheckBoxState,
-  CheckColorType
-} from '../../../../../check-item/single-circle-check-box'
 import { SelectMemberService } from '../../../../../../context/service'
 import { useListPrevNext } from '../../../../../../hooks/useListPreNext'
 import { IFlyeleAvatarItem } from '../../../../../../../pay-modal'
 import { StringHighLight } from '../StringHighLight'
 import cs from 'classnames'
+import { CheckBoxState, CheckColorType } from '@flyele-nx/constant'
 
 const MemberList = ({
   resultArr,

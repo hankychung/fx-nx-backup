@@ -4,16 +4,26 @@ import style from './inviteModal.module.scss'
 import { useContactStore } from '@flyele-nx/zustand-store'
 import { invitePlugin } from '.'
 import { useMemoizedFn } from 'ahooks'
+import { Header } from './components/header'
+import { Tabs } from 'antd'
+import { IInviteParams, InviteMoadlTabKey } from '@flyele-nx/types'
+import { InviteLink } from './components/invite-link'
+import { QrcodeInvite } from './components/qrcode-invite'
 
 interface IOuterProps {
   defaultTakers?: string[]
+  inviteParams?: IInviteParams
 }
 
 interface IProps extends IOuterProps {
   close: () => void
 }
 
-const InviteModal: React.FC<IProps> = ({ close, defaultTakers = [] }) => {
+const InviteModal: React.FC<IProps> = ({
+  close,
+  defaultTakers = [],
+  inviteParams = {}
+}) => {
   const plugins = useMemo(() => {
     return [
       new invitePlugin.interact({
@@ -31,17 +41,45 @@ const InviteModal: React.FC<IProps> = ({ close, defaultTakers = [] }) => {
     close()
   })
 
+  const tabItems = [
+    {
+      key: InviteMoadlTabKey.member,
+      label: '飞项协作人',
+      children: (
+        <div className={style.content}>
+          <FlyMemberSelector
+            plugins={plugins}
+            onConfirm={confirm}
+            onCancel={close}
+            defaultTakers={defaultTakers}
+          />
+        </div>
+      )
+    },
+    {
+      key: InviteMoadlTabKey.qrcode,
+      label: '二维码邀请',
+      children: (
+        <div className={style.content}>
+          <QrcodeInvite inviteParams={inviteParams} isNote={false} />
+        </div>
+      )
+    },
+    {
+      key: InviteMoadlTabKey.link,
+      label: '邀请链接',
+      children: (
+        <div className={style.content}>
+          <InviteLink inviteParams={inviteParams} />
+        </div>
+      )
+    }
+  ]
+
   return (
     <div className={style['invite-modal']}>
-      <div className={style.header}>header</div>
-      <div>
-        <FlyMemberSelector
-          plugins={plugins}
-          onConfirm={confirm}
-          onCancel={close}
-          defaultTakers={defaultTakers}
-        />
-      </div>
+      <Header />
+      <Tabs items={tabItems}></Tabs>
     </div>
   )
 }

@@ -1,0 +1,65 @@
+.container {
+  width: 640px;
+  .header {
+    width: 100%;
+    padding-top: 14px;
+    padding-left: 20px;
+    font-weight: bolder;
+    font-size: 16px;
+    padding-bottom: 14px;
+    height: 50px;
+    box-sizing: border-box;
+    border-bottom: 0.5px solid #ededed;
+    .close {
+      position: absolute;
+      right: 24px;
+      top: 14px;
+    }
+  }
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 540px;
+  }
+  .right {
+    display: flex;
+    flex-direction: column;
+    height: 540px;
+    .target {
+      height: 0;
+      flex: 1;
+    }
+  }
+  .footer {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .btn {
+      min-width: 96px;
+      margin: 0 8px;
+      cursor: pointer;
+    }
+    :global {
+      .ant-btn:hover {
+        color: rgb(58, 213, 199);
+        border-color: rgb(58, 213, 199);
+      }
+      .ant-btn-primary {
+        background-color: rgb(58, 213, 199);
+      }
+      .ant-btn-primary:hover {
+        background-color: rgb(58, 213, 199);
+        color: #fff;
+      }
+    }
+  }
+}
+
+.modal-wrapper {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+    }
+  }
+}

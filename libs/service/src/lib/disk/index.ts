@@ -1,10 +1,10 @@
-import { OssToken } from '@flyele-nx/types'
+import { FlyDoc, OssToken } from '@flyele-nx/types'
 import { service } from '../service'
 import { AxiosProgressEvent } from 'axios'
 
 const UPLOAD_TIMEOUT = 5 * 60 * 1000
 
-class Storage {
+class Disk {
   private prefix = 'disk/v2'
   getUploadToken() {
     return service.getRaw<OssToken>({
@@ -67,6 +67,10 @@ class Storage {
         return res
       })
   }
+
+  getStorage = (params: { page?: number; page_record?: number }) => {
+    return service.get<FlyDoc[]>({ url: `${this.prefix}/storages`, params })
+  }
 }
 
-export const storageApi = new Storage()
+export const diskApi = new Disk()

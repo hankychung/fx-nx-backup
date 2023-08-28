@@ -1,7 +1,7 @@
 import { useUploadStore } from '@flyele-nx/zustand-store'
 import { IZustandUploadState, OssToken } from '@flyele-nx/types'
 import { produce } from 'immer'
-import { storageApi } from '@flyele-nx/service'
+import { diskApi } from '@flyele-nx/service'
 
 class UploadHandler {
   // 上传文件
@@ -21,7 +21,7 @@ class UploadHandler {
       files
     })
 
-    const ossToken = await storageApi.getUploadToken()
+    const ossToken = await diskApi.getUploadToken()
 
     files.forEach((file, index) => {
       // 调用api上传
@@ -151,9 +151,9 @@ class UploadHandler {
     abortSignal: AbortSignal
     ossToken?: OssToken
   }) {
-    const token = ossToken || (await storageApi.getUploadToken())
+    const token = ossToken || (await diskApi.getUploadToken())
 
-    storageApi
+    diskApi
       .upload({
         abortSignal,
         token,

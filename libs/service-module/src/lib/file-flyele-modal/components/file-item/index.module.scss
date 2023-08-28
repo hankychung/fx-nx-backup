@@ -1,0 +1,25 @@
+.container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  .icon {
+    width: 24px;
+    height: 30px;
+    margin-right: 9px;
+  }
+  .info {
+    .info_title {
+      color: rgba(6, 6, 6, 0.87);
+      font-size: 14px;
+      max-width: 190px;
+    }
+    .info_desc {
+      color: #b4b4b4;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 230px;
+    }
+  }
+}

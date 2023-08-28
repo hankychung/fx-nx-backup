@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Popover, PopoverProps } from 'antd'
 
 import styles from './index.module.scss'
+import { flyeleFileModal } from '../file-flyele-modal'
 
 export interface Props extends Pick<PopoverProps, 'placement'> {
   onVisibleChange?: (v: boolean) => void // 监听显隐变化
@@ -39,6 +40,13 @@ const FilePopover: React.FC<React.PropsWithChildren<Props>> = ({
       txt: '飞项文档',
       onClick: () => {
         console.log('打开飞项文档')
+        setVisible(false)
+        flyeleFileModal.open({
+          onConfirm: (files) => {
+            console.log('files', files)
+            flyeleFileModal.close()
+          }
+        })
       },
       show: true
     },

@@ -21,7 +21,7 @@ export const MessageSimpleLine = ({ content, iconName, loading }: Props) => {
       case '成功':
         return (
           <div className={styles.img}>
-            <SuccessIcon width={17} height={17} />
+            <SuccessIcon width={17} height={17} color="#24C935" />
           </div>
         )
       case '时间':

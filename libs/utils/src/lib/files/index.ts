@@ -10,14 +10,15 @@ const fileRegArr: Array<[string, RegExp]> = [
 
 export const getFileIcon = (
   name: string,
-  iconType: 'light' | 'dark' | 'copyTask' = 'light'
+  iconType: 'light' | 'dark' | 'copyTask' | 'small' = 'light'
 ) => {
   const baseUrl =
     'https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/file'
   const dict = {
     light: `${baseUrl}/icon-`,
     dark: `${baseUrl}/load/`,
-    copyTask: `${baseUrl}/copyTask/`
+    copyTask: `${baseUrl}/copyTask/`,
+    small: `${baseUrl}/small/`
   }
 
   const type =

@@ -21,7 +21,10 @@
 .overHandle {
   fill: #cdcdcd !important;
 }
-
+.isMoveHandle {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
 .barBackground {
   user-select: none;
   stroke-width: 0;

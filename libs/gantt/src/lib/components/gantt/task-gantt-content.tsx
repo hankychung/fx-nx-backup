@@ -9,11 +9,13 @@ import { isKeyboardEvent } from '../../helpers/other-helper'
 import { TaskItem } from '../task-item/task-item'
 import {
   FullViewBarMoveAction,
-  FullViewGanttContentMoveAction
+  FullViewGanttContentMoveAction,
+  MatterType
 } from '@flyele-nx/constant'
 import { isInTask } from '../../utils'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import { globalNxController } from '@flyele-nx/global-processor'
+import { timeGetter } from '@flyele-nx/utils'
 
 export type TaskGanttContentProps = {
   tasks: IFullViewBarTask[]
@@ -64,6 +66,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   const [xStep, setXStep] = useState(0)
   const [initEventX1Delta, setInitEventX1Delta] = useState(0)
   const [isMoving, setIsMoving] = useState(false)
+
   const userId = useUserInfoStore((state) => state.userInfo.user_id)
 
   // create xStep
@@ -89,6 +92,25 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
           userId,
           ganttEvent.changedTask?.creator_id
         )
+
+      if (ganttEvent.changedTask.matter_type === MatterType.meeting) {
+        const curStamp = await timeGetter.getDate()
+
+        if (ganttEvent.changedTask.finish_time) {
+          globalNxController.showMsg({ content: '会议已结束不能修改' })
+
+          return true
+        }
+
+        if (
+          ganttEvent.changedTask?.start_time &&
+          ganttEvent.changedTask?.start_time < curStamp
+        ) {
+          globalNxController.showMsg({ content: '会议进行中不能修改' })
+          return true
+        }
+      }
+
       if (ganttEvent.changedTask?.finish_time) {
         globalNxController.showMsg({
           msgType: '消息',
@@ -319,6 +341,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
               isSelected={!!selectedTask && task.id === selectedTask.id}
               rtl={rtl}
               svg={svg}
+              isShowDrop={isMoving}
             />
           )
         })}

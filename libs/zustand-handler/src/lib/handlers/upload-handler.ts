@@ -8,7 +8,7 @@ class UploadHandler {
   async upload(id: string, files: File[]) {
     // 用于端上维护的上传文件id
     const fileIds = files.map(
-      (file) => file.name + Math.random().toString().substring(3, 8)
+      (file) => file.name + '-' + Math.random().toString().substring(3, 9)
     )
 
     // 将文件添加至对应的上传列表
@@ -169,8 +169,16 @@ class UploadHandler {
           }
         }
       })
-      .then(() => {
-        this.updateStatus(fileId, 'success')
+      .then((res) => {
+        const uploadedFileId = res?.data?.data?.file_id
+
+        if (uploadedFileId) {
+          this.updateStatus(fileId, 'success', {
+            uploadedFileId
+          })
+        } else {
+          this.updateStatus(fileId, 'error')
+        }
       })
       .catch((e) => {
         console.error('上传文件失败', e, fileId)
@@ -192,14 +200,19 @@ class UploadHandler {
     )
   }
 
-  private updateStatus(fileId: string, status: 'success' | 'error') {
+  private updateStatus(
+    fileId: string,
+    status: 'success' | 'error',
+    options?: { uploadedFileId: string }
+  ) {
     useUploadStore.setState(
       produce((state: IZustandUploadState) => {
         const info = state.fileDict[fileId]
 
         state.fileDict[fileId] = {
           ...info,
-          status
+          status,
+          uploadedFileId: options?.uploadedFileId
         }
       })
     )

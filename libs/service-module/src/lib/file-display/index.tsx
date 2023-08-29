@@ -11,7 +11,7 @@ interface IProps {
 
 const FileDisplay: React.FC<IProps> = (props: IProps) => {
   const { fileDictId } = props
-  const fileList = useUploadStore((state) => state.uploadDict['create']) || []
+  const fileList = useUploadStore((state) => state.uploadDict[fileDictId]) || []
   const fileDict = useUploadStore((state) => state.fileDict)
 
   return (
@@ -39,7 +39,14 @@ const FileDisplay: React.FC<IProps> = (props: IProps) => {
         })}
         <FilePopover
           onLocalDoc={(files) => {
-            uploadHandler.upload(fileDictId, files)
+            uploadHandler.upload(fileDictId, {
+              localFiles: files
+            })
+          }}
+          onFlyeleDoc={(files) => {
+            uploadHandler.upload(fileDictId, {
+              cloudFiles: files
+            })
           }}
         >
           <div className={style.add_img_box}>

@@ -95,8 +95,6 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     })
   })
 
-  // console.log('@task changing', data, isBoard)
-
   const { updateExpandedDict, batchUpdateChildDict, batchUpdateTask } =
     useScheduleStore(
       (state) => ({
@@ -133,6 +131,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   const isTopMost = useMemo(() => {
     return !!data?.topmost_at && !data?.finish_time && isShowMenu && isTopTask
   }, [data?.finish_time, data?.topmost_at, isShowMenu, isTopTask])
+
+  const isFollow = useMemo(() => {
+    const value = data?.is_follow || data?.has_follow
+    return !!value
+  }, [data?.has_follow, data?.is_follow])
 
   const { menuActions } = useMenuActions({ data, isVipWin, isTopTask })
 
@@ -332,7 +335,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     })}
                     text={data.title || ''}
                   />
-                  <Follow isFollow={data?.is_follow || data?.has_follow} />
+                  <Follow isFollow={isFollow} />
                 </div>
                 <div className={styles.headRight}>
                   <ScheduleType matterType={data.matter_type} />

@@ -566,16 +566,6 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     }
   }, [data])
 
-  const changeStatus = useMemoizedFn(() => {
-    GanttHandler.batchModify({
-      keys: [data.task_id],
-      diff: {
-        finish_time: data.finish_time ? 0 : dayjs().unix(),
-        state: changeCompleteState(data.state)
-      }
-    })
-  })
-
   return data.task_id === FAKE_ID ? (
     <div
       className={cs(style.title, style['title-active'], style['title-create'])}
@@ -606,11 +596,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
         })}
         style={titleStyle}
       >
-        <StatusBox
-          task={_data as IScheduleTask}
-          isVipWin={false}
-          changeStatus={changeStatus}
-        />
+        <StatusBox task={_data as IScheduleTask} isVipWin={false} />
       </div>
       <div className={cs(style.txtBox)}>
         {!edit && (

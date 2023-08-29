@@ -225,7 +225,7 @@ const _StatusBox: FC<IProps> = (props) => {
       !!userId &&
       !isInTask(task?.takers as IFullViewTaker[], userId, task?.creator_id)
     )
-  }, [userId, task])
+  }, [userId, task?.takers, task?.creator_id])
 
   const handleClick = useMemoizedFn(() => {
     if (nonSelfExecution || notMyBusiness) {

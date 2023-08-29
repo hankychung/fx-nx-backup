@@ -140,6 +140,10 @@ function getId(data: string | IFullViewTask) {
   return data
 }
 
+function getProjectKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
+  return i.task_id
+}
+
 const FAKE_ITEM: IFullViewTask = {
   create_at: 0,
   creator_id: useUserInfoStore.getState().userInfo.user_id,
@@ -173,4 +177,4 @@ export const getFakeItem = (options?: { needCurDate?: boolean }) => {
   }
 }
 
-export { getKey, createSVG, getTimeTxt, getId }
+export { getKey, createSVG, getTimeTxt, getId, getProjectKey }

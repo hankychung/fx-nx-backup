@@ -11,10 +11,11 @@ import { useMenuSummary } from './useMenuSummary'
 interface IMenuActions {
   data: IScheduleTask
   isVipWin?: boolean
+  isTopTask?: boolean
 }
 
 export const useMenuActions = (props: IMenuActions) => {
-  const { data, isVipWin = false } = props
+  const { data, isVipWin = false, isTopTask } = props
 
   /**
    * 菜单功能—置顶
@@ -55,8 +56,12 @@ export const useMenuActions = (props: IMenuActions) => {
    * 右键菜单
    */
   const menuActions = useMemo(() => {
-    return [pin, priorityLevel, follow, selectTime, summary, hide, quit]
-  }, [pin, priorityLevel, follow, selectTime, summary, hide, quit])
+    const action = [priorityLevel, follow, selectTime, summary, hide, quit]
+    if (isTopTask) {
+      action.unshift(pin)
+    }
+    return action
+  }, [priorityLevel, follow, selectTime, summary, hide, quit, isTopTask, pin])
 
   return {
     menuActions

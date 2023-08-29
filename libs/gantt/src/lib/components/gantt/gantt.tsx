@@ -26,7 +26,7 @@ import { TaskGantt } from './task-gantt'
 import { convertToBarTasks } from '../../helpers/bar-helper'
 import { HorizontalScroll } from '../other/horizontal-scroll'
 // import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
-import styles from './gantt.module.css'
+import styles from './gantt.module.scss'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
@@ -75,6 +75,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const taskListRef = useRef<HTMLDivElement>(null)
+  const taskHeaderRef = useRef<HTMLDivElement>(null)
   const [dateSetup, setDateSetup] = useState<IFullViewDateSetup>(() => {
     const [startDate, endDate] = ganttDateRange(tasks, viewMode, preStepsCount)
     return { viewMode, dates: seedDates(startDate, endDate, viewMode) }
@@ -86,6 +87,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [listCellWidth, setListCellWidth] = useState('150px')
   const [taskListWidth, setTaskListWidth] = useState(0)
   const [taskListHeight, setTaskListHeight] = useState(0)
+  const [taskHeaderWidth, setTaskHeaderWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
   const [currentDate, setCurrentDate] = useState('')
@@ -106,7 +108,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const ganttFullHeight = barTasks.length * rowHeight
 
   const [scrollY, setScrollY] = useState(0)
-  const [scrollX, setScrollX] = useState(-1)
+  const [scrollX, setScrollX] = useState(0)
   // const scrollX = use
   const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false)
   const { taskDict, childrenDict, expandDict, taskList } = useGanttList()
@@ -142,7 +144,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
               hideChildren: false,
               displayOrder: 1
             }
-            filteredTasks.push(item as Task)
+            if (modifyExpend.includes(key)) {
+              filteredTasks.push(item as Task)
+            }
             if (childrenDict[a]) {
               sum(a)
             }
@@ -299,7 +303,18 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       setTaskListWidth(taskListRef.current.offsetWidth)
       setTaskListHeight(taskListRef.current.offsetHeight)
     }
-  }, [taskListRef, listCellWidth])
+    if (taskHeaderRef.current) {
+      setTaskHeaderWidth(taskHeaderRef.current?.offsetWidth)
+    }
+  }, [
+    taskListRef,
+    listCellWidth,
+    taskDict,
+    taskList,
+    tasks,
+    currentDate,
+    taskHeaderRef
+  ])
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -362,14 +377,16 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
   }
 
-  const handleScrollX = (event: SyntheticEvent<HTMLDivElement>) => {
-    if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
-      setScrollX(event.currentTarget.scrollLeft)
-      setIgnoreScrollEvent(true)
-    } else {
-      setIgnoreScrollEvent(false)
+  const handleScrollX = useMemoizedFn(
+    (event: SyntheticEvent<HTMLDivElement>) => {
+      if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
+        setScrollX(event.currentTarget.scrollLeft)
+        setIgnoreScrollEvent(true)
+      } else {
+        setIgnoreScrollEvent(false)
+      }
     }
-  }
+  )
 
   /**
    * Handles arrow keys events and transform it to new scroll
@@ -497,6 +514,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     horizontalContainerClass: styles.horizontalContainer,
     selectedTask,
     taskListRef,
+    taskHeaderRef,
     setSelectedTask: handleSelectedTask,
     onExpanderClick: handleExpanderClick,
     TaskListHeader,
@@ -514,7 +532,14 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     const date = dayjs(dates[res]).format('YYYY-MM')
 
     setCurrentDate(date)
-  }, [setCurrentDate, columnWidth, dateSetup.dates, scrollX])
+  }, [
+    setCurrentDate,
+    columnWidth,
+    dateSetup.dates,
+    scrollX,
+    taskDict,
+    taskList
+  ])
 
   const toTodayView = useMemoizedFn(() => {
     const initDate = new Date()
@@ -535,6 +560,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     if (!dateSetup.dates || !columnWidth || currentDate) return
     toTodayView()
   }, [columnWidth, currentDate, dateSetup.dates, toTodayView])
+
   return (
     <div>
       <div
@@ -568,7 +594,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           taskListWidth={taskListWidth}
         />
 
-        {ganttEvent.changedTask && (
+        {/* {ganttEvent.changedTask && (
           <Tooltip
             arrowIndent={arrowIndent}
             rowHeight={rowHeight}
@@ -585,36 +611,40 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             rtl={rtl}
             svgWidth={svgWidth}
           />
+        )} */}
+        {taskList.length > 0 && (
+          <div
+            className={styles.fixedss}
+            style={{
+              left: `${
+                listCellWidth ? taskHeaderWidth : taskHeaderWidth + 40
+              }px`
+            }}
+          >
+            <div className={styles.currentDate}>{currentDate}</div>
+            {currentDate && (
+              <div className={styles.today} onClick={toTodayView}>
+                今天
+              </div>
+            )}
+          </div>
         )}
-        <div
-          className={styles.fixedss}
-          style={{
-            left: `${listCellWidth ? taskListWidth : taskListWidth + 40}px`
-          }}
-        >
-          <div className={styles.currentDate}>{currentDate}</div>
-          {currentDate && (
-            <div className={styles.today} onClick={toTodayView}>
-              今天
-            </div>
-          )}
-        </div>
-        <VerticalScroll
+        {/* <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}
           headerHeight={headerHeight}
           scroll={scrollY}
           onScroll={handleScrollY}
           rtl={rtl}
-        />
+        /> */}
+        {/* <HorizontalScroll
+          svgWidth={svgWidth}
+          taskListWidth={taskListWidth}
+          scroll={scrollX}
+          rtl={rtl}
+          onScroll={handleScrollX}
+        /> */}
       </div>
-      <HorizontalScroll
-        svgWidth={svgWidth}
-        taskListWidth={taskListWidth}
-        scroll={scrollX}
-        rtl={rtl}
-        onScroll={handleScrollX}
-      />
     </div>
   )
 }

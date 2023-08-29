@@ -1,8 +1,12 @@
-import { IFullViewTask } from '@flyele-nx/types'
+import {
+  IContactsAndStatus,
+  IFullViewTaker,
+  IFullViewTask,
+  ITakerAndStatus
+} from '@flyele-nx/types'
 import {
   IProjectState,
   useProjectStore,
-  useUserInfoStore,
   zustandUtils
 } from '@flyele-nx/zustand-store'
 import { produce } from 'immer'
@@ -131,14 +135,6 @@ export class ProjectHandler {
     takerIds: string[]
     taskIds: string[]
   }) {
-    const { user_id } = useUserInfoStore.getState().userInfo
-
-    if (takerIds.includes(user_id)) {
-      this.removeTasks(taskIds)
-
-      return
-    }
-
     useProjectStore.setState(
       produce<IProjectState>((state) => {
         const { taskDict } = state
@@ -149,6 +145,27 @@ export class ProjectHandler {
           taskDict[id].takers = takers.filter(
             (t) => !takerIds.includes(t.taker_id)
           )
+        })
+      })
+    )
+  }
+
+  // 添加协作人
+  addTakers({
+    taker,
+    taskIds
+  }: {
+    taker: (IContactsAndStatus | ITakerAndStatus)[]
+    taskIds: string[]
+  }) {
+    useProjectStore.setState(
+      produce<IProjectState>((state) => {
+        const { taskDict } = state
+
+        taskIds.forEach((id) => {
+          const takers = taskDict[id].takers || []
+
+          taskDict[id].takers = [...takers, ...taker] as IFullViewTaker[]
         })
       })
     )

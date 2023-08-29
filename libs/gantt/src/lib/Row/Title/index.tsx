@@ -35,7 +35,7 @@ import {
 } from '@flyele-nx/constant'
 import dayjs from 'dayjs'
 // import { useLocation } from 'react-router-dom'
-import { getWidget } from '../../utils/index'
+import { getProjectKey, getWidget } from '../../utils/index'
 // import { ICreateParams } from 'service/types/create'
 // import { FullShowMode } from '@/service/types/matter.d'
 // import { getDataset } from '@/hooks/useFollow'
@@ -64,6 +64,7 @@ import { StatusBox } from './status-box'
 import { ApiHandler } from '../../utils/apiHandler'
 import { Indent } from '../../components/task-list/components/indent'
 import { GanttHandler } from '../../utils/ganttHandler'
+import { changeCompleteState } from './status-box/utils'
 
 const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
   data,
@@ -549,7 +550,10 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
 
   const repeatTotal = reTotal ? (reTotal > 99 ? '99+' : reTotal) : 1
 
-  const completeTotal = data.task_tree_complete_total || 0
+  const completeTotal =
+    Number(data.task_tree_complete_total) > 99
+      ? '99+'
+      : data.task_tree_complete_total || 0
 
   const taskTotal =
     Number(data.task_tree_total) > 99 && !isOpen
@@ -561,6 +565,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       ref_task_id: data.task_id
     }
   }, [data])
+
   return data.task_id === FAKE_ID ? (
     <div
       className={cs(style.title, style['title-active'], style['title-create'])}

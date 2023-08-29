@@ -11,7 +11,7 @@ import {
 } from '@flyele-nx/zustand-store'
 import { produce } from 'immer'
 import { projectApi } from '@flyele-nx/service'
-
+type ITaskModifier = (task: IFullViewTask) => IFullViewTask
 export class ProjectHandler {
   private projectId = ''
 
@@ -150,24 +150,26 @@ export class ProjectHandler {
     )
   }
 
-  // 添加协作人
-  addTakers({
-    taker,
-    taskIds
-  }: {
-    taker: (IContactsAndStatus | ITakerAndStatus)[]
-    taskIds: string[]
-  }) {
+  tasksModifier(taskIds: string[], handler: ITaskModifier) {
+    const { taskDict } = useProjectStore.getState()
+
+    console.log('NX inner modifier', taskIds, taskDict)
+
+    // TODO: 循环事项的更新需要考虑
     useProjectStore.setState(
-      produce<IProjectState>((state) => {
-        const { taskDict } = state
-
-        taskIds.forEach((id) => {
-          const takers = taskDict[id].takers || []
-
-          taskDict[id].takers = [...takers, ...taker] as IFullViewTaker[]
+      produce((state: IProjectState) => {
+        taskIds.forEach((k) => {
+          console.log('NX inner taker result', handler(taskDict[k]))
+          if (state.taskDict[k]) {
+            state.taskDict[k] = handler(taskDict[k])
+          }
         })
       })
+    )
+
+    console.log(
+      'NX inner modifier end project',
+      useProjectStore.getState().taskDict
     )
   }
 

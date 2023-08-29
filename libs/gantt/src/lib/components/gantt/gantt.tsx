@@ -31,6 +31,7 @@ import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
+import { useDisplayEffect } from '@flyele/flyele-components'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -295,13 +296,18 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     }
   }, [failedTask, barTasks])
 
+  useDisplayEffect(() => {
+    if (taskHeaderRef.current) {
+      setTaskHeaderWidth(taskHeaderRef.current?.offsetWidth)
+    }
+  }, taskHeaderRef.current)
+
   useEffect(() => {
     if (!listCellWidth) {
       setTaskListWidth(0)
     }
     if (taskListRef.current) {
       setTaskListWidth(taskListRef.current.offsetWidth)
-      setTaskListHeight(taskListRef.current.offsetHeight)
     }
     if (taskHeaderRef.current) {
       setTaskHeaderWidth(taskHeaderRef.current?.offsetWidth)
@@ -331,6 +337,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     setSvgContainerHeight(tasks.length * rowHeight + headerHeight * 2)
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
+    event.stopPropagation()
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
       let newScrollX = scrollX + scrollMove
@@ -340,7 +347,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         newScrollX = svgWidth
       }
       setScrollX(newScrollX)
-      event.preventDefault()
     } else if (ganttHeight) {
       let newScrollY = scrollY + event.deltaY
       if (newScrollY < 0) {
@@ -350,12 +356,12 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
-        event.preventDefault()
       }
     }
 
     setIgnoreScrollEvent(true)
   })
+
   // scroll events
   useEffect(() => {
     // subscribe if scroll is necessary
@@ -576,7 +582,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
               width: '40px',
               height: `${taskListHeight}px`,
               padding: '16px',
-              border: '1px solid rgba(232, 232, 232, 0.5)',
+              border: taskListHeight
+                ? '1px solid rgba(232, 232, 232, 0.5)'
+                : '',
               boxSizing: 'border-box'
             }}
           >
@@ -592,6 +600,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           scrollX={scrollX}
           currentDate={currentDate}
           taskListWidth={taskListWidth}
+          setScrollX={setScrollX}
         />
 
         {/* {ganttEvent.changedTask && (
@@ -612,13 +621,11 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             svgWidth={svgWidth}
           />
         )} */}
-        {taskList.length > 0 && (
+        {taskHeaderWidth && (
           <div
             className={styles.fixedss}
             style={{
-              left: `${
-                listCellWidth ? taskHeaderWidth : taskHeaderWidth + 40
-              }px`
+              left: `${isChecked ? taskHeaderWidth || taskListWidth : 40}px`
             }}
           >
             <div className={styles.currentDate}>{currentDate}</div>

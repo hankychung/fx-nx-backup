@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react'
 import cs from 'classnames'
 // import useSubscribe from '@/hooks/useSubscribe'
 // import sub from 'constants/pubsub'
-import { CircleArrowUpIcon, CircleArrowUpDarkIcon } from '@flyele-nx/icon'
+import { CircleArrowUp, CircleArrowUpDarkIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
 import { IScheduleTask } from '@flyele-nx/types'
 
@@ -62,7 +62,7 @@ export const Expand: React.FC<IPROPExpand> = ({
       {isDarkMode ? (
         <CircleArrowUpDarkIcon width={20} height={20} />
       ) : (
-        <CircleArrowUpIcon width={20} height={20} />
+        <CircleArrowUp width={20} height={20} />
       )}
     </div>
   )

@@ -200,6 +200,22 @@ class TaskHandler {
               return true
             })
           }
+
+          // 处理子孙事项
+          Object.keys(state.childrenDict).forEach((parentKey) => {
+            const children = state.childrenDict[parentKey]
+
+            if (children) {
+              const newChildren = children.filter((id) => !ids.includes(id))
+
+              if (!newChildren.length) {
+                delete state.childrenDict[parentKey]
+                state.taskDict[parentKey].has_child = false
+              } else {
+                state.childrenDict[parentKey] = newChildren
+              }
+            }
+          })
         })
       })
     )

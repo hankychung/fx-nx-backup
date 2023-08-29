@@ -1,6 +1,6 @@
 {
   "name": "@flyele-nx/icon",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {

@@ -6,6 +6,7 @@ interface IUploadFile {
   abortController: AbortController
   file: File
   uploadDictId: string
+  uploadedFileId?: string
 }
 
 interface IZustandUploadState {

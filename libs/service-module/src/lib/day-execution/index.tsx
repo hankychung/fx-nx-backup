@@ -4,7 +4,7 @@ import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { Progress } from 'antd'
-import { CircleArrowUpIcon } from '@flyele-nx/icon'
+import { CircleArrowUpIcon, Close } from '@flyele-nx/icon'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Loading } from '@flyele-nx/ui'
 import { disposalTodayList } from './utils'
@@ -182,6 +182,7 @@ const _DayExecution = ({
             />
           )}
         </div>
+        <Close></Close>
         <div className={styles.headerRight}>
           {!!taskTotal && (
             <>
@@ -229,6 +230,7 @@ const _DayExecution = ({
             </div>
             {show && (
               <div className={styles.footer}>
+                <Close></Close>
                 <div
                   className={styles.hideBtn}
                   onClick={() => setShow((show) => !show)}

@@ -4,7 +4,6 @@ import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
 import dayjs from 'dayjs'
 import cs from 'classnames'
 import { Progress } from 'antd'
-import { CircleArrowUpIcon } from '@flyele-nx/icon'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Loading } from '@flyele-nx/ui'
 import { disposalTodayList } from './utils'
@@ -13,6 +12,7 @@ import { Nodata } from './components/no-data'
 import { ExecutionHandler } from '../schedule-list/utils/executionHandler'
 import { useScheduleStore } from '@flyele-nx/global-processor'
 import { emitter } from '@flyele-nx/utils'
+import { CircleArrowUp } from '@flyele-nx/icon'
 
 interface IProps {
   date: number
@@ -193,7 +193,7 @@ const _DayExecution = ({
             className={cs(styles.arrowIcon, { [styles.arrowIconUp]: show })}
             onClick={() => setShow((show) => !show)}
           >
-            <CircleArrowUpIcon width={17} height={17} />
+            <CircleArrowUp width={17} height={17} />
           </div>
         </div>
       </div>
@@ -239,7 +239,7 @@ const _DayExecution = ({
                       [styles.arrowIconUp]: show
                     })}
                   >
-                    <CircleArrowUpIcon width={17} height={17} />
+                    <CircleArrowUp width={17} height={17} />
                   </div>
                 </div>
               </div>

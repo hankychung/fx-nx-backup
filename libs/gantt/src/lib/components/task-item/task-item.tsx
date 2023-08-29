@@ -118,14 +118,11 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
     // }
   }, [task.x1])
-  const userId = useUserInfoStore((state) => state.userInfo.user_id)
-  const notMyBusiness = useMemo(() => {
-    return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
-  }, [userId, task])
+
   const timeTooltip = useMemo(() => {
-    const start = dayjs(task.start).format('MM月DD日 HH:mm')
-    const end = dayjs(task.end).format('MM月DD日 HH:mm')
-    return `${start}-${end}`
+    const start = task.start ? dayjs(task.start).format('MM月DD日 HH:mm') : ''
+    const end = task.end ? dayjs(task.end).format('MM月DD日 HH:mm') : ''
+    return `${start}${start && end ? '-' : ''}${end}`
   }, [task])
 
   return (

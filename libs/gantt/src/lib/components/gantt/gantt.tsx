@@ -88,7 +88,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [listCellWidth, setListCellWidth] = useState('150px')
   const [taskListWidth, setTaskListWidth] = useState(0)
   const [taskListHeight, setTaskListHeight] = useState(0)
-  const [scrollTime, setScrollTime] = useState(0)
   const [taskHeaderWidth, setTaskHeaderWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
@@ -338,6 +337,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     setSvgContainerHeight(tasks.length * rowHeight + headerHeight * 2)
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
+    event.stopPropagation()
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
       let newScrollX = scrollX + scrollMove
@@ -347,7 +347,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         newScrollX = svgWidth
       }
       setScrollX(newScrollX)
-      event.preventDefault()
     } else if (ganttHeight) {
       let newScrollY = scrollY + event.deltaY
       if (newScrollY < 0) {
@@ -357,12 +356,12 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
-        event.preventDefault()
       }
     }
 
     setIgnoreScrollEvent(true)
   })
+
   // scroll events
   useEffect(() => {
     // subscribe if scroll is necessary
@@ -545,8 +544,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     dateSetup.dates,
     scrollX,
     taskDict,
-    taskList,
-    scrollTime
+    taskList
   ])
 
   const toTodayView = useMemoizedFn(() => {
@@ -602,7 +600,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           scrollX={scrollX}
           currentDate={currentDate}
           taskListWidth={taskListWidth}
-          setScrollTime={setScrollTime}
+          setScrollX={setScrollX}
         />
 
         {/* {ganttEvent.changedTask && (

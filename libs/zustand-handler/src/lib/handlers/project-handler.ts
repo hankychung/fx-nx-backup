@@ -22,7 +22,7 @@ export class ProjectHandler {
     return this.projectId
   }
 
-  static updateTaskDict(tasks: IFullViewTask[]) {
+  updateTaskDict(tasks: IFullViewTask[]) {
     useProjectStore.setState(
       produce((state: IProjectState) => {
         tasks.forEach((task) => {

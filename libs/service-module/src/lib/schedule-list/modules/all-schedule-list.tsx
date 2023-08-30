@@ -69,6 +69,10 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   const fetchList = useMemoizedFn(async (params: IInitTodayList) => {
     try {
+      if (params.tasks) {
+        return await initTodayList(params)
+      }
+
       if (loading) return
 
       if (isInit.current) {

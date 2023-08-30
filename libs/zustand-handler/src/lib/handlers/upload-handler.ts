@@ -1,13 +1,38 @@
 import { useUploadStore } from '@flyele-nx/zustand-store'
-import { IZustandUploadState, OssToken } from '@flyele-nx/types'
+import { FlyDoc, IZustandUploadState, OssToken } from '@flyele-nx/types'
 import { produce } from 'immer'
-import { storageApi } from '@flyele-nx/service'
+import { diskApi } from '@flyele-nx/service'
 
 class UploadHandler {
   // 上传文件
-  async upload(id: string, files: File[]) {
+  async upload(
+    id: string,
+    options: {
+      localFiles?: File[]
+      cloudFiles?: FlyDoc[] // 云文件
+    }
+  ) {
+    const { localFiles = [], cloudFiles = [] } = options
+
     // 用于端上维护的上传文件id
-    const fileIds = files.map(
+    let fileIds: string[] = []
+
+    // 如果是云文件
+    if (cloudFiles.length) {
+      fileIds = cloudFiles.map(
+        (file) =>
+          file.file_name + '-' + Math.random().toString().substring(3, 9)
+      )
+      this.addFiles(id, fileIds)
+      this.initCloudFileState({
+        uploadDictId: id,
+        fileIds,
+        files: cloudFiles
+      })
+      return
+    }
+
+    fileIds = localFiles.map(
       (file) => file.name + '-' + Math.random().toString().substring(3, 9)
     )
 
@@ -18,12 +43,12 @@ class UploadHandler {
     const { abortSignals } = this.initFileState({
       uploadDictId: id,
       fileIds,
-      files
+      files: localFiles
     })
 
-    const ossToken = await storageApi.getUploadToken()
+    const ossToken = await diskApi.getUploadToken()
 
-    files.forEach((file, index) => {
+    localFiles.forEach((file, index) => {
       // 调用api上传
       this.handleUpload({
         file,
@@ -37,6 +62,10 @@ class UploadHandler {
   // 重试
   async retry(fileId: string) {
     const { uploadDictId, file } = useUploadStore.getState().fileDict[fileId]
+    if (!file) {
+      console.error('file not found')
+      return
+    }
     const {
       abortSignals: [abortSignal]
     } = this.initFileState({
@@ -60,7 +89,7 @@ class UploadHandler {
     const { status, abortController, uploadDictId } = fileDict[fileId]
 
     if (status === 'pending') {
-      abortController.abort()
+      abortController?.abort()
     }
 
     const uploadList = uploadDict[uploadDictId]
@@ -140,6 +169,43 @@ class UploadHandler {
     return { abortSignals }
   }
 
+  private initCloudFileState({
+    uploadDictId,
+    fileIds,
+    files
+  }: {
+    uploadDictId: string
+    fileIds: string[]
+    files: FlyDoc[]
+  }) {
+    const abortSignals: AbortSignal[] = []
+
+    useUploadStore.setState(
+      produce((state: IZustandUploadState) => {
+        files.forEach((file, index) => {
+          const fileId = fileIds[index]
+
+          const controller = new AbortController()
+
+          const { signal } = controller
+
+          abortSignals.push(signal)
+
+          state.fileDict[fileId] = {
+            status: 'success',
+            fileId,
+            progress: 0,
+            name: file.file_name,
+            uploadDictId,
+            uploadedFileId: file.file_id
+          }
+        })
+      })
+    )
+
+    return { abortSignals }
+  }
+
   private async handleUpload({
     file,
     fileId,
@@ -151,9 +217,9 @@ class UploadHandler {
     abortSignal: AbortSignal
     ossToken?: OssToken
   }) {
-    const token = ossToken || (await storageApi.getUploadToken())
+    const token = ossToken || (await diskApi.getUploadToken())
 
-    storageApi
+    diskApi
       .upload({
         abortSignal,
         token,

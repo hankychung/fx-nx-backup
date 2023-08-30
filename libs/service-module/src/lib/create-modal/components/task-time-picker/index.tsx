@@ -6,6 +6,7 @@ import { useMemoizedFn } from 'ahooks'
 import { MatterTimePicker, TabKey } from './components/matter-time-picker'
 import { useCreatTaskTime } from './hooks/useCreatTaskTime'
 import { FlyTextTooltip } from '@flyele/flyele-components'
+import { getDate_MD_Week_Hm } from '@flyele-nx/utils'
 
 const _TaskTimePicker = () => {
   const [showModal, setShowModal] = useState(false)
@@ -16,7 +17,8 @@ const _TaskTimePicker = () => {
 
   const { timeData, timeText, onConfirmTime, initTimeData } = useCreatTaskTime()
 
-  const showDatePicker = useMemoizedFn(() => {
+  const showDatePicker = useMemoizedFn((type: TabKey) => {
+    setModalTabKey(type)
     setShowModal(true)
   })
 
@@ -44,7 +46,7 @@ const _TaskTimePicker = () => {
     <>
       <MatterCreateCell
         isMatterCreate
-        onClick={showDatePicker}
+        onClick={() => showDatePicker(TabKey.time)}
         img={() => <TimeIcon width={16} height={16} />}
       >
         <div className={styles.datePicker}>
@@ -59,10 +61,12 @@ const _TaskTimePicker = () => {
       {!!executeAt && (
         <MatterCreateCell
           isMatterCreate
-          onClick={showDatePicker}
+          onClick={() => showDatePicker(TabKey.executeAt)}
           img={() => <FlagIcon width={16} height={16} />}
         >
-          <div className={styles.datePicker}>{executeAt}</div>
+          <div className={styles.datePicker}>{`${getDate_MD_Week_Hm(
+            executeAt
+          )} 启动`}</div>
         </MatterCreateCell>
       )}
 
@@ -70,9 +74,18 @@ const _TaskTimePicker = () => {
         open={showModal}
         defaultActiveKey={modalTabKey}
         timeData={timeData}
+        executeAt={executeAt}
         onClose={closeModal}
         onConfirmTime={(data) => {
           onConfirmTime(data)
+          closeModal()
+        }}
+        onConfirmExecuteAt={(date) => {
+          if (date) {
+            setExecuteAt(date.unix())
+          } else {
+            setExecuteAt(0)
+          }
           closeModal()
         }}
       />

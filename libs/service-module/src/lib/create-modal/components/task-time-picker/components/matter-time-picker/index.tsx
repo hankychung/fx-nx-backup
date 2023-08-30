@@ -7,6 +7,7 @@ import {
 } from '../../../../../time-component/date-selector'
 import { ExecuteAtSelector } from '../../../../../time-component/execute-at-selector'
 import { ITimeProps } from '@flyele-nx/types'
+import { Dayjs } from 'dayjs'
 
 export enum TabKey {
   time = 'time',
@@ -19,7 +20,9 @@ interface IProps {
   defaultActiveKey?: TabKey
   repeatData?: IRepeatData
   onConfirmTime: (data: ITimeProps) => void
+  onConfirmExecuteAt: (data: Dayjs | undefined) => void
   timeData?: ITimeProps
+  executeAt?: number
 }
 
 const _MatterTimePicker = ({
@@ -28,7 +31,9 @@ const _MatterTimePicker = ({
   repeatData,
   defaultActiveKey = TabKey.time,
   onConfirmTime,
-  timeData
+  timeData,
+  executeAt,
+  onConfirmExecuteAt
 }: IProps) => {
   return (
     <Modal
@@ -64,11 +69,10 @@ const _MatterTimePicker = ({
               label: '启动时间',
               children: (
                 <ExecuteAtSelector
+                  defaultValue={executeAt}
+                  endTime={timeData?.endTime}
                   onClose={onClose}
-                  onConfirm={(date) => {
-                    console.log('@@ date', date)
-                    onClose()
-                  }}
+                  onConfirm={onConfirmExecuteAt}
                 />
               )
             }

@@ -1,0 +1,36 @@
+.wrap {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background: #fcfcfc;
+
+  .tips {
+    font-size: 14px;
+    text-align: center;
+    color: #b4b4b4;
+    flex: 1;
+  }
+
+  .info {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    justify-content: flex-start;
+
+    .date {
+      font-size: 15px;
+      font-weight: bold;
+      color: rgba(38, 38, 38, 1);
+      margin: 0 10px 0 20px;
+      width: 100px;
+    }
+  }
+}
+
+.tip {
+  font-size: 14px;
+  color: #b4b4b4;
+  margin-left: 35px;
+}

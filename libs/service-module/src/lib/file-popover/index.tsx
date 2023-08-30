@@ -2,21 +2,26 @@ import React, { useState } from 'react'
 import { Popover, PopoverProps } from 'antd'
 
 import styles from './index.module.scss'
+import { flyeleFileModal } from '../file-flyele-modal'
+import { FlyDoc } from '@flyele-nx/types'
 
 export interface Props extends Pick<PopoverProps, 'placement'> {
   onVisibleChange?: (v: boolean) => void // 监听显隐变化
   onLocalDoc?: (files: File[]) => void
+  onFlyeleDoc?: (files: FlyDoc[]) => void
 }
 
 const FilePopover: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   onVisibleChange,
   onLocalDoc,
+  onFlyeleDoc,
   placement = 'bottom'
 }) => {
   const [visible, setVisible] = useState(false)
 
   const handleLocalDocClick = () => {
+    console.log('打开本地文档')
     setVisible(false)
     // 选择本地文件
     const input = document.createElement('input')
@@ -39,6 +44,13 @@ const FilePopover: React.FC<React.PropsWithChildren<Props>> = ({
       txt: '飞项文档',
       onClick: () => {
         console.log('打开飞项文档')
+        setVisible(false)
+        flyeleFileModal.open({
+          onConfirm: (files) => {
+            flyeleFileModal.close()
+            onFlyeleDoc?.(files)
+          }
+        })
       },
       show: true
     },

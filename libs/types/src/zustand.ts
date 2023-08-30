@@ -4,8 +4,8 @@ interface IUploadFile {
   fileId: string
   name: string
   progress: number
-  abortController: AbortController
-  file: File
+  abortController?: AbortController
+  file?: File
   uploadDictId: string
   // 真实文件id, 传给后端使用, status为success时有值
   uploadedFileId?: string

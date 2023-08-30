@@ -10,14 +10,15 @@ const fileRegArr: Array<[string, RegExp]> = [
 
 export const getFileIcon = (
   name: string,
-  iconType: 'light' | 'dark' | 'copyTask' = 'light'
+  iconType: 'light' | 'dark' | 'copyTask' | 'small' = 'light'
 ) => {
   const baseUrl =
     'https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/file'
   const dict = {
     light: `${baseUrl}/icon-`,
     dark: `${baseUrl}/load/`,
-    copyTask: `${baseUrl}/copyTask/`
+    copyTask: `${baseUrl}/copyTask/`,
+    small: `${baseUrl}/small/`
   }
 
   const type =
@@ -25,4 +26,11 @@ export const getFileIcon = (
     'unknown'
 
   return `${dict[iconType]}${type}.png`
+}
+
+// 根据文件名判断是否图片
+export const isImage = (name: string) => {
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif']
+  const extension = name.substring(name.lastIndexOf('.')).toLowerCase()
+  return imageExtensions.includes(extension)
 }

@@ -55,7 +55,7 @@ export interface ISaveFileToCloudApi {
 
 export interface IOnlineImageApi {
   ids: string[]
-  flyeleId: string
+  flyeleId?: string
   ossConfig?: string
   grantor?: string
   to?: 'private_chat' | ''

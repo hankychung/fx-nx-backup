@@ -1,0 +1,15 @@
+.container {
+  height: 100%;
+  overflow-y: auto;
+  background: #f8f8f8;
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 12px 17px;
+    box-sizing: border-box;
+    cursor: pointer;
+    .icon {
+      margin-right: 8px;
+    }
+  }
+}

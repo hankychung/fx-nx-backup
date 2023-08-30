@@ -16,12 +16,13 @@ import {
   useScheduleStore,
   useContactStore,
   useUserInfoStore,
-  globalNxController
+  globalNxController,
+  nxControllerRegister
 } from '@flyele-nx/global-processor'
 import { AuthType, UsercApi, AuthConst } from '@flyele-nx/service'
 import { IBaseProjectInfo, Taker } from '@flyele-nx/types'
 import { useMemoizedFn } from 'ahooks'
-import { contextMenuTool } from '../../../../../../index'
+import { contextMenuTool, inviteModal } from '../../../../../../index'
 import {
   MatterType,
   CATEGORY,
@@ -218,7 +219,19 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
       },
       isSmallTool
     }
-    globalNxController.onHandlerTaskAddTaker(params)
+    if (nxControllerRegister.ipcRenderer) {
+      globalNxController.onHandlerTaskAddTaker(params)
+    } else {
+      inviteModal.open({
+        inviteParams: {
+          taskId: taskId,
+          title: task.title,
+          matterType: task.matter_type,
+          projectId: projectInfo?.project_id,
+          spaceId: projectInfo?.workspace_id
+        }
+      })
+    }
   })
 
   // 协作人弹窗

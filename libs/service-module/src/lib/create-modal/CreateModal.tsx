@@ -16,6 +16,8 @@ import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
 import { IBaseProjectInfo } from '@flyele-nx/types'
 
+const FILE_DICT_ID = 'create'
+
 interface IProps {
   close: () => void
 }
@@ -58,7 +60,10 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
       <div className={style['content-wrap']}>
         <DropZone
           onChange={(_, files) => {
-            files && uploadHandler.upload('create', files)
+            files &&
+              uploadHandler.upload(FILE_DICT_ID, {
+                localFiles: files
+              })
           }}
         >
           <div className={style.content}>
@@ -72,7 +77,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               onChange={setDesc}
               placeholder="背景信息/说明（可拖文件到这里）"
             />
-            <FileDisplay fileDictId="create" />
+            <FileDisplay fileDictId={FILE_DICT_ID} />
             <TagMatterBar />
             <ProjectSelector
               project={project}

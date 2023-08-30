@@ -285,9 +285,10 @@ class TaskHandler {
   }) {
     const { taskDict, finishSchedule, schedule } = useScheduleStore.getState()
 
-    const list = (type === 'finished' ? finishSchedule : schedule)[date].map(
-      (id) => taskDict[id]
-    )
+    const decentList =
+      (type === 'finished' ? finishSchedule : schedule)[date] || []
+
+    const list = decentList.map((id) => taskDict[id])
 
     return { list }
   }

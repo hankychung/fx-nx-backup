@@ -90,7 +90,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     console.log('reload date', date)
 
     try {
-      const reloadRes = await fetchList(params ? { ...params, date } : { date })
+      const reloadRes = await fetchList(params || { date })
 
       console.log('reload res', reloadRes)
 

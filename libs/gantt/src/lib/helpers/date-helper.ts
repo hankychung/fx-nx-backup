@@ -119,9 +119,9 @@ export const ganttDateRange = (
       break
     case FullViewModeEnum.Day:
       newStartDate = startOfDate(newStartDate, 'day')
-      newStartDate = addToDate(newStartDate, -1 * preStepsCount, 'day')
+      newStartDate = addToDate(newStartDate, -90, 'day')
       newEndDate = startOfDate(newEndDate, 'day')
-      newEndDate = addToDate(newEndDate, 19, 'day')
+      newEndDate = addToDate(newEndDate, 90, 'day')
       break
     case FullViewModeEnum.QuarterDay:
       newStartDate = startOfDate(newStartDate, 'day')

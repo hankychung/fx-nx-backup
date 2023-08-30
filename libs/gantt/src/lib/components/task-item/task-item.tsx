@@ -120,8 +120,16 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
   }, [task.x1])
 
   const timeTooltip = useMemo(() => {
-    const start = task.start ? dayjs(task.start).format('MM月DD日 HH:mm') : ''
-    const end = task.end ? dayjs(task.end).format('MM月DD日 HH:mm') : ''
+    const start = task.start
+      ? dayjs(task.start).format(
+          `MM月DD日 ${task.start_time_full_day === 2 ? '' : 'HH:mm'}`
+        )
+      : ''
+    const end = task.end
+      ? dayjs(task.end).format(
+          `MM月DD日 ${task.end_time_full_day === 2 ? '' : 'HH:mm'}`
+        )
+      : ''
     return `${start}${start && end ? '-' : ''}${end}`
   }, [task])
 

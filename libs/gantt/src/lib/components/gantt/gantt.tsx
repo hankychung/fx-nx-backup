@@ -337,7 +337,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     setSvgContainerHeight(tasks.length * rowHeight + headerHeight * 2)
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
-    event.stopPropagation()
+    // event.stopPropagation()
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
       let newScrollX = scrollX + scrollMove
@@ -347,6 +347,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         newScrollX = svgWidth
       }
       setScrollX(newScrollX)
+      event.preventDefault()
     } else if (ganttHeight) {
       let newScrollY = scrollY + event.deltaY
       if (newScrollY < 0) {
@@ -356,6 +357,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
+        event.preventDefault()
       }
     }
 
@@ -559,6 +561,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     if (index === -1) {
       return
     }
+
     setCurrentViewDate(initDate)
     setScrollX(columnWidth * index - columnWidth * 2)
   })

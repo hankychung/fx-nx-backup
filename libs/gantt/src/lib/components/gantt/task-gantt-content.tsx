@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   IFullViewEventOption,
   IFullViewBarTask,
@@ -79,19 +79,24 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     const newXStep = (timeStep * columnWidth) / dateDelta
     setXStep(newXStep)
   }, [columnWidth, dates, timeStep])
+  const notMyBusiness = useMemo(() => {
+    if (!ganttEvent.changedTask) return
+    return (
+      !!userId &&
+      !isInTask(
+        ganttEvent.changedTask?.takers,
+        userId,
+        ganttEvent.changedTask?.creator_id
+      )
+    )
+  }, [ganttEvent.changedTask, userId])
 
   useEffect(() => {
     const handleMouseMove = async (event: MouseEvent) => {
+      console.log(ganttEvent.changedTask, 'ganttEvent.changedTask')
+
       if (!ganttEvent.changedTask || !point || !svg?.current) return
       event.preventDefault()
-
-      const notMyBusiness =
-        !!userId &&
-        !isInTask(
-          ganttEvent.changedTask?.takers,
-          userId,
-          ganttEvent.changedTask?.creator_id
-        )
 
       if (ganttEvent.changedTask.matter_type === MatterType.meeting) {
         const curStamp = await timeGetter.getDate()
@@ -252,7 +257,8 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     rtl,
     setFailedTask,
     setGanttEvent,
-    userId
+    userId,
+    notMyBusiness
   ])
 
   /**
@@ -327,7 +333,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     <g className="content">
       <g className="bar" fontFamily={fontFamily} fontSize={fontSize}>
         {tasks.map((task) => {
-          if (!task.start_time) return null
+          if (!task.start_time && !task.end_time) return null
           return (
             <TaskItem
               task={task}

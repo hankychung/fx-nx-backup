@@ -1,5 +1,9 @@
 import React, { useMemo } from 'react'
-import { FlyMemberSelector } from '@flyele/flyele-components'
+import {
+  FlyMemberSelector,
+  FlyMemberBookCtrl,
+  useController
+} from '@flyele/flyele-components'
 import style from './inviteModal.module.scss'
 import { useContactStore } from '@flyele-nx/zustand-store'
 import { invitePlugin } from '.'
@@ -24,6 +28,8 @@ const InviteModal: React.FC<IProps> = ({
   defaultTakers = [],
   inviteParams = {}
 }) => {
+  const controller = useController(new FlyMemberBookCtrl())
+
   const plugins = useMemo(() => {
     return [
       new invitePlugin.interact({
@@ -37,7 +43,7 @@ const InviteModal: React.FC<IProps> = ({
   }, [])
 
   const confirm = useMemoizedFn((takerIds: string[]) => {
-    console.log(takerIds)
+    console.log(takerIds, controller.checkedStateMember.values())
     close()
   })
 
@@ -52,6 +58,14 @@ const InviteModal: React.FC<IProps> = ({
             onConfirm={confirm}
             onCancel={close}
             defaultTakers={defaultTakers}
+            controller={controller}
+            onInitSetMemberState={(id) => {
+              if (defaultTakers.includes(id)) {
+                return 'checked'
+              }
+
+              return 'normal'
+            }}
           />
         </div>
       )

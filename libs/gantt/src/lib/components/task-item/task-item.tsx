@@ -118,14 +118,11 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
     // }
   }, [task.x1])
-  const userId = useUserInfoStore((state) => state.userInfo.user_id)
-  const notMyBusiness = useMemo(() => {
-    return !!userId && !isInTask(task?.takers, userId, task?.creator_id)
-  }, [userId, task])
+
   const timeTooltip = useMemo(() => {
-    const start = dayjs(task.start).format('MM月DD日 HH:mm')
-    const end = dayjs(task.end).format('MM月DD日 HH:mm')
-    return `${start}-${end}`
+    const start = task.start ? dayjs(task.start).format('MM月DD日 HH:mm') : ''
+    const end = task.end ? dayjs(task.end).format('MM月DD日 HH:mm') : ''
+    return `${start}${start && end ? '-' : ''}${end}`
   }, [task])
 
   return (
@@ -160,12 +157,12 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
         {
           <g
             className={style.timeTip}
-            x={getX}
-            y={task.y < 40 ? task.y + 40 : task.y - 50}
+            x={task.y < 40 ? task.x1 - 240 : getX}
+            y={task.y < 40 ? task.y : task.y - 50}
           >
             <foreignObject
-              x={getX}
-              y={task.y < 40 ? task.y + 40 : task.y - 50}
+              x={task.y < 40 ? task.x1 - 240 : getX}
+              y={task.y < 40 ? task.y : task.y - 50}
               width="240"
               height="130"
             >
@@ -178,7 +175,7 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
           x={getX}
           y={task.y + taskHeight * 0.5}
           className={cs(style.barLabel, {
-            [style.overColor]: !!task.finish_time
+            [style.overColor]: !!task.finish_time || !!task.complete_at
           })}
           ref={textRef}
           color="rgba(189, 189, 189, 1)"

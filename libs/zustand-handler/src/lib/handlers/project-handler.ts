@@ -26,7 +26,10 @@ export class ProjectHandler {
     useProjectStore.setState(
       produce((state: IProjectState) => {
         tasks.forEach((task) => {
-          state.taskDict[zustandUtils.getProjectKey(task)] = task
+          state.taskDict[zustandUtils.getProjectKey(task)] = {
+            ...state.taskDict[zustandUtils.getProjectKey(task)],
+            ...task
+          }
         })
       })
     )

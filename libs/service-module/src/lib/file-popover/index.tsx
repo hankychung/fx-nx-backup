@@ -21,6 +21,7 @@ const FilePopover: React.FC<React.PropsWithChildren<Props>> = ({
   const [visible, setVisible] = useState(false)
 
   const handleLocalDocClick = () => {
+    console.log('打开本地文档')
     setVisible(false)
     // 选择本地文件
     const input = document.createElement('input')

@@ -196,7 +196,8 @@ class UploadHandler {
             fileId,
             progress: 0,
             name: file.file_name,
-            uploadDictId
+            uploadDictId,
+            uploadedFileId: file.file_id
           }
         })
       })

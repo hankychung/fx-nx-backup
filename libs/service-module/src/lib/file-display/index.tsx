@@ -1,9 +1,12 @@
 import { uploadHandler } from '@flyele-nx/zustand-handler'
 import style from './index.module.scss'
 import { useUploadStore } from '@flyele-nx/zustand-store'
-import { getFileIcon } from '@flyele-nx/utils'
-import { AddIcon, DeleteOrCloseIcon } from '@flyele-nx/icon'
+import { getFileIcon, isImage } from '@flyele-nx/utils'
+import { AddIcon, DeleteOrCloseIcon, LoadingIcon } from '@flyele-nx/icon'
 import FilePopover from '../file-popover'
+import { useState } from 'react'
+import { diskApi } from '@flyele-nx/service'
+import { Image } from 'antd'
 
 interface IProps {
   fileDictId: string
@@ -13,19 +16,41 @@ const FileDisplay: React.FC<IProps> = (props: IProps) => {
   const { fileDictId } = props
   const fileList = useUploadStore((state) => state.uploadDict[fileDictId]) || []
   const fileDict = useUploadStore((state) => state.fileDict)
+  const [imageDict, setImageDict] = useState<Record<string, string>>({})
+  const getImageDict = async (fileId: string) => {
+    const { name, uploadedFileId, status } = fileDict[fileId]
+
+    if (
+      status === 'success' &&
+      uploadedFileId &&
+      !imageDict[uploadedFileId] &&
+      isImage(name)
+    ) {
+      const ids = fileList.map((i) => fileDict[i].uploadedFileId ?? '')
+      const res = await diskApi.getOnlineImage({ ids: ids })
+
+      setImageDict(res.data)
+    }
+  }
 
   return (
     <div className={style['file-display']}>
       <div className={style.list}>
         {fileList.map((fileId) => {
-          const { name } = fileDict[fileId]
+          const { name, uploadedFileId, status } = fileDict[fileId]
+          const url =
+            isImage(name) && uploadedFileId
+              ? imageDict[uploadedFileId]
+              : getFileIcon(name, 'light')
 
+          getImageDict(fileId)
           return (
             <div key={fileId} className={style.item}>
-              <img
+              <Image
                 alt=""
                 className={style.file_item__icon}
-                src={getFileIcon(name, 'light')}
+                src={url}
+                preview={isImage(name)}
               />
               <span className={style.file_info__file_name}>{name}</span>
               <DeleteOrCloseIcon
@@ -34,6 +59,9 @@ const FileDisplay: React.FC<IProps> = (props: IProps) => {
                 }}
                 className={style.file_item__close}
               />
+              {status === 'pending' && (
+                <LoadingIcon className={style.file_item__loading} />
+              )}
             </div>
           )
         })}

@@ -13,7 +13,8 @@ interface ITimeBoxProps {
   date: Dayjs
   showTime: boolean
   onChange: (time: Dayjs) => void
-  onClear: () => void
+  onClear?: () => void
+  showClear?: boolean
   placeholder?: string
   warpClass?: string
   disabled?: boolean // 禁用编辑
@@ -26,6 +27,7 @@ const _TimeBox = ({
   placeholder = '请输入',
   warpClass,
   onClear,
+  showClear = true,
   disabled = false
 }: ITimeBoxProps) => {
   const [showPicker, setShowPicker] = useState(false)
@@ -89,15 +91,17 @@ const _TimeBox = ({
         onChange={onChangeMinutes}
         popupClassName={styles.pickerPopup}
       />
-      <div
-        className={styles.deleteIcon}
-        onClick={() => {
-          setShowPicker(false)
-          onClear()
-        }}
-      >
-        <DeleteOrCloseIcon width={14} height={14} color="#060606" />
-      </div>
+      {showClear && (
+        <div
+          className={styles.deleteIcon}
+          onClick={() => {
+            setShowPicker(false)
+            onClear && onClear()
+          }}
+        >
+          <DeleteOrCloseIcon width={14} height={14} color="#060606" />
+        </div>
+      )}
     </div>
   )
 }

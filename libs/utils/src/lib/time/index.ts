@@ -272,6 +272,21 @@ export const getDate_validity_date = (
   return { output, firstPartOutput, secondPartOutput }
 }
 
+/** 12月4日 周四 9:00 */
+export const getDate_MD_Week_Hm = (stamp: number | undefined) => {
+  if (!stamp) return ''
+
+  const Today = dayjs()
+
+  const YYYY = dayjs.unix(stamp).format('YYYY年')
+  const TodayYYYY = Today.format('YYYY年')
+  const MD = dayjs.unix(stamp).format('M月D日')
+  const Week = `周${DAY_DICT[dayjs.unix(stamp).day()]}`
+  const Hm = dayjs.unix(stamp).format('HH:mm')
+
+  return `${YYYY !== TodayYYYY ? `${YYYY} ` : ''}${MD} ${Week} ${Hm}`
+}
+
 // 获取事项开始时间
 export const getMatterStartTime = async (
   cur: Dayjs,

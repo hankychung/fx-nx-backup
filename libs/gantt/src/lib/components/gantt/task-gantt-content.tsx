@@ -16,6 +16,7 @@ import { isInTask } from '../../utils'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { timeGetter } from '@flyele-nx/utils'
+import dayjs from 'dayjs'
 
 export type TaskGanttContentProps = {
   tasks: IFullViewBarTask[]
@@ -145,6 +146,17 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         rtl
       )
       if (isChanged) {
+        if (changedTask.repeat_id) {
+          const curStamp = dayjs().startOf('date').unix()
+
+          if (
+            changedTask?.start &&
+            dayjs(changedTask?.start).unix() < curStamp
+          ) {
+            globalNxController.showMsg({ content: '不可设置早于当前的时间' })
+            return true
+          }
+        }
         setGanttEvent({ action: ganttEvent.action, changedTask })
       }
     }
@@ -190,6 +202,16 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         onDateChange &&
         isNotLikeOriginal
       ) {
+        if (newChangedTask.repeat_id) {
+          const curStamp = dayjs().startOf('date').unix()
+
+          if (
+            newChangedTask.start &&
+            dayjs(newChangedTask.start).unix() < curStamp
+          ) {
+            return true
+          }
+        }
         if (newChangedTask.finish_time) {
           return
         }

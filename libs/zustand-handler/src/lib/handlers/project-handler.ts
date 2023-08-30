@@ -1,9 +1,4 @@
-import {
-  IContactsAndStatus,
-  IFullViewTaker,
-  IFullViewTask,
-  ITakerAndStatus
-} from '@flyele-nx/types'
+import { IFullViewTask } from '@flyele-nx/types'
 import {
   IProjectState,
   useProjectStore,
@@ -25,6 +20,16 @@ export class ProjectHandler {
 
   getProjectId() {
     return this.projectId
+  }
+
+  static updateTaskDict(tasks: IFullViewTask[]) {
+    useProjectStore.setState(
+      produce((state: IProjectState) => {
+        tasks.forEach((task) => {
+          state.taskDict[zustandUtils.getProjectKey(task)] = task
+        })
+      })
+    )
   }
 
   // 拉取子事项

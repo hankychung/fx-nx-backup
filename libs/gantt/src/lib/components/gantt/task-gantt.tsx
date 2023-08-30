@@ -4,6 +4,7 @@ import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
 import styles from './gantt.module.scss'
 import cs from 'classnames'
+import { useDisplayEffect } from '@flyele/flyele-components'
 export type TaskGanttProps = {
   gridProps: GridProps
   calendarProps: CalendarProps
@@ -45,6 +46,11 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
     }
   }, [scrollX])
 
+  useDisplayEffect(() => {
+    if (verticalGanttContainerRef.current) {
+      verticalGanttContainerRef.current.scrollLeft = scrollX
+    }
+  }, verticalGanttContainerRef.current)
   // const handleScroll = useMemoizedFn((event) => {
   //   console.log(event)
   //   if (event.wheelDelta) {

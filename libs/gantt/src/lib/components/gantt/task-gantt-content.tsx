@@ -93,8 +93,6 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
 
   useEffect(() => {
     const handleMouseMove = async (event: MouseEvent) => {
-      console.log(ganttEvent.changedTask, 'ganttEvent.changedTask')
-
       if (!ganttEvent.changedTask || !point || !svg?.current) return
       event.preventDefault()
 

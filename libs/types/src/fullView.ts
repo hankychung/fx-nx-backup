@@ -559,6 +559,7 @@ export type IFullViewTask = {
   files?: IFullViewFiles[] // 背景信息文件
 
   priority_level?: QuadrantValue
+  refreshWorkflow?: boolean
 } & Partial<IBaseProjectInfo> &
   Partial<IFullFlowStepList>
 export interface IFullFlowStepList {

@@ -108,7 +108,7 @@ export const Bar = ({
         progressWidth={task.progressWidth}
         barCornerRadius={task.barCornerRadius}
         styles={task.styles}
-        isFinish={!!task.finish_time}
+        isFinish={!!task.finish_time || !!task.complete_at}
         isSelected={isSelected}
         onMouseDown={(e) => {
           isDateChangeable && onEventStart('move', task, e)
@@ -125,7 +125,7 @@ export const Bar = ({
               width={task.handleWidth}
               height={handleHeight}
               barCornerRadius={task.barCornerRadius}
-              isFinish={!!task.finish_time}
+              isFinish={!!task.finish_time || !!task.complete_at}
               isShowDrop={isShowDrop}
               onMouseDown={(e) => {
                 onEventStart('start', task, e)
@@ -138,7 +138,7 @@ export const Bar = ({
               width={task.handleWidth}
               height={handleHeight}
               barCornerRadius={task.barCornerRadius}
-              isFinish={!!task.finish_time}
+              isFinish={!!task.finish_time || !!task.complete_at}
               isShowDrop={isShowDrop}
               onMouseDown={(e) => {
                 onEventStart('end', task, e)

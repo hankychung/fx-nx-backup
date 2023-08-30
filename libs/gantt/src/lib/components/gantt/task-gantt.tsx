@@ -13,6 +13,7 @@ export type TaskGanttProps = {
   scrollX: number
   currentDate: string
   taskListWidth: number
+  setScrollX: (num: number) => void
 }
 export const TaskGantt: React.FC<TaskGanttProps> = ({
   gridProps,
@@ -22,7 +23,8 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   scrollY,
   scrollX,
   currentDate,
-  taskListWidth
+  taskListWidth,
+  setScrollX
 }) => {
   const ganttSVGRef = useRef<SVGSVGElement>(null)
   const horizontalContainerRef = useRef<HTMLDivElement>(null)
@@ -43,6 +45,26 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
     }
   }, [scrollX])
 
+  // const handleScroll = useMemoizedFn((event) => {
+  //   console.log(event)
+  //   if (event.wheelDelta) {
+  //     // 屏蔽scroll事件
+  //     event.preventDefault()
+  //   }
+  //   setScrollX(verticalGanttContainerRef?.current?.scrollLeft || 0)
+  // })
+
+  // useEffect(() => {
+  //   // subscribe if scroll is necessary
+  //   verticalGanttContainerRef.current?.addEventListener('scroll', handleScroll)
+  //   return () => {
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //     verticalGanttContainerRef.current?.removeEventListener(
+  //       'scroll',
+  //       handleScroll
+  //     )
+  //   }
+  // }, [verticalGanttContainerRef, handleScroll])
   return (
     <div
       className={styles.ganttVerticalContainer}

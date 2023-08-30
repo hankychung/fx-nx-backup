@@ -87,7 +87,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
   })
 
   const reload = useMemoizedFn(async (params?: IInitTodayList) => {
-    console.log('reload date', date)
+    console.log('reload date', date, params)
 
     try {
       const reloadRes = await fetchList(params || { date })

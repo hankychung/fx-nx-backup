@@ -1,4 +1,4 @@
-import { FlyDoc, OssToken } from '@flyele-nx/types'
+import { FlyDoc, IOnlineImageApi, OssToken } from '@flyele-nx/types'
 import { service } from '../service'
 import { AxiosProgressEvent } from 'axios'
 
@@ -70,6 +70,18 @@ class Disk {
 
   getStorage = (params: { page?: number; page_record?: number }) => {
     return service.get<FlyDoc[]>({ url: `${this.prefix}/storages`, params })
+  }
+
+  async getOnlineImage({
+    ids = [],
+    grantor = '',
+    flyeleId = ''
+  }: IOnlineImageApi) {
+    const sIds = ids.join(',')
+
+    return service.get<Record<string, string>>({
+      url: `${this.prefix}/storages/batch?file_id=${sIds}&grantor=${grantor}&flyele_id=${flyeleId}`
+    })
   }
 }
 

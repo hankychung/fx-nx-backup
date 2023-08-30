@@ -27,3 +27,10 @@ export const getFileIcon = (
 
   return `${dict[iconType]}${type}.png`
 }
+
+// 根据文件名判断是否图片
+export const isImage = (name: string) => {
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif']
+  const extension = name.substring(name.lastIndexOf('.')).toLowerCase()
+  return imageExtensions.includes(extension)
+}

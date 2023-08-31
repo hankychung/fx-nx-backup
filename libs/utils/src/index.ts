@@ -32,5 +32,6 @@ export {
   getTaskMatterStartTime,
   getMatterTimeParams,
   getTimeKeys,
-  getMatterTimeText
+  getMatterTimeText,
+  getDefaultRulesIntoState
 } from './lib/time'

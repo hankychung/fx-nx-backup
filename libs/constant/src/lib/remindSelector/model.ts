@@ -82,3 +82,11 @@ export type RemindConfigMeeting = {
   startRemind: Array<RemindItemType<'meeting'>>
   endRemind: []
 }
+
+export type RemindDataType<T extends RemindType = 'all'> = [T] extends [
+  'matter'
+]
+  ? MatterRemindList
+  : [T] extends ['meeting']
+  ? MeetingRemindList
+  : MatterRemindList | MeetingRemindList | [string[], string[]]

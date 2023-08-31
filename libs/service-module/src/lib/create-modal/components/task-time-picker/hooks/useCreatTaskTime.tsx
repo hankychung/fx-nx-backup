@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { Dispatch, useState, SetStateAction } from 'react'
 import { ITimeProps } from '@flyele-nx/types'
 import { useMemoizedFn } from 'ahooks'
 import {
@@ -11,9 +11,11 @@ import {
 } from '@flyele-nx/utils'
 import dayjs from 'dayjs'
 
-export const useCreatTaskTime = () => {
-  // 事项时间
-  const [timeData, setTimeData] = useState<ITimeProps | undefined>()
+export const useCreatTaskTime = ({
+  setTimeData
+}: {
+  setTimeData: Dispatch<SetStateAction<ITimeProps | undefined>>
+}) => {
   // 事项时间显示文案
   const [timeText, setTimeText] = useState('')
 
@@ -79,7 +81,6 @@ export const useCreatTaskTime = () => {
   })
 
   return {
-    timeData,
     onConfirmTime,
     initTimeData,
     timeText

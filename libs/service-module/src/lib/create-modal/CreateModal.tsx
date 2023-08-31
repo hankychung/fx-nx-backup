@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './createModal.module.scss'
 import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
@@ -14,7 +14,7 @@ import { uploadHandler } from '@flyele-nx/zustand-handler'
 import { FileDisplay } from '../file-display'
 import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
-import { IBaseProjectInfo } from '@flyele-nx/types'
+import { IBaseProjectInfo, ITimeProps } from '@flyele-nx/types'
 
 const FILE_DICT_ID = 'create'
 
@@ -35,6 +35,11 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
     QuadrantValue.no_important_no_urgent
   )
 
+  // 事项时间
+  const [timeData, setTimeData] = useState<ITimeProps | undefined>()
+  // 启动时间
+  const [executeAt, setExecuteAt] = useState<number>(0)
+
   const handlePrioritySelectorChange = (val: QuadrantValue) => {
     setPriority_level(val)
   }
@@ -53,6 +58,10 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
   const onChangeProject = (project: IBaseProjectInfo) => {
     setProject(project)
   }
+
+  useEffect(() => {
+    console.log('@@@ timeData', timeData)
+  }, [timeData])
 
   return (
     <div className={style['create-modal']}>
@@ -94,8 +103,13 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               priority_level={priority_level}
               handlePrioritySelectorChange={handlePrioritySelectorChange}
             />
-            <TaskTimePicker />
-            <RemindPicker />
+            <TaskTimePicker
+              timeData={timeData}
+              setTimeData={setTimeData}
+              executeAt={executeAt}
+              setExecuteAt={setExecuteAt}
+            />
+            <RemindPicker timeData={timeData} />
             <RepeatPicker />
           </div>
           <div className={style.footer}>footer</div>

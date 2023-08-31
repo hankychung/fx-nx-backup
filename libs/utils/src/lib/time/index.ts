@@ -5,9 +5,14 @@ import {
   ITimeMatterSectionType,
   ITimeMatterSectionReturn,
   IScheduleTask,
-  ITimeParams
+  ITimeParams,
+  ITimeBaseProps
 } from '@flyele-nx/types'
-import { defaultSelector } from '@flyele-nx/constant'
+import {
+  defaultSelector,
+  RemindDataType,
+  ValidRuleType
+} from '@flyele-nx/constant'
 import dayjs, { Dayjs } from 'dayjs'
 import { timeGetter } from '../timeGetter'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
@@ -563,4 +568,65 @@ export const getMatterTimeText = (date: Dayjs, cur: number) => {
   return `${date.format('M月D日')}${
     date.isSame(curDate, 'day') ? ' 今天' : weekTxt
   }`
+}
+
+// 获取事项时间计算结果值
+export const getTimeDataComputedData = (timeData: ITimeBaseProps) => {
+  const { startTimeFullDay, endTimeFullDay, startTime, endTime, isSetTime } =
+    timeData
+
+  const startFullDay = startTimeFullDay === 2
+  const endFullDay = endTimeFullDay === 2
+
+  const isSameDay = startTime.isSame(endTime, 'day')
+
+  const isOnlyEndTime = isSameDay && !endFullDay && startFullDay // 只有截止时间的情况
+  const isCurAllDay = isSameDay && endFullDay // 当天全天
+  const hasStartTime = isSetTime && (!startFullDay || !isOnlyEndTime)
+  const hasEndTime = isSetTime && (!endFullDay || !isCurAllDay)
+
+  return {
+    startFullDay,
+    endFullDay,
+    isSameDay,
+    isOnlyEndTime,
+    hasStartTime,
+    hasEndTime
+  }
+}
+
+// 在事项时间变更后获取默认的提醒时间
+export const getDefaultRulesIntoState = (timeData: ITimeBaseProps) => {
+  const ruleListPre: Array<ValidRuleType<'matter'>> = []
+  const remindDataPre: RemindDataType<'matter'> = [[], []]
+
+  const { hasStartTime, hasEndTime, startFullDay, endFullDay } =
+    getTimeDataComputedData(timeData)
+
+  if (hasStartTime) {
+    const isSameDay = dayjs().isSame(timeData.startTime, 'day')
+
+    ruleListPre.push(startFullDay ? 'all_day' : 'start_time')
+    remindDataPre[0] = [
+      startFullDay ? (isSameDay ? 'all_day_18_00' : 'all_day_9_00') : 'start_0'
+    ]
+  }
+
+  if (hasEndTime) {
+    const isSameDay = dayjs().isSame(timeData.endTime, 'day')
+
+    ruleListPre.push(endFullDay ? 'end_all_day' : 'end_time')
+    remindDataPre[1] = [
+      endFullDay
+        ? isSameDay
+          ? 'endall_day_18_00'
+          : 'endall_day_9_00'
+        : 'end_15'
+    ]
+  }
+
+  return {
+    remindDataPre,
+    ruleListPre
+  }
 }

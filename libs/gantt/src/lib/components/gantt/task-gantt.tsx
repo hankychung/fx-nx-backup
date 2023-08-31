@@ -4,7 +4,7 @@ import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
 import styles from './gantt.module.scss'
 import cs from 'classnames'
-import { useDisplayEffect } from '@flyele/flyele-components'
+import { useDisplayEffect, useMemoizedFn } from '@flyele/flyele-components'
 export type TaskGanttProps = {
   gridProps: GridProps
   calendarProps: CalendarProps
@@ -34,6 +34,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   const [todayLine, setTodayLine] = useState<ReactChild[]>([])
   const newBarProps = { ...barProps, svg: ganttSVGRef }
   const _gridProps = { ...gridProps, setTodayLine }
+  const isWheel = useRef(false)
   useEffect(() => {
     if (horizontalContainerRef.current) {
       horizontalContainerRef.current.scrollTop = scrollY
@@ -41,7 +42,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   }, [scrollY])
 
   useEffect(() => {
-    if (verticalGanttContainerRef.current) {
+    if (verticalGanttContainerRef.current && !isWheel.current) {
       verticalGanttContainerRef.current.scrollLeft = scrollX
     }
   }, [scrollX])
@@ -51,26 +52,107 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       verticalGanttContainerRef.current.scrollLeft = scrollX
     }
   }, verticalGanttContainerRef.current)
-  // const handleScroll = useMemoizedFn((event) => {
-  //   console.log(event)
-  //   if (event.wheelDelta) {
-  //     // 屏蔽scroll事件
-  //     event.preventDefault()
-  //   }
-  //   setScrollX(verticalGanttContainerRef?.current?.scrollLeft || 0)
+  const handleScroll = useMemoizedFn((event) => {
+    if (!isWheel.current) {
+      return
+    }
+    setScrollX(verticalGanttContainerRef?.current?.scrollLeft || 0)
+    // timer = setTimeout(() => {
+    //   isWheel.current = false
+    // }, 200);
+  })
+
+  useEffect(() => {
+    // subscribe if scroll is necessary
+    verticalGanttContainerRef.current?.addEventListener(
+      'scroll',
+      handleScroll,
+      {
+        passive: false
+      }
+    )
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      verticalGanttContainerRef.current?.removeEventListener(
+        'scroll',
+        handleScroll
+      )
+    }
+  }, [verticalGanttContainerRef, handleScroll])
+
+  useEffect(() => {
+    // subscribe if scroll is necessary
+    verticalGanttContainerRef.current?.addEventListener(
+      'mousedown',
+      function (event) {
+        // 当鼠标按下时，将 isDragging 设置为 true
+        isWheel.current = true
+      }
+    )
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      verticalGanttContainerRef.current?.removeEventListener(
+        'mousedown',
+        function (event) {
+          // 当鼠标按下时，将 isDragging 设置为 true
+          isWheel.current = true
+        }
+      )
+    }
+  }, [verticalGanttContainerRef])
+  useEffect(() => {
+    // subscribe if scroll is necessary
+    verticalGanttContainerRef.current?.addEventListener(
+      'mouseup',
+      function (event) {
+        // 当鼠标按下时，将 isDragging 设置为 true
+        isWheel.current = false
+      }
+    )
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      verticalGanttContainerRef.current?.removeEventListener(
+        'mouseup',
+        function (event) {
+          // 当鼠标按下时，将 isDragging 设置为 true
+          isWheel.current = false
+        }
+      )
+    }
+  }, [verticalGanttContainerRef])
+
+  // const handle = useMemoizedFn((event) => {
+  //   event.stopPropagation()
+  //   event.preventDefault();
+  //   // isWheel.current = true
+  //   // clearTimeout(timer)
+  //   // timer = setTimeout(() => {
+  //   //   console.log(event.deltaX);
+
+  //   //   if (event.deltaX < 0) {
+  //   //     // 向上滚动停止的操作
+  //   //     console.log('向上滚动停止了');
+  //   //     isWheel.current = false
+  //   //     // 执行其他操作...
+  //   //   } else if (event.deltaX > 0) {
+  //   //     // 向下滚动停止的操作
+  //   //     isWheel.current = false
+  //   //     console.log('向下滚动停止了');
+  //   //     // 执行其他操作...
+  //   //   }
+  //   // }, 1000)
   // })
 
   // useEffect(() => {
   //   // subscribe if scroll is necessary
-  //   verticalGanttContainerRef.current?.addEventListener('scroll', handleScroll)
+  //   verticalGanttContainerRef.current?.addEventListener('wheel', handle, {
+  //     passive: false
+  //   })
   //   return () => {
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     verticalGanttContainerRef.current?.removeEventListener(
-  //       'scroll',
-  //       handleScroll
-  //     )
+  //     verticalGanttContainerRef.current?.removeEventListener('wheel', handle)
   //   }
-  // }, [verticalGanttContainerRef, handleScroll])
+  // }, [verticalGanttContainerRef, handle])
   return (
     <div
       className={styles.ganttVerticalContainer}

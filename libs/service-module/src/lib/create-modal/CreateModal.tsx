@@ -16,6 +16,7 @@ import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
 import { IBaseProjectInfo } from '@flyele-nx/types'
 import { ChildMatter } from './components/child-matter'
+import { MemberBar } from './components/member-bar'
 
 const FILE_DICT_ID = 'create'
 
@@ -99,6 +100,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
             <RemindPicker />
             <RepeatPicker />
             <ChildMatter />
+            <MemberBar />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

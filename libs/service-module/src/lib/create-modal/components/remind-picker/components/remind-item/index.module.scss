@@ -1,0 +1,17 @@
+.remindItem {
+  width: 100%;
+  height: 40px;
+  padding: 0 13px 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+
+  .title {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(6, 6, 6, 0.87);
+  }
+}

@@ -5,6 +5,7 @@ import Loading from './img/loading.gif'
 import TakerAdd from './img/taker_add.png'
 import TakerAddDisabled from './img/taker_add_disabled.png'
 import TakerRemove from './img/taker_remove.png'
+import CircleArrowUpGreyImg from './img/circle_arrow_up_grey.png'
 
 type IImg = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -37,4 +38,8 @@ export const TakerAddDisabledIcon: React.FC<IImg> = (props) => {
 
 export const TakerRemoveIcon: React.FC<IImg> = (props) => {
   return <img {...props} src={TakerRemove} alt="" />
+}
+
+export const CircleArrowUpGrey: React.FC<IImg> = (props) => {
+  return <img {...props} src={CircleArrowUpGreyImg} alt="" />
 }

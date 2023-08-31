@@ -1,0 +1,77 @@
+.remindListRoot {
+  width: 180px;
+  .content {
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      /* 高宽分别对应横竖滚动条的尺寸 */
+      width: 2px;
+      height: 1px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      /* 滚动条里面小方块 */
+      background: rgba(180, 180, 180, 1);
+    }
+
+    &::-webkit-scrollbar-track {
+      /* 滚动条里面轨道 */
+      background: #fff;
+    }
+
+    .itemBox {
+      position: relative;
+      user-select: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-bottom: 1px solid rgba(237, 237, 237, 1);
+      }
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 13px 20px 16px;
+    position: relative;
+
+    .btn {
+      font-size: 12px;
+      cursor: pointer;
+
+      &:hover {
+        background: #fff;
+      }
+    }
+
+    .redBtn {
+      color: rgba(254, 77, 77, 1);
+
+      &:hover {
+        color: rgba(254, 77, 77, 0.8);
+      }
+    }
+
+    .primaryBtn {
+      color: rgba(29, 210, 193, 1);
+
+      &:hover {
+        color: rgba(29, 210, 193, 0.8);
+      }
+    }
+
+    .disabled {
+      color: rgba(180, 180, 180, 1);
+
+      &:hover {
+        color: rgba(180, 180, 180, 0.8);
+      }
+    }
+  }
+}

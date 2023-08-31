@@ -5,9 +5,14 @@ import {
   ITimeMatterSectionType,
   ITimeMatterSectionReturn,
   IScheduleTask,
-  ITimeParams
+  ITimeParams,
+  ITimeBaseProps
 } from '@flyele-nx/types'
-import { defaultSelector } from '@flyele-nx/constant'
+import {
+  defaultSelector,
+  RemindDataType,
+  ValidRuleType
+} from '@flyele-nx/constant'
 import dayjs, { Dayjs } from 'dayjs'
 import { timeGetter } from '../timeGetter'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
@@ -563,4 +568,163 @@ export const getMatterTimeText = (date: Dayjs, cur: number) => {
   return `${date.format('M月D日')}${
     date.isSame(curDate, 'day') ? ' 今天' : weekTxt
   }`
+}
+
+// 获取事项时间计算结果值
+export const getTimeDataComputedData = (timeData: ITimeBaseProps) => {
+  const { startTimeFullDay, endTimeFullDay, startTime, endTime, isSetTime } =
+    timeData
+
+  const startFullDay = startTimeFullDay === 2
+  const endFullDay = endTimeFullDay === 2
+
+  const isSameDay = startTime.isSame(endTime, 'day')
+
+  const isOnlyEndTime = isSameDay && !endFullDay && startFullDay // 只有截止时间的情况
+  const isCurAllDay = isSameDay && endFullDay // 当天全天
+  const hasStartTime = isSetTime && (!startFullDay || !isOnlyEndTime)
+  const hasEndTime = isSetTime && (!endFullDay || !isCurAllDay)
+
+  return {
+    startFullDay,
+    endFullDay,
+    isSameDay,
+    isOnlyEndTime,
+    hasStartTime,
+    hasEndTime
+  }
+}
+
+// 在事项时间变更后获取默认的提醒时间
+export const getDefaultRulesIntoState = (timeData: ITimeBaseProps) => {
+  const ruleListPre: Array<ValidRuleType<'matter'>> = []
+  const remindDataPre: RemindDataType<'matter'> = [[], []]
+
+  const { hasStartTime, hasEndTime, startFullDay, endFullDay } =
+    getTimeDataComputedData(timeData)
+
+  if (hasStartTime) {
+    const isSameDay = dayjs().isSame(timeData.startTime, 'day')
+
+    ruleListPre.push(startFullDay ? 'all_day' : 'start_time')
+    remindDataPre[0] = [
+      startFullDay ? (isSameDay ? 'all_day_18_00' : 'all_day_9_00') : 'start_0'
+    ]
+  }
+
+  if (hasEndTime) {
+    const isSameDay = dayjs().isSame(timeData.endTime, 'day')
+
+    ruleListPre.push(endFullDay ? 'end_all_day' : 'end_time')
+    remindDataPre[1] = [
+      endFullDay
+        ? isSameDay
+          ? 'endall_day_18_00'
+          : 'endall_day_9_00'
+        : 'end_15'
+    ]
+  }
+
+  return {
+    remindDataPre,
+    ruleListPre
+  }
+}
+
+/** 常规的时间文本 老的 moment 版本 */
+export const getNormalTimeTxt = async ({
+  date,
+  cur,
+  curDatePrefix,
+  suffix = ''
+}: {
+  date: Dayjs
+  cur?: Dayjs
+  curDatePrefix?: string
+  suffix?: string // 每个日期上加的文字
+}) => {
+  const _cur = cur || dayjs.unix(await timeGetter.getDate())
+  const _curDatePrefix = curDatePrefix || '今天'
+
+  if (!date.isSame(_cur, 'year')) {
+    return `${date.format('YYYY年M月D日 HH:mm')}${suffix}`
+  }
+
+  return (
+    (date.isSame(_cur, 'day')
+      ? _curDatePrefix + date.format('HH:mm')
+      : date.format('M月D日 HH:mm')) + suffix
+  )
+}
+
+// 获取事项提醒时间文本
+export const getAllRemindTxt = async (
+  presetTxt: string,
+  customList?: (Dayjs | number)[],
+  isRevert = false
+) => {
+  let customTxt = ''
+
+  if (customList) {
+    const txtList = await Promise.all(
+      customList.map(
+        async (t) =>
+          await getNormalTimeTxt({
+            date: typeof t === 'number' ? dayjs.unix(t) : dayjs(t),
+            suffix: '提醒'
+          })
+      )
+    )
+
+    customTxt = txtList.join('、')
+  }
+
+  const presetNoRemind =
+    ['不提醒', '添加提醒'].includes(presetTxt) || !presetTxt
+
+  if (presetNoRemind && !customTxt) return presetTxt
+
+  if (isRevert) {
+    return customTxt
+      ? `${customTxt}${presetNoRemind ? '' : `、 ${presetTxt}`}`
+      : presetTxt
+  }
+
+  return customTxt
+    ? `${presetNoRemind ? '' : `${presetTxt}、`}${customTxt}`
+    : presetTxt
+}
+
+export const getMatterPresetRemindTxt = (
+  remindData: [string[], string[]]
+): string => {
+  const [start, end] = remindData
+
+  if (start.length === 0 && end.length === 0) return '添加提醒'
+
+  const startNoRemind =
+    (start[0] === 'start_no_remind' && start.length === 1) || start.length === 0
+  const endNoRemind =
+    (end[0] === 'end_no_remind' && end.length === 1) || end.length === 0
+
+  if (startNoRemind && endNoRemind) {
+    return '不提醒'
+  }
+
+  const first = defaultSelector.startRemind.filter(
+    (item) => !!start.find((t) => t === item.key)
+  )
+  const second = defaultSelector?.endRemind.filter((item) =>
+    end.find((t) => t === item.key)
+  )
+
+  const startTxt = first
+    .map((t) =>
+      second.length === 0 && t.key.match('all_day') ? t.curCName : t.CName
+    )
+    .join('、')
+
+  const endTxt = second.map((t) => t.CName).join('、')
+
+  return startTxt + (startTxt && endTxt ? '、' : '') + endTxt
 }

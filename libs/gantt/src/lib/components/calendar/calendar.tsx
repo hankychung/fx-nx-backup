@@ -10,6 +10,8 @@ import {
   getWeekNumberISO8601
 } from '../../helpers/date-helper'
 import styles from './calendar.module.css'
+import { useMemoizedFn } from 'ahooks'
+import dayjs from 'dayjs'
 
 export type CalendarProps = {
   dateSetup: IFullViewDateSetup
@@ -215,6 +217,11 @@ export const Calendar: React.FC<CalendarProps> = ({
     }
     return [topValues, bottomValues]
   }
+  const getWeek = useMemoizedFn((date) => {
+    const datas = dayjs(date).day()
+    const week = ['日', '一', '二', '三', '四', '五', '六']
+    return week[datas]
+  })
 
   const getCalendarValuesForDay = () => {
     const topValues: ReactChild[] = []
@@ -232,7 +239,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           x={columnWidth * i + columnWidth * 0.5}
           className={styles.calendarBottomText}
         >
-          {bottomValue}
+          {`${bottomValue} ${getWeek(date)}`}
         </text>
       )
       if (

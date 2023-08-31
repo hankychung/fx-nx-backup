@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MatterCreateCell } from '@flyele-nx/ui'
 import styles from './index.module.scss'
 import { NoticeIcon } from '@flyele-nx/icon'
-import { useMemoizedFn, useDeepCompareEffect } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import { Popover } from 'antd'
 import { RemindList } from './components/remind-list'
 import { ITimeProps } from '@flyele-nx/types'
 import { ValidRuleType } from '@flyele-nx/constant'
 import { getDefaultRulesIntoState } from '@flyele-nx/utils'
 import { Dayjs } from 'dayjs'
+import { RemindText } from './components/remind-text'
 
 interface IProps {
   timeData: ITimeProps | undefined
@@ -36,10 +37,9 @@ const _RemindPicker = ({ timeData }: IProps) => {
     setOpen(newOpen)
   })
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (!timeData) return
 
-    console.log('@@@ timeData', timeData)
     const { remindDataPre, ruleListPre } = getDefaultRulesIntoState(timeData)
 
     setRemindData(remindDataPre)
@@ -59,6 +59,7 @@ const _RemindPicker = ({ timeData }: IProps) => {
           ruleList={ruleList}
           setRemindData={setRemindData}
           setCustomRemindData={setCustomRemindData}
+          onClose={() => handleOpenChange(false)}
         />
       }
       overlayClassName={styles.remindModal}
@@ -68,7 +69,10 @@ const _RemindPicker = ({ timeData }: IProps) => {
         onClick={showPicker}
         img={() => <NoticeIcon width={16} height={16} />}
       >
-        <div className={styles.remindPicker}>remind</div>
+        <RemindText
+          remindData={remindData}
+          customRemindData={customRemindData}
+        />
       </MatterCreateCell>
     </Popover>
   )

@@ -238,7 +238,7 @@ const _DateSelector = ({
 
   useEffect(() => {
     if (defaultValue) {
-      setInnerTimeData(defaultValue)
+      setInnerTimeData({ ...defaultValue })
     }
   }, [defaultValue])
 

@@ -1,16 +1,18 @@
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import {
   defaultSelector,
   ValidRuleType,
   RemindDataType,
   DEFAULT_CUSTOM_REMIND_TOTAL,
-  RemindType
+  RemindType,
+  MAX_CUSTOM_REMIND_TOTAL
 } from '@flyele-nx/constant'
 import { RemindItem } from '../remind-item'
 import { useMemoizedFn } from 'ahooks'
 import { Dayjs } from 'dayjs'
 import { ICustomRemind } from '../../index'
+import cs from 'classnames'
 
 interface IProps {
   remindData: [string[], string[]]
@@ -19,6 +21,7 @@ interface IProps {
   setCustomRemindData: React.Dispatch<
     React.SetStateAction<ICustomRemind | undefined>
   >
+  onClose?: () => void
 }
 
 // 自定义 时间出入参
@@ -41,7 +44,8 @@ const _RemindList = ({
   remindData,
   ruleList,
   setRemindData,
-  setCustomRemindData
+  setCustomRemindData,
+  onClose
 }: IProps) => {
   const [customList, setCustomList] = useState<
     { time: Dayjs; timeTxt: string }[]
@@ -114,6 +118,52 @@ const _RemindList = ({
     onRemindChange(data)
   })
 
+  /**
+   * 添加自定义提醒
+   */
+  const addRemind = () => {
+    console.log('@@@ 添加自定义提醒')
+  }
+
+  /**
+   * 处理不提醒
+   */
+  const handlerNoRemind = () => {
+    setCustomList([])
+
+    onRemindChange({
+      presetData: [['start_no_remind'], ['end_no_remind']],
+      customData: {
+        total: maxCustomRemindTotal.current,
+        remindList: []
+      }
+    })
+
+    onClose && onClose()
+  }
+
+  /**
+   * 是否无提醒
+   */
+  const noRemind = useMemo(() => {
+    const [start, end] = remindData
+    const startNoRemind = start.length === 0 || start[0] === 'start_no_remind'
+    const endNoRemind = end.length === 0 || end[0] === 'end_no_remind'
+
+    return startNoRemind && endNoRemind && customList.length === 0
+  }, [remindData, customList.length])
+
+  /**
+   * 添加自定义提醒按钮颜色
+   */
+  const addBtnColor = useMemo(() => {
+    if (customList.length >= MAX_CUSTOM_REMIND_TOTAL) {
+      return '#ff8f00 '
+    }
+
+    return ''
+  }, [customList.length])
+
   return (
     <div className={styles.remindListRoot}>
       <div className={styles.content}>
@@ -157,7 +207,25 @@ const _RemindList = ({
         </div>
         <div className={styles.itemBox}>{/*  TODO 自定义提醒 */}</div>
       </div>
-      <div className={styles.footer}></div>
+      <div className={styles.footer}>
+        <div
+          className={cs(styles.btn, styles.redBtn, {
+            [styles.disabled]: noRemind
+          })}
+          onClick={handlerNoRemind}
+        >
+          不提醒
+        </div>
+        <div
+          className={cs(styles.btn, styles.primaryBtn)}
+          style={{
+            color: addBtnColor
+          }}
+          onClick={addRemind}
+        >
+          添加自定义提醒
+        </div>
+      </div>
     </div>
   )
 }

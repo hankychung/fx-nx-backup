@@ -630,3 +630,101 @@ export const getDefaultRulesIntoState = (timeData: ITimeBaseProps) => {
     ruleListPre
   }
 }
+
+/** 常规的时间文本 老的 moment 版本 */
+export const getNormalTimeTxt = async ({
+  date,
+  cur,
+  curDatePrefix,
+  suffix = ''
+}: {
+  date: Dayjs
+  cur?: Dayjs
+  curDatePrefix?: string
+  suffix?: string // 每个日期上加的文字
+}) => {
+  const _cur = cur || dayjs.unix(await timeGetter.getDate())
+  const _curDatePrefix = curDatePrefix || '今天'
+
+  if (!date.isSame(_cur, 'year')) {
+    return `${date.format('YYYY年M月D日 HH:mm')}${suffix}`
+  }
+
+  return (
+    (date.isSame(_cur, 'day')
+      ? _curDatePrefix + date.format('HH:mm')
+      : date.format('M月D日 HH:mm')) + suffix
+  )
+}
+
+// 获取事项提醒时间文本
+export const getAllRemindTxt = async (
+  presetTxt: string,
+  customList?: (Dayjs | number)[],
+  isRevert = false
+) => {
+  let customTxt = ''
+
+  if (customList) {
+    const txtList = await Promise.all(
+      customList.map(
+        async (t) =>
+          await getNormalTimeTxt({
+            date: typeof t === 'number' ? dayjs.unix(t) : dayjs(t),
+            suffix: '提醒'
+          })
+      )
+    )
+
+    customTxt = txtList.join('、')
+  }
+
+  const presetNoRemind =
+    ['不提醒', '添加提醒'].includes(presetTxt) || !presetTxt
+
+  if (presetNoRemind && !customTxt) return presetTxt
+
+  if (isRevert) {
+    return customTxt
+      ? `${customTxt}${presetNoRemind ? '' : `、 ${presetTxt}`}`
+      : presetTxt
+  }
+
+  return customTxt
+    ? `${presetNoRemind ? '' : `${presetTxt}、`}${customTxt}`
+    : presetTxt
+}
+
+export const getMatterPresetRemindTxt = (
+  remindData: [string[], string[]]
+): string => {
+  const [start, end] = remindData
+
+  if (start.length === 0 && end.length === 0) return '添加提醒'
+
+  const startNoRemind =
+    (start[0] === 'start_no_remind' && start.length === 1) || start.length === 0
+  const endNoRemind =
+    (end[0] === 'end_no_remind' && end.length === 1) || end.length === 0
+
+  if (startNoRemind && endNoRemind) {
+    return '不提醒'
+  }
+
+  const first = defaultSelector.startRemind.filter(
+    (item) => !!start.find((t) => t === item.key)
+  )
+  const second = defaultSelector?.endRemind.filter((item) =>
+    end.find((t) => t === item.key)
+  )
+
+  const startTxt = first
+    .map((t) =>
+      second.length === 0 && t.key.match('all_day') ? t.curCName : t.CName
+    )
+    .join('、')
+
+  const endTxt = second.map((t) => t.CName).join('、')
+
+  return startTxt + (startTxt && endTxt ? '、' : '') + endTxt
+}

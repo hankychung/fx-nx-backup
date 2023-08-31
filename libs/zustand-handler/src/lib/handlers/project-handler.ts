@@ -94,7 +94,7 @@ export class ProjectHandler {
 
   // 删除事项
   removeTasks(taskIds: string[]) {
-    const { taskDict, taskList, childrenDict } = useProjectStore.getState()
+    const { taskDict, taskList } = useProjectStore.getState()
 
     const tasks = taskIds.map((id) => taskDict[id]).filter(Boolean)
 
@@ -120,14 +120,22 @@ export class ProjectHandler {
         // 从子事项列表移除
         if (parentTaskIds.length) {
           parentTaskIds.forEach((id) => {
-            if (childrenDict[id]) {
-              childrenDict[id] = childrenDict[id].filter(
+            if (state.childrenDict[id]) {
+              state.childrenDict[id] = state.childrenDict[id].filter(
                 (id) => !taskIds.includes(id)
               )
             }
+            if (state?.taskDict[id]) {
+              state.taskDict[id] = {
+                ...state.taskDict[id],
+                task_tree_complete_total:
+                  (state?.taskDict[id]?.task_tree_complete_total ?? 1) - 1,
+                task_tree_total: (state?.taskDict[id]?.task_tree_total ?? 1) - 1
+              }
+            }
           })
 
-          state.childrenDict = childrenDict
+          // state.childrenDict = childrenDict
         }
       })
     )
@@ -199,13 +207,15 @@ export class ProjectHandler {
       const { data } = await projectApi.getTaskListOfProject({
         projectId: this.projectId,
         tasks_id: decentIds.join(','),
-        show_mode: 2
+        show_mode: 2,
+        page_number: 1,
+        page_record: 20
       })
 
       useProjectStore.setState(
         produce<IProjectState>((state) => {
           data.forEach((task) => {
-            const { parent_id } = task
+            const { parent_id, task_id } = task
             const key = zustandUtils.getProjectKey(task)
             // 顶级事项
             if (!parent_id) {
@@ -218,7 +228,8 @@ export class ProjectHandler {
 
               return
             }
-
+            console.log(state.expandDict, parent_id)
+            state.expandDict[task_id] = false
             // 子孙事项 - 重置其父事项收合状态
             parent_id.split(',').forEach((id) => {
               state.expandDict[id] = false

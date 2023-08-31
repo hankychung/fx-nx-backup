@@ -17,6 +17,7 @@ import { QrcodeInvite } from './components/qrcode-invite'
 interface IOuterProps {
   defaultTakers?: string[]
   inviteParams?: IInviteParams
+  onConfirm?: (takers: string[]) => void
 }
 
 interface IProps extends IOuterProps {
@@ -26,7 +27,8 @@ interface IProps extends IOuterProps {
 const InviteModal: React.FC<IProps> = ({
   close,
   defaultTakers = [],
-  inviteParams = {}
+  inviteParams = {},
+  onConfirm
 }) => {
   const controller = useController(new FlyMemberBookCtrl())
 
@@ -44,6 +46,7 @@ const InviteModal: React.FC<IProps> = ({
 
   const confirm = useMemoizedFn((takerIds: string[]) => {
     console.log(takerIds, controller.checkedStateMember.values())
+    onConfirm?.(takerIds)
     close()
   })
 

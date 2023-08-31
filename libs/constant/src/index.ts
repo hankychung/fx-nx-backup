@@ -19,3 +19,8 @@ export * from './lib/remindSelector'
 export * from './lib/http'
 export * from './lib/matter'
 export * from './lib/applicationLibrary'
+export type {
+  ValidRuleType,
+  RemindDataType,
+  RemindType
+} from './lib/remindSelector/model'

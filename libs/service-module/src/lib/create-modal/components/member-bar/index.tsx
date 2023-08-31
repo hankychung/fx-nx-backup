@@ -1,9 +1,37 @@
 import React from 'react'
-import { MatterCreateCell } from '@flyele-nx/ui'
+import { Avatar, MatterCreateCell } from '@flyele-nx/ui'
 import styles from './index.module.scss'
-import { Taker } from '@flyele-nx/icon'
+import {
+  Taker,
+  TakerAddDisabledIcon,
+  TakerAddIcon,
+  TakerRemoveIcon
+} from '@flyele-nx/icon'
+import { inviteModal } from '../../../invite-modal'
+import { useContactStore } from '@flyele-nx/zustand-store'
+import { uniq } from 'lodash'
 
-const _MemberBar = () => {
+interface IProps {
+  takers: string[]
+  onChange?: (val: string[]) => void
+}
+
+const _MemberBar = (props: IProps) => {
+  const { takers, onChange } = props
+  const { contactDict } = useContactStore()
+  // TODO: 待补充
+  const addDisabled = false
+
+  const handlerAddTakers = () => {
+    inviteModal.open({
+      defaultTakers: takers,
+      onConfirm: (val) => {
+        const res = uniq([...val, ...takers])
+        onChange?.(res)
+      }
+    })
+  }
+
   return (
     <div>
       <MatterCreateCell
@@ -13,8 +41,28 @@ const _MemberBar = () => {
         <div className={styles['member-bar']}>协作人</div>
       </MatterCreateCell>
       <div className={styles['member-content']}>
-        <div></div>
-        <div></div>
+        {takers?.map((id) => {
+          const item = contactDict[id]
+
+          return (
+            <Avatar
+              vipType={item.vip_type}
+              vipNextExpiredAt={item.vip_next_expired_at}
+              src={item.avatar}
+              key={item.user_id}
+              size={28}
+            />
+          )
+        })}
+        {addDisabled ? (
+          <TakerAddDisabledIcon className={styles['member-bar-item']} />
+        ) : (
+          <TakerAddIcon
+            onClick={handlerAddTakers}
+            className={styles['member-bar-item']}
+          />
+        )}
+        <TakerRemoveIcon className={styles['member-bar-item']} />
       </div>
     </div>
   )

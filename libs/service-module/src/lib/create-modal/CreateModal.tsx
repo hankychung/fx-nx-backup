@@ -27,6 +27,7 @@ interface IProps {
 const CreateModal: React.FC<IProps> = ({ close }) => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
+  const [takers, setTakers] = useState<string[]>([])
 
   //TODO
   const [showProjectSelector, setShowProjectSelector] = useState(false)
@@ -100,7 +101,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
             <RemindPicker />
             <RepeatPicker />
             <ChildMatter />
-            <MemberBar />
+            <MemberBar onChange={setTakers} takers={takers} />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

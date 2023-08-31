@@ -267,6 +267,22 @@ class ListHandler {
               tasks: [...state.schedule[date].map((id) => taskDict[id]), task]
             })
 
+            // 如果是子事项, 收合其祖先
+            if (parent_id) {
+              const { expandedDict } = useScheduleStore.getState()
+
+              const parentIds = parent_id.split(',')
+
+              Object.entries(expandedDict).forEach(([date, dict]) => {
+                parentIds.forEach((id) => {
+                  if (dict[id]) {
+                    state.expandedDict[date][id] = false
+                    return
+                  }
+                })
+              })
+            }
+
             // if (!parent_id) {
             //   // 无父事项直接插入列表, 需排序
             //   state.schedule[date] = getSortedSchedule({

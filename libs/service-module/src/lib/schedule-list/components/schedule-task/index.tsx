@@ -144,10 +144,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 
     const { ref_task_id } = data
 
-    const shouldRequest =
-      !isExpanded && !useScheduleStore.getState().childrenDict[ref_task_id]
-
-    if (shouldRequest) {
+    if (!isExpanded) {
       const { data: tasks } = await TaskApi.getScheduleTree({
         taskId: ref_task_id
       })

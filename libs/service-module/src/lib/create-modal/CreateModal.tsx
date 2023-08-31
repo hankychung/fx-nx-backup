@@ -15,6 +15,7 @@ import { FileDisplay } from '../file-display'
 import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
 import { IBaseProjectInfo, ITimeProps } from '@flyele-nx/types'
+import { MemberBar } from './components/member-bar'
 
 const FILE_DICT_ID = 'create'
 
@@ -58,10 +59,6 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
   const onChangeProject = (project: IBaseProjectInfo) => {
     setProject(project)
   }
-
-  useEffect(() => {
-    console.log('@@@ timeData', timeData)
-  }, [timeData])
 
   return (
     <div className={style['create-modal']}>
@@ -111,6 +108,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
             />
             <RemindPicker timeData={timeData} />
             <RepeatPicker />
+            <MemberBar />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

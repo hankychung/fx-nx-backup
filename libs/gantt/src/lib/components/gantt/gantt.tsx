@@ -337,7 +337,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     setSvgContainerHeight(tasks.length * rowHeight + headerHeight * 2)
   }, [ganttHeight, tasks, headerHeight, rowHeight])
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
-    // event.stopPropagation()
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
       let newScrollX = scrollX + scrollMove
@@ -375,6 +374,22 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       wrapperRef.current?.removeEventListener('wheel', handleWheel)
     }
   }, [wrapperRef, handleWheel])
+
+  //   const handleScroll = useMemoizedFn((event) => {
+  //   console.log(event)
+
+  // })
+
+  // useEffect(() => {
+  //   // subscribe if scroll is necessary
+  //   wrapperRef.current?.addEventListener('scroll', handleScroll, {
+  //     passive: false
+  //   })
+  //   return () => {
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //     wrapperRef.current?.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, [wrapperRef, handleScroll])
 
   const handleScrollY = (event: SyntheticEvent<HTMLDivElement>) => {
     if (scrollY !== event.currentTarget.scrollTop && !ignoreScrollEvent) {

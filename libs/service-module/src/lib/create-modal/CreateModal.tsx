@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './createModal.module.scss'
 import { ModalHeader } from './components/header'
 import { TitleInput } from './components/title-input'
@@ -14,7 +14,9 @@ import { uploadHandler } from '@flyele-nx/zustand-handler'
 import { FileDisplay } from '../file-display'
 import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
-import { IBaseProjectInfo } from '@flyele-nx/types'
+import { ChildMatter } from './components/child-matter'
+import { IBaseProjectInfo, ITimeProps } from '@flyele-nx/types'
+import { MemberBar } from './components/member-bar'
 
 const FILE_DICT_ID = 'create'
 
@@ -25,6 +27,7 @@ interface IProps {
 const CreateModal: React.FC<IProps> = ({ close }) => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
+  const [takers, setTakers] = useState<string[]>([])
 
   //TODO
   const [showProjectSelector, setShowProjectSelector] = useState(false)
@@ -34,6 +37,11 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
   const [priority_level, setPriority_level] = useState(
     QuadrantValue.no_important_no_urgent
   )
+
+  // 事项时间
+  const [timeData, setTimeData] = useState<ITimeProps | undefined>()
+  // 启动时间
+  const [executeAt, setExecuteAt] = useState<number>(0)
 
   const handlePrioritySelectorChange = (val: QuadrantValue) => {
     setPriority_level(val)
@@ -94,9 +102,16 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
               priority_level={priority_level}
               handlePrioritySelectorChange={handlePrioritySelectorChange}
             />
-            <TaskTimePicker />
-            <RemindPicker />
+            <TaskTimePicker
+              timeData={timeData}
+              setTimeData={setTimeData}
+              executeAt={executeAt}
+              setExecuteAt={setExecuteAt}
+            />
+            <RemindPicker timeData={timeData} />
             <RepeatPicker />
+            <ChildMatter />
+            <MemberBar onChange={setTakers} takers={takers} />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

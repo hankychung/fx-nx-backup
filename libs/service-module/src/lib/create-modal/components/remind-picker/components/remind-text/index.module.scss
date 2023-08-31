@@ -1,0 +1,37 @@
+.remindTextRoot {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  overflow: hidden;
+
+  .content {
+    display: flex;
+    color: #060606;
+    font-size: 14px;
+    margin-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .toggleBtn {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    transition: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.down {
+      transform: rotate(180deg);
+    }
+  }
+}

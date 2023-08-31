@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import { MatterCreateCell } from '@flyele-nx/ui'
 import styles from './index.module.scss'
 import { FlagIcon, TimeIcon } from '@flyele-nx/icon'
@@ -7,15 +13,27 @@ import { MatterTimePicker, TabKey } from './components/matter-time-picker'
 import { useCreatTaskTime } from './hooks/useCreatTaskTime'
 import { FlyTextTooltip } from '@flyele/flyele-components'
 import { getDate_MD_Week_Hm } from '@flyele-nx/utils'
+import { ITimeProps } from '@flyele-nx/types'
 
-const _TaskTimePicker = () => {
+interface IProps {
+  timeData: ITimeProps | undefined
+  executeAt: number
+  setTimeData: Dispatch<SetStateAction<ITimeProps | undefined>>
+  setExecuteAt: Dispatch<SetStateAction<number>>
+}
+
+const _TaskTimePicker = ({
+  timeData,
+  setTimeData,
+  executeAt,
+  setExecuteAt
+}: IProps) => {
   const [showModal, setShowModal] = useState(false)
   const [modalTabKey, setModalTabKey] = useState<TabKey>(TabKey.time)
 
-  // 启动时间
-  const [executeAt, setExecuteAt] = useState<number>(0)
-
-  const { timeData, timeText, onConfirmTime, initTimeData } = useCreatTaskTime()
+  const { timeText, onConfirmTime, initTimeData } = useCreatTaskTime({
+    setTimeData
+  })
 
   const showDatePicker = useMemoizedFn((type: TabKey) => {
     setModalTabKey(type)

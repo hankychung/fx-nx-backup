@@ -10208,7 +10208,8 @@
                 a1 = 'sort, ref_task_id'
               } else {
                 if (c0.d !== 'today' && b9 !== 3) g.push(" parent_id = '' ")
-                if (c0.f !== 3) f.push(" date = '" + A.z(c0.e) + "' ")
+                if (c0.d === 'today' || c0.f !== 3)
+                  f.push(" date = '" + A.z(c0.e) + "' ")
                 a1 = 'sort_idx, timestamp, create_at, ref_task_id'
               }
               switch (c0.f) {

@@ -15,6 +15,7 @@ import { FileDisplay } from '../file-display'
 import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
 import { IBaseProjectInfo } from '@flyele-nx/types'
+import { MemberBar } from './components/member-bar'
 
 const FILE_DICT_ID = 'create'
 
@@ -97,6 +98,7 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
             <TaskTimePicker />
             <RemindPicker />
             <RepeatPicker />
+            <MemberBar />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

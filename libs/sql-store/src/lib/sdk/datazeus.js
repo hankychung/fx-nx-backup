@@ -10024,192 +10024,191 @@
               g = []
               f = []
               e = []
-              b9 = c0.f
-              if (b9 !== 3)
+              b9 = c0.d
+              o = b9 === 'today'
+              d = !o
+              if (!d || c0.f !== 3)
                 if (c0.c.length === 0) {
-                  o = A.z(c0.e)
-                  d = A.z(i)
-                  c = A.z(h)
-                  b = A.z(i + 86400)
-                  a =
+                  c = A.z(c0.e)
+                  b = A.z(i)
+                  a = A.z(h)
+                  a0 = A.z(i + 86400)
+                  a1 =
                     "CASE\n          WHEN flow_step_id > 0 AND start_time = 0 AND end_time = 0 THEN '" +
-                    o +
+                    c +
                     "'\n          WHEN execute_at > 0 THEN CASE\n                       WHEN execute_at >= " +
-                    d +
+                    b +
                     ' AND execute_at <= ' +
-                    c +
+                    a +
                     " THEN '" +
-                    o +
+                    c +
                     "'\n                        WHEN execute_at > 0 AND execute_at < " +
-                    b +
+                    a0 +
                     " THEN '" +
-                    o +
-                    "'\n                   END\n          WHEN DATE(cycle_date, 'localtime') = '" +
-                    o +
-                    "' THEN '" +
-                    o +
-                    "'\n          WHEN start_time >= " +
-                    d +
-                    ' AND start_time < ' +
-                    b +
-                    " THEN '" +
-                    o +
-                    u.e +
-                    d +
-                    " AND end_time = 0 THEN '" +
-                    o +
-                    "'\n          WHEN end_time >= " +
-                    d +
-                    ' AND end_time <= ' +
                     c +
+                    "'\n                   END\n          WHEN DATE(cycle_date, 'localtime') = '" +
+                    c +
+                    "' THEN '" +
+                    c +
+                    "'\n          WHEN start_time >= " +
+                    b +
+                    ' AND start_time < ' +
+                    a0 +
                     " THEN '" +
-                    o +
+                    c +
                     u.e +
-                    d +
+                    b +
+                    " AND end_time = 0 THEN '" +
+                    c +
+                    "'\n          WHEN end_time >= " +
+                    b +
+                    ' AND end_time <= ' +
+                    a +
+                    " THEN '" +
+                    c +
+                    u.e +
+                    b +
                     ' AND end_time > ' +
-                    d +
+                    b +
                     " THEN '" +
-                    o +
+                    c +
                     "'\n          WHEN end_time > 0 AND end_time < " +
-                    d +
+                    b +
                     " THEN '" +
-                    o +
+                    c +
                     "'\n          WHEN repeat_type > 0 AND start_time = 0 AND end_time = 0 THEN '" +
-                    o +
+                    c +
                     "'\n          WHEN flow_step_id > 0 ANd flow_step_join = 1 AND start_time = 0 AND end_time = 0 THEN '" +
-                    o +
+                    c +
                     "'\n    END AS date"
-                  a0 = c0.d
-                  if (a0 === 'history') {
-                    c0.f = 3
-                    b9 = 3
-                  } else if (a0 === 'future')
-                    a =
+                  if (b9 === 'history') c0.f = 3
+                  else if (b9 === 'future')
+                    a1 =
                       "CASE\n          WHEN execute_at > 0 AND DATE(execute_at, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN DATE(cycle_date, 'localtime') = '" +
-                      o +
+                      c +
                       "' AND end_time > " +
-                      b +
+                      a0 +
                       " THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN start_time >= " +
-                      d +
+                      b +
                       ' AND start_time < ' +
+                      a0 +
+                      " THEN '" +
+                      c +
+                      "'\n          WHEN end_time >= " +
+                      b +
+                      ' AND end_time <= ' +
+                      a +
+                      " THEN '" +
+                      c +
+                      u.e +
+                      b +
+                      ' AND end_time > ' +
                       b +
                       " THEN '" +
-                      o +
-                      "'\n          WHEN end_time >= " +
-                      d +
-                      ' AND end_time <= ' +
                       c +
-                      " THEN '" +
-                      o +
-                      u.e +
-                      d +
-                      ' AND end_time > ' +
-                      d +
-                      " THEN '" +
-                      o +
                       "'\n    END AS date"
-                  else if (a0 === 'today')
-                    a =
+                  else if (o)
+                    a1 =
                       "CASE\n          WHEN execute_at > 0 AND DATE(execute_at, 'localtime') = '" +
-                      o +
+                      c +
                       "' THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN start_time > 0 AND end_time > 0 AND DATE(cycle_date, 'localtime') = '" +
-                      o +
+                      c +
                       "' THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN start_time > 0 AND end_time > 0 AND start_time < " +
-                      d +
+                      b +
                       ' AND end_time > ' +
-                      c +
+                      a +
                       " THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN start_time >= " +
-                      d +
+                      b +
                       ' AND start_time <= ' +
-                      c +
+                      a +
                       " THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN end_time >= " +
-                      d +
+                      b +
                       ' AND end_time <= ' +
-                      c +
+                      a +
                       " THEN '" +
-                      o +
+                      c +
                       "'\n          WHEN flow_step_id > 0 AND start_time = 0 AND end_time = 0 AND create_at >= " +
-                      d +
+                      b +
                       ' AND create_at < ' +
-                      c +
+                      a +
                       " THEN '" +
-                      o +
+                      c +
                       "'\n    END AS date"
-                  if (a0 === 'today') {
-                    d = p.a
-                    d =
+                  if (o) {
+                    b9 = p.a
+                    b9 =
                       " CASE WHEN DATE(execute_at, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "'\n                THEN 0\n            WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND start_time_full_day = 1\n                THEN 0\n            WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND end_time_full_day = 1\n                THEN 0\n            WHEN creator_id != " +
-                      d +
+                      b9 +
                       "\n                THEN 1000000000.0 / accept_at\n            ELSE 1000000000.0 / create_at\n       END AS sort_idx, CASE\n    WHEN execute_at > 0 THEN execute_at\n    WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND start_time_full_day = 1 THEN start_time\n    WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND end_time_full_day = 1 THEN end_time\n    WHEN creator_id != " +
-                      d +
+                      b9 +
                       ' THEN accept_at\n    ELSE create_at\n       END AS timestamp,'
-                    o = d
                   } else
-                    o =
+                    b9 =
                       "CASE\n           WHEN topmost_at THEN 0\n           WHEN DATE(execute_at, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "'\n               THEN 1\n           WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND start_time_full_day = 1\n               THEN 1\n           WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND end_time_full_day = 1\n               THEN 1\n           WHEN start_time < " +
-                      d +
+                      b +
                       " AND DATE(end_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "'\n               THEN 2\n           WHEN start_time_full_day = 2 AND\n                end_time_full_day = 2 AND\n                DATE(start_time, 'unixepoch', 'localtime') =\n                '" +
-                      o +
+                      c +
                       "' AND\n                DATE(end_time, 'unixepoch', 'localtime') =\n                '" +
-                      o +
+                      c +
                       "' THEN 2\n           WHEN start_time < " +
-                      d +
+                      b +
                       ' AND end_time > ' +
-                      c +
+                      a +
                       "\n               THEN 2\n           WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
-                      o +
-                      "' AND end_time > " +
                       c +
+                      "' AND end_time > " +
+                      a +
                       "\n               THEN 2\n           WHEN matter_state = 3 AND end_time > 0 THEN 3\n           WHEN execute_at = 0 AND start_time = 0 AND end_time = 0 THEN 5\n           ELSE 4\n    END AS sort_idx\n    , CASE\n          WHEN execute_at > 0 THEN execute_at\n          WHEN DATE(start_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND start_time_full_day = 1 THEN start_time\n          WHEN DATE(end_time, 'unixepoch', 'localtime') = '" +
-                      o +
+                      c +
                       "' AND end_time_full_day = 1 THEN end_time\n          WHEN end_time = 0 AND start_time < " +
-                      d +
+                      b +
                       ' THEN start_time\n          ELSE end_time\n    END AS timestamp,'
-                  a = ' ' + o + a
-                } else a = ''
-              else a = ''
-              o = c0.c
-              if (o.length !== 0) {
-                g.push(" parent_id = '" + o + "' ")
-                a1 = 'sort, ref_task_id'
+                  a1 = ' ' + b9 + a1
+                } else a1 = ''
+              else a1 = ''
+              b9 = c0.c
+              if (b9.length !== 0) {
+                g.push(" parent_id = '" + b9 + "' ")
+                a2 = 'sort, ref_task_id'
               } else {
-                if (c0.d !== 'today' && b9 !== 3) g.push(" parent_id = '' ")
-                if (c0.f !== 3) f.push(" date = '" + A.z(c0.e) + "' ")
-                a1 = 'sort_idx, timestamp, create_at, ref_task_id'
+                if (d && c0.f !== 3) g.push(" parent_id = '' ")
+                if (c0.d === 'today' || c0.f !== 3)
+                  f.push(" date = '" + A.z(c0.e) + "' ")
+                a2 = 'sort_idx, timestamp, create_at, ref_task_id'
               }
               switch (c0.f) {
                 case 1:
@@ -10242,7 +10241,7 @@
                       o +
                       ')) '
                   )
-                  a1 = 'complete_time ' + (c0.d === 'today' ? 'DESC' : '')
+                  a2 = 'complete_time ' + (c0.d === 'today' ? 'DESC' : '')
                   break
                 case 4:
                   break
@@ -10251,7 +10250,7 @@
                 b9 = p.a
                 if (c0.d === 'future') {
                   o = A.z(c0.e)
-                  a2 =
+                  a3 =
                     "LEFT JOIN (SELECT tr.task_id, MAX(repeat_id) AS repeat_id, tr.start_time, tr.end_time\n                                           , tr.start_time_full_day\n                                           , tr.end_time_full_day\n                                           , tr.complete_at, tr.cycle\n                                           , cycle_date\n                                        FROM task_repeat tr JOIN task t2 ON tr.task_id = t2.id AND\n                                                                            DATE(t2.start_time, 'unixepoch', 'localtime') !=\n                                                                            DATE(t2.end_time, 'unixepoch', 'localtime')\n                                       WHERE DATETIME(tr.cycle_date, 'localtime') <=\n                                             DATETIME('" +
                     o +
                     " 23:59:59')\n                                          OR tr.cycle = 1\n                                       GROUP BY tr.task_id\n                                       UNION\n                                      SELECT tr.task_id, MAX(repeat_id) AS repeat_id, start_time, end_time, start_time_full_day\n                                           , end_time_full_day\n                                           , complete_at, tr.cycle, cycle_date\n                                        FROM task_repeat tr\n                                                 JOIN (SELECT MAX(id) AS id, trf.task_id, tr.cycle + 1 AS cycle\n                                                         FROM task_repeat_finish trf\n                                                                  JOIN task_repeat tr ON trf.repeat_id = tr.repeat_id\n                                                        GROUP BY trf.task_id) tt\n                                                      ON tr.task_id = tt.task_id AND tr.cycle = tt.cycle\n                                       WHERE DATETIME(tr.cycle_date, 'localtime') <=\n                                             DATETIME('" +
@@ -10260,28 +10259,28 @@
                     b9 +
                     ' '
                 } else
-                  a2 =
+                  a3 =
                     "LEFT JOIN (SELECT tr.task_id, repeat_id, start_time, end_time, start_time_full_day, end_time_full_day\n                                 , complete_at, tr.cycle, MAX(create_at) AS create_at, cycle_date\n                            FROM task_repeat tr\n                            WHERE DATETIME(tr.cycle_date, 'localtime') <= DATETIME('" +
                     A.kd(A.dU(l), A.dT(l), A.dS(l), 23, 59, 59).k(0) +
                     "') OR tr.cycle = 1\n                            GROUP BY tr.task_id) AS d\n                           ON c.id = d.task_id AND b.repeat_type > 0\n                 LEFT JOIN task_repeat_finish AS e\n                           ON d.repeat_id = e.repeat_id AND e.user_id = " +
                     b9
               } else {
                 b9 = p.a
-                a2 =
+                a3 =
                   'LEFT JOIN task_repeat AS d ON c.id = d.task_id AND b.repeat_type > 0 \nLEFT JOIN task_repeat_finish AS e ON d.repeat_id = e.repeat_id AND e.user_id = ' +
                   b9
               }
-              o = a === '' ? '' : a + ', '
+              o = a1 === '' ? '' : a1 + ', '
               d = c0.e
               c = c0.d === 'today' ? '' : 'AND delete_at = 0'
               b = e.length !== 0 ? 'WHERE (' + B.a.aB(e, ' AND ') + ')' : ''
-              a0 = f.length !== 0 ? 'WHERE (' + B.a.aB(f, ' AND ') + ')' : ''
-              a3 = c0.f
-              a4 = a3 === 3
+              a = f.length !== 0 ? 'WHERE (' + B.a.aB(f, ' AND ') + ')' : ''
+              a0 = c0.f
+              a4 = a0 === 3
               if (!a4) a5 = c0.c.length !== 0 ? '' : 'sort_idx, timestamp,'
               else a5 = ''
-              a3 = a3 === 1
-              a6 = a3
+              a0 = a0 === 1
+              a6 = a0
                 ? ', CASE WHEN zb.child_count > 0 THEN 1 ELSE 0 END AS has_child'
                 : ''
               if (a4)
@@ -10294,7 +10293,7 @@
                   'SELECT GROUP_CONCAT(taker_id) AS takers, ref_task_id\n                                FROM task_dispatch td\n                                         JOIN      task_config tc ON td.ref_task_id = tc.id\n                                         LEFT JOIN (SELECT MAX(tr.id) AS id, user_id, delete_at, task_id\n                                                      FROM task_flow_step_relation tr\n                                                               JOIN task_config tc ON tr.step_id = tc.flow_step_id\n                                                     WHERE delete_at = 0\n                                                     GROUP BY task_id,user_id) tfsr\n                                                   ON td.ref_task_id = tfsr.task_id AND tfsr.user_id=td.taker_id\n                               WHERE (is_valid = 1\n                                   AND status = 1\n                                   AND td.identity NOT IN (10804, 10811)\n                                   ' +
                   (c0.d === 'today' ? '' : 'AND td.delete_at = 0') +
                   '\n                                   AND tc.flow_step_id = 0\n                                   AND personal_state IN (0, 10409, 10604, 10611)\n                                   AND operate_state = 0 AND tfsr.id IS NULL)\n                                  OR (tfsr.id IS NOT NULL)\n                               GROUP BY ref_task_id'
-              a3 = a3
+              a0 = a0
                 ? "LEFT JOIN (SELECT CAST(CASE WHEN INSTR(parent_id, ',') > 0\n                                                   THEN SUBSTR(parent_id, -INSTR(parent_id, ',') + 1)\n                                               ELSE parent_id\n                                          END AS bigint) AS task_id\n                                   , COUNT(*) AS child_count\n                                FROM task_view\n                                WHERE category != 1\n                               GROUP BY parent_id) AS zb\n                             ON a.id = zb.task_id"
                 : ''
               a7 = g.length !== 0 ? 'AND (' + B.a.aB(g, ' AND ') + ')' : ''
@@ -10308,13 +10307,13 @@
                 '\n                      AND is_valid = 1\n                      ' +
                 c +
                 '\n                      AND personal_state IN (0, 10409, 10604, 10611)\n                      AND operate_state = 0) AS a\n                 LEFT JOIN task AS b\n                           ON a.ref_task_id = b.id\n                 LEFT JOIN task_config AS c\n                           ON b.id = c.id\n               ' +
-                a2 +
+                a3 +
                 "\n                 LEFT JOIN task b1\n                           ON c.parent_id != '' AND SUBSTR(c.parent_id, 0, INSTR(c.parent_id || ',', ',')) = b1.id\n            WHERE a.ref_task_id = b.id\n                AND b.state = 10201\n                AND b.matter_type IN (10701, 10702, 10705, 10707)) AS sub_a LEFT JOIN (SELECT tc.id, IFNULL(tfs.name, '') AS flow_step_name,\n                          IFNULL(tfsr.complete_at, 0) AS flow_step_complete_at,\n                          IFNULL(tfsr.user_id, '') AS user_id,\n                          CASE WHEN r.id > 0 THEN COUNT(*) ELSE 0 END AS flow_step_user_count\n                      FROM task_config AS tc\n                               LEFT JOIN task_flow_step tfs\n                                         ON tfs.id = tc.flow_step_id\n                               LEFT JOIN task_flow_step_relation AS tfsr\n                                         ON tfsr.step_id = tfs.id AND tfsr.delete_at = 0 AND\n                                            tfsr.user_id = " +
                 b9 +
                 '\n                               LEFT JOIN task_flow_step_relation AS r\n                                         ON r.step_id = tfs.id AND r.delete_at = 0\n                      GROUP BY tc.id, tfs.id) z\n                     ON sub_a.id = z.id)\n                 ' +
                 b +
                 ')\n     , td AS (SELECT * FROM task_view ' +
-                a0 +
+                a +
                 ')\n     , real_parent AS (SELECT tc1.id, GROUP_CONCAT(tv.id) AS parent_id\n                         FROM (SELECT tc1.id, tv.parent_id, tc1.category FROM task_config tc1 JOIN td tv ON tc1.id = tv.id) tc1\n                                  LEFT JOIN td tv ON INSTR(tc1.parent_id, tv.id)\n                        WHERE tc1.category = 2 AND tv.id IS NOT NULL\n                        GROUP BY tc1.id)\n    SELECT tt.*\nFROM (SELECT ' +
                 a5 +
                 " CAST(a.id AS TEXT) AS ref_task_id, a.title, CAST(a.taker_id AS TEXT) AS taker_id, takers, a.identity\n           , CASE WHEN a.repeat_id > 0 THEN CAST(a.repeat_id AS TEXT) ELSE '' END AS repeat_id\n           , a.state, CASE WHEN a.creator_id > 0 THEN CAST(a.creator_id AS TEXT) ELSE '' END AS creator_id\n           , CASE WHEN a.invite_id > 0 THEN CAST(a.invite_id AS TEXT) ELSE '' END AS invite_id\n           , CASE WHEN a.flow_step_id > 0 THEN CAST(a.flow_step_id AS TEXT) ELSE '' END AS flow_step_id, a.create_at\n           , a.update_at, a.complete_at, a.finish_time, a.original_start_time, a.original_end_time, a.start_time\n           , a.start_time_full_day, a.end_time, a.end_time_full_day, a.end_repeat_at, execute_at, accept_at\n           , IFNULL(finish_time, complete_at) AS complete_time, sort\n           , CASE WHEN a.dispatch_id > 0 THEN CAST(a.dispatch_id AS TEXT) ELSE '' END AS dispatch_id, a.cycle\n           , a.cycle_date, a.widget, a.priority_level, topmost_at\n           , CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS has_follow, a.personal_remind_at, IFNULL(repeat_delay_total, 0) AS repeat_delay_total\n           , CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide, a.matter_type, a.repeat_type, a.remind_at\n           , IFNULL(k.taker_total, 0) AS taker_total, IFNULL(k.child_total, 0) AS child_total\n           " +
@@ -10328,7 +10327,7 @@
                 ' ) aa\n                             ON a.id = aa.ref_task_id\n                 LEFT JOIN (SELECT object_id AS task_id, \'[\' ||\n                                                         GROUP_CONCAT(\'{"tag_id":"\' || CAST(tag_id AS TEXT) ||\n                                                                      \'","name":"\' || name ||\n                                                                      \'","color":"\' || color || \'"}\') || \']\' AS tags\n                              FROM tag ft\n                                       JOIN tag_bind ftb\n                                            ON ft.id = ftb.tag_id\n                             WHERE ftb.user_id = ' +
                 b9 +
                 '\n                               AND ftb.state = 1\n                             GROUP BY object_id) ff2\n                           ON a.id = ff2.task_id                                         \n           ' +
-                a3 +
+                a0 +
                 '\n           LEFT JOIN (SELECT a.task_id, COUNT(1) AS repeat_delay_total\n                      FROM task_repeat AS a\n                           LEFT JOIN task_repeat_finish AS b\n                                     ON a.repeat_id = b.repeat_id AND b.user_id = ' +
                 b9 +
                 "\n                      WHERE b.id IS NULL AND a.end_time > 0 AND a.end_time < STRFTIME('%s', 'now')\n                      GROUP BY a.task_id) zc ON a.id = zc.task_id  \n           LEFT JOIN real_parent AS rp ON a.id = rp.id         \n ) AS tt\nWHERE INSTR(takers, '" +
@@ -10337,7 +10336,7 @@
                 a7 +
                 ' \n  '
               b9 = $.aC.I()
-              o = a1 === '' ? '' : 'ORDER BY ' + a1
+              o = a2 === '' ? '' : 'ORDER BY ' + a2
               d = c0.x
               d.toString
               d = d > 0 ? 'LIMIT ' + d : ''
@@ -10395,19 +10394,19 @@
                   A.z(b2.h(0, 'repeat_id')) +
                   ' AND a.taker_id = e.user_id '
                 : ' '
-              a0 = A.z(b2.h(0, 'ref_task_id'))
-              a3 = $.aC.b
-              if (a3 === $.aC) A.aE(A.jF(d))
+              a = A.z(b2.h(0, 'ref_task_id'))
+              a0 = $.aC.b
+              if (a0 === $.aC) A.aE(A.jF(d))
               s = 12
               return A.T(
-                a3.E(
+                a0.E(
                   0,
                   '          SELECT CAST(a.ref_task_id AS TEXT) AS task_id, CAST(a.dispatch_id AS TEXT) AS dispatch_id\n     , CAST(a.creator_id AS TEXT) AS creator_id, CAST(a.taker_id AS TEXT) AS taker_id\n     , CAST(a.invite_id AS TEXT) AS invite_id, a.invite_type\n     , a.identity, a.state, a.operate_state, a.personal_state, a.reason, a.is_admin, a.is_dispatch, a.execute_at\n     , a.personal_remind_at, a.accept_at, a.finish_time, a.cancel_at, a.revoke_at, a.exit_at, a.set_admin_at\n     , a.topmost_at, a.create_at, a.update_at, a.delete_at, a.is_view, a.status, a.is_valid\n     , IFNULL(' +
                     c +
                     ', 0) AS finish_time\n     , CASE WHEN a.creator_id = a.taker_id THEN 1 ELSE a.is_view END AS is_view\n  FROM task_dispatch a\n      ' +
                     b +
                     '\n WHERE ref_task_id = ' +
-                    a0 +
+                    a +
                     '\n AND is_valid = 1\n AND status = 1\n AND identity NOT IN (10804, 10811)\n AND operate_state = 0'
                 ),
                 $async$N

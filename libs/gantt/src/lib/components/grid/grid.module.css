@@ -1,10 +1,13 @@
 .gridRow {
-  fill: #fff;
+  fill: transparent;
 }
 .gridHoverRow {
   fill: rgba(29, 210, 193, 0.05) !important;
 }
 
+.gridHolidayRow {
+  fill: #f8f8f8 !important;
+}
 .gridRow:nth-child(even) {
   /* fill: #f5f5f5; */
 }

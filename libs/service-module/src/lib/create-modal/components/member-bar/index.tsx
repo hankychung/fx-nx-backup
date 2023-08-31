@@ -10,6 +10,7 @@ import {
 import { inviteModal } from '../../../invite-modal'
 import { useContactStore } from '@flyele-nx/zustand-store'
 import { uniq } from 'lodash'
+import { memberRemoveModal } from '../../../member-remove-modal'
 
 interface IProps {
   takers: string[]
@@ -27,6 +28,16 @@ const _MemberBar = (props: IProps) => {
       defaultTakers: takers,
       onConfirm: (val) => {
         const res = uniq([...val, ...takers])
+        onChange?.(res)
+      }
+    })
+  }
+
+  const handlerRemoveTakers = () => {
+    memberRemoveModal.open({
+      defaultTakers: takers,
+      onConfirm: (val) => {
+        const res = takers.filter((id) => !val.includes(id))
         onChange?.(res)
       }
     })
@@ -62,7 +73,10 @@ const _MemberBar = (props: IProps) => {
             className={styles['member-bar-item']}
           />
         )}
-        <TakerRemoveIcon className={styles['member-bar-item']} />
+        <TakerRemoveIcon
+          onClick={handlerRemoveTakers}
+          className={styles['member-bar-item']}
+        />
       </div>
     </div>
   )

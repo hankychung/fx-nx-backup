@@ -2,11 +2,17 @@ import { uploadHandler } from '@flyele-nx/zustand-handler'
 import style from './index.module.scss'
 import { useUploadStore } from '@flyele-nx/zustand-store'
 import { getFileIcon, isImage } from '@flyele-nx/utils'
-import { AddIcon, DeleteOrCloseIcon, LoadingIcon } from '@flyele-nx/icon'
+import {
+  AddIcon,
+  DeleteOrCloseIcon,
+  FileAddIcon,
+  LoadingIcon
+} from '@flyele-nx/icon'
 import FilePopover from '../file-popover'
 import { useState } from 'react'
 import { diskApi } from '@flyele-nx/service'
 import { Image } from 'antd'
+import { MatterCreateCell } from '@flyele-nx/ui'
 
 interface IProps {
   fileDictId: string
@@ -77,9 +83,18 @@ const FileDisplay: React.FC<IProps> = (props: IProps) => {
             })
           }}
         >
-          <div className={style.add_img_box}>
-            <AddIcon color="#ccc" className={style.add_img_box_icon} />
-          </div>
+          {fileList.length ? (
+            <div className={style.add_img_box}>
+              <AddIcon color="#ccc" className={style.add_img_box_icon} />
+            </div>
+          ) : (
+            <MatterCreateCell
+              isMatterCreate
+              img={() => <FileAddIcon color="#060606" width={16} height={16} />}
+            >
+              <div className={style.file_text_placeholder}>{`文件/图片`}</div>
+            </MatterCreateCell>
+          )}
         </FilePopover>
       </div>
     </div>

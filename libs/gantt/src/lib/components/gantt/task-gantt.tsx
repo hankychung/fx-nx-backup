@@ -47,11 +47,11 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
     }
   }, [scrollX])
 
-  useDisplayEffect(() => {
-    if (verticalGanttContainerRef.current) {
-      verticalGanttContainerRef.current.scrollLeft = scrollX
-    }
-  }, verticalGanttContainerRef.current)
+  // useDisplayEffect(() => {
+  //   if (verticalGanttContainerRef.current) {
+  //     verticalGanttContainerRef.current.scrollLeft = scrollX
+  //   }
+  // }, verticalGanttContainerRef.current)
   const handleScroll = useMemoizedFn((event) => {
     if (!isWheel.current) {
       return

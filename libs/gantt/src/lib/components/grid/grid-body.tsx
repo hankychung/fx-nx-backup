@@ -6,6 +6,7 @@ import { useGanttList } from '../../hooks/useScheduleList'
 import cs from 'classnames'
 import { useMemoizedFn } from 'ahooks'
 import { zustandUtils } from '@flyele-nx/zustand-store'
+import dayjs from 'dayjs'
 export type GridBodyProps = {
   tasks: Task[]
   dates: Date[]
@@ -32,6 +33,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   const [rowLines, setRowLines] = useState<ReactChild[]>([])
   const [todayLine, setTodayLines] = useState<ReactChild[]>([])
   const [ticks, setTicks] = useState<ReactChild[]>([])
+  const [holidays, setHolidays] = useState<ReactChild[]>([])
 
   const init = useMemoizedFn(() => {
     let y = 0
@@ -81,6 +83,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const now = new Date()
     let tickX = 0
     const ticks: ReactChild[] = []
+    const holidays: ReactChild[] = []
     let today: ReactChild = <rect />
     for (let i = 0; i < dates.length; i++) {
       const date = dates[i]
@@ -158,6 +161,29 @@ export const GridBody: React.FC<GridBodyProps> = ({
           />
         )
       }
+      if (getWeek(dates[i])) {
+        holidays.push(
+          <rect
+            key={date.getTime()}
+            x={tickX}
+            y={0}
+            width={columnWidth}
+            height={y}
+            fill={'#f8f8f8'}
+          />
+        )
+      } else {
+        holidays.push(
+          <rect
+            key={date.getTime()}
+            x={tickX}
+            y={0}
+            width={columnWidth}
+            height={y}
+            fill={'#fff'}
+          />
+        )
+      }
       // rtl for today
       if (
         rtl &&
@@ -181,6 +207,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     setGridRows(gridRows)
     setRowLines(rowLines)
     setTicks(ticks)
+    setHolidays(holidays)
   })
   useEffect(() => {
     init()
@@ -188,8 +215,16 @@ export const GridBody: React.FC<GridBodyProps> = ({
   useEffect(() => {
     setTodayLine && setTodayLine(todayLine)
   }, [setTodayLine, todayLine])
+
+  const getWeek = useMemoizedFn((date) => {
+    const datas = dayjs(date).day()
+    // const week = ['日', '一', '二', '三', '四', '五', '六']
+    return datas === 0 || datas === 6
+  })
+
   return (
     <g className="gridBody">
+      <g>{holidays}</g>
       <g className="rows">{gridRows}</g>
       <g className="rowLines">{rowLines}</g>
       <g className="ticks">{ticks}</g>

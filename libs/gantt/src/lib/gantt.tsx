@@ -151,7 +151,12 @@ const _GanttList: ForwardRefRenderFunction<
       end_time_full_day: task.end_time_full_day,
       start_time_full_day: task.start_time_full_day,
       start: task.start,
-      end: task.end
+      end: task.end,
+      widget: {
+        remind: true,
+        time: true, // 汉杰说照家峰要求全部改成true, 有问题请找他
+        repeat: true
+      }
     }
     const newTask = {
       ...task,

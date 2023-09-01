@@ -14,6 +14,7 @@ import { uploadHandler } from '@flyele-nx/zustand-handler'
 import { FileDisplay } from '../file-display'
 import { ProjectSelector } from './components/project-selector'
 import { useMemoizedFn } from 'ahooks'
+import { ChildMatter } from './components/child-matter'
 import { IBaseProjectInfo, ITimeProps } from '@flyele-nx/types'
 import { MemberBar } from './components/member-bar'
 
@@ -26,6 +27,7 @@ interface IProps {
 const CreateModal: React.FC<IProps> = ({ close }) => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
+  const [takers, setTakers] = useState<string[]>([])
 
   //TODO
   const [showProjectSelector, setShowProjectSelector] = useState(false)
@@ -108,7 +110,8 @@ const CreateModal: React.FC<IProps> = ({ close }) => {
             />
             <RemindPicker timeData={timeData} />
             <RepeatPicker />
-            <MemberBar />
+            <ChildMatter />
+            <MemberBar onChange={setTakers} takers={takers} />
           </div>
           <div className={style.footer}>footer</div>
         </DropZone>

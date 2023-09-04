@@ -13,6 +13,8 @@ import { useMemoizedFn } from 'ahooks'
 import { Dayjs } from 'dayjs'
 import { ICustomRemind } from '../../index'
 import cs from 'classnames'
+import { globalNxController } from '@flyele-nx/global-processor'
+// import { RemindTimeSelector } from '../../../../../time-component/remind-time-selector'
 
 interface IProps {
   remindData: [string[], string[]]
@@ -50,7 +52,9 @@ const _RemindList = ({
   const [customList, setCustomList] = useState<
     { time: Dayjs; timeTxt: string }[]
   >([])
+  const [showTimeSelector, setShowTimeSelector] = useState(false)
 
+  const editListIndex = useRef<number>(-1)
   const maxCustomRemindTotal = useRef(DEFAULT_CUSTOM_REMIND_TOTAL)
 
   const selectRemind = (data: string[], key: string) => {
@@ -122,7 +126,15 @@ const _RemindList = ({
    * 添加自定义提醒
    */
   const addRemind = () => {
-    console.log('@@@ 添加自定义提醒')
+    if (customList.length === MAX_CUSTOM_REMIND_TOTAL) {
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: `最多创建${MAX_CUSTOM_REMIND_TOTAL}个自定义提醒时间`
+      })
+      return
+    }
+
+    setShowTimeSelector(true)
   }
 
   /**
@@ -140,6 +152,27 @@ const _RemindList = ({
     })
 
     onClose && onClose()
+  }
+
+  /**
+   * 编辑自定义提醒
+   */
+  const onEditCustom = (index: number) => {
+    editListIndex.current = index
+    setShowTimeSelector(true)
+  }
+
+  /**
+   * 删除自定义提醒
+   */
+  const deleteCustomRemind = useMemoizedFn((index: number) => {
+    const newCustomList = [...customList]
+    newCustomList.splice(index, 1)
+    setCustomList(newCustomList)
+  })
+
+  const closeTimeSelector = () => {
+    setShowTimeSelector(false)
   }
 
   /**
@@ -205,7 +238,31 @@ const _RemindList = ({
             )
           })}
         </div>
-        <div className={styles.itemBox}>{/*  TODO 自定义提醒 */}</div>
+        <div className={styles.itemBox}>
+          {customList.map((item, index) => {
+            return (
+              <RemindItem
+                key={item.time.unix()}
+                title={item.timeTxt}
+                onClick={() => onEditCustom(index)}
+                renderRightIcon={() => (
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deleteCustomRemind(index)
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      marginRight: 2
+                    }}
+                  >
+                    X
+                  </div>
+                )}
+              />
+            )
+          })}
+        </div>
       </div>
       <div className={styles.footer}>
         <div
@@ -226,6 +283,8 @@ const _RemindList = ({
           添加自定义提醒
         </div>
       </div>
+
+      {/*<RemindTimeSelector open={showTimeSelector} onClose={closeTimeSelector} />*/}
     </div>
   )
 }

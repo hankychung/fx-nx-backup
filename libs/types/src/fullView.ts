@@ -335,6 +335,12 @@ export interface IFullViewGanttProps
     IFullViewDisplayOption,
     IFullViewStylingOption {
   tasks: Task[]
+  fetchList: () => void
+  pageParams: React.MutableRefObject<{
+    page_number: number
+    page_record: number
+  }>
+  loading: React.MutableRefObject<boolean>
 }
 
 export interface IFullViewParams {

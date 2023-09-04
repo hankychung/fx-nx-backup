@@ -71,6 +71,7 @@ const _GanttList: ForwardRefRenderFunction<
     } as any
     const res = (await projectApi.getTaskListOfProject(params)).data
     loading.current = false
+    setShowLoading(false)
     if (!res || !res.length) return
     if (res && res.length < 20) isFinished.current = true
     if (pageParams.current.page_number === 1) {
@@ -111,7 +112,6 @@ const _GanttList: ForwardRefRenderFunction<
     const { keys } = batchUpdateTask(resList)
 
     updateList({ list: keys })
-    setShowLoading(false)
   })
 
   const reload = useMemoizedFn(async () => {

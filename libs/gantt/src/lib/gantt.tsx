@@ -11,7 +11,6 @@ import { Task, IFullViewTask } from '@flyele-nx/types'
 import { Enter_page_detail, FullViewModeEnum } from '@flyele-nx/constant'
 import { useMemoizedFn } from 'ahooks'
 import { TaskApi, projectApi } from '@flyele-nx/service'
-import fetchApiAllData from './utils/fetch-api-all-data'
 import { useGanttList } from './hooks/useScheduleList'
 import { Gantt } from './components/gantt/gantt'
 // import { getFakeItem } from './utils'
@@ -21,15 +20,17 @@ import { Pub } from '@flyele-nx/constant'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { GanttHandler } from './utils/ganttHandler'
 import { LoadingPage } from './components/LoadingPage'
-
 export interface IGanttListRef {
   reload: () => void
 }
 
 const _GanttList: ForwardRefRenderFunction<
   IGanttListRef,
-  { projectId: string }
-> = ({ projectId }: { projectId: string }, ref) => {
+  { projectId: string; isinitGantt: boolean }
+> = (
+  { projectId, isinitGantt }: { projectId: string; isinitGantt: boolean },
+  ref
+) => {
   const { updateList, batchUpdateTask, taskDict, taskList, reSet } =
     useGanttList()
   const [view, _setView] = React.useState<FullViewModeEnum>(
@@ -51,43 +52,72 @@ const _GanttList: ForwardRefRenderFunction<
     GanttHandler.updateProjectId(projectId)
   }, [projectId])
 
+  const pageParams = useRef({
+    page_number: 1,
+    page_record: 20
+  })
+  const loading = useRef<boolean>(false)
+  const isFinished = useRef<boolean>(false)
   const fetchList = useMemoizedFn(async () => {
-    if (!projectId) return
+    if (!projectId || isFinished.current || loading.current) return
+    loading.current = true
     let resList: Task[] = []
     const params = {
       show_mode: 2,
       projectId: projectId,
       query_type: 0,
-      sort: 'desc'
+      sort: 'desc',
+      ...pageParams.current
+    } as any
+    const res = (await projectApi.getTaskListOfProject(params)).data
+    loading.current = false
+    setShowLoading(false)
+    if (!res || !res.length) return
+    if (res && res.length < 20) isFinished.current = true
+    if (pageParams.current.page_number === 1) {
+      pageParams.current.page_number++
+      fetchList()
     }
 
-    await fetchApiAllData(projectApi, 'getTaskListOfProject', {
-      queryParams: params,
-      responseHandler: (res) => {
-        let { data } = res
-
-        data = data?.map((i: IFullViewTask) => ({
-          ...i,
-          start: i.start_time ? new Date(i.start_time * 1000) : new Date(),
-          end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
-          name: i.title,
-          id: i.task_id,
-          type: 'task',
-          hideChildren: false,
-          displayOrder: 1
-        }))
-
-        resList = resList.concat(data)
+    const filter = res?.filter((item: IFullViewTask) => {
+      if (
+        item.start_time &&
+        (item.start_time > Math.floor(dayjs().add(2, 'year').unix()) ||
+          item.start_time < Math.floor(dayjs().subtract(2, 'year').unix()))
+      ) {
+        return false
       }
+      if (
+        item.end_time &&
+        (item.end_time > Math.floor(dayjs().add(2, 'year').unix()) ||
+          item.end_time < Math.floor(dayjs().subtract(2, 'year').unix()))
+      ) {
+        return false
+      }
+      return true
     })
-    reSet()
+    const arr = filter?.map((i: IFullViewTask) => ({
+      ...i,
+      start: i.start_time ? new Date(i.start_time * 1000) : new Date(),
+      end: i.end_time ? new Date(i.end_time * 1000) : new Date(),
+      name: i.title,
+      id: i.task_id,
+      type: 'task',
+      hideChildren: false,
+      displayOrder: 1
+    })) as unknown as Task
+
+    resList = resList.concat(arr)
+
     const { keys } = batchUpdateTask(resList)
 
     updateList({ list: keys })
-    setShowLoading(false)
   })
 
   const reload = useMemoizedFn(async () => {
+    pageParams.current.page_number = 1
+    isFinished.current = false
+    reSet()
     try {
       return await fetchList()
     } catch (error) {
@@ -102,11 +132,15 @@ const _GanttList: ForwardRefRenderFunction<
   })
 
   useEffect(() => {
-    if (projectId && !isinit.current) {
+    if (projectId && !isinit.current && isinitGantt) {
+      pageParams.current.page_number = 1
+      isFinished.current = false
+      reSet()
       reload()
+
       isinit.current = true
     }
-  }, [reload, projectId, reSet])
+  }, [reload, projectId, reSet, isinitGantt])
 
   const handleTaskDelete = (task: Task) => {
     const conf = window.confirm('Are you sure about ' + task.name + ' ?')
@@ -223,6 +257,9 @@ const _GanttList: ForwardRefRenderFunction<
           onExpanderClick={handleExpanderClick}
           columnWidth={columnWidth}
           ganttHeight={640}
+          fetchList={fetchList}
+          pageParams={pageParams}
+          loading={loading}
         />
       )}
       {showLoading && <LoadingPage />}

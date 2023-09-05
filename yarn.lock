@@ -8294,6 +8294,18 @@ intersection-observer@^0.12.0:
   resolved "https://registry.npmmirror.com/intersection-observer/-/intersection-observer-0.12.2.tgz#4a45349cc0cd91916682b1f44c28d7ec737dc375"
   integrity sha512-7m1vEcPCxXYI8HqnL8CKI6siDyD+eIWSwgB3DZA+ZTogxk9I4CDnj4wilt9x/+/QbHI4YG5YZNmC6458/e9Ktg==
 
+intl-messageformat-parser@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmmirror.com/intl-messageformat-parser/-/intl-messageformat-parser-1.4.0.tgz#b43d45a97468cadbe44331d74bb1e8dea44fc075"
+  integrity sha512-/XkqFHKezO6UcF4Av2/Lzfrez18R0jyw7kRFhSeB/YRakdrgSc9QfFZUwNJI9swMwMoNPygK1ArC5wdFSjPw+A==
+
+intl-messageformat@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmmirror.com/intl-messageformat/-/intl-messageformat-2.2.0.tgz#345bcd46de630b7683330c2e52177ff5eab484fc"
+  integrity sha512-I+tSvHnXqJYjDfNmY95tpFMj30yoakC6OXAo+wu/wTMy6tA/4Fd4mvV7Uzs4cqK/Ap29sHhwjcY+78a8eifcXw==
+  dependencies:
+    intl-messageformat-parser "1.4.0"
+
 ip@^1.1.5:
   version "1.1.8"
   resolved "https://registry.npmmirror.com/ip/-/ip-1.1.8.tgz#ae05948f6b075435ed3307acce04629da8cdbf48"
@@ -9654,6 +9666,14 @@ kind-of@^6.0.3:
   version "6.0.3"
   resolved "https://registry.npmjs.org/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
+
+kiwi-intl@^1.2.6-beta.0:
+  version "1.2.6-beta.0"
+  resolved "https://registry.npmmirror.com/kiwi-intl/-/kiwi-intl-1.2.6-beta.0.tgz#0545e5aee2169ae27a15b8388edcf9e07aa541e0"
+  integrity sha512-wYJ1QASU1elSstZjyIr9lFZLoMMYPc+NTPP2dLRcFXA31TLLcsSVoUFH8qlEb33RcSql3MCH+zeC73/voHS1XA==
+  dependencies:
+    intl-messageformat "^2.2.0"
+    lodash.get "^4.4.2"
 
 kleur@^3.0.3:
   version "3.0.3"

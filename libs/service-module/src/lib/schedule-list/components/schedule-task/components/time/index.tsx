@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
 import { IScheduleTask } from '@flyele-nx/types'
 import cs from 'classnames'
@@ -223,7 +224,7 @@ export const Time: React.FC<IPROPTime> = ({
     ) {
       globalNxController.showMsg({
         msgType: '错误',
-        content: '非协作人无法修改时间'
+        content: I18N.common.nonCollaboratorNone
       })
       return
     }
@@ -256,14 +257,16 @@ export const Time: React.FC<IPROPTime> = ({
       !task?.repeat_type &&
       !task?.flow_step_id
     )
-      return '待安排' //新增无时间显示待安排
-    return '无时间'
+      return I18N.common.unscheduled //新增无时间显示待安排
+    return I18N.common.noTime
   }, [task.flow_step_id, task.repeat_type, task.start_time])
 
   const showTxt = useMemo(() => {
     return (
       (txt || getTimerStr) +
-      (MatterType.calendar === matterType ? ' 来自本地日历' : '')
+      (MatterType.calendar === matterType
+        ? I18N.common.from_device_calendar
+        : '')
     )
   }, [getTimerStr, matterType, txt])
 
@@ -272,7 +275,13 @@ export const Time: React.FC<IPROPTime> = ({
 
     const current = getCycle()
 
-    return `${showTxt} 第${current}次 / 共${repeatTotal}次`
+    return (
+      I18N.template?.(I18N.common.showScheduleTaskTime, {
+        val1: showTxt,
+        val2: current,
+        val3: repeatTotal
+      }) || ''
+    )
   }, [repeatType, showTxt, getCycle, repeatTotal])
 
   const buildRepeatIcon = useMemo(() => {

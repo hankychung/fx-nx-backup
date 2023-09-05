@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { ILocalTask, IScheduleTask } from '@flyele-nx/types'
 import dayjs from 'dayjs'
 
@@ -67,7 +68,7 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     if (start_time_full_day === 2 && end_time_full_day === 2) {
       updateArr({
         time: 0,
-        timeTxt: '全天',
+        timeTxt: I18N.common.all_day,
         task: e
       })
       return
@@ -124,7 +125,7 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
         ) {
           updateArr({
             time: 0,
-            timeTxt: '全天',
+            timeTxt: I18N.common.all_day,
             task: e
           })
           return
@@ -155,13 +156,22 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
    * 全天排最后
    */
   temp.sort((a, b) => {
-    if (a.tTimeTxt === '全天' && b.tTimeTxt !== '全天') {
+    if (
+      a.tTimeTxt === I18N.common.all_day &&
+      b.tTimeTxt !== I18N.common.all_day
+    ) {
       return 1
     }
-    if (a.tTimeTxt !== '全天' && b.tTimeTxt === '全天') {
+    if (
+      a.tTimeTxt !== I18N.common.all_day &&
+      b.tTimeTxt === I18N.common.all_day
+    ) {
       return -1
     }
-    if (a.tTimeTxt === '全天' && b.tTimeTxt === '全天') {
+    if (
+      a.tTimeTxt === I18N.common.all_day &&
+      b.tTimeTxt === I18N.common.all_day
+    ) {
       return 0
     }
     const timeA = a.tTimeTxt.split(':')

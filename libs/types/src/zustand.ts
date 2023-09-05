@@ -1,3 +1,5 @@
+import { ILang } from '@flyele-nx/i18n'
+
 interface IUploadFile {
   status: 'pending' | 'success' | 'error'
   // 用于维护文件字典, 仅前端使用
@@ -20,10 +22,8 @@ interface IZustandUploadState {
   }
 }
 
-type ILang = 'zh-CN' | 'en-US'
-
 interface IZustandGlobalInfo {
   lang: ILang
 }
 
-export { IZustandUploadState, IZustandGlobalInfo, ILang }
+export { IZustandUploadState, IZustandGlobalInfo }

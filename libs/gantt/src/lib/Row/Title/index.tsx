@@ -653,7 +653,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
                   })}
                   onClick={handleOpen}
                 >
-                  {isGroup && !!taskTotal ? (
+                  {isGroup ? (
                     <>
                       <span>{`${completeTotal}/${taskTotal}`}</span>
                       {/* <img src={arrDownIcon} alt="" /> */}

@@ -77,7 +77,7 @@ export const ganttDateRange = (
   preStepsCount: number
 ) => {
   let newStartDate: Date = tasks[0]?.start || new Date()
-  let newEndDate: Date = tasks[0]?.start || new Date()
+  let newEndDate: Date = tasks[0]?.end || new Date()
   if (tasks && tasks.length > 0) {
     for (const task of tasks) {
       if (task.start < newStartDate) {

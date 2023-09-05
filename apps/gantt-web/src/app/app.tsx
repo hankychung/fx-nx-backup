@@ -6,7 +6,7 @@ import { GanttList } from '@flyele-nx/gantt'
 const App = () => {
   return (
     <div className="Wrapper">
-      <GanttList projectId="2730164577370211"></GanttList>
+      <GanttList projectId="2214923039933130" isinitGantt={false}></GanttList>
     </div>
   )
 }

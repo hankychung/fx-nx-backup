@@ -20,4 +20,10 @@ interface IZustandUploadState {
   }
 }
 
-export { IZustandUploadState }
+type ILang = 'zh-CN' | 'en-US'
+
+interface IZustandGlobalInfo {
+  lang: ILang
+}
+
+export { IZustandUploadState, IZustandGlobalInfo, ILang }

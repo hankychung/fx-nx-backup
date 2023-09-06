@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { ErrorPage } from './components/error-page'
 import { ListAllFinished } from './components/all-finished'
 import ReallyEmpty from './components/really-empty'
@@ -62,7 +63,7 @@ export const EmptyData = (props: IProps) => {
     return (
       <div className={classNames(styles.loading)}>
         <img alt="" src={LoadingIcon} />
-        <span>加载中</span>
+        <span>{I18N.common.loading}</span>
       </div>
     )
 
@@ -83,12 +84,14 @@ export const EmptyData = (props: IProps) => {
         <div className={styles['empty-relax']}>
           <img src={relaxBg} alt="" />
           <div className={styles.txt}>
-            <div>暂无事项安排</div>
+            <div>{I18N.common.noTaskAtTheMoment}</div>
           </div>
         </div>
       )
     }
-    return <div className={styles['null-tip']}>这天好像没做什么事呢~</div>
+    return (
+      <div className={styles['null-tip']}>{I18N.common.nothingTodoToday}</div>
+    )
   }
 
   return null

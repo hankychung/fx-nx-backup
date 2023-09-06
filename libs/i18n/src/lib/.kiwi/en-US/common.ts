@@ -382,5 +382,11 @@ export default {
   areYouSureYouWantToMove: 'Are you sure to remove?',
   textLabelExist: '“{val1}” already existed',
   onlyChooseAtMostTag: 'maximum of {val1} tags',
-  missingSelectionLabel: 'Add tag failed'
+  missingSelectionLabel: 'Add tag failed',
+  noTaskAtTheMoment: 'No task today',
+  noTaskToday: 'No task today',
+  createAGenus: 'Build your daily life',
+  nothingTodoToday: 'This day was free~',
+  yourTaskHasBeenResolved: 'All tasks completed！',
+  networkErrorRefresh: 'Network error, please click refresh to load again'
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './index.module.scss'
 import cs from 'classnames'
 import { ArrowDownIcon } from '@flyele-nx/icon'
+import { I18N } from '@flyele-nx/i18n'
 
 const _FinishNumBtn = ({
   show,
@@ -36,7 +37,7 @@ const _FinishNumBtn = ({
         onClick={onChange}
       >
         <div className={cs(isDarkMode ? styles.textBlack : styles.text)}>
-          已完成·{count || 0}
+          {I18N.common.completed}·{count || 0}
         </div>
         <div className={cs(styles.icon, { [styles.showUp]: show })}>
           <ArrowDownIcon width={8} height={8} color="#B4B4B4" />

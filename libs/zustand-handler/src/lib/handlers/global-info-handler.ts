@@ -1,4 +1,5 @@
-import { ILang, IZustandGlobalInfo } from '@flyele-nx/types'
+import { IZustandGlobalInfo } from '@flyele-nx/types'
+import { ILang } from '@flyele-nx/i18n'
 import { useGlobalInfoStore } from '@flyele-nx/zustand-store'
 import { produce } from 'immer'
 

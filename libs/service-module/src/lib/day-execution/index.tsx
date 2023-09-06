@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useState, useMemo, useEffect } from 'react'
 import styles from './index.module.scss'
 import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
@@ -129,7 +130,7 @@ const _DayExecution = ({
     return [
       {
         tTime: 0,
-        tTimeTxt: '已完成',
+        tTimeTxt: I18N.common.completed,
         taskItems: list.sort(
           (a, b) =>
             (b.finish_time || b.create_at) - (a.finish_time || a.create_at)
@@ -166,8 +167,8 @@ const _DayExecution = ({
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.text}>
-            当日事项：
-            {taskTotal ? `${completeTotal}/${taskTotal}` : '无'}
+            {`${I18N.common.today_schedule}:`}
+            {taskTotal ? `${completeTotal}/${taskTotal}` : I18N.common.none}
           </div>
           {!!taskTotal && (
             <Progress
@@ -185,7 +186,7 @@ const _DayExecution = ({
         <div className={styles.headerRight}>
           {!!taskTotal && (
             <>
-              剩余：
+              {`${I18N.common.residue}:`}
               <span className={styles.total}>{total}</span>
             </>
           )}
@@ -224,7 +225,7 @@ const _DayExecution = ({
                     />
                   </>
                 )}
-                {loading && <Loading text="正在加载" top={10} />}
+                {loading && <Loading text={I18N.common.loading2} top={10} />}
               </InfiniteScroll>
             </div>
             {show && (
@@ -233,7 +234,7 @@ const _DayExecution = ({
                   className={styles.hideBtn}
                   onClick={() => setShow((show) => !show)}
                 >
-                  收起
+                  {I18N.common.fold}
                   <div
                     className={cs(styles.arrowIcon, {
                       [styles.arrowIconUp]: show

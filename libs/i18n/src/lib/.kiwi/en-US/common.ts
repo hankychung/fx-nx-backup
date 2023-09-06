@@ -369,5 +369,10 @@ export default {
   successfullyModified: '修改成功',
   alreadyOnSchedule: 'Schedule {val1}',
   show: 'show',
-  hide: 'hide'
+  hide: 'hide',
+  todayWord: '今天',
+  delayed: '已延期',
+  cutOff: ' 截止',
+  startUp: '启动',
+  delayedStart: '延期启动'
 }

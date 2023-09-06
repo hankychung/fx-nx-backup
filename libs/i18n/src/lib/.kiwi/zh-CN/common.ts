@@ -367,5 +367,10 @@ export default {
   successfullyModified: '修改成功',
   alreadyOnSchedule: '已在日程中{val1}',
   show: '显示',
-  hide: '隐藏'
+  hide: '隐藏',
+  todayWord: '今天',
+  delayed: '已延期',
+  cutOff: ' 截止',
+  startUp: '启动',
+  delayedStart: '延期启动'
 }

@@ -5,7 +5,7 @@ import zhCN from './.kiwi/zh-CN'
 import enUS from './.kiwi/en-US'
 import { ILang } from './types'
 
-const kiwiIntl = KiwiIntl.init('zh-CN', {
+const kiwiIntl = KiwiIntl.init('en-US', {
   'zh-CN': { ...zhCN },
   'en-US': { ...enUS }
 })

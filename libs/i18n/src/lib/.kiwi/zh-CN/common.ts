@@ -380,5 +380,11 @@ export default {
   areYouSureYouWantToMove: '你确定要移除吗？',
   textLabelExist: '“{val1}” 标签名称已存在',
   onlyChooseAtMostTag: '最多只能选择5个标签',
-  missingSelectionLabel: '选择标签失败'
+  missingSelectionLabel: '选择标签失败',
+  noTaskAtTheMoment: '暂无事项安排',
+  noTaskToday: '今日暂无事项',
+  createAGenus: '快来创建属于你的日常',
+  nothingTodoToday: '这天好像没做什么事呢~',
+  yourTaskHasBeenResolved: '你的事项已全部完成！',
+  networkErrorRefresh: '网络出错, 请点击刷新按钮'
 }

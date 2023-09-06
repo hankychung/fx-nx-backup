@@ -19,7 +19,7 @@ import { useExitTask } from '../../../../../utils/hooks/useExitTask'
 import { useExitTodo } from '../../../../../utils/hooks/useExitTodo'
 import { useExitMeeting } from '../../../../../utils/hooks/useExitMeeting'
 import { MatterType, MatterTypeLabel } from '@flyele-nx/constant'
-import { useGlobalInfoStore } from '@flyele-nx/zustand-store'
+import { globalInfoHandler } from '@flyele-nx/zustand-handler'
 
 export const useMenuQuit = ({
   data,
@@ -62,8 +62,7 @@ export const useMenuQuit = ({
 
     const last = MatterTypeLabel[data.matter_type]
 
-    const isCn = useGlobalInfoStore.getState().lang === 'zh-CN'
-    const blankSpace = isCn ? '' : ' '
+    const blankSpace = globalInfoHandler.langIsCn() ? '' : ' '
 
     // 兜底不显示 undefined
     return first + blankSpace + (last ?? '')

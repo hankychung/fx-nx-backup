@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -56,7 +57,7 @@ export const useMenuQuit = ({
   const quitText = useMemo(() => {
     const isCreator = data.creator_id === userId
 
-    const first = isCreator ? '取消' : '退出'
+    const first = isCreator ? I18N.common.cancel : I18N.common.quit
 
     const last = MatterTypeLabel[data.matter_type]
 

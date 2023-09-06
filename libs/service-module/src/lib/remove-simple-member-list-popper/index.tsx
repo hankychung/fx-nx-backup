@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, {
   MouseEvent,
   PropsWithChildren,
@@ -55,9 +56,9 @@ const RemoveSimpleMemberListPopper = forwardRef<
   const onClickRemove = useMemoizedFn((member: ISimpleMember) => {
     if (userInTask) {
       AlertWithOkAndCancel.alert({
-        message: '你确定要移除吗？',
-        confirmTxt: '移出',
-        cancelTxt: '取消',
+        message: I18N.common.areYouSureYouWantToMove,
+        confirmTxt: I18N.common.remove,
+        cancelTxt: I18N.common.cancel,
         color: 'red',
         async onOk() {
           let dispatchId = member.dispatchId
@@ -93,7 +94,7 @@ const RemoveSimpleMemberListPopper = forwardRef<
     } else {
       globalNxController.showMsg({
         msgType: '错误',
-        content: '没参与事项不可修改'
+        content: I18N.common.notInvolvedInMatters
       })
     }
   })

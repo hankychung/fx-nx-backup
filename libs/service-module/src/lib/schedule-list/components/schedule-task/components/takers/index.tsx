@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import cs from 'classnames'
 import { FlyAvatarGroup } from '@flyele/flyele-components'
@@ -180,7 +181,9 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     if (takers.length >= resAuth.maxTaker) {
       globalNxController.showMsg({
         msgType: '消息',
-        content: `人数已达${resAuth.maxTaker}人上限`
+        content: I18N.template?.(I18N.common.overNumTakerInTask, {
+          val1: resAuth.maxTaker
+        })
       })
       return false
     }
@@ -188,7 +191,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     if (!isInTask) {
       globalNxController.showMsg({
         msgType: '错误',
-        content: '没参与事项不可修改'
+        content: I18N.common.notInvolvedInMatters
       })
       return false
     }
@@ -263,7 +266,7 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     const status = getOperationStatus(task, userId)
 
     if (status === 'complete' && task.flow_step_id) {
-      globalNxController.showMsg({ content: '已完成的工作流事项不支持添加人' })
+      globalNxController.showMsg({ content: I18N.common.completedWork })
       return false
     }
 

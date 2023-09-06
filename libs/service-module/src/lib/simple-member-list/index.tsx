@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { MouseEvent, useMemo } from 'react'
 import addIcon from '../../assets/schedule/iconAdd.png' // figma导出svg图标失败，用png顶着
 import addDisabledIcon from '../../assets/schedule/add_disabled_3x.png' // figma导出svg图标失败，用png顶着
@@ -85,7 +86,7 @@ const SimpleMemberList = (props: IProps) => {
   return (
     <div className={styles.MemberListRoot}>
       <div className={styles.ListTitleBox}>
-        <div className={styles.title}>协作人</div>
+        <div className={styles.title}>{I18N.common.assignee}</div>
         <div
           style={{ pointerEvents: canNotAdd ? 'none' : 'auto' }}
           className={styles.addIcon}

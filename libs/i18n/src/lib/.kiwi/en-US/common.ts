@@ -374,5 +374,13 @@ export default {
   delayed: '已延期',
   cutOff: ' 截止',
   startUp: '启动',
-  delayedStart: '延期启动'
+  delayedStart: '延期启动',
+  completedWork: '已完成的工作流事项不支持添加人',
+  notInvolvedInMatters: '没参与事项不可修改',
+  overNumTakerInTask: '人数已达{val1}人上限',
+  remove: '移出',
+  areYouSureYouWantToMove: '你确定要移除吗？',
+  textLabelExist: '“{val1}” 标签名称已存在',
+  onlyChooseAtMostTag: '最多只能选择{val1}个标签',
+  missingSelectionLabel: '选择标签失败'
 }

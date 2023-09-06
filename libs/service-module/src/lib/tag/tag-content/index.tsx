@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useState, useEffect } from 'react'
 import { TagInput } from '../tag-input'
 import { useMemoizedFn, useMount } from 'ahooks'
@@ -171,13 +172,15 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
         } catch (e) {
           globalNxController.showMsg({
             msgType: '错误',
-            content: '选择标签失败'
+            content: I18N.common.missingSelectionLabel
           })
         }
       } else {
         globalNxController.showMsg({
           msgType: '消息',
-          content: '最多只能选择5个标签'
+          content: I18N.template?.(I18N.common.onlyChooseAtMostTag, {
+            val1: 5
+          })
         })
       }
     }
@@ -205,7 +208,9 @@ const TagContent: React.FC<ITagContent> = ({ data }) => {
       } catch (e) {
         globalNxController.showMsg({
           msgType: '消息',
-          content: `“${text}” 标签名称已存在`,
+          content: I18N.template?.(I18N.common.textLabelExist, {
+            val1: text
+          }),
           duration: 1.5
         })
         return false

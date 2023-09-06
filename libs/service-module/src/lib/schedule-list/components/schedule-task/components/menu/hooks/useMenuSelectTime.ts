@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -31,7 +32,7 @@ export const useMenuSelectTime = ({
     ) {
       globalNxController.showMsg({
         msgType,
-        content: '会议已开始，无法修改'
+        content: I18N.common.meetingCanNotEditOnHasStarted
       })
       return
     }
@@ -41,9 +42,15 @@ export const useMenuSelectTime = ({
       let content = ''
 
       if (matterType === MatterType.meeting) {
-        content = `${MatterTypeLabel[matterType]}已结束，无法修改`
+        content =
+          I18N.template?.(I18N.common.canNotEditOnEnd, {
+            val1: MatterTypeLabel[matterType]
+          }) || ''
       } else {
-        content = `${MatterTypeLabel[matterType]}已完成，无法修改`
+        content =
+          I18N.template?.(I18N.common.canNotEditOnFinished, {
+            val1: MatterTypeLabel[matterType]
+          }) || ''
       }
 
       globalNxController.showMsg({
@@ -67,7 +74,7 @@ export const useMenuSelectTime = ({
   })
 
   return {
-    txt: '调整时间',
+    txt: I18N.common.adjustingTheTime,
     callback: action,
     checkAction: true
   }

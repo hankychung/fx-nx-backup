@@ -4,9 +4,12 @@ import { FeedBackIcon } from '@flyele-nx/icon'
 import logo from '../../../assets/login/logo.png'
 import reset_success from '../../../assets/login/reset_success.png'
 import reset_error from '../../../assets/login/reset_error.png'
-import { Form, Input, Modal, message } from 'antd'
+import { Button, Form, Input, Modal, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { ReactComponent as CreatePassword } from '../../../assets/login/create_password.svg'
+import { UsercApi } from '@flyele-nx/service'
+import { IResetPassword } from '@flyele-nx/types'
+import { debounce } from 'lodash'
 
 type ChangeValue = {
   [P in 'password' | 'passwordConfirm']: string
@@ -19,17 +22,55 @@ const ResetPassword = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [createNewPassword, setCreateNewPassword] = useState(true)
   const [isCreateSuccess, setIsCreateSuccess] = useState(false)
+  const [userInfo, setUserInfo] = useState<IResetPassword>()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    console.log(window.location.href)
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+
+    // 获取所有参数的键值对
+    const params: any = {}
+    urlParams.forEach((value, key) => {
+      params[key] = value
+    })
+    setUserInfo(params)
   }, [])
+
+  const resetPassword = () => {
+    if (!userInfo) return
+    setLoading(true)
+    const params = {
+      ...userInfo,
+      mima: passwordConfirm,
+      yanzhengma: userInfo.code
+    }
+    UsercApi.resetPassword(params)
+      .then((res) => {
+        console.log(res)
+        setCreateNewPassword(false)
+        setIsCreateSuccess(true)
+        setLoading(false)
+      })
+      .catch((err) => {
+        setCreateNewPassword(false)
+        setIsCreateSuccess(false)
+        setLoading(false)
+      })
+  }
   const onSubmit = () => {
     form
       .validateFields()
       .then(async () => {
-        console.log(password, passwordConfirm)
-        setCreateNewPassword(false)
-        setIsCreateSuccess(true)
+        if (password === passwordConfirm) {
+          resetPassword()
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: 'Password entries do not match'
+          })
+        }
+
         // login()
       })
       .catch((err) => {
@@ -44,8 +85,6 @@ const ResetPassword = () => {
 
   const onChange = (changedValues: ChangeValue) => {
     const entries = Object.entries(changedValues)
-
-    console.log(entries)
 
     entries.forEach((item) => {
       switch (item[0]) {
@@ -166,9 +205,15 @@ const ResetPassword = () => {
               />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 24 }}>
-              <button onClick={onSubmit} type="button">
+              <Button
+                onClick={debounce(onSubmit, 5000, {
+                  leading: true,
+                  trailing: false
+                })}
+                loading={loading}
+              >
                 Reset password
-              </button>
+              </Button>
             </Form.Item>
           </Form>
         </div>

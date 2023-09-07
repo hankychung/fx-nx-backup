@@ -13,7 +13,8 @@ import {
   IUserSetting,
   IIndustryListParams,
   IIndustryList,
-  IIndustryInfo
+  IIndustryInfo,
+  IResetPassword
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
 
@@ -165,6 +166,15 @@ class Userc {
       params: {
         industry_id: id
       }
+    })
+  }
+
+  // 海外版重置密码
+
+  async resetPassword(data: IResetPassword) {
+    return await service.post({
+      url: `${this.prefix}/auth/haiwaibanyouxiangchongzhimimajiekou`,
+      data: data
     })
   }
 }

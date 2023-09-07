@@ -64,6 +64,11 @@ const ResetPassword = () => {
       .then(async () => {
         if (password === passwordConfirm) {
           resetPassword()
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: 'Password entries do not match'
+          })
         }
 
         // login()

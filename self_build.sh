@@ -44,7 +44,9 @@ elif [ $app == "management-system" ];then
 elif [ $app == "landing" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileLanding .
 elif [ $app == "web-client" ];then
-docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWebClient .
+  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWebClient .
+elif [ $app == "overseas" ];then
+  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileOverseas .
 else
   echo "  --> 不打镜像..."
   exit 1

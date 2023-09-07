@@ -152,6 +152,18 @@
     color: #e0e0e0;
   }
 
+  :global {
+    .ant-btn {
+      background-color: #1dd2c1;
+      border-radius: 22px;
+      height: 44px;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+  }
   button {
     background-color: #1dd2c1;
     border-radius: 22px;

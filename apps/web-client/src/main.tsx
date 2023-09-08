@@ -9,18 +9,12 @@ import { ConfigProvider } from 'antd'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import zhCN from 'antd/locale/zh_CN'
-import { setLang } from '@flyele-nx/i18n'
-import { globalInfoHandler } from '@flyele-nx/zustand-handler'
 
 dayjs.locale('zh-cn')
 
 const env = process.env.NODE_ENV as string
 
 SocketHandler.initUrl(envStore.initEnv(env).url)
-
-setLang('en-US', () => {
-  globalInfoHandler.setLang('en-US')
-})
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

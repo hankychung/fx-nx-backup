@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { IntroductionBox } from './components/introduction-box'
-import { memberPowerStaticData } from '@flyele-nx/constant'
+import {
+  memberPowerStaticData,
+  memberPowerStaticDataEn
+} from '@flyele-nx/constant'
 import PayModal, { IFlyeleAvatarItem } from '../pay-modal'
 import { message, Modal } from 'antd'
 import CustomerServicesModal from '../customer-services-modal'
@@ -13,13 +16,16 @@ import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
 import { FlyButton } from '@flyele/flyele-components'
 import { UserInfoUtils } from '@flyele-nx/utils'
+import { ILang } from '@flyele-nx/i18n'
 
 export const MemberIntroduction = ({
   widthStyle,
-  handleMoreEquitySpace
+  handleMoreEquitySpace,
+  lang
 }: {
   widthStyle: string
   handleMoreEquitySpace: () => void
+  lang?: ILang
 }) => {
   const [show, setShow] = useState(false)
   const [vipType, setVipType] = useState('')
@@ -155,10 +161,14 @@ export const MemberIntroduction = ({
     return vipType === 'personal' ? 1 : 2
   }, [vipType])
 
+  const powerStaticData = useMemo(() => {
+    return lang === 'en-US' ? memberPowerStaticDataEn : memberPowerStaticData
+  }, [lang])
+
   return (
     <div className={styles.memberIntroduction} style={{ width: widthStyle }}>
       {contextHolder}
-      {memberPowerStaticData.map((item) => {
+      {powerStaticData.map((item) => {
         return (
           <IntroductionBox
             key={item.key}

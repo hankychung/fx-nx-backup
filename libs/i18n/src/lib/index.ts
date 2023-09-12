@@ -5,7 +5,7 @@ import zhCN from './.kiwi/zh-CN'
 import enUS from './.kiwi/en-US'
 import { ILang } from './types'
 
-const lang = (localStorage.getItem('lang') || 'zh-CN') as ILang
+const lang = ((global as any).lang || 'zh-CN') as ILang
 
 const kiwiIntl = KiwiIntl.init(lang, {
   'zh-CN': { ...zhCN },

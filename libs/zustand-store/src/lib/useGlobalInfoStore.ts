@@ -3,7 +3,7 @@ import { IZustandGlobalInfo } from '@flyele-nx/types'
 import { create } from 'zustand'
 
 const useGlobalInfoStore = create<IZustandGlobalInfo>(() => ({
-  lang: (localStorage.getItem('lang') as ILang) || 'zh-CN'
+  lang: ((global as any).lang as ILang) || 'zh-CN'
 }))
 
 export { useGlobalInfoStore }

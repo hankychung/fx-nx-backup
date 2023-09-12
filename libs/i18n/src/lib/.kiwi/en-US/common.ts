@@ -958,5 +958,10 @@ export default {
   forms: '窗体',
   completeCreation: 'Create',
   closeWindow: 'Close window',
-  showHiddenWindows: 'Show/hide window'
+  showHiddenWindows: 'Show/hide window',
+  removeAssignee: 'Remove assignee',
+  removeProjectMember: 'Remove project member',
+  removeTeamspaceMember: 'Remove teamspace member',
+  removeSpaceGuest: 'Remove guest',
+  removeProjectGuest: 'Remove guest'
 }

@@ -949,5 +949,10 @@ export default {
   forms: '窗体',
   completeCreation: '完成创建',
   closeWindow: '关闭窗口',
-  showHiddenWindows: '显示/隐藏窗口'
+  showHiddenWindows: '显示/隐藏窗口',
+  removeAssignee: '移除协作人',
+  removeProjectMember: '移除项目内部成员',
+  removeTeamspaceMember: '移除空间内部成员',
+  removeSpaceGuest: '移除空间外部成员',
+  removeProjectGuest: '移除项目外部成员'
 }

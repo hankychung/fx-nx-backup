@@ -958,5 +958,5 @@ export default {
   forms: '窗体',
   completeCreation: 'Create',
   closeWindow: 'Close window',
-  showHiddenWindows: 'Show/hide window',
+  showHiddenWindows: 'Show/hide window'
 }

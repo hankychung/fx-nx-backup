@@ -949,5 +949,5 @@ export default {
   forms: '窗体',
   completeCreation: '完成创建',
   closeWindow: '关闭窗口',
-  showHiddenWindows: '显示/隐藏窗口',
+  showHiddenWindows: '显示/隐藏窗口'
 }

@@ -72,5 +72,16 @@ export default {
   eventImport: 'Import by Excel',
   people2: '100',
   numberOfItems: 'Personal Tasks',
-  abilityToHandleMatters: 'Tasks'
+  abilityToHandleMatters: 'Tasks',
+  downloadInAppStore: 'Download in App store',
+  downloadInGooglePlay: 'Download in Google play',
+  simultaneouslySupportingI:
+    'We can sync data in real-time across iOS，Android，Mac，Windows device ',
+  freeForAllPlatforms: 'Flyele for all platforms',
+  android: 'Android',
+  ios: 'iOS',
+  mac: 'Mac',
+  windows: 'Windows',
+  clickToDownload: 'Download',
+  downloadBitVersion: 'Download 64-bit version'
 }

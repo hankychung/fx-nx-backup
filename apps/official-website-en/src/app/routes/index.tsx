@@ -1,13 +1,13 @@
 import { useRoutes } from 'react-router-dom'
-import InterestsIntroduction from '../pages/interests-introduction'
 import App from '../pages/home'
+import { DownloadPage } from '../pages/download'
+import InterestsIntroduction from '../pages/interests-introduction'
 
 export const routePath = {
   home: '/',
   product: '/product',
   download: '/download',
-  price: '/price',
-  contactUs: '/contact-us'
+  price: '/price'
 }
 
 export const AllRoutes = () => {
@@ -22,14 +22,10 @@ export const AllRoutes = () => {
         },
         {
           path: routePath.download,
-          element: <InterestsIntroduction />
+          element: <DownloadPage />
         },
         {
           path: routePath.price,
-          element: <InterestsIntroduction />
-        },
-        {
-          path: routePath.contactUs,
           element: <InterestsIntroduction />
         }
       ]

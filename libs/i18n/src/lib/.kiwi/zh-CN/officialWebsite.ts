@@ -72,5 +72,15 @@ export default {
   eventImport: '事项导入',
   people2: '100人',
   numberOfItems: '事项数量',
-  abilityToHandleMatters: '事项能力'
+  abilityToHandleMatters: '事项能力',
+  downloadInAppStore: '请到App store 下载',
+  downloadInGooglePlay: '请到Google Play下载',
+  simultaneouslySupportingI: '同时支持iOS，Android，Mac，Windows',
+  freeForAllPlatforms: '全平台免费下载',
+  android: 'Android客户端',
+  ios: 'iOS客户端',
+  mac: 'Mac客户端',
+  windows: 'Windows客户端',
+  clickToDownload: '点击下载',
+  downloadBitVersion: '下载64位版本'
 }

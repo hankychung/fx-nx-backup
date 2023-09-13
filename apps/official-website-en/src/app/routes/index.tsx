@@ -1,6 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 import App from '../pages/home'
 import { DownloadPage } from '../pages/download'
+import { ProductPage } from '../pages/product'
 import InterestsIntroduction from '../pages/interests-introduction'
 
 export const routePath = {
@@ -18,7 +19,7 @@ export const AllRoutes = () => {
       children: [
         {
           path: routePath.product,
-          element: <InterestsIntroduction />
+          element: <ProductPage />
         },
         {
           path: routePath.download,

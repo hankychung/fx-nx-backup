@@ -39,7 +39,7 @@ export function App() {
 
   useMount(() => {
     const path =
-      location.pathname === '/' ? routePath.download : location.pathname
+      location.pathname === '/' ? routePath.product : location.pathname
 
     changeTabOnUrl(path)
   })

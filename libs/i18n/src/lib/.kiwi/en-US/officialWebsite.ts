@@ -83,5 +83,47 @@ export default {
   mac: 'Mac',
   windows: 'Windows',
   clickToDownload: 'Download',
-  downloadBitVersion: 'Download 64-bit version'
+  downloadBitVersion: 'Download 64-bit version',
+  personalScheduleManagement: 'Personal schedule management',
+  teamWorkManagement: 'Team management',
+  projectManagement: 'Project management',
+  goalManagement: 'Goal management',
+  fourMajorWorkplaces: 'Focus on four scenarios',
+  basedOnPdc:
+    'Tailored for professionals based on PDCA and Goal Management methods. It suits various management needs in time, task, and team management. Ultimately, it leads to improved efficiency, enhanced work quality, and career growth.',
+  flyingItemsCanBeCoordinated:
+    'A collaborative time and task management application',
+  pushOnTimeEveryDay:
+    'Receive timely morning and evening reports every day, ensuring a clear overview of daily work schedules and progress',
+  earlyPlanAndLateTotal: 'Remind you on morning and evening',
+  canPerformTasks:
+    'Offering Calendar, Priority View, Mind Map, and more, allowing flexible filtering, sorting, and grouping of tasks for organized and focused task management',
+  sunZhouMoonAndFourElephants: 'A variety of views to keep work organized',
+  supportsPca:
+    'Support for multiple platforms including PC, mobile apps, and web',
+  fullPlatformMultiEnd: 'All platforms',
+  crossProjectViewing:
+    'Viewing the overall schedule of space members across projects, with simple and clear personnel assignments and workload adjustments',
+  teamScheduleView: "Understanding the team's manpower",
+  supportForCombiningFatherAndSon:
+    'You can save commonly used information as task templates. Templates can include workflows, and each workflow node can have flexible or fixed personnel configurations to meet different process requirements',
+  automationWork: 'Task workflow templates',
+  systemFollowUpPerson:
+    'The system automatically updates task completion progress based on personnel progress, enhancing collaboration efficiency through features like task instant messaging and message notifications',
+  taskProgressFrom: 'Task progress automatically tracked',
+  canUseGrouping:
+    'You can use Board and Table for visual coordination. You can also rearrange the hierarchical relationships of tasks by dragging  task cards, and quickly complete tasks or enter task details to view the overall situation',
+  multiViewVisualization: 'Multiple views',
+  byWhLight:
+    'Easily create plan tasks using the 5W1H approach, implementing team plans and cross-departmental collaborative management in the form of projects',
+  flexiblePlanningSystem: 'Easy to make plan',
+  supportForTargeting:
+    'Breaking down objectives into multiple tasks and assigning them to different collaborators for clearer division of work and collaboration',
+  relatedTaskItems: 'Related tasks to facilitate goal achievement',
+  setTeamGoals:
+    'Decomposing team goals into action plans and specific tasks to drive effective goal implementation, while aligning individual work with the overarching goals',
+  layerByLayerDecomposition: 'Decompose & Align',
+  visualDisplayGroup:
+    "Visually showcase the team's primary goal, covering the implementation process of the OKR methodology, ensuring clear responsibilities throughout the team",
+  okrDevelopment: 'Establishing team objectives using OKR'
 }

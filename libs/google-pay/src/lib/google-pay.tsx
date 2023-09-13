@@ -37,32 +37,14 @@ export function GooglePay(props: GooglePayProps) {
           totalPrice: props.price,
           currencyCode: 'USD',
           countryCode: 'US'
-          // displayItems: [
-          //   {
-          //     label: 'Subtotal',
-          //     type: 'SUBTOTAL',
-          //     price: '11.00'
-          //   },
-          //   {
-          //     label: 'Tax',
-          //     type: 'TAX',
-          //     price: '1.00'
-          //   },
-          //   {
-          //     label: 'Shipping',
-          //     type: 'LINE_ITEM',
-          //     price: '0',
-          //     status: 'PENDING'
-          //   }
-          // ]
         },
         callbackIntents: ['PAYMENT_AUTHORIZATION']
       }}
       onLoadPaymentData={(paymentRequest) => {
         console.log('Success', paymentRequest)
       }}
-      onPaymentAuthorized={() => {
-        console.log('Payment authorized')
+      onPaymentAuthorized={(res) => {
+        console.log('Payment authorized', res)
 
         return {
           transactionState: 'SUCCESS'

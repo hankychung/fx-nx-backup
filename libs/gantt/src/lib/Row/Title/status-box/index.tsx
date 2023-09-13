@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { FC, memo, useMemo, useState } from 'react'
 import { TaskApi, TaskDispatchApi } from '@flyele-nx/service'
 import { IFullViewTaker, IScheduleTask } from '@flyele-nx/types'
@@ -232,12 +233,12 @@ const _StatusBox: FC<IProps> = (props) => {
       if (nonSelfExecution ? !!task.complete_at : !!task.finish_time) {
         globalNxController.showMsg({
           msgType: '错误',
-          content: '你未参与，无法再次打开'
+          content: I18N.common.cannot_reopen_uninvolved
         })
       } else {
         globalNxController.showMsg({
           msgType: '错误',
-          content: '你未参与，无法完成'
+          content: I18N.common.cannot_complete_uninvolved
         })
       }
     }

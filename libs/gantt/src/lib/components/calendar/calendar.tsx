@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { ReactChild } from 'react'
 import { IFullViewDateSetup } from '@flyele-nx/types'
 import { FullViewModeEnum } from '@flyele-nx/constant'
@@ -219,7 +220,15 @@ export const Calendar: React.FC<CalendarProps> = ({
   }
   const getWeek = useMemoizedFn((date) => {
     const datas = dayjs(date).day()
-    const week = ['日', '一', '二', '三', '四', '五', '六']
+    const week = [
+      I18N.common.today,
+      I18N.common.mondayMini,
+      I18N.common.tuesdayMini,
+      I18N.common.wednesdayMini,
+      I18N.common.thursdayMini,
+      I18N.common.fridayMini,
+      I18N.common.saturdayMini
+    ]
     return week[datas]
   })
 

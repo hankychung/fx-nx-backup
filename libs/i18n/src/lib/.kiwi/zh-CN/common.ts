@@ -1087,5 +1087,9 @@ export default {
   size: '大小',
   uploadBy: '上传人',
   newTemplate: '新增模版',
-  targetAligned: '目标已对齐'
+  targetAligned: '目标已对齐',
+
+  recurringMattersTemporarily: '循环事项暂不支持拖动调整时间',
+  deadlineTime: '截止时间',
+  startTime: '开始时间'
 }

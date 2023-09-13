@@ -14,12 +14,15 @@ export interface IInfoType {
   btnBgColor?: string
   btnBorderColor?: string
   money: number | string
-  unit: '' | '月' | '年' | '年/人'
+  unit: string
   moneyText?: string
   powerList: IPower[]
   isDiyRender?: string
 }
 
+/**
+ * 中文版
+ */
 export const memberPowerStaticData: IInfoType[] = [
   {
     key: 'free',
@@ -233,6 +236,220 @@ export const memberPowerStaticData: IInfoType[] = [
       },
       {
         title: '对接内部系统',
+        active: true
+      },
+      {
+        title: '……',
+        active: false
+      }
+    ]
+  }
+]
+
+/**
+ * 英文版
+ */
+export const memberPowerStaticDataEn: IInfoType[] = [
+  {
+    key: 'free',
+    title: 'Free plan',
+    desc: 'Simplified personal task management',
+    bgColor: '#AFBDDB',
+    btnText: 'Free forever',
+    btnTextColor: '#AFBDDB',
+    btnBgColor: '#fff',
+    btnBorderColor: '#AFBDDB',
+    money: 0,
+    unit: '',
+    powerList: [
+      {
+        title: 'Unlimited Tasks & Notes',
+        active: true
+      },
+      {
+        title: '3-layer subtasks',
+        active: true
+      },
+      {
+        title: 'Assigning to 20 people in one task',
+        active: true
+      },
+      {
+        title: '2G of file storage，50M for a single file',
+        active: true
+      },
+      {
+        title: '20 individual Goals',
+        active: true
+      },
+      {
+        title: 'One',
+        active: true,
+        isDiyRender: 'free_space'
+      }
+    ]
+  },
+  {
+    key: 'personal',
+    title: 'Premium plan',
+    desc: 'More advance features',
+    bgColor: '#FFBF5F',
+    btnText: '立即开通',
+    btnTextColor: '#FFFFFF',
+    btnBgColor: 'linear-gradient(270.34deg, #FFB85E 2.92%, #FFD075 97.6%)',
+    btnBorderColor: 'none',
+    money: 12,
+    unit: 'month',
+    powerList: [
+      {
+        title: 'All Free features',
+        active: true
+      },
+      {
+        title: 'Priority View',
+        active: true
+      },
+      {
+        title: 'Mind map & Relation map',
+        active: true
+      },
+      {
+        title: '8-layer subtasks',
+        active: true
+      },
+      {
+        title: '20G of File Storage，300M for a single file',
+        active: true
+      },
+      {
+        title: '10 Custom list',
+        active: true
+      },
+      {
+        title: 'Unlimited Individual goals',
+        active: true
+      },
+      {
+        title: 'Available for inviting in goal',
+        active: true
+      },
+      {
+        title: 'Personal Mind map',
+        active: true
+      },
+      {
+        title: 'Personal Relation map',
+        active: true
+      },
+      {
+        title: 'Unlimited column in “All view”',
+        active: true
+      },
+      {
+        title: 'Export to Excel',
+        active: true
+      },
+      {
+        title: '……',
+        active: false
+      }
+    ]
+  },
+  {
+    key: 'team',
+    title: 'Business plan',
+    desc: 'For teamwork',
+    bgColor: '#755EEF',
+    btnText: '立即开通',
+    btnTextColor: '#fff',
+    btnBgColor: 'linear-gradient(90deg, #7B5EEF 0%, #6248ED 100%)',
+    btnBorderColor: 'none',
+    money: 298,
+    unit: 'member / year',
+    powerList: [
+      {
+        title: 'All Premium features',
+        active: true
+      },
+      {
+        title: 'Unlimited',
+        active: true,
+        isDiyRender: 'free_space'
+      },
+      {
+        title: 'Unlimited',
+        active: true,
+        isDiyRender: 'professional_space'
+      },
+      {
+        title: 'Unlimited projects',
+        active: true
+      },
+      {
+        title: 'Unlimited members',
+        active: true
+      },
+      {
+        title: 'Unlimited guests',
+        active: true
+      },
+      {
+        title: 'More storage（member*10G)',
+        active: true
+      },
+      {
+        title: 'Team schedule',
+        active: true
+      },
+      {
+        title: 'Team Report(coming soon)',
+        active: true
+      },
+      {
+        title: 'Team Goals',
+        active: true
+      },
+      {
+        title: 'Team Mind map',
+        active: true
+      },
+      {
+        title: 'Team Relation map',
+        active: true
+      },
+      {
+        title: 'Team Template center',
+        active: true
+      }
+    ]
+  },
+  {
+    key: 'custom',
+    title: 'Enterprise',
+    desc: 'On-Premises Deployment',
+    bgColor: '#535179',
+    btnText: 'Contact sales',
+    btnTextColor: '#535179',
+    btnBgColor: '#fff',
+    btnBorderColor: '#535179',
+    money: 0,
+    unit: '',
+    moneyText: 'Let‘s talk',
+    powerList: [
+      {
+        title: 'All Business features',
+        active: true
+      },
+      {
+        title: 'Customization Requirements',
+        active: true
+      },
+      {
+        title: 'On-Premises Deployment',
+        active: true
+      },
+      {
+        title: 'Integration with Enterprise Personnel Structure',
         active: true
       },
       {

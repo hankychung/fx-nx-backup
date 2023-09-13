@@ -25,7 +25,7 @@ const _Header = ({
       label: I18N.officialWebsite.price
     },
     {
-      key: routePath.contactUs,
+      key: 'contact-us',
       label: I18N.officialWebsite.contactUs
     }
   ]

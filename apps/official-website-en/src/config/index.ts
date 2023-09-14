@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type ILang = 'zh-CN' | 'en-US'
 
 function initLang(lang: ILang) {

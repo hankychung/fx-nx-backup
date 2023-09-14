@@ -1554,6 +1554,7 @@ export default {
   next: '未来',
   history: '历史',
   quote: '引用',
+  commentArea: '评论区',
   writeAComment: '写评论',
   noteSuccess: '发送成功',
   someoneIsCurrentlyNote: '其他设备正在编辑该笔记',

@@ -1601,6 +1601,7 @@ export default {
   next: 'Future',
   history: 'History',
   quote: 'Choose task',
+  commentArea: 'Comment Area',
   writeAComment: 'New comment',
   noteSuccess: 'Success',
   someoneIsCurrentlyNote: 'Someone is editing, please try later',

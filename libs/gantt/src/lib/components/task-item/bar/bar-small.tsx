@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 // import { getProgressPoint } from '../../../helpers/bar-helper'
 import { BarDisplay } from './bar-display'
 // import { BarProgressHandle } from './bar-progress-handle'
 import { TaskItemProps } from '../task-item'
 import styles from './bar.module.css'
 import { BarDateHandle } from './bar-date-handle'
-import { useUserInfoStore } from '@flyele-nx/zustand-store'
-import { isInTask } from '../../../utils'
 
 export const BarSmall: React.FC<TaskItemProps> = ({
   task,

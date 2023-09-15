@@ -1,4 +1,5 @@
 // import { Table } from 'antd'
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import EmptyStand from '../../../assets/icons/empty_stand.png'
 import styles from './index.module.scss'
@@ -39,7 +40,7 @@ const ListEmpty: React.FC<React.PropsWithChildren<ListEmptyProps>> = () => {
   return (
     <div className={styles.empty}>
       <img className={styles.empty__img} src={EmptyStand} alt="empty" />
-      <div className={styles.empty__hint}>暂无事项</div>
+      <div className={styles.empty__hint}>{I18N.common.noMattersAtPresent}</div>
       {/* <div className={styles.empty__handle}>
         <div onClick={onCreate} className={styles.empty__handle__create}>
           创建事项

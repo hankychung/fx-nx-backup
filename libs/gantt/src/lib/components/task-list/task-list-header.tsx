@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import styles from './task-list-header.module.css'
 import Option from '../Option'
@@ -52,7 +53,7 @@ export const TaskListHeaderDefault: React.FC<{
               paddingLeft: 16
             }}
           >
-            名称
+            {I18N.common.name_all}
           </div>
           <div
             className={styles.ganttTable_HeaderSeparator}
@@ -68,7 +69,7 @@ export const TaskListHeaderDefault: React.FC<{
               paddingLeft: 12
             }}
           >
-            开始时间
+            {I18N.common.startTime}
           </div>
           <div
             className={styles.ganttTable_HeaderSeparator}
@@ -84,7 +85,7 @@ export const TaskListHeaderDefault: React.FC<{
               paddingLeft: 12
             }}
           >
-            截止时间
+            {I18N.common.deadlineTime}
           </div>
         </div>
       </div>

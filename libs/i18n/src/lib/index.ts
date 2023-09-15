@@ -5,9 +5,9 @@ import zhCN from './.kiwi/zh-CN'
 import enUS from './.kiwi/en-US'
 import { ILang } from './types'
 
-const lang = ((global as any).lang || 'zh-CN') as ILang
+const lang = ((globalThis as any).lang || 'zh-CN') as ILang
 
-console.log('nx lang', lang, global)
+console.log('nx lang', lang, globalThis)
 
 const kiwiIntl = KiwiIntl.init(lang, {
   'zh-CN': { ...zhCN },

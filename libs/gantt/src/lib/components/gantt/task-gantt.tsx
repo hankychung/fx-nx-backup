@@ -4,7 +4,7 @@ import { CalendarProps, Calendar } from '../calendar/calendar'
 import { TaskGanttContentProps, TaskGanttContent } from './task-gantt-content'
 import styles from './gantt.module.scss'
 import cs from 'classnames'
-import { useDisplayEffect, useMemoizedFn } from '@flyele/flyele-components'
+import { useMemoizedFn } from '@flyele/flyele-components'
 export type TaskGanttProps = {
   gridProps: GridProps
   calendarProps: CalendarProps

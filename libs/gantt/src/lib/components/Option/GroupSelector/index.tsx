@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useState, useMemo } from 'react'
 import checkIcon from '../../../../assets/icons/check.png'
 import style from './index.module.scss'
@@ -8,10 +9,10 @@ interface IProps {
 }
 
 const arr = [
-  { txt: '按事项时间分区', key: FullViewGroupByEnum.time },
-  { txt: '按分组分区', key: FullViewGroupByEnum.group },
-  { txt: '按项目分区', key: FullViewGroupByEnum.project },
-  { txt: '不分区', key: FullViewGroupByEnum.default }
+  { txt: I18N.common.date, key: FullViewGroupByEnum.time },
+  { txt: I18N.common.board_section, key: FullViewGroupByEnum.group },
+  { txt: I18N.common.project_partition, key: FullViewGroupByEnum.project },
+  { txt: I18N.common.not_partitioned, key: FullViewGroupByEnum.default }
 ]
 
 const _GroupSelector: React.FC<IProps> = ({ handleSelect }) => {

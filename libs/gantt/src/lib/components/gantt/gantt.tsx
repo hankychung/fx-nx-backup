@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, {
   useState,
   SyntheticEvent,
@@ -379,7 +380,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
         if (loading.current) return
 
         loadmoreDebounce(() => {
-          console.log('已滚动到底部')
           pageParams.current.page_number++
           fetchList()
         })
@@ -674,7 +674,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             <div className={styles.currentDate}>{currentDate}</div>
             {currentDate && (
               <div className={styles.today} onClick={toTodayView}>
-                今天
+                {I18N.common.todayWord}
               </div>
             )}
           </div>

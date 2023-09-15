@@ -1,0 +1,110 @@
+.downloadPageRoot {
+  padding-top: 60px;
+  .pageTitleBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    .pageTitle {
+      color: #151515;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+    .pageDesc {
+      color: #6a6a6a;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+  .downloadBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 54px;
+    padding-bottom: 64px;
+    gap: 20px;
+    .downloadHoverItem {
+      position: absolute;
+      bottom: -230px;
+      opacity: 0;
+      transition: all 0.4s;
+      cursor: pointer;
+      .downloadIcon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 22px;
+      }
+
+      .downloadText {
+        color: #6a6a6a;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+    .downloadItem {
+      width: 230px;
+      height: 230px;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      cursor: default;
+      overflow: hidden;
+
+      &:hover {
+        .downloadHoverItem {
+          bottom: 0;
+          opacity: 1;
+          cursor: pointer;
+        }
+      }
+
+      .itemIcon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 24px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .itemTitle {
+        color: #000;
+        font-size: 27px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+      }
+      .itemDesc {
+        color: #6a6a6a;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+    .hoverItem {
+      cursor: pointer;
+      position: relative;
+    }
+  }
+  .picBox {
+    width: 100%;
+    height: 619px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 42%;
+    }
+  }
+}

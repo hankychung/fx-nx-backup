@@ -1,7 +1,7 @@
 {
-  "name": "google-pay",
+  "name": "paypal",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/google-pay/src",
+  "sourceRoot": "libs/paypal/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/google-pay/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/paypal/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "build": {
@@ -17,7 +17,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/libs/google-pay"
+        "outputPath": "dist/libs/paypal"
       },
       "configurations": {
         "development": {
@@ -29,7 +29,7 @@
       }
     },
     "tslint": {
-      "command": "tsc --project ./libs/google-pay/tsconfig.lib.json"
+      "command": "tsc --project ./libs/paypal/tsconfig.lib.json"
     }
   }
 }

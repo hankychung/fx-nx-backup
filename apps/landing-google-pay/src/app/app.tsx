@@ -3,7 +3,7 @@ import JSEncrypt from 'jsencrypt'
 import qs from 'query-string'
 import { useEffect, useState } from 'react'
 
-import { GooglePay } from '@flyele-nx/google-pay'
+import { Header } from './components/Header'
 
 export const priKey = `MIICXQIBAAKBgQDsi0/G+qf46LmjC3WrlJBbayDPXkEzrNCKj6ueJeV3sVNR4NSd
 PDCDbd/aDujsfJ/udUHWx0puN9QfACqafCKVSlRYW72mQ0TTcpc1W3ZhH92+QE7G
@@ -64,8 +64,7 @@ export function App() {
 
   return (
     <>
-      <div>asd</div>
-      {price && <GooglePay price={price} />}
+      <Header />
     </>
   )
 }

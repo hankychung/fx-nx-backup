@@ -2,12 +2,15 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import styles from './paypal.module.scss'
 
 /* eslint-disable-next-line */
-export interface PaypalProps {}
+export interface PaypalProps {
+  onClick?: () => void
+}
 
 const host = 'http://localhost:8888'
 
-export function Paypal(props: PaypalProps) {
+export function Paypal({ onClick }: PaypalProps) {
   async function createOrder() {
+    onClick?.()
     try {
       const response = await fetch(`${host}/api/orders`, {
         method: 'POST',

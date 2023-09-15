@@ -79,18 +79,19 @@ export function Paypal(props: PaypalProps) {
         const transaction =
           orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
           orderData?.purchase_units?.[0]?.payments?.authorizations?.[0]
-        alert(
-          `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`
-        )
+        // alert(
+        //   `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`
+        // )
         console.log(
           'Capture result',
           orderData,
-          JSON.stringify(orderData, null, 2)
+          JSON.stringify(orderData, null, 2),
+          transaction
         )
       }
     } catch (error) {
       console.error(error)
-      alert(`Sorry, your transaction could not be processed...<br><br>${error}`)
+      // alert(`Sorry, your transaction could not be processed...<br><br>${error}`)
     }
   }
 

@@ -12,7 +12,7 @@ import { useMemoizedFn } from '@flyele/flyele-components'
 import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
-import { paymentApi } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { VipMealType } from '../controller'
 const PayQrCode = ({
   payInfo,

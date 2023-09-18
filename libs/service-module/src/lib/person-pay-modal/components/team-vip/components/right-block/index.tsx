@@ -15,7 +15,8 @@ import style from './index.module.scss'
 import PayButton from '../../../pay-button'
 import { VipMealType } from '../../../controller'
 import { SelectMemberContext } from '../../../../context/context'
-import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import * as dayjs from 'dayjs'
@@ -68,7 +69,7 @@ const RightBlock = ({
     return list.filter((item) => +item.ref_goods_id === id)
   }
   const getMealList = useMemoizedFn(async () => {
-    paymentApi.getPrice({ good_type: 'team' }).then((res) => {
+    paymentApi.getGoodsList({ good_type: 'team' }).then((res) => {
       if (res.code === 0) {
         const new_arr = res.data.map((item) => {
           const arr = getItem(item.id, couponList || [])

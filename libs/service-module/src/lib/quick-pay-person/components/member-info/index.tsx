@@ -22,7 +22,8 @@ import cs from 'classnames'
 import style from './index.module.scss'
 import CustomerServicesModal from '../../../customer-services-modal'
 import PayModal, { IFlyeleAvatarItem } from '../../../pay-modal'
-import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { getResidueTime, regFenToYuan } from '../../utils'
 import { useCurrentTime } from '../../hoooks/useCurrentTime'
 import { useMemoizedFn } from 'ahooks'
@@ -50,7 +51,7 @@ const MemberInfo = ({
   }
   const getMealList = useMemoizedFn(async () => {
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6, 7] }).then((_) => {
-      paymentApi.getPrice({ good_type: 'person' }).then((res) => {
+      paymentApi.getGoodsList({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
           console.log('res', res)
 

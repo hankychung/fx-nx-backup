@@ -1,4 +1,4 @@
-import { IGetCouponParams, IGetPriceParams, init } from '@flyele-nx/api'
+import { IGetCouponParams, IGetPriceParams, IGetPriceRes } from '@flyele-nx/api'
 import { service } from '../service'
 import { ICreateOrderParams, IGetPayParams } from '../typings'
 
@@ -7,7 +7,7 @@ class Payment {
    * 获取商品列表1
    */
   async getGoodsList(params: IGetPriceParams) {
-    return service.post({
+    return service.post<IGetPriceRes>({
       url: `payment/v2/goods`,
       data: params
     })
@@ -67,10 +67,5 @@ class Payment {
 }
 
 const PaymentApi = new Payment()
-init({
-  getPrice: PaymentApi.getGoodsList,
-  createCoupon: PaymentApi.createCoupon,
-  createOrder: PaymentApi.createOrder,
-  getToken: PaymentApi.getToken
-})
-export const paymentApi = new Payment()
+
+export default PaymentApi

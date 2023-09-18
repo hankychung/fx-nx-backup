@@ -17,7 +17,8 @@ import Protocol from './components/protocol'
 import { SelectMemberContext } from '../../context/context'
 import SuccessPay from './components/success-pay'
 import { useMemoizedFn } from '@flyele/flyele-components'
-import { IActiveGoods, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { regFenToYuan } from '../../utils'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { VipMealType } from '../../../person-pay-modal/components/controller'
@@ -64,7 +65,7 @@ const PayQrCode = ({
     try {
       paymentApi.createOrder(params).then(async (_) => {
         const a = {
-          ..._.data.data,
+          ..._.data,
           total_price:
             ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
             userInfo.length

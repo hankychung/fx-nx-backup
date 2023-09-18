@@ -11,7 +11,8 @@ import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_i
 import style from './index.module.scss'
 import Protocol from './components/protocol'
 import SuccessPay from './components/success-pay'
-import { IActiveGoods, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { regFenToYuan } from '../../utils'
 import { useMemoizedFn } from 'ahooks'
 import QRCode from 'qrcode'
@@ -51,7 +52,7 @@ const PayQrCode = ({
     try {
       paymentApi.createOrder(params).then(async (_) => {
         const a = {
-          ..._.data.data,
+          ..._.data,
           total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
         }
         const res = await QRCode.toDataURL(

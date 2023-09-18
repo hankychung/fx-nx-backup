@@ -4,7 +4,7 @@
  * 请参考 order-system 的类型导出模式
  */
 import { UsercApi } from './lib/userc'
-import { paymentApi } from './lib/payment'
+import paymentApi from './lib/payment'
 import { OrderSystemApi } from './lib/order-system'
 import { service } from './lib/service'
 import { TaskDispatchApi } from './lib/task-dispatch'

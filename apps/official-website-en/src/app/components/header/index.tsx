@@ -3,7 +3,6 @@ import React from 'react'
 import styles from './index.module.scss'
 import cs from 'classnames'
 import { routePath } from '../../routes'
-import { VipIntroduce } from '@flyele-nx/service-module'
 
 const _Header = ({
   activeTab,
@@ -55,15 +54,6 @@ const _Header = ({
             </div>
           )
         })}
-      </div>
-      <div>
-        <VipIntroduce
-          open={true}
-          avatar={''}
-          name={''}
-          isTeamVip={false}
-          isVip={false}
-        ></VipIntroduce>
       </div>
     </div>
   )

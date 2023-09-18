@@ -1,4 +1,9 @@
-import { IGetCouponParams, IGetPriceParams, IGetPriceRes } from '@flyele-nx/api'
+import {
+  ICreateOrderRes,
+  IGetCouponParams,
+  IGetPriceParams,
+  IGetPriceRes
+} from '@flyele-nx/api'
 import { service } from '../service'
 import { ICreateOrderParams, IGetPayParams } from '../typings'
 
@@ -25,7 +30,7 @@ class Payment {
    * 下单
    */
   async createOrder(params: ICreateOrderParams) {
-    return service.post({
+    return service.post<ICreateOrderRes>({
       url: `payment/v2/indent`,
       data: params
     })

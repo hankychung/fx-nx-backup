@@ -84,7 +84,29 @@ export type IndentData = {
     after_pay_end_at: number
   }
 }
+
+export type ICreateOrderRes = {
+  data: {
+    code: number
+    data: {
+      description: string
+      out_trade_no: string
+    }
+  }
+}
+
 export type GetPrice = (params: IGetPriceParams) => Promise<IGetPriceRes>
 export type GetCoupon = (params: IGetCouponParams) => Promise<IGetCpuponRes>
-export type CreateOrder = (params: ICreateOrderParams) => Promise<IGetCpuponRes>
+export type CreateOrder = (
+  params: ICreateOrderParams
+) => Promise<ICreateOrderRes>
 export type GetToken = () => string
+
+export type IGetOrderFn = () => Promise<
+  | {
+      total_price: number
+      description: string
+      out_trade_no: string
+    }
+  | undefined
+>

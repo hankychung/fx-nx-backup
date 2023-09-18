@@ -11,7 +11,7 @@ import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_i
 import style from './index.module.scss'
 import Protocol from './components/protocol'
 import SuccessPay from './components/success-pay'
-import { IActiveGoods, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods, IGetOrderFn, paymentApi } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
 import { useMemoizedFn } from 'ahooks'
 import QRCode from 'qrcode'
@@ -24,7 +24,8 @@ const PayQrCode = ({
   memberList,
   onClose,
   goProtocol,
-  domain
+  domain,
+  getOrder
 }: {
   isPaySuccess: boolean
   vipMeal?: IActiveGoods
@@ -32,38 +33,25 @@ const PayQrCode = ({
   memberList: IFlyeleAvatarItem[]
   onClose?: () => void
   goProtocol: () => void
+  getOrder: IGetOrderFn
 }) => {
   const [qrCode, setQrCode] = useState('')
   const isInit = useRef(false)
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
-    const params = {
-      amount: 1,
-      coupon_id: vipMeal?.price ? vipMeal?.coupon_id : 0,
-      good_id: vipMeal?.id || 0,
-      // good_id: 8,
-      origin_route: 'PC客户端',
-      total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0,
-      // total_price: 1,
-      users_id: memberList.map((item) => item.userId),
-      indent_member_type: 2
+    const data = await getOrder()
+
+    if (!data) {
+      console.error('获取订单失败')
+      return
     }
-    try {
-      paymentApi.createOrder(params).then(async (_) => {
-        const a = {
-          ..._.data.data,
-          total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
-        }
-        const res = await QRCode.toDataURL(
-          `${domain}/payDetail?params=${JSON.stringify(
-            a
-          )}&&token=${paymentApi.getToken()}`
-        )
-        setQrCode(res)
-      })
-    } catch {
-      console.log('00')
-    }
+
+    const res = await QRCode.toDataURL(
+      `${domain}/payDetail?params=${JSON.stringify(
+        data
+      )}&&token=${paymentApi.getToken()}`
+    )
+    setQrCode(res)
   })
   useEffect(() => {
     console.log(vipMeal, 'vipMeal')

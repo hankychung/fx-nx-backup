@@ -64,6 +64,28 @@ class Payment {
   getToken() {
     return service.getToken()
   }
+
+  // 创建paypal订单
+  async createPaypalOrder(orderId: string) {
+    return service.post({
+      url: `payment/v2/paypal/create_order`,
+      data: {
+        indent_num: orderId
+      },
+      timeout: 60000
+    })
+  }
+
+  // paypal订单支付详情
+  async getPaypalOrderDetail(orderId: string) {
+    return service.get({
+      url: `payment/v2/paypal/callback/sync`,
+      params: {
+        order_id: orderId
+      },
+      timeout: 60000
+    })
+  }
 }
 
 const PaymentApi = new Payment()

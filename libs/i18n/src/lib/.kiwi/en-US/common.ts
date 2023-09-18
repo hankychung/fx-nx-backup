@@ -2050,6 +2050,14 @@ export default {
   supportImportantTight: 'Priority view, Mind map, Relation map...',
   multipleViewsCan: 'Multiply views ',
   openPersonVipGetMore: 'Premium’s features',
-  morePowerfulOnes: 'For personal work'
+  morePowerfulOnes: 'For personal work',
+  proSpace: 'Pro Teamspace',
+  freeSpace: 'Free Teamspace',
+  proTeamspaceFeatures: 'Pro Teamspace Features',
+  popular: 'POPULAR',
+  help: 'Help',
+  freePeople: 'You’re a member of Free plan',
+  premiumPeople: 'Currently you are a Premium member',
+  businessPeople: 'Currently you are a Business member'
   //会员end
 }

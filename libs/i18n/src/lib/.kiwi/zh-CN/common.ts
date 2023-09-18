@@ -1994,6 +1994,14 @@ export default {
   supportImportantTight: '支持重要紧急视图、脉络视图、关系视图',
   multipleViewsCan: '多种视图能力',
   openPersonVipGetMore: '开通个人会员，解锁超值权益',
-  morePowerfulOnes: '更强大的个人事项管理权益'
+  morePowerfulOnes: '更强大的个人事项管理权益',
+  proSpace: '专业空间',
+  freeSpace: '免费空间',
+  proTeamspaceFeatures: '专业空间能力',
+  popular: '热门推荐',
+  help: '联系客服',
+  freePeople: '你当前是免费账户',
+  premiumPeople: '你当前是个人会员',
+  businessPeople: '你当前是团队会员'
   //会员end
 }

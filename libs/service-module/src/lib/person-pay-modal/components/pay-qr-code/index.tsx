@@ -70,7 +70,7 @@ const PayQrCode = ({
                 userInfo.length
             }
           : {
-              ..._.data.data,
+              ..._.data,
               total_price:
                 ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
                 userInfo.length

@@ -1,4 +1,5 @@
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
+import { paymentApi } from '@flyele-nx/service'
 
 /* eslint-disable-next-line */
 export interface PaypalProps {
@@ -11,30 +12,39 @@ export interface PaypalProps {
   quantity?: number
 }
 
-const host = 'http://localhost:8888'
+// const host = 'http://localhost:8888'
 
-export function Paypal({ onClick, width = 310, height = 50 }: PaypalProps) {
+export function Paypal({
+  onClick,
+  width = 310,
+  height = 50,
+  productId
+}: PaypalProps) {
   async function createOrder() {
     onClick?.()
     try {
-      const response = await fetch(`${host}/api/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        // use the "body" param to optionally pass additional order information
-        // like product ids and quantities
-        body: JSON.stringify({
-          cart: [
-            {
-              id: 'YOUR_PRODUCT_ID',
-              quantity: 'YOUR_PRODUCT_QUANTITY'
-            }
-          ]
-        })
-      })
+      // const response = await fetch(`${host}/api/orders`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   // use the "body" param to optionally pass additional order information
+      //   // like product ids and quantities
+      //   body: JSON.stringify({
+      //     cart: [
+      //       {
+      //         id: 'YOUR_PRODUCT_ID',
+      //         quantity: 'YOUR_PRODUCT_QUANTITY'
+      //       }
+      //     ]
+      //   })
+      // })
 
-      const orderData = await response.json()
+      // const orderData = await response.json()
+
+      const orderData = (await paymentApi.createPaypalOrder(productId)).data
+
+      console.log('check orderData', orderData)
 
       if (orderData.id) {
         return orderData.id
@@ -54,17 +64,24 @@ export function Paypal({ onClick, width = 310, height = 50 }: PaypalProps) {
 
   async function onApprove(data: any, actions: any) {
     try {
-      const response = await fetch(
-        `${host}/api/orders/${data.orderID}/capture`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
+      console.log('approve data', data)
 
-      const orderData = await response.json()
+      // const response = await fetch(
+      //   `${host}/api/orders/${data.orderID}/capture`,
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     }
+      //   }
+      // )
+
+      const orderData = (await paymentApi.getPaypalOrderDetail(data.orderID))
+        .data as any
+
+      console.log('approve response', orderData)
+
+      // const orderData = await response.json()
       // Three cases to handle:
       //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
       //   (2) Other non-recoverable errors -> Show a failure message

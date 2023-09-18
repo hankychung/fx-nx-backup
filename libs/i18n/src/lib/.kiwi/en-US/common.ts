@@ -1940,5 +1940,15 @@ export default {
   maxReached: 'Reached the maximum limit of {val1}',
   confirmModification: '确认修改',
   completeInvitation: '完成邀请',
-  addStartup: '添加启动'
+  addStartup: '添加启动',
+  //组件库start
+  existingLis: 'Exsiting {val1}',
+  addLis: 'New {val1}',
+  selectedInc: 'Select {val1}',
+  participateIn: 'assignee',
+  myAssistant: 'My contact',
+  searchParticipants: 'Search',
+  currentlySelectedAs: '当前选中成员大于 maxSelectedTotal',
+  notFindHelper: 'No result'
+  //组件库end
 }

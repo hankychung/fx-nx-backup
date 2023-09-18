@@ -7,8 +7,6 @@ import { ILang } from './types'
 
 const lang = ((globalThis as any).lang || 'zh-CN') as ILang
 
-console.log('nx lang', lang, globalThis)
-
 const kiwiIntl = KiwiIntl.init(lang, {
   'zh-CN': { ...zhCN },
   'en-US': { ...enUS }

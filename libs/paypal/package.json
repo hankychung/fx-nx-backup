@@ -1,6 +1,6 @@
 {
-  "name": "@flyele-nx/google-pay",
-  "version": "0.0.1",
+  "name": "@flyele-nx/paypal",
+  "version": "0.0.4",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {

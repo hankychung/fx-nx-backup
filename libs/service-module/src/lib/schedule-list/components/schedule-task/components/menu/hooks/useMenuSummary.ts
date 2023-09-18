@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -15,7 +16,7 @@ export const useMenuSummary = ({ data }: { data: IScheduleTask }): IAction => {
   }, [data.matter_type])
 
   return {
-    txt: '总结',
+    txt: I18N.common.summary,
     callback: action,
     checkAction: check
   }

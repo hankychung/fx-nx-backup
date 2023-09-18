@@ -46,39 +46,37 @@ const _MatterTimePicker = ({
       onCancel={onClose}
       className={styles.modalRoot}
     >
-      <div className={styles.time_modal_content}>
-        <Tabs
-          className={styles.tabsRoot}
-          tabBarStyle={{ paddingLeft: 20 }}
-          defaultActiveKey={defaultActiveKey}
-          items={[
-            {
-              key: TabKey.time,
-              label: '事项时间',
-              children: (
-                <DateSelector
-                  defaultValue={timeData}
-                  repeatData={repeatData}
-                  onClose={onClose}
-                  onConfirm={onConfirmTime}
-                />
-              )
-            },
-            {
-              key: TabKey.executeAt,
-              label: '启动时间',
-              children: (
-                <ExecuteAtSelector
-                  defaultValue={executeAt}
-                  endTime={timeData?.endTime}
-                  onClose={onClose}
-                  onConfirm={onConfirmExecuteAt}
-                />
-              )
-            }
-          ]}
-        />
-      </div>
+      <Tabs
+        className={styles.tabsRoot}
+        tabBarStyle={{ paddingLeft: 20 }}
+        defaultActiveKey={defaultActiveKey}
+        items={[
+          {
+            key: TabKey.time,
+            label: '事项时间',
+            children: (
+              <DateSelector
+                defaultValue={timeData}
+                repeatData={repeatData}
+                onClose={onClose}
+                onConfirm={onConfirmTime}
+              />
+            )
+          },
+          {
+            key: TabKey.executeAt,
+            label: '启动时间',
+            children: (
+              <ExecuteAtSelector
+                defaultValue={executeAt}
+                endTime={timeData?.endTime}
+                onClose={onClose}
+                onConfirm={onConfirmExecuteAt}
+              />
+            )
+          }
+        ]}
+      />
     </Modal>
   )
 }

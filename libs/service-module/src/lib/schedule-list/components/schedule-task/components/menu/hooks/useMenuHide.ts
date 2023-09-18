@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useHide } from '../../../../../utils/hooks/useHide'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -26,7 +27,9 @@ export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
       !data.has_child &&
         globalNxController.showMsg({
           msgType: '消息',
-          content: `已在日程中${isHide ? '显示' : '隐藏'}`
+          content: I18N.template?.(I18N.common.alreadyOnSchedule, {
+            val1: isHide ? I18N.common.show : I18N.common.hide
+          })
         })
 
       TaskHandler.removeTasks([taskId])
@@ -34,7 +37,7 @@ export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
   })
 
   return {
-    txt: '日程隐藏',
+    txt: I18N.common.schedule_hide,
     callback: action,
     checkAction: true
   }

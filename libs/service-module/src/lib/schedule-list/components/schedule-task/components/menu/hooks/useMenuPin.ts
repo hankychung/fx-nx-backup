@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemo } from 'react'
 import { TaskDispatchApi } from '@flyele-nx/service'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -17,7 +18,9 @@ export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
     TaskDispatchApi.pinSchedule(dispatch).then(async () => {
       globalNxController.showMsg({
         msgType: '消息',
-        content: `${topmost_at ? '已取消置顶' : '已置顶'}`
+        content: `${
+          topmost_at ? I18N.common.onCancelTopping : I18N.common.onTopping
+        }`
       })
 
       globalNxController.pubJsPublish(Pub.BOARD_TOPMOST, {
@@ -33,7 +36,7 @@ export const useMenuPin = ({ data }: { data: IScheduleTask }): IAction => {
   })
 
   const menu = useMemo(
-    () => (data.topmost_at ? '取消置顶' : '置顶'),
+    () => (data.topmost_at ? I18N.common.cancelTopping : I18N.common.topping),
     [data.topmost_at]
   )
 

@@ -125,14 +125,6 @@ export class ProjectHandler {
                 (id) => !taskIds.includes(id)
               )
             }
-            if (state?.taskDict[id]) {
-              state.taskDict[id] = {
-                ...state.taskDict[id],
-                task_tree_complete_total:
-                  (state?.taskDict[id]?.task_tree_complete_total ?? 1) - 1,
-                task_tree_total: (state?.taskDict[id]?.task_tree_total ?? 1) - 1
-              }
-            }
           })
 
           // state.childrenDict = childrenDict

@@ -1,0 +1,23 @@
+{
+  "kiwiDir": "./libs/i18n/src/lib/.kiwi",
+  "fileType": "ts",
+  "srcLang": "zh-CN",
+  "distLangs": ["zh-CN", "en-US"],
+  "googleApiKey": "",
+  "baiduApiKey": {
+    "appId": "20230915001818043",
+    "appKey": "40M4BiDf1wXGOJNjPzSY"
+  },
+  "baiduLangMap": {
+    "en-US": "en",
+    "zh-TW": "cht"
+  },
+  "translateOptions": {
+    "concurrentLimit": 10,
+    "requestOptions": {}
+  },
+  "defaultTranslateKeyApi": "Baidu",
+  "importI18N": "import { I18N } from '@flyele-nx/i18n'",
+  "ignoreDir": [],
+  "ignoreFile": []
+}

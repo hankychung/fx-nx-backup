@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import styles from './index.module.scss'
@@ -40,8 +41,8 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
       obj.t_l = application_name
       obj.t_r = flow_step_name
         ? complete_at
-          ? '工作流已完成'
-          : `当前步骤：${flow_step_name}`
+          ? I18N.common.work_flow_completed
+          : `${I18N.common.procedure}：${flow_step_name}`
         : ''
     } else if (isRepeat) {
       obj = await getRepeatTxt(task)

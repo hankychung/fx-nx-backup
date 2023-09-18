@@ -6,13 +6,21 @@ interface IProps {
   title: string
   checked?: boolean
   onClick?: () => void
+  renderRightIcon?: () => React.ReactNode
 }
 
-const _RemindItem = ({ title, checked, onClick }: IProps) => {
+const _RemindItem = ({ title, checked, onClick, renderRightIcon }: IProps) => {
   return (
     <div className={styles.remindItem} onClick={onClick}>
       <div className={styles.title}>{title}</div>
-      <FlyRadio size={FlyIconSize.normal} type={checked ? 'check' : 'normal'} />
+      {renderRightIcon ? (
+        renderRightIcon()
+      ) : (
+        <FlyRadio
+          size={FlyIconSize.normal}
+          type={checked ? 'check' : 'normal'}
+        />
+      )}
     </div>
   )
 }

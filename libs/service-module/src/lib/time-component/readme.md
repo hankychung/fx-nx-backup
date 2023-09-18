@@ -5,3 +5,5 @@
 - DateSelector 事项时间选择
 
 - ExecuteAtSelector 事项执行时间组件
+
+- RemindTimeSelector 事项自定义提醒时间组件

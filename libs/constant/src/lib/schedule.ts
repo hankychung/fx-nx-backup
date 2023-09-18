@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 export enum QuadrantValue {
   no_important_no_urgent = 1,
   urgent_no_important,
@@ -6,10 +7,10 @@ export enum QuadrantValue {
 }
 
 export const QuadrantText = {
-  [QuadrantValue.important_urgent]: '重要紧急',
-  [QuadrantValue.important_no_urgent]: '重要不紧急',
-  [QuadrantValue.urgent_no_important]: '紧急不重要',
-  [QuadrantValue.no_important_no_urgent]: '不紧急不重要'
+  [QuadrantValue.important_urgent]: I18N.common.urgent_and_important,
+  [QuadrantValue.important_no_urgent]: I18N.common.not_urgent_and_important,
+  [QuadrantValue.urgent_no_important]: I18N.common.urgent_and_unimportant,
+  [QuadrantValue.no_important_no_urgent]: I18N.common.not_urgent_and_unimportant
 }
 
 export const QuadrantBefore = {
@@ -108,15 +109,15 @@ export enum MatterType {
 export const MatterTypeLabel: {
   [key: number]: string
 } = {
-  [MatterType.matter]: '事项',
-  [MatterType.meeting]: '会议',
-  [MatterType.timeCollect]: '时间征集',
-  [MatterType.notice]: '公告',
-  [MatterType.todo]: '待办',
-  [MatterType.timeRemind]: '时间提醒',
-  [MatterType.calendar]: '日历导入',
-  [MatterType.project]: '项目',
-  [MatterType.target]: '目标'
+  [MatterType.matter]: I18N.common.task,
+  [MatterType.meeting]: I18N.common.meeting,
+  [MatterType.timeCollect]: I18N.common.timeCollection,
+  [MatterType.notice]: I18N.common.announcement,
+  [MatterType.todo]: I18N.common.to_do,
+  [MatterType.timeRemind]: I18N.common.timeReminder,
+  [MatterType.calendar]: I18N.common.calendarImport,
+  [MatterType.project]: I18N.common.project,
+  [MatterType.target]: I18N.common.objectives
 }
 
 // 循环类型 （新版）
@@ -141,14 +142,14 @@ export enum LOOP_MATTER {
 }
 
 export const LOOP_MATTER_LABEL: { [key: number]: string } = {
-  [LOOP_MATTER.noLoop]: '不循环',
-  [LOOP_MATTER.everDay]: '每天',
-  [LOOP_MATTER.weekly]: '每周',
-  [LOOP_MATTER.everyFortnight]: '每2周',
-  [LOOP_MATTER.weekdays]: '工作日',
-  [LOOP_MATTER.nonWork]: '非工作日',
-  [LOOP_MATTER.monthly]: '每月',
-  [LOOP_MATTER.custom]: '自定义循环'
+  [LOOP_MATTER.noLoop]: I18N.common.no_repeat,
+  [LOOP_MATTER.everDay]: I18N.common.daily,
+  [LOOP_MATTER.weekly]: I18N.common.weekly,
+  [LOOP_MATTER.everyFortnight]: I18N.common.every_2_week,
+  [LOOP_MATTER.weekdays]: I18N.common.weekday,
+  [LOOP_MATTER.nonWork]: I18N.common.nonWorkingDays,
+  [LOOP_MATTER.monthly]: I18N.common.monthly,
+  [LOOP_MATTER.custom]: I18N.common.custom
 }
 
 export enum CreateType {

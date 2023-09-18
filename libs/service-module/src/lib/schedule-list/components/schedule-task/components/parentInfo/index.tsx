@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import cs from 'classnames'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -20,7 +21,7 @@ function getType(task?: IScheduleTask) {
   let _name = ''
 
   if (task.project_name) {
-    _type = '项目'
+    _type = I18N.common.project
     _name = task.project_name
     //2.1 PC-4731 日视图里子孙事项有所属项目时，上级结构优先显示项目，其次再是顶级父事项
   } else if (
@@ -30,7 +31,7 @@ function getType(task?: IScheduleTask) {
       task.matter_type
     )
   ) {
-    _type = '事项'
+    _type = I18N.common.task
     _name = task.parent_name
   }
 

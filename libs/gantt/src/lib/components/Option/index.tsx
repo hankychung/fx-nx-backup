@@ -1,7 +1,4 @@
-import { Dropdown } from 'antd'
-
-import { ReactComponent as TableHeader } from '../../../assets/icons/table-header.svg'
-import { ReactComponent as DisplayIcon } from '../../../assets/icons/displayIcon.svg'
+import { I18N } from '@flyele-nx/i18n'
 import { ReactComponent as GroupIcon } from '../../../assets/icons/groupIcon.svg'
 
 import {
@@ -46,7 +43,7 @@ const Option: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
             <div className={style.option}>
               {/* <img src={groupIcon} alt="" /> */}
               <GroupIcon />
-              <span className={style['btn-text']}>分区</span>
+              <span className={style['btn-text']}>{I18N.common.group_by}</span>
             </div>
           </FlyBasePopper>
           {/* <div className={style.option}>

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useMemo } from 'react'
 import { FlyBasePopper } from '@flyele/flyele-components'
 import { getQuadrantBeforeIcon } from './hook/useQuadrantBefore'
@@ -37,7 +38,10 @@ export const PriorityLevelPopper = (props: Props) => {
       task_id
     )
       .then(() => {
-        globalNxController.showMsg({ content: '修改成功', msgType: '成功' })
+        globalNxController.showMsg({
+          content: I18N.common.successfullyModified,
+          msgType: '成功'
+        })
         globalNxController.pubJsPublish(
           Pub.DB_INCREASE_01_READUX_AND_SQLITEDB,
           {
@@ -53,7 +57,10 @@ export const PriorityLevelPopper = (props: Props) => {
         onChange?.(level)
       })
       .catch(() => {
-        globalNxController.showMsg({ content: '修改失败', msgType: '错误' })
+        globalNxController.showMsg({
+          content: I18N.common.modificationFailed,
+          msgType: '错误'
+        })
       })
       .finally(() => {
         close?.()
@@ -106,7 +113,7 @@ export const PriorityLevelPopper = (props: Props) => {
       content={PriorityLevelMenu}
       zIndex={9999}
     >
-      <span>优先级</span>
+      <span>{I18N.common.priority}</span>
     </FlyBasePopper>
   )
 }

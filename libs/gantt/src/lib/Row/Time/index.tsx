@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { FC, useState, useEffect, useMemo } from 'react'
 import { FlyTooltip, useMemoizedFn } from '@flyele/flyele-components'
 import cs from 'classnames'
@@ -51,7 +52,7 @@ const Time: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     ) {
       globalNxController.showMsg({
         msgType: '错误',
-        content: '非协作人无法修改时间'
+        content: I18N.common.nonCollaboratorNone
       })
       return
     }
@@ -91,7 +92,10 @@ const Time: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
         </FlyTooltip>
       ) : (
         <div onClick={editTime}>
-          <NoDataText text="添加时间" warpClass={cs(style.textBox)} />
+          <NoDataText
+            text={I18N.common.addTime}
+            warpClass={cs(style.textBox)}
+          />
         </div>
       )}
       <div></div>

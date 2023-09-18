@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, {
   useState,
   SyntheticEvent,
@@ -32,6 +33,7 @@ import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { useDisplayEffect } from '@flyele/flyele-components'
+import { debounce } from 'lodash'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -72,7 +74,10 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   onClick,
   onDelete,
   onSelect,
-  onExpanderClick
+  onExpanderClick,
+  fetchList,
+  pageParams,
+  loading
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const taskListRef = useRef<HTMLDivElement>(null)
@@ -336,6 +341,12 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     // }
     setSvgContainerHeight(tasks.length * rowHeight + headerHeight * 2)
   }, [ganttHeight, tasks, headerHeight, rowHeight])
+
+  const loadmoreDebounce = useMemo(
+    () => debounce(async (callBack: () => void) => await callBack(), 10),
+    []
+  )
+
   const handleWheel = useMemoizedFn((event: WheelEvent) => {
     if (event.shiftKey || event.deltaX) {
       const scrollMove = event.deltaX ? event.deltaX : event.deltaY
@@ -356,10 +367,24 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
-        event.preventDefault()
+        // event.preventDefault()
       }
     }
+    if (wrapperRef.current) {
+      const isScrollingDown = event.deltaY > 0
+      const isAtBottom =
+        wrapperRef.current?.scrollTop + wrapperRef.current?.clientHeight >=
+        wrapperRef.current?.scrollHeight
 
+      if (isScrollingDown && isAtBottom) {
+        if (loading.current) return
+
+        loadmoreDebounce(() => {
+          pageParams.current.page_number++
+          fetchList()
+        })
+      }
+    }
     setIgnoreScrollEvent(true)
   })
 
@@ -649,7 +674,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             <div className={styles.currentDate}>{currentDate}</div>
             {currentDate && (
               <div className={styles.today} onClick={toTodayView}>
-                今天
+                {I18N.common.todayWord}
               </div>
             )}
           </div>

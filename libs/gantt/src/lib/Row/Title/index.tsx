@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { FC, useMemo, useState, useRef, useEffect } from 'react'
 // import { getParentNode } from 'utils/dom'
 // import { openVenationWin } from 'utils/createVenationWin'
@@ -35,7 +36,7 @@ import {
 } from '@flyele-nx/constant'
 import dayjs from 'dayjs'
 // import { useLocation } from 'react-router-dom'
-import { getProjectKey, getWidget } from '../../utils/index'
+import { getWidget } from '../../utils/index'
 // import { ICreateParams } from 'service/types/create'
 // import { FullShowMode } from '@/service/types/matter.d'
 // import { getDataset } from '@/hooks/useFollow'
@@ -46,7 +47,6 @@ import { getProjectKey, getWidget } from '../../utils/index'
 // import { ICheckTaskComboResponse } from '@/service/types/rights'
 // import { useGlobalMatterCondition } from '@/hooks/useGlobalMatterCondition'
 // import { useGlobalMatterPriority } from '@/hooks/useGlobalMatterPriority'
-import { IconBox } from './IconBox'
 import style from './index.module.scss'
 import { isInTask } from '../../utils/index'
 import AlertPromise from '../../components/AlertPromise'
@@ -80,14 +80,12 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     level = 0,
     // childLine,
     topParentLine,
-    cycle_date,
     task_id,
     repeat_id = '',
     parent_id,
     repeat_type,
     takers,
     creator_id,
-    cycle,
     date,
     group_id,
     project_id
@@ -136,9 +134,11 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     } else {
       AlertPromise({
         title: '',
-        content: <div className={style.modal}>是否取消创建</div>,
-        cancelText: '取消创建',
-        okText: '不取消',
+        content: (
+          <div className={style.modal}>{I18N.common.cancelCreation2}</div>
+        ),
+        cancelText: I18N.common.cancelCreation,
+        okText: I18N.common.doNotCancel,
         cancelStyle: { borderRadius: 8 },
         okStyle: { borderRadius: 8, backgroundColor: 'var(--primary)' },
         keyboard: false,
@@ -224,7 +224,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       // })
 
       showMsg({
-        content: '创建成功'
+        content: I18N.common.createdSuccessfully
       })
 
       setVal('')
@@ -260,7 +260,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
 
       // 点击创建事项的其他内容区域
       if (dom.classList.contains('create-mask')) {
-        showMsg({ content: '标题未填哦' })
+        showMsg({ content: I18N.common.titleNotFilledIn })
 
         createInputRef.current?.focus()
 
@@ -450,7 +450,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       if (finish_time) {
         showMsg({
           msgType: '消息',
-          content: '已完成事项不可修改'
+          content: I18N.common.completedItems
         })
         return
       }
@@ -458,7 +458,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       if (notMyBusiness) {
         showMsg({
           msgType: '错误',
-          content: '没参与事项不可修改'
+          content: I18N.common.notInvolvedInMatters
         })
         return
       }
@@ -512,7 +512,12 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
     }
 
     if (inputValue.length > MAX_TITLE_LEN) {
-      showMsg({ msgType: '错误', content: `标题不可超过${MAX_TITLE_LEN}个字` })
+      showMsg({
+        msgType: '错误',
+        content: I18N.template?.(I18N.common.titleCannotExceed, {
+          val1: MAX_TITLE_LEN
+        })
+      })
       return
     }
 
@@ -576,7 +581,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
         value={value}
         onChange={onInputChange}
         onKeyPress={handleKeyPress}
-        placeholder="输入标题，回车创建，esc取消"
+        placeholder={I18N.common.enterTitleBack}
         style={{
           padding: '0 20px',
           width: '100%'
@@ -631,7 +636,13 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
 
             {!!repeat_type && (
               <div className={style['repeat-box-wrapper']}>
-                <FlyTooltip text={`已产生${repeatTotal}次循环`}>
+                <FlyTooltip
+                  text={
+                    I18N.template?.(I18N.common.generatedRe, {
+                      val1: repeatTotal
+                    }) || ''
+                  }
+                >
                   <div
                     className={cs(style.box, style['repeat-box'])}
                     onClick={showCycleDetail}
@@ -645,7 +656,13 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
 
             {(has_child || (!isGroup && parent_id)) && (
               <FlyTooltip
-                text={isGroup ? `已完成${completeTotal}个子事项` : '脉络图'}
+                text={
+                  isGroup
+                    ? I18N.template?.(I18N.common.completedCo, {
+                        val1: completeTotal
+                      }) || ''
+                    : I18N.common.mind_map
+                }
               >
                 <div
                   className={cs(style.box, style['close-box'], {
@@ -653,7 +670,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
                   })}
                   onClick={handleOpen}
                 >
-                  {isGroup && !!taskTotal ? (
+                  {isGroup ? (
                     <>
                       <span>{`${completeTotal}/${taskTotal}`}</span>
                       {/* <img src={arrDownIcon} alt="" /> */}

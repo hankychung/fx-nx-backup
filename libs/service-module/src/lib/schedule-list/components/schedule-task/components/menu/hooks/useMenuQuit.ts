@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IScheduleTask } from '@flyele-nx/types'
@@ -18,6 +19,7 @@ import { useExitTask } from '../../../../../utils/hooks/useExitTask'
 import { useExitTodo } from '../../../../../utils/hooks/useExitTodo'
 import { useExitMeeting } from '../../../../../utils/hooks/useExitMeeting'
 import { MatterType, MatterTypeLabel } from '@flyele-nx/constant'
+import { globalInfoHandler } from '@flyele-nx/zustand-handler'
 
 export const useMenuQuit = ({
   data,
@@ -56,12 +58,14 @@ export const useMenuQuit = ({
   const quitText = useMemo(() => {
     const isCreator = data.creator_id === userId
 
-    const first = isCreator ? '取消' : '退出'
+    const first = isCreator ? I18N.common.cancel : I18N.common.quit
 
     const last = MatterTypeLabel[data.matter_type]
 
+    const blankSpace = globalInfoHandler.langIsCn() ? '' : ' '
+
     // 兜底不显示 undefined
-    return first + (last ?? '')
+    return first + blankSpace + (last ?? '')
   }, [data.creator_id, data.matter_type, userId])
 
   return {

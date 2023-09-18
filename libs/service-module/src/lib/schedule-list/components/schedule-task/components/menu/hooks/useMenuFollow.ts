@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemo } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { IAction } from '../../../../../../context-menu/types'
@@ -10,7 +11,7 @@ import { Pub } from '@flyele-nx/constant'
 
 export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
   const getTxt = useMemo(() => {
-    return data.has_follow ? '取消关注' : '关注'
+    return data.has_follow ? I18N.common.cancelFollow : I18N.common.focus
   }, [data.has_follow])
 
   // 要改变至新状态
@@ -25,14 +26,14 @@ export const useMenuFollow = ({ data }: { data: IScheduleTask }): IAction => {
       if (isFollow) {
         return {
           action: 'unfollowTask',
-          msg: '已取消关注',
+          msg: I18N.common.cancelledFollowing,
           follow: !isFollow
         }
       }
 
       return {
         action: 'followTask',
-        msg: '已关注',
+        msg: I18N.common.followed,
         follow: !isFollow
       }
     }

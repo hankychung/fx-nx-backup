@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   IFullViewEventOption,
@@ -16,8 +17,6 @@ import { isInTask } from '../../utils'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { timeGetter } from '@flyele-nx/utils'
-import dayjs from 'dayjs'
-import { GanttHandler } from '../../utils/ganttHandler'
 
 export type TaskGanttContentProps = {
   tasks: IFullViewBarTask[]
@@ -98,7 +97,9 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
       if (!ganttEvent.changedTask || !point || !svg?.current) return
       event.preventDefault()
       if (ganttEvent.changedTask.repeat_id) {
-        globalNxController.showMsg({ content: '循环事项暂不支持拖动调整时间' })
+        globalNxController.showMsg({
+          content: I18N.common.recurringMattersTemporarily
+        })
 
         return true
       }
@@ -106,7 +107,9 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         const curStamp = await timeGetter.getDate()
 
         if (ganttEvent.changedTask.finish_time) {
-          globalNxController.showMsg({ content: '会议已结束不能修改' })
+          globalNxController.showMsg({
+            content: I18N.common.meeting_ended_cannot_modify
+          })
 
           return true
         }
@@ -115,7 +118,9 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
           ganttEvent.changedTask?.start_time &&
           ganttEvent.changedTask?.start_time < curStamp
         ) {
-          globalNxController.showMsg({ content: '会议进行中不能修改' })
+          globalNxController.showMsg({
+            content: I18N.common.meeting_in_progress_cannot_modify
+          })
           return true
         }
       }
@@ -123,7 +128,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
       if (ganttEvent.changedTask?.finish_time) {
         globalNxController.showMsg({
           msgType: '消息',
-          content: '已完成事项不可修改'
+          content: I18N.common.completedItems
         })
         return
       }
@@ -131,7 +136,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
       if (notMyBusiness) {
         globalNxController.showMsg({
           msgType: '错误',
-          content: '没参与事项不可修改'
+          content: I18N.common.notInvolvedInMatters
         })
         return
       }

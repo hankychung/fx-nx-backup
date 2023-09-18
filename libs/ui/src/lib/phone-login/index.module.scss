@@ -17,6 +17,9 @@
   }
 
   :global {
+    .ant-input {
+      caret-color: #1dd2c1;
+    }
     .ant-input:hover {
       border-color: #43dec9;
     }

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import dayjs, { Dayjs } from 'dayjs'
 import { IScheduleTask, Taker, RepeatList } from '@flyele-nx/types'
 import { MatterType } from '@flyele-nx/constant'
@@ -140,7 +141,7 @@ const dateRange = (
       (pos === 'start' && todayStartFull) ||
       (pos === 'end' && todayEndFull)
     ) {
-      return '今天'
+      return I18N.common.todayWord
     }
 
     // if (pos === 'start' && !isStartFull) {
@@ -222,7 +223,10 @@ export const getDate_validity_low_date = (
 
   if (!start_time && !end_time)
     return {
-      output: !flow_step_id && !repeat_type ? '待安排' : '无时间', //新增待安排字段
+      output:
+        !flow_step_id && !repeat_type
+          ? I18N.common.unscheduled
+          : I18N.common.noTime, //新增待安排字段
       delayTxt: '',
       firstPartOutput,
       secondPartOutput,
@@ -234,14 +238,8 @@ export const getDate_validity_low_date = (
   let delayTxt = ''
 
   if (needDelay && end_time && end_time < curTime && start_time < curTime) {
-    delayTxt = '已延期'
+    delayTxt = I18N.common.delayed
   }
-  // if (
-  //   start_time_full_day === 2 && start_time && !end_time
-  //   // isSameDay(dayjs.unix(end_time), dayjs.unix(start_time))
-  // ) {
-  //   end_time_full_day = 1
-  // }
 
   const startDj = dayjs.unix(start_time)
   const start_YYYY = startDj.format('YYYY年')
@@ -261,9 +259,6 @@ export const getDate_validity_low_date = (
 
   const end_MMDD = dayjs.unix(end_time).format(end_MMDD_format)
 
-  // const start_Week = `周${DAY_DICT[dayjs.unix(start_time).day()]}`
-  // const end_Week = `周${DAY_DICT[dayjs.unix(end_time).day()]}`
-
   // 年份 + 日期
   if (start_YYYY !== today_YYYY) {
     firstStr += start_YYYY
@@ -278,7 +273,6 @@ export const getDate_validity_low_date = (
   secondStr += end_MMDD
 
   // 周几 在最后拼接
-
   // 01 是开始全天 (单天全天)
   if (
     start_time_full_day === 2 &&
@@ -286,9 +280,11 @@ export const getDate_validity_low_date = (
     isSameDay(dayjs.unix(end_time), dayjs.unix(start_time))
   ) {
     output +=
-      !notToday && isSameDay(today, dayjs.unix(start_time)) ? '今天' : firstStr
+      !notToday && isSameDay(today, dayjs.unix(start_time))
+        ? I18N.common.todayWord
+        : firstStr
     output += ' '
-    output += '(全天)'
+    output += `(${I18N.common.all_day})`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -306,10 +302,8 @@ export const getDate_validity_low_date = (
   if (start_time_full_day !== 2 && start_time && !end_time) {
     output += firstStr
     output += ' '
-    // output += isSameDay(today, dayjs.unix(start_time)) ? '今天' : firstStr
-    // output += ' '
     output += dayjs.unix(start_time).format('HH:mm')
-    output += ' 开始'
+    output += ` ${I18N.common.start}`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -317,10 +311,8 @@ export const getDate_validity_low_date = (
   if (!start_time && end_time) {
     output += secondStr
     output += ' '
-    // output += isSameDay(today, dayjs.unix(end_time)) ? '今天' : end_Week
-    // output += ' '
     output += dayjs.unix(end_time).format('HH:mm')
-    output += ' 截止'
+    output += ` ${I18N.common.cutOff}`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -335,10 +327,6 @@ export const getDate_validity_low_date = (
   ) {
     output += firstStr
     output += ' '
-    // output += isSameDay(today, dayjs.unix(start_time)) ? '今天' : start_Week
-    // output += ' '
-    // firstPartOutput = `${output} ${dayjs.unix(start_time).format('HH:mm')}`
-    // secondPartOutput = `${output} ${dayjs.unix(end_time).format('HH:mm')}`
 
     output += dayjs.unix(start_time).format('HH:mm')
     firstPartOutput = output
@@ -354,19 +342,11 @@ export const getDate_validity_low_date = (
   if (start_time && end_time) {
     output += firstStr
     output += ' '
-    // output += isSameDay(today, dayjs.unix(start_time)) ? '今天' : start_Week
-    // output += ' '
-    // output +=
-    //   start_time_full_day === 2 ? '' : dayjs.unix(start_time).format('HH:mm')
     firstPartOutput = output
 
     output += ' - '
     output += secondStr
     output += ' '
-    // output += isSameDay(today, dayjs.unix(end_time)) ? '今天' : end_Week
-    // output += ' '
-    // output +=
-    //   end_time_full_day === 2 ? '' : dayjs.unix(end_time).format('HH:mm')
     secondPartOutput = output.slice(firstPartOutput.length + 3, output.length)
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -450,10 +430,10 @@ export const getScheduleDate = ({
       ) {
         if (isTeamSchedule) {
           return {
-            txt: `${formatDateWithYear(startTime)}（全天）`
+            txt: `${formatDateWithYear(startTime)}（${I18N.common.all_day}）`
           }
         }
-        return { txt: '全天' }
+        return { txt: I18N.common.all_day }
       }
 
       // 未完成
@@ -467,14 +447,14 @@ export const getScheduleDate = ({
           () => {
             // 有开始时间
             if (startTime) {
-              const suffix = isExecute ? '启动' : '开始'
+              const suffix = isExecute ? I18N.common.startUp : I18N.common.start
 
               const getDelaytxt = () => {
                 if (end_time && end_time < _curTime && startTime < _curTime) {
-                  return '已延期'
+                  return I18N.common.delayed
                 }
 
-                return delayStart() ? '延期启动' : ''
+                return delayStart() ? I18N.common.delayedStart : ''
               }
 
               return {
@@ -508,7 +488,7 @@ export const getScheduleDate = ({
                 txt: dateRange(startTime, endTime, {
                   needAllDate: isTeamSchedule
                 }),
-                delayTxt: endTime < _curTime ? '已延期' : ''
+                delayTxt: endTime < _curTime ? I18N.common.delayed : ''
               }
             }
 
@@ -568,7 +548,10 @@ export const getScheduleDate = ({
 
             return {
               txt: runConditions(conds),
-              delayTxt: startTime < _curTime ? '已延期' : '延期启动'
+              delayTxt:
+                startTime < _curTime
+                  ? I18N.common.delayed
+                  : I18N.common.delayedStart
             }
           }
         ],
@@ -601,7 +584,7 @@ export const getScheduleDate = ({
                 : startTime === 0 && isTeamSchedule
                 ? `${range} ${formatTime(endTime)}截止`
                 : range,
-              delayTxt: delayStart() ? '延期启动' : ''
+              delayTxt: delayStart() ? I18N.common.delayedStart : ''
             }
           }
         ]

@@ -11,7 +11,8 @@ import Header from './components/header'
 import MemberInfo from './components/member-info'
 import PayQrCode from './components/pay-qrcode'
 import { IFlyeleAvatarItem } from '../pay-modal'
-import { IActiveGoods } from '@flyele-nx/api'
+import { IActiveGoods, paymentApi } from '@flyele-nx/api'
+import { useMemoizedFn } from 'ahooks'
 interface Iprops {
   onClose: () => void
   mineId: string
@@ -32,6 +33,31 @@ const QuickPay = (props: Iprops) => {
     domain
   } = props
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
+
+  const getOrder = useMemoizedFn(async () => {
+    const params = {
+      amount: 1,
+      coupon_id: 0,
+      good_id: vipMeal?.id || 0,
+      // good_id: 8,
+      origin_route: 'PC客户端',
+      total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0,
+      // total_price: 1,
+      users_id: memberList.map((item) => item.userId),
+      indent_member_type: 2
+    }
+    try {
+      const res = await paymentApi.createOrder(params)
+
+      return {
+        ...res.data.data,
+        total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+      }
+    } catch (e) {
+      console.log('getOrder error', e)
+    }
+  })
+
   return (
     <div>
       <Modal
@@ -60,6 +86,7 @@ const QuickPay = (props: Iprops) => {
           </div>
           <div>
             <PayQrCode
+              getOrder={getOrder}
               goProtocol={goProtocol}
               memberList={memberList}
               vipMeal={vipMeal}

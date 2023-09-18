@@ -6,6 +6,7 @@
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/PersonVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
@@ -19,7 +20,7 @@ const LeftBlock = ({ goInterests }: { goInterests: () => void }) => {
     <div className={style.leftBlock}>
       <div className={style.person_desc}>{obj.desc}</div>
       <div className={style.interests} onClick={goInterests}>
-        <span>查看完整权益</span>
+        <span>{I18N.common.viewFullRights}</span>
         <ArrowRight color="#F1AA40" />
       </div>
       <div className={style.interests_list}>
@@ -35,9 +36,7 @@ const LeftBlock = ({ goInterests }: { goInterests: () => void }) => {
           )
         })}
       </div>
-      <div className={style.left_footer}>
-        *可创建免费空间 1 个，专业空间 0 个
-      </div>
+      <div className={style.left_footer}>{I18N.common.canCreateFree}</div>
     </div>
   )
 }

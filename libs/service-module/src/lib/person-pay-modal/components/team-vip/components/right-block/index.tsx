@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
@@ -142,7 +143,7 @@ const RightBlock = ({
     <div className={style.rightBlock}>
       <div>
         <div className={style.mealBlock}>
-          <div className={style.title}>团队套餐</div>
+          <div className={style.title}>{I18N.common.teamPackage}</div>
           <div className={style.mealList}>
             <div
               className={cs(style.mealItem, {
@@ -152,7 +153,7 @@ const RightBlock = ({
                 // mealSelect(_)
               }}
             >
-              <div className={style.vip_name}>团队会员</div>
+              <div className={style.vip_name}>{I18N.common.business}</div>
               <div className={style.price}>
                 {vipMeal?.original_price && (
                   <span>
@@ -164,7 +165,7 @@ const RightBlock = ({
                   <span>￥</span>
                   {`${regFenToYuan(
                     (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
-                  )}/人/年`}
+                  )}${I18N.common.regFe}`}
                 </div>
               </div>
               {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
@@ -187,9 +188,9 @@ const RightBlock = ({
         </div>
         <div className={style.memberList}>
           <div className={style.lable_vip}>
-            <div className={style.title}>开通对象</div>
+            <div className={style.title}>{I18N.common.openTo}</div>
             <div className={style.memberSum}>
-              开通人数
+              {I18N.common.numberOfUsersOpened}
               <span>{` x${resultArr.length}`}</span>
             </div>
           </div>

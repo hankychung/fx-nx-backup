@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
@@ -144,7 +145,7 @@ const RightBlock = ({
     <div className={style.rightBlock}>
       {!isLifeLong && (
         <div className={style.mealBlock}>
-          <div className={style.title}>套餐选择</div>
+          <div className={style.title}>{I18N.common.packageSelection}</div>
           <div className={style.mealList}>
             {vipMealList.map((_: IActiveGoods) => {
               let num = 0

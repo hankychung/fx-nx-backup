@@ -10285,7 +10285,7 @@
                 : ''
               if (a4)
                 a4 =
-                  'SELECT ref_task_id, GROUP_CONCAT(taker_id) AS takers\n    FROM task_dispatch\n   WHERE is_valid = 1 AND status = 1 ' +
+                  'SELECT ref_task_id, GROUP_CONCAT(taker_id) AS takers\n    FROM task_dispatch\n   WHERE is_valid = 1 AND status = 1 AND identity NOT IN (10804, 10811) ' +
                   (c0.d === 'today' ? '' : 'AND delete_at = 0') +
                   '\n   GROUP BY ref_task_id'
               else

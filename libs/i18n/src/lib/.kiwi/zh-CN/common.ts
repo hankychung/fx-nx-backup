@@ -1517,7 +1517,6 @@ export default {
   msgni3: '{val1} 输出了会议纪要',
   msgni2: '{val1} 添加附件[图片]',
   msgni: '{val1} 添加附件 【{val2}】',
-
   step3Generate: '第三步：生成导出文件，获得最终表格',
   step2Selection: '第二步：选择导出事项的数据维度',
   firstStepScreening: '第一步：筛选条件，确认要导出的事项',
@@ -1582,12 +1581,10 @@ export default {
   dataConditions: '数据条件',
   operationTime: '操作时间',
   exportAsEx: '导出为Excel',
-  /**start */
   noRelevantInformationFound: '未查到相关结果',
   referenceLink: '引用/链接',
   text: '文本',
   findMessageText: '查找消息/文件/图片/重点/引用/链接',
-  /**end */
   unnamedApplication: '未命名应用',
   releaseTo: '发布至',
   noDescription: '暂无说明',
@@ -1621,7 +1618,7 @@ export default {
   doYouWantToSaveThis: '是否保存本次编辑内容？',
   createUpTo20Task: '最多创建20个子事项',
   atLeastOneIsRequired: '需至少有一名固定协作人',
-  selfSelectedCollaborators: '自选协作人范围已改为任意协作人',
+  selfSelectedCollaborators: '自选协作人',
   flowPath: '流程',
   pleaseEnterTheSteps: '请输入步骤名称',
   afterSelectingTheStep: '选中步骤后在此配置规则',
@@ -1886,6 +1883,7 @@ export default {
   completeInvitation: '完成邀请',
   addStartup: '添加启动',
   //组件库start
+
   existingLis: '已有{val1}人',
   addLis: '新增{val1}人',
   selectedInc: '已选{val1}人',
@@ -1893,6 +1891,44 @@ export default {
   myAssistant: '我的协助人',
   searchParticipants: '搜索参与人',
   currentlySelectedAs: '当前选中成员大于 maxSelectedTotal',
-  notFindHelper: '未找到相关协作人'
+  notFindHelper: '未找到相关协作人',
   //组件库end
+  //会员start
+  youHaveNotYet: '你当前尚未开通',
+  immediatelyAfterOpening: '开通后立即享受超过25项特权',
+  upgradeTeamMeeting: '升级团队会员，立享专业团队空间，',
+  dayjs: '{val1}到期',
+  lifetimeMembership: '终身会员 永不过期',
+  enjoyPersonalExpertise: '享受个人专属权益',
+  expire: '到期',
+  originalIndividualMember: '原个人会员已为你延期到',
+  originalLifelongIndividual: '原终身个人会员将在团队会员结束后恢复',
+  enjoyPersonalSpaceExpertise: '享受个人专属权益和专业团队空间能力',
+  dayjs2: '{val1}到期',
+  afterDaysExpired: '{val1}天后到期',
+  activate: '开通',
+  limitedTimeActivitiesEvery:
+    '限时活动：每邀请1个新用户注册，免费得5天团队会员',
+  checkNow: '立即查看',
+  projectCreatorUseMore: '项目创建人开通会员后，可享受更多功能权益',
+  reminderTaOn: '提醒TA开通',
+  failedEnterpriseEdition: '失败，企业版暂无支付流程',
+  news: '消息',
+  onlyMembersCan: '仅会员才可使用该功能',
+  increaseTheNumberOfProjects: '增加项目数量',
+  gSeat: '10G*席位',
+  increaseFileCapacity: '增加文件容量',
+  addSubItemsLevel: '增加子事项层级',
+  addSubItemsMount: '增加子事项数量',
+  canBeBasedOnConditions: '可根据条件导出事项，进行高阶数据处理',
+  mattersThatCanBeSpecified: '可指定事项产生循环的频率和日期，设置循环更加灵活',
+  addCustomizationMount: '增加自定义视图数量',
+  increaseTheNumberOfTargets: '增加目标数量',
+  someFilesExceed: '部分文件超过50M不能上传',
+  increaseFileSize: '增加文件大小',
+  addProjectMatters: '增加项目事项数量',
+  addItemAgreement: '增加事项协作人数量',
+  increaseTheNumberOfHeaders: '增加表头数量',
+  inTheMindMap: '在思维导图中结构化创建事项'
+  //会员end
 }

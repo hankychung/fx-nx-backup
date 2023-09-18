@@ -1884,5 +1884,15 @@ export default {
   maxReached: '已达{val1}字上限',
   confirmModification: '确认修改',
   completeInvitation: '完成邀请',
-  addStartup: '添加启动'
+  addStartup: '添加启动',
+  //组件库start
+  existingLis: '已有{val1}人',
+  addLis: '新增{val1}人',
+  selectedInc: '已选{val1}人',
+  participateIn: '参与',
+  myAssistant: '我的协助人',
+  searchParticipants: '搜索参与人',
+  currentlySelectedAs: '当前选中成员大于 maxSelectedTotal',
+  notFindHelper: '未找到相关协作人'
+  //组件库end
 }

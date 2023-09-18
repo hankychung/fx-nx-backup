@@ -1,14 +1,19 @@
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
-import styles from './paypal.module.scss'
 
 /* eslint-disable-next-line */
 export interface PaypalProps {
   onClick?: () => void
+  width?: number
+  height?: number
+  success?: () => void
+  fail?: () => void
+  productId: string
+  quantity?: number
 }
 
 const host = 'http://localhost:8888'
 
-export function Paypal({ onClick }: PaypalProps) {
+export function Paypal({ onClick, width = 310, height = 50 }: PaypalProps) {
   async function createOrder() {
     onClick?.()
     try {
@@ -99,13 +104,15 @@ export function Paypal({ onClick }: PaypalProps) {
   }
 
   return (
-    <PayPalScriptProvider options={{ clientId: 'test' }}>
-      <PayPalButtons
-        createOrder={createOrder}
-        onApprove={onApprove}
-        style={{ layout: 'horizontal' }}
-      />
-    </PayPalScriptProvider>
+    <div style={{ width: `${width}px` }}>
+      <PayPalScriptProvider options={{ clientId: 'test' }}>
+        <PayPalButtons
+          createOrder={createOrder}
+          onApprove={onApprove}
+          style={{ layout: 'horizontal', tagline: false, height }}
+        />
+      </PayPalScriptProvider>
+    </div>
   )
 }
 

@@ -11,10 +11,12 @@ import Header from './components/header'
 import MemberInfo from './components/member-info'
 import PayQrCode from './components/pay-qrcode'
 import { IFlyeleAvatarItem } from '../pay-modal'
+import Protocol from './components/pay-qrcode/components/protocol'
 import { IActiveGoods } from '@flyele-nx/api'
 import { paymentApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { Paypal } from '@flyele-nx/paypal'
+
 interface Iprops {
   onClose: () => void
   mineId: string
@@ -95,11 +97,10 @@ const QuickPay = (props: Iprops) => {
               />
             )}
           </div>
-          <div>
+          <div className={style.bottomBlock}>
             {isCN ? (
               <PayQrCode
                 getOrder={getOrder}
-                goProtocol={goProtocol}
                 memberList={memberList}
                 vipMeal={vipMeal}
                 isPaySuccess={isPaySuccess}
@@ -107,8 +108,28 @@ const QuickPay = (props: Iprops) => {
                 domain={domain}
               />
             ) : (
-              <Paypal productId={productId} />
+              <>
+                <div className={style.price}>
+                  <span>$</span>
+                  <span>
+                    {(vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0}
+                  </span>
+                </div>
+                <Paypal
+                  productId={productId}
+                  containerStyle={{
+                    position: 'absolute',
+                    top: '80px',
+                    left: '50%',
+                    transform: 'translateX(-50%)'
+                  }}
+                />
+              </>
             )}
+            {/* 协议 */}
+            <div className={style.protocol}>
+              <Protocol goProtocol={goProtocol} />
+            </div>
           </div>
         </div>
       </Modal>

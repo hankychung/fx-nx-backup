@@ -5,17 +5,7 @@ const fn = () => {
 }
 
 export function App() {
-  return (
-    <QuickPay
-      onClose={fn}
-      mineId="22"
-      memberList={[]}
-      isPaySuccess={false}
-      domain="asd"
-      goProtocol={fn}
-      goInterests={fn}
-    />
-  )
+  return <Paypal productId="9999" />
 }
 
 export default App

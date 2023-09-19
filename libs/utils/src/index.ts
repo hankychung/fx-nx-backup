@@ -35,5 +35,6 @@ export {
   getMatterTimeText,
   getDefaultRulesIntoState,
   getAllRemindTxt,
-  getMatterPresetRemindTxt
+  getMatterPresetRemindTxt,
+  getEnFormat
 } from './lib/time'

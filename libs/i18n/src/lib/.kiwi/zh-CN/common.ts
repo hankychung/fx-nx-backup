@@ -1927,6 +1927,14 @@ export default {
   addItemAgreement: '增加事项协作人数量',
   increaseTheNumberOfHeaders: '增加表头数量',
   inTheMindMap: '在思维导图中结构化创建事项',
+  //会员end
+
+  /** */
+  viewCommonQuestions: '查看常见问题',
+  toAnswerYourQuestions: '为您解答所有疑问',
+  addExclusiveCustomers: '添加专属客服',
+  isItImportantForTheTeam: '是否对团队会员存在顾虑？',
+  /** */
   packageSelection: '套餐选择',
   numberOfUsersOpened: '开通人数',
   openTo: '开通对象',

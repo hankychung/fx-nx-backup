@@ -1,5 +1,6 @@
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import { paymentApi } from '@flyele-nx/service'
+import { CSSProperties } from 'react'
 
 export interface PaypalProps {
   // 点击按钮
@@ -14,6 +15,7 @@ export interface PaypalProps {
   fail?: () => void
   // 订单id
   productId: string
+  containerStyle?: CSSProperties
 }
 
 export function Paypal({
@@ -22,7 +24,8 @@ export function Paypal({
   height = 50,
   productId,
   success,
-  fail
+  fail,
+  containerStyle = {}
 }: PaypalProps) {
   async function createOrder() {
     onClick?.()
@@ -100,14 +103,16 @@ export function Paypal({
   }
 
   return (
-    <div style={{ width: `${width}px` }}>
-      <PayPalScriptProvider options={{ clientId: 'test' }}>
-        <PayPalButtons
-          createOrder={createOrder}
-          onApprove={onApprove}
-          style={{ layout: 'horizontal', tagline: false, height }}
-        />
-      </PayPalScriptProvider>
+    <div style={{ ...containerStyle, width: `${width}px` }}>
+      {!!productId && (
+        <PayPalScriptProvider options={{ clientId: 'test' }}>
+          <PayPalButtons
+            createOrder={createOrder}
+            onApprove={onApprove}
+            style={{ layout: 'horizontal', tagline: false, height }}
+          />
+        </PayPalScriptProvider>
+      )}
     </div>
   )
 }

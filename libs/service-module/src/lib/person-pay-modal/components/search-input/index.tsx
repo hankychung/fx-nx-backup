@@ -138,7 +138,8 @@ const SearchInput = (props: ISearchInputProps) => {
           />
           {showCancle && (
             <div className={styles.inputCancel} onClick={handleCancel}>
-              {I18N.common.cancel}</div>
+              {I18N.common.cancel}
+            </div>
           )}
         </div>
       ) : (

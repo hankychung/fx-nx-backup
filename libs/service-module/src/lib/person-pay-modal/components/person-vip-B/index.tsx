@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { IActiveGoods, ICoupon } from '@flyele-nx/api'
 import { paymentApi } from '@flyele-nx/service'
 import { paymentApi as paymentCountApi } from '@flyele-nx/service'
@@ -236,7 +237,7 @@ const PersonVipB = ({
                       }
                     )}
                   >
-                    立省¥
+                    {I18N.common.provincialGovernment}¥
                     {regFenToYuan(
                       _.original_price - _.now_price - (_.price || 0)
                     )}
@@ -248,7 +249,7 @@ const PersonVipB = ({
                 >
                   限时&nbsp; 23:59:00
                 </div> */}
-                  {_.name === '终身会员' &&
+                  {_.name === I18N.common.life_time &&
                     _.end_at &&
                     getResidueTime(num - nowScecond) !== '0' && (
                       <div
@@ -256,7 +257,7 @@ const PersonVipB = ({
                           [style.timeActive]: _.active
                         })}
                       >
-                        限时&nbsp;
+                        {I18N.common.limitedTimeNbs}&nbsp;
                         {getResidueTime(
                           num - nowScecond,
                           (
@@ -271,7 +272,7 @@ const PersonVipB = ({
             })}
           </div>
           <div className={style.priceBottom}>
-            已有{persons}人开通会员，正在更好管理自己的生活、工作
+            {I18N.template?.(I18N.common.haveOpenVipPeople, { val1: persons })}
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { IActiveGoods } from '@flyele-nx/api'
 import cs from 'classnames'
 import React, { useContext, useEffect, useState } from 'react'
@@ -56,10 +57,10 @@ const PayButton = (props: Iprops) => {
     <div className={style.payButton}>
       {activeItem && (
         <div className={style.priceSum}>
-          <span>合计</span>
+          <span>{I18N.common.totalPrice}</span>
           <div className={style.price}>
             {activeItem && activeItem.end_at && (
-              <span>{`已省¥${
+              <span>{`${I18N.common.vipSaved}${
                 vipMealType === VipMealType.TEAM
                   ? +regFenToYuan(
                       activeItem.original_price -
@@ -96,10 +97,10 @@ const PayButton = (props: Iprops) => {
         })}
         onClick={payClick}
       >
-        立即支付
+        {I18N.common.immediatePayment}
       </div>
       <div className={style.protocol}>
-        支付即视为同意
+        {I18N.common.paymentIsConsideredAs}
         <span
           className={cs({
             [style.teamColor]: vipMealType === VipMealType.TEAM
@@ -108,7 +109,7 @@ const PayButton = (props: Iprops) => {
             goProtocol && goProtocol()
           }}
         >
-          《飞项会员协议》
+          {I18N.common.feixiangMemberAssociation}
         </span>
       </div>
       {vipMealList && (

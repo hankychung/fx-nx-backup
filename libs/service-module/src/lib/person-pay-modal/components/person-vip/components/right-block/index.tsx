@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
@@ -19,16 +19,19 @@ const RightBlock = ({
   mineId,
   couponList,
   goProtocol,
-  vipMealType
+  vipMealType,
+  originRoute
 }: {
   goProtocol?: () => void
   memberList: IFlyeleAvatarItem[]
   mineId: string
   couponList?: ICoupon[]
   vipMealType: VipMealType
+  originRoute?: string
 }) => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
+  const [productId, setProductId] = useState('')
   const { nowScecond } = useCurrentTime()
   const isLifeLong = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
@@ -141,6 +144,38 @@ const RightBlock = ({
     const day = parseInt(`${totalSeconds / 3600 / 24}`)
     return day > 5 ? true : false
   }, [vipMealList])
+  //获取订单号
+  const qrCodeFunction = useMemoizedFn(async () => {
+    const userInfo = memberList.filter((item) => item.userId === mineId)
+    const payInfo = activeGood ? activeGood[0] : vipMealList[0]
+    const params = {
+      amount: userInfo.length,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
+      good_id: payInfo?.id || 0,
+      origin_route: originRoute ? originRoute : 'PC客户端',
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
+      users_id: userInfo.map((item) => item.userId),
+      indent_member_type:
+        vipMealType === VipMealType.PERSON
+          ? VipMealType.PERSON
+          : VipMealType.TEAM
+    }
+    try {
+      paymentApi.createOrder(params).then(async (res) => {
+        setProductId(res.data.out_trade_no)
+      })
+    } catch {
+      console.log('00')
+    }
+  })
+
+  //当切换套餐的时候直接生成订单(海外版)
+  useEffect(() => {
+    if (isCN) return
+    qrCodeFunction()
+  }, [vipMealList, qrCodeFunction])
 
   return (
     <div className={style.rightBlock}>
@@ -225,6 +260,7 @@ const RightBlock = ({
             payClick={payClick}
             goProtocol={goProtocol}
             vipMealList={vipMealList}
+            productId={productId}
           />
         </div>
       )}

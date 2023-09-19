@@ -22,7 +22,8 @@ const PersonVip = ({
   couponList,
   goProtocol,
   vipMealType,
-  goInterests
+  goInterests,
+  originRoute
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -30,6 +31,7 @@ const PersonVip = ({
   vipMealType: VipMealType
   goProtocol?: () => void
   goInterests: () => void
+  originRoute?: string
 }) => {
   return (
     <div className={style.personVip}>
@@ -43,6 +45,7 @@ const PersonVip = ({
           couponList={couponList}
           goProtocol={goProtocol}
           vipMealType={vipMealType}
+          originRoute={originRoute}
         />
       </div>
     </div>

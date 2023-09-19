@@ -76,7 +76,6 @@ const VipPackage = (props: Iprops) => {
           setShowPay(service.getData('showPay').show)
           setPayInfo(service.getData('showPay').payInfo)
           setUserInfo(service.getData('showPay').userInfo)
-
           break
 
         default:
@@ -190,6 +189,7 @@ const VipPackage = (props: Iprops) => {
               couponList={couponList}
               vipMealType={vipMealType}
               goInterests={goInterests}
+              originRoute={originRoute}
             />
           ) : (
             <PersonVipB
@@ -199,6 +199,7 @@ const VipPackage = (props: Iprops) => {
               couponList={couponList}
               vipMealType={vipMealType}
               goInterests={goInterests}
+              originRoute={originRoute}
             />
           )
         ) : (
@@ -209,6 +210,7 @@ const VipPackage = (props: Iprops) => {
             couponList={couponList}
             vipMealType={vipMealType}
             goInterests={goInterests}
+            originRoute={originRoute}
           />
         )}
       </div>
@@ -225,6 +227,7 @@ const VipPackage = (props: Iprops) => {
           showMsg={showMsg}
           hasShowRetrieveModal={hasShowRetrieveModal}
           setHasShowRetrieveModal={setHasShowRetrieveModal}
+          originRoute={originRoute}
         />
       </div>
       {/* 支付弹窗 */}

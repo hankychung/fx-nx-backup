@@ -6,7 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
@@ -30,7 +30,8 @@ const RightBlock = ({
   couponList,
   showMsg,
   hasShowRetrieveModal,
-  setHasShowRetrieveModal
+  setHasShowRetrieveModal,
+  originRoute
 }: {
   vipMealType: VipMealType
   goProtocol: () => void
@@ -38,12 +39,14 @@ const RightBlock = ({
   couponList?: ICoupon[]
   hasShowRetrieveModal: boolean
   setHasShowRetrieveModal: () => void
+  originRoute?: string
 }) => {
   const service = useContext(SelectMemberContext)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const { nowScecond } = useCurrentTime()
   const [showTeam, setShowTeam] = useState(false)
+  const [productId, setProductId] = useState('')
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -139,6 +142,39 @@ const RightBlock = ({
     const day = parseInt(`${totalSeconds / 3600 / 24}`)
     return day > 5 ? true : false
   }, [vipMeal])
+
+  //获取订单号
+  const qrCodeFunction = useMemoizedFn(async () => {
+    const userInfo = resultArr
+    const payInfo = vipMeal
+    const params = {
+      amount: userInfo.length,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
+      good_id: payInfo?.id || 0,
+      origin_route: originRoute ? originRoute : 'PC客户端',
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
+      users_id: userInfo.map((item) => item.userId),
+      indent_member_type:
+        vipMealType === VipMealType.PERSON
+          ? VipMealType.PERSON
+          : VipMealType.TEAM
+    }
+    try {
+      paymentApi.createOrder(params).then(async (res) => {
+        setProductId(res.data.out_trade_no)
+      })
+    } catch {
+      console.log('00')
+    }
+  })
+
+  //当切换套餐的时候直接生成订单(海外版)
+  useEffect(() => {
+    if (isCN) return
+    qrCodeFunction()
+  }, [vipMeal, resultArr, qrCodeFunction])
 
   return (
     <div className={style.rightBlock}>
@@ -245,6 +281,7 @@ const RightBlock = ({
           payClick={payClick}
           resultArr={resultArr}
           goProtocol={goProtocol}
+          productId={productId}
         />
       </div>
       {!hasShowRetrieveModal && (

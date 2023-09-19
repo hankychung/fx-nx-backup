@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import { IActiveGoods } from '@flyele-nx/api'
 import cs from 'classnames'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
@@ -6,7 +6,7 @@ import style from './index.module.scss'
 import { ReactComponent as ArrowRight } from '../../../../../../assets/payImg/arrow_right.svg'
 import { SelectMemberContext } from '../../../../context/context'
 import PayUnfinish from '../pay-unfinish'
-import RetrievePayModalTeam from '../../../../../retrieve-pay-modal-team'
+import { Paypal } from '@flyele-nx/paypal'
 
 interface Iprops {
   activeGood?: IActiveGoods[]
@@ -15,9 +15,17 @@ interface Iprops {
   goProtocol?: () => void
   goInterests?: () => void
   vipMealList: IActiveGoods[]
+  productId?: string
 }
 const PayButton = (props: Iprops) => {
-  const { payClick, goProtocol, goInterests, vipMealList, payLife } = props
+  const {
+    payClick,
+    goProtocol,
+    goInterests,
+    vipMealList,
+    payLife,
+    productId = ''
+  } = props
   const [isShow, setIsShow] = useState(false)
   const service = useContext(SelectMemberContext)
 
@@ -40,8 +48,14 @@ const PayButton = (props: Iprops) => {
   return (
     <div className={style.payButton}>
       <div>
-        <div className={cs(style.payBtn)} onClick={payClick}>
-          {I18N.common.immediatePayment}
+        <div className={cs(style.payBox)} onClick={payClick}>
+          {isCN ? (
+            <div className={cs(style.payBtn)}>
+              {I18N.common.immediatePayment}
+            </div>
+          ) : (
+            <Paypal productId={productId} width={324} height={44}></Paypal>
+          )}
         </div>
         <div className={style.protocol}>
           {I18N.common.paymentIsConsideredAs}

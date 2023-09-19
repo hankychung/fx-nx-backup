@@ -16,6 +16,7 @@ import { IActiveGoods } from '@flyele-nx/api'
 import { paymentApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 import { Paypal } from '@flyele-nx/paypal'
+import { regFenToYuan } from './utils'
 
 interface Iprops {
   onClose: () => void
@@ -112,7 +113,9 @@ const QuickPay = (props: Iprops) => {
                 <div className={style.price}>
                   <span>$</span>
                   <span>
-                    {(vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0}
+                    {regFenToYuan(
+                      (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+                    )}
                   </span>
                 </div>
                 <Paypal

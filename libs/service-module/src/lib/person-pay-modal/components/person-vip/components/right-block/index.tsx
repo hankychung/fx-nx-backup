@@ -6,13 +6,14 @@ import style from './index.module.scss'
 import PayButton from '../../../pay-button'
 import { VipMealType } from '../../../controller'
 import PersonVipEmpty from './person-vip-empty'
-import { IActiveGoods, paymentApi, ICoupon } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon } from '@flyele-nx/api'
 import { getResidueTime, regFenToYuan } from '../../../../utils'
 import * as dayjs from 'dayjs'
 import { useCurrentTime } from '../../../../hooks/useCurrentTime'
 import { SelectMemberContext } from '../../../../context/context'
 import { useMemoizedFn } from 'ahooks'
 import { IFlyeleAvatarItem } from '../../../../../pay-modal'
+import { paymentApi } from '@flyele-nx/service'
 const RightBlock = ({
   memberList,
   mineId,
@@ -41,7 +42,7 @@ const RightBlock = ({
   }
 
   const getMealList = useMemoizedFn(async () => {
-    paymentApi.getPrice({ good_type: 'person' }).then((res) => {
+    paymentApi.getGoodsList({ good_type: 'person' }).then((res) => {
       if (res.code === 0) {
         const new_arr = res.data.map((item, index) => {
           const arr = getItem(item.id, couponList || [])

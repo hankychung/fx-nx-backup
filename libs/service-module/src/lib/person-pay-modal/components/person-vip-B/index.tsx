@@ -1,5 +1,6 @@
 import { I18N } from '@flyele-nx/i18n'
-import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { paymentApi as paymentCountApi } from '@flyele-nx/service'
 import React, { useContext, useState, useEffect, useMemo } from 'react'
 
@@ -44,7 +45,7 @@ const PersonVipB = ({
     return list.filter((item) => +item.ref_goods_id === id)
   }
   const getMealList = useMemoizedFn(async () => {
-    paymentApi.getPrice({ good_type: 'person' }).then((res) => {
+    paymentApi.getGoodsList({ good_type: 'person' }).then((res) => {
       if (res.code === 0) {
         const new_arr = res.data.map((item, index) => {
           const arr = getItem(item.id, couponList || [])

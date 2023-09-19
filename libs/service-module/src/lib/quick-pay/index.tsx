@@ -11,7 +11,8 @@ import Header from './components/header'
 import MemberInfo from './components/member-info'
 import PayQrCode from './components/pay-qrcode'
 import { IFlyeleAvatarItem } from '../pay-modal'
-import { IActiveGoods, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
 interface Iprops {
   onClose: () => void
@@ -50,7 +51,7 @@ const QuickPay = (props: Iprops) => {
       const res = await paymentApi.createOrder(params)
 
       return {
-        ...res.data.data,
+        ...res.data,
         total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
       }
     } catch (e) {

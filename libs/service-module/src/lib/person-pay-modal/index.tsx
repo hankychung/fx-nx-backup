@@ -17,6 +17,7 @@ import { SelectMemberContext } from './context/context'
 import { IFlyeleAvatarItem } from '../pay-modal'
 import RetrievePayModal from '../retrieve-pay-modal'
 import RetrievePayModalTeam from '../retrieve-pay-modal-team'
+import { globalInfoHandler } from '@flyele-nx/zustand-handler'
 interface Iprops {
   onClose: () => void
   payType?: VipMealType
@@ -52,6 +53,8 @@ const PersonPayModal = (props: Iprops) => {
   const [vipMealType, setVipMealType] = useState<VipMealType>(payType || 1) // 切换tab
   const [showRetrieveModal, setShowRetrieveModal] = useState(false)
   const [hasShowRetrieveModal, setHasShowRetrieveModal] = useState(false)
+  const isCN = globalInfoHandler.langIsCn()
+
   useEffect(() => {
     if (payType) {
       setVipMealType(payType)
@@ -66,6 +69,9 @@ const PersonPayModal = (props: Iprops) => {
       onClose()
     } else if (hasShowRetrieveModal && vipMealType === 2) {
       //这个判断主要是做团队会员只弹一次的功能
+      onClose()
+    } else if (!isCN) {
+      //是英文版直接关闭，不弹个人挽回弹窗
       onClose()
     } else {
       setShowRetrieveModal(true)

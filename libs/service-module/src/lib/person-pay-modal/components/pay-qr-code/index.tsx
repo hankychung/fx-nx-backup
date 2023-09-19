@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_icon.svg'
 // import { ReactComponent as AlipayIcon } from '../../../../assets/payImg/alipay_icon.svg'
@@ -112,8 +113,10 @@ const PayQrCode = ({
           <div className={style.payQrCode}>
             <div className={style.head}>
               <div className={style.lable_pay}>
-                <span>扫码支付</span>
-                <div className={style.telephone}>对公支付联系: 15002007797</div>
+                <span>{I18N.common.scanCodePayment}</span>
+                <div className={style.telephone}>
+                  {I18N.common.corporatePaymentReceipt}
+                </div>
               </div>
               <Close
                 className={style.close}
@@ -140,7 +143,7 @@ const PayQrCode = ({
               <div className={style.payIcon}>
                 <div className={style.iconItem}>
                   <WechatIcon className={style.qrcode}></WechatIcon>
-                  <span>微信支付</span>
+                  <span>{I18N.common.weChatPayment}</span>
                 </div>
               </div>
             </div>

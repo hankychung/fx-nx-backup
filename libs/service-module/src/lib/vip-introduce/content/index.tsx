@@ -8,10 +8,14 @@ import divisionIcon from '../../../assets/introduction/division.svg'
 
 import { Button } from 'antd'
 import css from './index.module.scss'
-import { memberPowerStaticData } from './packages_const'
+import {
+  memberPowerStaticData,
+  memberPowerStaticDataEN
+} from './packages_const'
 import { IInfoType, IPower, VipIntroduceContentProps } from '../types'
 import { FlyTooltip } from '@flyele/flyele-components'
-import { pointer } from 'd3-selection'
+import { globalInfoHandler } from '@flyele-nx/zustand-handler'
+import { I18N } from '@flyele-nx/i18n'
 
 export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
   const {
@@ -30,7 +34,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
     return item.isSpace === 'professional_space' ? (
       <div className={css.space_division}>
         <div className={css.professionnal_capacity}>
-          <span>专业空间能力</span>
+          <span>{I18N.common.proTeamspaceFeatures}</span>
         </div>
         <img src={divisionIcon} alt="" />
       </div>
@@ -38,6 +42,9 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       ''
     )
   }
+  const isCN = globalInfoHandler.langIsCn()
+
+  const dataList = isCN ? memberPowerStaticData : memberPowerStaticDataEN
 
   const isSpace = (item: IPower) => {
     if (!item) return
@@ -93,7 +100,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
 
   return (
     <div className={css.container}>
-      {memberPowerStaticData.map((item) => {
+      {dataList.map((item) => {
         const btnText = fillterBtnText(item)
         return (
           <div className={css.card} key={item.key}>
@@ -101,7 +108,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
               {item.topText && (
                 <>
                   <VectorIcon style={{ marginRight: 2 }} />
-                  热门推荐
+                  {I18N.common.popular}
                 </>
               )}
             </div>
@@ -132,10 +139,13 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                 </div>
                 {item.key !== 'custom' && (
                   <div className={css.priceBox}>
-                    <span className={css.smallText}>¥ </span>
+                    {isCN && <span className={css.smallText}>¥ </span>}
                     {item.money}
                     {item.unit && (
                       <span className={css.smallText}>{` / ${item.unit}`}</span>
+                    )}
+                    {!isCN && item.key === 'team' && (
+                      <div className={css.priceBoxBottom}>per member</div>
                     )}
                   </div>
                 )}
@@ -192,10 +202,8 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                     {item.oldPrice}
                   </span>
                 </p> */}
-                {item.key === 'custom' ? (
+                {item.key === 'custom' && isCN && (
                   <div className={css.priceConsultation}>价格咨询</div>
-                ) : (
-                  <></>
                 )}
                 {btnText && (
                   <Button

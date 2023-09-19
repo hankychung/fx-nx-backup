@@ -9,6 +9,7 @@ import {
   FlyBasePopperCtrl,
   useController
 } from '@flyele/flyele-components'
+import { I18N } from '@flyele-nx/i18n'
 import CustomerServicesModal from '../customer-services-modal'
 import { BaseUserInfoType } from '@flyele-nx/ui'
 import { VipIntroduceContentProps } from './types'
@@ -35,9 +36,9 @@ const _VipIntroduce = (props: IProps) => {
   const Controller = useController(new FlyBasePopperCtrl())
 
   const text = useMemo(() => {
-    if (isTeamVip) return '你当前是团队会员'
-    else if (isVip) return '你当前是个人会员'
-    else return '你当前是免费账户'
+    if (isTeamVip) return I18N.common.businessPeople
+    else if (isVip) return I18N.common.premiumPeople
+    else return I18N.common.freePeople
   }, [isVip, isTeamVip])
 
   return (
@@ -82,7 +83,7 @@ const _VipIntroduce = (props: IProps) => {
             }}
             icon={<CustomerIcon />}
           >
-            联系客服
+            {I18N.common.help}
           </Button>
         </FlyBasePopper>
       </div>

@@ -26,7 +26,7 @@ export interface IInfoType {
   btnBgColor?: string
   btnBorderColor?: string
   money: string
-  unit: '' | '月' | '年' | '年/人'
+  unit: '' | '月' | '年' | '年/人' | 'yr'
   moneyText?: string
   powerList: IPower[]
   topText?: string

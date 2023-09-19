@@ -62,7 +62,7 @@ const QuickPay = (props: Iprops) => {
   })
 
   useEffect(() => {
-    if (isCN) return
+    if (isCN || !vipMeal) return
 
     getOrder(vipMeal).then((res) => {
       setProductId(res?.out_trade_no || '')

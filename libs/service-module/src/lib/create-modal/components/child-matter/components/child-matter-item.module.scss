@@ -1,0 +1,75 @@
+.child_matter_wrap {
+  display: flex;
+  align-items: center;
+  //margin-top: 26px;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 16px 0 12px;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  margin: 4px 0;
+
+  .left_box {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    img {
+      margin-right: 7px;
+      width: 16px;
+      height: 16px;
+    }
+
+    input {
+      padding-left: 10px;
+      width: 100%;
+      font-size: 14px;
+      color: rgba(#000, 0.87);
+      flex: 1;
+      outline: none;
+      border: none;
+      background-color: transparent;
+      //caret-color: $theme-primary;
+
+      &::-webkit-input-placeholder {
+        color: #b4b4b4;
+      }
+    }
+  }
+
+  .right_box {
+    display: flex;
+    align-items: center;
+
+    .time_expire {
+      color: #fe4d4d;
+      font-size: 13px;
+    }
+
+    .iconBox {
+      margin-left: 10px;
+    }
+
+    .clear_icon {
+      margin-left: 10px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.hover_bg {
+  background-color: rgba(29, 210, 193, 0.2);
+}
+
+.takerIcon {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  .num {
+    font-size: 10px;
+    color: #1dd2c1;
+  }
+}

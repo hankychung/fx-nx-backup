@@ -3,6 +3,7 @@ import { FullViewModeEnum } from '@flyele-nx/constant'
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions
 import DateTimeFormat = Intl.DateTimeFormat
 import dayjs from 'dayjs'
+import { getEnFormat } from '@flyele-nx/utils'
 
 type DateHelperScales =
   | 'year'
@@ -192,7 +193,7 @@ export const getLocaleMonth = (date: Date, locale: string) => {
   //   bottomValue[0],
   //   bottomValue[0].toLocaleUpperCase()
   // )
-  const bottomValue = dayjs(date).format('YYYY年MM月')
+  const bottomValue = getEnFormat(dayjs(date), 'YYYY年MM月', 'MMM, YYYY')
   return bottomValue
 }
 

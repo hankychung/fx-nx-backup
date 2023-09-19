@@ -26,7 +26,7 @@ import { TaskListProps, TaskList } from '../task-list/task-list'
 import { TaskGantt } from './task-gantt'
 import { convertToBarTasks } from '../../helpers/bar-helper'
 import { HorizontalScroll } from '../other/horizontal-scroll'
-// import { removeHiddenTasks, sortTasks } from '../../helpers/other-helper'
+import { getEnFormat } from '@flyele-nx/utils'
 import styles from './gantt.module.scss'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
@@ -577,7 +577,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
     const dates = dateSetup.dates
     if (!dates[res]) return
-    const date = dayjs(dates[res]).format('YYYY-MM')
+    const date = getEnFormat(dayjs(dates[res]), 'YYYY-MM', 'MMM D')
 
     setCurrentDate(date)
   }, [

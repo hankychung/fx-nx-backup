@@ -1883,8 +1883,6 @@ export default {
   confirmModification: '确认修改',
   completeInvitation: '完成邀请',
   addStartup: '添加启动',
-  //组件库start
-
   existingLis: '已有{val1}人',
   addLis: '新增{val1}人',
   selectedInc: '已选{val1}人',
@@ -1893,8 +1891,6 @@ export default {
   searchParticipants: '搜索参与人',
   currentlySelectedAs: '当前选中成员大于 maxSelectedTotal',
   notFindHelper: '未找到相关协作人',
-  //组件库end
-  //会员start
   youHaveNotYet: '你当前尚未开通',
   immediatelyAfterOpening: '开通后立即享受超过25项特权',
   upgradeTeamMeeting: '升级团队会员，立享专业团队空间，',
@@ -2002,6 +1998,34 @@ export default {
   help: '联系客服',
   freePeople: '你当前是免费账户',
   premiumPeople: '你当前是个人会员',
-  businessPeople: '你当前是团队会员'
+  businessPeople: '你当前是团队会员',
   //会员end
+  pictureFiles: '图片/文件',
+  toDoCompleted: '已完成待办不可修改',
+  theMeetingHasStarted: '会议已开始不可修改',
+  notParticipatingInTheMeeting: '未参与会议不可修改',
+  meetingEnded: '已结束会议不可修改',
+  meetingCreationOnly: '仅会议创建人可以移动会议',
+  currentlyNotSupportedForChecking: '暂不支持查看此类事项脉络图',
+  completionMatters: '完结事项',
+  compere: '主持人',
+  choroidFunction: '脉络图功能事项创建后才可使用',
+  afterDeletionItsChildren: '删除后，其子事项将跟随一起删除',
+  doNotRemind: '不提醒',
+  editMore: '编辑更多',
+  inputSubItems: '输入子事项名称，回车创建',
+  selectTemplate: '模版',
+  noDetailedDescription: '无详情描述',
+  fillInTheDetailedDescription: '填写详情描述',
+  meetingProgress: '会议进展',
+  toDoProgress: '待办进展',
+  address: '地址',
+  parentMatter: '父事项',
+  noDefaultCollaboration: '无默认协作人，请创建后再邀请',
+  theScheduleHasBeenDisplayed: '日程已显示',
+  scheduleHidden: '日程已隐藏',
+  followFailed: '关注失败',
+  notAddedToProject: '未加入项目不能邀请和移除成员',
+  inTheConversationYouCan: '在对话中，可创建协作小工具，让协作更便捷',
+  youHaveBeenRemovedVal: '你已被移出该{val1}'
 }

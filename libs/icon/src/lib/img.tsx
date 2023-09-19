@@ -8,6 +8,7 @@ import TakerRemove from './img/taker_remove.png'
 import CircleArrowUpGreyImg from './img/circle_arrow_up_grey.png'
 import FlyLogoImg from './img/logo.png'
 import EmailGreenImg from './img/email_green.svg'
+import EmailPurpleImg from './img/email_purple.svg'
 
 type IImg = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -52,4 +53,8 @@ export const FlyLogo: React.FC<IImg> = (props) => {
 
 export const EmailGreenIcon: React.FC<IImg> = (props) => {
   return <img {...props} src={EmailGreenImg} alt="" />
+}
+
+export const EmailPurpleIcon: React.FC<IImg> = (props) => {
+  return <img {...props} src={EmailPurpleImg} alt="" />
 }

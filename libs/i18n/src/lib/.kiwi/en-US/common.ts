@@ -1986,6 +1986,13 @@ export default {
   addProjectMatters: 'More tasks in project',
   addItemAgreement: 'More assignee',
   increaseTheNumberOfHeaders: 'Add more column',
-  inTheMindMap: 'Create by mind mad'
+  inTheMindMap: 'Create by mind mad',
   //会员end
+
+  /** */
+  viewCommonQuestions: 'FAQ',
+  toAnswerYourQuestions: 'Answer your questions',
+  addExclusiveCustomers: 'Contact us',
+  isItImportantForTheTeam: 'If there are any concerns'
+  /** */
 }

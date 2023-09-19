@@ -1,47 +1,32 @@
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import { paymentApi } from '@flyele-nx/service'
 
-/* eslint-disable-next-line */
 export interface PaypalProps {
+  // 点击按钮
   onClick?: () => void
+  // 按钮宽度
   width?: number
+  // 按钮高度
   height?: number
+  // 支付成功回调
   success?: () => void
+  // 支付失败回调
   fail?: () => void
+  // 订单id
   productId: string
-  quantity?: number
 }
-
-// const host = 'http://localhost:8888'
 
 export function Paypal({
   onClick,
   width = 310,
   height = 50,
-  productId
+  productId,
+  success,
+  fail
 }: PaypalProps) {
   async function createOrder() {
     onClick?.()
     try {
-      // const response = await fetch(`${host}/api/orders`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   // use the "body" param to optionally pass additional order information
-      //   // like product ids and quantities
-      //   body: JSON.stringify({
-      //     cart: [
-      //       {
-      //         id: 'YOUR_PRODUCT_ID',
-      //         quantity: 'YOUR_PRODUCT_QUANTITY'
-      //       }
-      //     ]
-      //   })
-      // })
-
-      // const orderData = await response.json()
-
       const orderData = (await paymentApi.createPaypalOrder(productId)).data
 
       console.log('check orderData', orderData)
@@ -58,23 +43,14 @@ export function Paypal({
       }
     } catch (error) {
       console.error(error)
-      alert(`Could not initiate PayPal Checkout...<br><br>${error}`)
+      alert(`Could not initiate PayPal Checkout... ${error}`)
+      fail?.()
     }
   }
 
   async function onApprove(data: any, actions: any) {
     try {
       console.log('approve data', data)
-
-      // const response = await fetch(
-      //   `${host}/api/orders/${data.orderID}/capture`,
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     }
-      //   }
-      // )
 
       const orderData = (await paymentApi.getPaypalOrderDetail(data.orderID))
         .data as any
@@ -113,10 +89,13 @@ export function Paypal({
           JSON.stringify(orderData, null, 2),
           transaction
         )
+
+        success?.()
       }
     } catch (error) {
       console.error(error)
-      // alert(`Sorry, your transaction could not be processed...<br><br>${error}`)
+      alert(`Sorry, your transaction could not be processed... ${error}`)
+      fail?.()
     }
   }
 

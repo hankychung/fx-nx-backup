@@ -104,13 +104,15 @@ export function Paypal({
 
   return (
     <div style={{ ...containerStyle, width: `${width}px` }}>
-      <PayPalScriptProvider options={{ clientId: 'test' }}>
-        <PayPalButtons
-          createOrder={createOrder}
-          onApprove={onApprove}
-          style={{ layout: 'horizontal', tagline: false, height }}
-        />
-      </PayPalScriptProvider>
+      {!!productId && (
+        <PayPalScriptProvider options={{ clientId: 'test' }}>
+          <PayPalButtons
+            createOrder={createOrder}
+            onApprove={onApprove}
+            style={{ layout: 'horizontal', tagline: false, height }}
+          />
+        </PayPalScriptProvider>
+      )}
     </div>
   )
 }

@@ -66,18 +66,20 @@
     }
   }
 
-  .payBtn {
-    width: 324px;
-    height: 44px;
-    background: linear-gradient(270.36deg, #ffb85e 0.58%, #ffd075 99.97%);
-    border-radius: 4px;
-    font-size: 14px;
-    color: #734c24;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .payBox {
     margin-top: 13px;
-    font-weight: 600;
+    .payBtn {
+      width: 324px;
+      height: 44px;
+      background: linear-gradient(270.36deg, #ffb85e 0.58%, #ffd075 99.97%);
+      border-radius: 4px;
+      font-size: 14px;
+      color: #734c24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
     cursor: pointer;
   }
 

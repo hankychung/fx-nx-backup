@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import { IActiveGoods, ICoupon } from '@flyele-nx/api'
 import { paymentApi } from '@flyele-nx/service'
 import { paymentApi as paymentCountApi } from '@flyele-nx/service'
@@ -15,13 +15,21 @@ import { useCurrentTime } from '../../hooks/useCurrentTime'
 import { SelectMemberContext } from '../../context/context'
 import PayButton from './components/pay-button'
 import PersonVipEmpty from './components/person-vip-empty'
+
+enum IMealName {
+  personVip = '个人会员',
+  teamVip = '团队会员',
+  lifeVip = '终身会员'
+}
+
 const PersonVipB = ({
   memberList,
   mineId,
   couponList,
   goProtocol,
   vipMealType,
-  goInterests
+  goInterests,
+  originRoute
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -29,10 +37,13 @@ const PersonVipB = ({
   vipMealType: VipMealType
   goProtocol?: () => void
   goInterests: () => void
+  originRoute?: string
 }) => {
   const [persons, setPersons] = useState<number>(0)
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const { nowScecond } = useCurrentTime()
+  const [productId, setProductId] = useState('')
+
   const service = useContext(SelectMemberContext)
   const isLifeLong = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
@@ -148,6 +159,39 @@ const PersonVipB = ({
       getMealList()
     }
   }, [getMealList, vipMealType, couponList])
+
+  //获取订单号
+  const qrCodeFunction = useMemoizedFn(async () => {
+    const userInfo = memberList.filter((item) => item.userId === mineId)
+    const payInfo = activeGood ? activeGood[0] : vipMealList[0]
+    const params = {
+      amount: userInfo.length,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
+      good_id: payInfo?.id || 0,
+      origin_route: originRoute ? originRoute : 'PC客户端',
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
+      users_id: userInfo.map((item) => item.userId),
+      indent_member_type:
+        vipMealType === VipMealType.PERSON
+          ? VipMealType.PERSON
+          : VipMealType.TEAM
+    }
+    try {
+      paymentApi.createOrder(params).then(async (res) => {
+        setProductId(res.data.out_trade_no)
+      })
+    } catch {
+      console.log('00')
+    }
+  })
+
+  //当切换套餐的时候直接生成订单(海外版)
+  useEffect(() => {
+    if (isCN) return
+    qrCodeFunction()
+  }, [vipMealList, qrCodeFunction])
   return (
     <div className={style.personVip}>
       {!isLifeLong && (
@@ -183,14 +227,16 @@ const PersonVipB = ({
                   className={cs(
                     style.priceItem,
                     {
-                      [style.activeStyle]: _.active && _.name !== '终身会员'
+                      [style.activeStyle]:
+                        _.active && _.name !== IMealName.lifeVip
                     },
                     {
-                      [style.activeStyleB]: _.active && _.name === '终身会员'
+                      [style.activeStyleB]:
+                        _.active && _.name === IMealName.lifeVip
                     },
                     {
                       [style.priceItemFifstActive]:
-                        _.active && _.name === '终身会员'
+                        _.active && _.name === IMealName.lifeVip
                     }
                   )}
                   key={_.id}
@@ -202,14 +248,15 @@ const PersonVipB = ({
                     <div
                       className={cs(style.mealName, {
                         [style.mealNameActive]:
-                          _.active && _.name === '终身会员'
+                          _.active && _.name === IMealName.lifeVip
                       })}
                     >
                       {_.name}
                     </div>
                     <div
                       className={cs(style.price, {
-                        [style.priceActive]: _.active && _.name === '终身会员'
+                        [style.priceActive]:
+                          _.active && _.name === IMealName.lifeVip
                       })}
                     >
                       ￥
@@ -218,7 +265,7 @@ const PersonVipB = ({
                     <div
                       className={cs(style.oldPrice, {
                         [style.oldPriceActive]:
-                          _.active && _.name === '终身会员'
+                          _.active && _.name === IMealName.lifeVip
                       })}
                     >
                       ¥{regFenToYuan(_.original_price)}
@@ -229,11 +276,11 @@ const PersonVipB = ({
                       style.priceSave,
                       {
                         [style.priceSaveActive]:
-                          _.active && _.name !== '终身会员'
+                          _.active && _.name !== IMealName.lifeVip
                       },
                       {
                         [style.priceSaveActiveB]:
-                          _.active && _.name === '终身会员'
+                          _.active && _.name === IMealName.lifeVip
                       }
                     )}
                   >
@@ -286,6 +333,7 @@ const PersonVipB = ({
             goProtocol={goProtocol}
             goInterests={goInterests}
             vipMealList={vipMealList}
+            productId={productId}
           />
         </div>
       )}

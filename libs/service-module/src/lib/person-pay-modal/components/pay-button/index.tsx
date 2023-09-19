@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import { IActiveGoods } from '@flyele-nx/api'
 import cs from 'classnames'
 import React, { useContext, useEffect, useState } from 'react'
@@ -8,6 +8,7 @@ import { VipMealType } from '../controller'
 import style from './index.module.scss'
 import { SelectMemberContext } from '../../context/context'
 import PayUnfinish from '../person-vip-B/components/pay-unfinish'
+import { Paypal } from '@flyele-nx/paypal'
 
 interface Iprops {
   vipMealType: VipMealType
@@ -16,6 +17,7 @@ interface Iprops {
   payClick: () => void
   goProtocol?: () => void
   vipMealList?: IActiveGoods[]
+  productId?: string
 }
 const PayButton = (props: Iprops) => {
   const {
@@ -24,7 +26,8 @@ const PayButton = (props: Iprops) => {
     payClick,
     resultArr = [],
     goProtocol,
-    vipMealList
+    vipMealList,
+    productId = ''
   } = props
   const [isShow, setIsShow] = useState(false)
 
@@ -89,16 +92,20 @@ const PayButton = (props: Iprops) => {
           </div>
         </div>
       )}
-      <div
-        className={cs(style.payBtn, {
-          [style.teamPayBtn]: vipMealType === VipMealType.TEAM,
-          [style.noMember]:
-            vipMealType === VipMealType.TEAM && resultArr.length === 0
-        })}
-        onClick={payClick}
-      >
-        {I18N.common.immediatePayment}
-      </div>
+      {isCN ? (
+        <div
+          className={cs(style.payBtn, {
+            [style.teamPayBtn]: vipMealType === VipMealType.TEAM,
+            [style.noMember]:
+              vipMealType === VipMealType.TEAM && resultArr.length === 0
+          })}
+          onClick={payClick}
+        >
+          {I18N.common.immediatePayment}
+        </div>
+      ) : (
+        <Paypal productId={productId} width={324}></Paypal>
+      )}
       <div className={style.protocol}>
         {I18N.common.paymentIsConsideredAs}
         <span

@@ -12,6 +12,7 @@ import { isInTask } from '../../utils'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import dayjs from 'dayjs'
 import { useGanttList } from '../../hooks/useScheduleList'
+import { getEnFormat } from '@flyele-nx/utils'
 // import { createSVG } from '../../utils'
 // import checkboxFinishedIcon from '../../../assets/schedule/check.png'
 
@@ -121,13 +122,17 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
 
   const timeTooltip = useMemo(() => {
     const start = task.start
-      ? dayjs(task.start).format(
-          `MM月DD日 ${task.start_time_full_day === 2 ? '' : 'HH:mm'}`
+      ? getEnFormat(
+          dayjs(task.start),
+          `MM月DD日 ${task.start_time_full_day === 2 ? '' : 'HH:mm'}`,
+          `MMM D ${task.start_time_full_day === 2 ? '' : 'h:mm A'}`
         )
       : ''
     const end = task.end
-      ? dayjs(task.end).format(
-          `MM月DD日 ${task.end_time_full_day === 2 ? '' : 'HH:mm'}`
+      ? getEnFormat(
+          dayjs(task.end),
+          `MM月DD日 ${task.start_time_full_day === 2 ? '' : 'HH:mm'}`,
+          `MMM D ${task.start_time_full_day === 2 ? '' : 'h:mm A'}`
         )
       : ''
     return `${start}${start && end ? '-' : ''}${end}`

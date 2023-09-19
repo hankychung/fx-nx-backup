@@ -3,6 +3,7 @@ import { Tree, Input, Button, message } from 'antd'
 import { v4 } from 'uuid'
 import { ChildMatterData } from '@flyele-nx/types'
 import { findChildMatter, getAllKeys } from './utils'
+import { ChildMatterItem } from './components/child-matter-item'
 
 export const ChildMatter: React.FC = () => {
   const [treeData, setTreeData] = useState<ChildMatterData[]>([
@@ -72,6 +73,7 @@ export const ChildMatter: React.FC = () => {
       treeData={treeData}
       expandedKeys={expandedKeys}
       titleRender={(data) => {
+        // return <ChildMatterItem />
         return (
           <div style={{ display: 'flex' }}>
             <Input

@@ -9,7 +9,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_icon.svg'
 import style from './index.module.scss'
-import Protocol from './components/protocol'
 import SuccessPay from './components/success-pay'
 import { paymentApi } from '@flyele-nx/service'
 import { IActiveGoods, IGetOrderFn } from '@flyele-nx/api'
@@ -24,7 +23,6 @@ const PayQrCode = ({
   vipMeal,
   memberList,
   onClose,
-  goProtocol,
   domain,
   getOrder
 }: {
@@ -33,7 +31,6 @@ const PayQrCode = ({
   domain: string
   memberList: IFlyeleAvatarItem[]
   onClose?: () => void
-  goProtocol: () => void
   getOrder: IGetOrderFn
 }) => {
   const [qrCode, setQrCode] = useState('')
@@ -109,8 +106,6 @@ const PayQrCode = ({
               </div> */}
               </div>
             </div>
-            {/* 协议 */}
-            <Protocol goProtocol={goProtocol} />
           </div>
         )}
       {(memberList[0].corp_id || memberList[0].is_interact === 2) && (

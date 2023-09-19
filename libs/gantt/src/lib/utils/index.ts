@@ -5,6 +5,8 @@ import dj, { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { FAKE_ID, FullViewMatterStateEnum } from '@flyele-nx/constant'
 import { useUserInfoStore } from '@flyele-nx/zustand-store'
+import { getEnFormat } from '@flyele-nx/utils'
+import { isCN } from '@flyele-nx/i18n'
 function getKey(i: Pick<IFullViewTask, 'task_id' | 'repeat_id'>) {
   return i.repeat_id ? `${i.task_id}-${i.repeat_id}` : i.task_id
 }
@@ -75,24 +77,24 @@ interface ITimeInfo {
 
 function formatYearAndDate(_dj: Dayjs) {
   if (dj().isSame(_dj, 'year')) {
-    return _dj.format('M月D日')
+    return getEnFormat(_dj, 'M月D日', 'MMM D')
   }
 
-  return _dj.format('YYYY年M月D日')
+  return getEnFormat(_dj, 'YYYY年M月D日', 'MMM D, YYYY')
 }
 
 function formatMonthAndDate(dj: Dayjs) {
-  return dj.format('M月D日')
+  return getEnFormat(dj, 'M月D日', 'MMM D')
 }
 
 function formatTime(d: Dayjs) {
-  return d.format('HH:mm')
+  return isCN ? d.format('HH:mm') : `${getEnFormat(d, 'HH:mm', 'h:mm A')}`
 }
 
 function formatFullTime(d: Dayjs, needYear?: boolean, full?: boolean) {
-  return `${(needYear ? formatYearAndDate : formatMonthAndDate)(d)} ${
-    full ? '' : formatTime(d)
-  }`
+  return `${(needYear ? formatYearAndDate : formatMonthAndDate)(d)}${
+    isCN ? '' : ','
+  } ${full ? '' : formatTime(d)}`
 }
 
 const getTimeTxt = (

@@ -1999,7 +1999,6 @@ export default {
   freePeople: '你当前是免费账户',
   premiumPeople: '你当前是个人会员',
   businessPeople: '你当前是团队会员',
-  //会员end
   pictureFiles: '图片/文件',
   toDoCompleted: '已完成待办不可修改',
   theMeetingHasStarted: '会议已开始不可修改',
@@ -2027,5 +2026,24 @@ export default {
   followFailed: '关注失败',
   notAddedToProject: '未加入项目不能邀请和移除成员',
   inTheConversationYouCan: '在对话中，可创建协作小工具，让协作更便捷',
-  youHaveBeenRemovedVal: '你已被移出该{val1}'
+  youHaveBeenRemovedVal: '你已被移出该{val1}',
+  immediatelyAfterLogin: '登录后立即查看',
+  toDoDetailsPage: '待办详情页面',
+  eventDetailsPage: '事项详情页面',
+  unableToJoin: '无法加入',
+  theAdministratorHasAlreadyContacted: '管理员已同意',
+  acceptInvitation: '接受邀请',
+  tokenError: 'token已失效，请重新登陆',
+  meetingDetailsPage: '会议详情页面',
+  pleaseContactTheSpace: '请联系空间创建人进行激活。',
+  affiliatedSpace: '所属空间进入待激活状态',
+  unableToJoinEmpty: '无法加入，空间人数已满',
+  joinedSpace: '已加入空间',
+  changeAnAccountAndRepeat: '换个账号重试',
+  targetCreatorNotVip: '目标创建人未开通会员，无法加入',
+  youJoinedTheTarget: '你加入目标',
+  afterAdministratorApproval: '管理员审批后自动加入',
+  joinedTarget: '已加入目标',
+  targetHasBeenTaken: '目标已被取消，无法继续查看',
+  joinNow: '立即加入'
 }

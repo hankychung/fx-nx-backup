@@ -20,7 +20,8 @@ import { ReactComponent as EquityList } from '../../assets/payImg/equity_list.sv
 
 import style from './index.module.scss'
 import PayQrCode from './pay-qrcode'
-import { IActiveGoods, ICoupon, paymentApi } from '@flyele-nx/api'
+import { IActiveGoods, ICoupon } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { useMemoizedFn, useMount } from 'ahooks'
 import dayjs from 'dayjs'
 import { getResidueTime } from '../quick-pay/utils'
@@ -83,7 +84,7 @@ const RetrievePayModal = (props: Iprops) => {
   const getMealList = useMemoizedFn(async () => {
     console.log('123getMealList')
     paymentApi.createCoupon({ coupon_id: [1, 2, 3, 4, 5, 6, 7] }).then((_) => {
-      paymentApi.getPrice({ good_type: 'person' }).then((res) => {
+      paymentApi.getGoodsList({ good_type: 'person' }).then((res) => {
         if (res.code === 0) {
           const list =
             res.data &&

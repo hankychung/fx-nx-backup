@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { ReactComponent as WechatIcon } from '../../../../assets/payImg/wechat_icon.svg'
 // import { ReactComponent as AlipayIcon } from '../../../../assets/payImg/alipay_icon.svg'
@@ -12,7 +13,7 @@ import { useMemoizedFn } from '@flyele/flyele-components'
 import { IActiveGoods } from '@flyele-nx/api'
 import { regFenToYuan } from '../../utils'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
-import { paymentApi } from '@flyele-nx/api'
+import { paymentApi } from '@flyele-nx/service'
 import { VipMealType } from '../controller'
 const PayQrCode = ({
   payInfo,
@@ -70,7 +71,7 @@ const PayQrCode = ({
                 userInfo.length
             }
           : {
-              ..._.data.data,
+              ..._.data,
               total_price:
                 ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
                 userInfo.length
@@ -112,8 +113,10 @@ const PayQrCode = ({
           <div className={style.payQrCode}>
             <div className={style.head}>
               <div className={style.lable_pay}>
-                <span>扫码支付</span>
-                <div className={style.telephone}>对公支付联系: 15002007797</div>
+                <span>{I18N.common.scanCodePayment}</span>
+                <div className={style.telephone}>
+                  {I18N.common.corporatePaymentReceipt}
+                </div>
               </div>
               <Close
                 className={style.close}
@@ -140,7 +143,7 @@ const PayQrCode = ({
               <div className={style.payIcon}>
                 <div className={style.iconItem}>
                   <WechatIcon className={style.qrcode}></WechatIcon>
-                  <span>微信支付</span>
+                  <span>{I18N.common.weChatPayment}</span>
                 </div>
               </div>
             </div>

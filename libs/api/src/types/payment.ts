@@ -86,12 +86,10 @@ export type IndentData = {
 }
 
 export type ICreateOrderRes = {
+  code: number
   data: {
-    code: number
-    data: {
-      description: string
-      out_trade_no: string
-    }
+    description: string
+    out_trade_no: string
   }
 }
 

@@ -207,3 +207,199 @@ export const memberPowerStaticData: IInfoType[] = [
     ]
   }
 ]
+
+export const memberPowerStaticDataEN: IInfoType[] = [
+  {
+    key: 'free',
+    title: 'Free',
+    desc: 'All features',
+    borderColor: 'rgba(187, 199, 225, 0.4)',
+    bgColor: '#BBC7E1',
+    btnText: '',
+    btnTextColor: '#BBC7E1',
+    btnBgColor: '#fff',
+    btnBorderColor: '#BBC7E1',
+    money: '0',
+    unit: '',
+    topText: '',
+    oldPrice: '',
+    powerList: [
+      {
+        title: 'Unlimited Tasks & Notes',
+        active: true
+      },
+      {
+        title: '3-layer subtasks',
+        active: true
+      },
+      {
+        title: '20 people in one task',
+        active: true
+      },
+      {
+        title: '2G of file storage，50M for a single file',
+        active: true
+      },
+      {
+        title: '20 individual Goals',
+        active: true
+      },
+      {
+        title: 'One',
+        active: true,
+        isSpace: 'free_space'
+      }
+    ]
+  },
+  {
+    key: 'personal',
+    title: 'Premium',
+    desc: 'All features',
+    bgColor: '#FFBF5F',
+    borderColor: 'rgba(255, 191, 95, 0.4)',
+    btnText: 'Select',
+    btnTextColor: '#FFFFFF',
+    btnBgColor: 'linear-gradient(270.34deg, #FFB85E 2.92%, #FFD075 97.6%)',
+    btnBorderColor: 'none',
+    money: '128',
+    unit: 'yr',
+    topText: '',
+    oldPrice: '¥128/yr',
+    powerList: [
+      {
+        title: 'All Free features',
+        active: true
+      },
+      {
+        title: 'Priority View',
+        active: true
+      },
+      {
+        title: 'Mind map & Relation map',
+        active: true
+      },
+      {
+        title: '8-layer subtasks',
+        active: true
+      },
+      {
+        title: '20G of File Storage，300M for a single file',
+        active: true
+      },
+      {
+        title: '10 Custom list',
+        active: true
+      },
+      {
+        title: 'Unlimited Individual Goals',
+        active: true
+      },
+      {
+        title: 'Export to Excel',
+        active: true
+      },
+      {
+        title: 'One',
+        active: true,
+        isSpace: 'free_space'
+      }
+    ]
+  },
+  {
+    key: 'team',
+    title: 'Business',
+    desc: 'All features',
+    bgColor: '#755EEF',
+    borderColor: 'rgba(117, 94, 239, 0.4)',
+    btnText: 'Select',
+    btnTextColor: '#fff',
+    btnBgColor: 'linear-gradient(90deg, #7B5EEF 0%, #6248ED 100%)',
+    btnBorderColor: 'none',
+    money: '298',
+    unit: 'yr',
+    topText: 'POPULAR',
+    oldPrice: '',
+    powerList: [
+      {
+        title: 'All Premium features',
+        active: true
+      },
+      {
+        title: 'Unlimited',
+        active: true,
+        isSpace: 'free_space'
+      },
+      {
+        title: 'Unlimited',
+        active: true,
+        isSpace: 'professional_space'
+      },
+      {
+        title: 'Unlimited projects',
+        active: true
+      },
+      {
+        title: 'Unlimited members',
+        active: true
+      },
+      {
+        title: 'Unlimited guests',
+        active: true
+      },
+      {
+        title: 'More storage（member*10G)',
+        active: true
+      },
+      {
+        title: 'Team schedule',
+        active: true
+      },
+      {
+        title: 'Team Goals',
+        active: true
+      },
+      {
+        title: 'Team Template center',
+        active: true
+      }
+    ]
+  },
+  {
+    key: 'custom',
+    title: 'Enterprise',
+    desc: '',
+    bgColor: '#535179',
+    borderColor: 'rgba(83, 81, 121, 0.4)',
+    btnText: 'Contact us',
+    btnTextColor: '#535179',
+    btnBgColor: '#535179',
+    btnBorderColor: '#535179',
+    money: '价格咨询',
+    unit: '',
+    moneyText: '添加销售为您制定方案',
+    topText: '',
+    oldPrice: '',
+    powerList: [
+      {
+        title: 'All Business features',
+        active: true
+      },
+      {
+        title: 'Customization Requirements',
+        active: true
+      },
+      {
+        title: 'On-Premises Deployment',
+        active: true
+      },
+      {
+        title: 'Integration with Enterprise Personnel Structure',
+        active: true
+      },
+      {
+        title: '……',
+        active: false
+      }
+    ]
+  }
+]

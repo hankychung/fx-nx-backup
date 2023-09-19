@@ -6,6 +6,7 @@
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useMemo } from 'react'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as Customer } from '../../../../assets/payImg/customer.svg'
@@ -34,13 +35,13 @@ const Header = (props: Iprops) => {
   const vipText = useMemo(() => {
     const info = memberList.filter((item) => item.userId === mineId)[0]
 
-    let txt = '未开通飞项会员'
+    let txt = I18N.common.flightNotActivated
     if (!info.level) {
       if (info.end_time && info.recently_type === 2) {
-        txt = '您的团队会员已过期，请续费后使用'
+        txt = I18N.common.yourTeamWill
       }
       if (info.end_time && info.recently_type === 1) {
-        txt = '您的个人会员过期，请续费后使用'
+        txt = I18N.common.yourPersonalMeeting
       }
     }
     if (info.level === 1) {
@@ -50,7 +51,7 @@ const Header = (props: Iprops) => {
           .format('YYYY年MM月DD日')}到期`
       }
       if (info.end_time === 9999999999) {
-        txt = `您已开通终身版个人会员，可无限期使用`
+        txt = I18N.common.youHaveOpenedTheTerminal
       }
     }
     if (info.level === 2) {
@@ -91,7 +92,7 @@ const Header = (props: Iprops) => {
         >
           <div className={style.customer}>
             <Customer></Customer>
-            <span>联系客服</span>
+            <span>{I18N.common.contactCustomerService}</span>
           </div>
         </FlyBasePopper>
 

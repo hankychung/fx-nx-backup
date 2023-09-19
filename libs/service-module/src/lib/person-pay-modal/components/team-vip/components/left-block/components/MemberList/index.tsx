@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useMemo, useState } from 'react'
 import { ReactComponent as Close } from '../../../../../../../../assets/payImg/close.svg'
 // import { useInteracts } from '../../../../../../../../hooks/cache/useInteracts'
@@ -138,7 +139,11 @@ const MemberList = ({
   return (
     <div className={style.memberList}>
       <div className={style.title}>
-        <div>{`选择更多好友开通（${resultArr.length}）`}</div>
+        <div>
+          {I18N.template?.(I18N.common.choosingMoreIsGood, {
+            val1: resultArr.length
+          })}
+        </div>
         <Close
           className={style.close}
           onClick={() => {
@@ -149,11 +154,11 @@ const MemberList = ({
       <div className={style.search} id="search_block">
         <SearchInput
           value={searchValue}
-          defaultText="输入用户名搜索"
+          defaultText={I18N.common.enterOneUserName}
           onActive={onActiveSearch}
           onChange={onSearch}
           onCancel={onCancelSearch}
-          placeholder="输入用户名搜索"
+          placeholder={I18N.common.enterOneUserName}
           showCancle={false}
           // defaultText={searchDefaultText}
           overlayClassName={style.searchOverClassName}
@@ -195,7 +200,7 @@ const MemberList = ({
                         <div className={style.name_icon}>
                           <div className={style.name}>{_.name}</div>
                           {mineId === _.userId && (
-                            <div className={style.mine}>我</div>
+                            <div className={style.mine}>{I18N.common.me}</div>
                           )}
                           {_.isVip && !_.isTeamVip && (
                             <MemberPersonVip
@@ -259,7 +264,7 @@ const MemberList = ({
                           </div>
 
                           {mineId === _.userId && (
-                            <div className={style.mine}>我</div>
+                            <div className={style.mine}>{I18N.common.me}</div>
                           )}
                           {_.isVip && !_.isTeamVip && (
                             <MemberPersonVip
@@ -280,7 +285,7 @@ const MemberList = ({
               )
             })}
           {searchList.length === 0 && (
-            <div className={style.empty_list}>未搜索到相关结果</div>
+            <div className={style.empty_list}>{I18N.common.noPhaseFound}</div>
           )}
         </div>
       )}

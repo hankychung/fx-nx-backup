@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useRef, useState } from 'react'
 import cs from 'classnames'
 import { Input, InputRef } from 'antd'
@@ -31,10 +32,10 @@ const SearchIconBox: React.FC<React.PropsWithChildren<unknown>> = () => (
 const SearchInput = (props: ISearchInputProps) => {
   const {
     value,
-    defaultText = '搜索',
+    defaultText = I18N.common.search,
     onActive,
     enterSearch,
-    placeholder = '输入名称',
+    placeholder = I18N.common.enterName,
     onChange,
     onBlur,
     onCancel,
@@ -137,7 +138,7 @@ const SearchInput = (props: ISearchInputProps) => {
           />
           {showCancle && (
             <div className={styles.inputCancel} onClick={handleCancel}>
-              取消
+              {I18N.common.cancel}
             </div>
           )}
         </div>

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { memo, useEffect, useMemo } from 'react'
 import style from './index.module.scss'
 import { Modal } from 'antd'
@@ -24,7 +25,7 @@ const PayUnfinish = ({
   const userId = +useUserInfoStore((state) => state.userInfo.user_id)
 
   const meal = useMemo(() => {
-    return vipMealList.find((item) => item.name === '终身会员')
+    return vipMealList.find((item) => item.name === I18N.common.life_time)
   }, [vipMealList])
 
   useEffect(() => {
@@ -59,14 +60,14 @@ const PayUnfinish = ({
           ></Close>
         </div>
         <div className={style.content}>
-          <div>未支付成功</div>
-          <div>终身会员限时优惠，不要错过啦</div>
+          <div>{I18N.common.unpaidSuccessfully}</div>
+          <div>{I18N.common.lifetimeMembershipLimit}</div>
           <div onClick={payClick} style={{ fontSize: 18 }}>
-            仅需
+            {I18N.common.justNeedTo}
             <div style={{ fontSize: 22, marginBottom: 3 }}>
               ¥{regFenToYuan((meal?.now_price || 19800) - (meal?.price || 0))}
             </div>
-            ，开通终身会员
+            {I18N.common.openingALifelongMeeting}
           </div>
         </div>
       </div>

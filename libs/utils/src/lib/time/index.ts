@@ -17,6 +17,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { timeGetter } from '../timeGetter'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import 'dayjs/locale/en'
+import { isCN } from '@flyele-nx/i18n'
 dayjs.extend(isSameOrAfter)
 
 type TimeKeys = {
@@ -730,6 +731,10 @@ export const getMatterPresetRemindTxt = (
   return startTxt + (startTxt && endTxt ? '、' : '') + endTxt
 }
 
-export const getEnFormat = (time: dayjs.Dayjs, format: string) => {
-  return time.locale('en').format(format)
+export const getEnFormat = (
+  time: dayjs.Dayjs,
+  cnFormat: string,
+  enFormat: string
+) => {
+  return isCN ? time.format(cnFormat) : time.locale('en').format(enFormat)
 }

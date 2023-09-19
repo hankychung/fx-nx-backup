@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { IActiveGoods } from '@flyele-nx/api'
 import cs from 'classnames'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
@@ -40,25 +41,23 @@ const PayButton = (props: Iprops) => {
     <div className={style.payButton}>
       <div>
         <div className={cs(style.payBtn)} onClick={payClick}>
-          立即支付
+          {I18N.common.immediatePayment}
         </div>
         <div className={style.protocol}>
-          支付即视为同意
+          {I18N.common.paymentIsConsideredAs}
           <span
             onClick={() => {
               goProtocol && goProtocol()
             }}
           >
-            《飞项会员协议》
+            {I18N.common.feixiangMemberAssociation}
           </span>
         </div>
       </div>
       <div className={style.footer}>
-        <div className={style.left}>
-          开通个人会员，解锁四象限视图、桌面日历挂件等超值权益
-        </div>
+        <div className={style.left}>{I18N.common.openingPersonalVip}</div>
         <div className={style.right} onClick={goInterests}>
-          <span>查看完整权益</span>
+          <span>{I18N.common.viewFullRights}</span>
           <ArrowRight color="#F1AA40" />
         </div>
       </div>

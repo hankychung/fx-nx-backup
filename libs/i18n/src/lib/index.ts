@@ -12,4 +12,8 @@ const kiwiIntl = KiwiIntl.init(lang, {
   'en-US': { ...enUS }
 })
 
+const isCN = lang === 'zh-CN'
+
+export { isCN }
+
 export default kiwiIntl

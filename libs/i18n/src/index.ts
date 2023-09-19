@@ -1,4 +1,4 @@
-import I18N from './lib'
+import I18N, { isCN } from './lib'
 
-export { I18N }
+export { I18N, isCN }
 export type { ILang } from './lib/types'

@@ -29,6 +29,7 @@ import { useCurrentTime } from '../../hoooks/useCurrentTime'
 import { useMemoizedFn } from 'ahooks'
 import meal_time from '../../../../assets/payImg/meal_time.svg'
 import { globalNxController } from '@flyele-nx/global-processor'
+import { globalInfoHandler } from '@flyele-nx/zustand-handler'
 
 const MemberInfo = ({
   memberList,
@@ -43,7 +44,7 @@ const MemberInfo = ({
   setVipMeal: (_: IActiveGoods) => void
   handleModalType: () => void
 }) => {
-  const Controller = useController(new FlyBasePopperCtrl())
+  const isCN = globalInfoHandler.langIsCn()
   const { nowScecond } = useCurrentTime()
 
   const getItem = (id: number, list: ICoupon[]) => {
@@ -184,7 +185,7 @@ const MemberInfo = ({
             </div>
           </div>
           <div className={style.price}>
-            {vipMeal?.original_price && (
+            {isCN && vipMeal?.original_price && (
               <span>
                 <i>￥</i>
                 {/* <span>{regFenToYuan(vipMeal?.original_price || 0)}</span> */}
@@ -198,20 +199,22 @@ const MemberInfo = ({
               )}`}
             </div>
           </div>
-          {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
-            <div className={style.time}>
-              <span>
-                {getResidueTime(
-                  num - nowScecond,
-                  (
-                    (vipMeal?.now_price - (vipMeal?.price || 0)) /
-                    vipMeal?.original_price
-                  ).toFixed(2)
-                )}
-              </span>
-              <MealTime className={style.mealTime}></MealTime>
-            </div>
-          )}
+          {isCN &&
+            vipMeal?.end_at &&
+            getResidueTime(num - nowScecond) !== '0' && (
+              <div className={style.time}>
+                <span>
+                  {getResidueTime(
+                    num - nowScecond,
+                    (
+                      (vipMeal?.now_price - (vipMeal?.price || 0)) /
+                      vipMeal?.original_price
+                    ).toFixed(2)
+                  )}
+                </span>
+                <MealTime className={style.mealTime}></MealTime>
+              </div>
+            )}
         </div>
       </div>
       <div className={style.switchCoupon}>

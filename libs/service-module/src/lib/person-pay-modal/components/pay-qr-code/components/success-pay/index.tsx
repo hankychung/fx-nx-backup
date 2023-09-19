@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useState } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import close from '../../../../../../assets/payImg/close.svg'
@@ -49,11 +50,13 @@ const SuccessPay = ({ onClose }: { onClose: () => void }) => {
 
         <div className={style.info}>
           <img alt="pay_success" src={pay_success} className={style.close} />
-          <span>支付成功</span>
-          <div>感谢您的支持～</div>
+          <span>{I18N.common.paymentSuccessful}</span>
+          <div>{`${I18N.common.thankYouForYourSupport}～`}</div>
         </div>
       </div>
-      <div className={style.closeBtn}>{`自动关闭（${time}s）`}</div>
+      <div className={style.closeBtn}>
+        {I18N.template?.(I18N.common.automaticShutdownT, { val1: time })}
+      </div>
     </div>
   )
 }

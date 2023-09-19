@@ -6,19 +6,20 @@
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import style from './index.module.scss'
 
 const Protocol = ({ goProtocol }: { goProtocol: () => void }) => {
   return (
     <div className={style.Protocol}>
-      支付即视为同意
+      {I18N.common.paymentIsConsideredAs}
       <span
         onClick={() => {
           goProtocol()
         }}
       >
-        《飞项会员协议》
+        {I18N.common.feixiangMemberAssociation}
       </span>
     </div>
   )

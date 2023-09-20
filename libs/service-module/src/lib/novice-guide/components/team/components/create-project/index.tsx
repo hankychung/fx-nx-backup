@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, {
   ChangeEvent,
   useContext,
@@ -473,7 +473,9 @@ const _CreateProject = ({
       if (oldIndustryId.current === activeIndustryTag) return
 
       setTemplate([])
-      fetchTemplate(activeIndustryTag)
+      if (isCN) {
+        fetchTemplate(activeIndustryTag)
+      }
     }
   }, [visible, activeIndustryTag, fetchTemplate])
 
@@ -487,7 +489,7 @@ const _CreateProject = ({
   return (
     <CommonPage
       visible={visible}
-      title="团队有哪些工作项目"
+      title={I18N.common.teamRecentProject}
       desc=""
       disableNext={false}
       loadingNext={loading}

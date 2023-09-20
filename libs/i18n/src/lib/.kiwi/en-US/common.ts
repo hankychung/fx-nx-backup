@@ -2133,13 +2133,15 @@ export default {
   yourNextStep: 'What are you going to do next week?',
   noviceGuide: '新手引导最多创建20个事项',
   customProject: 'Add Project',
-  theNumberOfTeamMembersIs: '团队人数是？',
+  theNumberOfTeamMembersIs: 'What is the size of the team?',
   writeYourWorkType: '都没有？点此输入你的行业类型……',
-  yourIndustryCategory: '你的行业类型是？',
-  enterTeamName: '输入团队名称...',
-  createYourGroup: '创建你的团队空间',
+  enterTeamName: 'Enter team name...',
+  createYourGroup: 'Create your Teamspace',
   completeInvitationOpen: '完成邀请，开始使用',
-  lastStepInvitation: '最后一步！邀请你的成员',
+  lastStepInvitation: 'Invite your members',
   feixiangInvitesYou: '【飞项】邀请你加入“{val1}”，快点击接受邀请吧！{val2}',
-  copyFailedPlease: '复制失败，请再次尝试'
+  copyFailedPlease: '复制失败，请再次尝试',
+  nextStep: 'Next',
+  moreThan50: 'More than 50',
+  teamRecentProject: `What are your team's recent projects?`
 }

@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useContext, useMemo, useState } from 'react'
 import { CommonPage } from '../../../common/page'
 import { useMemoizedFn, useMount } from 'ahooks'
@@ -8,6 +8,17 @@ import { UsercApi } from '@flyele-nx/service'
 import { IndustryMemberType, diyIndustryId } from '@flyele-nx/constant'
 import { IIndustryList } from '@flyele-nx/types'
 import { PersonalContext } from '../../../../context/personal'
+
+const careerDataEN: IIndustryList[] = [
+  { industry_id: 1, industry_name: 'IIndustryList' },
+  { industry_id: 2, industry_name: 'Sales' },
+  { industry_id: 3, industry_name: 'Developer' },
+  { industry_id: 4, industry_name: 'Designer' },
+  { industry_id: 5, industry_name: 'Operator' },
+  { industry_id: 6, industry_name: 'Lawyer' },
+  { industry_id: 7, industry_name: 'Customer manager' },
+  { industry_id: 8, industry_name: 'Student' }
+]
 
 export const CareerChoice = ({
   visible,
@@ -75,7 +86,11 @@ export const CareerChoice = ({
   }, [activeTag])
 
   useMount(async () => {
-    await fetchIndustryList()
+    if (isCN) {
+      await fetchIndustryList()
+    } else {
+      setTags(careerDataEN)
+    }
   })
 
   return (

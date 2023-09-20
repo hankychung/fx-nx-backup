@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useMemo, useState, useContext } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
@@ -80,7 +80,9 @@ const _IndustryType = ({
   }, [inactiveTags])
 
   const disableNext = useMemo(() => {
-    return activeIndustryTag === 0 || activeTeamSize === ''
+    return isCN
+      ? activeIndustryTag === 0 || activeTeamSize === ''
+      : activeTeamSize === ''
   }, [activeIndustryTag, activeTeamSize])
 
   useMount(async () => {
@@ -90,19 +92,21 @@ const _IndustryType = ({
   return (
     <CommonPage
       visible={visible}
-      title={I18N.common.yourIndustryCategory}
+      title={isCN ? '你的行业类型是？' : ''}
       desc=""
       disableNext={disableNext}
       goBack={onGoBack}
       goNext={onGoNext}
     >
       <div className={styles.industryTypeRoot}>
-        <CommonTagList
-          tags={tagsList}
-          activeTag={activeIndustryTag}
-          onClick={onClickInactiveTags}
-          placeholder={I18N.common.writeYourWorkType}
-        />
+        {isCN && (
+          <CommonTagList
+            tags={tagsList}
+            activeTag={activeIndustryTag}
+            onClick={onClickInactiveTags}
+            placeholder={I18N.common.writeYourWorkType}
+          />
+        )}
         <div className={styles.title}>
           {I18N.common.theNumberOfTeamMembersIs}
         </div>

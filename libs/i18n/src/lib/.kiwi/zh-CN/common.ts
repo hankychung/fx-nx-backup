@@ -2075,10 +2075,12 @@ export default {
   lastStepInvitation: '最后一步！邀请你的成员',
   missingQrCode: '缺少二维码',
   copyFailedPlease: '复制失败，请再次尝试',
-  error: '错误',
   copyFailed: '复制失败',
   imageCopied: '图片已复制到剪贴板',
   qrCodeNode: '二维码节点没准备好',
   messageLength: '消息长',
-  feixiangInvitesYou: '【飞项】邀请你加入“{val1}”，快点击接受邀请吧！{val2}'
+  feixiangInvitesYou: '【飞项】邀请你加入“{val1}”，快点击接受邀请吧！{val2}',
+  nextStep: '下一步',
+  moreThan50: '50以上',
+  teamRecentProject: '团队有哪些工作项目'
 }

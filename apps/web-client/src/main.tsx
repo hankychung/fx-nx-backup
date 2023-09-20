@@ -1,3 +1,4 @@
+import './config/index'
 import { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'

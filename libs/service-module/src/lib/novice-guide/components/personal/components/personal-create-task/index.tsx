@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useRef, useState } from 'react'
 import { CommonPage } from '../../../common/page'
 import { useMemoizedFn, useUpdateEffect } from 'ahooks'
@@ -38,7 +39,7 @@ const _PersonalCreateTask = ({
     if (tasks.length >= 20) {
       globalNxController.showMsg({
         msgType: '错误',
-        content: '新手引导最多创建20个事项'
+        content: I18N.common.noviceGuide
       })
       return
     }
@@ -120,12 +121,12 @@ const _PersonalCreateTask = ({
   return (
     <CommonPage
       visible={visible}
-      title="你接下来一周要做哪些事情？"
+      title={I18N.common.yourNextStep}
       desc=""
       goBack={goBack}
       goNext={goNext}
       loadingNext={loading}
-      nextBtnText="开始使用"
+      nextBtnText={I18N.common.gettingStarted}
     >
       <div className={styles.personalCreateTaskRoot}>
         {tasks.map((task, index) => (
@@ -133,7 +134,7 @@ const _PersonalCreateTask = ({
             <div className={styles.no}>{index + 1}、</div>
             <Input
               ref={(ref) => ref && (inputRefList.current[index] = ref)}
-              placeholder="请输入任务名称"
+              placeholder={I18N.common.pleaseEnterATask}
               value={task.title}
               onChange={(e) => {
                 const updatedTasks = [...tasks]
@@ -155,7 +156,7 @@ const _PersonalCreateTask = ({
           <div className={styles.addIcon}>
             <AddIcon width={10} height={10} color="#B4B4B4" />
           </div>
-          更多任务
+          {I18N.common.moreTasks}
         </div>
       </div>
     </CommonPage>

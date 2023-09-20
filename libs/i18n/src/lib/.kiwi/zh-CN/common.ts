@@ -1927,14 +1927,10 @@ export default {
   addItemAgreement: '增加事项协作人数量',
   increaseTheNumberOfHeaders: '增加表头数量',
   inTheMindMap: '在思维导图中结构化创建事项',
-  //会员end
-
-  /** */
   viewCommonQuestions: '查看常见问题',
   toAnswerYourQuestions: '为您解答所有疑问',
   addExclusiveCustomers: '添加专属客服',
   isItImportantForTheTeam: '是否对团队会员存在顾虑？',
-  /** */
   packageSelection: '套餐选择',
   numberOfUsersOpened: '开通人数',
   openTo: '开通对象',
@@ -2053,5 +2049,18 @@ export default {
   afterAdministratorApproval: '管理员审批后自动加入',
   joinedTarget: '已加入目标',
   targetHasBeenTaken: '目标已被取消，无法继续查看',
-  joinNow: '立即加入'
+  joinNow: '立即加入',
+  youWillJoin: '你也将加入',
+  youWillJoinTogether: '你也将一并加入',
+  noSpatialInformation: '无空间信息',
+  invitationSpace: '邀请你加入空间',
+  invitationProject: '邀请你加入项目',
+  slogan: '把每件事做干的漂漂亮亮',
+  inFlyeleApp: '在飞项App中打开',
+  inFlyeleMiniProgress: '在飞项小程序中打开',
+  loadingData: '数据加载中...请稍候',
+  picturePreview: '图片预览',
+  checkInTheFlyele: '在飞项中查看',
+  checkInFlyeleApp: '在飞项APP中查看',
+  checkInMiniProgress: '在飞项小程序中查看'
 }

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useMemo, useState, useContext } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
@@ -89,7 +90,7 @@ const _IndustryType = ({
   return (
     <CommonPage
       visible={visible}
-      title="你的行业类型是？"
+      title={I18N.common.yourIndustryCategory}
       desc=""
       disableNext={disableNext}
       goBack={onGoBack}
@@ -100,9 +101,11 @@ const _IndustryType = ({
           tags={tagsList}
           activeTag={activeIndustryTag}
           onClick={onClickInactiveTags}
-          placeholder="都没有？点此输入你的行业类型……"
+          placeholder={I18N.common.writeYourWorkType}
         />
-        <div className={styles.title}>团队人数是？</div>
+        <div className={styles.title}>
+          {I18N.common.theNumberOfTeamMembersIs}
+        </div>
         <CommonTagList
           tags={TeamSize}
           activeTag={activeTeamSize}

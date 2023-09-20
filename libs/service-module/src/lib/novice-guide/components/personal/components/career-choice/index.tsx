@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useMemo, useState } from 'react'
 import { CommonPage } from '../../../common/page'
 import { useMemoizedFn, useMount } from 'ahooks'
@@ -80,8 +81,8 @@ export const CareerChoice = ({
   return (
     <CommonPage
       visible={visible}
-      title="你的职业是？"
-      desc="为你推荐最合适的工作流程"
+      title={I18N.common.whatIsYourProfession}
+      desc={I18N.common.recommendTheMost}
       disableNext={disableNext}
       goBack={onGoBack}
       goNext={onGoNext}
@@ -91,7 +92,7 @@ export const CareerChoice = ({
           tags={tagsList}
           activeTag={activeTag}
           onClick={onClickTags}
-          placeholder="都没有？点此输入你的职业……"
+          placeholder={I18N.common.iDidntEvenOrderThis}
         />
       </div>
     </CommonPage>

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, {
   ChangeEvent,
   useContext,
@@ -592,7 +593,7 @@ const _CreateProject = ({
           <div className={styles.addBtn}>
             <AddIcon width={10} height={10} color="#B4B4B4" />
           </div>
-          自定义
+          {I18N.common.customProject}
         </div>
       </div>
     </CommonPage>

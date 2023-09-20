@@ -2127,8 +2127,8 @@ export default {
   inFlyeleApp: 'Open in APP',
   inFlyeleMiniProgress: '在飞项小程序中打开',
   loadingData: 'Loading...',
-  picturePreview: '图片预览',
-  checkInTheFlyele: '在飞项中查看',
-  checkInFlyeleApp: '在飞项APP中查看',
+  picturePreview: 'Preview',
+  checkInTheFlyele: 'Open in Flyele',
+  checkInFlyeleApp: 'Open in APP',
   checkInMiniProgress: '在飞项小程序中查看'
 }

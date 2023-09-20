@@ -2117,5 +2117,18 @@ export default {
   afterAdministratorApproval: 'Pending for admin approval',
   joinedTarget: 'Join goal success',
   targetHasBeenTaken: 'Goal has been deleted',
-  joinNow: 'Join'
+  joinNow: 'Join',
+  youWillJoin: 'You will join',
+  youWillJoinTogether: 'You will also join',
+  noSpatialInformation: 'None',
+  invitationSpace: 'Invite you to join teampsace',
+  invitationProject: 'Invite you to join project',
+  slogan: '把每件事做干的漂漂亮亮',
+  inFlyeleApp: 'Open in APP',
+  inFlyeleMiniProgress: '在飞项小程序中打开',
+  loadingData: 'Loading...',
+  picturePreview: '图片预览',
+  checkInTheFlyele: '在飞项中查看',
+  checkInFlyeleApp: '在飞项APP中查看',
+  checkInMiniProgress: '在飞项小程序中查看'
 }

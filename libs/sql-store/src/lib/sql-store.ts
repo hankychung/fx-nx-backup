@@ -40,10 +40,10 @@ class SqlStore {
 
   isReady = false
 
-  // private host = 'https://api.flyele.vip'
-  private host = !isClient
-    ? 'http://localhost:8888/api'
-    : 'https://api.flyele.vip'
+  private host = 'https://api.flyele.vip'
+  // private host = !isClient
+  //   ? 'http://localhost:8888/api'
+  //   : 'https://api.flyele.vip'
 
   private userId = ''
 

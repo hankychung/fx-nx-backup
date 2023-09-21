@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useEffect, useMemo } from 'react'
 import {
   FlyAvatar,
@@ -111,7 +112,7 @@ const MemberInfo = ({
             <div className={style.name_icon}>
               <div className={style.name}>{memberList[0]?.name}</div>
               {mineId === memberList[0]?.userId && (
-                <div className={style.mine}>我</div>
+                <div className={style.mine}>{I18N.common.me}</div>
               )}
               {memberList[0]?.isVip && !memberList[0]?.isTeamVip && (
                 <MemberPersonVip
@@ -144,7 +145,7 @@ const MemberInfo = ({
         >
           <div className={style.customer}>
             <Customer></Customer>
-            <span>客服</span>
+            <span>{I18N.common.customerService}</span>
           </div>
         </FlyBasePopper>
       </div>
@@ -157,19 +158,19 @@ const MemberInfo = ({
             // mealSelect(_)
           }}
         >
-          <div className={style.name}>团队会员</div>
+          <div className={style.name}>{I18N.common.business}</div>
           <div className={style.price}>
-            {vipMeal?.original_price && (
+            {isCN && vipMeal?.original_price && (
               <span>
                 <i>￥</i>
                 <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
               </span>
             )}
             <div>
-              <span>￥</span>
+              <span>{isCN ? '￥' : '$'}</span>
               {`${regFenToYuan(
                 (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
-              )}/人/年`}
+              )}${I18N.common.regFe}`}
             </div>
           </div>
           {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (

@@ -219,14 +219,14 @@ const RightBlock = ({
                 >
                   <div className={style.name}>{_.name}</div>
                   <div className={style.price}>
-                    {_.original_price && (
+                    {_.original_price && isCN && (
                       <span>
                         <i>￥</i>
                         <span>{regFenToYuan(_.original_price)}</span>
                       </span>
                     )}
                     <div>
-                      <span>￥</span>
+                      <span>{isCN ? '￥' : '$'}</span>
                       {regFenToYuan(_.now_price - (_.price || 0))}
                     </div>
                   </div>

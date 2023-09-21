@@ -6,28 +6,18 @@
  * @FilePath: /electron-client/app/components/QuickPay/components/MemberInfo/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE99
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useMemo } from 'react'
-import {
-  FlyAvatar,
-  FlyBasePopper,
-  FlyBasePopperCtrl,
-  useController
-} from '@flyele/flyele-components'
-import { ReactComponent as Customer } from '../../../../assets/payImg/customer.svg'
 import { ReactComponent as MealTime } from '../../../../assets/payImg/meal_time.svg'
-import { ReactComponent as MemberPersonVip } from '../../../../assets/payImg/member_person_vip.svg'
-import { ReactComponent as MemberTeamVip } from '../../../../assets/payImg/member_team_vip.svg'
 import * as dayjs from 'dayjs'
 import cs from 'classnames'
 import style from './index.module.scss'
-import CustomerServicesModal from '../../../customer-services-modal'
-import PayModal, { IFlyeleAvatarItem } from '../../../pay-modal'
+import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { IActiveGoods, ICoupon } from '@flyele-nx/api'
 import { paymentApi } from '@flyele-nx/service'
 import { getResidueTime, regFenToYuan } from '../../utils'
 import { useCurrentTime } from '../../hoooks/useCurrentTime'
 import { useMemoizedFn } from 'ahooks'
-import meal_time from '../../../../assets/payImg/meal_time.svg'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { globalInfoHandler } from '@flyele-nx/zustand-handler'
 
@@ -59,7 +49,7 @@ const MemberInfo = ({
           const list =
             res.data &&
             res.data.length &&
-            res.data.filter((item) => item.name === '终身会员')
+            res.data.filter((item) => item.name === I18N.common.life_time)
           console.log('test-list', list)
           if (list) {
             const new_arr = list.map((item) => {
@@ -111,50 +101,6 @@ const MemberInfo = ({
 
   return (
     <div className={style.memberInfo}>
-      {/* <div className={style.member}>
-        <div className={style.mem_info}>
-          <FlyAvatar src={memberList[0].avatar} size={30} />
-          <div className={style.mem_name}>
-            <div className={style.name_icon}>
-              <div className={style.name}>{memberList[0]?.name}</div>
-              {mineId === memberList[0]?.userId && (
-                <div className={style.mine}>我</div>
-              )}
-              {memberList[0]?.isVip && !memberList[0]?.isTeamVip && (
-                <MemberPersonVip
-                  className={style.member_person_vip}
-                ></MemberPersonVip>
-              )}
-              {memberList[0]?.isTeamVip && (
-                <MemberTeamVip
-                  className={style.member_team_vip}
-                ></MemberTeamVip>
-              )}
-            </div>
-            <span>{memberList[0]?.telephone}</span>
-          </div>
-        </div>
-        <FlyBasePopper
-          controller={Controller}
-          trigger="click"
-          placement="bottom-end"
-          showArrow={false}
-          content={() => (
-            <div>
-              <CustomerServicesModal
-                onClose={() => {
-                  Controller.hide()
-                }}
-              ></CustomerServicesModal>
-            </div>
-          )}
-        >
-          <div className={style.customer}>
-            <Customer></Customer>
-            <span>客服</span>
-          </div>
-        </FlyBasePopper>
-      </div> */}
       <div className={style.mealList}>
         <div
           className={cs(style.mealItem, {
@@ -165,9 +111,9 @@ const MemberInfo = ({
           }}
         >
           <div className={style.name}>
-            <div>个人会员·终身会员</div>
+            <div>{I18N.common.individualMembershipEnd}</div>
             <div className={style.more}>
-              开通后立即享受众多
+              {I18N.common.immediatelyAfterOpening}
               <span
                 onClick={() => {
                   const shell = globalNxController.electronShell()
@@ -180,7 +126,7 @@ const MemberInfo = ({
                   }
                 }}
               >
-                个人会员权益
+                {I18N.common.individualMembershipRights}
               </span>
             </div>
           </div>
@@ -193,7 +139,7 @@ const MemberInfo = ({
               </span>
             )}
             <div>
-              <span>￥</span>
+              <span>{isCN ? '￥' : '$'}</span>
               {`${regFenToYuan(
                 (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
               )}`}
@@ -218,7 +164,8 @@ const MemberInfo = ({
         </div>
       </div>
       <div className={style.switchCoupon}>
-        已为您选择最优惠套餐&nbsp; <span onClick={handleModalType}>切换</span>
+        {I18N.common.selectedForYou}&nbsp;
+        <span onClick={handleModalType}>{I18N.common.switch}</span>
       </div>
     </div>
   )

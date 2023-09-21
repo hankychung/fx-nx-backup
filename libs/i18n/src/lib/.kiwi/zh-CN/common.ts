@@ -2095,5 +2095,11 @@ export default {
   feixiangInvitesYou: '【飞项】邀请你加入“{val1}”，快点击接受邀请吧！{val2}',
   nextStep: '下一步',
   moreThan50: '50以上',
-  teamRecentProject: '团队有哪些工作项目'
+  teamRecentProject: '团队有哪些工作项目',
+  switch: '切换',
+  selectedForYou: '已为您选择最优惠套餐&nbsp;',
+  individualMembershipRights: '个人会员权益',
+  openEnjoyMore: '开通后立即享受众多',
+  individualMembershipEnd: '个人会员·终身会员',
+  customerService: '客服'
 }

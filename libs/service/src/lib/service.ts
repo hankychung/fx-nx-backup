@@ -32,11 +32,15 @@ class Service {
         // before request is sent
         config.headers.Authorization = this.token
 
-        config.headers['X-Auth-Timezone'] = -new Date().getTimezoneOffset() / 60
+        if (envStore.getEnv() !== 'dev') {
+          config.headers['X-Auth-Timezone'] =
+            -new Date().getTimezoneOffset() / 60
 
-        config.headers['X-Auth-Language'] = navigator.language
+          config.headers['X-Auth-Language'] = navigator.language
 
-        config.headers['X-Auth-Area'] = (global as any).lang === 'zh-CN' ? 0 : 1
+          config.headers['X-Auth-Area'] =
+            (global as any).lang === 'zh-CN' ? 0 : 1
+        }
 
         if (config.data && config.data.NxBaseUrl) {
           config.baseURL = config.data.NxBaseUrl

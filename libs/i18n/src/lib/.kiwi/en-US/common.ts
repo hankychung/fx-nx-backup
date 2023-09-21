@@ -1011,7 +1011,7 @@ export default {
   saveToFlyer: 'Save to Flyele files',
   open: 'Open',
   applyToBecomeAnInternal: 'Convert to member',
-  openingAPersonalMeeting: '开通个人会员',
+  openingAPersonalMeeting: 'Upgrade to Business',
   openMembers: '开通会员，20个个人项目数量在内14项会员权益',
   theProjectNeedsToBeStimulated: '该项目待激活，创建人开通会员后恢复使用',
   theProjectNeedsToBeStimulatedOpenCanUse: '该项目待激活，开通会员即可恢复使用',
@@ -2156,5 +2156,10 @@ export default {
   copyFailedPlease: '复制失败，请再次尝试',
   nextStep: 'Next',
   moreThan50: 'More than 50',
-  teamRecentProject: `What are your team's recent projects?`
+  teamRecentProject: `What are your team's recent projects?`,
+  switch: 'Change plan',
+  selectedForYou: 'This is the best plan',
+  individualMembershipRights: '',
+  openEnjoyMore: 'More than 25 advanced features',
+  individualMembershipEnd: 'Premium·Lifetime'
 }

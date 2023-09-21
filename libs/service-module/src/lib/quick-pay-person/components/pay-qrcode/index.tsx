@@ -18,6 +18,8 @@ import { useMemoizedFn } from 'ahooks'
 import QRCode from 'qrcode'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import LogOut from './components/log-out'
+import { isCN } from '@flyele-nx/i18n'
+import { Paypal } from '@flyele-nx/paypal'
 
 const PayQrCode = ({
   isPaySuccess,
@@ -38,6 +40,7 @@ const PayQrCode = ({
 }) => {
   const [qrCode, setQrCode] = useState('')
   const isInit = useRef(false)
+  const [productId, setProductId] = useState('')
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
     const params = {
@@ -53,16 +56,20 @@ const PayQrCode = ({
     }
     try {
       paymentApi.createOrder(params).then(async (_) => {
-        const a = {
-          ..._.data,
-          total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+        if (isCN) {
+          const a = {
+            ..._.data,
+            total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
+          }
+          const res = await QRCode.toDataURL(
+            `${domain}/payDetail?params=${JSON.stringify(
+              a
+            )}&&token=${paymentApi.getToken()}`
+          )
+          setQrCode(res)
+        } else {
+          setProductId(_.data.out_trade_no)
         }
-        const res = await QRCode.toDataURL(
-          `${domain}/payDetail?params=${JSON.stringify(
-            a
-          )}&&token=${paymentApi.getToken()}`
-        )
-        setQrCode(res)
       })
     } catch {
       console.log('00')
@@ -93,36 +100,30 @@ const PayQrCode = ({
         <div className={style.payQrCode}>
           <div className={style.payInfo}>
             <div className={style.price}>
-              <span> ￥</span>
+              <span>{isCN ? '￥' : '$'}</span>
               <span>
                 {regFenToYuan(
                   (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
                 )}
               </span>
-              {/* {vipMeal?.original_price && (
-                <span>{`已省¥${regFenToYuan(
-                  vipMeal?.original_price -
-                    vipMeal?.now_price -
-                    (vipMeal?.price || 0)
-                )}`}</span>
-              )} */}
             </div>
-            <div className={style.code}>
-              {qrCode && (
-                <img alt="qrcode" src={qrCode} className={style.qrcode} />
-              )}
-            </div>
-            <div className={style.payIcon}>
-              <div className={style.iconItem}>
-                <WechatIcon className={style.qrcode}></WechatIcon>
-                <span>微信支付</span>
-              </div>
-              {/* <span>/</span>
-              <div className={style.iconItem}>
-                <AlipayIcon className={style.qrcode}></AlipayIcon>
-                <span>支付宝支付</span>
-              </div> */}
-            </div>
+            {isCN ? (
+              <>
+                <div className={style.code}>
+                  {qrCode && (
+                    <img alt="qrcode" src={qrCode} className={style.qrcode} />
+                  )}
+                </div>
+                <div className={style.payIcon}>
+                  <div className={style.iconItem}>
+                    <WechatIcon className={style.qrcode}></WechatIcon>
+                    <span>微信支付</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <Paypal productId={productId} width={324}></Paypal>
+            )}
           </div>
           {/* 协议 */}
           <Protocol goProtocol={goProtocol} />

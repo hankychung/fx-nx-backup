@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_right.svg'
@@ -13,7 +14,7 @@ const Header = (props: Iprops) => {
       <div className={style.userInfo}>
         <div className={style.left}>
           <div className={style.user_info}>
-            <span>开通个人会员</span>
+            <span>{I18N.common.openingAPersonalMeeting}</span>
           </div>
         </div>
       </div>

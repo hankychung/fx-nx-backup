@@ -38,3 +38,4 @@ export {
   getMatterPresetRemindTxt,
   getEnFormat
 } from './lib/time'
+export { convertToOrdinal } from './lib/math'

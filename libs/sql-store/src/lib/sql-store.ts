@@ -18,6 +18,8 @@ import './sdk/datazeus.js'
 const wasmUrl = '/sql-wasm.wasm'
 declare const registerDataZeusSDK: any
 
+const isClient = (globalThis as any).isClient
+
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 
 function checkDecentTable(k: string) {
@@ -38,8 +40,10 @@ class SqlStore {
 
   isReady = false
 
-  // private host = 'https://api.flyele.vip'
-  private host = 'http://localhost:8888/api'
+  private host = 'https://api.flyele.vip'
+  // private host = !isClient
+  //   ? 'http://localhost:8888/api'
+  //   : 'https://api.flyele.vip'
 
   private userId = ''
 

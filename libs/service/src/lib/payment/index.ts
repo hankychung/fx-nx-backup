@@ -6,6 +6,7 @@ import {
 } from '@flyele-nx/api'
 import { service } from '../service'
 import { ICreateOrderParams, IGetPayParams } from '../typings'
+import { envStore } from '../env'
 
 class Payment {
   /**
@@ -73,7 +74,10 @@ class Payment {
   // 创建paypal订单
   async createPaypalOrder(orderId: string) {
     return service.post({
-      url: `payment/v2/paypal/create_order`,
+      url:
+        envStore.getEnv() === 'dev'
+          ? 'http://10.255.0.35:8080/v2/paypal/create_order'
+          : `payment/v2/paypal/create_order`,
       data: {
         indent_num: orderId
       }

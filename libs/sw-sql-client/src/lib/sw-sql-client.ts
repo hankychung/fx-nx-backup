@@ -73,11 +73,11 @@ class ServiceWorkerUtils {
         type: string
         timestamp: number
         data?: object
-      }) => void,
+      }) => void
       isClient?: boolean
     }
   ) {
-    (globalThis as any).isClient = !!options?.isClient
+    ;(globalThis as any).isClient = !!options?.isClient
 
     if (!('serviceWorker' in navigator)) {
       console.error('serviceWorker is not supported')

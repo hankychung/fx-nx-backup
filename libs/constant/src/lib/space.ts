@@ -1,3 +1,5 @@
+import { I18N } from '@flyele-nx/i18n'
+
 /**
  * 空间升级类型
  */
@@ -85,6 +87,6 @@ export const TeamSize = [
   },
   {
     id: '4',
-    title: '50以上'
+    title: I18N.common.moreThan50
   }
 ]

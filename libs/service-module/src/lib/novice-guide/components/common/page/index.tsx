@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { FC, PropsWithChildren } from 'react'
 import styles from './index.module.scss'
 import { FlyButton } from '@flyele/flyele-components'
@@ -26,7 +27,7 @@ const _CommonPage: FC<PropsWithChildren<IProps>> = ({
   goBack,
   disableNext = false,
   loadingNext = false,
-  nextBtnText = '下一步'
+  nextBtnText = I18N.common.nextStep
 }) => {
   return (
     <div
@@ -50,7 +51,7 @@ const _CommonPage: FC<PropsWithChildren<IProps>> = ({
                 color="rgba(0, 0, 0, 0.4)"
               />
             </div>
-            返回
+            {I18N.common.return}
           </div>
           <div className={styles.goNextBtn}>
             <FlyButton

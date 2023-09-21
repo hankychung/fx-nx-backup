@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
@@ -115,13 +116,16 @@ const _InviteMember = ({
   const copyToClickBoard = () => {
     navigator.clipboard
       .writeText(
-        `【飞项】邀请你加入“${spaceName}”，快点击接受邀请吧！${shortUrl}`
+        I18N.template?.(I18N.common.feixiangInvitesYou, {
+          val1: spaceName,
+          val2: shortUrl
+        }) || ''
       )
       .then(() => {
         globalNxController.showMsg({
           msgType: '消息长',
           duration: 2,
-          content: '复制成功，好友可通过链接接受邀请'
+          content: I18N.common.copySuccessfullyOkay
         })
       })
       .catch((error) => {
@@ -190,7 +194,7 @@ const _InviteMember = ({
         console.log('复制失败', error)
         globalNxController.showMsg({
           msgType: '错误',
-          content: '复制失败，请再次尝试'
+          content: I18N.common.copyFailedPlease
         })
       }
     } else {
@@ -207,7 +211,7 @@ const _InviteMember = ({
   return (
     <CommonPage
       visible={visible}
-      title="最后一步！邀请你的成员"
+      title={I18N.common.lastStepInvitation}
       desc=""
       disableNext={false}
       needFooter={false}
@@ -230,19 +234,21 @@ const _InviteMember = ({
           </div>
         </div>
         <div className={styles.cardRoot}>
-          <div className={cs(styles.title, styles.fs16)}>邀请链接</div>
+          <div className={cs(styles.title, styles.fs16)}>
+            {I18N.common.invitationLink}
+          </div>
           <div className={styles.urlBox}>{shortUrl}</div>
           <div
             className={cs(styles.copy, styles.ml)}
             onClick={copyToClickBoard}
           >
-            复制
+            {I18N.common.duplicate}
           </div>
         </div>
         <div className={styles.btnBox}>
           <div className={styles.btn}>
             <FlyButton theme="primary" block onClick={onGoHome}>
-              完成邀请，开始使用
+              {I18N.common.completeInvitationOpen}
             </FlyButton>
           </div>
         </div>

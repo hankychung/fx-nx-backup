@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useMemo, useState } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
@@ -87,7 +88,7 @@ const _CreateSpace = ({
   return (
     <CommonPage
       visible={visible}
-      title="创建你的团队空间"
+      title={I18N.common.createYourGroup}
       desc=""
       disableNext={disableNext}
       goBack={onGoBack}
@@ -125,7 +126,7 @@ const _CreateSpace = ({
         </div>
         <div className={styles.right}>
           <Input
-            placeholder="输入团队名称..."
+            placeholder={I18N.common.enterTeamName}
             value={spaceName}
             onChange={(e) => {
               setSpaceName && setSpaceName(e.target.value)

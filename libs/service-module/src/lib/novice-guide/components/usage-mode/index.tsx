@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import styles from './index.module.scss'
 import { CommonPage } from '../common/page'
@@ -18,14 +19,14 @@ const _UsageMode = ({
   }> = [
     {
       key: 'personal',
-      title: '个人使用',
-      desc: '简单方便地管理自己的工作生活',
+      title: I18N.common.personalUse,
+      desc: I18N.common.simplyAndConveniently,
       img: 'https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/noviceGuide/personal.png'
     },
     {
       key: 'team',
-      title: '团队协作',
-      desc: '建造团队，执行项目，沉淀流程',
+      title: I18N.common.teamwork,
+      desc: I18N.common.constructionTeamLeader,
       img: 'https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/noviceGuide/team.png'
     }
   ]
@@ -33,8 +34,8 @@ const _UsageMode = ({
   return (
     <CommonPage
       visible={visible}
-      title="你期望在飞项使用方式是？"
-      desc="简单几步，快速上手"
+      title={I18N.common.youExpectToBeFlying}
+      desc={I18N.common.easyStepsQuick}
       needFooter={false}
     >
       <div className={styles.usageModeRoot}>

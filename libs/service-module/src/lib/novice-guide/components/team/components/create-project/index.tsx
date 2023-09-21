@@ -1,3 +1,4 @@
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, {
   ChangeEvent,
   useContext,
@@ -472,7 +473,9 @@ const _CreateProject = ({
       if (oldIndustryId.current === activeIndustryTag) return
 
       setTemplate([])
-      fetchTemplate(activeIndustryTag)
+      if (isCN) {
+        fetchTemplate(activeIndustryTag)
+      }
     }
   }, [visible, activeIndustryTag, fetchTemplate])
 
@@ -486,7 +489,7 @@ const _CreateProject = ({
   return (
     <CommonPage
       visible={visible}
-      title="团队有哪些工作项目"
+      title={I18N.common.teamRecentProject}
       desc=""
       disableNext={false}
       loadingNext={loading}
@@ -592,7 +595,7 @@ const _CreateProject = ({
           <div className={styles.addBtn}>
             <AddIcon width={10} height={10} color="#B4B4B4" />
           </div>
-          自定义
+          {I18N.common.customProject}
         </div>
       </div>
     </CommonPage>

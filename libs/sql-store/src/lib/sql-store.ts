@@ -18,7 +18,7 @@ import './sdk/datazeus.js'
 const wasmUrl = '/sql-wasm.wasm'
 declare const registerDataZeusSDK: any
 
-const isClient = document.querySelector('#client')
+const isClient = (globalThis as any).isClient
 
 type RecordInfo = Pick<PackInfo['data'][0], 'id' | 'attach_info'>
 

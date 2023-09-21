@@ -57,8 +57,8 @@ const VipPackage = (props: Iprops) => {
     originRoute,
     showMsg,
     hasShowRetrieveModal,
-    setHasShowRetrieveModal,
-    needABTab = true
+    setHasShowRetrieveModal
+    // needABTab = true
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
@@ -180,7 +180,7 @@ const VipPackage = (props: Iprops) => {
           display: vipMealType === VipMealType.PERSON ? 'block' : 'none'
         }}
       >
-        {needABTab ? (
+        {/* {needABTab ? (
           user_id % 2 !== 0 ? (
             <PersonVip
               memberList={memberList}
@@ -202,17 +202,17 @@ const VipPackage = (props: Iprops) => {
               originRoute={originRoute}
             />
           )
-        ) : (
-          <PersonVip
-            memberList={memberList}
-            mineId={mineId}
-            goProtocol={goProtocol}
-            couponList={couponList}
-            vipMealType={vipMealType}
-            goInterests={goInterests}
-            originRoute={originRoute}
-          />
-        )}
+        ) : ( */}
+        <PersonVip
+          memberList={memberList}
+          mineId={mineId}
+          goProtocol={goProtocol}
+          couponList={couponList}
+          vipMealType={vipMealType}
+          goInterests={goInterests}
+          originRoute={originRoute}
+        />
+        {/* )} */}
       </div>
       <div
         style={{ display: vipMealType === VipMealType.TEAM ? 'block' : 'none' }}

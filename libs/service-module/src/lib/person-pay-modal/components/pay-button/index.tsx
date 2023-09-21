@@ -78,7 +78,7 @@ const PayButton = (props: Iprops) => {
               }`}</span>
             )}
             <div>
-              <span>¥</span>
+              <span>{isCN ? '￥' : '$'}</span>
               <span>
                 {vipMealType === VipMealType.TEAM
                   ? +regFenToYuan(

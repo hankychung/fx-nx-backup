@@ -192,14 +192,14 @@ const RightBlock = ({
             >
               <div className={style.vip_name}>{I18N.common.business}</div>
               <div className={style.price}>
-                {vipMeal?.original_price && (
+                {vipMeal?.original_price && isCN && (
                   <span>
                     <i>￥</i>
                     <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
                   </span>
                 )}
                 <div>
-                  <span>￥</span>
+                  <span>{isCN ? '￥' : '$'}</span>
                   {`${regFenToYuan(
                     (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
                   )}${I18N.common.regFe}`}

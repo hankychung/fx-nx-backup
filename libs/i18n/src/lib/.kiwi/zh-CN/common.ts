@@ -2100,5 +2100,6 @@ export default {
   selectedForYou: '已为您选择最优惠套餐&nbsp;',
   individualMembershipRights: '个人会员权益',
   openEnjoyMore: '开通后立即享受众多',
-  individualMembershipEnd: '个人会员·终身会员'
+  individualMembershipEnd: '个人会员·终身会员',
+  customerService: '客服'
 }

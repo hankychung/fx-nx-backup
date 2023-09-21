@@ -1040,7 +1040,7 @@ export default {
   personalProjectSet: '个人项目集暂不能使用脉络图！',
   withinSearchItems: '搜索项目内相关内容',
   thisProjectBelongsTo: '该项目属于专业空间',
-  openTeamVip: '开通团队会员',
+  openTeamVip: 'Upgrade to Business',
   teamNeedsToBeActivated: '需开通团队会员才能进入专业空间的项目',
   otherMembersWillCloseTips: '其他成员将该模块关闭显示',
   ganttChart: 'Gantt',
@@ -2014,7 +2014,7 @@ export default {
   lifetimeMembershipLimit: 'There is a limited-time offer of Lifetime member',
   unpaidSuccessfully: 'Not paid success',
   feixiangMemberAssociation: 'Flyele Membership Agreement',
-  paymentIsConsideredAs: 'By click “Check out”,you are agree to the',
+  paymentIsConsideredAs: 'By click “Check out”,you are agree to the ',
   immediatePayment: 'Check out',
   vipSaved: 'saved',
   totalPrice: 'Total',
@@ -2161,5 +2161,6 @@ export default {
   selectedForYou: 'This is the best plan',
   individualMembershipRights: '',
   openEnjoyMore: 'More than 25 advanced features',
-  individualMembershipEnd: 'Premium·Lifetime'
+  individualMembershipEnd: 'Premium·Lifetime',
+  customerService: 'Contact'
 }

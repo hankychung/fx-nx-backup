@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as ArrowRight } from '../../../../assets/payImg/arrow_right.svg'
@@ -13,9 +14,9 @@ const Header = (props: Iprops) => {
       <div className={style.userInfo}>
         <div className={style.left}>
           <div className={style.user_info}>
-            <span>开通团队会员</span>
+            <span>{I18N.common.openTeamVip}</span>
             <div className={style.interests} onClick={goInterests}>
-              <span>查看完整权益</span>
+              <span>{I18N.common.viewFullRights}</span>
               <ArrowRight color="#6A67F4" />
             </div>
           </div>

@@ -6,6 +6,8 @@ import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
 import { useScheduleStore, zustandUtils } from '@flyele-nx/global-processor'
 import { LOOP_MATTER_LABEL } from '@flyele-nx/constant'
+import { I18N } from '@flyele-nx/i18n'
+import { getEnFormat } from '@flyele-nx/utils'
 
 const { resetState, getDiffKeys, getKey, getKeyOfList, getSortedSchedule } =
   zustandUtils
@@ -170,11 +172,11 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
     _obj.t_l = `${LOOP_MATTER_LABEL[repeat_type as number]}`
 
     if (isAlwaysRepeat(end_repeat_at || 0)) {
-      _obj.t_l += '、一直循环'
+      _obj.t_l += `、${I18N.common.forever}`
     } else {
       const YYYY =
         dayjs.unix(end_repeat_at || 0).format('YYYY') !== dayjs().format('YYYY')
-      const M_DD = dayjs.unix(end_repeat_at || 0).format('M月DD日')
+      const M_DD = getEnFormat(dayjs.unix(end_repeat_at || 0), 'M月DD日', '')
 
       _obj.t_l += `、${
         YYYY ? dayjs.unix(end_repeat_at || 0).format('YYYY年') : ''

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 export type SectionType = {
   h1: string
 }
@@ -15,15 +16,15 @@ export type TabType = {
 export const vipPayText = (type: VipPayType) => {
   if (type === VipPayType.NOVIPCREATE) {
     return {
-      h1: '开通团队会员，使用专业空间'
+      h1: I18N.common.openVipUseSpace
     }
   }
   if (type === VipPayType.UPSPACE) {
     return {
-      h1: '升级专业空间'
+      h1: I18N.common.upgradeProfessionalSpace
     }
   }
   return {
-    h1: '为好友开通团队会员'
+    h1: I18N.common.activateForFriends
   }
 }

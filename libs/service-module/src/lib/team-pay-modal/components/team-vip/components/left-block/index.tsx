@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useMemoizedFn } from 'ahooks'
@@ -144,9 +145,11 @@ const LeftBlock = (props: Iprops) => {
     <div className={style.leftBlock}>
       <div className={style.lableClear}>
         <div className={style.lableSum}>
-          {`开通对象（${resultArr.length}）`}
+          {`${I18N.common.openObject}（${resultArr.length}）`}
           {vipType === VipPayType.NOVIPCREATE && (
-            <div className={style.tips}>同时邀请进入专业空间 </div>
+            <div className={style.tips}>
+              {I18N.common.inviteInAtTheSameTime}{' '}
+            </div>
           )}
         </div>
         {resultArr.length > 0 && (
@@ -164,7 +167,7 @@ const LeftBlock = (props: Iprops) => {
               })
             }}
           >
-            清空选择
+            {I18N.common.clearSelection}
           </div>
         )}
         {!resultArr.length && (
@@ -176,7 +179,7 @@ const LeftBlock = (props: Iprops) => {
               })
             }}
           >
-            全选
+            {I18N.common.select_all}
           </div>
         )}
       </div>
@@ -230,7 +233,7 @@ const LeftBlock = (props: Iprops) => {
                           <div className={style.name}>{_.name}</div>
 
                           {mineId === _.userId && (
-                            <div className={style.mine}>我</div>
+                            <div className={style.mine}>{I18N.common.me}</div>
                           )}
                           {_.isVip && !_.isTeamVip && (
                             <MemberPersonVip

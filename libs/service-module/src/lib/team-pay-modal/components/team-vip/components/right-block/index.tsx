@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PersonVip/components/RightBlock/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
@@ -20,6 +21,8 @@ import { paymentApi } from '@flyele-nx/service'
 import * as dayjs from 'dayjs'
 import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { useMemoizedFn } from 'ahooks'
+// import { VipMealType } from 'libs/service-module/src/lib/person-pay-modal/components/controller'
+import { VipMealType } from '../../../../../person-pay-modal/components/controller'
 
 const RightBlock = ({
   vipType,
@@ -39,6 +42,7 @@ const RightBlock = ({
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const { nowScecond } = useCurrentTime()
   const defaultValue = useRef(false)
+  const [productId, setProductId] = useState('')
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -124,6 +128,35 @@ const RightBlock = ({
     }
   })
 
+  //获取订单号
+  const qrCodeFunction = useMemoizedFn(async () => {
+    const userInfo = resultArr
+    const payInfo = vipMeal
+    const params = {
+      amount: userInfo.length,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
+      good_id: payInfo?.id || 0,
+      origin_route: 'PC客户端',
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
+      users_id: userInfo.map((item) => item.userId),
+      indent_member_type: VipMealType.TEAM
+    }
+    try {
+      paymentApi.createOrder(params).then(async (res) => {
+        setProductId(res.data.out_trade_no)
+      })
+    } catch {
+      console.log('00')
+    }
+  })
+
+  useEffect(() => {
+    if (isCN) return
+    qrCodeFunction()
+  }, [resultArr, qrCodeFunction])
+
   //修改优惠
   useEffect(() => {
     if (
@@ -144,9 +177,9 @@ const RightBlock = ({
   return (
     <div className={style.rightBlock}>
       <div>
-        <div className={style.lable}>套餐内容</div>
+        <div className={style.lable}>{I18N.common.packageContent}</div>
         <div className={style.mealBlock}>
-          <div className={style.vip_title}>团队套餐</div>
+          <div className={style.vip_title}>{I18N.common.teamPackage}</div>
           <div className={style.mealList}>
             <div
               className={cs(style.mealItem, {
@@ -156,19 +189,19 @@ const RightBlock = ({
                 // mealSelect(_)
               }}
             >
-              <div className={style.name}>团队会员</div>
+              <div className={style.name}>{I18N.common.business}</div>
               <div className={style.price}>
-                {vipMeal?.original_price && (
+                {vipMeal?.original_price && isCN && (
                   <span>
                     <i>￥</i>
                     <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
                   </span>
                 )}
                 <div>
-                  <span>￥</span>
+                  <span>{isCN ? '￥' : '$'}</span>
                   {`${regFenToYuan(
                     (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0
-                  )}/人/年`}
+                  )}${I18N.common.regFe}`}
                 </div>
               </div>
               {vipMeal?.end_at && getResidueTime(num - nowScecond) !== '0' && (
@@ -191,9 +224,9 @@ const RightBlock = ({
         </div>
         <div className={style.memberList}>
           <div className={style.lable_sum}>
-            <div className={style.title}>开通人数</div>
+            <div className={style.title}>{I18N.common.numberOfUsersOpened}</div>
             <div className={style.memberSum}>
-              <span>{`x ${resultArr.length}人`}</span>
+              <span>{`x ${resultArr.length}${isCN ? '人' : ''}`}</span>
             </div>
           </div>
         </div>

@@ -68,6 +68,7 @@ const QuickPayPerson = (props: Iprops) => {
               onClose={onClose}
               domain={domain}
               senConfirm={senConfirm}
+              mineId={mineId}
             />
           </div>
         </div>

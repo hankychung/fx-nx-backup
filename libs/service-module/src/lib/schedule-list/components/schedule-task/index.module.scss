@@ -6,6 +6,7 @@
   border-radius: 8px;
   outline: none;
   content-visibility: auto;
+  contain-intrinsic-size: auto 100px;
 
   .title {
     overflow: hidden;

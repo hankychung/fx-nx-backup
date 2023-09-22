@@ -49,8 +49,7 @@ const MemberInfo = ({
           const list =
             res.data &&
             res.data.length &&
-            res.data.filter((item) => item.name === I18N.common.life_time)
-          console.log('test-list', list)
+            res.data.filter((item) => item.name === '个人会员-终身套餐')
           if (list) {
             const new_arr = list.map((item) => {
               const arr = getItem(item.id, _.data || [])
@@ -73,7 +72,6 @@ const MemberInfo = ({
                 active: false
               }
             })
-            console.log('new_arr', new_arr)
             setVipMeal(new_arr[0])
           }
         }

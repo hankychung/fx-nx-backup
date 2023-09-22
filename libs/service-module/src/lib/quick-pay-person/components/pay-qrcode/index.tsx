@@ -28,7 +28,8 @@ const PayQrCode = ({
   onClose,
   goProtocol,
   domain,
-  senConfirm
+  senConfirm,
+  mineId
 }: {
   isPaySuccess: boolean
   vipMeal?: IActiveGoods
@@ -37,6 +38,7 @@ const PayQrCode = ({
   onClose?: () => void
   goProtocol: () => void
   senConfirm?: () => void
+  mineId?: string
 }) => {
   const [qrCode, setQrCode] = useState('')
   const isInit = useRef(false)
@@ -47,10 +49,8 @@ const PayQrCode = ({
       amount: 1,
       coupon_id: vipMeal?.price ? vipMeal?.coupon_id : 0,
       good_id: vipMeal?.id || 0,
-      // good_id: 8,
       origin_route: 'PC客户端',
       total_price: (vipMeal?.now_price || 0) - (vipMeal?.price || 0) || 0,
-      // total_price: 1,
       users_id: memberList.map((item) => item.userId),
       indent_member_type: 1
     }
@@ -76,12 +76,8 @@ const PayQrCode = ({
     }
   })
   useEffect(() => {
-    console.log(vipMeal, 'vipMeal')
-
     if (isInit.current && vipMeal) return
     if (vipMeal) {
-      console.log(vipMeal, 'vipMeal')
-
       qrCodeFunction()
       senConfirm?.()
     }
@@ -122,7 +118,11 @@ const PayQrCode = ({
                 </div>
               </>
             ) : (
-              <Paypal productId={productId} width={324}></Paypal>
+              <Paypal
+                productId={productId}
+                width={324}
+                containerStyle={{ marginBottom: 100 }}
+              ></Paypal>
             )}
           </div>
           {/* 协议 */}

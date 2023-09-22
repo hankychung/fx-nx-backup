@@ -11,6 +11,11 @@
   margin-top: 20px;
 
   > span {
+    cursor: pointer;
     color: rgba(29, 210, 193, 1);
   }
+}
+
+.ProtocolEN {
+  flex-direction: column;
 }

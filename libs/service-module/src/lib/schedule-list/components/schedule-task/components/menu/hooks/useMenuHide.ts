@@ -37,7 +37,7 @@ export const useMenuHide = ({ data }: { data: IScheduleTask }): IAction => {
   })
 
   return {
-    txt: I18N.common.schedule_hide,
+    txt: I18N.common.hide,
     callback: action,
     checkAction: true
   }

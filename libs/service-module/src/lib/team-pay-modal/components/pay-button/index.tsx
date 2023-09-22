@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/PayButton/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import { IActiveGoods } from '@flyele-nx/api'
 import cs from 'classnames'
 import React from 'react'
@@ -13,6 +14,8 @@ import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { regFenToYuan } from '../../utils'
 import { VipPayType } from '../controller'
 import style from './index.module.scss'
+import { isCN } from '@flyele-nx/i18n'
+import { Paypal } from '@flyele-nx/paypal'
 
 interface Iprops {
   vipType: VipPayType
@@ -37,9 +40,9 @@ const PayButton = (props: Iprops) => {
     <div className={style.payButton}>
       {activeItem && (
         <div className={style.priceSum}>
-          <span>合计</span>
+          <span>{I18N.common.totalPrice}</span>
           <div className={style.price}>
-            {activeItem && activeItem.end_at && (
+            {activeItem && activeItem.end_at && isCN && (
               <span>{`已省¥${
                 +regFenToYuan(
                   activeItem.original_price -
@@ -48,7 +51,7 @@ const PayButton = (props: Iprops) => {
               }`}</span>
             )}
             <div>
-              <span>¥</span>
+              <span>{isCN ? '¥' : '$'}</span>
               <span>
                 {+regFenToYuan(activeItem.now_price - (activeItem.price || 0)) *
                   resultArr?.length}
@@ -57,25 +60,31 @@ const PayButton = (props: Iprops) => {
           </div>
         </div>
       )}
-      <div
-        className={cs(style.payBtn, {
-          [style.teamPayBtn]: true,
-          [style.noMember]:
-            (!mineInfo?.isTeamVip &&
-              resultArr.length === 0 &&
-              vipType === VipPayType.UPSPACE) ||
-            (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
-        })}
-        onClick={payClick}
-      >
-        {vipType === VipPayType.UPSPACE &&
-        resultArr.length === 0 &&
-        mineInfo?.isTeamVip
-          ? '仅升级空间'
-          : '立即支付'}
-      </div>
+      {isCN ? (
+        <>
+          <div
+            className={cs(style.payBtn, {
+              [style.teamPayBtn]: true,
+              [style.noMember]:
+                (!mineInfo?.isTeamVip &&
+                  resultArr.length === 0 &&
+                  vipType === VipPayType.UPSPACE) ||
+                (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
+            })}
+            onClick={payClick}
+          >
+            {vipType === VipPayType.UPSPACE &&
+            resultArr.length === 0 &&
+            mineInfo?.isTeamVip
+              ? I18N.common.upgradeSpaceOnly
+              : I18N.common.immediatePayment}
+          </div>
+        </>
+      ) : (
+        <Paypal productId="1"></Paypal>
+      )}
       <div className={style.protocol}>
-        支付即视为同意
+        {I18N.common.paymentIsConsideredAs}
         <span
           className={cs({
             [style.teamColor]: true
@@ -84,7 +93,7 @@ const PayButton = (props: Iprops) => {
             goProtocol()
           }}
         >
-          《飞项会员协议》
+          {I18N.common.feixiangMemberAssociation}
         </span>
       </div>
     </div>

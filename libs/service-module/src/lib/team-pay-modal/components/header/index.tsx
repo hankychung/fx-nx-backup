@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as Customer } from '../../../../assets/payImg/customer.svg'
@@ -38,13 +39,11 @@ const Header = ({
           <div className={style.user_info}>
             <span>{obj.h1}</span>
             <div className={style.interests} onClick={goInterests}>
-              <span>查看完整权益</span>
+              <span>{I18N.common.viewFullRights}</span>
               <ArrowRight color="#6A67F4" />
             </div>
           </div>
-          <div className={style.tips}>
-            如果未开通团队会员用户，无法进入到专业空间
-          </div>
+          <div className={style.tips}>{I18N.common.ifNotActivated}</div>
         </div>
       </div>
       <div className={style.right}>
@@ -65,7 +64,7 @@ const Header = ({
         >
           <div className={style.customer}>
             <Customer></Customer>
-            <span>联系客服</span>
+            <span>{I18N.common.contactCustomerService}</span>
           </div>
         </FlyBasePopper>
 

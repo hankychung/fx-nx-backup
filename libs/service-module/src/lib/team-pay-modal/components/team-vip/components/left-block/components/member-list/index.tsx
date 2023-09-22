@@ -6,6 +6,7 @@
  * @FilePath: /electron-client/app/components/PersonPayModal/components/TeamVip/components/LeftBlock/components/MemberList/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { I18N } from '@flyele-nx/i18n'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FlyAvatar } from '@flyele/flyele-components'
 import { useMemoizedFn } from 'ahooks'
@@ -144,16 +145,16 @@ const MemberList = ({
       {vipType === VipPayType.NOVIPCREATE && (
         <div>
           <div className={style.title}>
-            <div>选择更多好友开通</div>
+            <div>{I18N.common.choosingMoreIsGood}</div>
           </div>
           <div className={style.search}>
             <SearchInput
               value={searchValue}
-              defaultText="输入用户名搜索"
+              defaultText={I18N.common.enterOneUserName}
               onActive={onActiveSearch}
               onChange={onSearch}
               onCancel={onCancelSearch}
-              placeholder="输入用户名搜索"
+              placeholder={I18N.common.enterOneUserName}
               showCancle={false}
               // defaultText={searchDefaultText}
               overlayClassName={style.searchOverClassName}
@@ -201,7 +202,7 @@ const MemberList = ({
                         <div className={style.name_icon}>
                           <div className={style.name}>{_.name}</div>
                           {mineId === _.userId && (
-                            <div className={style.mine}>我</div>
+                            <div className={style.mine}>{I18N.common.me}</div>
                           )}
                           {_.isVip && !_.isTeamVip && (
                             <MemberPersonVip
@@ -262,7 +263,7 @@ const MemberList = ({
                         <div className={style.name_icon}>
                           <div className={style.name}>{_.name}</div>
                           {mineId === _.userId && (
-                            <div className={style.mine}>我</div>
+                            <div className={style.mine}>{I18N.common.me}</div>
                           )}
                           {_.isVip && !_.isTeamVip && (
                             <MemberPersonVip

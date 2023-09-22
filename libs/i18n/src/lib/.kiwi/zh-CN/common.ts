@@ -2347,5 +2347,14 @@ export default {
   templateWorkflow: '模版工作流所有协作人({val1}人)',
   showAllSteps: '显示所有步骤的协作人集合，在此处添加/移除协作人会应用所有步骤',
   ccTo: '抄送人',
-  currentlyUpTo: '当前最多可邀请{val1}名新协作人'
+  currentlyUpTo: '当前最多可邀请{val1}名新协作人',
+  ifNotActivated: '如果未开通团队会员用户，无法进入到专业空间',
+  packageContent: '套餐内容',
+  openObject: '开通对象',
+  clearSelection: '清空选择',
+  inviteInAtTheSameTime: '同时邀请进入专业空间',
+  activateForFriends: '为好友开通团队会员',
+  openVipUseSpace: '开通团队会员，使用专业空间',
+  choosingMorePeople: '选择更多好友开通',
+  upgradeSpaceOnly: '仅升级空间'
 }

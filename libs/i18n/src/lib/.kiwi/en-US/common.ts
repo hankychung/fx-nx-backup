@@ -2412,5 +2412,14 @@ export default {
   showAllSteps:
     'A collection of assignee for all steps. Adding or removing a assignee here will apply to all steps',
   ccTo: '抄送人',
-  currentlyUpTo: '当前最多可邀请{val1}名新协作人'
+  currentlyUpTo: '当前最多可邀请{val1}名新协作人',
+  ifNotActivated: '如果未开通团队会员用户，无法进入到专业空间',
+  packageContent: '套餐内容',
+  openObject: '开通对象',
+  clearSelection: '清空选择',
+  inviteInAtTheSameTime: '同时邀请进入专业空间',
+  activateForFriends: '为好友开通团队会员',
+  openVipUseSpace: '开通团队会员，使用专业空间',
+  choosingMorePeople: '选择更多好友开通',
+  upgradeSpaceOnly: '仅升级空间'
 }

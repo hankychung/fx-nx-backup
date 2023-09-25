@@ -20,6 +20,15 @@ compile-official-website:
     - chmod a+x ./self_build.sh
     - ./self_build.sh $CI_COMMIT_BRANCH official-website
   when: manual
+compile-official-website-en:
+  tags:
+    - nodejs
+    - mac
+  stage: compile
+  script:
+    - chmod a+x ./self_build.sh
+    - ./self_build.sh $CI_COMMIT_BRANCH official-website-en
+  when: manual
 compile-management-system:
   tags:
     - nodejs

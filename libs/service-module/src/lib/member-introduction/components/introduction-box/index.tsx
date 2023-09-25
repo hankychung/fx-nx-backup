@@ -4,7 +4,10 @@ import { IInfoType, IPower } from '@flyele-nx/constant'
 import divisionIcon from '../../../../assets/introduction/division.svg'
 import { ReactComponent as SelectIcon } from '../../../../assets/introduction/select.svg'
 import { ReactComponent as FreeSpace } from '../../../../assets/introduction/free_space.svg'
+import { ReactComponent as FreeSpaceEN } from '../../../../assets/introduction/free_space_EN.svg'
 import { ReactComponent as ProfessionalSpace } from '../../../../assets/introduction/professional_space.svg'
+import { ReactComponent as ProfessionalSpaceEN } from '../../../../assets/introduction/professional_space_EN.svg'
+import { isCN } from '@flyele-nx/i18n'
 
 interface IProps {
   info: IInfoType
@@ -36,9 +39,9 @@ export const IntroductionBox = ({
 
     switch (item.isDiyRender) {
       case 'free_space':
-        return <FreeSpace />
+        return isCN ? <FreeSpace /> : <FreeSpaceEN />
       case 'professional_space':
-        return <ProfessionalSpace />
+        return isCN ? <ProfessionalSpace /> : <ProfessionalSpaceEN />
       default:
         return
     }

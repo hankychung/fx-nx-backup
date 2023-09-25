@@ -28,16 +28,14 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
     {
       key: 0,
       question: I18N.common.theProfessionalSpaceIs,
-      answer:
-        I18N.common.spaceItselfIsNot,
+      answer: I18N.common.spaceItselfIsNot,
       highlightText: I18N.common.business,
       expanded: true
     },
     {
       key: 1,
       question: I18N.common.internalMembersAnd,
-      answer:
-        I18N.common.inAProfessionalSpace2,
+      answer: I18N.common.inAProfessionalSpace2,
       expanded: false,
       isClick: true
     },
@@ -56,8 +54,7 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
     {
       key: 4,
       question: I18N.common.teamMembersHave2,
-      answer:
-        I18N.common.teamMembersHaveExpired,
+      answer: I18N.common.teamMembersHaveExpired,
       expanded: false
     },
     {
@@ -69,8 +66,7 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
     {
       key: 6,
       question: I18N.common.teamMembersAnd,
-      answer:
-        I18N.common.suitableForIndividualMembers,
+      answer: I18N.common.suitableForIndividualMembers,
       expanded: false
     }
   ])
@@ -100,7 +96,9 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
       width={728}
     >
       <div className={style.wrap}>
-        <div className={style.header_title}>{I18N.common.frequentlyAskedQuestions}</div>
+        <div className={style.header_title}>
+          {I18N.common.frequentlyAskedQuestions}
+        </div>
         <div className={style.question_answer}>
           {items.map((item, index) => {
             const isExpanded = item.expanded
@@ -139,7 +137,8 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
                         item.isClick ? handleItemDifferenceClick : undefined
                       }
                     >
-                      {I18N.common.viewInternalAndExternal}</div>
+                      {I18N.common.viewInternalAndExternal}
+                    </div>
                   </div>
                 ) : (
                   <div
@@ -175,7 +174,8 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
                 Controller.show()
               }}
             >
-              {I18N.common.needMoreHelp}</div>
+              {I18N.common.needMoreHelp}
+            </div>
           </FlyBasePopper>
         </div>
       </div>

@@ -17,6 +17,7 @@ export const PageBottom = ({ widthStyle }: { widthStyle?: string }) => {
         <div className={styles.useTitle}>
           {I18N.officialWebsite.startManagingImmediately}
         </div>
+        <div className={styles.slogan}>{I18N.common.slogan}</div>
         <div className={styles.useBtn} onClick={goToPage}>
           {I18N.officialWebsite.getStarted}
         </div>

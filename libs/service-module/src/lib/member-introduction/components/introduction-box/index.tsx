@@ -32,8 +32,7 @@ export const IntroductionBox = ({
     btnTextColor,
     btnBgColor,
     btnBorderColor,
-    powerList,
-    isDiyRender
+    powerList
   } = info
   const isSpace = (item: IPower) => {
     if (!item.isDiyRender) return

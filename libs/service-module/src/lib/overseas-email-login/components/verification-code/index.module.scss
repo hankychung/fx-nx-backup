@@ -1,0 +1,151 @@
+.phone_number_login {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.email_icon {
+  display: flex;
+  justify-content: center;
+}
+
+.login_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    color: #262626;
+    font-weight: bold;
+    font-size: 23px;
+  }
+
+  span {
+    color: rgba(6, 6, 6, 0.3);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+}
+
+.desc {
+  color: #b4b4b4;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.desc_bottom {
+  color: #050505;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+
+.form_wrap {
+  padding: 0 22px 0 22px;
+
+  &__custom_input {
+    border-radius: 6px;
+    height: 44px;
+  }
+
+  .code_suffix__disabled {
+    color: #b4b4b4;
+  }
+
+  .code_suffix__active {
+    color: #1dd2c1;
+    cursor: pointer;
+  }
+
+  .code_suffix__timer {
+    color: #e0e0e0;
+  }
+
+  :global {
+    .ant-btn {
+      background-color: #1dd2c1;
+      border-radius: 22px;
+      height: 44px;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  button {
+    background-color: #1dd2c1;
+    border-radius: 22px;
+    height: 44px;
+    color: #fff;
+    font-size: 14px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  button[disabled] {
+    background-color: rgba(29, 210, 193, 0.2);
+    cursor: auto;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+.login_in {
+  color: #435ad9;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.go_login_in {
+  color: #474747;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 35px;
+
+  > span {
+    &:last-child {
+      color: #435ad9;
+      cursor: pointer;
+    }
+  }
+}
+
+.footer_wrap {
+  display: flex;
+  color: #262626;
+  font-size: 12px;
+  justify-content: center;
+  margin-top: 20px;
+
+  a {
+    color: #1fd3c2;
+    cursor: pointer;
+  }
+}
+
+.input_block {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+
+.input_code {
+  .input {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+    border-bottom: 1px solid #d5d5d5;
+    caret-color: #1dd2c1;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}

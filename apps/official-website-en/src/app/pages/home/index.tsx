@@ -3,7 +3,7 @@ import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { routePath } from '../../routes'
 import { Header } from '../../components/header'
 import { useMemoizedFn, useMount } from 'ahooks'
-import { ContactUsModal } from '../../components/contact-us-modal'
+import { OverseasContactUsModal } from '@flyele-nx/ui'
 
 export function App() {
   const [activeTab, setActiveTab] = useState('')
@@ -56,7 +56,7 @@ export function App() {
       <Header activeTab={activeTab} onClickTab={onClickTab} />
       <Outlet />
 
-      <ContactUsModal open={contactUsModal} onCancel={onCloseModal} />
+      <OverseasContactUsModal open={contactUsModal} onCancel={onCloseModal} />
     </div>
   )
 }

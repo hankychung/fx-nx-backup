@@ -1,0 +1,30 @@
+.right_wrap {
+  height: 60%;
+  min-height: 510px;
+  background: #fff;
+  -webkit-app-region: none;
+
+  &__container {
+    padding: 20px;
+  }
+
+  .nav_wrap {
+    display: flex;
+    justify-content: flex-end;
+
+    .nav_item {
+      cursor: pointer;
+      display: inline-block;
+      height: 68px;
+
+      img {
+        width: 68px;
+        height: 68px;
+      }
+    }
+
+    .hide {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,160 @@
+.modalRoot {
+  :global {
+    .ant-modal-header {
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 24px;
+    }
+
+    .ant-modal-mask {
+      opacity: 0.7 !important;
+      background: #151515 !important;
+    }
+
+    .ant-modal-content {
+      border-radius: 8px !important;
+    }
+
+    .ant-modal-close {
+      top: 6px;
+
+      &:hover {
+        background-color: unset;
+      }
+    }
+  }
+}
+
+.phone_number_login {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.login_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    color: #262626;
+    font-weight: bold;
+    font-size: 23px;
+  }
+
+  span {
+    color: rgba(6, 6, 6, 0.3);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+}
+
+.form_wrap {
+  padding: 48px 22px 0 22px;
+
+  &__custom_input {
+    border-radius: 6px;
+    height: 44px;
+  }
+
+  &__phone_num_prefix {
+    color: rgba(6, 6, 6, 0.87);
+    font-size: 14px;
+    position: relative;
+    width: 40px;
+    margin-right: 10px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      height: 10px;
+      width: 1px;
+      background-color: rgba(6, 6, 6, 0.2);
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  }
+
+  &__code_suffix {
+    font-size: 14px;
+    position: relative;
+    padding-left: 13px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 10px;
+      width: 1px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(6, 6, 6, 0.2);
+      left: 0;
+    }
+  }
+
+  .code_suffix__disabled {
+    color: #b4b4b4;
+  }
+
+  .code_suffix__active {
+    color: #1dd2c1;
+    cursor: pointer;
+  }
+
+  .code_suffix__timer {
+    color: #e0e0e0;
+  }
+
+  :global {
+    .ant-btn {
+      background-color: #1dd2c1;
+      border-radius: 22px;
+      height: 44px;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  button[disabled] {
+    background-color: rgba(29, 210, 193, 0.2);
+    cursor: auto;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+.forget_password {
+  color: #1dd2c1;
+  font-size: 12px;
+  margin-top: -12px;
+  cursor: pointer;
+  text-align: right;
+  margin-bottom: 32px;
+}
+
+.create_account {
+  color: #1dd2c1;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.footer_wrap {
+  display: flex;
+  color: #262626;
+  font-size: 12px;
+  justify-content: center;
+  margin-top: 20px;
+
+  a {
+    color: #1fd3c2;
+    cursor: pointer;
+  }
+}

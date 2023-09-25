@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'antd'
 import styles from './index.module.scss'
-import contactUsImg from '../../../assets/icons/contactUs.png'
+import { ContactUsIcon } from '@flyele-nx/icon'
 
 const _ContactUsModal = ({
   open,
@@ -19,7 +19,7 @@ const _ContactUsModal = ({
       onCancel={onCancel}
     >
       <div className={styles.header}>
-        <img className={styles.logo} src={contactUsImg} alt="contactUs" />
+        <ContactUsIcon className={styles.logo} alt="contactUs" />
         <div className={styles.title}>Contact us</div>
       </div>
       <div className={styles.content}>
@@ -30,4 +30,4 @@ const _ContactUsModal = ({
   )
 }
 
-export const ContactUsModal = React.memo(_ContactUsModal)
+export const OverseasContactUsModal = React.memo(_ContactUsModal)

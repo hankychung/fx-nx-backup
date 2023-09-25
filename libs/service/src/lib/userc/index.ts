@@ -14,7 +14,10 @@ import {
   IIndustryListParams,
   IIndustryList,
   IIndustryInfo,
-  IResetPassword
+  IResetPassword,
+  IOverseasLogin,
+  IOverseasCreateAccount,
+  IOverseasGetCode
 } from '@flyele-nx/types'
 import { AxiosRequestConfig } from 'axios'
 
@@ -175,6 +178,32 @@ class Userc {
     return await service.post({
       url: `${this.prefix}/auth/haiwaibanyouxiangchongzhimimajiekou`,
       data: data
+    })
+  }
+
+  //海外版登录
+
+  async OverseasLogin(params: IOverseasLogin) {
+    return await service.post({
+      url: '/auth/haiwaibanyouxiangdenglujiekou',
+      data: params
+    })
+  }
+
+  //海外版注册
+
+  async OverseasCreateAccount(params: IOverseasCreateAccount) {
+    return await service.post({
+      url: '/auth/haiwaibanyouxiangzhucejiekou',
+      data: params
+    })
+  }
+  //海外版获取验证码
+
+  async OverseasGetCode(params: IOverseasGetCode) {
+    return await service.post({
+      url: '/auth/haiwaibanyouxiangfasongyoujianjiekou',
+      data: params
     })
   }
 }

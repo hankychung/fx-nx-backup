@@ -1,0 +1,131 @@
+.phone_number_login {
+  display: flex;
+  flex-direction: column;
+}
+
+.login_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #000;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 36px;
+}
+
+.form_wrap {
+  padding: 37px 47px 0 47px;
+
+  &__custom_input {
+    border-radius: 6px;
+    height: 44px;
+  }
+
+  &__phone_num_prefix {
+    color: rgba(6, 6, 6, 0.87);
+    font-size: 14px;
+    position: relative;
+    width: 40px;
+    margin-right: 10px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      height: 10px;
+      width: 1px;
+      background-color:  rgba(6, 6, 6, 0.2);
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  }
+
+  &__code_suffix {
+    font-size: 14px;
+    position: relative;
+    padding-left: 13px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 10px;
+      width: 1px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color:  rgba(6, 6, 6, 0.2);
+      left: 0;
+    }
+  }
+
+  .code_suffix__disabled {
+    color: #b4b4b4;
+  }
+
+  .code_suffix__active {
+    color: #1dd2c1;
+    cursor: pointer;
+  }
+
+  .code_suffix__timer {
+    color: #e0e0e0;
+  }
+
+  button {
+    background-color: #1dd2c1;
+    border-radius: 22px;
+    height: 44px;
+    color: #fff;
+    font-size: 14px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  button[disabled] {
+    background-color: rgba(29, 210, 193, 0.2);
+    cursor: auto;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+.logo {
+  width: 54px;
+  height: 60px;
+}
+
+.link_success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18px;
+
+  .logo_block {
+    width: 112px;
+    height: 112px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f8fa;
+    border-radius: 100%;
+  }
+}
+
+.login_block {
+  color: #8f8f8f;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 19px;
+  padding-bottom: 26px;
+
+  p {
+    > span {
+      &:last-child {
+        color: #435ad9;
+      }
+    }
+  }
+}

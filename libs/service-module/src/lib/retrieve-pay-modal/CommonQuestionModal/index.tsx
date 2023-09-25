@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { Modal } from 'antd'
 import React, { useState } from 'react'
 import { ReactComponent as Add } from '../../../assets/payImg/commom_question_add.svg'
@@ -26,50 +27,46 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
   const [items, setItems] = useState([
     {
       key: 0,
-      question: '专业空间是如何收费的？',
-      answer:
-        '空间本身不收费，但专业空间仅限<span  style="color: #5D7BFF;">团队会员</span>才可加入。因此在升级空间时，需要将空间成员开通团队会员才可正常使用。298元为帮每位成员开通团队会员的费用。',
-      highlightText: '团队会员',
+      question: I18N.common.theProfessionalSpaceIs,
+      answer: I18N.common.spaceItselfIsNot,
+      highlightText: I18N.common.business,
       expanded: true
     },
     {
       key: 1,
-      question: '内部成员跟外部成员的区别？',
-      answer:
-        '在专业空间中，<span style="color: #5D7BFF;">内部成员需要付费，外部成员无需付费</span>。内部成员可以拥有所有高级功能的使用权益（部分管理权益可配置权限）。外部成员仅可进行事项协作，无法查看空间/项目。',
+      question: I18N.common.internalMembersAnd,
+      answer: I18N.common.inAProfessionalSpace2,
       expanded: false,
       isClick: true
     },
     {
       key: 2,
-      question: '在专业空间中每个成员都需要付费吗？',
-      answer: '内部成员需付费，外部成员无需付费',
+      question: I18N.common.inAProfessionalSpace,
+      answer: I18N.common.internalMembersNeedTo,
       expanded: false
     },
     {
       key: 3,
-      question: '多个专业空间需要多次付费吗？',
-      answer: '不需要。只要内部成员是团队会员，即可正常参与多个专业空间。',
+      question: I18N.common.multipleProfessionalVacancies,
+      answer: I18N.common.noNeedJust,
       expanded: false
     },
     {
       key: 4,
-      question: '团队会员过期后会有什么影响？',
-      answer:
-        '团队会员过期后，成员仍会保留在专业空间中，包括TA创建的数据，但TA仅可参与事项，无法进入空间，直到重新续费团队会员。',
+      question: I18N.common.teamMembersHave2,
+      answer: I18N.common.teamMembersHaveExpired,
       expanded: false
     },
     {
       key: 5,
-      question: '员工离职后会员权益可以转移吗？',
-      answer: '可以，请联系客服处理',
+      question: I18N.common.afterEmployeeResignation,
+      answer: I18N.common.canYouPleaseContact,
       expanded: false
     },
     {
       key: 6,
-      question: '团队会员跟个人会员的区别？',
-      answer:
-        '个人会员适合个人用户使用，提供面向个人的高级能力与简单的协作能力。团队会员拥有<span  style="color: #5D7BFF;">专业空间的使用权</span>，只有团队会员才能使用专业空间的所有高级协作能力，适合团队型用户使用',
+      question: I18N.common.teamMembersAnd,
+      answer: I18N.common.suitableForIndividualMembers,
       expanded: false
     }
   ])
@@ -99,7 +96,9 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
       width={728}
     >
       <div className={style.wrap}>
-        <div className={style.header_title}>常见问题</div>
+        <div className={style.header_title}>
+          {I18N.common.frequentlyAskedQuestions}
+        </div>
         <div className={style.question_answer}>
           {items.map((item, index) => {
             const isExpanded = item.expanded
@@ -138,7 +137,7 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
                         item.isClick ? handleItemDifferenceClick : undefined
                       }
                     >
-                      查看内外部详细区别
+                      {I18N.common.viewInternalAndExternal}
                     </div>
                   </div>
                 ) : (
@@ -175,7 +174,7 @@ export const CommonQuestionModal: React.FC<IProps> = (props) => {
                 Controller.show()
               }}
             >
-              需要更多帮助？联系客服为你解答
+              {I18N.common.needMoreHelp}
             </div>
           </FlyBasePopper>
         </div>

@@ -28,6 +28,7 @@ import SystemBoard from './lib/system-board'
 import { CustomPanel } from './lib/custom-panel'
 import { TagMatterBar } from './lib/tag/tag-matter-bar'
 import type { IGoHomeParams } from './lib/novice-guide/types'
+import { CommonQuestionModal } from './lib/retrieve-pay-modal/CommonQuestionModal'
 
 export * from './lib/schedule-list' // 日程列表
 export * from './lib/create-modal'
@@ -61,7 +62,8 @@ export {
   SystemBoard,
   CustomPanel,
   TagMatterBar,
-  IGoHomeParams
+  IGoHomeParams,
+  CommonQuestionModal
 }
 
 export * from './lib/map-svg/type/props'

@@ -27,17 +27,22 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: rgba(29, 210, 193, 0.1);
   margin-top: 80px;
+  background: #2ebeb0;
 
   .useTitle {
-    margin: 0 20px;
+    margin: 0 20px 8px;
     font-style: normal;
-    color: #262626;
-    font-size: 36px;
     font-weight: 500;
-    line-height: 50px;
-    margin-bottom: 56px;
+    color: #fdfdff;
+    font-size: 48px;
+    line-height: normal;
+  }
+
+  .slogan {
+    color: #fdfdff;
+    font-size: 24px;
+    font-weight: 400;
   }
 
   .useBtn {
@@ -46,11 +51,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(79.75deg, #00e09d 5.87%, #1dd2c1 89.96%);
+    background: #fefeff;
     cursor: pointer;
     font-weight: 500;
-    font-size: 18px;
-    color: #ffffff;
     border-radius: 8px;
+    margin-top: 54px;
+    color: #2fd5c5;
+    font-size: 20px;
   }
 }

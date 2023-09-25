@@ -1,5 +1,6 @@
 import { uid } from '@flyele-nx/utils'
 import { ILoginKeyParams, IDevice } from '@flyele-nx/service'
+import { IOverseasLogin } from '@flyele-nx/types'
 
 class Util {
   async getLoginKeyParams(
@@ -15,6 +16,18 @@ class Util {
         device_id: uid
       },
       last_login_key: key
+    }
+  }
+
+  async getEmailLoginParams(
+    device: Omit<IDevice, 'device_id'>,
+    email: string,
+    password?: string
+  ): Promise<IOverseasLogin> {
+    return {
+      mima: password || '',
+      youxiang: email,
+      device: (await this.getLoginKeyParams('', device)).device
     }
   }
 }

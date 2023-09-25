@@ -17,6 +17,8 @@ import { paymentApi } from '@flyele-nx/service'
 import { FlyButton } from '@flyele/flyele-components'
 import { UserInfoUtils } from '@flyele-nx/utils'
 import { ILang } from '@flyele-nx/i18n'
+import { OverseasEmailLogin } from '../overseas-email-login'
+import { OverseasContactUsModal } from '@flyele-nx/ui'
 
 export const MemberIntroduction = ({
   widthStyle,
@@ -31,6 +33,8 @@ export const MemberIntroduction = ({
   const [vipType, setVipType] = useState('')
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCorpModal, setShowCorpModal] = useState(false)
+  const [showEmailLogin, setShowEmailLogin] = useState(false)
+  const [contactUsModal, setContactUsModal] = useState(false)
 
   const [showCustomerModal, setShowCustomerModal] = useState(false)
   const [isShowPay, setIsShowPay] = useState(false)
@@ -51,9 +55,17 @@ export const MemberIntroduction = ({
     // setShow(true)
     if (key === 'personal' || key === 'team') {
       setVipType(key)
+      if (lang === 'en-US') {
+        setShowEmailLogin(true)
+        return
+      }
       setShowLoginModal(true)
     }
     if (key === 'custom') {
+      if (lang === 'en-US') {
+        setContactUsModal(true)
+        return
+      }
       setShowCustomerModal(true)
     }
   }
@@ -144,6 +156,7 @@ export const MemberIntroduction = ({
   const onCloseLoginModal = () => {
     setShowCorpModal(false)
     setShowLoginModal(false)
+    setShowEmailLogin(false)
   }
 
   const onLoginSuccess = useMemoizedFn(async (data?: IUserInfo) => {
@@ -222,6 +235,7 @@ export const MemberIntroduction = ({
       >
         <CustomerServicesModal onClose={() => setShowCustomerModal(false)} />
       </Modal>
+
       <Modal
         open={showLoginModal}
         width={480}
@@ -268,6 +282,33 @@ export const MemberIntroduction = ({
           </div>
         )}
       </Modal>
+
+      {/* 海外版 邮箱登录 */}
+      <Modal
+        open={showEmailLogin}
+        width={410}
+        centered
+        destroyOnClose
+        footer={null}
+        maskClosable={false}
+        onCancel={onCloseLoginModal}
+      >
+        <OverseasEmailLogin
+          deviceParams={{
+            client_version: '0.0.1',
+            os: 'html5',
+            platform: 'web',
+            device_name: 'browser'
+          }}
+          onLoginSuccess={onLoginSuccess}
+        />
+      </Modal>
+
+      {/* 海外版 联系我们 */}
+      <OverseasContactUsModal
+        open={contactUsModal}
+        onCancel={() => setContactUsModal(false)}
+      />
     </div>
   )
 }

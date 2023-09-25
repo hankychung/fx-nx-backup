@@ -44,13 +44,6 @@ export interface IPhoneLoginParams {
   channel_source?: string
 }
 
-export interface IResetPassword {
-  mima: string
-  yanzhengma?: string
-  youxiang?: string
-  code?: string
-}
-
 /**
  * 登录相关结束
  */

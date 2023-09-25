@@ -40,7 +40,7 @@ if [ $app == "h5" ];then
 elif [ $app == "official-website" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
 elif [ $app == "official-website-en" ];then
-  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWeb .
+  docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileWebEn .
 elif [ $app == "management-system" ];then
   docker build --platform linux/amd64 -t $version_number -f deployment/DockerfileManage .
 elif [ $app == "landing" ];then

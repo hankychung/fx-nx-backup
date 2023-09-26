@@ -95,6 +95,7 @@ const RightBlock = ({
       }
     })
   })
+
   useEffect(() => {
     if (
       vipMealType === VipMealType.PERSON &&
@@ -148,6 +149,7 @@ const RightBlock = ({
   const qrCodeFunction = useMemoizedFn(async () => {
     const userInfo = memberList.filter((item) => item.userId === mineId)
     const payInfo = activeGood ? activeGood[0] : vipMealList[0]
+    if (!payInfo || !payInfo.id) return
     const params = {
       amount: userInfo.length,
       coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
@@ -173,7 +175,7 @@ const RightBlock = ({
 
   //当切换套餐的时候直接生成订单(海外版)
   useEffect(() => {
-    if (isCN) return
+    if (isCN || !vipMealList || vipMealList.length === 0) return
     qrCodeFunction()
   }, [vipMealList, qrCodeFunction])
 

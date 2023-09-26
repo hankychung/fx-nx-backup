@@ -147,6 +147,8 @@ const RightBlock = ({
   const qrCodeFunction = useMemoizedFn(async () => {
     const userInfo = resultArr
     const payInfo = vipMeal
+    if (!payInfo || !payInfo.id) return
+
     const params = {
       amount: userInfo.length,
       coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
@@ -172,7 +174,7 @@ const RightBlock = ({
 
   //当切换套餐的时候直接生成订单(海外版)
   useEffect(() => {
-    if (isCN) return
+    if (isCN || !vipMeal) return
     qrCodeFunction()
   }, [vipMeal, resultArr, qrCodeFunction])
 

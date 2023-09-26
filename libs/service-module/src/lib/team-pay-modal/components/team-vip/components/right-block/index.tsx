@@ -42,7 +42,6 @@ const RightBlock = ({
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const { nowScecond } = useCurrentTime()
   const defaultValue = useRef(false)
-  const [productId, setProductId] = useState('')
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -127,35 +126,6 @@ const RightBlock = ({
       service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
     }
   })
-
-  //获取订单号
-  const qrCodeFunction = useMemoizedFn(async () => {
-    const userInfo = resultArr
-    const payInfo = vipMeal
-    const params = {
-      amount: userInfo.length,
-      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
-      good_id: payInfo?.id || 0,
-      origin_route: 'PC客户端',
-      total_price:
-        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
-        userInfo.length,
-      users_id: userInfo.map((item) => item.userId),
-      indent_member_type: VipMealType.TEAM
-    }
-    try {
-      paymentApi.createOrder(params).then(async (res) => {
-        setProductId(res.data.out_trade_no)
-      })
-    } catch {
-      console.log('00')
-    }
-  })
-
-  useEffect(() => {
-    if (isCN) return
-    qrCodeFunction()
-  }, [resultArr, qrCodeFunction])
 
   //修改优惠
   useEffect(() => {

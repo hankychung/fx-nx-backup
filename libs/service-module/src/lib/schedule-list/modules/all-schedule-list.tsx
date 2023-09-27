@@ -115,6 +115,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
   }, [reload, reloaderId, date])
 
   useUpdateEffect(() => {
+    console.log('nx all schedule - date changing', date)
     reload()
   }, [date])
 

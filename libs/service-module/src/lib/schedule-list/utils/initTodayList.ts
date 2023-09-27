@@ -4,6 +4,7 @@ import {
   useScheduleStore
 } from '@flyele-nx/global-processor'
 import { ILocalTask } from '@flyele-nx/types'
+import { ListHandler } from './listHandler'
 
 export interface IInitTodayList {
   tasks?: ILocalTask[]
@@ -26,7 +27,9 @@ export const initTodayList = async (params: IInitTodayList) => {
     ).data.list ||
     []
 
-  const { keys } = batchUpdateTask(tasks, { isFinished: false })
+  const { keys, repeatDict } = batchUpdateTask(tasks, { isFinished: false })
+
+  ListHandler.updateDateRepeatDict({ date, repeatDict })
 
   updateList({
     date,

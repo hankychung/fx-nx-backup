@@ -74,7 +74,29 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
 }) => {
   const domRef = useRef<HTMLDivElement>(null)
 
-  const data = useScheduleStore((state) => state.taskDict[taskKey])
+  const rawData = useScheduleStore((state) => state.taskDict[taskKey])
+
+  const allRepeatData = useScheduleStore((state) => state.dateRepeatDict)
+
+  const d = allRepeatData[date] || {}
+
+  const repeatData = rawData.finish_time ? undefined : d[taskKey]
+
+  // 整合符合当前日期下的循环周期
+  const data = useMemo(() => {
+    if (!repeatData) {
+      return rawData
+    }
+
+    const { cycle, cycle_date } = repeatData
+
+    return {
+      ...rawData,
+      cycle,
+      cycle_date
+    }
+  }, [rawData, repeatData])
+
   const children = useScheduleStore((state) => state.childrenDict[taskKey])
   const isExpanded = useScheduleStore((state) => {
     const dict = state.expandedDict[date]

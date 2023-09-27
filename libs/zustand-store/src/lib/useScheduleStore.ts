@@ -3,6 +3,10 @@ import { ILocalTask } from '@flyele-nx/types'
 import { produce } from 'immer'
 import { getKey, getKeyOfList, getSortedSchedule } from './utils/schedule'
 
+export interface IRepeatDict {
+  [k: string]: ILocalTask
+}
+
 export interface IState {
   // 以下所有日期共用
   todayFinishCount: number
@@ -15,6 +19,9 @@ export interface IState {
     [k: string]: {
       [k: string]: boolean
     }
+  }
+  dateRepeatDict: {
+    [k: string]: IRepeatDict
   }
   todayExecution: { [date: string]: string[] }
   todayCompletedExecution: { [date: string]: string[] }
@@ -35,6 +42,7 @@ interface IMutation {
     options?: { isFinished?: boolean; compare?: boolean }
   ) => {
     keys: string[]
+    repeatDict: IRepeatDict
   }
   updateExpandedDict: (info: {
     date: string
@@ -86,7 +94,11 @@ const initSchedule: IState = {
    * 当天事项 统计数据（未完成/已完成）的数量
    * 从接口返回出来的
    */
-  todayExecutionCount: {}
+  todayExecutionCount: {},
+  /**
+   * 用于记录不同日期下的循环周期
+   */
+  dateRepeatDict: {}
 }
 
 const useScheduleStore = create<IState & IMutation>((set) => {
@@ -131,6 +143,9 @@ const useScheduleStore = create<IState & IMutation>((set) => {
     batchUpdateTask(arr, options) {
       const keys: string[] = []
 
+      // 用于记录不同日期下的循环周期
+      const repeatDict: IRepeatDict = {}
+
       const isFinished = options?.isFinished
 
       const compare = options?.compare
@@ -145,6 +160,8 @@ const useScheduleStore = create<IState & IMutation>((set) => {
             const { ref_task_id, repeat_id } = item
             if (repeat_id) {
               const key = getKey(item)
+
+              repeatDict[ref_task_id] = item
 
               if (!compare || !taskDict[key]) {
                 dict[key] = item
@@ -170,7 +187,7 @@ const useScheduleStore = create<IState & IMutation>((set) => {
         })
       )
 
-      return { keys }
+      return { keys, repeatDict }
     },
     /**
      * 更新对应日期下的事项展开字典

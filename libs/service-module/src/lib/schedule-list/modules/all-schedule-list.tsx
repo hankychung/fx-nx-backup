@@ -5,13 +5,11 @@ import React, {
   ForwardRefRenderFunction,
   useMemo,
   useState,
-  useRef,
-  useContext
+  useRef
 } from 'react'
 import styles from '../schedule-list.module.scss'
 import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
-import dayjs from 'dayjs'
 import { ListHandler } from '../utils/listHandler'
 import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from '../types'
@@ -86,6 +84,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     } catch (e) {
       console.error('scheduleList fetch error', e)
     } finally {
+      console.log('fetch finished', params)
       setLoading(false)
     }
   })
@@ -115,7 +114,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
 
   useUpdateEffect(() => {
     reload()
-  }, [date])
+  }, [date, reload])
 
   useImperativeHandle(ref, () => {
     return {

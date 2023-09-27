@@ -88,12 +88,14 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       return rawData
     }
 
-    const { cycle, cycle_date } = repeatData
+    const { cycle, cycle_date, start_time, end_time } = repeatData
 
     return {
       ...rawData,
       cycle,
-      cycle_date
+      cycle_date,
+      start_time,
+      end_time
     }
   }, [rawData, repeatData])
 

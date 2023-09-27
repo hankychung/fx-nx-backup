@@ -3,7 +3,8 @@ import { ILocalTask } from '@flyele-nx/types'
 import {
   IState,
   useScheduleStore,
-  globalNxController
+  globalNxController,
+  IRepeatDict
 } from '@flyele-nx/global-processor'
 import {
   getInsertedFinishTasks,
@@ -417,6 +418,21 @@ class ListHandler {
       globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [target])
     })
     globalNxController.pubJsPublish(Pub.UPDATE_SCHEDULE, [newTask])
+  }
+
+  // 更新日程下的循环事项字典
+  static updateDateRepeatDict({
+    date,
+    repeatDict
+  }: {
+    date: string
+    repeatDict: IRepeatDict
+  }) {
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        state.dateRepeatDict[date] = repeatDict
+      })
+    )
   }
 }
 

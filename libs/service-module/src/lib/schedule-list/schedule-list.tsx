@@ -78,7 +78,11 @@ const _ScheduleList: ForwardRefRenderFunction<
 
     const list = r.data.list || []
 
-    const { keys } = batchUpdateTask(list, { isFinished })
+    const { keys, repeatDict } = batchUpdateTask(list, { isFinished })
+
+    if (!isFinished) {
+      ListHandler.updateDateRepeatDict({ date, repeatDict })
+    }
 
     updateList({
       date,

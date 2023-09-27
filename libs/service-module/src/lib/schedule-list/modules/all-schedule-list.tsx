@@ -5,13 +5,11 @@ import React, {
   ForwardRefRenderFunction,
   useMemo,
   useState,
-  useRef,
-  useContext
+  useRef
 } from 'react'
 import styles from '../schedule-list.module.scss'
-import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
+import { useMemoizedFn, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
-import dayjs from 'dayjs'
 import { ListHandler } from '../utils/listHandler'
 import classNames from 'classnames'
 import { ScheduleListProps, IScheduleListRef } from '../types'
@@ -114,8 +112,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     }
   }, [reload, reloaderId, date])
 
-  useEffect(() => {
-    console.log('nx all schedule - date changing', date)
+  useUpdateEffect(() => {
     reload()
   }, [date, reload])
 

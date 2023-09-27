@@ -2149,6 +2149,8 @@ export default {
   freeSpace: 'Free Teamspace',
   proTeamspaceFeatures: 'Pro Teamspace Features',
   popular: 'POPULAR',
+  renewal: 'Select',
+  upgradeToUse: 'Select',
   help: 'Help',
   freePeople: 'You’re a member of Free plan',
   premiumPeople: 'Currently you are a Premium member',

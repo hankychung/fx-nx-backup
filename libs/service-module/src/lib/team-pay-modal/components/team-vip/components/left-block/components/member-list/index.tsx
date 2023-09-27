@@ -145,7 +145,11 @@ const MemberList = ({
       {vipType === VipPayType.NOVIPCREATE && (
         <div>
           <div className={style.title}>
-            <div>{I18N.common.choosingMoreIsGood}</div>
+            <div>
+              {I18N.template?.(I18N.common.choosingMoreIsGood, {
+                val1: resultArr.length
+              })}
+            </div>
           </div>
           <div className={style.search}>
             <SearchInput

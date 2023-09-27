@@ -86,6 +86,7 @@ const _AllScheduleList: ForwardRefRenderFunction<
     } catch (e) {
       console.error('scheduleList fetch error', e)
     } finally {
+      console.log('fetch finished', params)
       setLoading(false)
     }
   })

@@ -49,7 +49,8 @@ const MemberInfo = ({
           const list =
             res.data &&
             res.data.length &&
-            res.data.filter((item) => item.name === '个人会员-终身套餐')
+            // 终身会员用文本判断？
+            res.data.filter((item) => item.id === 14)
           if (list) {
             const new_arr = list.map((item) => {
               const arr = getItem(item.id, _.data || [])

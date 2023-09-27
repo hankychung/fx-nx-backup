@@ -114,14 +114,10 @@ const _AllScheduleList: ForwardRefRenderFunction<
     }
   }, [reload, reloaderId, date])
 
-  useMount(() => {
-    console.log('all schedule mounted')
-  })
-
-  useUpdateEffect(() => {
+  useEffect(() => {
     console.log('nx all schedule - date changing', date)
     reload()
-  }, [date])
+  }, [date, reload])
 
   useImperativeHandle(ref, () => {
     return {

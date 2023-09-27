@@ -2388,5 +2388,5 @@ export default {
   coverSetTo: '封面设置成功',
   applyFailed: '应用{val1}失败',
   applySuccess: '应用{val1}成功',
-  afterDeletionThereWillBeNo: '删除后将不能再使用该模版',
-};
+  afterDeletionThereWillBeNo: '删除后将不能再使用该模版'
+}

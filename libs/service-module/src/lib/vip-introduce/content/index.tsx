@@ -90,9 +90,9 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       }
 
       // 已经开通了团队会员或者个人会员
-      if (item.key === 'personal' && isVip) return '续费使用'
-      if (item.key === 'team' && isVip) return '升级使用'
-      if (item.key === 'team' && isTeamVip) return '续费使用'
+      if (item.key === 'personal' && isVip) return I18N.common.renewal
+      if (item.key === 'team' && isVip) return I18N.common.upgradeToUse
+      if (item.key === 'team' && isTeamVip) return I18N.common.renewal
       return item.btnText
     },
     [isVip, isTeamVip, isForeverVip]

@@ -32,7 +32,7 @@ class Service {
         // before request is sent
         config.headers.Authorization = this.token
 
-        if (envStore.getEnv() !== 'dev') {
+        if (!envStore.IsNxDev()) {
           config.headers['X-Auth-Timezone'] =
             -new Date().getTimezoneOffset() / 60
 

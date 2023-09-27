@@ -78,6 +78,8 @@ const _StatusBox: FC<IProps> = (props) => {
   )
 
   const showCycle = useMemo(() => {
+    console.log('task', task)
+
     // 最后一次已完成的循环无循环id
     if (!task.repeat_id || task.finish_time) {
       return false
@@ -87,6 +89,11 @@ const _StatusBox: FC<IProps> = (props) => {
       task.cycle_date &&
       dayjs(task.cycle_date).isAfter(dayjs(Date.now()), 'day')
     ) {
+      console.log(
+        '111',
+        task.cycle_date,
+        dayjs(task.cycle_date).isAfter(dayjs(Date.now()), 'day')
+      )
       return true
     }
 
@@ -94,18 +101,21 @@ const _StatusBox: FC<IProps> = (props) => {
       (v) => v.repeat_id === task?.repeat_id
     )?.cycle_date
 
+    console.log('nowRepeat', nowRepeat)
+
     if (nowRepeat && dayjs(nowRepeat).isAfter(dayjs(Date.now()), 'day')) {
+      console.log('222', dayjs(nowRepeat).isAfter(dayjs(Date.now()), 'day'))
       return true
     }
 
+    console.log(
+      '!!task.repeat_type && !task.repeat_id',
+      !!task.repeat_type,
+      !task.repeat_id
+    )
+
     return !!task.repeat_type && !task.repeat_id
-  }, [
-    task.cycle_date,
-    task.repeat_id,
-    task?.repeat_list,
-    task.repeat_type,
-    task.finish_time
-  ])
+  }, [task])
 
   // 分发
   const dispatchApi = useMemoizedFn(async (isBatch?: boolean) => {

@@ -71,7 +71,7 @@ export const EmptyData = (props: IProps) => {
   if (isError) return <ErrorPage />
 
   if (listType === 'NORMAL') {
-    if (!isToday) return null
+    if (!isToday && !isBoard) return null
     // 有事项（全部完成）
     if (allFinished) return <ListAllFinished isBoard={isBoard} />
 

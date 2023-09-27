@@ -9,7 +9,7 @@ import React, {
   useContext
 } from 'react'
 import styles from '../schedule-list.module.scss'
-import { useMemoizedFn, useUpdateEffect } from 'ahooks'
+import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
 import { ScheduleTask } from '../components/schedule-task'
 import dayjs from 'dayjs'
 import { ListHandler } from '../utils/listHandler'
@@ -113,6 +113,10 @@ const _AllScheduleList: ForwardRefRenderFunction<
       ListHandler.removeReloader(reloaderId)
     }
   }, [reload, reloaderId, date])
+
+  useMount(() => {
+    console.log('all schedule mounted')
+  })
 
   useUpdateEffect(() => {
     console.log('nx all schedule - date changing', date)

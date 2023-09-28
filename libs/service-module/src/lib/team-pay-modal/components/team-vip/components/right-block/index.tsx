@@ -48,7 +48,7 @@ const RightBlock = ({
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
   const { nowScecond } = useCurrentTime()
-  const defaultValue = useRef(false)
+  const [defaultValue, setDefaultValue] = useState(false)
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -58,7 +58,7 @@ const RightBlock = ({
         case 'selectMember':
           setResultArr(service.getData('selectMember').list)
           setTimeout(() => {
-            defaultValue.current = true
+            setDefaultValue(true)
           }, 300)
           break
 
@@ -111,9 +111,10 @@ const RightBlock = ({
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
+
   const payClick = useCallback(
     (options?: { doNotShow?: boolean }) => {
-      if (defaultValue.current) {
+      if (defaultValue) {
         if (
           resultArr.length === 0 &&
           VipPayType.UPSPACE === vipType &&
@@ -138,10 +139,20 @@ const RightBlock = ({
         })
       }
     },
-    [resultArr, vipMeal, mineInfo, service, vipType, upSpace, showMsg]
+    [
+      resultArr,
+      vipMeal,
+      mineInfo,
+      service,
+      vipType,
+      upSpace,
+      showMsg,
+      defaultValue
+    ]
   )
 
   useEffect(() => {
+    console.log('pay click', isCN)
     if (isCN) return
 
     payClick({ doNotShow: true })

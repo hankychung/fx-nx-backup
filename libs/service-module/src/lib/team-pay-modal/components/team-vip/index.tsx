@@ -92,7 +92,7 @@ const TeamVip = (props: Iprops) => {
       if (!res) return
 
       console.log('trading', res)
-      const { out_trade_no } = res
+      const { out_trade_no } = res.data
       setOrderId(out_trade_no)
     })
   }, [getOrder])

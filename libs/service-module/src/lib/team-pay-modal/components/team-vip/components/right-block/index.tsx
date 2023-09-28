@@ -21,21 +21,21 @@ import { paymentApi } from '@flyele-nx/service'
 import * as dayjs from 'dayjs'
 import { getResidueTime, regFenToYuan } from '../../../../utils'
 import { useMemoizedFn } from 'ahooks'
-// import { VipMealType } from 'libs/service-module/src/lib/person-pay-modal/components/controller'
-import { VipMealType } from '../../../../../person-pay-modal/components/controller'
 
 const RightBlock = ({
   vipType,
   mineInfo,
   upSpace,
   goProtocol,
-  showMsg
+  showMsg,
+  orderId
 }: {
   vipType: VipPayType
   mineInfo?: IFlyeleAvatarItem
   upSpace?: () => void
   goProtocol: () => void
   showMsg?: () => void
+  orderId: string
 }) => {
   const service = useContext(SelectMemberContext)
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
@@ -211,6 +211,7 @@ const RightBlock = ({
           vipType={vipType}
           mineInfo={mineInfo}
           goProtocol={goProtocol}
+          orderId={orderId}
         />
       </div>
     </div>

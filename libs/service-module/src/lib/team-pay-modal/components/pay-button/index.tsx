@@ -24,6 +24,7 @@ interface Iprops {
   mineInfo?: IFlyeleAvatarItem
   payClick: () => void
   goProtocol: () => void
+  orderId: string
 }
 const PayButton = (props: Iprops) => {
   const {
@@ -32,7 +33,8 @@ const PayButton = (props: Iprops) => {
     resultArr = [],
     vipType,
     mineInfo,
-    goProtocol
+    goProtocol,
+    orderId
   } = props
 
   const activeItem = activeGood[0]
@@ -61,47 +63,27 @@ const PayButton = (props: Iprops) => {
         </div>
       )}
 
-      <div
-        className={cs(style.payBtn, {
-          [style.teamPayBtn]: true,
-          [style.noMember]:
-            (!mineInfo?.isTeamVip &&
-              resultArr.length === 0 &&
-              vipType === VipPayType.UPSPACE) ||
-            (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
-        })}
-        onClick={payClick}
-      >
-        {vipType === VipPayType.UPSPACE &&
-        resultArr.length === 0 &&
-        mineInfo?.isTeamVip
-          ? I18N.common.upgradeSpaceOnly
-          : I18N.common.immediatePayment}
-      </div>
-
-      {/* {isCN ? (
-        <>
-          <div
-            className={cs(style.payBtn, {
-              [style.teamPayBtn]: true,
-              [style.noMember]:
-                (!mineInfo?.isTeamVip &&
-                  resultArr.length === 0 &&
-                  vipType === VipPayType.UPSPACE) ||
-                (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
-            })}
-            onClick={payClick}
-          >
-            {vipType === VipPayType.UPSPACE &&
-            resultArr.length === 0 &&
-            mineInfo?.isTeamVip
-              ? I18N.common.upgradeSpaceOnly
-              : I18N.common.immediatePayment}
-          </div>
-        </>
+      {isCN ? (
+        <div
+          className={cs(style.payBtn, {
+            [style.teamPayBtn]: true,
+            [style.noMember]:
+              (!mineInfo?.isTeamVip &&
+                resultArr.length === 0 &&
+                vipType === VipPayType.UPSPACE) ||
+              (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
+          })}
+          onClick={payClick}
+        >
+          {vipType === VipPayType.UPSPACE &&
+          resultArr.length === 0 &&
+          mineInfo?.isTeamVip
+            ? I18N.common.upgradeSpaceOnly
+            : I18N.common.immediatePayment}
+        </div>
       ) : (
-        <Paypal productId="1"></Paypal>
-      )} */}
+        <Paypal productId={orderId}></Paypal>
+      )}
 
       <div className={style.protocol}>
         {I18N.common.paymentIsConsideredAs}

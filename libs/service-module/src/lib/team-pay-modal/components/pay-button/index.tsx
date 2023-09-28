@@ -25,6 +25,7 @@ interface Iprops {
   payClick: () => void
   goProtocol: () => void
   orderId: string
+  invalidPayment: boolean
 }
 const PayButton = (props: Iprops) => {
   const {
@@ -34,7 +35,8 @@ const PayButton = (props: Iprops) => {
     vipType,
     mineInfo,
     goProtocol,
-    orderId
+    orderId,
+    invalidPayment
   } = props
 
   const activeItem = activeGood[0]
@@ -82,7 +84,7 @@ const PayButton = (props: Iprops) => {
             : I18N.common.immediatePayment}
         </div>
       ) : (
-        <Paypal productId={orderId}></Paypal>
+        !invalidPayment && <Paypal productId={orderId}></Paypal>
       )}
 
       <div className={style.protocol}>

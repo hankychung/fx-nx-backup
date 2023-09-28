@@ -2079,6 +2079,8 @@ export default {
   freeSpace: '免费空间',
   proTeamspaceFeatures: '专业空间能力',
   popular: '热门推荐',
+  renewal: '续费使用',
+  upgradeToUse: '升级使用',
   help: '联系客服',
   freePeople: '你当前是免费账户',
   premiumPeople: '你当前是个人会员',

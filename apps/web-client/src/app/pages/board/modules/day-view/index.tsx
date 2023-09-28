@@ -9,6 +9,7 @@ import { timeGetter, useCurTime } from '@flyele-nx/utils'
 import { useMount } from 'ahooks'
 import dayjs from 'dayjs'
 import { CustomPanel, SystemBoard } from '@flyele-nx/service-module'
+// import { VipMealType } from 'libs/service-module/src/lib/person-pay-modal/components/controller'
 
 export const DayView: FC = () => {
   const defaultDate = timeGetter.getDateRoughly()
@@ -31,6 +32,23 @@ export const DayView: FC = () => {
 
   return (
     <CurTimeContext.Provider value={curTime.unix()}>
+      {/* for test */}
+      {/* <PayModal
+        visible
+        mineId="222"
+        payType={VipMealType.PERSON}
+        domain="22"
+        modalType="quick_person"
+        successRef={{
+          current: {
+            setIsPay: () => {}
+          }
+        }}
+        onClose={() => {}}
+        memberList={[]}
+        goProtocol={() => {}}
+        goInterests={() => {}}
+      /> */}
       <div className={style.dayview}>
         {/* left */}
         <div className={style.lft}>

@@ -31,6 +31,7 @@ import {
   globalNxController,
   useUserInfoStore
 } from '@flyele-nx/global-processor'
+import { isCN } from '@flyele-nx/i18n'
 
 interface Iprops {
   onClose: () => void
@@ -89,7 +90,8 @@ const RetrievePayModal = (props: Iprops) => {
           const list =
             res.data &&
             res.data.length &&
-            res.data.filter((item) => item.name === '终身会员')
+            // 14-终身会员 / 29-年套餐
+            res.data.filter((item) => item.id === (isCN ? 14 : 29))
           if (list) {
             const new_arr = list.map((item) => {
               const arr = getItem(item.id, _.data || [])

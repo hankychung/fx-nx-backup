@@ -60,7 +60,26 @@ const PayButton = (props: Iprops) => {
           </div>
         </div>
       )}
-      {isCN ? (
+
+      <div
+        className={cs(style.payBtn, {
+          [style.teamPayBtn]: true,
+          [style.noMember]:
+            (!mineInfo?.isTeamVip &&
+              resultArr.length === 0 &&
+              vipType === VipPayType.UPSPACE) ||
+            (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
+        })}
+        onClick={payClick}
+      >
+        {vipType === VipPayType.UPSPACE &&
+        resultArr.length === 0 &&
+        mineInfo?.isTeamVip
+          ? I18N.common.upgradeSpaceOnly
+          : I18N.common.immediatePayment}
+      </div>
+
+      {/* {isCN ? (
         <>
           <div
             className={cs(style.payBtn, {
@@ -82,7 +101,8 @@ const PayButton = (props: Iprops) => {
         </>
       ) : (
         <Paypal productId="1"></Paypal>
-      )}
+      )} */}
+
       <div className={style.protocol}>
         {I18N.common.paymentIsConsideredAs}
         <span

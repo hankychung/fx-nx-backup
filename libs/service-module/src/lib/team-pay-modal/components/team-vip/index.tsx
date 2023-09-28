@@ -89,6 +89,8 @@ const TeamVip = (props: Iprops) => {
     if (isCN) return
 
     getOrder().then((res) => {
+      if (!res) return
+
       console.log('trading', res)
       const { out_trade_no } = res
       setOrderId(out_trade_no)

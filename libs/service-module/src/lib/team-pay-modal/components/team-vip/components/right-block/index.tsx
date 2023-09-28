@@ -7,7 +7,14 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { I18N, isCN } from '@flyele-nx/i18n'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import cs from 'classnames'
 import { ReactComponent as MealTime } from '../../../../../../assets/payImg/meal_time.svg'
 import style from './index.module.scss'
@@ -104,28 +111,41 @@ const RightBlock = ({
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
-  const payClick = useMemoizedFn(() => {
-    if (defaultValue.current) {
-      if (
-        resultArr.length === 0 &&
-        VipPayType.UPSPACE === vipType &&
-        mineInfo?.isTeamVip
-      ) {
-        upSpace && upSpace()
-        return
+  const payClick = useCallback(
+    (options?: { doNotShow?: boolean }) => {
+      if (defaultValue.current) {
+        if (
+          resultArr.length === 0 &&
+          VipPayType.UPSPACE === vipType &&
+          mineInfo?.isTeamVip
+        ) {
+          upSpace && upSpace()
+          return
+        }
+        if (
+          (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
+          (VipPayType.UPSPACE === vipType &&
+            !mineInfo?.isTeamVip &&
+            resultArr.length === 0)
+        ) {
+          showMsg && showMsg()
+          return
+        }
+        service.showPay({
+          show: !options?.doNotShow,
+          payInfo: vipMeal,
+          userInfo: resultArr
+        })
       }
-      if (
-        (resultArr.length === 0 && VipPayType.UPSPACE !== vipType) ||
-        (VipPayType.UPSPACE === vipType &&
-          !mineInfo?.isTeamVip &&
-          resultArr.length === 0)
-      ) {
-        showMsg && showMsg()
-        return
-      }
-      service.showPay({ show: true, payInfo: vipMeal, userInfo: resultArr })
-    }
-  })
+    },
+    [resultArr, vipMeal, mineInfo, service, vipType, upSpace, showMsg]
+  )
+
+  useEffect(() => {
+    if (isCN) return
+
+    payClick({ doNotShow: true })
+  }, [payClick])
 
   //修改优惠
   useEffect(() => {

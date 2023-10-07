@@ -40,6 +40,12 @@ const PayButton = (props: Iprops) => {
   } = props
 
   const activeItem = activeGood[0]
+
+  const onlyUpgradeSpace =
+    vipType === VipPayType.UPSPACE &&
+    resultArr.length === 0 &&
+    mineInfo?.isTeamVip
+
   return (
     <div className={style.payButton}>
       {activeItem && (
@@ -65,7 +71,7 @@ const PayButton = (props: Iprops) => {
         </div>
       )}
 
-      {isCN ? (
+      {isCN || onlyUpgradeSpace ? (
         <div
           className={cs(style.payBtn, {
             [style.teamPayBtn]: true,
@@ -77,9 +83,7 @@ const PayButton = (props: Iprops) => {
           })}
           onClick={payClick}
         >
-          {vipType === VipPayType.UPSPACE &&
-          resultArr.length === 0 &&
-          mineInfo?.isTeamVip
+          {onlyUpgradeSpace
             ? I18N.common.upgradeSpaceOnly
             : I18N.common.immediatePayment}
         </div>

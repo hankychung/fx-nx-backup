@@ -25,6 +25,7 @@ interface Iprops {
   payClick: () => void
   goProtocol: () => void
   orderId: string
+  invalidPayment: boolean
 }
 const PayButton = (props: Iprops) => {
   const {
@@ -34,10 +35,17 @@ const PayButton = (props: Iprops) => {
     vipType,
     mineInfo,
     goProtocol,
-    orderId
+    orderId,
+    invalidPayment
   } = props
 
   const activeItem = activeGood[0]
+
+  const onlyUpgradeSpace =
+    vipType === VipPayType.UPSPACE &&
+    resultArr.length === 0 &&
+    mineInfo?.isTeamVip
+
   return (
     <div className={style.payButton}>
       {activeItem && (
@@ -63,7 +71,7 @@ const PayButton = (props: Iprops) => {
         </div>
       )}
 
-      {isCN ? (
+      {isCN || onlyUpgradeSpace ? (
         <div
           className={cs(style.payBtn, {
             [style.teamPayBtn]: true,
@@ -75,14 +83,12 @@ const PayButton = (props: Iprops) => {
           })}
           onClick={payClick}
         >
-          {vipType === VipPayType.UPSPACE &&
-          resultArr.length === 0 &&
-          mineInfo?.isTeamVip
+          {onlyUpgradeSpace
             ? I18N.common.upgradeSpaceOnly
             : I18N.common.immediatePayment}
         </div>
       ) : (
-        <Paypal productId={orderId}></Paypal>
+        !invalidPayment && <Paypal productId={orderId}></Paypal>
       )}
 
       <div className={style.protocol}>

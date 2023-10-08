@@ -112,8 +112,11 @@ const RightBlock = ({
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])
 
+  const [invalidPayment, setInvalidPayment] = useState(false)
+
   const payClick = useCallback(
     (options?: { doNotShow?: boolean }) => {
+      setInvalidPayment(false)
       if (defaultValue) {
         if (
           resultArr.length === 0 &&
@@ -129,6 +132,7 @@ const RightBlock = ({
             !mineInfo?.isTeamVip &&
             resultArr.length === 0)
         ) {
+          setInvalidPayment(true)
           showMsg && showMsg()
           return
         }
@@ -243,6 +247,7 @@ const RightBlock = ({
           mineInfo={mineInfo}
           goProtocol={goProtocol}
           orderId={orderId}
+          invalidPayment={invalidPayment}
         />
       </div>
     </div>

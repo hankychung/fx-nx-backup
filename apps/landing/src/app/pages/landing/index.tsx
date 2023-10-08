@@ -67,7 +67,7 @@ const Landing = () => {
               <Arrow />
             </div>
             <img
-              className={classNames(styles.mb_show, styles.board_img)}
+              className={classNames(styles.mb_show, styles.main_img)}
               src={require('../../../assets/mb-landingBG2.png')}
               alt=""
             />
@@ -91,7 +91,7 @@ const Landing = () => {
               <Arrow />
             </div>
             <img
-              className={classNames(styles.mb_show, styles.manage_img)}
+              className={classNames(styles.mb_show, styles.main_img)}
               src={require('../../../assets/mb-landingBG3.png')}
               alt=""
             />
@@ -117,7 +117,7 @@ const Landing = () => {
               <Arrow />
             </div>
             <img
-              className={classNames(styles.mb_show, styles.component_img)}
+              className={classNames(styles.mb_show, styles.main_img)}
               src={require('../../../assets/mb-landingBG4.png')}
               alt=""
             />
@@ -142,7 +142,7 @@ const Landing = () => {
               <Arrow />
             </div>
             <img
-              className={classNames(styles.mb_show, styles.component_img)}
+              className={classNames(styles.mb_show, styles.main_img)}
               src={require('../../../assets/mb-landingBG5.png')}
               alt=""
             />
@@ -169,7 +169,7 @@ const Landing = () => {
               <Arrow />
             </div>
             <img
-              className={classNames(styles.mb_show, styles.target_img)}
+              className={classNames(styles.mb_show, styles.main_img)}
               src={require('../../../assets/mb-landingBG6.png')}
               alt=""
             />

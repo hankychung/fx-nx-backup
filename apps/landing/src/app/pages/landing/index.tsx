@@ -66,6 +66,11 @@ const Landing = () => {
               下载使用
               <Arrow />
             </div>
+            <img
+              className={classNames(styles.mb_show, styles.board_img)}
+              src={require('../../../assets/mb-landingBG2.png')}
+              alt=""
+            />
           </div>
         </li>
         <li className={styles.manage}>
@@ -85,6 +90,11 @@ const Landing = () => {
               下载使用
               <Arrow />
             </div>
+            <img
+              className={classNames(styles.mb_show, styles.manage_img)}
+              src={require('../../../assets/mb-landingBG3.png')}
+              alt=""
+            />
           </div>
         </li>
         <li className={styles.component}>
@@ -106,6 +116,11 @@ const Landing = () => {
               下载使用
               <Arrow />
             </div>
+            <img
+              className={classNames(styles.mb_show, styles.component_img)}
+              src={require('../../../assets/mb-landingBG4.png')}
+              alt=""
+            />
           </div>
         </li>
         <li className={styles.view}>
@@ -126,6 +141,11 @@ const Landing = () => {
               下载使用
               <Arrow />
             </div>
+            <img
+              className={classNames(styles.mb_show, styles.component_img)}
+              src={require('../../../assets/mb-landingBG5.png')}
+              alt=""
+            />
           </div>
         </li>
         <li className={styles.target}>
@@ -148,44 +168,64 @@ const Landing = () => {
               下载使用
               <Arrow />
             </div>
+            <img
+              className={classNames(styles.mb_show, styles.target_img)}
+              src={require('../../../assets/mb-landingBG6.png')}
+              alt=""
+            />
           </div>
         </li>
-        <div className={styles.user_say}>
-          <div className={styles.user_say_box}>
-            <div className={styles.user_say_box_tittle}>我们的用户这样说</div>
-            <div className={styles.user_say_box_user}>
-              <div className={styles.user_say_box_item1}></div>
-              <div className={styles.user_say_box_item2}></div>
-              <div className={styles.user_say_box_item3}></div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.bottom}>
-          <div className={styles.bottom_title}>立即开启你的高效管理模式吧</div>
-          <div className={styles.bottom_body}>把每件事都干的漂漂亮亮</div>
-          <div
-            className={styles.free_button}
-            style={{
-              marginTop: 47,
-              backgroundColor: 'white',
-              color: '#30D6C5'
-            }}
-            onClick={() => {
-              handleClick('下载使用-底部')
-            }}
-            data-agl-cvt="6"
-          >
-            下载使用
-          </div>
-        </div>
       </ol>
+      <div className={styles.user_say}>
+        <div className={styles.user_say_box}>
+          <div className={styles.user_say_box_tittle}>我们的用户这样说</div>
+          <div className={styles.user_say_box_user}>
+            <div
+              className={classNames(
+                styles.user_say_box_item,
+                styles.user_say_box_item1
+              )}
+            ></div>
+            <div
+              className={classNames(
+                styles.user_say_box_item,
+                styles.user_say_box_item2
+              )}
+            ></div>
+            <div
+              className={classNames(
+                styles.user_say_box_item,
+                styles.user_say_box_item3
+              )}
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.bottom}>
+        <div className={styles.bottom_title}>立即开启你的高效管理模式吧</div>
+        <div className={styles.bottom_body}>把每件事都干的漂漂亮亮</div>
+        <div
+          className={styles.free_button}
+          style={{
+            backgroundColor: 'white',
+            color: '#30D6C5'
+          }}
+          onClick={() => {
+            handleClick('下载使用-底部')
+          }}
+          data-agl-cvt="6"
+        >
+          下载使用
+        </div>
+      </div>
       <div className={styles.footer}>
         <div className={styles.footer_item}>
-          版权所有©2020-2022飞项科技.保留一切权利.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;飞项科技（广州）有限公司
-          粤ICP备2020073377号
+          <p>版权所有©2020-2022飞项科技.保留一切权利.</p>
+          <p>飞项科技（广州）有限公司 粤ICP备2020073377号</p>
         </div>
         <div className={styles.footer_item}>
-          粤公网安备44011202001924号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;增值电信业务经营许可证：粤B2-20220181
+          <p>粤公网安备44011202001924号</p>
+          <p>增值电信业务经营许可证：粤B2-20220181</p>
         </div>
       </div>
     </div>

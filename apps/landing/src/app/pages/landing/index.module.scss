@@ -231,26 +231,20 @@
     .user_say_box_user {
       display: flex;
       gap: 10px;
-      .user_say_box_item1 {
+      .user_say_box_item {
         margin-top: 56px;
         height: 354px;
         width: 608px;
-        background-image: url('../../../assets/user1.png');
         background-size: 100%;
+      }
+      .user_say_box_item1 {
+        background-image: url('../../../assets/user1.png');
       }
       .user_say_box_item2 {
-        margin-top: 56px;
-        height: 354px;
-        width: 608px;
         background-image: url('../../../assets/user2.png');
-        background-size: 100%;
       }
       .user_say_box_item3 {
-        margin-top: 56px;
-        height: 354px;
-        width: 608px;
         background-image: url('../../../assets/user3.png');
-        background-size: 100%;
       }
     }
   }
@@ -282,6 +276,9 @@
     color: #fdfdff;
     margin-top: 8px;
   }
+  .free_button {
+    margin-top: 47px;
+  }
 }
 
 .footer {
@@ -293,12 +290,16 @@
   justify-content: center;
   flex-direction: column;
   .footer_item {
+    display: flex;
     font-family: PingFang SC;
     font-size: 13px;
     font-weight: 400;
     // line-height: 18px;
     color: #888888;
     margin-top: 6px;
+    & > p {
+      margin: 0 20px;
+    }
   }
 }
 
@@ -404,7 +405,7 @@
       position: relative;
       & > .box {
         padding-left: 2em;
-        padding-right: 5em;
+        padding-right: 3em;
         box-sizing: border-box;
       }
 
@@ -437,11 +438,168 @@
     }
   }
   .board {
-    height: 2000px;
+    height: auto;
+    background-image: none;
+    padding-bottom: 250px;
+    .board_img {
+      width: 100%;
+      height: auto;
+    }
     .board_box {
       width: 100%;
       margin-top: 0;
       margin-left: 0;
+      .board_title {
+        font-size: 76.8px;
+      }
+      .board_body {
+        font-size: 66.56px;
+      }
+    }
+  }
+  .manage {
+    height: auto;
+    background-image: none;
+    padding-bottom: 250px;
+    .manage_box {
+      width: 100%;
+      margin-top: 0;
+      margin-left: 0;
+      .manage_title {
+        font-size: 76.8px;
+      }
+      .manage_body {
+        font-size: 66.56px;
+      }
+    }
+  }
+  .component {
+    height: auto;
+    background-image: none;
+    padding-bottom: 250px;
+    .component_box {
+      width: 100%;
+      margin-top: 0;
+      margin-left: 0;
+      .component_title {
+        font-size: 76.8px;
+        color: #333333;
+      }
+      .component_body {
+        font-size: 66.56px;
+        color: #666666;
+      }
+    }
+  }
+
+  .view {
+    height: auto;
+    background-image: none;
+    padding-bottom: 250px;
+    .view_box {
+      width: 100%;
+      margin-top: 0;
+      margin-left: 0;
+      .view_title {
+        font-size: 76.8px;
+      }
+      .view_body {
+        font-size: 66.56px;
+      }
+    }
+  }
+
+  .target {
+    height: auto;
+    background-image: none;
+    padding-bottom: 250px;
+    .target_box {
+      width: 100%;
+      margin-top: 0;
+      margin-left: 0;
+      text-align: start;
+      align-items: unset;
+
+      .target_title {
+        font-size: 76.8px;
+      }
+      .target_body {
+        font-size: 66.56px;
+        width: 100%;
+      }
+    }
+  }
+
+  .user_say {
+    height: auto;
+    background: linear-gradient(
+      92.59deg,
+      rgba(48, 214, 194, 0.1) 3.04%,
+      #d2f3ff 101.2%
+    );
+    padding: 122px 0;
+
+    .user_say_box {
+      height: auto;
+      width: 100%;
+      margin-top: 0;
+      .user_say_box_tittle {
+        font-size: 92.16px;
+      }
+      .user_say_box_user {
+        width: 100%;
+        overflow-x: auto;
+        .user_say_box_item {
+          width: 844.8px;
+          height: 491.52px;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+  .bottom {
+    height: auto;
+    .bottom_title {
+      font-size: 92.16px;
+    }
+    .bottom_body {
+      font-size: 71.68px;
+      margin-top: 20px;
+    }
+  }
+  .footer {
+    height: auto;
+    padding: 80px 0;
+    .footer_item {
+      text-align: center;
+      display: block;
+      font-size: 51.2px;
+    }
+  }
+
+  .free_button {
+    height: 163.84px;
+    width: 481.28px;
+    background-color: #30d6c5;
+    border-radius: 30.7px;
+    font-size: 61.44px;
+    line-height: 163.84px;
+    margin-bottom: 60px;
+    color: white;
+    cursor: pointer;
+    margin-top: 47px;
+  }
+
+  .free_button_arrow {
+    height: 163.84px;
+    width: 481.28px;
+    background-color: #30d6c5;
+    border-radius: 30.7px;
+    font-size: 61.44px;
+    line-height: 163.84px;
+    margin-bottom: 60px;
+    svg {
+      display: none;
     }
   }
 }

@@ -335,19 +335,21 @@ export const getDate_validity_low_date = (
   }
   // 03 仅，开始，非全天
   if (start_time_full_day !== 2 && start_time && !end_time) {
+    output += `${isCN ? '' : 'Start at '}`
     output += firstStr
     output += ' '
     output += dayjs.unix(start_time).format(isCN ? 'HH:mm' : 'h:mm A')
-    output += ` ${I18N.common.start}`
+    output += `${isCN ? ' 开始' : ''}`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
   // 04 仅，结束，非全天
   if (!start_time && end_time) {
+    output += `${isCN ? '' : 'Due at '}`
     output += secondStr
     output += ' '
     output += dayjs.unix(end_time).format(isCN ? 'HH:mm' : 'h:mm A')
-    output += ` ${I18N.common.cutOff}`
+    output += `${isCN ? ' 截止' : ''}`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -484,7 +486,7 @@ export const getScheduleDate = ({
           () => {
             // 有开始时间
             if (startTime) {
-              const suffix = isExecute ? I18N.common.startUp : I18N.common.start
+              const suffix = isCN ? (isExecute ? '启动' : '开始') : 'Start at'
 
               const getDelaytxt = () => {
                 if (end_time && end_time < _curTime && startTime < _curTime) {
@@ -495,7 +497,7 @@ export const getScheduleDate = ({
               }
 
               return {
-                txt: `${
+                txt: `${isCN ? '' : `${suffix} `}${
                   startTimeDj.isBefore(selectDate, 'date')
                     ? `${formatDateWithYear(startTime)} ${
                         isTeamSchedule ? formatTime(startTime) : ''
@@ -505,7 +507,7 @@ export const getScheduleDate = ({
                         startTime
                       )}`
                     : formatTime(startTime)
-                } ${suffix}`,
+                } ${isCN ? suffix : ''}`,
                 delayTxt: getDelaytxt()
               }
             }

@@ -10,6 +10,7 @@ import { ReactComponent as CreatePassword } from '../../../assets/login/create_p
 import { UsercApi } from '@flyele-nx/service'
 import { IResetPassword } from '@flyele-nx/types'
 import { debounce } from 'lodash'
+import { OverseasContactUsModal } from '@flyele-nx/ui'
 
 type ChangeValue = {
   [P in 'password' | 'passwordConfirm']: string
@@ -24,6 +25,7 @@ const ResetPassword = () => {
   const [isCreateSuccess, setIsCreateSuccess] = useState(false)
   const [userInfo, setUserInfo] = useState<IResetPassword>()
   const [loading, setLoading] = useState(false)
+  const [contactUsModal, setContactUsModal] = useState(false)
 
   useEffect(() => {
     const queryString = window.location.search
@@ -101,9 +103,10 @@ const ResetPassword = () => {
   }
 
   const onClickFeedbackNew = () => {
-    window.open(
-      ' https://fxkj15.qiyukf.com/client?k=32dc07afddda5179a2b418a9daa1fbca&wp=1&robotShuntSwitch=0'
-    )
+    setContactUsModal(true)
+  }
+  const onCloseModal = () => {
+    setContactUsModal(false)
   }
 
   return (
@@ -218,6 +221,7 @@ const ResetPassword = () => {
           </Form>
         </div>
       </Modal>
+      <OverseasContactUsModal open={contactUsModal} onCancel={onCloseModal} />
     </div>
   )
 }

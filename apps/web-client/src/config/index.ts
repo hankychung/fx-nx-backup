@@ -5,11 +5,15 @@ function initLang(lang: ILang) {
   ;(global as any).lang = lang
 }
 
+const defaultLang = 'zh-CN'
+
 function getLang() {
-  return ((global as any).lang || 'zh-CN') as ILang
+  return ((global as any).lang || defaultLang) as ILang
 }
 
+const lang = (process.env.NX_LANG || defaultLang) as ILang
+
 // 初始化语言
-initLang('en-US')
+initLang(lang)
 
 export { initLang, getLang }

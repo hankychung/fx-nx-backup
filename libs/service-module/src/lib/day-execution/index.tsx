@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useState, useMemo, useEffect } from 'react'
 import styles from './index.module.scss'
 import { useMemoizedFn, useMount, useUpdateEffect } from 'ahooks'
@@ -167,7 +167,7 @@ const _DayExecution = ({
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.text}>
-            {`${I18N.common.today_schedule}:`}
+            {`${I18N.common.today_schedule}:${isCN ? '' : ' '}`}
             {taskTotal ? `${completeTotal}/${taskTotal}` : I18N.common.none}
           </div>
           {!!taskTotal && (

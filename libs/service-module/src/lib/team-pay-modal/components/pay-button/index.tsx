@@ -24,6 +24,8 @@ interface Iprops {
   mineInfo?: IFlyeleAvatarItem
   payClick: () => void
   goProtocol: () => void
+  orderId: string
+  invalidPayment: boolean
 }
 const PayButton = (props: Iprops) => {
   const {
@@ -32,10 +34,18 @@ const PayButton = (props: Iprops) => {
     resultArr = [],
     vipType,
     mineInfo,
-    goProtocol
+    goProtocol,
+    orderId,
+    invalidPayment
   } = props
 
   const activeItem = activeGood[0]
+
+  const onlyUpgradeSpace =
+    vipType === VipPayType.UPSPACE &&
+    resultArr.length === 0 &&
+    mineInfo?.isTeamVip
+
   return (
     <div className={style.payButton}>
       {activeItem && (
@@ -60,29 +70,27 @@ const PayButton = (props: Iprops) => {
           </div>
         </div>
       )}
-      {isCN ? (
-        <>
-          <div
-            className={cs(style.payBtn, {
-              [style.teamPayBtn]: true,
-              [style.noMember]:
-                (!mineInfo?.isTeamVip &&
-                  resultArr.length === 0 &&
-                  vipType === VipPayType.UPSPACE) ||
-                (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
-            })}
-            onClick={payClick}
-          >
-            {vipType === VipPayType.UPSPACE &&
-            resultArr.length === 0 &&
-            mineInfo?.isTeamVip
-              ? I18N.common.upgradeSpaceOnly
-              : I18N.common.immediatePayment}
-          </div>
-        </>
+
+      {isCN || onlyUpgradeSpace ? (
+        <div
+          className={cs(style.payBtn, {
+            [style.teamPayBtn]: true,
+            [style.noMember]:
+              (!mineInfo?.isTeamVip &&
+                resultArr.length === 0 &&
+                vipType === VipPayType.UPSPACE) ||
+              (resultArr.length === 0 && vipType !== VipPayType.UPSPACE)
+          })}
+          onClick={payClick}
+        >
+          {onlyUpgradeSpace
+            ? I18N.common.upgradeSpaceOnly
+            : I18N.common.immediatePayment}
+        </div>
       ) : (
-        <Paypal productId="1"></Paypal>
+        !invalidPayment && <Paypal productId={orderId}></Paypal>
       )}
+
       <div className={style.protocol}>
         {I18N.common.paymentIsConsideredAs}
         <span

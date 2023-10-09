@@ -46,8 +46,9 @@ const allPackages = ['apps'].reduce((acc, curr) => {
  * 生成应用串行运行命令
  * @param apps 应用列表
  * @param apiEnv 启动环境
+ * @param lang 语言环境
  */
-const generateCommands = ({ apps, apiEnv } = {}) => {
+const generateCommands = ({ apps, apiEnv, lang } = {}) => {
   // 下面是多选的代码，目前是单选，因为nx的端口问题，启动多个的话 不会自动切换端口只有一个4200端口
   // console.log('apps', apps)
   // let filterStr = ''
@@ -57,7 +58,7 @@ const generateCommands = ({ apps, apiEnv } = {}) => {
   // }
   const { name } = apps
 
-  const command = `cross-env NODE_ENV=${apiEnv}-dev nx serve ${name} --host 0.0.0.0`
+  const command = `cross-env NODE_ENV=${apiEnv}-dev NX_LANG=${lang} nx serve ${name} --host 0.0.0.0`
 
   return { command }
 }
@@ -92,6 +93,26 @@ const serve = async () => {
       }
     }
   ])
+  // 选择语言环境
+  const langChoices = [
+    {
+      name: 'zh-CN',
+      value: 'zh-CN'
+    },
+    {
+      name: 'en-US',
+      value: 'en-US'
+    }
+  ]
+  const { lang } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'lang',
+      message: '请选择语言版本',
+      choices: langChoices
+    }
+  ])
+
   // web-client 项目需要询问是否启动代理
   if (apps.name === 'web-client') {
     const { shouldStartProxy } = await inquirer.prompt([
@@ -120,7 +141,8 @@ const serve = async () => {
 
   const { command } = generateCommands({
     apps,
-    apiEnv
+    apiEnv,
+    lang
   })
 
   concurrently([command], {

@@ -4,6 +4,7 @@ import { routePath } from '../../routes'
 import { Header } from '../../components/header'
 import { useMemoizedFn, useMount } from 'ahooks'
 import { OverseasContactUsModal } from '@flyele-nx/ui'
+import { useNxController } from '../../../hooks/useNxController'
 
 export function App() {
   const [activeTab, setActiveTab] = useState('')
@@ -11,6 +12,8 @@ export function App() {
 
   const navigate = useNavigate()
   const location = useLocation()
+
+  const { contextHolder } = useNxController()
 
   const onCloseModal = () => {
     setContactUsModal(false)
@@ -53,6 +56,7 @@ export function App() {
 
   return (
     <div>
+      {contextHolder}
       <Header activeTab={activeTab} onClickTab={onClickTab} />
       <Outlet />
 

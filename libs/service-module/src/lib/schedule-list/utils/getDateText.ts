@@ -1,7 +1,8 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import dayjs, { Dayjs } from 'dayjs'
 import { IScheduleTask, Taker, RepeatList } from '@flyele-nx/types'
 import { MatterType } from '@flyele-nx/constant'
+import { getEnFormat } from '@flyele-nx/utils'
 
 export type ITimeMatterSectionType = {
   start_time?: number // 开始时间
@@ -56,14 +57,35 @@ function runConditions(cons: Map<() => boolean, () => any>) {
   return '未命中条件'
 }
 
-const formatDate = (n: number) => dayjs.unix(n).format('M月D日')
+/**
+ * 中英文翻译转化
+ * 开始
+ */
+const transitionStartAt = (dateStr: string, needSpace?: boolean) => {
+  return isCN ? `${dateStr}${needSpace ? ' ' : ''}开始` : `Start at ${dateStr}`
+}
+
+/**
+ * 中英文翻译转化
+ * 截止
+ */
+const transitionDueAt = (dateStr: string, needSpace?: boolean) => {
+  return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due at ${dateStr}`
+}
+
+const formatDate = (n: number) =>
+  dayjs.unix(n).format(isCN ? 'M月D日' : 'MMM D')
 
 const formatTime = (n: number, needAllDate?: boolean) => {
   const date = dayjs.unix(n)
   const isCurYear = dayjs().isSame(date, 'year')
   const formatRule = needAllDate
-    ? `${isCurYear ? '' : 'YYYY年'}M月D日 H:mm`
-    : 'H:mm'
+    ? isCN
+      ? `${isCurYear ? '' : 'YYYY年'}M月D日 H:mm`
+      : `MMM D${isCurYear ? '' : ', YYYY h:mm A'}`
+    : isCN
+    ? 'H:mm'
+    : 'h:mm A'
 
   return dayjs.unix(n).format(formatRule)
 }
@@ -72,7 +94,11 @@ export const formatDateWithYear = (n: number) => {
   const date = dayjs.unix(n)
   const isCurYear = dayjs().isSame(date, 'year')
 
-  return date.format(`${isCurYear ? '' : 'YYYY年'}M月D日`)
+  return date.format(
+    isCN
+      ? `${isCurYear ? '' : 'YYYY年'}M月D日`
+      : `MMM D${isCurYear ? '' : ', YYYY'}`
+  )
 }
 
 /** 判断两个时间是否是同一天 */
@@ -158,14 +184,14 @@ const dateRange = (
   if (start.isSame(end, 'month')) {
     if (options?.needAllDate) {
       return `${getTxt(formatDateWithYear(s), 'start')} - ${getTxt(
-        end.format('D日'),
+        end.format(isCN ? 'D日' : 'D'),
         'end'
       )}`
     }
-    return `${getTxt(start.format('M月D日'), 'start')} - ${getTxt(
-      end.format('D日'),
-      'end'
-    )}`
+    return `${getTxt(
+      start.format(isCN ? 'M月D日' : 'MMM D'),
+      'start'
+    )} - ${getTxt(end.format(isCN ? 'D日' : 'D'), 'end')}`
   }
 
   if (start.isSame(end, 'year')) {
@@ -179,11 +205,11 @@ const dateRange = (
   }
 
   if (s === 0) {
-    return `${getTxt(end.format('YYYY年M月D日'), 'end')}`
+    return `${getTxt(end.format(isCN ? 'YYYY年M月D日' : 'MMM D, YYYY'), 'end')}`
   }
 
   return `${getTxt(formatDate(s), 'start')} - ${getTxt(
-    end.format('YYYY年M月D日'),
+    end.format(isCN ? 'YYYY年M月D日' : 'MMM D, YYYY'),
     'end'
   )}`
 }
@@ -242,22 +268,33 @@ export const getDate_validity_low_date = (
   }
 
   const startDj = dayjs.unix(start_time)
-  const start_YYYY = startDj.format('YYYY年')
+  const start_YYYY = getEnFormat(startDj, 'YYYY年', 'YYYY')
   const endDj = dayjs.unix(end_time)
-  const end_YYYY = endDj.format('YYYY年')
-  const today_YYYY = today.format('YYYY年')
+  const end_YYYY = getEnFormat(endDj, 'YYYY年', 'YYYY')
+  const today_YYYY = getEnFormat(today, 'YYYY年', 'YYYY')
 
-  const start_MMDD = dayjs.unix(start_time).format('M月D日')
+  const start_MMDD = getEnFormat(dayjs.unix(start_time), 'M月D日', 'MMM D')
 
-  const end_MMDD_format =
+  let end_MMDD_format = ''
+  let end_MMDD_format_EN = ''
+  if (
     SameMonth &&
     start_time &&
     startDj.isSame(startDj, 'month') &&
     !isSameDay(startDj, endDj)
-      ? 'D日'
-      : 'M月D日'
+  ) {
+    end_MMDD_format = 'D日'
+    end_MMDD_format_EN = 'D'
+  } else {
+    end_MMDD_format = 'M月D日'
+    end_MMDD_format_EN = 'MMM D'
+  }
 
-  const end_MMDD = dayjs.unix(end_time).format(end_MMDD_format)
+  const end_MMDD = getEnFormat(
+    dayjs.unix(end_time),
+    end_MMDD_format,
+    end_MMDD_format_EN
+  )
 
   // 年份 + 日期
   if (start_YYYY !== today_YYYY) {
@@ -302,7 +339,7 @@ export const getDate_validity_low_date = (
   if (start_time_full_day !== 2 && start_time && !end_time) {
     output += firstStr
     output += ' '
-    output += dayjs.unix(start_time).format('HH:mm')
+    output += dayjs.unix(start_time).format(isCN ? 'HH:mm' : 'h:mm A')
     output += ` ${I18N.common.start}`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
@@ -311,7 +348,7 @@ export const getDate_validity_low_date = (
   if (!start_time && end_time) {
     output += secondStr
     output += ' '
-    output += dayjs.unix(end_time).format('HH:mm')
+    output += dayjs.unix(end_time).format(isCN ? 'HH:mm' : 'h:mm A')
     output += ` ${I18N.common.cutOff}`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
@@ -328,12 +365,12 @@ export const getDate_validity_low_date = (
     output += firstStr
     output += ' '
 
-    output += dayjs.unix(start_time).format('HH:mm')
+    output += dayjs.unix(start_time).format(isCN ? 'HH:mm' : 'h:mm A')
     firstPartOutput = output
 
     output += ' - '
-    output += dayjs.unix(end_time).format('HH:mm')
-    secondPartOutput = dayjs.unix(end_time).format('HH:mm')
+    output += dayjs.unix(end_time).format(isCN ? 'HH:mm' : 'h:mm A')
+    secondPartOutput = dayjs.unix(end_time).format(isCN ? 'HH:mm' : 'h:mm A')
 
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -525,9 +562,11 @@ export const getScheduleDate = ({
               [
                 () => !startTime || startTimeDj.isSame(endTimeDj, 'date'),
                 () =>
-                  `${formatDateWithYear(endTime)} ${
-                    isTeamSchedule ? formatTime(endTime) : ''
-                  }截止`
+                  `${transitionDueAt(
+                    `${formatDateWithYear(endTime)} ${
+                      isTeamSchedule ? formatTime(endTime) : ''
+                    }`
+                  )}`
               ],
               // 开始时间在选中天
               [
@@ -539,7 +578,10 @@ export const getScheduleDate = ({
                 () => !!startTime && startTimeDj.isBefore(selectDate, 'date'),
                 () =>
                   startTime > endTime
-                    ? `${formatDateWithYear(endTime)} 截止`
+                    ? `${transitionDueAt(
+                        `${formatDateWithYear(endTime)}`,
+                        true
+                      )}`
                     : dateRange(startTime, endTime, {
                         needAllDate: isTeamSchedule
                       })
@@ -578,11 +620,15 @@ export const getScheduleDate = ({
 
             return {
               txt: startTimeDj.isSame(selectDate, 'date')
-                ? `${formatTime(startTime)} ${
-                    isExecute ? '启动' : '开始'
-                  } (${dateRange(startTime, endTime)})`
+                ? isCN
+                  ? `${formatTime(startTime)} ${
+                      isExecute ? '启动' : '开始'
+                    } (${dateRange(startTime, endTime)})`
+                  : `${dateRange(startTime, endTime)} ${
+                      isExecute ? 'Start at' : 'Start at'
+                    } ${formatTime(startTime)}`
                 : startTime === 0 && isTeamSchedule
-                ? `${range} ${formatTime(endTime)}截止`
+                ? `${range} ${transitionDueAt(formatTime(endTime))}`
                 : range,
               delayTxt: delayStart() ? I18N.common.delayedStart : ''
             }
@@ -597,7 +643,7 @@ export const getScheduleDate = ({
       return {
         txt: `${dateRange(startTime, end_time, {
           needAllDate: isTeamSchedule
-        })}${finishTime ? ' 已结束' : ''}`
+        })}${finishTime ? ` ${I18N.common.ended}` : ''}`
       }
     }
 
@@ -610,9 +656,9 @@ export const getScheduleDate = ({
         ],
         [
           () => startTimeDj.isSame(selectDate, 'date'),
-          () => `${formatTime(startTime)} 开始`
+          () => `${transitionStartAt(`${formatTime(startTime)}`, true)}`
         ],
-        [() => true, () => `${formatTime(endTime)} 截止`]
+        [() => true, () => `${transitionDueAt(`${formatTime(endTime)}`, true)}`]
       ])
 
       return {
@@ -624,14 +670,23 @@ export const getScheduleDate = ({
       const range = dateRange(startTime, endTime)
 
       const conds = new Map([
-        [() => !!finishTime, () => `${formatTime(end_time)} 已结束`],
+        [
+          () => !!finishTime,
+          () => `${formatTime(end_time)} ${I18N.common.ended}`
+        ],
         [
           () => startTimeDj.isSame(selectDate, 'date'),
-          () => `${formatTime(startTime)} 开始 (${range})`
+          () =>
+            `${transitionStartAt(`${formatTime(startTime)}`, true)} (${range})`
         ],
         [
           () => endTimeDj.isSame(selectDate, 'date'),
-          () => `${formatTime(endTime)} 结束 (${range})`
+          () =>
+            `${
+              isCN
+                ? `${formatTime(endTime)} 结束`
+                : `End at ${formatTime(endTime)}`
+            } (${range})`
         ],
         [() => true, () => range]
       ])

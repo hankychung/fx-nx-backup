@@ -73,31 +73,29 @@ const transitionDueAt = (dateStr: string, needSpace?: boolean) => {
   return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due at ${dateStr}`
 }
 
-const formatDate = (n: number) =>
-  dayjs.unix(n).format(isCN ? 'M月D日' : 'MMM D')
+const formatDate = (n: number) => getEnFormat(dayjs.unix(n), 'M月D日', 'MMM D')
 
 const formatTime = (n: number, needAllDate?: boolean) => {
   const date = dayjs.unix(n)
   const isCurYear = dayjs().isSame(date, 'year')
   const formatRule = needAllDate
-    ? isCN
-      ? `${isCurYear ? '' : 'YYYY年'}M月D日 H:mm`
-      : `MMM D${isCurYear ? '' : ', YYYY h:mm A'}`
-    : isCN
-    ? 'H:mm'
+    ? `${isCurYear ? '' : 'YYYY年'}M月D日 H:mm`
+    : 'H:mm'
+  const formatRuleEn = needAllDate
+    ? `MMM D${isCurYear ? '' : ', YYYY h:mm A'}`
     : 'h:mm A'
 
-  return dayjs.unix(n).format(formatRule)
+  return getEnFormat(dayjs.unix(n), formatRule, formatRuleEn)
 }
 
 export const formatDateWithYear = (n: number) => {
   const date = dayjs.unix(n)
   const isCurYear = dayjs().isSame(date, 'year')
 
-  return date.format(
-    isCN
-      ? `${isCurYear ? '' : 'YYYY年'}M月D日`
-      : `MMM D${isCurYear ? '' : ', YYYY'}`
+  return getEnFormat(
+    date,
+    `${isCurYear ? '' : 'YYYY年'}M月D日`,
+    `MMM D${isCurYear ? '' : ', YYYY'}`
   )
 }
 
@@ -184,14 +182,14 @@ const dateRange = (
   if (start.isSame(end, 'month')) {
     if (options?.needAllDate) {
       return `${getTxt(formatDateWithYear(s), 'start')} - ${getTxt(
-        end.format(isCN ? 'D日' : 'D'),
+        getEnFormat(end, 'D日', 'D'),
         'end'
       )}`
     }
     return `${getTxt(
       start.format(isCN ? 'M月D日' : 'MMM D'),
       'start'
-    )} - ${getTxt(end.format(isCN ? 'D日' : 'D'), 'end')}`
+    )} - ${getTxt(getEnFormat(end, 'D日', 'D'), 'end')}`
   }
 
   if (start.isSame(end, 'year')) {
@@ -205,11 +203,11 @@ const dateRange = (
   }
 
   if (s === 0) {
-    return `${getTxt(end.format(isCN ? 'YYYY年M月D日' : 'MMM D, YYYY'), 'end')}`
+    return `${getTxt(getEnFormat(end, 'YYYY年M月D日', 'MMM D, YYYY'), 'end')}`
   }
 
   return `${getTxt(formatDate(s), 'start')} - ${getTxt(
-    end.format(isCN ? 'YYYY年M月D日' : 'MMM D, YYYY'),
+    getEnFormat(end, 'YYYY年M月D日', 'MMM D, YYYY'),
     'end'
   )}`
 }
@@ -445,10 +443,12 @@ export const getScheduleDate = ({
 
         const txt =
           matterType === MatterType.calendar
-            ? `${formatTime(finishTime, isTeamSchedule)} 已结束`
+            ? `${formatTime(finishTime, isTeamSchedule)} ${I18N.common.ended}`
             : item?.repeat_type && item?.repeat_type !== 0
             ? `${formatTime(finishTime, isTeamSchedule)} 完成所有循环`
-            : `${formatTime(finishTime, isTeamSchedule)} 已完成`
+            : `${formatTime(finishTime, isTeamSchedule)} ${
+                I18N.common.completed
+              }`
         const delayDays = Math.floor((finishTime - endTime) / (60 * 60 * 24))
 
         return {

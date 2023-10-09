@@ -11,7 +11,7 @@ function getLang() {
   return ((global as any).lang || defaultLang) as ILang
 }
 
-const lang = (process.env.NODE_LANG || defaultLang) as ILang
+const lang = (process.env.NX_LANG || defaultLang) as ILang
 
 // 初始化语言
 initLang(lang)

@@ -4,9 +4,9 @@
  * @LastEditors: wanghui wanghui@flyele.net
  * @LastEditTime: 2023-04-24 10:36:34
  */
-import { IActiveGoods } from '@flyele-nx/api'
+import { IActiveGoods, paymentApi } from '@flyele-nx/api'
 import { useCreation } from 'ahooks'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import { SelectMemberContext } from '../../context/context'
 import { SelectMemberService } from '../../context/service'
@@ -16,6 +16,8 @@ import LeftBlock from './components/left-block'
 import RightBlock from './components/right-block'
 
 import style from './index.module.scss'
+import { VipMealType } from '../../../person-pay-modal/components/controller'
+import { isCN } from '@flyele-nx/i18n'
 
 interface Iprops {
   memberList: IFlyeleAvatarItem[]
@@ -51,6 +53,49 @@ const TeamVip = (props: Iprops) => {
   const service = useCreation(() => {
     return new SelectMemberService()
   }, [])
+  const [orderId, setOrderId] = useState('')
+
+  const getOrder = useCallback(async () => {
+    console.log('get order')
+
+    if (!userInfo) return null
+
+    const params = {
+      amount: userInfo.length,
+      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
+      good_id: payInfo?.id || 0,
+      // good_id: 8,
+      origin_route: 'PC客户端',
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length,
+      // total_price: 1,
+      users_id: userInfo.map((item) => item.userId),
+      workspace_id: spaceId,
+      indent_member_type: VipMealType.TEAM
+    }
+
+    const _ = await paymentApi.createOrder(params)
+
+    return {
+      ..._.data,
+      total_price:
+        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
+        userInfo.length
+    }
+  }, [payInfo, userInfo, spaceId])
+
+  useEffect(() => {
+    if (isCN) return
+
+    getOrder().then((res) => {
+      if (!res) return
+
+      console.log('trading', res)
+      const { out_trade_no } = res.data
+      setOrderId(out_trade_no)
+    })
+  }, [getOrder])
 
   useEffect(() => {
     service.addListener((ev) => {
@@ -88,11 +133,13 @@ const TeamVip = (props: Iprops) => {
             showMsg={showMsg}
             goProtocol={goProtocol}
             mineInfo={memberList.filter((item) => item.userId === mineId)[0]}
+            orderId={orderId}
           />
         </div>
         {/* 支付弹窗 */}
         {showPay && (
           <PayQrCode
+            getOrder={getOrder}
             payInfo={payInfo}
             spaceId={spaceId}
             senConfirm={senConfirm}

@@ -21,7 +21,6 @@ import { IActiveGoods } from '@flyele-nx/api'
 import { paymentApi } from '@flyele-nx/service'
 import { regFenToYuan } from '../../utils'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
-import { VipMealType } from '../../../person-pay-modal/components/controller'
 
 const PayQrCode = ({
   payInfo,
@@ -31,7 +30,8 @@ const PayQrCode = ({
   isPaySuccess,
   onClose,
   goProtocol,
-  domain
+  domain,
+  getOrder
 }: {
   payInfo?: IActiveGoods
   userInfo: IFlyeleAvatarItem[]
@@ -41,6 +41,7 @@ const PayQrCode = ({
   senConfirm?: () => void
   onClose?: () => void
   goProtocol: () => void
+  getOrder: () => Promise<any>
 }) => {
   const service = useContext(SelectMemberContext)
   // const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -48,38 +49,15 @@ const PayQrCode = ({
 
   //获取二维码
   const qrCodeFunction = useMemoizedFn(async () => {
-    const params = {
-      amount: userInfo.length,
-      coupon_id: payInfo?.price ? payInfo?.coupon_id : 0,
-      good_id: payInfo?.id || 0,
-      // good_id: 8,
-      origin_route: 'PC客户端',
-      total_price:
-        ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
-        userInfo.length,
-      // total_price: 1,
-      users_id: userInfo.map((item) => item.userId),
-      workspace_id: spaceId,
-      indent_member_type: VipMealType.TEAM
-    }
-    try {
-      paymentApi.createOrder(params).then(async (_) => {
-        const a = {
-          ..._.data,
-          total_price:
-            ((payInfo?.now_price || 0) - (payInfo?.price || 0) || 0) *
-            userInfo.length
-        }
-        const b = JSON.stringify(a)
-        const res = await QRCode.toDataURL(
-          `${domain}/payDetail?params=${b}&&token=${paymentApi.getToken()}`
-        )
-        setQrCode(res)
-      })
-    } catch {
-      console.log('00')
-    }
+    const a = await getOrder()
+
+    const b = JSON.stringify(a)
+    const res = await QRCode.toDataURL(
+      `${domain}/payDetail?params=${b}&&token=${paymentApi.getToken()}`
+    )
+    setQrCode(res)
   })
+
   useEffect(() => {
     qrCodeFunction()
     senConfirm && senConfirm()

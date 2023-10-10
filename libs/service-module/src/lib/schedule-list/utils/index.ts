@@ -6,7 +6,7 @@ import { getNowRepeatData, isAlwaysRepeat } from './loop/loopMatter'
 import { loopStuff } from './loop/loopStuff'
 import { useScheduleStore, zustandUtils } from '@flyele-nx/global-processor'
 import { LOOP_MATTER_LABEL } from '@flyele-nx/constant'
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import { getEnFormat } from '@flyele-nx/utils'
 
 const { resetState, getDiffKeys, getKey, getKeyOfList, getSortedSchedule } =
@@ -158,6 +158,14 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
   return duringTask || futureStart || futureEnd
 }
 
+/**
+ * 中英文翻译转化
+ * 截止
+ */
+const transitionDueAt = (dateStr: string, needSpace?: boolean) => {
+  return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due at ${dateStr}`
+}
+
 const getRepeatTxt = async (task?: IScheduleTask) => {
   const _obj = {
     t_l: '',
@@ -174,16 +182,16 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
     if (isAlwaysRepeat(end_repeat_at || 0)) {
       _obj.t_l += `、${I18N.common.forever}`
     } else {
-      const YYYY =
-        dayjs.unix(end_repeat_at || 0).format('YYYY') !== dayjs().format('YYYY')
-      const M_DD = getEnFormat(dayjs.unix(end_repeat_at || 0), 'M月DD日', '')
+      const time = dayjs.unix(end_repeat_at || 0)
+      const YYYY = time.format('YYYY') !== dayjs().format('YYYY')
+      const M_DD = getEnFormat(time, 'M月DD日', 'MMM D')
 
-      _obj.t_l += `、${
-        YYYY ? dayjs.unix(end_repeat_at || 0).format('YYYY年') : ''
-      }${M_DD}截止`
+      const cnStr = `${YYYY ? time.format('YYYY年') : ''}${M_DD}`
+      const enStr = `${M_DD}${YYYY ? time.format(', YYYY') : ''}`
+      _obj.t_l += `、${transitionDueAt(isCN ? cnStr : enStr)}`
     }
 
-    _obj.t_r = `已循环（${
+    _obj.t_r = `${isCN ? '已循环' : 'Repeat:'}（${
       cycle || getNowRepeatData(task)?.cycle || 0
     }/${await loopStuff.getRepeatTotal(task)}）`
   }

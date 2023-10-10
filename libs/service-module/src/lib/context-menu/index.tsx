@@ -9,6 +9,7 @@ import { useClickAway, useMemoizedFn } from 'ahooks'
 import styles from './index.module.scss'
 import cs from 'classnames'
 import { IAction, IContextMenuRef, IShowMenuOptions } from './types'
+import { isCN } from '@flyele-nx/i18n'
 
 const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
   props,
@@ -85,6 +86,7 @@ const _ContextMenu: ForwardRefRenderFunction<IContextMenuRef> = (
 
   const menuPosition = useMemo(() => {
     return {
+      width: isCN ? '120px' : '138px',
       left: x + 10,
       top: y + 10
     }

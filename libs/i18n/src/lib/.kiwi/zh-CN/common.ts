@@ -181,6 +181,7 @@ export default {
   addTask: '创建',
   prohibit_external_member: '外部成员不可进行该操作',
   create_detail: '详细创建',
+  create_detail2: '详细创建',
   mind_map_create: '脉络图创建',
   pdca_tips: '以任务为核心，更好的支撑团队任务管理的工具',
   pdca: '管理（PDCA)',
@@ -2439,6 +2440,5 @@ export default {
   pleaseFillInTheProject: '请填写项目名称',
   upToLetters: '项目名称长度不能超过{val1}个字符',
   selectAProject: '请选择项目',
-  checkSpaceRightsByClick: '点击查看空间权益',
-  spaceVersion: '空间版本'
+  checkSpaceRightsByClick: '点击查看空间权益'
 }

@@ -27,7 +27,7 @@ export default {
   individual: '2',
   numberOfTemplates: 'Template',
   dataReport: 'Team report(Coming soon)',
-  withinSpaceCapacity: '空间容量=内部成员中团队会员数量*10G',
+  withinSpaceCapacity: 'Storage = Member count * 10G',
   numberOfPeopleG: 'Members*10G',
   spaceStorage: 'Team storage',
   individual2: '500',
@@ -36,10 +36,10 @@ export default {
   itemsWithinTheProject: 'Tasks in one project',
   individual4: '20',
   withinASingleSpace: 'Project',
-  externalMembersCan: '外部成员可提供有限协作能力，无需付费即可参与事项',
+  externalMembersCan:
+    'Guest can be assigned tasks without entering Teamspace/project',
   unlimitedWithoutMeeting: 'Unlimited，No membership required',
-  toObtainABlank:
-    '如需获得空间中所有付费服务，请开通团队会员；只有团队会员才能加入专业版空间、使用高级功能。',
+  toObtainABlank: 'Only Business member can access Pro teamspace',
   infiniteTeamOnly: 'Unlimited，Members require Business plan',
   peopleDoNotNeedMembers: 'Up to 20，No membership required',
   createInfinitePlus: 'Create and join unlimited',
@@ -57,7 +57,8 @@ export default {
   onlySupportsViewing2: 'View',
   eventContextMap: 'Task mind map',
   monthlyViewPendant: 'Calendar widget（PC）',
-  membersCanQuickly: '会员可快速制作事项模版，规范事项工作流。',
+  membersCanQuickly:
+    'Commonly used information can be saved as a template, which is available for Premium',
   personalTemplateLibrary: 'Personal template center',
   nonDistributableItems: '20 without add participants',
   personalRelationshipView: 'Personal Relation map',
@@ -125,5 +126,6 @@ export default {
   layerByLayerDecomposition: 'Decompose & Align',
   visualDisplayGroup:
     "Visually showcase the team's primary goal, covering the implementation process of the OKR methodology, ensuring clear responsibilities throughout the team",
-  okrDevelopment: 'Establishing team objectives using OKR'
+  okrDevelopment: 'Establishing team objectives using OKR',
+  spaceVersion: '空间版本'
 }

@@ -7,7 +7,7 @@ export const SpaceEqualComparison = () => {
   return (
     <SpaceComparison
       header={[
-        I18N.common.spaceVersion,
+        I18N.officialWebsite.spaceVersion,
         I18N.common.free_teamspace,
         I18N.common.pro_teamspace
       ]}

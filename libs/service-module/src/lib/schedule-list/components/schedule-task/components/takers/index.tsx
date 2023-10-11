@@ -252,7 +252,6 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     }
   })
 
-  // 进入编辑状态，因为父级组件监听了鼠标右键，需要阻止冒泡
   const editTakers = useMemoizedFn(async () => {
     /**
      * 如果存在右键菜单，先把菜单关闭了
@@ -260,6 +259,15 @@ export const Takers: React.FC<IPROPTakers> = (props) => {
     const contextMenuVisible = contextMenuTool.getVisible()
     if (contextMenuVisible) {
       contextMenuTool.close()
+      return false
+    }
+    /**
+     * 如果存在其他协作人列表菜单，先把其他关闭了
+     * 通过模拟点击 body 实现触发popover的 clickAway
+     */
+    const otherMenuVisible = document.getElementById('removeSimpleMemberList')
+    if (otherMenuVisible) {
+      document.body.click()
       return false
     }
 

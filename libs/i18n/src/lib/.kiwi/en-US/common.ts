@@ -182,6 +182,7 @@ export default {
   addTask: '+Task',
   prohibit_external_member: 'Unavailable for guest',
   create_detail: 'Add new task',
+  create_detail2: 'Detail',
   mind_map_create: 'Add by Mind map',
   pdca_tips:
     'This is a task-focused tool to better support team task management',
@@ -1461,7 +1462,6 @@ export default {
   yesterdayWord: 'Yesterday',
   rightInConversation:
     'You can highlight a message by right click message and ',
-  select: ' "point"',
   writeKeyPoints: 'Add point',
   cancelFocus: 'Remove point',
   cancelKeyPoints: 'Remove success',
@@ -2517,5 +2517,6 @@ export default {
   projectCreatedAs: 'Create success',
   pleaseFillInTheProject: 'Write the project name',
   upToLetters: 'Up to {val1} letters',
-  selectAProject: 'Choose project'
+  selectAProject: 'Choose project',
+  checkSpaceRightsByClick: 'See more teamspace feature'
 }

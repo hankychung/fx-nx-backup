@@ -7,7 +7,7 @@ import { ReactComponent as FreeSpace } from '../../../../assets/introduction/fre
 import { ReactComponent as FreeSpaceEN } from '../../../../assets/introduction/free_space_EN.svg'
 import { ReactComponent as ProfessionalSpace } from '../../../../assets/introduction/professional_space.svg'
 import { ReactComponent as ProfessionalSpaceEN } from '../../../../assets/introduction/professional_space_EN.svg'
-import { isCN } from '@flyele-nx/i18n'
+import { isCN, I18N } from '@flyele-nx/i18n'
 
 interface IProps {
   info: IInfoType
@@ -51,7 +51,9 @@ export const IntroductionBox = ({
     if (!item.isDiyRender) return
     return item.isDiyRender === 'professional_space' ? (
       <div className={styles.space_division}>
-        <div className={styles.professionnal_capacity}>专业空间能力</div>
+        <div className={styles.professionnal_capacity}>
+          {I18N.common.proTeamspaceFeatures}
+        </div>
         <img src={divisionIcon} alt="" />
       </div>
     ) : (
@@ -84,7 +86,7 @@ export const IntroductionBox = ({
               moneyText
             ) : (
               <>
-                <span className={styles.smallText}>¥ </span>
+                <span className={styles.smallText}>{isCN ? '¥ ' : '$ '}</span>
                 {money}
                 {unit && (
                   <span className={styles.smallText}>{` / ${unit}`}</span>
@@ -109,7 +111,7 @@ export const IntroductionBox = ({
         </div>
         {key === 'personal' && (
           <div className={styles.personTask} style={{ width: '192px' }}>
-            仅针对&nbsp;个人任务
+            {isCN ? '仅针对 个人任务' : 'For personal tasks'}
           </div>
         )}
         <div className={styles.listBox}>

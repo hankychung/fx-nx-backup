@@ -160,10 +160,10 @@ const _StatusBox: FC<IProps> = (props) => {
           timer: ANIMATION_DURATION
         })
 
-        changeStatus?.()
-
         setUpdating(false)
       }
+
+      changeStatus?.()
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 

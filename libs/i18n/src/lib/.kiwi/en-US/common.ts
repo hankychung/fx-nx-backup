@@ -1461,7 +1461,6 @@ export default {
   yesterdayWord: 'Yesterday',
   rightInConversation:
     'You can highlight a message by right click message and ',
-  select: ' "point"',
   writeKeyPoints: 'Add point',
   cancelFocus: 'Remove point',
   cancelKeyPoints: 'Remove success',
@@ -2517,5 +2516,7 @@ export default {
   projectCreatedAs: 'Create success',
   pleaseFillInTheProject: 'Write the project name',
   upToLetters: 'Up to {val1} letters',
-  selectAProject: 'Choose project'
+  selectAProject: 'Choose project',
+  checkSpaceRightsByClick: 'See more teamspace feature',
+  spaceVersion: '空间版本'
 }

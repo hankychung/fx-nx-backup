@@ -2438,5 +2438,7 @@ export default {
   projectCreatedAs: '项目创建成功',
   pleaseFillInTheProject: '请填写项目名称',
   upToLetters: '项目名称长度不能超过{val1}个字符',
-  selectAProject: '请选择项目'
+  selectAProject: '请选择项目',
+  checkSpaceRightsByClick: '点击查看空间权益',
+  spaceVersion: '空间版本'
 }

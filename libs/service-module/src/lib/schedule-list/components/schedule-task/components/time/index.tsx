@@ -138,15 +138,7 @@ export const Time: React.FC<IPROPTime> = ({
   }, [isRemind, task])
 
   const { txt, delayTxt } = useMemo(() => {
-    // const pathnames = history.location.pathname.split('/')
-
-    // const isTeamSchedule = pathnames.includes('team_schedule')
     const isTeamSchedule = false
-
-    // const isProjectPage =
-    //   pathnames.includes('project') && pathnames.includes('detail')
-
-    // const isGroup = location.href.includes('isGroup=1')
 
     // 是否在项目分组页面里
     // 是否在成员日程 并且 该task是未完成的

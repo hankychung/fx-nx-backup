@@ -68,9 +68,16 @@ const transitionStartAt = (dateStr: string, needSpace?: boolean) => {
 /**
  * 中英文翻译转化
  * 截止
+ * isTime at 用于时间 on 用于日期
  */
-const transitionDueAt = (dateStr: string, needSpace?: boolean) => {
-  return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due at ${dateStr}`
+const transitionDueAt = (
+  dateStr: string,
+  needSpace?: boolean,
+  isTime?: boolean
+) => {
+  return isCN
+    ? `${dateStr}${needSpace ? ' ' : ''}截止`
+    : `Due ${isTime ? 'at' : 'on'} ${dateStr}`
 }
 
 const formatDate = (n: number) => getEnFormat(dayjs.unix(n), 'M月D日', 'MMM D')
@@ -168,14 +175,6 @@ const dateRange = (
       return I18N.common.todayWord
     }
 
-    // if (pos === 'start' && !isStartFull) {
-    //   return `${txt} ${formatTime(s)}`
-    // }
-
-    // if (pos === 'end' && !isEndFull) {
-    //   return `${txt} ${formatTime(e)}`
-    // }
-
     return txt
   }
 
@@ -187,7 +186,7 @@ const dateRange = (
       )}`
     }
     return `${getTxt(
-      start.format(isCN ? 'M月D日' : 'MMM D'),
+      getEnFormat(start, 'M月D日', 'MMM D'),
       'start'
     )} - ${getTxt(getEnFormat(end, 'D日', 'D'), 'end')}`
   }
@@ -345,7 +344,7 @@ export const getDate_validity_low_date = (
   }
   // 04 仅，结束，非全天
   if (!start_time && end_time) {
-    output += `${isCN ? '' : 'Due at '}`
+    output += `${isCN ? '' : 'Due on '}`
     output += secondStr
     output += ' '
     output += dayjs.unix(end_time).format(isCN ? 'HH:mm' : 'h:mm A')
@@ -630,7 +629,11 @@ export const getScheduleDate = ({
                       isExecute ? 'Start at' : 'Start at'
                     } ${formatTime(startTime)}`
                 : startTime === 0 && isTeamSchedule
-                ? `${range} ${transitionDueAt(formatTime(endTime))}`
+                ? `${range} ${transitionDueAt(
+                    formatTime(endTime),
+                    false,
+                    true
+                  )}`
                 : range,
               delayTxt: delayStart() ? I18N.common.delayedStart : ''
             }
@@ -660,7 +663,10 @@ export const getScheduleDate = ({
           () => startTimeDj.isSame(selectDate, 'date'),
           () => `${transitionStartAt(`${formatTime(startTime)}`, true)}`
         ],
-        [() => true, () => `${transitionDueAt(`${formatTime(endTime)}`, true)}`]
+        [
+          () => true,
+          () => `${transitionDueAt(`${formatTime(endTime)}`, true, true)}`
+        ]
       ])
 
       return {

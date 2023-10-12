@@ -105,6 +105,7 @@ const RemoveSimpleMemberListPopper = forwardRef<
 
   return (
     <Popover
+      id="removeSimpleMemberList"
       arrow={false}
       placement="bottom"
       trigger="click"
@@ -118,8 +119,9 @@ const RemoveSimpleMemberListPopper = forwardRef<
           handleOpenChange(value)
         }
       }}
-      zIndex={10}
+      zIndex={500}
       autoAdjustOverflow={true}
+      destroyTooltipOnHide={true}
       overlayInnerStyle={{
         padding: 0
       }}

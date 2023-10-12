@@ -185,7 +185,7 @@ class Userc {
 
   async OverseasLogin(params: IOverseasLogin) {
     return await service.post({
-      url: '/auth/haiwaibanyouxiangdenglujiekou',
+      url: `${this.prefix}/auth/haiwaibanyouxiangdenglujiekou`,
       data: params
     })
   }
@@ -194,7 +194,7 @@ class Userc {
 
   async OverseasCreateAccount(params: IOverseasCreateAccount) {
     return await service.post({
-      url: '/auth/haiwaibanyouxiangzhucejiekou',
+      url: `${this.prefix}/auth/haiwaibanyouxiangzhucejiekou`,
       data: params
     })
   }
@@ -202,7 +202,7 @@ class Userc {
 
   async OverseasGetCode(params: IOverseasGetCode) {
     return await service.post({
-      url: '/auth/haiwaibanyouxiangfasongyoujianjiekou',
+      url: `${this.prefix}/auth/haiwaibanyouxiangfasongyoujianjiekou`,
       data: params
     })
   }

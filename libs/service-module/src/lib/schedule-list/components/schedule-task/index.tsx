@@ -312,7 +312,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         )}
 
-        {!isSimple && !isTimeLine && (
+        {!isSimple && !isTimeLine && data.flow_step_id && (
           <Workflow
             taskId={taskKey}
             opacity={opacity}

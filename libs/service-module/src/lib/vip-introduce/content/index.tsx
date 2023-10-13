@@ -3,7 +3,9 @@ import { ReactComponent as VectorIcon } from '../../../assets/vip-introduce/vect
 import { ReactComponent as ArrowIcon } from '../../../assets/vip-introduce/arrow.svg'
 import { ReactComponent as SelectIcon } from '../../../assets/introduction/select.svg'
 import { ReactComponent as FreeSpace } from '../../../assets/introduction/free_space.svg'
+import { ReactComponent as FreeSpaceEN } from '../../../assets/introduction/free_space_EN.svg'
 import { ReactComponent as ProfessionalSpace } from '../../../assets/introduction/professional_space.svg'
+import { ReactComponent as ProfessionalSpaceEN } from '../../../assets/introduction/professional_space_EN.svg'
 import divisionIcon from '../../../assets/introduction/division.svg'
 
 import { Button } from 'antd'
@@ -14,8 +16,7 @@ import {
 } from './packages_const'
 import { IInfoType, IPower, VipIntroduceContentProps } from '../types'
 import { FlyTooltip } from '@flyele/flyele-components'
-import { globalInfoHandler } from '@flyele-nx/zustand-handler'
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 
 export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
   const {
@@ -42,7 +43,6 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       ''
     )
   }
-  const isCN = globalInfoHandler.langIsCn()
 
   const dataList = isCN ? memberPowerStaticData : memberPowerStaticDataEN
 
@@ -52,13 +52,21 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
       case 'free_space':
         return (
           <div className={css.space_free_professional}>
-            <FreeSpace onClick={equitySpaceClick} />
+            {isCN ? (
+              <FreeSpace onClick={equitySpaceClick} />
+            ) : (
+              <FreeSpaceEN onClick={equitySpaceClick} />
+            )}
           </div>
         )
       case 'professional_space':
         return (
           <div className={css.space_free_professional}>
-            <ProfessionalSpace onClick={equitySpaceClick} />
+            {isCN ? (
+              <ProfessionalSpace onClick={equitySpaceClick} />
+            ) : (
+              <ProfessionalSpaceEN onClick={equitySpaceClick} />
+            )}
           </div>
         )
       default:
@@ -153,7 +161,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
               <div className={css.content}>
                 {item.key === 'personal' && (
                   <div className={css.personTask} style={{ width: '192px' }}>
-                    仅针对&nbsp;个人任务
+                    {isCN ? '仅针对 个人任务' : 'For personal tasks'}
                   </div>
                 )}
                 {item.powerList.map((power, index) => (
@@ -174,7 +182,7 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                         {power.title}
                       </div>
                       <FlyTooltip
-                        text="点击查看空间权益"
+                        text={I18N.common.checkSpaceRightsByClick}
                         trigger="hover"
                         zIndex={1003}
                       >

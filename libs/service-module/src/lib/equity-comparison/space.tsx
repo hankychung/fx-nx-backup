@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React from 'react'
 import { SpaceComparison } from './components/equal-comparison'
 import { spaceEqualComparisonData } from '@flyele-nx/constant'
@@ -5,12 +6,15 @@ import { spaceEqualComparisonData } from '@flyele-nx/constant'
 export const SpaceEqualComparison = () => {
   return (
     <SpaceComparison
-      // title="空间权益对比"
-      header={['空间版本', '免费空间', '专业空间']}
+      header={[
+        I18N.officialWebsite.spaceVersion,
+        I18N.common.free_teamspace,
+        I18N.common.pro_teamspace
+      ]}
       desc={[
         ' ',
-        '支持20人内的团队简单使用~',
-        '无限人数，更专业更全面的团队权益'
+        I18N.common.withinTheSupportGroup,
+        I18N.common.unlimitedNumberOfPeople
       ]}
       isSpace={true}
       listObj={spaceEqualComparisonData}

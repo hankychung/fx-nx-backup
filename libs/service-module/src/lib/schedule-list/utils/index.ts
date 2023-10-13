@@ -162,8 +162,8 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
  * 中英文翻译转化
  * 截止
  */
-const transitionDueAt = (dateStr: string, needSpace?: boolean) => {
-  return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due at ${dateStr}`
+const transitionDueOn = (dateStr: string, needSpace?: boolean) => {
+  return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due on ${dateStr}`
 }
 
 const getRepeatTxt = async (task?: IScheduleTask) => {
@@ -188,7 +188,7 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
 
       const cnStr = `${YYYY ? time.format('YYYY年') : ''}${M_DD}`
       const enStr = `${M_DD}${YYYY ? time.format(', YYYY') : ''}`
-      _obj.t_l += `、${transitionDueAt(isCN ? cnStr : enStr)}`
+      _obj.t_l += `、${transitionDueOn(isCN ? cnStr : enStr)}`
     }
 
     _obj.t_r = `${isCN ? '已循环' : 'Repeat:'}（${

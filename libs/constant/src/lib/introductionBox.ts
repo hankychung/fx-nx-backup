@@ -298,8 +298,8 @@ export const memberPowerStaticDataEn: IInfoType[] = [
     btnTextColor: '#FFFFFF',
     btnBgColor: 'linear-gradient(270.34deg, #FFB85E 2.92%, #FFD075 97.6%)',
     btnBorderColor: 'none',
-    money: 12,
-    unit: 'month',
+    money: 48,
+    unit: 'year',
     powerList: [
       {
         title: 'All Free features',
@@ -364,7 +364,7 @@ export const memberPowerStaticDataEn: IInfoType[] = [
     btnTextColor: '#fff',
     btnBgColor: 'linear-gradient(90deg, #7B5EEF 0%, #6248ED 100%)',
     btnBorderColor: 'none',
-    money: 298,
+    money: 84,
     unit: 'member / year',
     powerList: [
       {

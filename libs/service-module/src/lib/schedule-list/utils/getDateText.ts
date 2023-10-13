@@ -2,7 +2,7 @@ import { I18N, isCN } from '@flyele-nx/i18n'
 import dayjs, { Dayjs } from 'dayjs'
 import { IScheduleTask, Taker, RepeatList } from '@flyele-nx/types'
 import { MatterType } from '@flyele-nx/constant'
-import { getEnFormat } from '@flyele-nx/utils'
+import { getEnFormat, convertToOrdinal } from '@flyele-nx/utils'
 
 export type ITimeMatterSectionType = {
   start_time?: number // 开始时间
@@ -444,18 +444,33 @@ export const getScheduleDate = ({
 
         const txt =
           matterType === MatterType.calendar
-            ? `${formatTime(finishTime, isTeamSchedule)} ${I18N.common.ended}`
+            ? `${isCN ? '' : `Ended at `}${formatTime(
+                finishTime,
+                isTeamSchedule
+              )} ${isCN ? I18N.common.ended : ''}`
             : item?.repeat_type && item?.repeat_type !== 0
-            ? `${formatTime(finishTime, isTeamSchedule)} 完成所有循环`
-            : `${formatTime(finishTime, isTeamSchedule)} ${
-                I18N.common.completed
+            ? `${formatTime(finishTime, isTeamSchedule)} ${
+                I18N.common.completedWholeRepeat
               }`
+            : `${isCN ? '' : `Completed at `}${formatTime(
+                finishTime,
+                isTeamSchedule
+              )} ${isCN ? I18N.common.completed : ''}`
         const delayDays = Math.floor((finishTime - endTime) / (60 * 60 * 24))
 
         return {
           txt: cycle
-            ? `${formatTime(finishTime, isTeamSchedule)} 完成第${cycle}次循环`
-            : `${txt}${delayDays > 0 && endTime ? ` 延期${delayDays}天` : ''}`
+            ? `${formatTime(finishTime, isTeamSchedule)} ${I18N.template?.(
+                I18N.common.completedXRepeat,
+                { val1: convertToOrdinal(cycle) }
+              )}`
+            : `${txt}${
+                delayDays > 0 && endTime
+                  ? ` ${I18N.template?.(I18N.common.delayXDays, {
+                      val1: delayDays
+                    })}`
+                  : ''
+              }`
         }
       }
 

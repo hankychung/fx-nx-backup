@@ -2449,5 +2449,8 @@ export default {
   setAsNewForm: '设为新窗体',
   mergeWithToday: '与今日合并',
   hangerSetupMenu: '挂件设置菜单',
-  transparentMoldForHangingParts: '挂件透明模式'
+  transparentMoldForHangingParts: '挂件透明模式',
+  completedWholeRepeat: '完成所有循环',
+  completedXRepeat: '完成第{val1}次循环',
+  delayXDays: '延期{val1}天'
 }

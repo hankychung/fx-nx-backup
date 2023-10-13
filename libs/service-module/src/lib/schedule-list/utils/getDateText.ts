@@ -560,12 +560,14 @@ export const getScheduleDate = ({
 
             // 无开始时间 / 选中天不是全天事项
             return {
-              txt: `${
-                isTeamSchedule ? `${formatDateWithYear(endTime)} ` : ''
-              }${formatTime(endTime)} 截止${
-                startTime ? ` (${dateRange(startTime, endTime)})` : ''
-              }`,
-              delayTxt: endTime < _curTime ? '已延期' : ''
+              txt: `${transitionDueAt(
+                `${
+                  isTeamSchedule ? `${formatDateWithYear(endTime)} ` : ''
+                }${formatTime(endTime)}`,
+                true,
+                true
+              )}${startTime ? ` (${dateRange(startTime, endTime)})` : ''}`,
+              delayTxt: endTime < _curTime ? I18N.common.delayed : ''
             }
           }
         ],

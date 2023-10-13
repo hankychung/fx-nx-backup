@@ -5,7 +5,8 @@ import {
   CSSProperties,
   PropsWithChildren,
   useRef,
-  MouseEvent
+  MouseEvent,
+  useEffect
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi } from '@flyele-nx/service'
@@ -130,6 +131,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     )
 
   const isHovering = useHover(domRef)
+
+  useEffect(() => {
+    console.log('check hovering domref', domRef)
+  }, [domRef])
 
   if (!data) {
     console.error('taskKey not found', taskKey, useScheduleStore.getState())

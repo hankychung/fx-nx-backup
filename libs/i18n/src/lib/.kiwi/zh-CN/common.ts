@@ -235,7 +235,6 @@ export default {
   start: '开始',
   next_day: '跨天',
   deadline: '截止',
-  all_day: '全天',
   wholeDay: '全天',
   rest: '休',
   work: '班',
@@ -265,6 +264,7 @@ export default {
   clear: '清空',
   unlimited: '不限',
   no_collaborators: '无协作人',
+  no_assignee: '无协作人',
   no_creator: '无创建人',
   no_responsible_person: '无责任人',
   loading2: '正在加载',
@@ -370,6 +370,7 @@ export default {
   show: '显示',
   hide: '隐藏',
   todayWord: '今天',
+  todayWord2: '今日',
   delayed: '已延期',
   cutOff: ' 截止',
   startUp: '启动',
@@ -598,6 +599,7 @@ export default {
   thisOperationRequires3:
     '该操作需要将【{val1}】模版添加到个人模版库，是否继续？',
   tasks2: '{val1}个你参与的事项',
+  tasksCreate: '{val1}个你创建的事项',
   youAreAboutTo: '你即将：',
   deleted: '已删除',
   completeEveryone: '完结（全部人）',
@@ -2440,5 +2442,12 @@ export default {
   pleaseFillInTheProject: '请填写项目名称',
   upToLetters: '项目名称长度不能超过{val1}个字符',
   selectAProject: '请选择项目',
-  checkSpaceRightsByClick: '点击查看空间权益'
+  checkSpaceRightsByClick: '点击查看空间权益',
+  shrinkThePendant: '缩小挂件',
+  fixedDeployment: '固定展开',
+  flyingItemDesktopHanging: '飞项桌面挂件',
+  setAsNewForm: '设为新窗体',
+  mergeWithToday: '与今日合并',
+  hangerSetupMenu: '挂件设置菜单',
+  transparentMoldForHangingParts: '挂件透明模式'
 }

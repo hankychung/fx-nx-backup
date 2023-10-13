@@ -179,7 +179,7 @@ export default {
   not_show_joined_space_tip:
     'as a guest. Please contact admin to change your role',
   create: 'Create',
-  addTask: '+Task',
+  addTask: '+ Task',
   prohibit_external_member: 'Unavailable for guest',
   create_detail: 'Add new task',
   create_detail2: 'Detail',
@@ -237,7 +237,6 @@ export default {
   start: 'start',
   next_day: 'Next day',
   deadline: 'Deadline',
-  all_day: 'All day',
   wholeDay: 'Whole day',
   rest: 'rest',
   work: 'work',
@@ -272,6 +271,7 @@ export default {
   clear: 'Clear',
   unlimited: 'All',
   no_collaborators: 'no collaborators',
+  no_assignee: 'No assignee',
   no_creator: 'no creator',
   no_responsible_person: 'no responsible person',
   loading2: 'Loading',
@@ -378,6 +378,7 @@ export default {
   show: 'Show',
   hide: 'Hide',
   todayWord: 'Today',
+  todayWord2: 'Today',
   delayed: 'Delay',
   cutOff: ' 截止',
   startUp: '启动',
@@ -615,6 +616,7 @@ export default {
   thisOperationRequires3:
     'The operation requires adding the "{val1}" template to the personal template center. Do you want to proceed？',
   tasks2: '{val1} tasks that you involved',
+  tasksCreate: '{val1} tasks that you created',
   youAreAboutTo: 'You will：',
   deleted: 'Deleted',
   completeEveryone: 'Finish(All assignees)',
@@ -2518,5 +2520,12 @@ export default {
   pleaseFillInTheProject: 'Write the project name',
   upToLetters: 'Up to {val1} letters',
   selectAProject: 'Choose project',
-  checkSpaceRightsByClick: 'See more teamspace feature'
+  checkSpaceRightsByClick: 'See more teamspace feature',
+  shrinkThePendant: 'Minimize widget',
+  fixedDeployment: 'Keep expanding',
+  flyingItemDesktopHanging: 'Flyele widget',
+  setAsNewForm: 'As a window',
+  mergeWithToday: 'Combine widget',
+  hangerSetupMenu: 'Setting',
+  transparentMoldForHangingParts: 'Transparency mode'
 }

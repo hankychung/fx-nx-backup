@@ -1,5 +1,4 @@
 import React, {
-  useEffect,
   useRef,
   forwardRef,
   useImperativeHandle,
@@ -7,7 +6,7 @@ import React, {
   useMemo
 } from 'react'
 import styles from './schedule-list.module.scss'
-import { useMemoizedFn } from 'ahooks'
+import { useMemoizedFn, useMount } from 'ahooks'
 import { ScheduleTask } from './components/schedule-task'
 import dayjs from 'dayjs'
 import { ListHandler } from './utils/listHandler'
@@ -62,7 +61,7 @@ const _ScheduleList: ForwardRefRenderFunction<
     return isFinished ? finishList : list
   }, [finishList, isFinished, list])
 
-  const reloaderId = useRef(date + isFinished + isBoard)
+  // const reloaderId = useRef(date + isFinished + isBoard)
 
   const fetchList = useMemoizedFn(async () => {
     if (loading) return undefined
@@ -103,15 +102,15 @@ const _ScheduleList: ForwardRefRenderFunction<
     }
   })
 
-  useEffect(() => {
-    const id = reloaderId.current
+  // useEffect(() => {
+  //   const id = reloaderId.current
 
-    ListHandler.collectReloader(id, reload)
+  //   ListHandler.collectReloader(id, reload)
 
-    return () => {
-      ListHandler.removeReloader(id)
-    }
-  }, [reload])
+  //   return () => {
+  //     ListHandler.removeReloader(id)
+  //   }
+  // }, [reload])
 
   useImperativeHandle(ref, () => {
     return {
@@ -119,13 +118,14 @@ const _ScheduleList: ForwardRefRenderFunction<
     }
   })
 
-  useEffect(() => {
-    if (isInit.current) {
-      isInit.current = false
-
-      reload()
+  useMount(() => {
+    // 周视图首次加载通过 reloadDates 批量拉取数据
+    if (scheduleType === 'WEEKLY') {
+      return
     }
-  }, [reload])
+
+    reload()
+  })
 
   return (
     <div

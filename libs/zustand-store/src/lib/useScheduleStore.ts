@@ -163,7 +163,7 @@ const useScheduleStore = create<IState & IMutation>((set) => {
 
       const dict: { [k: string]: ILocalTask } = {}
 
-      const { taskDict } = this
+      const { taskDict } = useScheduleStore.getState()
 
       arr.forEach((item) => {
         const { ref_task_id, repeat_id } = item

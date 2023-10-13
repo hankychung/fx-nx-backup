@@ -51,7 +51,7 @@ interface IProps {
   isVipWin?: boolean
 }
 
-const ANIMATION_DURATION = 950
+const ANIMATION_DURATION = 450
 
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus, isVipWin = false } = props

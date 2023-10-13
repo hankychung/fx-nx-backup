@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useMemo } from 'react'
 import { FlyBasePopper } from '@flyele/flyele-components'
 import { getQuadrantBeforeIcon } from './hook/useQuadrantBefore'
@@ -80,6 +80,7 @@ export const PriorityLevelPopper = (props: Props) => {
                 className={styles.item}
                 key={key}
                 onClick={() => changeLevel(level)}
+                style={{ width: isCN ? '130px' : '200px' }}
               >
                 <div className={styles.title}>
                   {getQuadrantBeforeIcon({ type: level })}

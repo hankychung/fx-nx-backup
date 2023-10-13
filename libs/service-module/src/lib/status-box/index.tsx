@@ -51,7 +51,7 @@ interface IProps {
   isVipWin?: boolean
 }
 
-const ANIMATION_DURATION = 950
+const ANIMATION_DURATION = 450
 
 const _StatusBox: FC<IProps> = (props) => {
   const { task, changeStatus, resetStatus, isVipWin = false } = props
@@ -78,8 +78,6 @@ const _StatusBox: FC<IProps> = (props) => {
   )
 
   const showCycle = useMemo(() => {
-    console.log('task', task)
-
     // 最后一次已完成的循环无循环id
     if (!task.repeat_id || task.finish_time) {
       return false
@@ -89,11 +87,6 @@ const _StatusBox: FC<IProps> = (props) => {
       task.cycle_date &&
       dayjs(task.cycle_date).isAfter(dayjs(Date.now()), 'day')
     ) {
-      console.log(
-        '111',
-        task.cycle_date,
-        dayjs(task.cycle_date).isAfter(dayjs(Date.now()), 'day')
-      )
       return true
     }
 
@@ -101,18 +94,9 @@ const _StatusBox: FC<IProps> = (props) => {
       (v) => v.repeat_id === task?.repeat_id
     )?.cycle_date
 
-    console.log('nowRepeat', nowRepeat)
-
     if (nowRepeat && dayjs(nowRepeat).isAfter(dayjs(Date.now()), 'day')) {
-      console.log('222', dayjs(nowRepeat).isAfter(dayjs(Date.now()), 'day'))
       return true
     }
-
-    console.log(
-      '!!task.repeat_type && !task.repeat_id',
-      !!task.repeat_type,
-      !task.repeat_id
-    )
 
     return !!task.repeat_type && !task.repeat_id
   }, [task])
@@ -176,10 +160,10 @@ const _StatusBox: FC<IProps> = (props) => {
           timer: ANIMATION_DURATION
         })
 
-        changeStatus?.()
-
         setUpdating(false)
       }
+
+      changeStatus?.()
 
       if (!task.dispatch_id) throw 'dispatch_id不存在'
 

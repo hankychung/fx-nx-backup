@@ -167,8 +167,24 @@ const _StatusBox: FC<IProps> = (props) => {
    * @param isBatch 是否批量完成
    */
   const handleComplete = async (isBatch?: boolean) => {
+    if (nonSelfExecution || notMyBusiness) {
+      if (nonSelfExecution ? !!task.complete_at : !!task.finish_time) {
+        globalNxController.showMsg({
+          msgType: '错误',
+          content: I18N.common.cannot_reopen_uninvolved
+        })
+      } else {
+        globalNxController.showMsg({
+          msgType: '错误',
+          content: I18N.common.cannot_complete_uninvolved
+        })
+      }
+      return
+    }
+
     changeStatus?.()
     setVisible(false)
+
     try {
       if (!task.finish_time) {
         setUpdating(true)
@@ -251,7 +267,7 @@ const _StatusBox: FC<IProps> = (props) => {
       [MatterType.matter, MatterType.todo].includes(matterType)
     ) {
       // 非我执行
-      if (nonSelfExecution || notMyBusiness)
+      if ((nonSelfExecution || notMyBusiness) && !task.finish_time)
         return <DisabledIcon onClick={handleClick} />
       // 完成动画
       if (updating)

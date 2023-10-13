@@ -2527,5 +2527,8 @@ export default {
   setAsNewForm: 'As a window',
   mergeWithToday: 'Combine widget',
   hangerSetupMenu: 'Setting',
-  transparentMoldForHangingParts: 'Transparency mode'
+  transparentMoldForHangingParts: 'Transparency mode',
+  completedWholeRepeat: 'Completed whole repeat',
+  completedXRepeat: 'Completed the {val1} repeat',
+  delayXDays: 'Delay {val1} days'
 }

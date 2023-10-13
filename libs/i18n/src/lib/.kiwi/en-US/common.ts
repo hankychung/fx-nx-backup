@@ -382,7 +382,7 @@ export default {
   delayed: 'Delay',
   cutOff: ' 截止',
   startUp: '启动',
-  delayedStart: '延期启动',
+  delayedStart: 'Delay',
   collaborativeMatters: 'Cooperative tasks',
   all_personal_task: 'Independent tasks',
   headerSettings: 'Column',

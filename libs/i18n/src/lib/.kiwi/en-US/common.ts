@@ -382,7 +382,7 @@ export default {
   delayed: 'Delay',
   cutOff: ' 截止',
   startUp: '启动',
-  delayedStart: '延期启动',
+  delayedStart: 'Delay',
   collaborativeMatters: 'Cooperative tasks',
   all_personal_task: 'Independent tasks',
   headerSettings: 'Column',
@@ -2527,5 +2527,8 @@ export default {
   setAsNewForm: 'As a window',
   mergeWithToday: 'Combine widget',
   hangerSetupMenu: 'Setting',
-  transparentMoldForHangingParts: 'Transparency mode'
+  transparentMoldForHangingParts: 'Transparency mode',
+  completedWholeRepeat: 'Completed whole repeat',
+  completedXRepeat: 'Completed the {val1} repeat',
+  delayXDays: 'Delay {val1} days'
 }

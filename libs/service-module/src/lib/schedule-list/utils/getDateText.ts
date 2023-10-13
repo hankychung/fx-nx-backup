@@ -318,7 +318,7 @@ export const getDate_validity_low_date = (
         ? I18N.common.todayWord
         : firstStr
     output += ' '
-    output += `(${I18N.common.all_day})`
+    output += `(${I18N.common.wholeDay})`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -468,10 +468,10 @@ export const getScheduleDate = ({
       ) {
         if (isTeamSchedule) {
           return {
-            txt: `${formatDateWithYear(startTime)}（${I18N.common.all_day}）`
+            txt: `${formatDateWithYear(startTime)}（${I18N.common.wholeDay}）`
           }
         }
-        return { txt: I18N.common.all_day }
+        return { txt: I18N.common.wholeDay }
       }
 
       // 未完成

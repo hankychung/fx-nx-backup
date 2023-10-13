@@ -444,12 +444,16 @@ export const getScheduleDate = ({
 
         const txt =
           matterType === MatterType.calendar
-            ? `${formatTime(finishTime, isTeamSchedule)} ${I18N.common.ended}`
+            ? `${isCN ? '' : `Ended at `}${formatTime(
+                finishTime,
+                isTeamSchedule
+              )} ${isCN ? I18N.common.ended : ''}`
             : item?.repeat_type && item?.repeat_type !== 0
             ? `${formatTime(finishTime, isTeamSchedule)} 完成所有循环`
-            : `${formatTime(finishTime, isTeamSchedule)} ${
-                I18N.common.completed
-              }`
+            : `${isCN ? '' : `Completed at `}${formatTime(
+                finishTime,
+                isTeamSchedule
+              )} ${isCN ? I18N.common.completed : ''}`
         const delayDays = Math.floor((finishTime - endTime) / (60 * 60 * 24))
 
         return {

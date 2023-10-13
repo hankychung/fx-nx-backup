@@ -22,6 +22,7 @@ import dayjs from 'dayjs'
 import { TaskHandler } from './taskHandler'
 import { TaskApi } from '@flyele-nx/service'
 import { Pub } from '@flyele-nx/constant'
+import { QueryType } from '@flyele-nx/sql-store'
 
 class ListHandler {
   // 完成事项
@@ -39,6 +40,59 @@ class ListHandler {
 
     // 将已完成事项插入完成列表
     this.insertFinishTasks(taskIds)
+  }
+
+  // TODO: 现只处理未完成事项
+  // 刷新所有周视图未完成事项
+  static async reloadDates(dates: string[]) {
+    let newTaskDict = {}
+
+    const repeatDictByDate: { [k: string]: IRepeatDict } = {}
+
+    const scheduleByDate: { [k: string]: string[] } = {}
+
+    const { batchUpdateTask } = useScheduleStore.getState()
+
+    for (const date of dates) {
+      const r = await globalNxController.getDayView({
+        day: date,
+        queryType: QueryType.participate
+      })
+
+      const list = r.data.list || []
+
+      const { repeatDict, dict } = batchUpdateTask(list, {
+        isFinished: false
+      })
+
+      newTaskDict = {
+        ...newTaskDict,
+        ...dict
+      }
+
+      repeatDictByDate[date] = repeatDict
+
+      scheduleByDate[date] = getSortedSchedule({ date, tasks: list })
+    }
+
+    useScheduleStore.setState(
+      produce((state: IState) => {
+        state.taskDict = {
+          ...state.taskDict,
+          ...newTaskDict
+        }
+
+        state.dateRepeatDict = {
+          ...state.dateRepeatDict,
+          ...repeatDictByDate
+        }
+
+        state.schedule = {
+          ...state.schedule,
+          ...scheduleByDate
+        }
+      })
+    )
   }
 
   // 重启事项

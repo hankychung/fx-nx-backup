@@ -1,4 +1,4 @@
-import {
+import React, {
   FC,
   memo,
   useMemo,
@@ -41,6 +41,7 @@ import {
   Enter_page_detail
 } from '@flyele-nx/constant'
 import { changeCompleteState } from '../../../status-box/utils'
+import { BuildRepeatIcon } from './components/time/components/build-repeat-icon'
 
 export interface IProps {
   taskKey: string
@@ -362,6 +363,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     text={data.title || ''}
                   />
                   <Follow isFollow={isFollow} />
+                  {isSimple && (
+                    <BuildRepeatIcon task={data} isDarkMode={isDarkMode} />
+                  )}
                 </div>
                 <div className={styles.headRight}>
                   <ScheduleType matterType={data.matter_type} />

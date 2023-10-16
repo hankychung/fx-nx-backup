@@ -2,7 +2,7 @@ import { I18N, isCN } from '@flyele-nx/i18n'
 import dayjs, { Dayjs } from 'dayjs'
 import { IScheduleTask, Taker, RepeatList } from '@flyele-nx/types'
 import { MatterType } from '@flyele-nx/constant'
-import { getEnFormat } from '@flyele-nx/utils'
+import { getEnFormat, convertToOrdinal } from '@flyele-nx/utils'
 
 export type ITimeMatterSectionType = {
   start_time?: number // 开始时间
@@ -68,9 +68,16 @@ const transitionStartAt = (dateStr: string, needSpace?: boolean) => {
 /**
  * 中英文翻译转化
  * 截止
+ * isTime at 用于时间 on 用于日期
  */
-const transitionDueAt = (dateStr: string, needSpace?: boolean) => {
-  return isCN ? `${dateStr}${needSpace ? ' ' : ''}截止` : `Due at ${dateStr}`
+const transitionDueAt = (
+  dateStr: string,
+  needSpace?: boolean,
+  isTime?: boolean
+) => {
+  return isCN
+    ? `${dateStr}${needSpace ? ' ' : ''}截止`
+    : `Due ${isTime ? 'at' : 'on'} ${dateStr}`
 }
 
 const formatDate = (n: number) => getEnFormat(dayjs.unix(n), 'M月D日', 'MMM D')
@@ -168,14 +175,6 @@ const dateRange = (
       return I18N.common.todayWord
     }
 
-    // if (pos === 'start' && !isStartFull) {
-    //   return `${txt} ${formatTime(s)}`
-    // }
-
-    // if (pos === 'end' && !isEndFull) {
-    //   return `${txt} ${formatTime(e)}`
-    // }
-
     return txt
   }
 
@@ -187,7 +186,7 @@ const dateRange = (
       )}`
     }
     return `${getTxt(
-      start.format(isCN ? 'M月D日' : 'MMM D'),
+      getEnFormat(start, 'M月D日', 'MMM D'),
       'start'
     )} - ${getTxt(getEnFormat(end, 'D日', 'D'), 'end')}`
   }
@@ -319,7 +318,7 @@ export const getDate_validity_low_date = (
         ? I18N.common.todayWord
         : firstStr
     output += ' '
-    output += `(${I18N.common.all_day})`
+    output += `(${I18N.common.wholeDay})`
     firstPartOutput = output
     return { output, delayTxt, firstPartOutput, secondPartOutput }
   }
@@ -345,7 +344,7 @@ export const getDate_validity_low_date = (
   }
   // 04 仅，结束，非全天
   if (!start_time && end_time) {
-    output += `${isCN ? '' : 'Due at '}`
+    output += `${isCN ? '' : 'Due on '}`
     output += secondStr
     output += ' '
     output += dayjs.unix(end_time).format(isCN ? 'HH:mm' : 'h:mm A')
@@ -445,18 +444,33 @@ export const getScheduleDate = ({
 
         const txt =
           matterType === MatterType.calendar
-            ? `${formatTime(finishTime, isTeamSchedule)} ${I18N.common.ended}`
+            ? `${isCN ? '' : `Ended at `}${formatTime(
+                finishTime,
+                isTeamSchedule
+              )} ${isCN ? I18N.common.ended : ''}`
             : item?.repeat_type && item?.repeat_type !== 0
-            ? `${formatTime(finishTime, isTeamSchedule)} 完成所有循环`
-            : `${formatTime(finishTime, isTeamSchedule)} ${
-                I18N.common.completed
+            ? `${formatTime(finishTime, isTeamSchedule)} ${
+                I18N.common.completedWholeRepeat
               }`
+            : `${isCN ? '' : `Completed at `}${formatTime(
+                finishTime,
+                isTeamSchedule
+              )} ${isCN ? I18N.common.completed : ''}`
         const delayDays = Math.floor((finishTime - endTime) / (60 * 60 * 24))
 
         return {
           txt: cycle
-            ? `${formatTime(finishTime, isTeamSchedule)} 完成第${cycle}次循环`
-            : `${txt}${delayDays > 0 && endTime ? ` 延期${delayDays}天` : ''}`
+            ? `${formatTime(finishTime, isTeamSchedule)} ${I18N.template?.(
+                I18N.common.completedXRepeat,
+                { val1: convertToOrdinal(cycle) }
+              )}`
+            : `${txt}${
+                delayDays > 0 && endTime
+                  ? ` ${I18N.template?.(I18N.common.delayXDays, {
+                      val1: delayDays
+                    })}`
+                  : ''
+              }`
         }
       }
 
@@ -469,10 +483,10 @@ export const getScheduleDate = ({
       ) {
         if (isTeamSchedule) {
           return {
-            txt: `${formatDateWithYear(startTime)}（${I18N.common.all_day}）`
+            txt: `${formatDateWithYear(startTime)}（${I18N.common.wholeDay}）`
           }
         }
-        return { txt: I18N.common.all_day }
+        return { txt: I18N.common.wholeDay }
       }
 
       // 未完成
@@ -546,12 +560,14 @@ export const getScheduleDate = ({
 
             // 无开始时间 / 选中天不是全天事项
             return {
-              txt: `${
-                isTeamSchedule ? `${formatDateWithYear(endTime)} ` : ''
-              }${formatTime(endTime)} 截止${
-                startTime ? ` (${dateRange(startTime, endTime)})` : ''
-              }`,
-              delayTxt: endTime < _curTime ? '已延期' : ''
+              txt: `${transitionDueAt(
+                `${
+                  isTeamSchedule ? `${formatDateWithYear(endTime)} ` : ''
+                }${formatTime(endTime)}`,
+                true,
+                true
+              )}${startTime ? ` (${dateRange(startTime, endTime)})` : ''}`,
+              delayTxt: endTime < _curTime ? I18N.common.delayed : ''
             }
           }
         ],
@@ -630,7 +646,11 @@ export const getScheduleDate = ({
                       isExecute ? 'Start at' : 'Start at'
                     } ${formatTime(startTime)}`
                 : startTime === 0 && isTeamSchedule
-                ? `${range} ${transitionDueAt(formatTime(endTime))}`
+                ? `${range} ${transitionDueAt(
+                    formatTime(endTime),
+                    false,
+                    true
+                  )}`
                 : range,
               delayTxt: delayStart() ? I18N.common.delayedStart : ''
             }
@@ -660,7 +680,10 @@ export const getScheduleDate = ({
           () => startTimeDj.isSame(selectDate, 'date'),
           () => `${transitionStartAt(`${formatTime(startTime)}`, true)}`
         ],
-        [() => true, () => `${transitionDueAt(`${formatTime(endTime)}`, true)}`]
+        [
+          () => true,
+          () => `${transitionDueAt(`${formatTime(endTime)}`, true, true)}`
+        ]
       ])
 
       return {

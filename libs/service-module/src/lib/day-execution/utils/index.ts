@@ -68,7 +68,7 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
     if (start_time_full_day === 2 && end_time_full_day === 2) {
       updateArr({
         time: 0,
-        timeTxt: I18N.common.all_day,
+        timeTxt: I18N.common.wholeDay,
         task: e
       })
       return
@@ -125,7 +125,7 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
         ) {
           updateArr({
             time: 0,
-            timeTxt: I18N.common.all_day,
+            timeTxt: I18N.common.wholeDay,
             task: e
           })
           return
@@ -157,20 +157,20 @@ export const disposalTodayList = (todayList: IScheduleTask[]) => {
    */
   temp.sort((a, b) => {
     if (
-      a.tTimeTxt === I18N.common.all_day &&
-      b.tTimeTxt !== I18N.common.all_day
+      a.tTimeTxt === I18N.common.wholeDay &&
+      b.tTimeTxt !== I18N.common.wholeDay
     ) {
       return 1
     }
     if (
-      a.tTimeTxt !== I18N.common.all_day &&
-      b.tTimeTxt === I18N.common.all_day
+      a.tTimeTxt !== I18N.common.wholeDay &&
+      b.tTimeTxt === I18N.common.wholeDay
     ) {
       return -1
     }
     if (
-      a.tTimeTxt === I18N.common.all_day &&
-      b.tTimeTxt === I18N.common.all_day
+      a.tTimeTxt === I18N.common.wholeDay &&
+      b.tTimeTxt === I18N.common.wholeDay
     ) {
       return 0
     }

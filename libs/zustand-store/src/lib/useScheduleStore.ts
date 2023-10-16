@@ -30,6 +30,21 @@ export interface IState {
   }
 }
 
+type BatchUpdateTask = (
+  tasks: ILocalTask[],
+  options?: {
+    isFinished?: boolean
+    compare?: boolean
+    doNotUpdateStore?: boolean
+  }
+) => {
+  keys: string[]
+  repeatDict: IRepeatDict
+  dict: {
+    [k: string]: ILocalTask
+  }
+}
+
 interface IMutation {
   updateList: (options: {
     date: string
@@ -37,13 +52,7 @@ interface IMutation {
     isInit?: boolean
     isFinished?: boolean
   }) => void
-  batchUpdateTask: (
-    tasks: ILocalTask[],
-    options?: { isFinished?: boolean; compare?: boolean }
-  ) => {
-    keys: string[]
-    repeatDict: IRepeatDict
-  }
+  batchUpdateTask: BatchUpdateTask
   updateExpandedDict: (info: {
     date: string
     taskId: string
@@ -150,45 +159,87 @@ const useScheduleStore = create<IState & IMutation>((set) => {
 
       const compare = options?.compare
 
-      set(
-        produce((state: IState) => {
-          const dict: { [k: string]: ILocalTask } = {}
+      const doNotUpdateStore = options?.doNotUpdateStore
 
-          const { taskDict } = state
+      const dict: { [k: string]: ILocalTask } = {}
 
-          arr.forEach((item) => {
-            const { ref_task_id, repeat_id } = item
-            if (repeat_id) {
-              const key = getKey(item)
+      const { taskDict } = useScheduleStore.getState()
 
-              repeatDict[ref_task_id] = item
+      arr.forEach((item) => {
+        const { ref_task_id, repeat_id } = item
+        if (repeat_id) {
+          const key = getKey(item)
 
-              if (!compare || !taskDict[key]) {
-                dict[key] = item
-              }
-            }
+          repeatDict[ref_task_id] = item
 
-            keys.push(getKeyOfList(item))
+          if (!compare || !taskDict[key]) {
+            dict[key] = item
+          }
+        }
 
-            if (isFinished && repeat_id) {
-              // do nothing
-              // 不写入纯ref_task_id字典
-            } else {
-              if (!compare || !taskDict[ref_task_id]) {
-                dict[ref_task_id] = item
-              }
+        keys.push(getKeyOfList(item))
+
+        if (isFinished && repeat_id) {
+          // do nothing
+          // 不写入纯ref_task_id字典
+        } else {
+          if (!compare || !taskDict[ref_task_id]) {
+            dict[ref_task_id] = item
+          }
+        }
+      })
+
+      if (!doNotUpdateStore) {
+        set(
+          produce((state: IState) => {
+            state.taskDict = {
+              ...state.taskDict,
+              ...dict
             }
           })
+        )
+      }
 
-          state.taskDict = {
-            ...state.taskDict,
-            ...dict
-          }
-        })
-      )
+      // set(
+      //   produce((state: IState) => {
+      //     const dict: { [k: string]: ILocalTask } = {}
 
-      return { keys, repeatDict }
+      //     const { taskDict } = state
+
+      //     arr.forEach((item) => {
+      //       const { ref_task_id, repeat_id } = item
+      //       if (repeat_id) {
+      //         const key = getKey(item)
+
+      //         repeatDict[ref_task_id] = item
+
+      //         if (!compare || !taskDict[key]) {
+      //           dict[key] = item
+      //         }
+      //       }
+
+      //       keys.push(getKeyOfList(item))
+
+      //       if (isFinished && repeat_id) {
+      //         // do nothing
+      //         // 不写入纯ref_task_id字典
+      //       } else {
+      //         if (!compare || !taskDict[ref_task_id]) {
+      //           dict[ref_task_id] = item
+      //         }
+      //       }
+      //     })
+
+      //     state.taskDict = {
+      //       ...state.taskDict,
+      //       ...dict
+      //     }
+      //   })
+      // )
+
+      return { keys, repeatDict, dict }
     },
+
     /**
      * 更新对应日期下的事项展开字典
      */

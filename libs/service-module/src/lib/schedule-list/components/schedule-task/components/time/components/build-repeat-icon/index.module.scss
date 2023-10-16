@@ -1,0 +1,20 @@
+.repeatDelayTotalBox {
+  display: flex;
+  width: 26px;
+  height: 13px;
+  background: rgba(255, 244, 240, 1);
+  border-radius: 6px;
+  color: rgba(255, 144, 110, 1);
+  font-size: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+}
+
+.repeatIcon {
+  margin-left: 6px;
+  width: 13px;
+  height: 13px;
+  display: flex;
+  flex: none;
+}

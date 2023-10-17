@@ -235,6 +235,14 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       return
     }
 
+    if (data.ref_task_id === 'FAKE_ID') {
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: '事项创建中，稍后再试'
+      })
+      return
+    }
+
     globalNxController.openTaskDetailWindow({
       task: data,
       enterPage: Enter_page_detail.日程列表

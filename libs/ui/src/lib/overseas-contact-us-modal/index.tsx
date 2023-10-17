@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'antd'
+import { CustomerServiceEmail } from '../customer-service-email'
 import styles from './index.module.scss'
-import { ContactUsIcon } from '@flyele-nx/icon'
 
 const _ContactUsModal = ({
   open,
@@ -15,17 +15,12 @@ const _ContactUsModal = ({
       title={null}
       footer={null}
       open={open}
-      width={213}
+      width={320}
       onCancel={onCancel}
+      closeIcon={false}
+      className={styles.modalClass}
     >
-      <div className={styles.header}>
-        <ContactUsIcon className={styles.logo} alt="contactUs" />
-        <div className={styles.title}>Contact us</div>
-      </div>
-      <div className={styles.content}>
-        you can contact us at the following email address
-      </div>
-      <div className={styles.email}>Flyele@flyele.net</div>
+      <CustomerServiceEmail onClose={onCancel} />
     </Modal>
   )
 }

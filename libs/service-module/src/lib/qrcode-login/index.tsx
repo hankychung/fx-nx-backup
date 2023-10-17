@@ -19,6 +19,7 @@ import cs from 'classnames'
 import { useMemoizedFn, useMount, useUnmount } from 'ahooks'
 import util from './utils'
 import style from './index.module.scss'
+import { isCN } from '@flyele-nx/i18n'
 
 interface Props {
   deviceParams: Omit<IDevice, 'device_id'>
@@ -73,8 +74,8 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
     const envHost = envStore.getHost()
     let url = `${envHost}/md/index.html?${params}`
 
-    if (envHost.indexOf('net') !== -1) {
-      url = `https://h5.flyele.net/index.html?${params}`
+    if (envHost.indexOf('net') !== -1 || envHost.indexOf('com') !== -1) {
+      url = `https://h5.flyele.${isCN ? 'net' : 'com'}/index.html?${params}`
     }
 
     console.log('url', url)

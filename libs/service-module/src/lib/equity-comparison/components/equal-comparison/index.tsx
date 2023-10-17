@@ -6,6 +6,7 @@ import cs from 'classnames'
 import { ReactComponent as SelectIcon } from '../../../../assets/introduction/select.svg'
 import { ReactComponent as CloseIcon } from '../../../../assets/introduction/close.svg'
 import equityComparison from '../../../../assets/introduction/equityComparison.png'
+import { isCN } from '@flyele-nx/i18n'
 
 import { Modal } from 'antd'
 
@@ -119,7 +120,10 @@ export const SpaceComparison = ({ title, header, desc, listObj }: IProps) => {
           className={cs(
             styles.tableRowSpace,
             styles.tableHeader,
-            styles.tableHeaderSpace
+            styles.tableHeaderSpace,
+            {
+              [styles.tableRowSpaceEN]: !isCN
+            }
           )}
         >
           {header.map((h, idx) => {
@@ -157,7 +161,9 @@ export const SpaceComparison = ({ title, header, desc, listObj }: IProps) => {
                 return (
                   <div
                     key={item.key}
-                    className={styles.tableRowSpace}
+                    className={cs(styles.tableRowSpace, {
+                      [styles.tableRowSpaceEN]: !isCN
+                    })}
                     style={{ backgroundColor: item.onclick ? '#F2F6FD' : '' }}
                   >
                     <div

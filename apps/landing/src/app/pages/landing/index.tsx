@@ -32,7 +32,7 @@ const Landing = () => {
             基于PDCA、四象限时间管理、目标管理法为职场人量身打造，适合时间管理、任务管理、工作管理的多种管理需求，最终实现效率提升、工作精进、成长晋升。
           </span>
           <div
-            className={classNames(styles.free_button_arrow)}
+            className={classNames(styles.mb_hide, styles.free_button_arrow)}
             style={{ marginTop: 40 }}
             onClick={() => {
               handleClick('下载使用-顶部')
@@ -56,7 +56,7 @@ const Landing = () => {
               飞项作为伴随职业人成长的平台非常强调“连接”，无论是团队任务还是个人待办，长期的目标或每日计划，都会汇集到你的个人工作管理面板，方便你管理自己与协作的所有事儿。
             </span>
             <div
-              className={classNames(styles.free_button_arrow)}
+              className={classNames(styles.mb_hide, styles.free_button_arrow)}
               style={{ marginTop: 20 }}
               onClick={() => {
                 handleClick('下载使用-今日面板')

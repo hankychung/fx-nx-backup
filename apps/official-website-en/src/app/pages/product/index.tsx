@@ -21,13 +21,15 @@ const UseButton = ({
   height,
   bgColor = '#30D6C5',
   marginTop,
-  marginBottom
+  marginBottom,
+  fontSize
 }: {
   width?: string
   height?: string
   bgColor?: string
   marginTop?: string
   marginBottom?: string
+  fontSize?: string
 }) => {
   const navigate = useNavigate()
 
@@ -43,7 +45,8 @@ const UseButton = ({
         height,
         backgroundColor: bgColor,
         marginTop: marginTop,
-        marginBottom: marginBottom
+        marginBottom: marginBottom,
+        fontSize: fontSize
       }}
       onClick={goToPage}
     >
@@ -169,90 +172,105 @@ export const ProductPage = () => {
           <div className={styles.headerDesc}>
             {I18N.officialWebsite.basedOnPdc}
           </div>
-          <UseButton width="270px" marginTop="90px" />
+          <UseButton width="270px" marginTop="50px" />
         </div>
       </div>
-      <div
-        className={styles.bgBox}
-        style={{
-          backgroundImage: `url(${commonUrl}pdca${isCN ? '' : '-en'}.png)`
-        }}
-      />
-      <div
-        className={cs(styles.bgBox, styles.scenarios)}
-        style={{
-          backgroundImage: `url(${commonUrl}scenarios${isCN ? '' : '-en'}.png)`
-        }}
-      >
-        <div className={styles.scenariosTitle}>
-          {I18N.officialWebsite.fourMajorWorkplaces}
-        </div>
-        <div className={styles.contentLeft}>
-          <List
-            title={I18N.officialWebsite.goalManagement}
-            list={scenarios}
-            btnColor="#7589FA"
-            rootClass={styles.scenariosList}
-          />
-        </div>
-      </div>
-      <div
-        className={styles.bgBox}
-        style={{
-          backgroundImage: `url(${commonUrl}project${isCN ? '' : '-en'}.png)`
-        }}
-      >
-        <List
-          title={I18N.officialWebsite.projectManagement}
-          list={project}
-          btnColor="#FE8596"
-          circleColor="#FE8596"
-          rootClass={styles.projectList}
+      <div className={styles.bigBgBox}>
+        <div
+          className={styles.bgBox}
+          style={{
+            backgroundImage: `url(${commonUrl}pdca${isCN ? '' : '-en'}.png)`
+          }}
         />
       </div>
-      <div
-        className={styles.bgBox}
-        style={{
-          backgroundImage: `url(${commonUrl}team${isCN ? '' : '-en'}.png)`
-        }}
-      >
-        <div className={styles.contentLeft}>
+      <div className={styles.bigBgBox}>
+        <div
+          className={cs(styles.bgBox, styles.scenarios)}
+          style={{
+            backgroundImage: `url(${commonUrl}scenarios${
+              isCN ? '' : '-en'
+            }.png)`
+          }}
+        >
+          <div className={styles.scenariosTitle}>
+            {I18N.officialWebsite.fourMajorWorkplaces}
+          </div>
+          <div className={styles.contentLeft}>
+            <List
+              title={I18N.officialWebsite.goalManagement}
+              list={scenarios}
+              btnColor="#7589FA"
+              rootClass={styles.scenariosList}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={styles.bigBgBox}>
+        <div
+          className={styles.bgBox}
+          style={{
+            backgroundImage: `url(${commonUrl}project${isCN ? '' : '-en'}.png)`
+          }}
+        >
           <List
-            title={I18N.officialWebsite.teamWorkManagement}
-            list={team}
-            btnColor="#5DD5FB"
-            circleColor="#5DD5FB"
-            rootClass={styles.teamList}
+            title={I18N.officialWebsite.projectManagement}
+            list={project}
+            btnColor="#FE8596"
+            circleColor="#FE8596"
+            rootClass={styles.projectList}
           />
         </div>
       </div>
-      <div
-        className={styles.bgBox}
-        style={{
-          backgroundImage: `url(${commonUrl}schedule${isCN ? '' : '-en'}.png)`
-        }}
-      >
-        <List
-          title={I18N.officialWebsite.personalScheduleManagement}
-          list={personal}
-          btnColor="#30D6C5"
-          circleColor="#30D6C5"
-          rootClass={styles.personalList}
-        />
+      <div className={styles.bigBgBox}>
+        <div
+          className={styles.bgBox}
+          style={{
+            backgroundImage: `url(${commonUrl}team${isCN ? '' : '-en'}.png)`
+          }}
+        >
+          <div className={styles.contentLeft}>
+            <List
+              title={I18N.officialWebsite.teamWorkManagement}
+              list={team}
+              btnColor="#5DD5FB"
+              circleColor="#5DD5FB"
+              rootClass={styles.teamList}
+            />
+          </div>
+        </div>
       </div>
-      <div
-        className={styles.bgBox}
-        style={{
-          backgroundImage: `url(${commonUrl}core${isCN ? '' : '-en'}.png)`
-        }}
-      >
-        <div className={styles.coreBtn}>
-          <UseButton
-            width="200px"
-            height="44px"
-            bgColor="#7589FA"
-            marginBottom="94px"
+      <div className={styles.bigBgBox}>
+        <div
+          className={styles.bgBox}
+          style={{
+            backgroundImage: `url(${commonUrl}schedule${isCN ? '' : '-en'}.png)`
+          }}
+        >
+          <List
+            title={I18N.officialWebsite.personalScheduleManagement}
+            list={personal}
+            btnColor="#30D6C5"
+            circleColor="#30D6C5"
+            rootClass={styles.personalList}
           />
+        </div>
+      </div>
+      <div className={styles.bigBgBox}>
+        <div
+          className={styles.bgBox}
+          style={{
+            backgroundImage: `url(${commonUrl}core${isCN ? '' : '-en'}.png)`
+          }}
+        >
+          <div className={styles.coreBtn}>
+            <UseButton
+              width="200px"
+              height="44px"
+              bgColor="#7589FA"
+              marginBottom="94px"
+              fontSize="16px"
+            />
+          </div>
         </div>
       </div>
 

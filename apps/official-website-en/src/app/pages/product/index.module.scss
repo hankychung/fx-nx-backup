@@ -15,8 +15,8 @@
 .listContent {
   width: 500px;
   .title {
-    color: #222;
-    font-size: 34px;
+    color: #262626;
+    font-size: 28px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -37,15 +37,15 @@
           border-radius: 50%;
         }
         .itemTitle {
-          color: #222;
-          font-size: 24px;
+          color: #262626;
+          font-size: 20px;
           font-style: normal;
           font-weight: 500;
         }
       }
       .itemBottom {
-        color: #888;
-        font-size: 20px;
+        color: #363636;
+        font-size: 14px;
         font-style: normal;
         font-weight: 400;
         margin-left: 28px;
@@ -59,11 +59,13 @@
   background-color: #f8ffff;
   .header {
     width: 100%;
+    max-width: 1920px;
     height: 700px;
     background-image: url('https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/official-website/product-bg1.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
+    margin: 0 auto;
 
     .headerContent {
       width: 35%;
@@ -86,17 +88,23 @@
       }
     }
   }
-  .bgBox {
+  .bigBgBox {
     width: 100%;
     height: 910px;
+  }
+  .bgBox {
+    width: 100%;
+    max-width: 1920px;
+    height: 100%;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
+    margin: 0 auto;
   }
 
   .scenarios {
     .scenariosTitle {
-      color: #222;
+      color: #262626;
       text-align: center;
       font-size: 36px;
       font-style: normal;

@@ -1,41 +1,9 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 5px;
-  .logo {
-    width: 36px;
+.modalClass {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
   }
-  .title {
-    color: #000;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    margin-left: 8px;
-  }
-}
-.content {
-  margin-top: 58px;
-  margin-bottom: 17px;
-  color: #828282;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-}
-.email {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9px;
-  border: 1px solid #f4f4f4;
-  background: #fcfcfc;
-  color: #8985fb;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  padding: 13px 0;
 }

@@ -21,13 +21,15 @@ const UseButton = ({
   height,
   bgColor = '#30D6C5',
   marginTop,
-  marginBottom
+  marginBottom,
+  fontSize
 }: {
   width?: string
   height?: string
   bgColor?: string
   marginTop?: string
   marginBottom?: string
+  fontSize?: string
 }) => {
   const navigate = useNavigate()
 
@@ -43,7 +45,8 @@ const UseButton = ({
         height,
         backgroundColor: bgColor,
         marginTop: marginTop,
-        marginBottom: marginBottom
+        marginBottom: marginBottom,
+        fontSize: fontSize
       }}
       onClick={goToPage}
     >
@@ -265,6 +268,7 @@ export const ProductPage = () => {
               height="44px"
               bgColor="#7589FA"
               marginBottom="94px"
+              fontSize="16px"
             />
           </div>
         </div>

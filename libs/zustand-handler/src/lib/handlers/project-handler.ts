@@ -183,6 +183,7 @@ export class ProjectHandler {
 
   // 更新事项
   async updateTasksByApi(taskIds: string[]) {
+    if (!this.projectId) return
     if (this.updateTimer) {
       clearTimeout(this.updateTimer)
     }

@@ -1,13 +1,13 @@
 import React from 'react'
-import { Close, EmailGreenIcon, LogoutIcon } from '@flyele-nx/icon'
+import { Close, EmailGreenIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
 import { ReactComponent as CustomerModalBg } from '../../assets/icons/customer_modal_bg.svg'
 
-interface Iprops {
+interface IProps {
   onClose: () => void
 }
 
-export const CustomerServiceEmail = (props: Iprops) => {
+export const CustomerServiceEmail = (props: IProps) => {
   const { onClose } = props
 
   return (

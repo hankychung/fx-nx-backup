@@ -12,7 +12,6 @@ import { useMemoizedFn } from 'ahooks'
 import alertIcon from '../../../../../../assets/icons/gif/alert.gif'
 import { isHighlight } from '../../../../utils/tools'
 import dayjs from 'dayjs'
-import { getRepeatDelayTotal } from '../../../../utils'
 import parentStyle from '../../index.module.scss'
 import styles from './index.module.scss'
 import {
@@ -20,10 +19,10 @@ import {
   useUserInfoStore,
   globalNxController
 } from '@flyele-nx/global-processor'
-import { RepeatIcon, CycleCardIcon, CycleCardDarkIcon } from '@flyele-nx/icon'
 import { loopStuff } from '../../../../utils/loop/loopStuff'
 import { contextMenuTool } from '../../../../../../index'
 import { MatterType, VipSmallIpcEvents } from '@flyele-nx/constant'
+import { BuildRepeatIcon } from './components/build-repeat-icon'
 
 interface IPROPTime {
   taskId: string
@@ -51,8 +50,6 @@ export const Time: React.FC<IPROPTime> = ({
   // const groupIdCtx = useContext(GroupIdCtx)
   // const memberIdCtx = useContext(MemberIdCtx)
   const [repeatTotal, setRepeatTotal] = useState<number | string>(0)
-
-  const repeatDelayTotal = getRepeatDelayTotal({ rawTask: task, userId })
 
   const getNowRepeatData = (task: IScheduleTask) => {
     return task.repeat_list?.find?.((v) => v.repeat_id === task?.repeat_id)
@@ -276,27 +273,6 @@ export const Time: React.FC<IPROPTime> = ({
     )
   }, [repeatType, showTxt, getCycle, repeatTotal])
 
-  const buildRepeatIcon = useMemo(() => {
-    if (repeatDelayTotal) {
-      return (
-        <div className={styles.repeatDelayTotalBox}>
-          <RepeatIcon width="1em" height="1em" color="#FF784D" />
-          <div>{repeatDelayTotal}</div>
-        </div>
-      )
-    }
-
-    return isDarkMode ? (
-      <div className={styles.repeatIcon}>
-        <CycleCardDarkIcon width={13} height={13} />
-      </div>
-    ) : (
-      <div className={styles.repeatIcon}>
-        <CycleCardIcon width={13} height={13} />
-      </div>
-    )
-  }, [isDarkMode, repeatDelayTotal])
-
   if (!showTxt && !repeatType) {
     return null
   }
@@ -320,7 +296,7 @@ export const Time: React.FC<IPROPTime> = ({
               : '#6a6a6a'
           }}
         >
-          {buildRepeatIcon}
+          <BuildRepeatIcon task={task} isDarkMode={isDarkMode} />
         </div>
       </div>
     )
@@ -361,7 +337,9 @@ export const Time: React.FC<IPROPTime> = ({
           >
             {showTxt}
           </div>
-          {!!repeatType && buildRepeatIcon}
+          {!!repeatType && (
+            <BuildRepeatIcon task={task} isDarkMode={isDarkMode} />
+          )}
         </div>
       ) : (
         <Tooltip
@@ -398,7 +376,9 @@ export const Time: React.FC<IPROPTime> = ({
             >
               {showTxt}
             </div>
-            {!!repeatType && buildRepeatIcon}
+            {!!repeatType && (
+              <BuildRepeatIcon task={task} isDarkMode={isDarkMode} />
+            )}
           </div>
         </Tooltip>
       )}

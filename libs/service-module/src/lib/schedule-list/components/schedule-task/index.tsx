@@ -1,11 +1,12 @@
-import {
+import React, {
   FC,
   memo,
   useMemo,
   CSSProperties,
   PropsWithChildren,
   useRef,
-  MouseEvent
+  MouseEvent,
+  useEffect
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi } from '@flyele-nx/service'
@@ -40,6 +41,7 @@ import {
   Enter_page_detail
 } from '@flyele-nx/constant'
 import { changeCompleteState } from '../../../status-box/utils'
+import { BuildRepeatIcon } from './components/time/components/build-repeat-icon'
 
 export interface IProps {
   taskKey: string
@@ -130,6 +132,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     )
 
   const isHovering = useHover(domRef)
+
+  useEffect(() => {
+    console.log('check hovering domref', domRef)
+  }, [domRef])
 
   if (!data) {
     console.error('taskKey not found', taskKey, useScheduleStore.getState())
@@ -365,6 +371,9 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     text={data.title || ''}
                   />
                   <Follow isFollow={isFollow} />
+                  {isSimple && (
+                    <BuildRepeatIcon task={data} isDarkMode={isDarkMode} />
+                  )}
                 </div>
                 <div className={styles.headRight}>
                   <ScheduleType matterType={data.matter_type} />

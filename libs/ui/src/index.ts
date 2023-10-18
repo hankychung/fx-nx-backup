@@ -22,5 +22,6 @@ export { PromotionsCard } from './lib/promotions-card'
 export { Avatar } from './lib/avatar'
 export { CustomerServiceEmail } from './lib/customer-service-email'
 export { OverseasContactUsModal } from './lib/overseas-contact-us-modal'
+export { AvatarGroup } from './lib/avatar-group'
 
 export type { IPhoneLoginData } from './lib/phone-login/types'

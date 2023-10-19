@@ -40,7 +40,7 @@ const useTimer = () => {
   return {
     timer,
     stopTimer,
-    exeTimer,
+    exeTimer
   }
 }
 

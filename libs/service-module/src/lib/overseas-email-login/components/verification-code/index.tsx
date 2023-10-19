@@ -28,10 +28,7 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
   const inputRefs = useRef<HTMLInputElement[]>([])
   const [loading, setLoading] = useState(false)
   const [showTime, setShowTime] = useState(false)
-  const {
-    timer,
-    exeTimer,
-  } = useTimer()
+  const { timer, exeTimer } = useTimer()
   useEffect(() => {
     if (timer === 0) {
       setShowTime(false)

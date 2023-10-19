@@ -20,6 +20,7 @@ import style from './index.module.scss'
 import CustomerServicesModal from '../../../customer-services-modal'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import dayjs from 'dayjs'
+import { getEnFormat } from '@flyele-nx/utils'
 interface Iprops {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -46,9 +47,13 @@ const Header = (props: Iprops) => {
     }
     if (info.level === 1) {
       if (info.end_time) {
-        txt = `您已开通个人会员，${dayjs
-          .unix(info.end_time)
-          .format('YYYY年MM月DD日')}到期`
+        txt = `${I18N.template?.(I18N.common.youHaveOpened, {
+          val1: getEnFormat(
+            dayjs.unix(info.end_time),
+            'YYYY年MM月DD日',
+            'MMM D, YYYY'
+          )
+        })}`
       }
       if (info.end_time === 9999999999) {
         txt = I18N.common.youHaveOpenedTheTerminal
@@ -56,9 +61,13 @@ const Header = (props: Iprops) => {
     }
     if (info.level === 2) {
       if (info.end_time) {
-        txt = `您已开通团队会员，${dayjs
-          .unix(info.end_time)
-          .format('YYYY年MM月DD日')}到期`
+        txt = `${I18N.template?.(I18N.common.youHaveOpenedAGroup, {
+          val1: getEnFormat(
+            dayjs.unix(info.end_time),
+            'YYYY年MM月DD日',
+            'MMM D, YYYY'
+          )
+        })}`
       }
     }
     return txt
@@ -86,12 +95,12 @@ const Header = (props: Iprops) => {
                 onClose={() => {
                   Controller.hide()
                 }}
-              ></CustomerServicesModal>
+              />
             </div>
           )}
         >
           <div className={style.customer}>
-            <Customer></Customer>
+            <Customer />
             <span>{I18N.common.contactCustomerService}</span>
           </div>
         </FlyBasePopper>
@@ -101,7 +110,7 @@ const Header = (props: Iprops) => {
           onClick={() => {
             onClose()
           }}
-        ></Close>
+        />
       </div>
     </div>
   )

@@ -2134,9 +2134,10 @@ export default {
   corporatePaymentReceipt: '对公支付联系: 15002007797',
   scanCodePayment: '扫码支付',
   weChatPayment: '微信支付',
-  youHaveOpenedAGroup: '您已开通团队会员，{val1}到期',
+  youHaveOpenedAGroup:
+    'You has upgrade to Business member which expired on {val1}',
   youHaveOpenedTheTerminal: '您已开通终身版个人会员，可无限期使用',
-  youHaveOpened: '您已开通个人会员，{val1}到期',
+  youHaveOpened: 'You has upgrade to Premium member which expired on {val1}',
   yourPersonalMeeting:
     'Your Premium plan is expired, please renew to use advance features',
   yourTeamWill:

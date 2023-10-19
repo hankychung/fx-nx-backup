@@ -2604,5 +2604,32 @@ export default {
     'After deletion, all data in task would also be deleted. Are you sure to delete?',
   abortOperation: 'Cancel',
   cancelAndShadow:
-    'After deletion, all data in task would also be deleted. Are you sure to delete?'
+    'After deletion, all data in task would also be deleted. Are you sure to delete?',
+  currentSelectedItemForProject:
+    'The selected destination currently has the following limitations preventing copying. Successful if the project owner upgrade to Premium member.',
+  currentSelectedItemForProject2:
+    'The selected destination currently has the following limitations preventing copying. Successful if you upgrade to Premium member.',
+  existingInTheMatter:
+    'The repeating setting can not save to the template, are you sure to continue?',
+  nonMatterCreationBelongProject: 'Only task owner can change project',
+  thisTemplateIsCurrentlyUnavailable:
+    'The template is unvaild. Please contact to the template creator to adjust.',
+  toCreate: 'Yes',
+  notCreatedYet: 'Cancel',
+  theTemplateHasBeenUpdated:
+    'The template has updated. Do you want to use the latest version?',
+  noNewNewsAtTheMoment: 'Nothing here',
+  youHaveBeenRemoved3: 'You have been removed from {val1}',
+  itemt: '{val1} has been deleted',
+  refreshing2: 'Loading...',
+  refreshFailedPlease: 'Failed, please try later',
+  enterMeetingLocation: 'Add position',
+  confirmInvitation: 'Confirm',
+  invitationFailedPlease: 'Failed, please try later',
+  inviteErrorWithNumber: '{val1} failed',
+  theFollowingErr:
+    'Failed in these {val1} tasks as the number of assignee has over 20',
+  afterExitingTheMatter: 'Are you sure to quit?',
+  afterExitingTheMatter2: 'Are you sure to quit this task and {val1} tools?',
+  exitSuccessfully: 'Quit success'
 }

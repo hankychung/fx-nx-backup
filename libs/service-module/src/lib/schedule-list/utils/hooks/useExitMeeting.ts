@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import {
   useScheduleStore,
@@ -32,7 +33,7 @@ export const useExitMeeting = ({
       globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, [taskId])
 
       globalNxController.showMsg({
-        content: '退出成功',
+        content: I18N.common.exitSuccessfully,
         msgType: '消息',
         duration: 1.5
       })
@@ -57,9 +58,9 @@ export const useExitMeeting = ({
     }
 
     AlertWithOkAndCancel.alert({
-      message: '退出事项后将不再参与该会议',
-      confirmTxt: '仍要退出',
-      cancelTxt: '不退出',
+      message: I18N.common.afterExitingTheMeeting,
+      confirmTxt: I18N.common.stillWantToExit,
+      cancelTxt: I18N.common.doNotExit,
       color: 'red',
       // 小窗需要执行一些东西，老代码
       onCancel: () => {

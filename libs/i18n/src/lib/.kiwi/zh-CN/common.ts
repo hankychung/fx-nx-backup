@@ -2467,7 +2467,6 @@ export default {
   expireVip: '{val1}名成员的团队会员即将过期，',
   expiredVip: '{val1}名成员已过期',
   expiration: '过期后成员将无法进入空间',
-
   externalMembersOnly: '外部成员仅可查看加入的事项',
   unableToView: '不能查看到空间和项目，仅能对具体参与的事项查看和操作',
   externalMembers: '外部成员 ',
@@ -2519,5 +2518,33 @@ export default {
   continueToCancel: '继续取消',
   afterCancelingTheMatter: '取消事项后将删除所有数据且不可恢复',
   abortOperation: '放弃操作',
-  cancelAndShadow: '取消后将影响所有循环事项，并无法恢复，是否继续取消'
+  cancelAndShadow: '取消后将影响所有循环事项，并无法恢复，是否继续取消',
+  currentSelectedItemForProject:
+    '当前所选目的地存在部分限制无法复制，若项目创建人开通会员即可移动成功',
+  currentSelectedItemForProject2:
+    '当前所选目的地存在部分限制无法复制，若开通会员，即可成功创建即可移动成功',
+  existingInTheMatter: '事项中存在循环，暂不支持保存到模版，是否继续',
+  nonMatterCreationBelongProject: '非事项创建人无法修改所属项目',
+  thisTemplateIsCurrentlyUnavailable: '该模版暂不可用，请联系模版创建人修改',
+  toCreate: '去创建',
+  notCreatedYet: '暂不创建',
+  theTemplateHasBeenUpdated: '该模版已更新，是否创建最新的模版事项？',
+  noNewNewsAtTheMoment: '暂无新消息',
+  youHaveBeenRemoved3: '你已被移出{val1}，无法继续查看',
+  itemt: '{val1}已被取消，无法继续查看',
+  refreshing2: '正在刷新',
+  refreshFailedPlease: '刷新失败，请稍后再试',
+  enterMeetingLocation: '输入会议地点',
+  confirmInvitation: '确定邀请',
+  invitationFailedPlease: '邀请失败，请重试',
+  inviteErrorWithNumber: '{val1}人邀请失效',
+  theFollowingErr: '以下{val1}个事项中，由于协作人已超过20人，部分成员邀请失败',
+  afterExitingTheMatter: '退出事项后将不再参与该事项',
+  afterExitingTheMatter2: '退出事项后也将退出该事项的{val1}个小工具',
+  exitSuccessfully: '退出成功',
+  afterExitingTheTodo: '退出事项后将不再参与该待办',
+  afterExitingTheMeeting: '退出事项后将不再参与该会议',
+  unableToCancelTodo: '取消后无法恢复，是否取消待办？',
+  cancelMeeting: '取消会议',
+  unableToCancelMeeting: '取消后无法恢复，并在会议列表中移除，是否取消会议？'
 }

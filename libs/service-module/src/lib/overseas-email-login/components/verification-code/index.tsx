@@ -8,6 +8,7 @@ import { IDevice, IOverseasCreateAccount, IUserInfo } from '@flyele-nx/types'
 import { globalNxController } from '@flyele-nx/global-processor'
 import { service, UsercApi } from '@flyele-nx/service'
 import util from '../../../qrcode-login/utils'
+import { useTimer } from './useTimer'
 
 interface Props {
   deviceParams: Omit<IDevice, 'device_id'>
@@ -26,7 +27,16 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
   const [codes, setCodes] = useState(['', '', '', ''])
   const inputRefs = useRef<HTMLInputElement[]>([])
   const [loading, setLoading] = useState(false)
-
+  const [showTime, setShowTime] = useState(false)
+  const {
+    timer,
+    exeTimer,
+  } = useTimer()
+  useEffect(() => {
+    if (timer === 0) {
+      setShowTime(false)
+    }
+  }, [timer])
   useEffect(() => {
     if (inputRefs) {
       inputRefs.current[0].focus()
@@ -39,6 +49,8 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
       youxiang: userInfo.youxiang
     }).then((res) => {
       if (res) {
+        exeTimer()
+        setShowTime(true)
         globalNxController.showMsg({
           msgType: '成功',
           content: 'Verification code sent'
@@ -217,8 +229,9 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
               Verify
             </Button>
           </Form.Item>
-          <div className={style.login_in} onClick={resend}>
-            Resend code
+          <div className={style.login_in}>
+            <span onClick={resend}>Resend code</span>
+            {showTime && <span>{` （${timer}S）`}</span>}
           </div>
           <div className={style.go_login_in}>
             <span>Do you have an account ?</span>

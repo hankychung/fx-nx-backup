@@ -2631,5 +2631,11 @@ export default {
     'Failed in these {val1} tasks as the number of assignee has over 20',
   afterExitingTheMatter: 'Are you sure to quit?',
   afterExitingTheMatter2: 'Are you sure to quit this task and {val1} tools?',
-  exitSuccessfully: 'Quit success'
+  exitSuccessfully: 'Quit success',
+  afterExitingTheTodo: 'Are you sure to quit?',
+  afterExitingTheMeeting: 'Are you sure to quit?',
+  unableToCancelTodo:
+    'After deletion, all data in todo would also be deleted. Are you sure to delete?',
+  cancelMeeting: 'Delete',
+  unableToCancelMeeting: 'Are you sure to quit?'
 }

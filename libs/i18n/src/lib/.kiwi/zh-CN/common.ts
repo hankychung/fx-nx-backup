@@ -2541,5 +2541,10 @@ export default {
   theFollowingErr: '以下{val1}个事项中，由于协作人已超过20人，部分成员邀请失败',
   afterExitingTheMatter: '退出事项后将不再参与该事项',
   afterExitingTheMatter2: '退出事项后也将退出该事项的{val1}个小工具',
-  exitSuccessfully: '退出成功'
+  exitSuccessfully: '退出成功',
+  afterExitingTheTodo: '退出事项后将不再参与该待办',
+  afterExitingTheMeeting: '退出事项后将不再参与该会议',
+  unableToCancelTodo: '取消后无法恢复，是否取消待办？',
+  cancelMeeting: '取消会议',
+  unableToCancelMeeting: '取消后无法恢复，并在会议列表中移除，是否取消会议？'
 }

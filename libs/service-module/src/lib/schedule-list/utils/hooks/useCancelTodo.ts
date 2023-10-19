@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import {
   useScheduleStore,
@@ -51,7 +52,7 @@ export const useCancelTodo = ({
       // 删除该事项相关的卡片和事项列表数据
       globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, [taskId])
       globalNxController.showMsg({
-        content: '取消成功',
+        content: I18N.common.canceledSuccessfully,
         msgType: '成功',
         duration: 1.5
       })
@@ -62,7 +63,7 @@ export const useCancelTodo = ({
       TaskHandler.removeTasks([taskId])
     } else {
       globalNxController.showMsg({
-        content: '取消失败',
+        content: I18N.common.cancelFailed,
         msgType: '错误',
         duration: 1.5
       })
@@ -78,9 +79,9 @@ export const useCancelTodo = ({
 
     AlertWithOkAndCancel.alert({
       // 这些文案如果需要可配置，加上useState，放到hook参数里
-      message: '取消后无法恢复，是否取消待办？',
-      confirmTxt: '仍要取消',
-      cancelTxt: '不取消',
+      message: I18N.common.unableToCancelTodo,
+      confirmTxt: I18N.common.stillWantToCancel,
+      cancelTxt: I18N.common.doNotCancel,
       color: 'red',
       // 小窗需要执行一些东西，老代码
       onCancel: () => {

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { AlertWithOkAndCancel } from '@flyele-nx/ui'
 import {
   useScheduleStore,
@@ -56,7 +57,7 @@ export const useCancelMeeting = ({
         }
       })
       globalNxController.showMsg({
-        content: '取消成功',
+        content: I18N.common.canceledSuccessfully,
         msgType: '成功',
         duration: 1.5
       })
@@ -68,7 +69,7 @@ export const useCancelMeeting = ({
     } else {
       globalNxController.pubJsPublish(Pub.DB_INCREASE_02_UPDATE_FORCE, taskId)
       globalNxController.showMsg({
-        content: '取消失败',
+        content: I18N.common.cancelFailed,
         msgType: '错误',
         duration: 1.5
       })
@@ -83,9 +84,9 @@ export const useCancelMeeting = ({
 
     AlertWithOkAndCancel.alert({
       // 这些文案如果需要可配置，加上useState，放到hook参数里
-      message: '取消后无法恢复，并在会议列表中移除，是否取消会议？',
-      confirmTxt: '取消会议',
-      cancelTxt: '不取消',
+      message: I18N.common.unableToCancelMeeting,
+      confirmTxt: I18N.common.cancelMeeting,
+      cancelTxt: I18N.common.doNotCancel,
       color: 'red',
       // 小窗需要执行一些东西，老代码
       onCancel: () => {

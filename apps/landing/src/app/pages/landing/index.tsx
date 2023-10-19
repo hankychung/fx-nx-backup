@@ -4,10 +4,31 @@ import { sensors } from '../../../sensor'
 import { getSearch } from '@flyele-nx/utils'
 import { FlyLogo } from '@flyele-nx/icon'
 import classNames from 'classnames'
+import { useMount } from 'ahooks'
+import { MD5 } from 'crypto-js'
+
+// 小红书广告主id
+const XIAOHONGSHU_ADVERTISER_ID = '494912'
 
 const Landing = () => {
   const handleClick = (button_name: string) => {
     sensors.track('freeuse_button_click_2', { button_name: button_name })
+
+    fetch('https://adapi.xiaohongshu.com/api/open/common', {
+      method: 'POST',
+      body: JSON.stringify({
+        advertiser_id: XIAOHONGSHU_ADVERTISER_ID, //广告主id
+        version: '1.0', // 固定传1.0
+        sign: xiaohongshuSign(), // 具体见附录中的签名算法
+        timestamp: new Date().getTime(), // 获取当前时间的毫秒数
+        method: 'aurora.leads',
+        access_token: localStorage.getItem('xiaohongshu_access_token'),
+        event_type: '101',
+        click_id: getSearch()['click_id'],
+        conv_time: new Date().getTime()
+      })
+    })
+
     const url = `https://download.flyele.net/v1/downloads/install/package?channel=${
       getSearch()['utm_source']
     }`
@@ -15,6 +36,50 @@ const Landing = () => {
     // console.log(getSearch()['utm_source'], url)
 
     window.location.href = url
+  }
+
+  useMount(() => {
+    fetch('https://adapi.xiaohongshu.com/api/open/common', {
+      method: 'POST',
+      body: JSON.stringify({
+        advertiser_id: '494912', // 广告主id
+        version: '1.0', // 固定1.0
+        timestamp: new Date().getTime(), // 当前请求的毫秒数
+        method: 'oauth.getAccessToken'
+      })
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('res', res)
+        localStorage.setItem(
+          'xiaohongshu_access_token',
+          res?.data?.access_token
+        )
+      })
+  })
+
+  const xiaohongshuSign = () => {
+    const advertiserId = XIAOHONGSHU_ADVERTISER_ID
+
+    const timestamp = Date.now() // 毫秒时间戳
+
+    const method = 'aurora.leads'
+
+    const version = '1.0'
+
+    const srcArr: string[] = []
+
+    srcArr.push(`advertiser_id${advertiserId}`)
+
+    srcArr.push(`method${method}`)
+
+    srcArr.push(`timestamp${timestamp}`)
+
+    srcArr.push(`version${version}`)
+
+    const sign = MD5(srcArr.join('&'))
+
+    return sign
   }
 
   return (

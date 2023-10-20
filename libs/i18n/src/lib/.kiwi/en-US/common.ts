@@ -1741,6 +1741,7 @@ export default {
     'You can choose one teamspace to move in, and it’s unable to move out',
   import: 'Move in',
   applyingForGuidance: 'Pending for admin approval',
+  moneyUnit: '$',
   /** */
 
   remind: 'Reminder',

@@ -1699,6 +1699,7 @@ export default {
   importOperationDoesNotWork: '导入操作不可逆，且只能选择一个专业空间导入',
   import: '导入',
   applyingForGuidance: '正在申请导入该空间，待空间管理员通过',
+  moneyUnit: '¥',
   unnamedApplication: '未命名应用',
   submitFeedBack: '提交反馈',
   writeYourSuggestions: '请在此处写下你的建议与意见',

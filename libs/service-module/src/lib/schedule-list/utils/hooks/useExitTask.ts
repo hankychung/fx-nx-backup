@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { useMemoizedFn } from 'ahooks'
 import {
   useScheduleStore,
@@ -43,7 +44,6 @@ export const useExitTask = ({
 
     try {
       await TaskDispatchApi.exitTask(dispatch_id)
-      console.log('删除该事项相关的卡片和事项列表数据', taskIds)
       // 删除该事项相关的卡片和事项列表数据
       globalNxController.pubJsPublish(Pub.DELETE_MATTER_ITEM, taskIds)
 
@@ -54,7 +54,7 @@ export const useExitTask = ({
       )
 
       globalNxController.showMsg({
-        content: '退出成功',
+        content: I18N.common.exitSuccessfully,
         msgType: '消息',
         duration: 1.5
       })
@@ -82,9 +82,12 @@ export const useExitTask = ({
       let message = ''
 
       if (total > 0) {
-        message = `退出事项后也将退出该事项的${total}个小工具`
+        message =
+          I18N.template?.(I18N.common.afterExitingTheMatter2, {
+            val1: total
+          }) || ''
       } else {
-        message = '退出事项后将不再参与该事项'
+        message = I18N.common.afterExitingTheMatter
       }
 
       if (isVipWin) {
@@ -95,8 +98,8 @@ export const useExitTask = ({
 
       AlertWithOkAndCancel.alert({
         message,
-        confirmTxt: '仍要退出',
-        cancelTxt: '不退出',
+        confirmTxt: I18N.common.stillWantToExit,
+        cancelTxt: I18N.common.doNotExit,
         color: 'red',
         // 小窗需要执行一些东西，老代码
         onCancel: () => {
@@ -112,7 +115,7 @@ export const useExitTask = ({
       console.error('exist', _)
 
       globalNxController.showMsg({
-        content: '网络暂时不可用',
+        content: I18N.common.theNetworkIsTemporarilyUnavailable,
         msgType: '错误',
         duration: 1.5
       })

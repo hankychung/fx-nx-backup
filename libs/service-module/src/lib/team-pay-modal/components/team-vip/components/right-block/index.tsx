@@ -158,9 +158,9 @@ const RightBlock = ({
   useEffect(() => {
     console.log('pay click', isCN)
     if (isCN) return
-
+    if (!resultArr.length) return
     payClick({ doNotShow: true })
-  }, [payClick])
+  }, [payClick, resultArr.length])
 
   //修改优惠
   useEffect(() => {

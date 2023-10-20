@@ -123,7 +123,8 @@ function shouldInsertSchedule(options: { date: string; task: IScheduleTask }) {
       : dateStartUnix > todayUnix
       ? 'future'
       : 'history'
-
+  // 无时间工作流事项步骤轮到我
+  if (type === 'today' && task.flow_step_join) return true
   // 无时间事项不进入日程/不进入历史日程
   if ((!startTime && !endTime) || type === 'history') return false
 

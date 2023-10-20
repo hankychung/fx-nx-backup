@@ -53,16 +53,13 @@ const _EmailLogin: React.FC<React.PropsWithChildren<Props>> = ({
       .catch((err) => {
         try {
           setLoading(false)
-          if (err.data.code === 40010) {
-            globalNxController.showMsg({
-              msgType: '错误',
-              content: err.data.message
-            })
-          }
+          globalNxController.showMsg({
+            msgType: '错误',
+            content: err.response.data.message
+          })
         } catch (e) {
           // empty
         }
-        console.log(err)
       })
   }
   const onSubmit = () => {

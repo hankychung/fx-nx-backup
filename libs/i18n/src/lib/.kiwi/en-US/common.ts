@@ -2146,9 +2146,10 @@ export default {
   corporatePaymentReceipt: '对公支付联系: 15002007797',
   scanCodePayment: '扫码支付',
   weChatPayment: '微信支付',
-  youHaveOpenedAGroup: '您已开通团队会员，{val1}到期',
+  youHaveOpenedAGroup:
+    'You has upgrade to Business member which expired on {val1}',
   youHaveOpenedTheTerminal: '您已开通终身版个人会员，可无限期使用',
-  youHaveOpened: '您已开通个人会员，{val1}到期',
+  youHaveOpened: 'You has upgrade to Premium member which expired on {val1}',
   yourPersonalMeeting:
     'Your Premium plan is expired, please renew to use advance features',
   yourTeamWill:
@@ -2616,5 +2617,57 @@ export default {
     'After deletion, all data in task would also be deleted. Are you sure to delete?',
   abortOperation: 'Cancel',
   cancelAndShadow:
-    'After deletion, all data in task would also be deleted. Are you sure to delete?'
+    'After deletion, all data in task would also be deleted. Are you sure to delete?',
+  currentSelectedItemForProject:
+    'The selected destination currently has the following limitations preventing copying. Successful if the project owner upgrade to Premium member.',
+  currentSelectedItemForProject2:
+    'The selected destination currently has the following limitations preventing copying. Successful if you upgrade to Premium member.',
+  existingInTheMatter:
+    'The repeating setting can not save to the template, are you sure to continue?',
+  nonMatterCreationBelongProject: 'Only task owner can change project',
+  thisTemplateIsCurrentlyUnavailable:
+    'The template is unvaild. Please contact to the template creator to adjust.',
+  toCreate: 'Yes',
+  notCreatedYet: 'Cancel',
+  theTemplateHasBeenUpdated:
+    'The template has updated. Do you want to use the latest version?',
+  noNewNewsAtTheMoment: 'Nothing here',
+  youHaveBeenRemoved3: 'You have been removed from {val1}',
+  itemt: '{val1} has been deleted',
+  refreshing2: 'Loading...',
+  refreshFailedPlease: 'Failed, please try later',
+  enterMeetingLocation: 'Add position',
+  confirmInvitation: 'Confirm',
+  invitationFailedPlease: 'Failed, please try later',
+  inviteErrorWithNumber: '{val1} failed',
+  theFollowingErr:
+    'Failed in these {val1} tasks as the number of assignee has over 20',
+  afterExitingTheMatter: 'Are you sure to quit?',
+  afterExitingTheMatter2: 'Are you sure to quit this task and {val1} tools?',
+  exitSuccessfully: 'Quit success',
+  afterExitingTheTodo: 'Are you sure to quit?',
+  afterExitingTheMeeting: 'Are you sure to quit?',
+  unableToCancelTodo:
+    'After deletion, all data in todo would also be deleted. Are you sure to delete?',
+  cancelMeeting: 'Delete',
+  unableToCancelMeeting: 'Are you sure to quit?',
+  h5_downloadNow: 'Download',
+  h5_moreDetails: 'Using the full version, download here',
+  h5_fromTas: 'The {val2} invitation of {val1}',
+  h5_linkExceptionPlease: 'Error link, please check',
+  h5_youHaveExitedThe: 'You has quit this ',
+  h5_youHaveBeenRemoved: 'You has been removed from',
+  h5_youAreTheOneWho: '你是该{val1}创建人',
+  h5_youAreTheOneWho2: '你是该{val1}邀请人',
+  h5_reasonForLeaveD: '请假原因：{val1}',
+  h5_reasonForRejectionD: '拒绝原因：{val1}',
+  h5_youAreTheOneResponsibleForThisMatter: '您是该事项的创建者',
+  h5_toDoCancelled: '待办已取消',
+  h5_toDoYouHaveReturned: '待办你已退出该',
+  h5_toDoYouHaveBeen: '待办你已被移出该',
+  h5_theMeetingHasBeenCancelled: '会议已取消',
+  h5_youHaveWithdrawnFromTheMeeting: '会议你已退出该',
+  h5_youHaveBeen: '会议你已被移出该',
+  h5_youHaveReturnedTheItem: '事项你已退出该',
+  h5_youHaveBeen2: '事项你已被移出该'
 }

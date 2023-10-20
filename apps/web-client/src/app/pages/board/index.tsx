@@ -3,7 +3,7 @@ import { initCacheWorker } from '../../utils/initCacheWorker'
 import { BoardHeader } from './components/header'
 import { Outlet } from 'react-router-dom'
 import style from './index.module.scss'
-import { useUserInfoStore } from '@flyele-nx/service-module'
+import { ProjectLure, useUserInfoStore } from '@flyele-nx/service-module'
 import { LocalStore } from '@flyele-nx/utils'
 import { initInteract } from '../../utils/initInteract'
 
@@ -34,6 +34,7 @@ const Board: React.FC = () => {
       <div className={style.wrapper}>
         <Outlet />
       </div>
+      <ProjectLure visible={true} projectId={''} workspaceId={''} />
     </div>
   )
 }

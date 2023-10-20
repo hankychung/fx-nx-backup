@@ -1731,6 +1731,16 @@ export default {
   emptyContent: 'Premium plan is about to expired',
   feedBackSubmit: 'Please write some suggestion',
   official: 'Official',
+  contactCustomerServiceForClarification: 'Contact us to solve your problem',
+  ifMoreCooperationIsNeeded:
+    'If you need more members, please move the project to Pro teamspace',
+  personalProjectMost: 'Individual project support up to 20 users',
+  createAProfessionalBlank: 'Create Pro teamspace',
+  youCurrentlyDoNotHave: 'You don‘t join any Pro teamspace',
+  importOperationDoesNotWork:
+    'You can choose one teamspace to move in, and it’s unable to move out',
+  import: 'Move in',
+  applyingForGuidance: 'Pending for admin approval',
   /** */
 
   remind: 'Reminder',

@@ -1742,7 +1742,7 @@ export default {
   import: 'Move in',
   applyingForGuidance: 'Pending for admin approval',
   moneyUnit: '$',
-  freeAccount: '免费账户',
+  freeAccount: 'Free member',
   /** */
 
   remind: 'Reminder',

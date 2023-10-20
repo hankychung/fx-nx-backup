@@ -60,7 +60,6 @@ const _EmailLogin: React.FC<React.PropsWithChildren<Props>> = ({
         } catch (e) {
           // empty
         }
-        console.log(err)
       })
   }
   const onSubmit = () => {

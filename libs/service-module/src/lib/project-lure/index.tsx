@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { I18N, isCN } from '@flyele-nx/i18n'
+import { useEffect, useState } from 'react'
 import { Button, Modal } from 'antd'
 import cs from 'classnames'
 import {
@@ -10,7 +11,7 @@ import { useMemoizedFn, useRequest } from 'ahooks'
 import style from './index.module.scss'
 import { IBasicSpace } from '@flyele-nx/types'
 import { projectApi, workspaceApi } from '@flyele-nx/service'
-import { SpaceAvatar } from '@flyele-nx/ui'
+import { CustomerServiceEmail, SpaceAvatar } from '@flyele-nx/ui'
 import CustomerServicesModal from '../customer-services-modal'
 import { Close, CustomerServiceIcon, WarmingGrayIcon } from '@flyele-nx/icon'
 import EmptyImage from '../../assets/project-lure/empty.png'
@@ -74,7 +75,7 @@ export const ProjectLure = (props: IProps) => {
           </div>
           <span className={style.review_name}>{spaceInfo?.name}</span>
           <span className={style.review_desc}>
-            正在申请导入该空间，待空间管理员通过
+            {I18N.common.applyingForGuidance}
           </span>
         </div>
       )
@@ -96,7 +97,7 @@ export const ProjectLure = (props: IProps) => {
                     onClick={() => onImport?.(item)}
                     className={style.item_btn}
                   >
-                    导入
+                    {I18N.common.import}
                   </div>
                 </div>
               )
@@ -104,7 +105,7 @@ export const ProjectLure = (props: IProps) => {
           </div>
           <div className={style.warming}>
             <WarmingGrayIcon />
-            <span>导入操作不可逆，且只能选择一个专业空间导入</span>
+            <span>{I18N.common.importOperationDoesNotWork}</span>
           </div>
         </div>
       )
@@ -112,14 +113,16 @@ export const ProjectLure = (props: IProps) => {
       return (
         <div className={style.empty}>
           <img className={style.empty_img} src={EmptyImage} alt="empty" />
-          <span className={style.empty_txt}>你当前没有专业空间</span>
+          <span className={style.empty_txt}>
+            {I18N.common.youCurrentlyDoNotHave}
+          </span>
           <Button
             onClick={() => {
               onCreateSpace?.(getList)
             }}
             className={style.empty_btn}
           >
-            创建专业空间
+            {I18N.common.createAProfessionalBlank}
           </Button>
         </div>
       )
@@ -139,9 +142,9 @@ export const ProjectLure = (props: IProps) => {
       <div className={style.container}>
         <div className={style.header}>
           <div>
-            <h1 className={style.title}>个人项目最多支持20人使用</h1>
+            <h1 className={style.title}>{I18N.common.personalProjectMost}</h1>
             <span className={style.desc}>
-              如需更多协作人数，请导入至专业空间使用
+              {I18N.common.ifMoreCooperationIsNeeded}
             </span>
           </div>
           <Close className={style.icon_close} onClick={handleClose} />
@@ -156,18 +159,26 @@ export const ProjectLure = (props: IProps) => {
               placement="top"
               showArrow={false}
               zIndex={10003}
-              content={() => (
-                <CustomerServicesModal
-                  onClose={() => serviceController.hide()}
-                />
-              )}
+              content={() =>
+                isCN ? (
+                  <CustomerServicesModal
+                    onClose={() => serviceController.hide()}
+                  />
+                ) : (
+                  <CustomerServiceEmail
+                    onClose={() => serviceController.hide()}
+                  />
+                )
+              }
             >
               <div
                 className={style.footer_btn}
                 onClick={() => serviceController.show()}
               >
                 <CustomerServiceIcon />
-                <span style={{ marginLeft: 4 }}>联系客服，解答所有疑问</span>
+                <span style={{ marginLeft: 4 }}>
+                  {I18N.common.contactCustomerServiceForClarification}
+                </span>
               </div>
             </FlyBasePopper>
           </div>

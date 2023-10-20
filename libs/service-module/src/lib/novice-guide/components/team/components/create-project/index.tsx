@@ -589,7 +589,9 @@ const _CreateProject = ({
           )
         })}
         <div
-          className={cs(styles.projectItem, styles.moreBtn)}
+          className={cs(styles.projectItem, styles.moreBtn, {
+            [styles.enMoreBtn]: !isCN
+          })}
           onClick={onAddProject}
         >
           <div className={styles.addBtn}>

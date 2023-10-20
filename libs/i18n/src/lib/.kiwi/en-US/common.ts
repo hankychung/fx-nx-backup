@@ -2638,5 +2638,24 @@ export default {
   unableToCancelTodo:
     'After deletion, all data in todo would also be deleted. Are you sure to delete?',
   cancelMeeting: 'Delete',
-  unableToCancelMeeting: 'Are you sure to quit?'
+  unableToCancelMeeting: 'Are you sure to quit?',
+  h5_downloadNow: '立即下载',
+  h5_moreDetails: '更多事项详情与协作功能请查看小程序、或下载电脑端应用',
+  h5_fromTas: '来自{val1} 的{val2}邀请',
+  h5_linkExceptionPlease: '链接异常，请检查链接地址',
+  h5_youHaveExitedThe: '你已退出该',
+  h5_youHaveBeenRemoved: '你已被移出该',
+  h5_youAreTheOneWho: '你是该{val1}创建人',
+  h5_youAreTheOneWho2: '你是该{val1}邀请人',
+  h5_reasonForLeaveD: '请假原因：{val1}',
+  h5_reasonForRejectionD: '拒绝原因：{val1}',
+  h5_youAreTheOneResponsibleForThisMatter: '您是该事项的创建者',
+  h5_toDoCancelled: '待办已取消',
+  h5_toDoYouHaveReturned: '待办你已退出该',
+  h5_toDoYouHaveBeen: '待办你已被移出该',
+  h5_theMeetingHasBeenCancelled: '会议已取消',
+  h5_youHaveWithdrawnFromTheMeeting: '会议你已退出该',
+  h5_youHaveBeen: '会议你已被移出该',
+  h5_youHaveReturnedTheItem: '事项你已退出该',
+  h5_youHaveBeen2: '事项你已被移出该'
 }

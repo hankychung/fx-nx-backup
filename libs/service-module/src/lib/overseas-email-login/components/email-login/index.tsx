@@ -55,7 +55,7 @@ const _EmailLogin: React.FC<React.PropsWithChildren<Props>> = ({
           setLoading(false)
           globalNxController.showMsg({
             msgType: '错误',
-            content: err.data.message
+            content: err.response.data.message
           })
         } catch (e) {
           // empty

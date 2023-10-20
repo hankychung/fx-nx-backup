@@ -173,6 +173,13 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   const resend = () => {
+    if (showTime) {
+      globalNxController.showMsg({
+        msgType: '错误',
+        content: 'Please try later'
+      })
+      return
+    }
     getCode()
   }
 

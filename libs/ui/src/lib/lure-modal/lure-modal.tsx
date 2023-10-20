@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
@@ -42,8 +43,8 @@ function _LureModal({
   highlight,
   imgType,
   isEmptyContent,
-  confirmBtnText = '开通会员',
-  emptyTxt = '仅会员才可使用该功能'
+  confirmBtnText = I18N.common.activateMembership,
+  emptyTxt = I18N.common.onlyMembersCan
 }: LureModalProps) {
   return (
     <Modal
@@ -77,12 +78,12 @@ function _LureModal({
         >
           <div className={styles.lft}>
             <div className={styles.size}>{freeTxt}</div>
-            <div className={styles.sub}>免费账户</div>
+            <div className={styles.sub}>{I18N.common.freeAccount}</div>
           </div>
           <ConvertIcon />
           <div className={styles.rgt}>
             <div className={styles.size}>{vipTxt}</div>
-            <div className={styles.sub}>个人会员</div>
+            <div className={styles.sub}>{I18N.common.premium}</div>
           </div>
         </div>
       ) : (

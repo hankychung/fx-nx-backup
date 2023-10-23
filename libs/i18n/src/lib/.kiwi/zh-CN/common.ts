@@ -2575,5 +2575,18 @@ export default {
   h5_youHaveWithdrawnFromTheMeeting: '会议你已退出该',
   h5_youHaveBeen: '会议你已被移出该',
   h5_youHaveReturnedTheItem: '事项你已退出该',
-  h5_youHaveBeen2: '事项你已被移出该'
+  h5_youHaveBeen2: '事项你已被移出该',
+  h5_checkInTheFlight: '在飞项中查看其他日程',
+  h5_inFlightAp: '在飞项APP中查看其他日程',
+  h5_inTheSmallDistanceOfTheFlyingEvent: '在飞项小程序中查看其他日程',
+  h5_projectCollaborator: '事项协作人数已达{val1}人',
+  h5_numberOfCollaborators: '协作人数量已满{val1}人',
+  h5_creatorCanIncreaseTheNumber: '一级事项创建人升级会员后可提升协作人数',
+  h5_afterReview: '审核后后将一并加入所属空间',
+  h5_afterApproval: '审核通过后将一并加入事项与所属项目',
+  h5_reviewFailed: '审核未通过',
+  h5_underReview: '审核中',
+  h5_waitForTake: '等{val1}位协作人',
+  h5_theProjectHasBeenEstablished: '项目已成立{val1}天',
+  h5_toBeAccepted: '待接受'
 }

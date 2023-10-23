@@ -2669,5 +2669,21 @@ export default {
   h5_youHaveWithdrawnFromTheMeeting: '会议你已退出该',
   h5_youHaveBeen: '会议你已被移出该',
   h5_youHaveReturnedTheItem: '事项你已退出该',
-  h5_youHaveBeen2: '事项你已被移出该'
+  h5_youHaveBeen2: '事项你已被移出该',
+  h5_checkInTheFlight: 'Open in Flyele',
+  h5_inFlightAp: 'Open in APP',
+  h5_inTheSmallDistanceOfTheFlyingEvent: '在飞项小程序中查看其他日程',
+  h5_projectCollaborator: 'Reached the maximum limit of {val1}',
+  h5_numberOfCollaborators: 'Reached the maximum limit of {val1}',
+  h5_creatorCanIncreaseTheNumber:
+    'You can add more assignee after owner of parent task become to Premium member',
+  h5_afterReview:
+    'You will join the teamspace at the same time when you been approve',
+  h5_afterApproval:
+    'You will join the project and task at the same time when you been approve',
+  h5_reviewFailed: 'You has been rejected',
+  h5_underReview: 'Pending for admin approval',
+  h5_waitForTake: '{val1} assignees in total',
+  h5_theProjectHasBeenEstablished: 'Project has been active for {val1} days',
+  h5_toBeAccepted: '待接受'
 }

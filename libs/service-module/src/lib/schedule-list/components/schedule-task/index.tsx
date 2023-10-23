@@ -5,8 +5,7 @@ import React, {
   CSSProperties,
   PropsWithChildren,
   useRef,
-  MouseEvent,
-  useEffect
+  MouseEvent
 } from 'react'
 import { shallow } from 'zustand/shallow'
 import { TaskApi } from '@flyele-nx/service'
@@ -162,6 +161,10 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
     const value = data?.is_follow || data?.has_follow
     return !!value
   }, [data?.has_follow, data?.is_follow])
+
+  const repeatType = useMemo(() => {
+    return data.repeat_type || 0
+  }, [data.repeat_type])
 
   const { menuActions } = useMenuActions({ data, isVipWin, isTopTask })
 
@@ -367,7 +370,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     text={data.title || ''}
                   />
                   <Follow isFollow={isFollow} />
-                  {isSimple && (
+                  {isSimple && !!repeatType && (
                     <BuildRepeatIcon task={data} isDarkMode={isDarkMode} />
                   )}
                 </div>

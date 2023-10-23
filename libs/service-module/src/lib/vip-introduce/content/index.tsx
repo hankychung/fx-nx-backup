@@ -147,7 +147,9 @@ export const VipIntroduceContent = (props: VipIntroduceContentProps) => {
                 </div>
                 {item.key !== 'custom' && (
                   <div className={css.priceBox}>
-                    {isCN && <span className={css.smallText}>¥ </span>}
+                    <span className={css.smallText}>
+                      {I18N.common.moneyUnit}
+                    </span>
                     {item.money}
                     {item.unit && (
                       <span className={css.smallText}>{` / ${item.unit}`}</span>

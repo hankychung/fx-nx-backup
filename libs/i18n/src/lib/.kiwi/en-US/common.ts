@@ -914,7 +914,7 @@ export default {
   upgradeProfessionalGetMore:
     'Upgrading to Pro Teamspace to get unlimited goal ability',
   iDidntFindAnyIdeas: 'Are you sure to remove this goal?',
-  personalGoals: 'Personal',
+  personalGoals: 'Personal goal',
   addRes: '添加{val1}个',
   removeTarget: 'Remove',
   doNotRemove: 'Not remove',

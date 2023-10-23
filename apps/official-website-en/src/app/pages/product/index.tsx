@@ -35,6 +35,7 @@ const UseButton = ({
 
   const goToPage = () => {
     navigate(routePath.download)
+    window.scrollTo(0, 0)
   }
 
   return (

@@ -26,6 +26,7 @@ export function App() {
     if (key && key !== '/' && key !== activeTab) {
       setActiveTab(key)
       navigate(key)
+      window.scrollTo(0, 0)
     }
   })
 

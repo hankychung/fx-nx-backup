@@ -32,7 +32,7 @@ const _Header = ({
 
   return (
     <div className={styles.headerRoot}>
-      <div className={styles.logoBox}>
+      <div className={styles.logoBox} onClick={() => onClickTab(tabs[0].key)}>
         <img
           className={styles.logo}
           src="https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/logo.png"

@@ -76,7 +76,6 @@
     "@nrwl/js": "15.8.5",
     "@nrwl/linter": "15.8.5",
     "@nrwl/nx-cloud": "latest",
-    "@nrwl/nx-darwin-x64": "^15.9.3",
     "@nrwl/react": "15.8.5",
     "@nrwl/rollup": "15.8.5",
     "@nrwl/vite": "15.8.5",

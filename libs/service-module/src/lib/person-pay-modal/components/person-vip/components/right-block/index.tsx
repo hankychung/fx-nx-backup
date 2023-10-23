@@ -20,7 +20,9 @@ const RightBlock = ({
   couponList,
   goProtocol,
   vipMealType,
-  originRoute
+  originRoute,
+  isRequest,
+  setIsRequest
 }: {
   goProtocol?: () => void
   memberList: IFlyeleAvatarItem[]
@@ -28,6 +30,8 @@ const RightBlock = ({
   couponList?: ICoupon[]
   vipMealType: VipMealType
   originRoute?: string
+  isRequest?: boolean
+  setIsRequest?: (_: boolean) => void
 }) => {
   const [vipMealList, setVipMealList] = useState<IActiveGoods[]>([]) // 套餐list
   const service = useContext(SelectMemberContext)
@@ -93,21 +97,15 @@ const RightBlock = ({
         })
         setVipMealList(new_arr)
       }
+      setIsRequest && setIsRequest(false)
     })
   })
 
   useEffect(() => {
-    if (
-      vipMealType === VipMealType.PERSON &&
-      couponList &&
-      couponList?.length > 0
-    ) {
+    if (vipMealType === VipMealType.PERSON && isRequest) {
       getMealList()
     }
-    if (vipMealType === VipMealType.PERSON && couponList?.length === 0) {
-      getMealList()
-    }
-  }, [getMealList, vipMealType, couponList])
+  }, [getMealList, vipMealType, isRequest])
 
   //选择套餐
   const mealSelect = (_: IActiveGoods) => {

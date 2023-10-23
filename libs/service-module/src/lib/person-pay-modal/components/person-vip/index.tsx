@@ -23,7 +23,9 @@ const PersonVip = ({
   goProtocol,
   vipMealType,
   goInterests,
-  originRoute
+  originRoute,
+  isRequest,
+  setIsRequest
 }: {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -32,6 +34,8 @@ const PersonVip = ({
   goProtocol?: () => void
   goInterests: () => void
   originRoute?: string
+  isRequest?: boolean
+  setIsRequest?: (_: boolean) => void
 }) => {
   return (
     <div className={style.personVip}>
@@ -46,6 +50,8 @@ const PersonVip = ({
           goProtocol={goProtocol}
           vipMealType={vipMealType}
           originRoute={originRoute}
+          setIsRequest={setIsRequest}
+          isRequest={isRequest}
         />
       </div>
     </div>

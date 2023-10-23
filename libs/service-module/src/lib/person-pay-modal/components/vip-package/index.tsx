@@ -62,11 +62,13 @@ const VipPackage = (props: Iprops) => {
   } = props
   const [tabsList, setTabs] = useState<TabType[]>(tabs()) // 切换tab
   const [showPay, setShowPay] = useState<boolean>(false)
+  const [isRequest, setIsRequest] = useState<boolean>(false)
   const [payInfo, setPayInfo] = useState<IActiveGoods>()
   const [userInfo, setUserInfo] = useState<IFlyeleAvatarItem[]>()
   const [couponList, setCouponList] = useState<ICoupon[]>()
   const service = useContext(SelectMemberContext)
   const user_id = +useUserInfoStore((state) => state.userInfo.user_id)
+
   useEffect(() => {
     service.addListener((ev) => {
       const { event } = ev
@@ -111,6 +113,7 @@ const VipPackage = (props: Iprops) => {
       } else {
         setCouponList([])
       }
+      setIsRequest(true)
     })
   })
   //进入判断会员类型
@@ -211,6 +214,8 @@ const VipPackage = (props: Iprops) => {
           vipMealType={vipMealType}
           goInterests={goInterests}
           originRoute={originRoute}
+          isRequest={isRequest}
+          setIsRequest={setIsRequest}
         />
         {/* )} */}
       </div>
@@ -228,6 +233,8 @@ const VipPackage = (props: Iprops) => {
           hasShowRetrieveModal={hasShowRetrieveModal}
           setHasShowRetrieveModal={setHasShowRetrieveModal}
           originRoute={originRoute}
+          isRequest={isRequest}
+          setIsRequest={setIsRequest}
         />
       </div>
       {/* 支付弹窗 */}

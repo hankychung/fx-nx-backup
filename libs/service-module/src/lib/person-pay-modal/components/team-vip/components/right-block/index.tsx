@@ -31,7 +31,9 @@ const RightBlock = ({
   showMsg,
   hasShowRetrieveModal,
   setHasShowRetrieveModal,
-  originRoute
+  originRoute,
+  isRequest,
+  setIsRequest
 }: {
   vipMealType: VipMealType
   goProtocol: () => void
@@ -40,6 +42,8 @@ const RightBlock = ({
   hasShowRetrieveModal: boolean
   setHasShowRetrieveModal: () => void
   originRoute?: string
+  isRequest?: boolean
+  setIsRequest?: (_: boolean) => void
 }) => {
   const service = useContext(SelectMemberContext)
   const [resultArr, setResultArr] = useState<IFlyeleAvatarItem[]>([])
@@ -96,24 +100,17 @@ const RightBlock = ({
             active: false
           }
         })
+        setIsRequest && setIsRequest(false)
         setVipMeal(new_arr[0])
       }
     })
   })
   //获取套餐
   useEffect(() => {
-    if (
-      vipMealType === VipMealType.TEAM &&
-      couponList &&
-      couponList?.length > 0
-    ) {
+    if (vipMealType === VipMealType.TEAM && isRequest) {
       getMealList()
     }
-    if (vipMealType === VipMealType.TEAM && couponList?.length === 0) {
-      getMealList()
-    }
-  }, [vipMealType, getMealList, couponList])
-
+  }, [vipMealType, getMealList, isRequest])
   const num = useMemo(() => {
     return dayjs.unix(vipMeal?.end_at || 0).valueOf() / 1000 //结束时间  毫秒数
   }, [vipMeal])

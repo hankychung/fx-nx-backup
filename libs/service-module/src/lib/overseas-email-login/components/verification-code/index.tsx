@@ -55,12 +55,14 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
       }
     })
   })
-
+  const initCode = useMemoizedFn(() => {
+    if (!userInfo) return
+    exeTimer()
+    setShowTime(true)
+  })
   useEffect(() => {
-    if (userInfo) {
-      getCode()
-    }
-  }, [getCode, userInfo])
+    initCode()
+  }, [initCode])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,

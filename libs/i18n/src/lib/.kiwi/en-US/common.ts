@@ -816,7 +816,7 @@ export default {
   targetTheTitleHasNotBeenFilledInYet: 'Are you sure to discard this content？',
   editedCompleted: 'Complete',
   maximumSupportForAdding: 'Up to 20 KR',
-  inputKey: 'Search',
+  inputKey: 'Write the key result name',
   areYouSureToDeleteThis: 'Are you sure to delete this KR?',
   removeTheExecutor: 'Remove member',
   alignedTargets: 'Aligning goals can help the team move in one direction',
@@ -947,6 +947,7 @@ export default {
   cancelArchive: 'Unarchive',
   archiveTime: 'Archive on',
   archivedBy: 'Archive by',
+  archivedByTime: 'Archive on',
   canBeReturnedOn:
     'It can be viewed in the "Archived" list without affecting usage ',
   uploadFailed: 'Fail',
@@ -1144,11 +1145,12 @@ export default {
   canCreateWork:
     '· Workflow is available to the template, which make task to show the specific procedure.',
   commonSaveAndUse: '· You can save tasks to the Templates.',
-  VipHasExpired: '会员已过期，不支持使用该功能，请开通会员',
+  VipHasExpired:
+    'Your Premium plan is expired, please renew to use advance features',
   useing: 'Task templates',
   taskTemplate: 'Task template',
   spaceHasExpired: '专业版空间已过期，模版库已被停用，如需使用需重新开通。',
-  getAllItems: '获取所有项目列表',
+  getAllItems: 'Get all project list',
   createProject: 'New Project',
   upgradeSpace: 'Upgrade',
   exitSpace: 'Quit Teamspace',
@@ -1166,9 +1168,8 @@ export default {
   targetCapabilityOnly: 'This feature is available only in the Pro Teamspace',
   settingGoals:
     'Setting goals to achieve efficient teamwork and move in the same direction',
-  statisticalAbilityOnly:
-    '统计能力仅专业空间可用，升级专业空间解锁更多高级权益',
-  dataVisualization: '数据可视化，空间情况一看便知',
+  statisticalAbilityOnly: 'This feature is available only in the Pro Teamspace',
+  dataVisualization: 'Data visualization',
   thisFeatureIsOnlyAvailableFor:
     'This feature is available only in the Pro Teamspace',
   convertDifferentNumbers:
@@ -1179,20 +1180,19 @@ export default {
   quickProduction: 'Make your own template and add workflow',
   thisModule: '该模块该模块仅支持内部成员查看，目前您的身份是外部成员。',
   thisModuleOnlySupports: '该模块仅支持空间成员查看， 目前您的身份是外部成员。',
-  globalManagement: '全局管理成员计划和安排',
-  upgradeToProfessional: '升级为专业版空间',
+  globalManagement: 'Manage team schedule',
+  upgradeToProfessional: 'Upgrade to Pro',
   thisModuleOnlySupports2: '该模块仅支持专业版空间，目前您的空间是基础版空间。',
   crossProjectManagement: 'View member work schedules',
   performViewOnly:
-    '仅执行/查看自己参与的事项，无法进入空间进行功能操作（如：资源库、成员工作、数据报表等）',
+    'View only what they are involved in, no access to the teamspace',
   suggestSettingTo: 'Recommended for members who collaborate frequently',
-  withinTheAvailableSpace:
-    '拥有空间内全部能力和可视范围（具体可视范围可通过权限管理调整）',
+  withinTheAvailableSpace: 'Full capability in space',
   suggestSettingTo2: 'Recommended for members who collaborate frequently',
   administrators: 'Admin',
   refuse: 'Reject',
   agree: 'Approve',
-  unprocessed: '未处理',
+  unprocessed: 'Unprocessed',
   rejected: 'rejected',
   toBeAdded: 'To be added',
   enterpriseEditionProfessional: '企业版专业空间',
@@ -1634,6 +1634,7 @@ export default {
   createdOnDa: 'Created at {val1}',
   drawer: '',
   inviteToJoin: 'Invite',
+  meInviteToJoin: 'Invited by me',
   taskCompletionTouch: 'Completed action',
   notifyAgain: '',
   reInvite: '',
@@ -1703,6 +1704,7 @@ export default {
   returned: 'Withdrawed',
   waitingForAnotherPlace: 'Proccessing',
   pendingProcessing: 'Proccessing',
+  RemoveMemberButton: 'remove {val1}',
 
   /** */
   infon: 'Order of {val1}',
@@ -1746,6 +1748,9 @@ export default {
   importRequested: 'Pending for admin approval',
   moneyUnit: '$',
   freeAccount: 'Free member',
+  currentEditionProSpace: 'You are using Pro teamspace.',
+  renewMembership: 'Renew',
+  viewDetailedRights: 'Features list',
   /** */
 
   remind: 'Reminder',
@@ -1948,7 +1953,7 @@ export default {
   pleaseChooseToProtectOtherWillDelete:
     '请选择要保留在空间中的应用，最多选择2个，其他未选择应用将被清除',
   choosingToKeepShould: '选择保留应用',
-  noExplanationAtTheMoment: '暂无说明',
+  noExplanationAtTheMoment: 'No description',
   usedTimes: 'Used {val1} times',
   keepUpTo: '最多保留2个模版',
   confirmDowngrade: '确认降级',
@@ -2695,5 +2700,14 @@ export default {
   h5_underReview: 'Pending for admin approval',
   h5_waitForTake: '{val1} assignees in total',
   h5_theProjectHasBeenEstablished: 'Project has been active for {val1} days',
-  h5_toBeAccepted: '待接受'
+  h5_toBeAccepted: '待接受',
+  takerInvite: '{val1}',
+  joiningMethod: 'Invited by',
+  clickToInput: 'Enter',
+  commentName: 'Remark',
+  confirmInvitationAgain: '确认再次邀请该参会人？',
+  confirmInvitationAgain2: '确认再次邀请该参与人？',
+  nickname: 'Name',
+  upgradeSubmitted: 'Pending for admin approval...',
+  upgradedToInternal: 'Has become a member'
 }

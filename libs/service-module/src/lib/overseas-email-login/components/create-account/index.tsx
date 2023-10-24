@@ -8,7 +8,8 @@ import {
 import style from './index.module.scss'
 import { IOverseasCreateAccount } from '@flyele-nx/types'
 import { globalNxController } from '@flyele-nx/global-processor'
-
+import { UsercApi } from '@flyele-nx/service'
+import { useMemoizedFn } from 'ahooks'
 interface Props {
   onSuccess?: (data: IOverseasCreateAccount) => void
   goToLogin: () => void
@@ -32,6 +33,36 @@ const CreateAccount: React.FC<React.PropsWithChildren<Props>> = ({
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const getCode = useMemoizedFn(() => {
+    UsercApi.OverseasGetCode({
+      youjianleixing: 1,
+      youxiang: email
+    })
+      .then((res) => {
+        if (res.data.code === 0) {
+          globalNxController.showMsg({
+            msgType: '成功',
+            content: 'Verification code sent'
+          })
+          goToVerificationCode()
+        }
+      })
+      .catch((err) => {
+        // const str = err.errorFields[0].errors[0]
+        if (
+          err &&
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          globalNxController.showMsg({
+            msgType: '错误',
+            content: err.response.data.message
+          })
+        }
+      })
+  })
+
   const onSubmit = () => {
     form
       .validateFields()
@@ -42,7 +73,7 @@ const CreateAccount: React.FC<React.PropsWithChildren<Props>> = ({
             yonghuming: name,
             youxiang: email
           })
-        goToVerificationCode()
+        getCode()
       })
       .catch((err) => {
         const str = err.errorFields[0].errors[0]

@@ -101,7 +101,7 @@ const VerificationCode: React.FC<React.PropsWithChildren<Props>> = ({
     const params = {
       ...userInfo,
       yanzhengma: codes.join(''),
-      register_platform: '官网',
+      register_platform: '官网'
     }
 
     setLoading(true)

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { MapSvgConfig } from '../config'
 import { linkHorizontal } from '../d3'
 import { asstSvgGet } from '../d3/selection'
@@ -257,13 +258,13 @@ export const getSExpandBtnTransform = (d: Mdata): string => {
 export const getTargetLevelText = (level: TargetLevel) => {
   switch (level) {
     case TargetLevel.part: {
-      return '部门级'
+      return I18N.common.departmentalLevel
     }
     case TargetLevel.company: {
-      return '公司级'
+      return I18N.common.companyLevel
     }
     default: {
-      return '个人级'
+      return I18N.common.personalLevel
     }
   }
 }
@@ -271,16 +272,16 @@ export const getTargetLevelText = (level: TargetLevel) => {
 export const getTargetStatusText = (status: TargetStatus) => {
   switch (status) {
     case TargetStatus.risk: {
-      return { color: '#ED982B', text: '风险' }
+      return { color: '#ED982B', text: I18N.common.at_risk }
     }
     case TargetStatus.delay: {
-      return { color: '#EB6646', text: '延期' }
+      return { color: '#EB6646', text: I18N.common.delay }
     }
     case TargetStatus.over: {
-      return { color: '#92929D', text: '完结' }
+      return { color: '#92929D', text: I18N.common.closed }
     }
     default: {
-      return { color: '#25BBAD', text: '正常' }
+      return { color: '#25BBAD', text: I18N.common.on_track }
     }
   }
 }

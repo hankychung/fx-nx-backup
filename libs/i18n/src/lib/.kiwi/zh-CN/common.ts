@@ -2611,5 +2611,5 @@ export default {
   confirmInvitationAgain2: '确认再次邀请该参与人？',
   nickname: '昵称',
   upgradeSubmitted: '已提交升级审批',
-  upgradedToInternal: '已升级为内部成员'
-}
+  upgradedToInternal: '已升级为内部成员',
+};

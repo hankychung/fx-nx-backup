@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, {
   FC,
   useState,
@@ -32,14 +33,12 @@ import {
   RectWhiteIcon,
   TaskCheckIcon,
   UncheckIcon,
-  UndoGrayIcon,
   UndoIcon
 } from '@flyele-nx/icon'
 import {
   useContactStore,
   useUserInfoStore,
-  globalNxController,
-  useScheduleStore
+  globalNxController
 } from '@flyele-nx/global-processor'
 import { MatterType, FlowOperateType, SIZE_TYPE_KEY } from '@flyele-nx/constant'
 import { UserInfoUtils } from '@flyele-nx/utils'
@@ -285,7 +284,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
         globalNxController.updateWorkflowStep({ taskId })
         globalNxController.showMsg({
           msgType: '成功',
-          content: '操作成功，该事项已退回上一步'
+          content: I18N.common.theOperationWasSuccessful2
         })
       })
       .catch((err: any) => {
@@ -307,26 +306,26 @@ const _WorkflowOperation: ForwardRefRenderFunction<
 
     if (curStep?.operate_type === FlowOperateType.OR) {
       if (isLast) {
-        return '操作成功，工作流已完成'
+        return I18N.common.operationSuccessfulWorkflow
       }
 
-      return '操作成功，该事项已到下一步'
+      return I18N.common.theOperationWasSuccessful
     }
 
     const isAllOver = curStep?.user_ids?.every((v) => !!v.complete_at)
 
     // 如果是最后一步且全部已完成
     if (isLast && isAllOver) {
-      return '操作成功，工作流已完成'
+      return I18N.common.operationSuccessfulWorkflow
     }
 
     // 是否当前已全部完成
     if (isAllOver) {
-      return '操作成功，该事项已到下一步'
+      return I18N.common.theOperationWasSuccessful
     }
 
     // 当前非最后一步且非全部已完成
-    return '操作成功，等待他人处理'
+    return I18N.common.successfulOperationEtc
   })
 
   const handleNext = useMemoizedFn(() => {
@@ -420,9 +419,9 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       width: 420,
       icon: null,
       centered: true,
-      content: <div>下一步骤尚无执行人，请先选择执行人后再操作完成</div>,
-      cancelText: '取消',
-      okText: '去选择',
+      content: <div>{I18N.common.theNextStepIsStillPending}</div>,
+      cancelText: I18N.common.cancel,
+      okText: I18N.common.toChoose,
       cancelButtonProps: {
         type: 'text',
         style: { borderRadius: 8 }
@@ -448,7 +447,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
   const checkBeforeStep = useMemoizedFn(() => {
     if (showModal) {
       closeModal()
-      globalNxController.showMsg({ content: '他人已处理' })
+      globalNxController.showMsg({ content: I18N.common.othersHaveProcessed })
     }
   })
 
@@ -460,12 +459,12 @@ const _WorkflowOperation: ForwardRefRenderFunction<
     if (isOverDoneVerify()) {
       globalNxController.showMsg({
         msgType: '消息',
-        content: '工作流事项，暂不支持重新打开'
+        content: I18N.common.workflowMatters
       })
     } else {
       globalNxController.showMsg({
         msgType: '消息',
-        content: '当前步骤，你已处理'
+        content: I18N.common.currentStepYou2
       })
     }
   })
@@ -475,7 +474,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
       case 'pass': {
         globalNxController.showMsg({
           msgType: '消息',
-          content: '当前步骤，你无需处理'
+          content: I18N.common.currentStepYou
         })
         break
       }
@@ -562,21 +561,23 @@ const _WorkflowOperation: ForwardRefRenderFunction<
         footer={null}
       >
         <div className={style['modal-content']}>
-          <div className={style.title}>回退上一步</div>
+          <div className={style.title}>{I18N.common.stepBack}</div>
           <div className={style.content}>
             <TextArea
               value={inputVal}
               autoSize={false}
               maxLength={150}
               showCount
-              placeholder="请在此处输入意见"
+              placeholder={I18N.common.pleaseEnterHere}
               onChange={(e) => {
                 const { value } = e.target
 
                 if (value.length >= 150) {
                   globalNxController.showMsg({
                     msgType: '消息',
-                    content: '最多支持150个汉字'
+                    content: I18N.template?.(I18N.common.supportsUpToM, {
+                      val1: 150
+                    })
                   })
                 }
 
@@ -585,8 +586,8 @@ const _WorkflowOperation: ForwardRefRenderFunction<
             />
           </div>
           <div className={style.footer}>
-            <div onClick={closeModal}>取消</div>
-            <div onClick={handleBackConfirm}>提交</div>
+            <div onClick={closeModal}>{I18N.common.cancel}</div>
+            <div onClick={handleBackConfirm}>{I18N.common.submit}</div>
           </div>
         </div>
       </Modal>
@@ -633,7 +634,7 @@ const _Container: FC<{
                 <div className={style.line} />
                 <FlyTooltip text={addUser.name} trigger="hover">
                   <div className={cs(style['other-info'], style.header)}>
-                    <span>创建：</span>
+                    <span>{`${I18N.common.create}: `}</span>
                     <FlyAvatar src={addUser?.avatar} size={15} />
                     <span className={cs(style.overflow)}>{addUser.name}</span>
                   </div>
@@ -644,7 +645,9 @@ const _Container: FC<{
           if (step === OperateStep.DONE) {
             return (
               <div className={style.wrapper} key={idx}>
-                <div className={cs(style['other-info'], style.end)}>结束</div>
+                <div className={cs(style['other-info'], style.end)}>
+                  {I18N.common.end}
+                </div>
                 <div className={style.line} />
               </div>
             )
@@ -677,7 +680,7 @@ const _Container: FC<{
           onClick={handleBack}
           disabled={isFirstStep}
         >
-          上一步
+          {I18N.common.previousStep}
         </Button>
         <Button
           className={style.btn}
@@ -685,7 +688,7 @@ const _Container: FC<{
           type="primary"
           onClick={handleNext}
         >
-          下一步
+          {I18N.common.nextStep}
         </Button>
       </div>
     </div>

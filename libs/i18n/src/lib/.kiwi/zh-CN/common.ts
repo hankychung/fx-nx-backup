@@ -2731,5 +2731,5 @@ export default {
   acceptOnlyTheCurrent: '仅接受当前',
   areAllConnected: '是否全部接受?',
   cannotSetEarly: '不能设置早于当前的时间',
-  timeExpiredPlease: '时间过期，请重新设置',
-};
+  timeExpiredPlease: '时间过期，请重新设置'
+}

@@ -31,17 +31,34 @@ const ForgetPassword: React.FC<React.PropsWithChildren<Props>> = ({
   }, [])
 
   const getCode = useMemoizedFn(async () => {
-    await UsercApi.OverseasGetCode({
+    UsercApi.OverseasGetCode({
       youjianleixing: 2,
       youxiang: email
     })
+      .then((res) => {
+        setLinkSuccess(true)
+        console.log(res, 'reset-password')
+      })
+      .catch((err) => {
+        // const str = err.errorFields[0].errors[0]
+        if (
+          err &&
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          globalNxController.showMsg({
+            msgType: '错误',
+            content: err.response.data.message
+          })
+        }
+      })
   })
 
   const onSubmit = () => {
     form
       .validateFields()
       .then(async () => {
-        setLinkSuccess(true)
         await getCode()
         // login()
       })

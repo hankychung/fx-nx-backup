@@ -36,7 +36,7 @@ class Service {
           config.headers['X-Auth-Timezone'] =
             -new Date().getTimezoneOffset() / 60
 
-          config.headers['X-Auth-Language'] = navigator.language.split(
+          config.headers['X-Auth-Language'] = (global as any).lang.split(
             '-'
           )[0] as string
 

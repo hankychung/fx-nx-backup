@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useState, useEffect, useMemo } from 'react'
 import { Tree } from 'antd'
 import styles from './index.module.scss'
@@ -13,34 +14,34 @@ export enum charsType {
 export const charsDict = {
   // 批量接受的文案
   accept: {
-    title: '是否全部接受?',
-    oneBtn: '仅接受当前',
-    allBtn: '全部接受',
+    title: I18N.common.areAllConnected,
+    oneBtn: I18N.common.acceptOnlyTheCurrent,
+    allBtn: I18N.common.acceptAll,
     txt: ''
   },
   finish: {
-    title: '是否全部完成?',
-    oneBtn: '仅完成当前',
-    allBtn: '全部完成',
+    title: I18N.common.areAllCompleted2,
+    oneBtn: I18N.common.onlyCompleteTheCurrent2,
+    allBtn: I18N.common.allCompleted2,
     txt: ''
   },
   refused: {
-    title: '是否全部拒绝?',
-    oneBtn: '仅拒绝当前',
-    allBtn: '全部拒绝',
+    title: I18N.common.whetherToRejectAll,
+    oneBtn: I18N.common.onlyRejectTheCurrent,
+    allBtn: I18N.common.rejectAll,
     txt: ''
   },
   hide: {
-    title: '是否一并隐藏?',
-    oneBtn: '仅隐藏当前',
-    allBtn: '一并隐藏',
+    title: I18N.common.isItHiddenTogether,
+    oneBtn: I18N.common.hideOnlyTheCurrent,
+    allBtn: I18N.common.hideTogether,
     txt: ''
   },
   closeTask: {
-    title: '是否全部完结?',
-    oneBtn: '仅完结当前',
-    allBtn: '全部完结',
-    txt: '事项内所有协作人将同步完成'
+    title: I18N.common.areAllCompleted,
+    oneBtn: I18N.common.onlyCompleteTheCurrent,
+    allBtn: I18N.common.allCompleted,
+    txt: I18N.common.allWithinTheMatter
   }
 }
 
@@ -70,7 +71,10 @@ const InfosModalLayer: React.FC<React.PropsWithChildren<PropLayer>> = ({
   /** 注册了 key 的数据 */
   const treeData = useMemo(() => addKey(taskListInside), [taskListInside])
 
-  const title = `以下${taskList.length}个下级事项，${charsDict[typeName].title}`
+  const title = I18N.template?.(I18N.common.theFollowingDec, {
+    val1: taskList.length,
+    val2: charsDict[typeName].title
+  })
 
   return (
     <div className={styles.infos_modal_layer}>
@@ -81,7 +85,7 @@ const InfosModalLayer: React.FC<React.PropsWithChildren<PropLayer>> = ({
 
       {!!cycle && (
         <div className={styles.infos_modal_layer__cycle}>
-          <span>{`第${cycle}次循环事项：`}</span>
+          <span>{I18N.template?.(I18N.common.cycl, { val1: cycle })}</span>
         </div>
       )}
 

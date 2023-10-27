@@ -1,10 +1,11 @@
+import { I18N } from '@flyele-nx/i18n'
 import React, { useMemo } from 'react'
 import cs from 'classnames'
 import { FlyAvatarGroup, FlyTooltip } from '@flyele/flyele-components'
 import style from './index.module.scss'
 import { IUserStepInfo } from '@flyele-nx/service'
 import { WorkflowMemberIcon } from '../WorkflowMemberIcon'
-import { LineIcon, UndoGrayIcon } from '@flyele-nx/icon'
+import { LineIcon } from '@flyele-nx/icon'
 import { useContactStore } from '@flyele-nx/global-processor'
 import { FlowOperateType } from '@flyele-nx/constant'
 
@@ -107,7 +108,7 @@ const _WorkFlowStep: React.FC<IProps> = ({
             {title}
           </div>
           <span className={cs(style.logic, { [style['logic-or']]: isOr })}>
-            {isOr ? '或' : '且'}
+            {isOr ? I18N.common.or : I18N.common.and}
           </span>
         </div>
         <FlyAvatarGroup

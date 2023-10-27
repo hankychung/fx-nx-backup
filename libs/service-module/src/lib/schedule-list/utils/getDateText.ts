@@ -70,14 +70,19 @@ const transitionStartAt = (dateStr: string, needSpace?: boolean) => {
  * 截止
  * isTime at 用于时间 on 用于日期
  */
-const transitionDueAt = (
+export const transitionDateToEn = (
   dateStr: string,
   needSpace?: boolean,
-  isTime?: boolean
+  isTime?: boolean,
+  cnText?: string,
+  enText?: string
 ) => {
+  const cn = cnText || '截止'
+  const en = enText || 'Due'
+
   return isCN
-    ? `${dateStr}${needSpace ? ' ' : ''}截止`
-    : `Due ${isTime ? 'at' : 'on'} ${dateStr}`
+    ? `${dateStr}${needSpace ? ' ' : ''}${cn}`
+    : `${en} ${isTime ? 'at' : 'on'} ${dateStr}`
 }
 
 const formatDate = (n: number) => getEnFormat(dayjs.unix(n), 'M月D日', 'MMM D')
@@ -444,18 +449,24 @@ export const getScheduleDate = ({
 
         const txt =
           matterType === MatterType.calendar
-            ? `${isCN ? '' : `Ended at `}${formatTime(
-                finishTime,
-                isTeamSchedule
-              )} ${isCN ? I18N.common.ended : ''}`
+            ? transitionDateToEn(
+                formatTime(finishTime, isTeamSchedule),
+                true,
+                !isTeamSchedule,
+                I18N.common.ended,
+                'Ended'
+              )
             : item?.repeat_type && item?.repeat_type !== 0
             ? `${formatTime(finishTime, isTeamSchedule)} ${
                 I18N.common.completedWholeRepeat
               }`
-            : `${isCN ? '' : `Completed at `}${formatTime(
-                finishTime,
-                isTeamSchedule
-              )} ${isCN ? I18N.common.completed : ''}`
+            : transitionDateToEn(
+                formatTime(finishTime, isTeamSchedule),
+                true,
+                !isTeamSchedule,
+                I18N.common.completed,
+                'Completed'
+              )
         const delayDays = Math.floor((finishTime - endTime) / (60 * 60 * 24))
 
         return {
@@ -521,7 +532,7 @@ export const getScheduleDate = ({
                         startTime
                       )} ${formatTime(startTime)}`
                     : `${isCN ? '' : `Start at `}${formatTime(startTime)}`
-                } ${isCN ? suffix : ''}`,
+                }${isCN ? ` ${suffix}` : ''}`,
                 delayTxt: getDelaytxt()
               }
             }
@@ -560,7 +571,7 @@ export const getScheduleDate = ({
 
             // 无开始时间 / 选中天不是全天事项
             return {
-              txt: `${transitionDueAt(
+              txt: `${transitionDateToEn(
                 `${
                   isTeamSchedule ? `${formatDateWithYear(endTime)} ` : ''
                 }${formatTime(endTime)}`,
@@ -580,7 +591,7 @@ export const getScheduleDate = ({
               [
                 () => !startTime || startTimeDj.isSame(endTimeDj, 'date'),
                 () =>
-                  `${transitionDueAt(
+                  `${transitionDateToEn(
                     `${formatDateWithYear(endTime)} ${
                       isTeamSchedule ? formatTime(endTime) : ''
                     }`
@@ -589,14 +600,17 @@ export const getScheduleDate = ({
               // 开始时间在选中天
               [
                 () => !!startTime && startTimeDj.isSame(selectDate, 'date'),
-                () => `${formatDateWithYear(startTime)} 启动`
+                () =>
+                  `${isCN ? '' : 'Start on '}${formatDateWithYear(startTime)}${
+                    isCN ? ' 启动' : ''
+                  }`
               ],
               // 开始时间在历史
               [
                 () => !!startTime && startTimeDj.isBefore(selectDate, 'date'),
                 () =>
                   startTime > endTime
-                    ? `${transitionDueAt(
+                    ? `${transitionDateToEn(
                         `${formatDateWithYear(endTime)}`,
                         true
                       )}`
@@ -646,7 +660,7 @@ export const getScheduleDate = ({
                       isExecute ? 'Start at' : 'Start at'
                     } ${formatTime(startTime)}`
                 : startTime === 0 && isTeamSchedule
-                ? `${range} ${transitionDueAt(
+                ? `${range} ${transitionDateToEn(
                     formatTime(endTime),
                     false,
                     true
@@ -663,15 +677,27 @@ export const getScheduleDate = ({
 
     case MatterType.meeting: {
       return {
-        txt: `${dateRange(startTime, end_time, {
+        txt: `${
+          finishTime && !isCN ? '' : `Ended ${isTeamSchedule ? 'on' : 'at'} `
+        }${dateRange(startTime, end_time, {
           needAllDate: isTeamSchedule
-        })}${finishTime ? ` ${I18N.common.ended}` : ''}`
+        })}${finishTime && isCN ? ` ${I18N.common.ended}` : ''}`
       }
     }
 
     case MatterType.timeCollect: {
       const conds = new Map([
-        [() => !!finishTime, () => `${formatTime(end_time)} 已截止`],
+        [
+          () => !!finishTime,
+          () =>
+            transitionDateToEn(
+              formatTime(end_time),
+              true,
+              true,
+              '已截止',
+              'End'
+            )
+        ],
         [
           () => startTimeDj.isSame(endTimeDj, 'date'),
           () => dateRange(startTime, endTime)
@@ -682,7 +708,7 @@ export const getScheduleDate = ({
         ],
         [
           () => true,
-          () => `${transitionDueAt(`${formatTime(endTime)}`, true, true)}`
+          () => `${transitionDateToEn(`${formatTime(endTime)}`, true, true)}`
         ]
       ])
 
@@ -697,7 +723,14 @@ export const getScheduleDate = ({
       const conds = new Map([
         [
           () => !!finishTime,
-          () => `${formatTime(end_time)} ${I18N.common.ended}`
+          () =>
+            transitionDateToEn(
+              formatTime(end_time),
+              true,
+              true,
+              I18N.common.ended,
+              'End'
+            )
         ],
         [
           () => startTimeDj.isSame(selectDate, 'date'),

@@ -39,13 +39,11 @@ const CreateAccount: React.FC<React.PropsWithChildren<Props>> = ({
       youxiang: email
     })
       .then((res) => {
-        if (res.data.code === 0) {
-          globalNxController.showMsg({
-            msgType: '成功',
-            content: 'Verification code sent'
-          })
-          goToVerificationCode()
-        }
+        globalNxController.showMsg({
+          msgType: '成功',
+          content: 'Verification code sent'
+        })
+        goToVerificationCode()
       })
       .catch((err) => {
         // const str = err.errorFields[0].errors[0]

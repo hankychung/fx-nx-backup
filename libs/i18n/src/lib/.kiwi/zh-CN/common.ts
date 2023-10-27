@@ -560,6 +560,7 @@ export default {
   secondaryMatters: '二级事项',
   firstLevelMatters: '一级事项',
   contain: '包含',
+
   noNumericalValue: '无数值',
   hasNumericalValue: '有数值',
   equalTo: '等于',
@@ -1928,6 +1929,9 @@ export default {
   openTeamVipToCreate4: '您已为{val1}名成员开通团队会员',
   removeTaker: '删除协作人',
   confirmDelete: '确认删除',
+  noNameProject: '未命名项目',
+  maxProject: '最多创建20个项目',
+  contain2: '包含',
   withinTheSearchSpace: '搜索空间内相关内容',
   passed: '已通过',
   notic: '{val1} {val2}申请',

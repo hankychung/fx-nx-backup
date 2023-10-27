@@ -575,6 +575,7 @@ export default {
   secondaryMatters: 'Level-2 task',
   firstLevelMatters: 'Level-1 task',
   contain: 'is',
+
   noNumericalValue: 'Unvalid',
   hasNumericalValue: 'Valid',
   equalTo: '等于',
@@ -1845,6 +1846,9 @@ export default {
   openTeamVipToCreate4: 'You upgrade {val1} members to Business member',
   removeTaker: 'Delete contact',
   confirmDelete: 'Delete',
+  noNameProject: 'New project',
+  maxProject: 'Up to 20 projects',
+  contain2: 'group by',
   /** */
 
   remind: 'Reminder',

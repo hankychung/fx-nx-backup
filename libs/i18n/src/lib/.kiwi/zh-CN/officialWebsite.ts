@@ -124,5 +124,5 @@ export default {
   visualDisplayGroup:
     '直观展示团队主要目标，覆盖OKR工作法的实施流程，确保团队上下责任清晰。',
   okrDevelopment: 'OKR制定团队目标',
-  spaceVersion: '空间版本'
-}
+  spaceVersion: '空间版本',
+};

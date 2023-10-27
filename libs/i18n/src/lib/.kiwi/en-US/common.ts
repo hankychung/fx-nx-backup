@@ -1850,6 +1850,14 @@ export default {
   maxProject: 'Up to 20 projects',
   contain2: 'group by',
   avatarEdit: '头像设置',
+  openingATeamMeeting3: '开通团队会员享受专业空间权益',
+  individualMembershipBenefits: '个人会员享 10 项专属权益',
+  itemsWithinTheProject: '项目内事项',
+  singleEventCoordination: '单一事项协作人',
+  numberOfSubItems2: '子事项数',
+  openingATeamMeeting4: '开通团队会员享受更大权益',
+  openingAPersonalMeeting2: '开通个人会员享受更大权益',
+  memberHasExpired2: '会员已过期，不支持查看和使用视图，请开通会员',
   /** */
 
   remind: 'Reminder',

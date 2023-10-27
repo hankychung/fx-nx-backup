@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
@@ -56,10 +57,10 @@ function VipInterests({
               })}
             >
               {type === 'personVipFunction' && (
-                <div>个人会员享 10 项专属权益</div>
+                <div>{I18N.common.individualMembershipBenefits}</div>
               )}
               {type === 'teamVipFunction' && (
-                <div>开通团队会员享受专业空间权益</div>
+                <div>{I18N.common.openingATeamMeeting3}</div>
               )}
               <div
                 className={classNames(styles.interests, {
@@ -67,7 +68,7 @@ function VipInterests({
                 })}
                 onClick={handleConfirm}
               >
-                <span>查看完整权益</span>
+                <span>{I18N.common.viewFullRights}</span>
                 <ArrowRight
                   color={
                     type === 'personVipFunction'
@@ -96,7 +97,7 @@ function VipInterests({
               >
                 <div className={styles.customer}>
                   <Customer></Customer>
-                  <span>联系客服</span>
+                  <span>{I18N.common.contactCustomerService}</span>
                 </div>
               </FlyBasePopper>
             </div>
@@ -127,7 +128,7 @@ function VipInterests({
                 })}
                 onClick={handleConfirm}
               >
-                开通会员
+                {I18N.common.activateMembership}
               </div>
             </div>
           </div>

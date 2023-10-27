@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import styles from './vipexpired-banner.module.scss'
 import { ReactComponent as VipIcon } from './icons/vip.svg'
 
@@ -10,11 +11,9 @@ export function VipexpiredBanner({ handleConfirm }: VipexpiredBannerProps) {
   return (
     <div className={styles['vip-banner']}>
       <VipIcon />
-      <div className={styles.txt}>
-        会员已过期，不支持查看和使用视图，请开通会员
-      </div>
+      <div className={styles.txt}>{I18N.common.memberHasExpired}</div>
       <div className={styles.btn} onClick={handleConfirm}>
-        立即开通
+        {I18N.common.activate_now}
       </div>
     </div>
   )

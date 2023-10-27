@@ -560,7 +560,6 @@ export default {
   secondaryMatters: '二级事项',
   firstLevelMatters: '一级事项',
   contain: '包含',
-
   noNumericalValue: '无数值',
   hasNumericalValue: '有数值',
   equalTo: '等于',
@@ -1932,6 +1931,7 @@ export default {
   noNameProject: '未命名项目',
   maxProject: '最多创建20个项目',
   contain2: '包含',
+  avatarEdit: '头像设置',
   withinTheSearchSpace: '搜索空间内相关内容',
   passed: '已通过',
   notic: '{val1} {val2}申请',
@@ -2731,5 +2731,5 @@ export default {
   acceptOnlyTheCurrent: '仅接受当前',
   areAllConnected: '是否全部接受?',
   cannotSetEarly: '不能设置早于当前的时间',
-  timeExpiredPlease: '时间过期，请重新设置'
-}
+  timeExpiredPlease: '时间过期，请重新设置',
+};

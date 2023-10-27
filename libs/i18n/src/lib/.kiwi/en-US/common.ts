@@ -1849,6 +1849,7 @@ export default {
   noNameProject: 'New project',
   maxProject: 'Up to 20 projects',
   contain2: 'group by',
+  avatarEdit: '头像设置',
   /** */
 
   remind: 'Reminder',

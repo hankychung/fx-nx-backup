@@ -5,6 +5,7 @@ import { Slider, Modal, Button, ModalProps } from 'antd'
 import { ReactComponent as ResetIcon } from '../../assets/icons/avatar_reset.svg'
 import { ReactComponent as RotateIcon } from '../../assets/icons/avatar_rotate.svg'
 import css from './index.module.scss'
+import { I18N } from '@flyele-nx/i18n'
 
 interface IProps {
   src: string
@@ -121,7 +122,7 @@ const _AvatarEdit = (props: IProps) => {
       className={css.container}
       open={open}
       zIndex={1002}
-      title="头像设置"
+      title={I18N.common.avatarEdit}
       width={312}
       footer={null}
       mask={false}
@@ -219,9 +220,9 @@ const _AvatarEdit = (props: IProps) => {
       </div>
       <div className={css.footer}>
         <Button onClick={handleUpload} style={{ marginRight: 'auto' }}>
-          上传
+          {I18N.common.upload}
         </Button>
-        <Button onClick={onCancel}>取消</Button>
+        <Button onClick={onCancel}>{I18N.common.cancel}</Button>
         <Button
           onClick={() => {
             handleConfirm?.()
@@ -231,7 +232,7 @@ const _AvatarEdit = (props: IProps) => {
           type="primary"
           loading={loading}
         >
-          确定
+          {I18N.common.confirm}
         </Button>
       </div>
     </Modal>

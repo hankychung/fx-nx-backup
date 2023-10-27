@@ -16,7 +16,7 @@ import { useMemoizedFn } from 'ahooks'
 import { paymentApi } from '@flyele-nx/service'
 import { FlyButton } from '@flyele/flyele-components'
 import { UserInfoUtils } from '@flyele-nx/utils'
-import { ILang } from '@flyele-nx/i18n'
+import { I18N, ILang } from '@flyele-nx/i18n'
 import { OverseasEmailLogin } from '../overseas-email-login'
 import { OverseasContactUsModal } from '@flyele-nx/ui'
 
@@ -206,7 +206,7 @@ export const MemberIntroduction = ({
         showMsg={() => {
           messageApi.open({
             type: 'error',
-            content: '请选择开通对象'
+            content: I18N.common.pleaseSelectObj
           })
         }}
         originRoute="官网"

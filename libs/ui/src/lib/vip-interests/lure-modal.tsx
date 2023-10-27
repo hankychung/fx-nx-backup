@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
@@ -30,9 +30,12 @@ function VipInterests({
   const Controller = useController(new FlyBasePopperCtrl())
   const person_bac = 'https://cdn.flyele.net/resources/PC/person_background.png'
   const team_bac = 'https://cdn.flyele.net/resources/PC/team_bac.png'
-  const person_inter =
-    'https://cdn.flyele.net/resources/PC/person_inter_icon.png'
-  const team_inter = 'https://cdn.flyele.net/resources/PC/team_inter.png'
+  const person_inter = `https://cdn.flyele.net/resources/PC/person_inter_icon${
+    isCN ? '' : '_en'
+  }.png`
+  const team_inter = `https://cdn.flyele.net/resources/PC/team_inter${
+    isCN ? '' : '_en'
+  }.png`
   return (
     <Modal
       open={open}

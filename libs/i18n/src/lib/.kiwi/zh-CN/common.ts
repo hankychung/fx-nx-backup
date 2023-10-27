@@ -1940,6 +1940,8 @@ export default {
   openingATeamMeeting4: '开通团队会员享受更大权益',
   openingAPersonalMeeting2: '开通个人会员享受更大权益',
   memberHasExpired2: '会员已过期，不支持查看和使用视图，请开通会员',
+  pleaseSelectObj: '请选择开通对象',
+  moreEquitySpace: '更多空间权益',
   withinTheSearchSpace: '搜索空间内相关内容',
   passed: '已通过',
   notic: '{val1} {val2}申请',

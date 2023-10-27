@@ -1,4 +1,4 @@
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { CommonPage } from '../../../common/page'
 import styles from './index.module.scss'
@@ -217,22 +217,24 @@ const _InviteMember = ({
       needFooter={false}
     >
       <div className={styles.inviteMemberRoot}>
-        <div className={styles.cardRoot}>
-          <div className={styles.cardLeft}>
-            <div className={styles.title}>二维码邀请</div>
-            <div className={styles.desc}>
-              截图分享，对方扫码后即可加入你的团队
+        {isCN && (
+          <div className={styles.cardRoot}>
+            <div className={styles.cardLeft}>
+              <div className={styles.title}>二维码邀请</div>
+              <div className={styles.desc}>
+                截图分享，对方扫码后即可加入你的团队
+              </div>
+            </div>
+            <div className={styles.cardRight}>
+              <div className={styles.qrcodeBox} ref={domRef}>
+                <img className={styles.qrcode} src={qrCode} alt="qrcode" />
+              </div>
+              <div className={cs(styles.copy, styles.ml)} onClick={copyQrcode}>
+                复制
+              </div>
             </div>
           </div>
-          <div className={styles.cardRight}>
-            <div className={styles.qrcodeBox} ref={domRef}>
-              <img className={styles.qrcode} src={qrCode} alt="qrcode" />
-            </div>
-            <div className={cs(styles.copy, styles.ml)} onClick={copyQrcode}>
-              复制
-            </div>
-          </div>
-        </div>
+        )}
         <div className={styles.cardRoot}>
           <div className={cs(styles.title, styles.fs16)}>
             {I18N.common.invitationLink}

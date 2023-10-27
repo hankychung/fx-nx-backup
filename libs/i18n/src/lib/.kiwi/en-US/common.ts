@@ -575,6 +575,7 @@ export default {
   secondaryMatters: 'Level-2 task',
   firstLevelMatters: 'Level-1 task',
   contain: 'is',
+
   noNumericalValue: 'Unvalid',
   hasNumericalValue: 'Valid',
   equalTo: '等于',
@@ -1845,6 +1846,21 @@ export default {
   openTeamVipToCreate4: 'You upgrade {val1} members to Business member',
   removeTaker: 'Delete contact',
   confirmDelete: 'Delete',
+  noNameProject: 'New project',
+  maxProject: 'Up to 20 projects',
+  contain2: 'group by',
+  avatarEdit: 'Avatar',
+  openingATeamMeeting3: 'Pro teamspace for Business member',
+  individualMembershipBenefits: 'More features in Premium',
+  itemsWithinTheProject: 'Tasks in one project',
+  singleEventCoordination: 'Assignee in one tasks',
+  numberOfSubItems2: 'Subtask in one task',
+  memberHasExpired2:
+    'Your Premium plan is expired, please renew to use advance features',
+  pleaseSelectObj: 'Choose member',
+  moreEquitySpace: 'All features',
+  openingATeamMeeting4: 'Pro teamspace for Business member',
+  openingAPersonalMeeting2: 'More features in Premium  ',
   /** */
 
   remind: 'Reminder',

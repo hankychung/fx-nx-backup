@@ -6,7 +6,7 @@
  * @FilePath: /fx-nx/libs/service-module/src/lib/PersonPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useMemo } from 'react'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as Customer } from '../../../../assets/payImg/customer.svg'
@@ -21,6 +21,7 @@ import CustomerServicesModal from '../../../customer-services-modal'
 import { IFlyeleAvatarItem } from '../../../pay-modal'
 import dayjs from 'dayjs'
 import { getEnFormat } from '@flyele-nx/utils'
+import { CustomerServiceEmail } from '@flyele-nx/ui'
 interface Iprops {
   memberList: IFlyeleAvatarItem[]
   mineId: string
@@ -91,11 +92,15 @@ const Header = (props: Iprops) => {
           showArrow={false}
           content={() => (
             <div>
-              <CustomerServicesModal
-                onClose={() => {
-                  Controller.hide()
-                }}
-              />
+              {isCN ? (
+                <CustomerServicesModal
+                  onClose={() => {
+                    Controller.hide()
+                  }}
+                />
+              ) : (
+                <CustomerServiceEmail onClose={() => Controller.hide()} />
+              )}
             </div>
           )}
         >

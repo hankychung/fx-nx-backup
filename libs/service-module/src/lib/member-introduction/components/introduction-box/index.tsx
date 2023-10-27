@@ -68,7 +68,7 @@ export const IntroductionBox = ({
         className={styles.more_equity_space}
         onClick={handleMoreEquitySpace}
       >
-        更多空间权益
+        {I18N.common.moreEquitySpace}
       </span>
     )
   }

@@ -439,7 +439,7 @@ const _CreateProject = ({
     if (template.length >= 20) {
       globalNxController.showMsg({
         msgType: '错误',
-        content: '最多创建20个项目'
+        content: I18N.common.maxProject
       })
       return
     }
@@ -447,11 +447,14 @@ const _CreateProject = ({
       display_mode: 2,
       group_display: 'default',
       is_edit: true,
-      project_name: '未命名项目',
+      project_name: I18N.common.noNameProject,
       task_group: [
-        { group_name: '待处理', group_id: `${Math.random()}` },
-        { group_name: '进行中', group_id: `${Math.random()}` },
-        { group_name: '已完成', group_id: `${Math.random()}` }
+        {
+          group_name: I18N.common.pendingProcessing,
+          group_id: `${Math.random()}`
+        },
+        { group_name: I18N.common.in_progress, group_id: `${Math.random()}` },
+        { group_name: I18N.common.completed, group_id: `${Math.random()}` }
       ],
       checked: 'checked'
     }
@@ -523,7 +526,7 @@ const _CreateProject = ({
                     }
                     defaultValue={item.project_name}
                     value={inputValues[index]}
-                    placeholder="请输入项目名称"
+                    placeholder={I18N.common.pleaseEnterTheProject}
                     maxLength={16}
                     bordered={false}
                     style={{ maxWidth: '256px', fontSize: '16px' }}
@@ -554,7 +557,7 @@ const _CreateProject = ({
               </div>
               {item.is_edit && (
                 <div className={styles.itemRight}>
-                  <div className={styles.text}>包含</div>
+                  <div className={styles.text}>{I18N.common.contain2}</div>
                   <div className={styles.groupBox}>
                     {item.task_group.map((taskGroup, groupIndex) => {
                       if (!groupInputRefs.current[index]) {

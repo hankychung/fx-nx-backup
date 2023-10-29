@@ -1,3 +1,4 @@
+import { I18N, isCN } from '@flyele-nx/i18n'
 import styles from './lure-modal.module.scss'
 import { Modal } from 'antd'
 import { memo } from 'react'
@@ -12,6 +13,7 @@ import {
 import CustomerServicesModal from '../customer-services-modal'
 import classNames from 'classnames'
 import { identityData } from '@flyele-nx/constant'
+import { CustomerServiceEmail } from '../customer-service-email'
 export type IType = 'personVipCount' | 'teamVipCount'
 
 export interface VipCountProps {
@@ -48,15 +50,19 @@ function VipCount({ handleClose, handleConfirm, open, type }: VipCountProps) {
                 [styles.team_title]: type === 'teamVipCount'
               })}
             >
-              {type === 'personVipCount' && <div>开通个人会员享受更大权益</div>}
-              {type === 'teamVipCount' && <div>开通团队会员享受更大权益</div>}
+              {type === 'personVipCount' && (
+                <div>{I18N.common.openingAPersonalMeeting2}</div>
+              )}
+              {type === 'teamVipCount' && (
+                <div>{I18N.common.openingATeamMeeting4}</div>
+              )}
               <div
                 className={classNames(styles.interests, {
                   [styles.team_title]: type === 'teamVipCount'
                 })}
                 onClick={handleConfirm}
               >
-                <span>查看完整权益</span>
+                <span>{I18N.common.viewFullRights}</span>
                 <ArrowRight
                   color={
                     type === 'personVipCount' ? 'rgba(108, 64, 8, 1)' : '#fff'
@@ -73,17 +79,25 @@ function VipCount({ handleClose, handleConfirm, open, type }: VipCountProps) {
                 showArrow={false}
                 content={() => (
                   <div>
-                    <CustomerServicesModal
-                      onClose={() => {
-                        Controller.hide()
-                      }}
-                    ></CustomerServicesModal>
+                    {isCN ? (
+                      <CustomerServicesModal
+                        onClose={() => {
+                          Controller.hide()
+                        }}
+                      />
+                    ) : (
+                      <CustomerServiceEmail
+                        onClose={() => {
+                          Controller.hide()
+                        }}
+                      />
+                    )}
                   </div>
                 )}
               >
                 <div className={styles.customer}>
                   <Customer></Customer>
-                  <span>联系客服</span>
+                  <span>{I18N.common.contactCustomerService}</span>
                 </div>
               </FlyBasePopper>
             </div>
@@ -92,9 +106,13 @@ function VipCount({ handleClose, handleConfirm, open, type }: VipCountProps) {
             <div className={styles.list}>
               <div className={styles.header}>
                 <div className={styles.header_item}></div>
-                <div className={styles.header_item}>免费</div>
                 <div className={styles.header_item}>
-                  {type === 'personVipCount' ? '个人会员' : '团队会员'}
+                  {I18N.officialWebsite.free}
+                </div>
+                <div className={styles.header_item}>
+                  {type === 'personVipCount'
+                    ? I18N.common.premium
+                    : I18N.common.business}
                 </div>
               </div>
               <div className={styles.list_item}>
@@ -120,7 +138,7 @@ function VipCount({ handleClose, handleConfirm, open, type }: VipCountProps) {
                 })}
                 onClick={handleConfirm}
               >
-                开通会员
+                {I18N.common.activateMembership}
               </div>
             </div>
           </div>

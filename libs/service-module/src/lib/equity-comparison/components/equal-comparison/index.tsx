@@ -6,6 +6,7 @@ import cs from 'classnames'
 import { ReactComponent as SelectIcon } from '../../../../assets/introduction/select.svg'
 import { ReactComponent as CloseIcon } from '../../../../assets/introduction/close.svg'
 import equityComparison from '../../../../assets/introduction/equityComparison.png'
+import equityComparisonEn from '../../../../assets/introduction/equityComparisonEn.png'
 import { isCN } from '@flyele-nx/i18n'
 
 import { Modal } from 'antd'
@@ -182,7 +183,9 @@ export const SpaceComparison = ({ title, header, desc, listObj }: IProps) => {
                               maskClosable: true,
                               content: (
                                 <img
-                                  src={equityComparison}
+                                  src={
+                                    isCN ? equityComparison : equityComparisonEn
+                                  }
                                   style={{ marginTop: 10, width: 574 }}
                                 ></img>
                               )

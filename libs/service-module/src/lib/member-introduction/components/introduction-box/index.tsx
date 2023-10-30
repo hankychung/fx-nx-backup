@@ -109,7 +109,7 @@ export const IntroductionBox = ({
         <div className={styles.division}>
           <img src={divisionIcon} alt="" />
         </div>
-        {key === 'personal' && (
+        {key === 'personal' && isCN && (
           <div className={styles.personTask} style={{ width: '192px' }}>
             {isCN ? '仅针对 个人任务' : 'For personal tasks'}
           </div>

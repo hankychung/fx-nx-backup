@@ -127,5 +127,5 @@ export default {
   visualDisplayGroup:
     "Visually showcase the team's primary goal, covering the implementation process of the OKR methodology, ensuring clear responsibilities throughout the team",
   okrDevelopment: 'Establishing team objectives using OKR',
-  spaceVersion: '空间版本'
+  spaceVersion: 'Features'
 }

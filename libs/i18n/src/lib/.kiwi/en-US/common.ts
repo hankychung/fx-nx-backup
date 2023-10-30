@@ -642,7 +642,7 @@ export default {
   move: 'Move',
   noModificationRightsTemporarily: 'No permission',
   numberOfProjectPersonnel: '项目人数',
-  numberOfPeopleInTheSpace: '空间人数',
+  numberOfPeopleInTheSpace: 'Unlimited',
   numberOfParticipants: '事项人数',
   movedIntoProject: 'Move success',
   transferProjectLoss: 'Move failed',
@@ -1871,7 +1871,7 @@ export default {
   memberHasExpired2:
     'Your Premium plan is expired, please renew to use advance features',
   pleaseSelectObj: 'Choose member',
-  moreEquitySpace: 'All features',
+  moreEquitySpace: 'More Pro Teamspace features',
   openingATeamMeeting4: 'Pro teamspace for Business member',
   openingAPersonalMeeting2: 'More features in Premium  ',
   /** */

@@ -61,18 +61,25 @@
 
     .lft {
       color: rgba(106, 106, 106, 1);
-    }
-
-    .rgt {
-      color: rgba(254, 151, 0, 1);
+      .size {
+        line-height: 56px;
+      }
     }
 
     .size {
       font-size: 40px;
     }
 
+    .rgt {
+      color: rgba(254, 151, 0, 1);
+      .size {
+        font-size: 34px;
+      }
+    }
+
     .sub {
       font-size: 14px;
+      white-space: nowrap;
     }
   }
 

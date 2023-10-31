@@ -6,7 +6,7 @@
  * @FilePath: /electron-client/app/components/TeamPayModal/components/Header/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { I18N } from '@flyele-nx/i18n'
+import { I18N, isCN } from '@flyele-nx/i18n'
 import React from 'react'
 import { ReactComponent as Close } from '../../../../assets/payImg/close.svg'
 import { ReactComponent as Customer } from '../../../../assets/payImg/customer.svg'
@@ -19,6 +19,7 @@ import {
   useController
 } from '@flyele/flyele-components'
 import CustomerServicesModal from '../../../customer-services-modal'
+import { CustomerServiceEmail } from '@flyele-nx/ui'
 
 const Header = ({
   vipType,
@@ -54,11 +55,15 @@ const Header = ({
           showArrow={false}
           content={() => (
             <div>
-              <CustomerServicesModal
-                onClose={() => {
-                  Controller.hide()
-                }}
-              ></CustomerServicesModal>
+              {isCN ? (
+                <CustomerServicesModal
+                  onClose={() => {
+                    Controller.hide()
+                  }}
+                />
+              ) : (
+                <CustomerServiceEmail onClose={() => Controller.hide()} />
+              )}
             </div>
           )}
         >

@@ -13,14 +13,13 @@
 }
 
 .listContent {
-  width: 500px;
+  width: 30vw;
   .title {
     color: #262626;
     font-size: 28px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    margin-left: 28px;
     margin-bottom: 40px;
   }
   .list {
@@ -31,24 +30,24 @@
         align-items: center;
         margin-bottom: 8px;
         .circle {
-          width: 12px;
-          height: 12px;
+          width: 8px;
+          height: 8px;
           margin-right: 16px;
           border-radius: 50%;
         }
         .itemTitle {
           color: #262626;
-          font-size: 20px;
+          font-size: 24px;
           font-style: normal;
-          font-weight: 500;
         }
       }
       .itemBottom {
         color: #363636;
-        font-size: 14px;
+        font-size: 18px;
         font-style: normal;
         font-weight: 400;
         margin-left: 28px;
+        line-height: 32px;
       }
     }
   }
@@ -74,7 +73,7 @@
 
       .headerTitle {
         color: #333;
-        font-size: 42px;
+        font-size: 40px;
         font-style: normal;
         font-weight: 600;
         margin-bottom: 33px;
@@ -90,7 +89,8 @@
   }
   .bigBgBox {
     width: 100%;
-    height: 910px;
+    height: 47.4vw;
+    max-height: 910px;
   }
   .bgBox {
     width: 100%;
@@ -110,19 +110,19 @@
       font-style: normal;
       font-weight: 700;
       line-height: 54px; /* 150% */
-      padding-top: 76px;
-      padding-bottom: 84px;
+      padding-top: 4vw;
+      padding-bottom: 4.38vw;
     }
   }
 
   .projectList {
-    padding-top: 153px;
-    padding-left: 17%;
+    padding-top: 8vw;
+    padding-left: 10vw;
   }
 
   .personalList {
-    padding-top: 150px;
-    padding-left: 17%;
+    padding-top: 7.82vw;
+    padding-left: 10vw;
   }
 
   .contentLeft {
@@ -131,12 +131,12 @@
     align-items: end;
 
     .scenariosList {
-      padding-right: 14.6%;
+      padding-right: 10.6vw;
     }
 
     .teamList {
-      padding-top: 145px;
-      padding-right: 14.6%;
+      padding-top: 7.56vw;
+      padding-right: 10.6vw;
     }
   }
 
@@ -145,5 +145,41 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 1700px) {
+  .listContent {
+    width: 40vw;
+  }
+  .productPage {
+    .contentLeft {
+      .scenariosList {
+        padding-right: 4.6vw;
+      }
+    }
+    .scenarios {
+      margin-bottom: 290px;
+    }
+    .project {
+      margin-bottom: 290px;
+    }
+    .schedule {
+      margin-bottom: 290px;
+    }
+    .projectList {
+      padding-left: 3vw;
+    }
+    .personalList {
+      padding-left: 3vw;
+    }
+    .contentLeft {
+      .scenariosList {
+        padding-right: 4.6vw;
+      }
+      .teamList {
+        padding-right: 4.6vw;
+      }
+    }
   }
 }

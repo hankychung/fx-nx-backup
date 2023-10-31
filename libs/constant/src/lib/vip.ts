@@ -1,6 +1,7 @@
 /**
  * 0-非会员，1-个人会员，2-团队会员
  */
+import { I18N } from '@flyele-nx/i18n'
 export enum VipTypeEnum {
   Poor = 0,
   Person = 1,
@@ -23,101 +24,101 @@ export interface IIdentityData {
 export const identityData: IIdentityData[] = [
   {
     key: 'taskChildNumber',
-    title: '子事项数',
-    free: '20个，最多3层',
-    personal: '200个，最多8层',
-    team: '200个，最多8层'
+    title: I18N.common.numberOfSubItems2,
+    free: I18N.officialWebsite.multipleLayers2,
+    personal: I18N.officialWebsite.multipleLayers,
+    team: I18N.officialWebsite.multipleLayers
   },
   {
     key: 'taskTakerNumber',
-    title: '单一事项协作人',
-    free: '20人',
-    personal: '100人',
-    team: '无限'
+    title: I18N.common.singleEventCoordination,
+    free: I18N.officialWebsite.people,
+    personal: I18N.officialWebsite.people2,
+    team: I18N.common.infinite
   },
   {
     key: 'customView',
-    title: '自定义视图',
-    free: '1个',
-    personal: '10个',
-    team: '10个'
+    title: I18N.common.custom_list,
+    free: I18N.officialWebsite.individual7,
+    personal: I18N.officialWebsite.individual6,
+    team: I18N.officialWebsite.individual6
   },
   {
     key: 'tableHeader',
-    title: '表格表头显示',
-    free: '5个',
-    personal: '无限',
-    team: '无限'
+    title: I18N.officialWebsite.tableHeaderDisplay,
+    free: I18N.officialWebsite.individual5,
+    personal: I18N.common.infinite,
+    team: I18N.common.infinite
   },
   {
     key: 'personalTarget',
-    title: '个人目标',
-    free: '20个',
-    personal: '无限',
-    team: '无限'
+    title: I18N.common.individual,
+    free: I18N.officialWebsite.individual4,
+    personal: I18N.common.infinite,
+    team: I18N.common.infinite
   },
   {
     key: 'fileSave',
-    title: '文件存储',
+    title: I18N.officialWebsite.fileStorage,
     free: '2G',
     personal: '20G',
     team: '20G'
   },
   {
     key: 'fileUpdateSize',
-    title: '单个文件上传大小',
+    title: I18N.officialWebsite.onASingleFile,
     free: '50M',
     personal: '300M',
     team: false
   },
   {
     key: 'freeSpace',
-    title: '免费空间',
-    free: '创建1个，加入无限',
+    title: I18N.common.free_teamspace,
+    free: I18N.officialWebsite.createJoin,
     personal: false,
-    team: '无限'
+    team: I18N.common.infinite
   },
   {
     key: 'specialSpace',
-    title: '专业空间',
+    title: I18N.common.pro_teamspace,
     free: '0',
     personal: false,
-    team: '无限'
+    team: I18N.common.infinite
   },
   {
     key: 'spaceProjectNum',
-    title: '单一空间内项目个数',
-    free: '20个',
+    title: I18N.officialWebsite.withinASingleSpace,
+    free: I18N.officialWebsite.individual4,
     personal: false,
-    team: '无限'
+    team: I18N.common.infinite
   },
   {
     key: 'projectMember',
-    title: '项目人数',
-    free: '20个',
+    title: I18N.common.numberOfProjectPersonnel,
+    free: I18N.officialWebsite.individual4,
     personal: false,
-    team: '空间人数'
+    team: I18N.common.numberOfPeopleInTheSpace
   },
   {
     key: 'projectTask',
-    title: '项目内事项',
-    free: '100个',
+    title: I18N.common.itemsWithinTheProject,
+    free: I18N.officialWebsite.individual3,
     personal: false,
-    team: '无限'
+    team: I18N.common.infinite
   },
   {
     key: 'spaceTask',
-    title: '空间事项总数',
-    free: '500个',
+    title: I18N.officialWebsite.overallSpaceMatters,
+    free: I18N.officialWebsite.individual2,
     personal: false,
-    team: '无限'
+    team: I18N.common.infinite
   },
   {
     key: 'spaceSave',
-    title: '空间存储',
+    title: I18N.officialWebsite.spaceStorage,
     free: '2G',
     personal: false,
-    team: '人数*10G'
+    team: I18N.officialWebsite.numberOfPeopleG
   }
 ]
 

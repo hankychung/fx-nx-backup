@@ -2846,5 +2846,18 @@ export default {
   workflowCan: '工作流可以更好的规划事项步骤与参与人员',
   specifyScope: '指定范围',
   thereAreCurrentlyNoOptionsAvailableFor: '暂无可选对象',
-  selectionOfItems: '选择事项协作人'
+  selectionOfItems: '选择事项协作人',
+  fromLocalDay: '来自本地日历导入',
+  formerMath: '前{val1}分钟',
+  formerMath2: '前{val1}小时',
+  formerMath3: '前{val1}天',
+  formerMath4: '前{val1}天',
+  theDayBeforeGe: '前一天 {val1}',
+  getOnTheSameDay2: '当天 {val1}',
+  punctuality1: '准点',
+  transferToMatters: '转为事项',
+  autoComplete: '自动完成',
+  changeThingsAgain: '再次转换事项，请{val1}分钟后尝试',
+  transferredToANewMatter: '已转为新事项',
+  addWorkflowToTemplate: '添加工作流保存至模板'
 }

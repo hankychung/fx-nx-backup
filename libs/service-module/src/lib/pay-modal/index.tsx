@@ -20,6 +20,7 @@ import { VipPayType } from '../team-pay-modal/components/controller'
 import { sortMap } from '../person-pay-modal/utils'
 import { QuickPayPerson } from '../quick-pay-person'
 import { useMemoizedFn } from 'ahooks'
+import { isCN } from '@flyele-nx/i18n'
 
 export declare type IFlyeleAvatarItem = {
   userId: string
@@ -93,6 +94,12 @@ export default function PayModal(props: Iprops) {
       setIsPay(false)
     }
   }, [isPay])
+
+  useEffect(() => {
+    if (!isCN && isPaySuccess) {
+      onClose()
+    }
+  }, [isPaySuccess, onClose])
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
     // 排序规则
     const sortList = memberList.map((t) => {

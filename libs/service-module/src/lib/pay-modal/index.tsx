@@ -95,11 +95,11 @@ export default function PayModal(props: Iprops) {
     }
   }, [isPay])
 
-  useEffect(()=>{
-   if(!isCN && isPaySuccess){
-    onClose()
-   }
-  },[isPaySuccess, onClose])
+  useEffect(() => {
+    if (!isCN && isPaySuccess) {
+      onClose()
+    }
+  }, [isPaySuccess, onClose])
   const sortMemberList = useMemo((): IFlyeleAvatarItem[] => {
     // 排序规则
     const sortList = memberList.map((t) => {

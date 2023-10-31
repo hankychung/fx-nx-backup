@@ -292,7 +292,7 @@ export default {
   urgent_and_unimportant: 'Urgent & Unimportant',
   not_urgent_and_unimportant: 'Not Urgent & Unimportant',
   timeCollection: '时间征集',
-  announcement: 'announcement',
+  announcement: 'Announcement',
   timeReminder: '时间提醒',
   calendarImport: 'Import from calendar',
   nonWorkingDays: '非工作日',
@@ -2950,5 +2950,18 @@ export default {
   workflowCan: 'Workflow can help you breakdown task and assign by procedure',
   specifyScope: 'Assignee range',
   thereAreCurrentlyNoOptionsAvailableFor: 'No assignee',
-  selectionOfItems: 'Choose assignee'
+  selectionOfItems: 'Choose assignee',
+  fromLocalDay: 'From local calendar',
+  formerMath: '{val1} minutes before start',
+  formerMath2: '{val1} hours before start',
+  formerMath3: '{val1} days before start',
+  formerMath4: '{val1} days before start',
+  theDayBeforeGe: '{val1} at the day before start',
+  getOnTheSameDay2: '{val1} at the start day',
+  punctuality1: 'On time',
+  transferToMatters: 'Convert to task',
+  autoComplete: 'Auto completed',
+  changeThingsAgain: 'Please try in {val1} minutes',
+  transferredToANewMatter: 'Convert success',
+  addWorkflowToTemplate: 'Add workflow'
 }

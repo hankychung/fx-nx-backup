@@ -2772,6 +2772,7 @@ export default {
   h5_collaboratorInvitation2: '协作人邀请页面',
   h5_qrCodeHasPassed: '二维码已过期',
   h5_login: '登录',
+  h5_youAreTheProject: '您是该项目的创建者',
   takerInvite: '{val1}邀请加入',
   joiningMethod: '加入方式',
   clickToInput: '点击输入',

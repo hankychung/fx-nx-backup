@@ -2872,6 +2872,7 @@ export default {
   h5_collaboratorInvitation2: 'New contact',
   h5_qrCodeHasPassed: 'Invalid QR-code',
   h5_login: 'Login',
+  h5_youAreTheProject: '您是该项目的创建者',
   takerInvite: '{val1}',
   joiningMethod: 'Invited by',
   clickToInput: 'Enter',

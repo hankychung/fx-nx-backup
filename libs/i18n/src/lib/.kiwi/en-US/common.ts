@@ -1888,6 +1888,7 @@ export default {
   inACommon: 'Each task can be viewed in project',
   sharingProjectProgress: 'Share project progress',
   spaceCapacityOver: '容量超出上限，无发继续上传文件',
+  autoSyncAllFiles: '自动同步所有文件',
   /** */
 
   remind: 'Reminder',

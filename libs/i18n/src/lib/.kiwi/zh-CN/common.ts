@@ -1775,7 +1775,6 @@ export default {
   pickItUpInAnHour: '一小时后提醒',
   calendarWillBeOnMinutes: '日历将于10分钟后开始',
   uploadImg: '+上传图片',
-
   unnamedApplication: '未命名应用',
   moneyUnit: '¥',
   freeAccount: '免费账户',
@@ -1971,7 +1970,7 @@ export default {
     '在一个共同目标的page里，共享每个人的事项和进展，让项目里的每个人每一天都清晰明白。',
   sharingProjectProgress: '共享项目进展',
   spaceCapacityOver: '容量超出上限，无发继续上传文件',
-
+  autoSyncAllFiles: '自动同步所有文件',
   moreEquitySpace: '更多空间权益',
   withinTheSearchSpace: '搜索空间内相关内容',
   passed: '已通过',

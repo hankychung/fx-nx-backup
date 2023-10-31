@@ -495,6 +495,7 @@ export default {
   downloadProgress: '下载进度',
   closeSoftware: '关闭软件',
   downloadFreeUpdates: '免下载更新',
+  downloadFreeUpdates2: '免下载更新',
   installationPermissionsAreNotValid: '安装权限不足，请前往官网重新下载安装',
   reminderAfterHours: '2小时后提醒',
   ignoreThisChange: '忽略此次更新',
@@ -1774,6 +1775,7 @@ export default {
   pickItUpInAnHour: '一小时后提醒',
   calendarWillBeOnMinutes: '日历将于10分钟后开始',
   uploadImg: '+上传图片',
+
   unnamedApplication: '未命名应用',
   moneyUnit: '¥',
   freeAccount: '免费账户',
@@ -1954,6 +1956,22 @@ export default {
   openingAPersonalMeeting2: '开通个人会员享受更大权益',
   memberHasExpired2: '会员已过期，不支持查看和使用视图，请开通会员',
   pleaseSelectObj: '请选择开通对象',
+  updateReadme: '更新说明',
+  projectMembersAreTalented:
+    '项目成员才可查看空间资源库，若有需要可向空间管理员申请项目成员。',
+  spaceMembersOnly:
+    '空间成员才可查看空间资源库，若有需要可向管理员申请空间成员。',
+  supportForLinkingIndividuals:
+    '支持将个人事项批量移动至项目，先做事后安排，协作从未如此简单。',
+  importPersonnel: '导入个人事项',
+  projectMembersAnd:
+    '项目成员与事项成员可视权限分离，最大化协作的共识，保护项目信息安全。',
+  visualPermissionPoints: '可视权限分离',
+  inACommon:
+    '在一个共同目标的page里，共享每个人的事项和进展，让项目里的每个人每一天都清晰明白。',
+  sharingProjectProgress: '共享项目进展',
+  spaceCapacityOver: '容量超出上限，无发继续上传文件',
+
   moreEquitySpace: '更多空间权益',
   withinTheSearchSpace: '搜索空间内相关内容',
   passed: '已通过',
@@ -2386,6 +2404,10 @@ export default {
   inFlyeleApp: '在飞项App中打开',
   inFlyeleMiniProgress: '在飞项小程序中打开',
   loadingData: '数据加载中...请稍候',
+  dataRendering: '数据渲染',
+  parsingData: '解析数据',
+  downloadData: '下载数据',
+  preparationEnvironment: '准备环境',
   picturePreview: '图片预览',
   checkInTheFlyele: '在飞项中查看',
   checkInFlyeleApp: '在飞项APP中查看',
@@ -2725,6 +2747,15 @@ export default {
   h5_waitForTake: '等{val1}位协作人',
   h5_theProjectHasBeenEstablished: '项目已成立{val1}天',
   h5_toBeAccepted: '待接受',
+  h5_spaceForMattersToBeAddressed: '事项空间待激活',
+  h5_upgradeSpaceToIncreaseNumber: '开通专业版空间后可提升协作人数',
+  h5_projectCollaboratorMax: '事项协作人数量已达人数限制',
+  h5_spaceToBeActivated: '空间待激活',
+  h5_projectToBeActivated: '项目待激活',
+  h5_affiliation: '所属',
+  h5_enterPendingActivation: '进入待激活状态',
+  h5_pleaseContactToActivate: '请联系{val1}创建人进行激活。',
+  h5_requestDataHas: '【请求数据有误，请检查链接是否正确】',
   takerInvite: '{val1}邀请加入',
   joiningMethod: '加入方式',
   clickToInput: '点击输入',
@@ -2740,7 +2771,6 @@ export default {
   new: '新',
   newNews: '新消息',
   nowLogin: '正在登录',
-
   youHaveANewOne: '您有一条新消息',
   closeMonthView: '关闭月视图挂件{val1}',
   exclusiveToMembers: '（会员专享）',
@@ -2748,7 +2778,6 @@ export default {
   turnOffIsm: '关闭{val1}挂件',
   desktop: '桌面',
   enableIsm: '开启{val1}挂件',
-
   cycl: '第{val1}次循环事项：',
   theFollowingDec: '以下{val1}个下级事项，{val2}',
   allWithinTheMatter: '事项内所有协作人将同步完成',

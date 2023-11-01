@@ -2647,6 +2647,7 @@ export default {
   clearSelection: 'Clear',
   inviteInAtTheSameTime: 'They will add to this Teamspace',
   activateForFriends: 'More',
+  activateForFriends2: 'Upgrade for member',
   openVipUseSpace: 'Pro Teamspace is available for Business member',
   choosingMorePeople: 'Add more',
   upgradeSpaceOnly: 'Just upgrade teamspace',

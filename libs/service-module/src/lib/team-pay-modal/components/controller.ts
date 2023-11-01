@@ -25,6 +25,6 @@ export const vipPayText = (type: VipPayType) => {
     }
   }
   return {
-    h1: I18N.common.activateForFriends
+    h1: I18N.common.activateForFriends2
   }
 }

@@ -184,9 +184,9 @@ export const ProductPage = () => {
           }}
         />
       </div>
-      <div className={styles.bigBgBox}>
+      <div className={cs(styles.bigBgBox, styles.scenarios)}>
         <div
-          className={cs(styles.bgBox, styles.scenarios)}
+          className={styles.bgBox}
           style={{
             backgroundImage: `url(${commonUrl}scenarios${
               isCN ? '' : '-en'
@@ -206,7 +206,7 @@ export const ProductPage = () => {
           </div>
         </div>
       </div>
-      <div className={styles.bigBgBox}>
+      <div className={cs(styles.bigBgBox, styles.project)}>
         <div
           className={styles.bgBox}
           style={{
@@ -240,7 +240,7 @@ export const ProductPage = () => {
           </div>
         </div>
       </div>
-      <div className={styles.bigBgBox}>
+      <div className={cs(styles.bigBgBox, styles.schedule)}>
         <div
           className={styles.bgBox}
           style={{
@@ -268,7 +268,7 @@ export const ProductPage = () => {
               width="200px"
               height="44px"
               bgColor="#7589FA"
-              marginBottom="94px"
+              marginBottom="5vw"
               fontSize="16px"
             />
           </div>

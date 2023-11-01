@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { envStore } from '@flyele-nx/constant'
+import { isCN } from '@flyele-nx/i18n'
 
 class TimeGetter {
   private timeDiff = 0
@@ -16,6 +17,10 @@ class TimeGetter {
   }
 
   private async calibrateTime() {
+    if (!isCN) {
+      return dayjs().unix()
+    }
+
     if (this.loading) {
       return dayjs().unix()
     }
@@ -37,6 +42,10 @@ class TimeGetter {
   }
 
   async getDate(): Promise<number> {
+    if (!isCN) {
+      return dayjs().unix()
+    }
+
     if (this.serviceStamp) {
       return dayjs().unix() - this.timeDiff
     }
@@ -51,6 +60,10 @@ class TimeGetter {
   }
 
   getDateRoughly(): number {
+    if (!isCN) {
+      return dayjs().unix()
+    }
+
     if (this.serviceStamp) {
       return dayjs().unix() - this.timeDiff
     }

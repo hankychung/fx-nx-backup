@@ -2530,6 +2530,7 @@ export default {
   clearSelection: '清空选择',
   inviteInAtTheSameTime: '同时邀请进入专业空间',
   activateForFriends: '为好友开通团队会员',
+  activateForFriends2: '为好友开通团队会员',
   openVipUseSpace: '开通团队会员，使用专业空间',
   choosingMorePeople: '选择更多好友开通',
   upgradeSpaceOnly: '仅升级空间',

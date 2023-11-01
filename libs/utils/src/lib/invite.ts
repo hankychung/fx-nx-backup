@@ -1,3 +1,5 @@
+import { isCN } from '@flyele-nx/i18n'
+
 interface IInviteLinkLongUrl {
   userId: string
   h5Url?: string
@@ -34,7 +36,9 @@ export const inviteLinkLongUrl = ({
   // 这里要加上 rid  给 h5 去获取信息更新埋点
   const rid = getRandomNumberStr(10)
 
-  let urlParams = `/invite/${state}/?id=${id}&u=${userId}&rid=${rid}`
+  const lang = isCN ? 'zh-CN' : 'en-US'
+
+  let urlParams = `/invite/${state}/?id=${id}&u=${userId}&rid=${rid}&lang=${lang}`
 
   if (['project', 'space'].includes(state as string)) {
     // 空间成员邀请分为内部/外部

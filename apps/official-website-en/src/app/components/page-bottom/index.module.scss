@@ -18,6 +18,38 @@
     font-style: normal;
     font-weight: 400;
   }
+
+  .copyrightGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 42px 0;
+    .copyrightBtn {
+      color: #696969;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      width: 208px;
+    }
+    .line {
+      width: unset;
+    }
+    .line::before,
+    .line::after {
+      content: "";
+      display: inline-block;
+      width: 1px;
+      height: 22px;
+      background-color: #ededed;
+      vertical-align: middle;
+    }
+    .line::before {
+      margin-right: 39px;
+    }
+    .line::after {
+      margin-left: 39px;
+    }
+  }
 }
 
 .useBoxRoot {

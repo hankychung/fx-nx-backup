@@ -40,7 +40,7 @@ const ResetPassword = () => {
   }, [])
 
   const resetPassword = () => {
-    console.log('resetPassword')
+    // console.log('resetPassword')
     if (!userInfo) return
     setLoading(true)
     const params = {
@@ -48,7 +48,7 @@ const ResetPassword = () => {
       mima: passwordConfirm,
       yanzhengma: userInfo.code
     }
-    console.log('resetPassword', params)
+    // console.log('resetPassword', params)
     UsercApi.resetPassword(params)
       .then((res) => {
         console.log(res)
@@ -57,7 +57,7 @@ const ResetPassword = () => {
         setLoading(false)
       })
       .catch((err) => {
-        console.log('err', err)
+        // console.log('err', err)
 
         setCreateNewPassword(false)
         setIsCreateSuccess(false)
@@ -69,7 +69,7 @@ const ResetPassword = () => {
       .validateFields()
       .then(async () => {
         if (password === passwordConfirm) {
-          console.log('passwordConfirm', passwordConfirm)
+          // console.log('passwordConfirm', passwordConfirm)
           resetPassword()
         } else {
           messageApi.open({

@@ -105,7 +105,12 @@ export function Paypal({
   return (
     <div style={{ ...containerStyle, width: `${width}px` }}>
       {!!productId && (
-        <PayPalScriptProvider options={{ clientId: 'test' }}>
+        <PayPalScriptProvider
+          options={{
+            clientId:
+              'ARY92TrYTxiIXm7GJ0-_21UVkb1aPWXbxx_mbtrRCFD2-Os2AazLPX0yNFyYM0LjT7DWZZ-NuQt8tjV-'
+          }}
+        >
           <PayPalButtons
             createOrder={createOrder}
             onApprove={onApprove}

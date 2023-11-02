@@ -20,11 +20,11 @@ export const DownloadPage = () => {
     switch (type) {
       case 'windows':
         downloadUrl =
-          'https://download.flyele.net/v1/downloads/application?platform=windows'
+          'https://download.flyele.com/v1/downloads/application?platform=windows'
         break
       case 'mac':
         downloadUrl =
-          'https://download.flyele.net/v1/downloads/application?platform=macos'
+          'https://download.flyele.com/v1/downloads/application?platform=macos'
         break
       default:
         console.log('没有匹配上')

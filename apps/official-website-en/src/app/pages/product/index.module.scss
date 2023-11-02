@@ -13,7 +13,11 @@
 }
 
 .listContent {
-  width: 30vw;
+  width: 576px;
+  height: 910px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   .title {
     color: #262626;
     font-size: 28px;
@@ -58,6 +62,7 @@
   background-color: #f8ffff;
   .header {
     width: 100vw;
+    min-width: 1280px;
     height: 36.5vw;
     min-height: 700px;
     background-image: url('https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/official-website/product-bg1.png');
@@ -65,6 +70,9 @@
     background-size: 100% 100%;
     position: relative;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .headerContent {
       width: 35%;
@@ -86,100 +94,70 @@
         line-height: normal;
       }
     }
+
+    .headerBg {
+      width: 46.9vw;
+      min-width: 600px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
-  .bigBgBox {
-    width: 100%;
-    height: 47.4vw;
-    max-height: 910px;
+
+  .contentBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 55px;
+    flex-wrap: wrap;
+    .contentImg {
+      width: 51.4vw;
+      min-width: 658px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
+
+
   .bgBox {
     width: 100%;
+    min-width: 1280px;
     max-width: 1920px;
-    height: 100%;
+    height: 47.4vw;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: contain;
     position: relative;
     margin: 0 auto;
-  }
 
-  .scenarios {
-    .scenariosTitle {
-      color: #262626;
-      text-align: center;
-      font-size: 36px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 54px; /* 150% */
-      padding-top: 4vw;
-      padding-bottom: 4.38vw;
+    .coreBtn {
+      position: absolute;
+      bottom: 0;
+      left: calc(50% - 150px);
     }
   }
 
-  .projectList {
-    padding-top: 8vw;
-    padding-left: 10vw;
-  }
-
-  .personalList {
-    padding-top: 7.82vw;
-    padding-left: 10vw;
-  }
-
-  .contentLeft {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-
-    .scenariosList {
-      padding-right: 10.6vw;
-    }
-
-    .teamList {
-      padding-top: 7.56vw;
-      padding-right: 10.6vw;
-    }
-  }
-
-  .coreBtn {
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+  .scenariosTitle {
+    color: #262626;
+    text-align: center;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 54px; /* 150% */
+    padding-top: 4vw;
+    padding-bottom: 4.38vw;
   }
 }
 
-@media screen and (max-width: 1700px) {
-  .listContent {
-    width: 40vw;
-  }
+@media screen and (max-width: 1300px) {
   .productPage {
-    .contentLeft {
-      .scenariosList {
-        padding-right: 4.6vw;
-      }
+    .wrapReverse {
+      flex-wrap: wrap-reverse;
     }
-    .scenarios {
-      margin-bottom: 290px;
-    }
-    .project {
-      margin-bottom: 290px;
-    }
-    .schedule {
-      margin-bottom: 290px;
-    }
-    .projectList {
-      padding-left: 3vw;
-    }
-    .personalList {
-      padding-left: 3vw;
-    }
-    .contentLeft {
-      .scenariosList {
-        padding-right: 4.6vw;
-      }
-      .teamList {
-        padding-right: 4.6vw;
-      }
-    }
+  }
+  .listContent {
+    justify-content: unset;
   }
 }

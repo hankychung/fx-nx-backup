@@ -244,7 +244,7 @@ const _InviteMember = ({
             className={cs(styles.copy, styles.ml)}
             onClick={copyToClickBoard}
           >
-            {I18N.common.duplicate}
+            {I18N.common.copy}
           </div>
         </div>
         <div className={styles.btnBox}>

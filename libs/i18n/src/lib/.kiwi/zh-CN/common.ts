@@ -127,6 +127,7 @@ export default {
   summary: '总结',
   loading: '加载中',
   duplicate: '复制',
+  copy: '复制',
   edit: '编辑',
   invite: '邀请',
   quit: '退出',

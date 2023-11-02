@@ -2033,6 +2033,7 @@ export default {
   onlyCreaterMove: 'Only project owner can move',
   taskInput: 'Import task',
   copyProject: 'Duplicate',
+  copy: 'Copy',
   dissolutionProject: 'Delele',
   exitProject: 'Quit',
   PRO: 'PRO',

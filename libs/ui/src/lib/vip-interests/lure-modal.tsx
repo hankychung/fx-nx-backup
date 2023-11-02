@@ -12,6 +12,7 @@ import {
 } from '@flyele/flyele-components'
 import CustomerServicesModal from '../customer-services-modal'
 import classNames from 'classnames'
+import { CustomerServiceEmail } from '../customer-service-email'
 export type Type = 'personVipFunction' | 'teamVipFunction'
 
 export interface VipInterestsProps {
@@ -90,11 +91,15 @@ function VipInterests({
                 showArrow={false}
                 content={() => (
                   <div>
-                    <CustomerServicesModal
-                      onClose={() => {
-                        Controller.hide()
-                      }}
-                    ></CustomerServicesModal>
+                    {isCN ? (
+                      <CustomerServicesModal
+                        onClose={() => {
+                          Controller.hide()
+                        }}
+                      />
+                    ) : (
+                      <CustomerServiceEmail onClose={() => Controller.hide()} />
+                    )}
                   </div>
                 )}
               >

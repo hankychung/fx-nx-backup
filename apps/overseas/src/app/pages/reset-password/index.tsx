@@ -154,7 +154,7 @@ const ResetPassword = () => {
         destroyOnClose
         maskClosable={false}
         style={{
-          top: '219px'
+          top: '120px'
         }}
         mask={false}
       >

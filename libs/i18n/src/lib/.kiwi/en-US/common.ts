@@ -1660,7 +1660,7 @@ export default {
   drawer: '',
   inviteToJoin: 'Invite',
   meInviteToJoin: 'Invited by me',
-  taskCompletionTouch: 'Completed action',
+  taskCompletionTouch: 'Completed',
   notifyAgain: '',
   reInvite: '',
   spaceType: 'Teamspace type',

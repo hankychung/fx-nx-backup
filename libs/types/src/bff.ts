@@ -14,8 +14,8 @@ interface IBffTaskDetail {
    * 协作人列表
    */
   takers?: ITakers[]
-  task?: ITask
-  task_conclusion?: ITaskConclusion
+  task: ITask
+  task_conclusion: ITaskConclusion
   task_dispatch?: ITaskDispatch
   /**
    * 事项工作流
@@ -409,11 +409,11 @@ interface ITask {
   /**
    * 事项id
    */
-  task_id?: string
+  task_id: string
   /**
    * 任务标题
    */
-  title?: string
+  title: string
   /**
    * 顶级事项创建人
    */

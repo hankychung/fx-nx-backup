@@ -1,5 +1,6 @@
 import { service } from '../service'
 import {
+  IBffTaskDetail,
   ICustomDashboardItem,
   IDayViewResponse,
   IInteract,
@@ -76,6 +77,14 @@ class Biz {
   async getInteracts() {
     const res = await service.get<IInteract[]>({
       url: `${this.prefix}/user/interacts`
+    })
+
+    return res.data
+  }
+
+  async getTaskDetail({ taskId }: { taskId: string }) {
+    const res = await service.get<IBffTaskDetail>({
+      url: `${this.prefix}/task?task_id=${taskId}&apis=*`
     })
 
     return res.data

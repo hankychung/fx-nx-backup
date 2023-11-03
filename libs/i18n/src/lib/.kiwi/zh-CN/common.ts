@@ -2949,6 +2949,7 @@ export default {
   endingLoop: '结束循环的日期不能在当前日期之前',
   existingCollaborators: '已有协作人完成此事项，所有人已同步完成此事项',
   youreDoneAgainTask: '你又完成了一个事项',
+  recurringMattersDoNotDrag: '循环事项不支持左右拖动',
   h5_whileChattingAssigningAppointments: '边聊边派任务',
   h5_processCoordination: '事项过程协作',
   h5_distributionOfMatters: '事项派发',

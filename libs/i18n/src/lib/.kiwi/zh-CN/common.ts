@@ -2947,5 +2947,6 @@ export default {
   currentAfterSwitching: '切换后当前模版内容将清空，是否继续切换?',
   endingLoop: '结束循环的日期不能在当前日期之前',
   existingCollaborators: '已有协作人完成此事项，所有人已同步完成此事项',
-  youreDoneAgainTask: '你又完成了一个事项'
+  youreDoneAgainTask: '你又完成了一个事项',
+  recurringMattersDoNotDrag: '循环事项不支持左右拖动'
 }

@@ -3057,5 +3057,6 @@ export default {
     'After switching the current template content will be empty, whether to continue to switch?',
   endingLoop: "End date can't early than today",
   existingCollaborators: 'All assignees has completed',
-  youreDoneAgainTask: 'You completed another task'
+  youreDoneAgainTask: 'You completed another task',
+  recurringMattersDoNotDrag: 'Unable to drag repeat task'
 }

@@ -1,3 +1,4 @@
+import { I18N } from '@flyele-nx/i18n'
 import { produce } from 'immer'
 import { ILocalTask } from '@flyele-nx/types'
 import {
@@ -443,7 +444,7 @@ class ListHandler {
 
     if (target.repeat_id) {
       globalNxController.showMsg({
-        content: '循环事项不支持左右拖动'
+        content: I18N.common.recurringMattersDoNot
       })
       return
     }

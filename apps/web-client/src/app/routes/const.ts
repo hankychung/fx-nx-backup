@@ -11,6 +11,7 @@ export enum RoutePath {
   file = '/file',
   applicationLibrary = '/applicationLibrary',
   review = '/review',
+  detail = '/detail',
 
   //子路由头部
   dayView = '/board/day-view',

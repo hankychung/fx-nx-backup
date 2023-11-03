@@ -37,10 +37,12 @@ import { globalNxController } from '@flyele-nx/global-processor'
 import {
   MatterType,
   QuadrantValue,
-  Enter_page_detail
+  Enter_page_detail,
+  envStore
 } from '@flyele-nx/constant'
 import { changeCompleteState } from '../../../status-box/utils'
 import { BuildRepeatIcon } from './components/time/components/build-repeat-icon'
+import { useNavigate } from 'react-router-dom'
 
 export interface IProps {
   taskKey: string
@@ -82,6 +84,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
   const d = allRepeatData[date] || {}
 
   const repeatData = rawData.finish_time ? undefined : d[taskKey]
+
+  const navigate = useNavigate()
 
   // 整合符合当前日期下的循环周期
   const data = useMemo(() => {
@@ -246,6 +250,11 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
       task: data,
       enterPage: Enter_page_detail.日程列表
     })
+
+    // TODO: test
+    if (envStore.IsNxDev()) {
+      navigate(`/detail?id=${data.ref_task_id}`)
+    }
   })
 
   const isToday = useMemo(() => {

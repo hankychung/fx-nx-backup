@@ -444,7 +444,7 @@ class ListHandler {
 
     if (target.repeat_id) {
       globalNxController.showMsg({
-        content: I18N.common.recurringMattersDoNot
+        content: I18N.common.recurringMattersDoNotDrag
       })
       return
     }

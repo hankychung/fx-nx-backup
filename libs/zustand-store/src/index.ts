@@ -6,5 +6,6 @@ export * from './lib/useProjectStore'
 export * from './lib/useTagInfoStore'
 export * from './lib/useUploadStore'
 export * from './lib/useGlobalInfoStore'
+export * from './lib/useTaskDetailStore'
 
 export * as zustandUtils from './lib/utils'

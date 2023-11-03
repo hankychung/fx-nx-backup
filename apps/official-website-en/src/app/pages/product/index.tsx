@@ -185,9 +185,13 @@ export const ProductPage = () => {
       <div
         className={styles.bgBox}
         style={{
-          backgroundImage: `url(${commonUrl}pdca${isCN ? '' : '-en'}.png)`
+          backgroundImage: `url(${commonUrl}pdca-bg.png)`
         }}
-      />
+      >
+        <div className={styles.pdcaBox}>
+          <img src={`${commonUrl}pdca${isCN ? '' : '-en'}.png`} alt="pdca" />
+        </div>
+      </div>
       <div className={styles.scenariosTitle}>
         {I18N.officialWebsite.fourMajorWorkplaces}
       </div>
@@ -249,17 +253,21 @@ export const ProductPage = () => {
       <div
         className={styles.bgBox}
         style={{
-          backgroundImage: `url(${commonUrl}core${isCN ? '' : '-en'}.png)`
+          backgroundImage: `url(${commonUrl}core-bg.png)`
         }}
       >
-        <div className={styles.coreBtn}>
-          <UseButton
-            width="200px"
-            height="44px"
-            bgColor="#7589FA"
-            marginBottom="5vw"
-            fontSize="16px"
-          />
+        <div className={styles.coreBox}>
+          <div className={styles.coreImg}>
+            <img src={`${commonUrl}core${isCN ? '' : '-en'}.png`} alt="core" />
+            <div className={styles.coreBtn}>
+              <UseButton
+                width="200px"
+                height="44px"
+                bgColor="#7589FA"
+                fontSize="16px"
+              />
+            </div>
+          </div>
         </div>
       </div>
 

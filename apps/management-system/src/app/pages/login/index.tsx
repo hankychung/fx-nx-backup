@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './index.module.scss'
 import flyeleLogo from '../../../assets/flyeleLogo.png'
 import bigLogo from '../../../assets/bigLogo.png'
@@ -9,11 +9,35 @@ import { routePath } from '../../routes'
 import { message } from 'antd'
 import { AxiosError } from 'axios'
 import { useUserStore } from '../../store/user'
+import { useMount } from 'ahooks'
+import classNames from 'classnames'
+
+type Region = 'zh-CN' | 'en-US'
+
+const regions: { label: string; value: Region }[] = [
+  {
+    label: '国内订单',
+    value: 'zh-CN'
+  },
+  {
+    label: '海外订单',
+    value: 'en-US'
+  }
+]
 
 export const LoginPage = () => {
   const [messageApi, contextHolder] = message.useMessage()
   const userStore = useUserStore()
   const navigate = useNavigate()
+  const [region, setRegion] = useState<Region>('zh-CN')
+
+  useMount(() => {
+    const lang = localStorage.getItem('ENV_LANG')
+    if (lang) {
+      setRegion(lang as Region)
+      ;(global as any).lang = lang
+    }
+  })
 
   const onGetVerifyCode = (phone: string) => {
     return new Promise<boolean>((resolve, reject) => {
@@ -65,6 +89,12 @@ export const LoginPage = () => {
     }
   }
 
+  const handleRegionChange = (lang: Region) => {
+    setRegion(lang)
+    ;(global as any).lang = lang
+    localStorage.setItem('ENV_LANG', lang)
+  }
+
   return (
     <div className={styles.LoginPageRoot}>
       <div className={styles.pageTop}>
@@ -95,7 +125,26 @@ export const LoginPage = () => {
           </div>
         </div>
         <div className={styles.contentRight}>
-          <PhoneLogin getVerifyCode={onGetVerifyCode} onLogin={onLogin} />
+          <PhoneLogin
+            title={
+              <div className={styles.langRadioGroup}>
+                {regions.map((item) => (
+                  <div
+                    key={item.value}
+                    className={classNames(
+                      styles.langRadio,
+                      region === item.value && styles.active
+                    )}
+                    onClick={() => handleRegionChange(item.value)}
+                  >
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+            }
+            getVerifyCode={onGetVerifyCode}
+            onLogin={onLogin}
+          />
         </div>
       </div>
 

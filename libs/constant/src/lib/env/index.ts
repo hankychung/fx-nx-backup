@@ -1,4 +1,12 @@
-import { isCN } from '@flyele-nx/i18n'
+const getLang = () => {
+  if ((global as any).lang) return (global as any).lang
+
+  const lang = localStorage.getItem('ENV_LANG')
+  if (lang) {
+    ;(global as any).lang = lang
+    return lang
+  }
+}
 
 type IEnv = 'dev' | 'test' | 'prod'
 
@@ -7,7 +15,10 @@ type IType = 'neiMongol' | 'pay' | 'normal'
 const normal: Record<IEnv, string> = {
   dev: 'api.flyele.vip',
   test: 'api-test.flyele.vip',
-  prod: isCN ? 'api.flyele.net' : 'api.flyele.com'
+  get prod() {
+    const isCN = getLang() === 'zh-CN'
+    return isCN ? 'api.flyele.net' : 'api.flyele.com'
+  }
 }
 
 /**
@@ -17,7 +28,10 @@ const normal: Record<IEnv, string> = {
 const normalShortUrl: Record<IEnv, string> = {
   dev: 'd.flyele.vip',
   test: 'd-test.flyele.vip',
-  prod: isCN ? 'd.flyele.net' : 'd.flyele.com'
+  get prod() {
+    const isCN = getLang() === 'zh-CN'
+    return isCN ? 'd.flyele.net' : 'd.flyele.com'
+  }
 }
 
 const neiMongol: Record<IEnv, string> = {
@@ -36,13 +50,19 @@ const pay: Record<IEnv, string> = {
   dev: 'pay-test.flyele.vip',
   test: 'pay-test.flyele.vip',
   // pre_prod: { host: '${prefix}pay.pre.flyele.vip' },
-  prod: isCN ? 'pay.flyele.net' : 'pay.flyele.com'
+  get prod() {
+    const isCN = getLang() === 'zh-CN'
+    return isCN ? 'pay.flyele.net' : 'pay.flyele.com'
+  }
 }
 
 const normalH5Url: Record<IEnv, string> = {
   dev: 'https://localhost:8080',
   test: 'https://h5-test.flyele.vip',
-  prod: isCN ? 'https://h5.flyele.net' : 'https://h5.flyele.com'
+  get prod() {
+    const isCN = getLang() === 'zh-CN'
+    return isCN ? 'https://h5.flyele.net' : 'https://h5.flyele.com'
+  }
 }
 
 const neiMongolH5Url: Record<IEnv, string> = {
@@ -117,6 +137,7 @@ class EnvStore {
   }
 
   getHost() {
+    console.log('getHostgetHost')
     return getUrl({ env: this.env, fullPath: true, type: this.type })
   }
 

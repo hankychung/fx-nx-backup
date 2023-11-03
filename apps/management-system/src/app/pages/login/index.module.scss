@@ -70,6 +70,22 @@
     }
     .contentRight {
       margin-left: 56px;
+      .langRadioGroup {
+        display: flex;
+
+        .langRadio {
+          height: 40px;
+          width: 160px;
+          background-color: #f9f9f9;
+          font-size: 14px;
+          cursor: pointer;
+          border-radius: 4px;
+          &.active {
+            background-color: #54dcc4;
+            color: #fff;
+          }
+        }
+      }
     }
   }
 

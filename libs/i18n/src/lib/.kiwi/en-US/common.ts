@@ -3059,6 +3059,7 @@ export default {
   endingLoop: "End date can't early than today",
   existingCollaborators: 'All assignees has completed',
   youreDoneAgainTask: 'You completed another task',
+  recurringMattersDoNotDrag: 'Unable to drag repeat task',
   h5_whileChattingAssigningAppointments: 'Talk in task',
   h5_processCoordination: 'Cooperate with team',
   h5_distributionOfMatters: 'Task assignment',

@@ -123,18 +123,40 @@
 
   .bgBox {
     width: 100%;
-    min-width: 1280px;
-    max-width: 1920px;
-    height: 47.4vw;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 100%;
     position: relative;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    .coreBtn {
-      position: absolute;
-      bottom: 0;
-      left: calc(50% - 150px);
+    .pdcaBox {
+      width: 61.5vw;
+      min-width: 787px;
+      min-height: 910px;
+      padding-top: 55px;
+      img {
+        width: 100%;
+      }
+    }
+
+    .coreBox {
+      min-height: 910px;
+      .coreImg {
+        width: 58.7vw;
+        min-width: 751px;
+        position: relative;
+        img {
+          width: 100%;
+        }
+      }
+      .coreBtn {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translate(-50%, 0);
+      }
     }
   }
 

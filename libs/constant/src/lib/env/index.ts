@@ -7,7 +7,7 @@ type IType = 'neiMongol' | 'pay' | 'normal'
 const normal: Record<IEnv, string> = {
   dev: 'api.flyele.vip',
   test: 'api-test.flyele.vip',
-  prod: isCN ? 'api.flyele.com' : 'api.flyele.com'
+  prod: isCN ? 'api.flyele.net' : 'api.flyele.com'
 }
 
 /**

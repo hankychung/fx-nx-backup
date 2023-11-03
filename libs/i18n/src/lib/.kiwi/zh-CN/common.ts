@@ -127,6 +127,7 @@ export default {
   summary: '总结',
   loading: '加载中',
   duplicate: '复制',
+  copy: '复制',
   edit: '编辑',
   invite: '邀请',
   quit: '退出',
@@ -2948,5 +2949,12 @@ export default {
   endingLoop: '结束循环的日期不能在当前日期之前',
   existingCollaborators: '已有协作人完成此事项，所有人已同步完成此事项',
   youreDoneAgainTask: '你又完成了一个事项',
-  recurringMattersDoNotDrag: '循环事项不支持左右拖动'
+  recurringMattersDoNotDrag: '循环事项不支持左右拖动',
+  h5_whileChattingAssigningAppointments: '边聊边派任务',
+  h5_processCoordination: '事项过程协作',
+  h5_distributionOfMatters: '事项派发',
+  h5_inTheFutureWeWill: '以后我们就用飞项协作吧',
+  h5_inviteYouToBecome: '邀请你成为',
+  h5_hasBecomeMine: '已成为我的协作人',
+  h5_invitationAccepted: '已接受邀请'
 }

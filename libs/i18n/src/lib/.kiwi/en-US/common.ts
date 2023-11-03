@@ -2033,6 +2033,7 @@ export default {
   onlyCreaterMove: 'Only project owner can move',
   taskInput: 'Import task',
   copyProject: 'Duplicate',
+  copy: 'Copy',
   dissolutionProject: 'Delele',
   exitProject: 'Quit',
   PRO: 'PRO',
@@ -3058,5 +3059,12 @@ export default {
   endingLoop: "End date can't early than today",
   existingCollaborators: 'All assignees has completed',
   youreDoneAgainTask: 'You completed another task',
-  recurringMattersDoNotDrag: 'Unable to drag repeat task'
+  recurringMattersDoNotDrag: 'Unable to drag repeat task',
+  h5_whileChattingAssigningAppointments: 'Talk in task',
+  h5_processCoordination: 'Cooperate with team',
+  h5_distributionOfMatters: 'Task assignment',
+  h5_inTheFutureWeWill: 'Teamwork in flyele',
+  h5_inviteYouToBecome: 'Invite you as',
+  h5_hasBecomeMine: 'Has become your contact',
+  h5_invitationAccepted: 'Joined'
 }

@@ -1,4 +1,6 @@
 import { ILang } from '@flyele-nx/i18n'
+import { IBffTaskDetail } from './bff'
+import { IApiComment } from './comment'
 
 interface IUploadFile {
   status: 'pending' | 'success' | 'error'
@@ -26,4 +28,12 @@ interface IZustandGlobalInfo {
   lang: ILang
 }
 
-export { IZustandUploadState, IZustandGlobalInfo }
+interface IZustandDetail {
+  cacheIds: string[]
+
+  detailDict: { [k: string]: IBffTaskDetail }
+
+  commentDict: { [k: string]: IApiComment[] }
+}
+
+export { IZustandUploadState, IZustandGlobalInfo, IZustandDetail }

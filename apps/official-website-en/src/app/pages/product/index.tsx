@@ -175,102 +175,98 @@ export const ProductPage = () => {
           </div>
           <UseButton width="270px" marginTop="50px" />
         </div>
+        <div className={styles.headerBg}>
+          <img
+            src="https://flyele-system.oss-cn-shenzhen.aliyuncs.com/resources/PC/official-website/product-bg-img.png"
+            alt="bgImg"
+          />
+        </div>
       </div>
-      <div className={styles.bigBgBox}>
-        <div
-          className={styles.bgBox}
-          style={{
-            backgroundImage: `url(${commonUrl}pdca${isCN ? '' : '-en'}.png)`
-          }}
+      <div
+        className={styles.bgBox}
+        style={{
+          backgroundImage: `url(${commonUrl}pdca-bg.png)`
+        }}
+      >
+        <div className={styles.pdcaBox}>
+          <img src={`${commonUrl}pdca${isCN ? '' : '-en'}.png`} alt="pdca" />
+        </div>
+      </div>
+      <div className={styles.scenariosTitle}>
+        {I18N.officialWebsite.fourMajorWorkplaces}
+      </div>
+      <div className={styles.contentBox}>
+        <div className={styles.contentImg}>
+          <img
+            src={`${commonUrl}scenarios${isCN ? '' : '-en'}.png`}
+            alt="scenarios"
+          />
+        </div>
+        <List
+          title={I18N.officialWebsite.goalManagement}
+          list={scenarios}
+          btnColor="#7589FA"
         />
       </div>
-      <div className={cs(styles.bigBgBox, styles.scenarios)}>
-        <div
-          className={styles.bgBox}
-          style={{
-            backgroundImage: `url(${commonUrl}scenarios${
-              isCN ? '' : '-en'
-            }.png)`
-          }}
-        >
-          <div className={styles.scenariosTitle}>
-            {I18N.officialWebsite.fourMajorWorkplaces}
-          </div>
-          <div className={styles.contentLeft}>
-            <List
-              title={I18N.officialWebsite.goalManagement}
-              list={scenarios}
-              btnColor="#7589FA"
-              rootClass={styles.scenariosList}
-            />
-          </div>
-        </div>
-      </div>
-      <div className={cs(styles.bigBgBox, styles.project)}>
-        <div
-          className={styles.bgBox}
-          style={{
-            backgroundImage: `url(${commonUrl}project${isCN ? '' : '-en'}.png)`
-          }}
-        >
-          <List
-            title={I18N.officialWebsite.projectManagement}
-            list={project}
-            btnColor="#FE8596"
-            circleColor="#FE8596"
-            rootClass={styles.projectList}
+      <div className={cs(styles.contentBox, styles.wrapReverse)}>
+        <List
+          title={I18N.officialWebsite.projectManagement}
+          list={project}
+          btnColor="#FE8596"
+          circleColor="#FE8596"
+          rootClass={styles.projectList}
+        />
+        <div className={styles.contentImg}>
+          <img
+            src={`${commonUrl}project${isCN ? '' : '-en'}.png`}
+            alt="project"
           />
         </div>
       </div>
-      <div className={styles.bigBgBox}>
-        <div
-          className={styles.bgBox}
-          style={{
-            backgroundImage: `url(${commonUrl}team${isCN ? '' : '-en'}.png)`
-          }}
-        >
-          <div className={styles.contentLeft}>
-            <List
-              title={I18N.officialWebsite.teamWorkManagement}
-              list={team}
-              btnColor="#5DD5FB"
-              circleColor="#5DD5FB"
-              rootClass={styles.teamList}
-            />
-          </div>
+      <div className={styles.contentBox}>
+        <div className={styles.contentImg}>
+          <img src={`${commonUrl}team${isCN ? '' : '-en'}.png`} alt="team" />
         </div>
+        <List
+          title={I18N.officialWebsite.teamWorkManagement}
+          list={team}
+          btnColor="#5DD5FB"
+          circleColor="#5DD5FB"
+          rootClass={styles.teamList}
+        />
       </div>
-      <div className={cs(styles.bigBgBox, styles.schedule)}>
-        <div
-          className={styles.bgBox}
-          style={{
-            backgroundImage: `url(${commonUrl}schedule${isCN ? '' : '-en'}.png)`
-          }}
-        >
-          <List
-            title={I18N.officialWebsite.personalScheduleManagement}
-            list={personal}
-            btnColor="#30D6C5"
-            circleColor="#30D6C5"
-            rootClass={styles.personalList}
+      <div className={cs(styles.contentBox, styles.wrapReverse)}>
+        <List
+          title={I18N.officialWebsite.personalScheduleManagement}
+          list={personal}
+          btnColor="#30D6C5"
+          circleColor="#30D6C5"
+          rootClass={styles.personalList}
+        />
+        <div className={styles.contentImg}>
+          <img
+            src={`${commonUrl}schedule${isCN ? '' : '-en'}.png`}
+            alt="schedule"
           />
         </div>
       </div>
-      <div className={styles.bigBgBox}>
-        <div
-          className={styles.bgBox}
-          style={{
-            backgroundImage: `url(${commonUrl}core${isCN ? '' : '-en'}.png)`
-          }}
-        >
-          <div className={styles.coreBtn}>
-            <UseButton
-              width="200px"
-              height="44px"
-              bgColor="#7589FA"
-              marginBottom="5vw"
-              fontSize="16px"
-            />
+      <div
+        className={styles.bgBox}
+        style={{
+          backgroundImage: `url(${commonUrl}core-bg.png)`
+        }}
+      >
+        <div className={styles.coreBox}>
+          <div className={styles.coreImg}>
+            <img src={`${commonUrl}core${isCN ? '' : '-en'}.png`} alt="core" />
+            <div className={styles.coreBtn}>
+              <UseButton
+                width="200px"
+                height="44px"
+                bgColor="#7589FA"
+                fontSize="16px"
+              />
+            </div>
           </div>
         </div>
       </div>

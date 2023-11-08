@@ -3073,9 +3073,9 @@ export default {
   subordinateMatterI: 'Subtasks: {val1}',
   skipWeekend: 'Skip weekend',
   totalNum: '{val1} times',
-  spaceCreationMatters: '空间创建事项必须选择项目',
-  eventCreationLoss: '事项创建失败',
-  toDoCreationLost: '待办创建失败',
-  meetingCreationLoss: '会议创建失败',
-  currentIdentityNone: '当前身份无法加入'
+  spaceCreationMatters: 'Choose a project first',
+  eventCreationLoss: 'Failed to create',
+  toDoCreationLost: 'Failed to create',
+  meetingCreationLoss: 'Failed to create',
+  currentIdentityNone: "Can't join as your role"
 }

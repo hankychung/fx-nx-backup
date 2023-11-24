@@ -739,7 +739,7 @@ class SqlStore {
           return `'${JSON.stringify(i).replace(/'/g, `''`)}'`
         }
 
-        return (i as any)?.replace(/'/g, `''`) || 'null'
+        return typeof i === 'string' ? i.replace(/'/g, `''`) : i || 'null'
       })
       .join(' ,')})`
 

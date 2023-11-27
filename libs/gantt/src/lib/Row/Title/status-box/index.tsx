@@ -314,6 +314,7 @@ const _StatusBox: FC<IProps> = (props) => {
         <UncheckIcon
           width={14}
           height={14}
+          color='#3AD5C7'
           onClick={(e) => {
             e.stopPropagation()
             if (task.has_child) {

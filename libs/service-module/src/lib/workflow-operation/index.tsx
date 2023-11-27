@@ -538,7 +538,7 @@ const _WorkflowOperation: ForwardRefRenderFunction<
             }}
           >
             <OptionIcon className={style.optionIcon} />
-            <UncheckIcon className={style.uncheckIcon} />
+            <UncheckIcon className={style.uncheckIcon} color="#3AD5C7" />
           </div>
         </FlyBasePopper>
       ) : (

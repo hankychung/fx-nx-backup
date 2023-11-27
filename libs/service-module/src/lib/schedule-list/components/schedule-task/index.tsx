@@ -379,7 +379,7 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
                     text={data.title || ''}
                   />
                   <Follow isFollow={isFollow} />
-                  {isSimple && !!repeatType && (
+                  {isSimple && !!repeatType && !isTimeLine && (
                     <BuildRepeatIcon task={data} isDarkMode={isDarkMode} />
                   )}
                 </div>

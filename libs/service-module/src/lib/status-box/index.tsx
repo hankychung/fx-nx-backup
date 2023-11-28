@@ -51,6 +51,7 @@ interface IProps {
   resetStatus?: () => void
   isVipWin?: boolean
   iconClassName?: string
+  iconStyle?: React.CSSProperties
 }
 
 const ANIMATION_DURATION = 450
@@ -61,7 +62,8 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus,
     resetStatus,
     isVipWin = false,
-    iconClassName
+    iconClassName,
+    iconStyle
   } = props
   const [updating, setUpdating] = useState(false)
   const taskDict = useScheduleStore((state) => state.taskDict)
@@ -315,7 +317,10 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        <div className={classNames(styles.iconBox, iconClassName)}>
+        <div
+          className={classNames(styles.iconBox, iconClassName)}
+          style={iconStyle}
+        >
           {buildIcon()}
         </div>
       </AcceptOnceMany>

@@ -137,6 +137,7 @@ const _InviteMember = ({
    * 根据html生成图片
    */
   const createImgFromHtml = useMemoizedFn(async () => {
+    console.log('test create team')
     if (domRef.current) {
       clipboardUrl.current = (await domToImage(domRef.current, {
         needUrl: false,

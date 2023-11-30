@@ -26,6 +26,7 @@ import { getChildrenDict } from '../schedule-list/utils'
 import { WorkflowOperation } from '../workflow-operation'
 import { getOperationStatus } from '../workflow-operation/utils'
 import { MatterType } from '@flyele-nx/constant'
+import classNames from 'classnames'
 
 interface IProps {
   task: Pick<
@@ -49,7 +50,8 @@ interface IProps {
   changeStatus?: () => void
   resetStatus?: () => void
   isVipWin?: boolean
-  boxColor?: string
+  iconClassName?: string
+  iconStyle?: React.CSSProperties
 }
 
 const ANIMATION_DURATION = 450
@@ -60,7 +62,8 @@ const _StatusBox: FC<IProps> = (props) => {
     changeStatus,
     resetStatus,
     isVipWin = false,
-    boxColor = '#3AD5C7'
+    iconClassName,
+    iconStyle
   } = props
   const [updating, setUpdating] = useState(false)
   const taskDict = useScheduleStore((state) => state.taskDict)
@@ -257,7 +260,6 @@ const _StatusBox: FC<IProps> = (props) => {
         <UncheckIcon
           width={14}
           height={14}
-          color={boxColor}
           onClick={(e) => {
             e.stopPropagation()
             if (task.has_child) {
@@ -315,7 +317,12 @@ const _StatusBox: FC<IProps> = (props) => {
         handleClickAll={() => handleComplete(true)} // 批量操作
         typeName="finish"
       >
-        <div className={styles.iconBox}>{buildIcon()}</div>
+        <div
+          className={classNames(styles.iconBox, iconClassName)}
+          style={iconStyle}
+        >
+          {buildIcon()}
+        </div>
       </AcceptOnceMany>
     </div>
   )

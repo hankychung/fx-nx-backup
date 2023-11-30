@@ -147,6 +147,7 @@ export function QrcodeInvite(props: IProps) {
    * 根据html生成图片
    */
   const createImgFromHtml = useMemoizedFn(async () => {
+    console.log('test create')
     if (domRef.current) {
       clipboardUrl.current = (await domToImage(domRef.current, {
         needUrl: false,

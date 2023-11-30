@@ -128,3 +128,8 @@ export enum FullViewMatterStateEnum {
   COMPLETE_ON_TIME,
   COMPLETE_DELAY
 }
+
+export enum FullShowMode {
+  flat = 1,
+  group = 2
+}

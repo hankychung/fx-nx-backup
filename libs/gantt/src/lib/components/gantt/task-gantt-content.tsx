@@ -34,6 +34,8 @@ export type TaskGanttContentProps = {
   fontSize: string
   fontFamily: string
   rtl: boolean
+  scrollX: number
+  setScrollX: (num: number) => void
   setGanttEvent: (value: IFullViewGanttEvent) => void
   setFailedTask: (value: IFullViewBarTask | null) => void
   setSelectedTask: (taskId: string) => void
@@ -61,7 +63,9 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   onProgressChange,
   onDoubleClick,
   onClick,
-  onDelete
+  onDelete,
+  scrollX,
+  setScrollX
 }) => {
   const point = svg?.current?.createSVGPoint()
   const [xStep, setXStep] = useState(0)
@@ -362,6 +366,8 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
               rtl={rtl}
               svg={svg}
               isShowDrop={isMoving}
+              scrollX={scrollX}
+              setScrollX={setScrollX}
             />
           )
         })}

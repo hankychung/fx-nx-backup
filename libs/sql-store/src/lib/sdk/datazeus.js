@@ -10211,10 +10211,10 @@
               else a1 = ''
               b9 = c0.c
               if (b9.length !== 0) {
-                g.push(" parent_id = '" + b9 + "' ")
+                g.push(" schedule_parent_id = '" + b9 + "' ")
                 a2 = 'sort, ref_task_id'
               } else {
-                if (d && c0.f !== 3) g.push(" parent_id = '' ")
+                if (d && c0.f !== 3) g.push(" schedule_parent_id = '' ")
                 if (c0.d === 'today' || c0.f !== 3)
                   f.push(" date = '" + A.z(c0.e) + "' ")
                 a2 = 'sort_idx, timestamp, create_at, ref_task_id'
@@ -10323,11 +10323,11 @@
                 b +
                 ')\n     , td AS (SELECT * FROM task_view ' +
                 a +
-                ')\n     , real_parent AS (SELECT tc1.id, GROUP_CONCAT(tv.id) AS parent_id\n                         FROM (SELECT tc1.id, tv.parent_id, tc1.category FROM task_config tc1 JOIN td tv ON tc1.id = tv.id) tc1\n                                  LEFT JOIN td tv ON INSTR(tc1.parent_id, tv.id)\n                        WHERE tc1.category = 2 AND tv.id IS NOT NULL\n                        GROUP BY tc1.id)\n    SELECT tt.*\nFROM (SELECT ' +
+                ')\n     , real_parent AS (SELECT tc1.id, GROUP_CONCAT(tv.id) AS schedule_parent_id\n                         FROM (SELECT tc1.id, tv.parent_id, tc1.category FROM task_config tc1 JOIN td tv ON tc1.id = tv.id) tc1\n                                  LEFT JOIN td tv ON INSTR(tc1.parent_id, tv.id)\n                        WHERE tc1.category = 2 AND tv.id IS NOT NULL\n                        GROUP BY tc1.id)\n    SELECT tt.*\nFROM (SELECT ' +
                 a5 +
                 " CAST(a.id AS TEXT) AS ref_task_id, a.title, CAST(a.taker_id AS TEXT) AS taker_id, takers, a.identity\n           , CASE WHEN a.repeat_id > 0 THEN CAST(a.repeat_id AS TEXT) ELSE '' END AS repeat_id\n           , a.state, CASE WHEN a.creator_id > 0 THEN CAST(a.creator_id AS TEXT) ELSE '' END AS creator_id\n           , CASE WHEN a.invite_id > 0 THEN CAST(a.invite_id AS TEXT) ELSE '' END AS invite_id\n           , CASE WHEN a.flow_step_id > 0 THEN CAST(a.flow_step_id AS TEXT) ELSE '' END AS flow_step_id, a.create_at\n           , a.update_at, a.complete_at, a.finish_time, a.original_start_time, a.original_end_time, a.start_time\n           , a.start_time_full_day, a.end_time, a.end_time_full_day, a.end_repeat_at, execute_at, accept_at\n           , IFNULL(finish_time, complete_at) AS complete_time, sort\n           , CASE WHEN a.dispatch_id > 0 THEN CAST(a.dispatch_id AS TEXT) ELSE '' END AS dispatch_id, a.cycle\n           , a.cycle_date, a.widget, a.priority_level, topmost_at\n           , CASE WHEN j.id > 0 THEN 1 ELSE 0 END AS has_follow, a.personal_remind_at, IFNULL(repeat_delay_total, 0) AS repeat_delay_total\n           , CASE WHEN a.delete_at > 0 THEN 1 ELSE 0 END AS schedule_hide, a.matter_type, a.repeat_type, a.remind_at\n           , IFNULL(k.taker_total, 0) AS taker_total, IFNULL(k.child_total, 0) AS child_total\n           " +
                 a6 +
-                "\n           , CASE WHEN a.project_id > 0 THEN CAST(a.project_id AS TEXT) ELSE '' END AS project_id\n           , IFNULL(p.project_name, '') AS project_name, IFNULL(rp.parent_id, '') AS parent_id, parent_name, IFNULL(a.application_json,'{}') AS application_json\n           , flow_step_join, flow_step_name, flow_step_complete_at, flow_step_user_count, matter_state, IFNULL(tags, '') AS tags\n      FROM (td) AS a\n           LEFT JOIN task_follow AS j\n                     ON j.user_id = " +
+                "\n           , CASE WHEN a.project_id > 0 THEN CAST(a.project_id AS TEXT) ELSE '' END AS project_id\n           , IFNULL(p.project_name, '') AS project_name, parent_id, IFNULL(rp.schedule_parent_id, '') AS schedule_parent_id, parent_name, IFNULL(a.application_json,'{}') AS application_json\n           , flow_step_join, flow_step_name, flow_step_complete_at, flow_step_user_count, matter_state, IFNULL(tags, '') AS tags\n      FROM (td) AS a\n           LEFT JOIN task_follow AS j\n                     ON j.user_id = " +
                 b9 +
                 ' AND j.task_id = a.id\n           LEFT JOIN task_relation AS k\n                     ON a.id = k.task_id AND k.user_id = ' +
                 b9 +

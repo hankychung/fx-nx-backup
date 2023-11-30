@@ -8,8 +8,6 @@ import { Project } from './project/project'
 import style from './task-list.module.css'
 import { useMemoizedFn } from 'ahooks'
 import cs from 'classnames'
-import { isInTask } from '../../utils'
-import { useUserInfoStore } from '@flyele-nx/zustand-store'
 import dayjs from 'dayjs'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { getEnFormat } from '@flyele-nx/utils'
@@ -27,6 +25,8 @@ export type TaskItemProps = {
   rtl: boolean
   svg?: React.RefObject<SVGSVGElement>
   isShowDrop: boolean
+  scrollX: number
+  setScrollX: (num: number) => void
   onEventStart: (
     action: FullViewGanttContentMoveAction,
     selectedTask: IFullViewBarTask,
@@ -43,7 +43,9 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     isSelected,
     rtl,
     onEventStart,
-    svg
+    svg,
+    scrollX,
+    setScrollX
   } = {
     ...props
   }
@@ -119,6 +121,19 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
     //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
     // }
   }, [task.x1])
+  const getLeft = useMemo(() => {
+    return scrollX
+    // if (rtl && textRef.current) {
+    //   return (
+    //     task.x1 -
+    //     textRef.current.getBBox().width -
+    //     arrowIndent * +hasChild -
+    //     arrowIndent * 0.2
+    //   )
+    // } else {
+    //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2
+    // }
+  }, [scrollX])
 
   const timeTooltip = useMemo(() => {
     const start = task.start_time
@@ -196,7 +211,6 @@ export const TaskItem: React.FC<TaskItemProps> = (props) => {
           {task.name}
         </text>
       </g>
-
       {/* {childrenDict[t.task_id] &&
         childrenDict[t.task_id].map((item) => {
           const task = taskDict[item] as Task

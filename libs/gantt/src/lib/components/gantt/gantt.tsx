@@ -20,15 +20,15 @@ import { CalendarProps } from '../calendar/calendar'
 import { TaskGanttContentProps } from './task-gantt-content'
 import { TaskListHeaderDefault } from '../task-list/task-list-header'
 import { TaskListTableDefault } from '../task-list/task-list-table'
-import { StandardTooltipContent, Tooltip } from '../other/tooltip'
-import { VerticalScroll } from '../other/vertical-scroll'
+import { StandardTooltipContent } from '../other/tooltip'
 import { TaskListProps, TaskList } from '../task-list/task-list'
 import { TaskGantt } from './task-gantt'
 import { convertToBarTasks } from '../../helpers/bar-helper'
-import { HorizontalScroll } from '../other/horizontal-scroll'
 import { getEnFormat } from '@flyele-nx/utils'
 import styles from './gantt.module.scss'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
+import { ReactComponent as GanttLeft } from '../../../assets/icons/gantt_left.svg'
+import { ReactComponent as GanttRight } from '../../../assets/icons/gantt_right.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
@@ -77,7 +77,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   onExpanderClick,
   fetchList,
   pageParams,
-  loading
+  loading,
+  setFullShowMode
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const taskListRef = useRef<HTMLDivElement>(null)
@@ -96,6 +97,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [taskHeaderWidth, setTaskHeaderWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
+  const [svgContainerClientWidth, setSvgContainerClientWidth] = useState(0)
   const [currentDate, setCurrentDate] = useState('')
   const [svgContainerHeight, setSvgContainerHeight] = useState(ganttHeight)
   const [barTasks, setBarTasks] = useState<IFullViewBarTask[]>([])
@@ -106,10 +108,12 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     () => (rowHeight * barFill) / 100,
     [rowHeight, barFill]
   )
+  // console.log(svgContainerWidth,'svgContainerWidth');
 
   const [selectedTask, setSelectedTask] = useState<IFullViewBarTask>()
   const [failedTask, setFailedTask] = useState<IFullViewBarTask | null>(null)
-
+  const leftRef = useRef<HTMLDivElement>(null)
+  const rightRef = useRef<HTMLDivElement>(null)
   const svgWidth = dateSetup.dates.length * columnWidth
   const ganttFullHeight = barTasks.length * rowHeight
 
@@ -367,6 +371,15 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
+        if (leftRef.current) {
+          // verticalGanttContainerRef.current.scrollLeft = scrollX
+          leftRef.current.scrollTop = newScrollY || 0
+        }
+        if (rightRef.current) {
+          // verticalGanttContainerRef.current.scrollLeft = scrollX
+          rightRef.current.scrollTop = newScrollY || 0
+        }
+
         // event.preventDefault()
       }
     }
@@ -546,7 +559,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     onProgressChange,
     onDoubleClick,
     onClick,
-    onDelete
+    onDelete,
+    scrollX,
+    setScrollX
   }
 
   const tableProps: TaskListProps = {
@@ -568,7 +583,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     TaskListHeader,
     TaskListTable,
     setIsChecked,
-    isChecked
+    isChecked,
+    setFullShowMode
   }
 
   //顶部月份变化
@@ -644,6 +660,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           currentDate={currentDate}
           taskListWidth={taskListWidth}
           setScrollX={setScrollX}
+          setSvgContainerClientWidth={setSvgContainerClientWidth}
         />
 
         {/* {ganttEvent.changedTask && (
@@ -677,6 +694,63 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
                 {I18N.common.todayWord}
               </div>
             )}
+          </div>
+        )}
+        {barTasks && barTasks.length > 0 && (
+          <div
+            className={styles.leftList}
+            style={{
+              left: `${isChecked ? taskHeaderWidth || taskListWidth : 40}px`,
+              top: '76px'
+            }}
+            ref={leftRef}
+          >
+            {barTasks.map((_) => {
+              return (
+                <div
+                  key={_.task_id}
+                  className={styles.leftItem}
+                  onClick={() => {
+                    setScrollX(_.x1 - columnWidth)
+                  }}
+                >
+                  <GanttLeft
+                    style={{ display: _.x1 < scrollX ? 'block' : 'none' }}
+                  ></GanttLeft>
+                </div>
+              )
+            })}
+          </div>
+        )}
+        {barTasks && barTasks.length > 0 && (
+          <div
+            className={styles.rightList}
+            style={{
+              top: '74px'
+            }}
+            ref={rightRef}
+          >
+            {barTasks.map((_) => {
+              return (
+                <div
+                  key={_.task_id}
+                  className={styles.leftItem}
+                  onClick={() => {
+                    setScrollX(_.x2 - svgContainerClientWidth + columnWidth)
+                  }}
+                >
+                  <GanttRight
+                    style={{
+                      display:
+                        _.x1 > svgContainerClientWidth + scrollX ||
+                        _.x2 > svgContainerClientWidth + scrollX
+                          ? 'block'
+                          : 'none'
+                    }}
+                  ></GanttRight>
+                </div>
+              )
+            })}
           </div>
         )}
         {/* <VerticalScroll

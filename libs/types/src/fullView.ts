@@ -26,7 +26,8 @@ import {
   FullViewConclusionEnum,
   FullViewShowModeEnum,
   FullViewGroupByEnum,
-  FullViewMatterStateEnum
+  FullViewMatterStateEnum,
+  FullShowMode
 } from '@flyele-nx/constant'
 import { IRepeatConfig, MatterState } from './schedule'
 import { IBaseProjectInfo } from './project'
@@ -222,6 +223,7 @@ export interface Task extends IFullViewTask {
   dependencies?: string[]
   hideChildren?: boolean
   displayOrder?: number
+  showMode?: FullShowMode
 }
 
 export interface IFullViewEventOption {
@@ -342,6 +344,7 @@ export interface IFullViewGanttProps
     page_record: number
   }>
   loading: React.MutableRefObject<boolean>
+  setFullShowMode: (_: FullShowMode) => void
 }
 
 export interface IFullViewParams {
@@ -369,6 +372,7 @@ export interface IFullViewParams {
   repeats_id?: string // 循环事项id
   group_by?: FullViewGroupByEnum
   show_mode?: FullViewShowModeEnum // 1 平铺 2 收合
+  showMode?: FullShowMode // 1 平铺 2 收合
 }
 
 export interface IFullViewITaker {
@@ -564,7 +568,7 @@ export type IFullViewTask = {
   remind_at?: any // ITask['remind_at'] 这里的类型对不上，和 app/hooks/useFollow.ts 的remind_at不统一
   detail?: string // 背景信息
   files?: IFullViewFiles[] // 背景信息文件
-
+  showMode?: FullShowMode
   priority_level?: QuadrantValue
   refreshWorkflow?: boolean
 } & Partial<IBaseProjectInfo> &

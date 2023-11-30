@@ -49,12 +49,19 @@ interface IProps {
   changeStatus?: () => void
   resetStatus?: () => void
   isVipWin?: boolean
+  boxColor?: string
 }
 
 const ANIMATION_DURATION = 450
 
 const _StatusBox: FC<IProps> = (props) => {
-  const { task, changeStatus, resetStatus, isVipWin = false } = props
+  const {
+    task,
+    changeStatus,
+    resetStatus,
+    isVipWin = false,
+    boxColor = '#3AD5C7'
+  } = props
   const [updating, setUpdating] = useState(false)
   const taskDict = useScheduleStore((state) => state.taskDict)
 
@@ -250,6 +257,7 @@ const _StatusBox: FC<IProps> = (props) => {
         <UncheckIcon
           width={14}
           height={14}
+          color={boxColor}
           onClick={(e) => {
             e.stopPropagation()
             if (task.has_child) {

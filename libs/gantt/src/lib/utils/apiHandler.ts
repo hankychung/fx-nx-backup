@@ -1,6 +1,7 @@
 import { projectApi } from '@flyele-nx/service'
 import { GanttHandler } from './ganttHandler'
 import { IFullViewTask } from '@flyele-nx/types'
+import { FullShowMode, FullViewShowModeEnum } from '@flyele-nx/constant'
 
 class ApiHandler {
   private static projectId = ''
@@ -9,18 +10,15 @@ class ApiHandler {
     this.projectId = id
   }
 
-  static async getChildren(parentId: string, key: string) {
+  static async getChildren(parentId: string, key: string, mode: FullShowMode) {
     const res = (
       await projectApi.getTaskListOfProject({
         projectId: this.projectId,
         page_number: 1,
         parent_id: parentId,
-        show_mode: 2
+        show_mode: mode as unknown as FullViewShowModeEnum
       })
     ).data
-    const arr = parentId.split(',')
-    const num = arr && arr.length ? arr.length - 1 : 0
-    // const parent_id = arr[num]
 
     const data = res?.map((i: IFullViewTask) => ({
       ...i,
@@ -30,7 +28,8 @@ class ApiHandler {
       id: i.task_id,
       type: 'task',
       hideChildren: false,
-      displayOrder: 1
+      displayOrder: 1,
+      showMode: mode
     }))
 
     GanttHandler.updateChildrenDict({ parentId: key, children: data })

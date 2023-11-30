@@ -3,6 +3,7 @@ import { Task, IFullViewBarTask } from '@flyele-nx/types'
 import cs from 'classnames'
 import styles from './task-list-table.module.css'
 import ListEmpty from '../ListEmpty'
+import { FullShowMode } from '@flyele-nx/constant'
 export type TaskListProps = {
   headerHeight: number
   rowWidth: string
@@ -21,6 +22,7 @@ export type TaskListProps = {
   onExpanderClick: (task: Task) => void
   setIsChecked: (data: boolean) => void
   isChecked: boolean
+  setFullShowMode: (_: FullShowMode) => void
   TaskListHeader: React.FC<{
     headerHeight: number
     rowWidth: string
@@ -29,6 +31,7 @@ export type TaskListProps = {
     setIsChecked: (data: boolean) => void
     isChecked: boolean
     taskHeaderRef: React.RefObject<HTMLDivElement>
+    setFullShowMode: (_: FullShowMode) => void
   }>
   TaskListTable: React.FC<{
     rowHeight: number
@@ -62,7 +65,8 @@ export const TaskList: React.FC<TaskListProps> = ({
   TaskListHeader,
   TaskListTable,
   setIsChecked,
-  isChecked
+  isChecked,
+  setFullShowMode
 }) => {
   const horizontalContainerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -78,7 +82,8 @@ export const TaskList: React.FC<TaskListProps> = ({
     rowWidth,
     setIsChecked,
     isChecked,
-    taskHeaderRef
+    taskHeaderRef,
+    setFullShowMode
   }
   const selectedTaskId = selectedTask ? selectedTask.id : ''
   const tableProps = {

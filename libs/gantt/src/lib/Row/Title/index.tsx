@@ -30,6 +30,7 @@ import { FlyTextTooltip, FlyTooltip } from '@flyele/flyele-components'
 import {
   Enter_page_detail,
   FAKE_ID,
+  FullShowMode,
   NO_PROJECT_ID,
   Pub
   // TableHeaderTitle,
@@ -313,7 +314,7 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
       GanttHandler.expand([key], true)
       // 拉取子事项更新projectStore
       const parentId = parent_id ? `${parent_id},${task_id}` : task_id
-      ApiHandler.getChildren(parentId, key)
+      ApiHandler.getChildren(parentId, key, data.showMode || FullShowMode.group)
     }
   })
 
@@ -654,34 +655,35 @@ const Title: FC<React.PropsWithChildren<IFullViewCellProps>> = ({
               </div>
             )}
 
-            {(has_child || (!isGroup && parent_id)) && (
-              <FlyTooltip
-                text={
-                  isGroup
-                    ? I18N.template?.(I18N.common.completedCo, {
-                        val1: completeTotal
-                      }) || ''
-                    : I18N.common.mind_map
-                }
-              >
-                <div
-                  className={cs(style.box, style['close-box'], {
-                    [style['close-box-open']]: isExpanded
-                  })}
-                  onClick={handleOpen}
+            {(has_child || (!isGroup && parent_id)) &&
+              data.showMode === FullShowMode.group && (
+                <FlyTooltip
+                  text={
+                    isGroup
+                      ? I18N.template?.(I18N.common.completedCo, {
+                          val1: completeTotal
+                        }) || ''
+                      : I18N.common.mind_map
+                  }
                 >
-                  {isGroup ? (
-                    <>
-                      <span>{`${completeTotal}/${taskTotal}`}</span>
-                      {/* <img src={arrDownIcon} alt="" /> */}
-                      <ArrDownIcon />
-                    </>
-                  ) : (
-                    <VenationIcon />
-                  )}
-                </div>
-              </FlyTooltip>
-            )}
+                  <div
+                    className={cs(style.box, style['close-box'], {
+                      [style['close-box-open']]: isExpanded
+                    })}
+                    onClick={handleOpen}
+                  >
+                    {isGroup ? (
+                      <>
+                        <span>{`${completeTotal}/${taskTotal}`}</span>
+                        {/* <img src={arrDownIcon} alt="" /> */}
+                        <ArrDownIcon />
+                      </>
+                    ) : (
+                      <VenationIcon />
+                    )}
+                  </div>
+                </FlyTooltip>
+              )}
           </div>
         )}
       </div>

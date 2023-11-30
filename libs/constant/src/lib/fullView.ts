@@ -131,5 +131,5 @@ export enum FullViewMatterStateEnum {
 
 export enum FullShowMode {
   flat = 1,
-  group
+  group = 2
 }

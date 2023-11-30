@@ -1,6 +1,6 @@
 {
   "name": "@flyele-nx/service-module",
-  "version": "2.4.67",
+  "version": "2.4.68",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {

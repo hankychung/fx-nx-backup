@@ -37,9 +37,7 @@ const _GanttList: ForwardRefRenderFunction<
 ) => {
   const { updateList, batchUpdateTask, taskDict, taskList, reSet } =
     useGanttList()
-  const [view, _setView] = React.useState<FullViewModeEnum>(
-    FullViewModeEnum.Day
-  )
+  const [view, setView] = React.useState<FullViewModeEnum>(FullViewModeEnum.Day)
   const isinit = useRef(false)
   const [fullShowMode, setFullShowMode] = useState(FullShowMode.group)
   const [showLoading, setShowLoading] = useState(true)
@@ -281,6 +279,7 @@ const _GanttList: ForwardRefRenderFunction<
           fetchList={fetchList}
           pageParams={pageParams}
           loading={loading}
+          setView={setView}
           setFullShowMode={setFullShowMode}
         />
       )}

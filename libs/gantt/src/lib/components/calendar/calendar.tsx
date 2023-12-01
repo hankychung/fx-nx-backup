@@ -174,7 +174,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     const topValues: ReactChild[] = []
     const bottomValues: ReactChild[] = []
     let weeksCount = 1
-    const topDefaultHeight = headerHeight
+    const topDefaultHeight = headerHeight * 0.7
     const dates = dateSetup.dates
     for (let i = dates.length - 1; i >= 0; i--) {
       const date = dates[i]
@@ -184,12 +184,16 @@ export const Calendar: React.FC<CalendarProps> = ({
         topValue = `${getLocaleMonth(date, locale)}, ${date.getFullYear()}`
       }
       // bottom
-      const bottomValue = `W${getWeekNumberISO8601(date)}`
+      const bottomValue = `${dayjs(date)
+        .startOf('week')
+        .format('MM/DD')}-${dayjs(date)
+        .endOf('week')
+        .format('MM/DD')}(第${getWeekNumberISO8601(date)}周)`
 
       bottomValues.push(
         <text
           key={date.getTime()}
-          y={headerHeight * 0.8}
+          y={headerHeight * 0.7}
           x={columnWidth * (i + +rtl)}
           className={styles.calendarBottomText}
         >
@@ -202,12 +206,17 @@ export const Calendar: React.FC<CalendarProps> = ({
         if (i !== dates.length - 1) {
           topValues.push(
             <TopPartOfCalendar
-              key={topValue}
+              key={topValue + date.getFullYear()}
               value={topValue}
-              x1Line={columnWidth * i + weeksCount * columnWidth}
+              x1Line={columnWidth * (i + 1)}
               y1Line={0}
-              y2Line={topDefaultHeight}
-              xText={columnWidth * i + columnWidth * weeksCount * 0.5}
+              y2Line={headerHeight}
+              xText={
+                columnWidth * (i + 1) -
+                getDaysInMonth(date.getMonth(), date.getFullYear()) *
+                  columnWidth *
+                  0.5
+              }
               yText={topDefaultHeight * 0.9}
             />
           )

@@ -29,11 +29,15 @@ import styles from './gantt.module.scss'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
 import { ReactComponent as GanttLeft } from '../../../assets/icons/gantt_left.svg'
 import { ReactComponent as GanttRight } from '../../../assets/icons/gantt_right.svg'
+import { ReactComponent as ArrowDown } from '../../../assets/icons/arrow_down.svg'
+import { ReactComponent as ArrowUp } from '../../../assets/icons/arrow_up.svg'
+import { ReactComponent as ArrowSelect } from '../../../assets/icons/arrow_select.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { useDisplayEffect } from '@flyele/flyele-components'
 import { debounce } from 'lodash'
+import { Popover } from 'antd'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -78,7 +82,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   fetchList,
   pageParams,
   loading,
-  setFullShowMode
+  setFullShowMode,
+  setView
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const taskListRef = useRef<HTMLDivElement>(null)
@@ -589,7 +594,10 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
 
   //顶部月份变化
   useEffect(() => {
-    const res = Math.floor(scrollX / columnWidth)
+    const res = Math.floor(
+      scrollX /
+        (viewMode === FullViewModeEnum.Week ? columnWidth * 4 : columnWidth)
+    )
 
     const dates = dateSetup.dates
     if (!dates[res]) return
@@ -602,7 +610,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     dateSetup.dates,
     scrollX,
     taskDict,
-    taskList
+    taskList,
+    viewMode
   ])
 
   const toTodayView = useMemoizedFn(() => {
@@ -625,6 +634,63 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     if (!dateSetup.dates || !columnWidth || currentDate) return
     toTodayView()
   }, [columnWidth, currentDate, dateSetup.dates, toTodayView])
+  useEffect(() => {
+    toTodayView()
+  }, [toTodayView, viewMode, dateSetup.dates, columnWidth])
+
+  const viewText = useMemo(() => {
+    let str = ''
+    switch (viewMode) {
+      case FullViewModeEnum.Day:
+        str = '日视图'
+        break
+      case FullViewModeEnum.Week:
+        str = '周视图'
+        break
+      case FullViewModeEnum.Year:
+        str = '年视图'
+        break
+      default:
+        break
+    }
+    return str
+  }, [viewMode])
+  const currentText = useMemo(() => {
+    let str = ''
+    switch (viewMode) {
+      case FullViewModeEnum.Day:
+        str = I18N.common.todayWord
+        break
+      case FullViewModeEnum.Week:
+        str = '本周'
+        break
+      case FullViewModeEnum.Year:
+        str = '本年'
+        break
+      default:
+        break
+    }
+    return str
+  }, [viewMode])
+  const viewList = [
+    {
+      key: FullViewModeEnum.Day,
+      name: '日'
+    },
+    {
+      key: FullViewModeEnum.Week,
+      name: '周'
+    }
+    // {
+    //   key: FullViewModeEnum.Year,
+    //   name: '年'
+    // }
+  ]
+
+  const [showArrow, setShowArrow] = useState(false)
+  const handleOpenChange = (newOpen: boolean) => {
+    setShowArrow(newOpen)
+  }
 
   return (
     <div>
@@ -663,24 +729,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           setSvgContainerClientWidth={setSvgContainerClientWidth}
         />
 
-        {/* {ganttEvent.changedTask && (
-          <Tooltip
-            arrowIndent={arrowIndent}
-            rowHeight={rowHeight}
-            svgContainerHeight={svgContainerHeight}
-            svgContainerWidth={svgContainerWidth}
-            fontFamily={fontFamily}
-            fontSize={fontSize}
-            scrollX={scrollX}
-            scrollY={scrollY}
-            task={ganttEvent.changedTask}
-            headerHeight={headerHeight}
-            taskListWidth={taskListWidth}
-            TooltipContent={TooltipContent}
-            rtl={rtl}
-            svgWidth={svgWidth}
-          />
-        )} */}
         {taskHeaderWidth && (
           <div
             className={styles.fixedss}
@@ -691,10 +739,45 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             <div className={styles.currentDate}>{currentDate}</div>
             {currentDate && (
               <div className={styles.today} onClick={toTodayView}>
-                {I18N.common.todayWord}
+                {currentText}
               </div>
             )}
           </div>
+        )}
+        {taskHeaderWidth && (
+          <Popover
+            content={() => (
+              <div className={styles.viewContent}>
+                {viewList.map((_) => {
+                  return (
+                    <div
+                      key={_.key}
+                      className={styles.viewItem}
+                      onClick={() => {
+                        setView(_.key)
+                        setShowArrow(false)
+                      }}
+                      style={{
+                        background: _.key === viewMode ? '#F8F8F8' : ''
+                      }}
+                    >
+                      <span>{_.name}</span>
+                      {_.key === viewMode && <ArrowSelect></ArrowSelect>}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            trigger="click"
+            open={showArrow}
+            arrow={false}
+            onOpenChange={handleOpenChange}
+          >
+            <div className={styles.changeView}>
+              <div className={styles.currentView}>{viewText}</div>
+              {showArrow ? <ArrowUp></ArrowUp> : <ArrowDown></ArrowDown>}
+            </div>
+          </Popover>
         )}
         {barTasks && barTasks.length > 0 && (
           <div

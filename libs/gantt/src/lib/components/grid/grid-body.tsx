@@ -87,6 +87,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     let today: ReactChild = <rect />
     for (let i = 0; i < dates.length; i++) {
       const date = dates[i]
+      console.log(date)
 
       if (i !== 0) {
         if (
@@ -214,7 +215,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   }, [init, tasks, dates, hoverId])
   useEffect(() => {
     setTodayLine && setTodayLine(todayLine)
-  }, [setTodayLine, todayLine])
+  }, [setTodayLine, todayLine, columnWidth])
 
   const getWeek = useMemoizedFn((date) => {
     const datas = dayjs(date).day()

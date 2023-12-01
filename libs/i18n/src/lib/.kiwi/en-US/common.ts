@@ -1635,6 +1635,7 @@ export default {
   isItAResponsibility: 'Key person',
   attentionToMatters: 'Focus',
   modifyFilterBar: 'Adjust filter',
+  backToPrevious: 'Back to previous',
   generateTot: 'Export {val1}',
   nextPage: 'Next Page',
   lastPage: 'Previous page',

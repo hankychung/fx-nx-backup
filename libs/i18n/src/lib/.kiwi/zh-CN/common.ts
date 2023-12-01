@@ -1603,6 +1603,7 @@ export default {
   isItAResponsibility: '是否为责任人',
   attentionToMatters: '事项关注',
   modifyFilterBar: '修改筛选条件',
+  backToPrevious: '返回上一级',
   generateTot: '生成（{val1}条）',
   nextPage: '下一页',
   lastPage: '上一页',

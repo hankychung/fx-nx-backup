@@ -345,6 +345,7 @@ export interface IFullViewGanttProps
   }>
   loading: React.MutableRefObject<boolean>
   setFullShowMode: (_: FullShowMode) => void
+  setView: (_: FullViewModeEnum) => void
 }
 
 export interface IFullViewParams {

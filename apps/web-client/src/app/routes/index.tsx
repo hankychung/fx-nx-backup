@@ -7,6 +7,7 @@ import { RoutePath } from './const'
 import { DayView } from '../pages/board/modules/day-view'
 import { NoviceGuidePage } from '../pages/novice-guide-page'
 import { Detail } from '../pages/detail'
+import { WeekView } from '../pages/board/modules/week-view'
 
 const DefaultPage = () => <Navigate to="/" />
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
           {
             path: RoutePath.dayView,
             element: <DayView />
+          },
+          {
+            path: RoutePath.weekView,
+            element: <WeekView />
           }
         ]
       },

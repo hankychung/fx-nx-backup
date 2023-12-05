@@ -87,7 +87,6 @@ export const GridBody: React.FC<GridBodyProps> = ({
     let today: ReactChild = <rect />
     for (let i = 0; i < dates.length; i++) {
       const date = dates[i]
-      console.log(date)
 
       if (i !== 0) {
         if (

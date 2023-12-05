@@ -20,20 +20,24 @@ import { CalendarProps } from '../calendar/calendar'
 import { TaskGanttContentProps } from './task-gantt-content'
 import { TaskListHeaderDefault } from '../task-list/task-list-header'
 import { TaskListTableDefault } from '../task-list/task-list-table'
-import { StandardTooltipContent, Tooltip } from '../other/tooltip'
-import { VerticalScroll } from '../other/vertical-scroll'
+import { StandardTooltipContent } from '../other/tooltip'
 import { TaskListProps, TaskList } from '../task-list/task-list'
 import { TaskGantt } from './task-gantt'
 import { convertToBarTasks } from '../../helpers/bar-helper'
-import { HorizontalScroll } from '../other/horizontal-scroll'
 import { getEnFormat } from '@flyele-nx/utils'
 import styles from './gantt.module.scss'
 import { ReactComponent as HideList } from '../../../assets/icons/hide_list.svg'
+import { ReactComponent as GanttLeft } from '../../../assets/icons/gantt_left.svg'
+import { ReactComponent as GanttRight } from '../../../assets/icons/gantt_right.svg'
+import { ReactComponent as ArrowDown } from '../../../assets/icons/arrow_down.svg'
+import { ReactComponent as ArrowUp } from '../../../assets/icons/arrow_up.svg'
+import { ReactComponent as ArrowSelect } from '../../../assets/icons/arrow_select.svg'
 import { useGanttList } from '../../hooks/useScheduleList'
 import { useMemoizedFn } from 'ahooks'
 import dayjs from 'dayjs'
 import { useDisplayEffect } from '@flyele/flyele-components'
 import { debounce } from 'lodash'
+import { Popover } from 'antd'
 export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   tasks,
   headerHeight = 32,
@@ -77,7 +81,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   onExpanderClick,
   fetchList,
   pageParams,
-  loading
+  loading,
+  setFullShowMode,
+  setView
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const taskListRef = useRef<HTMLDivElement>(null)
@@ -96,6 +102,7 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
   const [taskHeaderWidth, setTaskHeaderWidth] = useState(0)
   const [isChecked, setIsChecked] = React.useState(true) //收合列表
   const [svgContainerWidth, setSvgContainerWidth] = useState(0)
+  const [svgContainerClientWidth, setSvgContainerClientWidth] = useState(0)
   const [currentDate, setCurrentDate] = useState('')
   const [svgContainerHeight, setSvgContainerHeight] = useState(ganttHeight)
   const [barTasks, setBarTasks] = useState<IFullViewBarTask[]>([])
@@ -106,10 +113,12 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     () => (rowHeight * barFill) / 100,
     [rowHeight, barFill]
   )
+  // console.log(svgContainerWidth,'svgContainerWidth');
 
   const [selectedTask, setSelectedTask] = useState<IFullViewBarTask>()
   const [failedTask, setFailedTask] = useState<IFullViewBarTask | null>(null)
-
+  const leftRef = useRef<HTMLDivElement>(null)
+  const rightRef = useRef<HTMLDivElement>(null)
   const svgWidth = dateSetup.dates.length * columnWidth
   const ganttFullHeight = barTasks.length * rowHeight
 
@@ -367,6 +376,15 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
       }
       if (newScrollY !== scrollY) {
         setScrollY(newScrollY)
+        if (leftRef.current) {
+          // verticalGanttContainerRef.current.scrollLeft = scrollX
+          leftRef.current.scrollTop = newScrollY || 0
+        }
+        if (rightRef.current) {
+          // verticalGanttContainerRef.current.scrollLeft = scrollX
+          rightRef.current.scrollTop = newScrollY || 0
+        }
+
         // event.preventDefault()
       }
     }
@@ -546,7 +564,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     onProgressChange,
     onDoubleClick,
     onClick,
-    onDelete
+    onDelete,
+    scrollX,
+    setScrollX
   }
 
   const tableProps: TaskListProps = {
@@ -568,12 +588,16 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     TaskListHeader,
     TaskListTable,
     setIsChecked,
-    isChecked
+    isChecked,
+    setFullShowMode
   }
 
   //顶部月份变化
   useEffect(() => {
-    const res = Math.floor(scrollX / columnWidth)
+    const res = Math.floor(
+      scrollX /
+        (viewMode === FullViewModeEnum.Week ? columnWidth * 4 : columnWidth)
+    )
 
     const dates = dateSetup.dates
     if (!dates[res]) return
@@ -586,7 +610,8 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     dateSetup.dates,
     scrollX,
     taskDict,
-    taskList
+    taskList,
+    viewMode
   ])
 
   const toTodayView = useMemoizedFn(() => {
@@ -609,6 +634,63 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
     if (!dateSetup.dates || !columnWidth || currentDate) return
     toTodayView()
   }, [columnWidth, currentDate, dateSetup.dates, toTodayView])
+  useEffect(() => {
+    toTodayView()
+  }, [toTodayView, viewMode, dateSetup.dates, columnWidth])
+
+  const viewText = useMemo(() => {
+    let str = ''
+    switch (viewMode) {
+      case FullViewModeEnum.Day:
+        str = '日视图'
+        break
+      case FullViewModeEnum.Week:
+        str = '周视图'
+        break
+      case FullViewModeEnum.Year:
+        str = '年视图'
+        break
+      default:
+        break
+    }
+    return str
+  }, [viewMode])
+  const currentText = useMemo(() => {
+    let str = ''
+    switch (viewMode) {
+      case FullViewModeEnum.Day:
+        str = I18N.common.todayWord
+        break
+      case FullViewModeEnum.Week:
+        str = '本周'
+        break
+      case FullViewModeEnum.Year:
+        str = '本年'
+        break
+      default:
+        break
+    }
+    return str
+  }, [viewMode])
+  const viewList = [
+    {
+      key: FullViewModeEnum.Day,
+      name: '日'
+    },
+    {
+      key: FullViewModeEnum.Week,
+      name: '周'
+    }
+    // {
+    //   key: FullViewModeEnum.Year,
+    //   name: '年'
+    // }
+  ]
+
+  const [showArrow, setShowArrow] = useState(false)
+  const handleOpenChange = (newOpen: boolean) => {
+    setShowArrow(newOpen)
+  }
 
   return (
     <div>
@@ -644,26 +726,9 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           currentDate={currentDate}
           taskListWidth={taskListWidth}
           setScrollX={setScrollX}
+          setSvgContainerClientWidth={setSvgContainerClientWidth}
         />
 
-        {/* {ganttEvent.changedTask && (
-          <Tooltip
-            arrowIndent={arrowIndent}
-            rowHeight={rowHeight}
-            svgContainerHeight={svgContainerHeight}
-            svgContainerWidth={svgContainerWidth}
-            fontFamily={fontFamily}
-            fontSize={fontSize}
-            scrollX={scrollX}
-            scrollY={scrollY}
-            task={ganttEvent.changedTask}
-            headerHeight={headerHeight}
-            taskListWidth={taskListWidth}
-            TooltipContent={TooltipContent}
-            rtl={rtl}
-            svgWidth={svgWidth}
-          />
-        )} */}
         {taskHeaderWidth && (
           <div
             className={styles.fixedss}
@@ -674,9 +739,101 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
             <div className={styles.currentDate}>{currentDate}</div>
             {currentDate && (
               <div className={styles.today} onClick={toTodayView}>
-                {I18N.common.todayWord}
+                {currentText}
               </div>
             )}
+          </div>
+        )}
+        {taskHeaderWidth && (
+          <Popover
+            content={() => (
+              <div className={styles.viewContent}>
+                {viewList.map((_) => {
+                  return (
+                    <div
+                      key={_.key}
+                      className={styles.viewItem}
+                      onClick={() => {
+                        setView(_.key)
+                        setShowArrow(false)
+                      }}
+                      style={{
+                        background: _.key === viewMode ? '#F8F8F8' : ''
+                      }}
+                    >
+                      <span>{_.name}</span>
+                      {_.key === viewMode && <ArrowSelect></ArrowSelect>}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            trigger="click"
+            open={showArrow}
+            arrow={false}
+            onOpenChange={handleOpenChange}
+          >
+            <div className={styles.changeView}>
+              <div className={styles.currentView}>{viewText}</div>
+              {showArrow ? <ArrowUp></ArrowUp> : <ArrowDown></ArrowDown>}
+            </div>
+          </Popover>
+        )}
+        {barTasks && barTasks.length > 0 && (
+          <div
+            className={styles.leftList}
+            style={{
+              left: `${isChecked ? taskHeaderWidth || taskListWidth : 40}px`,
+              top: '76px'
+            }}
+            ref={leftRef}
+          >
+            {barTasks.map((_) => {
+              return (
+                <div
+                  key={_.task_id}
+                  className={styles.leftItem}
+                  onClick={() => {
+                    setScrollX(_.x1 - columnWidth)
+                  }}
+                >
+                  <GanttLeft
+                    style={{ display: _.x1 < scrollX ? 'block' : 'none' }}
+                  ></GanttLeft>
+                </div>
+              )
+            })}
+          </div>
+        )}
+        {barTasks && barTasks.length > 0 && (
+          <div
+            className={styles.rightList}
+            style={{
+              top: '74px'
+            }}
+            ref={rightRef}
+          >
+            {barTasks.map((_) => {
+              return (
+                <div
+                  key={_.task_id}
+                  className={styles.leftItem}
+                  onClick={() => {
+                    setScrollX(_.x2 - svgContainerClientWidth + columnWidth)
+                  }}
+                >
+                  <GanttRight
+                    style={{
+                      display:
+                        _.x1 > svgContainerClientWidth + scrollX ||
+                        _.x2 > svgContainerClientWidth + scrollX
+                          ? 'block'
+                          : 'none'
+                    }}
+                  ></GanttRight>
+                </div>
+              )
+            })}
           </div>
         )}
         {/* <VerticalScroll

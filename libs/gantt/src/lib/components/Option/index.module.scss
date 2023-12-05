@@ -215,3 +215,60 @@
   display: flex;
   align-items: center;
 }
+
+.wrapper {
+  min-height: 274px;
+  width: 315px;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
+  color: rgba(54, 54, 54, 1);
+
+  .title {
+    font-size: 14px;
+  }
+
+  .mode {
+    height: 97px;
+    border-radius: 8px;
+    padding: 16px 16px 16px 16px;
+    background-color: rgba(244, 255, 254, 1);
+    border: 1px solid rgba(29, 210, 193, 0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    &-gray {
+      border: none;
+      background-color: rgba(249, 249, 249, 1);
+    }
+
+    & > div {
+      margin-left: 16px;
+
+      .sub {
+        font-size: 13px;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+
+        .icon {
+          margin-right: 10px;
+        }
+
+        div.icon {
+          height: 14px;
+          width: 14px;
+          border: 1px solid rgba(6, 6, 6, 0.3);
+          border-radius: 7px;
+        }
+      }
+
+      .info {
+        font-size: 11px;
+        color: rgba(106, 106, 106, 1);
+      }
+    }
+  }
+}

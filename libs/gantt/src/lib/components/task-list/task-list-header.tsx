@@ -3,6 +3,7 @@ import React from 'react'
 import styles from './task-list-header.module.css'
 import Option from '../Option'
 import { ReactComponent as ShowList } from '../../../assets/icons/show_list.svg'
+import { FullShowMode } from '@flyele-nx/constant'
 
 export const TaskListHeaderDefault: React.FC<{
   headerHeight: number
@@ -10,6 +11,7 @@ export const TaskListHeaderDefault: React.FC<{
   fontFamily: string
   fontSize: string
   isChecked: boolean
+  setFullShowMode: (_: FullShowMode) => void
   setIsChecked: (data: boolean) => void
   taskHeaderRef: React.RefObject<HTMLDivElement>
 }> = ({
@@ -19,12 +21,13 @@ export const TaskListHeaderDefault: React.FC<{
   rowWidth,
   setIsChecked,
   isChecked,
-  taskHeaderRef
+  taskHeaderRef,
+  setFullShowMode
 }) => {
   return (
     <>
       <div className={styles.options} ref={taskHeaderRef}>
-        <Option />
+        <Option setFullShowMode={setFullShowMode} />
         <div
           style={{ marginRight: '16px' }}
           onClick={() => setIsChecked(!isChecked)}

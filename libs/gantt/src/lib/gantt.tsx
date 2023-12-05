@@ -8,7 +8,11 @@ import React, {
   useRef
 } from 'react'
 import { Task, IFullViewTask } from '@flyele-nx/types'
-import { Enter_page_detail, FullViewModeEnum } from '@flyele-nx/constant'
+import {
+  Enter_page_detail,
+  FullShowMode,
+  FullViewModeEnum
+} from '@flyele-nx/constant'
 import { useMemoizedFn } from 'ahooks'
 import { TaskApi, projectApi } from '@flyele-nx/service'
 import { useGanttList } from './hooks/useScheduleList'
@@ -33,10 +37,9 @@ const _GanttList: ForwardRefRenderFunction<
 ) => {
   const { updateList, batchUpdateTask, taskDict, taskList, reSet } =
     useGanttList()
-  const [view, _setView] = React.useState<FullViewModeEnum>(
-    FullViewModeEnum.Day
-  )
+  const [view, setView] = React.useState<FullViewModeEnum>(FullViewModeEnum.Day)
   const isinit = useRef(false)
+  const [fullShowMode, setFullShowMode] = useState(FullShowMode.group)
   const [showLoading, setShowLoading] = useState(true)
   let columnWidth = 65
   if (view === FullViewModeEnum.Year) {
@@ -63,7 +66,7 @@ const _GanttList: ForwardRefRenderFunction<
     loading.current = true
     let resList: Task[] = []
     const params = {
-      show_mode: 2,
+      show_mode: fullShowMode,
       projectId: projectId,
       query_type: 0,
       sort: 'desc',
@@ -104,7 +107,9 @@ const _GanttList: ForwardRefRenderFunction<
       id: i.task_id,
       type: 'task',
       hideChildren: false,
-      displayOrder: 1
+      displayOrder: 1,
+      parent_id: fullShowMode === FullShowMode.flat ? '' : i.parent_id,
+      showMode: fullShowMode
     })) as unknown as Task
 
     resList = resList.concat(arr)
@@ -130,6 +135,20 @@ const _GanttList: ForwardRefRenderFunction<
       reload
     }
   })
+  useEffect(() => {
+    reload()
+  }, [projectId, reload, fullShowMode])
+
+  // useEffect(() => {
+  //   if (fullShowMode) {
+  //     pageParams.current.page_number = 1
+  //     isFinished.current = false
+  //     reSet()
+  //     reload()
+
+  //     isinit.current = true
+  //   }
+  // }, [reload, fullShowMode, reSet])
 
   useEffect(() => {
     if (projectId && !isinit.current && isinitGantt) {
@@ -260,6 +279,8 @@ const _GanttList: ForwardRefRenderFunction<
           fetchList={fetchList}
           pageParams={pageParams}
           loading={loading}
+          setView={setView}
+          setFullShowMode={setFullShowMode}
         />
       )}
       {showLoading && <LoadingPage />}

@@ -72,6 +72,9 @@ export const useCancelTask = ({
         taskId
       )
       TaskHandler.removeTasks(taskIds)
+      TaskHandler.removeTasksByCondition((task) =>
+        taskIds.includes(task?.parent_id || '')
+      )
     } else {
       globalNxController.showMsg({
         content: I18N.common.cancelFailed,

@@ -14,6 +14,7 @@ export type TaskGanttProps = {
   scrollX: number
   currentDate: string
   taskListWidth: number
+  setSvgContainerClientWidth: (num: number) => void
   setScrollX: (num: number) => void
 }
 export const TaskGantt: React.FC<TaskGanttProps> = ({
@@ -25,6 +26,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   scrollX,
   currentDate,
   taskListWidth,
+  setSvgContainerClientWidth,
   setScrollX
 }) => {
   const ganttSVGRef = useRef<SVGSVGElement>(null)
@@ -32,7 +34,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   const verticalGanttContainerRef = useRef<HTMLDivElement>(null)
   // const setTodayLine: ReactChild[] = []
   const [todayLine, setTodayLine] = useState<ReactChild[]>([])
-  const newBarProps = { ...barProps, svg: ganttSVGRef }
+  const newBarProps = { ...barProps, svg: ganttSVGRef, scrollX, setScrollX }
   const _gridProps = { ...gridProps, setTodayLine }
   const isWheel = useRef(false)
   useEffect(() => {
@@ -40,6 +42,11 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       horizontalContainerRef.current.scrollTop = scrollY
     }
   }, [scrollY])
+  useEffect(() => {
+    setSvgContainerClientWidth(
+      verticalGanttContainerRef.current?.clientWidth || 0
+    )
+  }, [setSvgContainerClientWidth, verticalGanttContainerRef])
 
   useEffect(() => {
     if (verticalGanttContainerRef.current && !isWheel.current) {
@@ -47,11 +54,6 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
     }
   }, [scrollX])
 
-  // useDisplayEffect(() => {
-  //   if (verticalGanttContainerRef.current) {
-  //     verticalGanttContainerRef.current.scrollLeft = scrollX
-  //   }
-  // }, verticalGanttContainerRef.current)
   const handleScroll = useMemoizedFn((event) => {
     if (!isWheel.current) {
       return
@@ -61,7 +63,6 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
     //   isWheel.current = false
     // }, 200);
   })
-
   useEffect(() => {
     // subscribe if scroll is necessary
     verticalGanttContainerRef.current?.addEventListener(
@@ -153,6 +154,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   //     verticalGanttContainerRef.current?.removeEventListener('wheel', handle)
   //   }
   // }, [verticalGanttContainerRef, handle])
+
   return (
     <div
       className={styles.ganttVerticalContainer}
@@ -197,14 +199,6 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
           <g className="ticks">{todayLine}</g>
         </svg>
       </div>
-      {/* <div
-        className={styles.fixedss}
-        style={{
-          left: `${taskListWidth + 20}px`
-        }}
-      >
-        {currentDate}
-      </div> */}
     </div>
   )
 }

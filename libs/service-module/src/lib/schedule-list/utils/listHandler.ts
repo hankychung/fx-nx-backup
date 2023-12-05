@@ -43,7 +43,6 @@ class ListHandler {
     this.insertFinishTasks(taskIds)
   }
 
-  // TODO: 现只处理未完成事项
   // 刷新所有周视图未完成事项
   static async reloadDates(dates: string[]) {
     let newTaskDict = {}
@@ -52,19 +51,34 @@ class ListHandler {
 
     const scheduleByDate: { [k: string]: string[] } = {}
 
+    const finishedScheduleByDate: { [k: string]: string[] } = {}
+
     const { batchUpdateTask } = useScheduleStore.getState()
 
+    const historyDates = dates.filter((date) => {
+      return dayjs(date).isBefore(getDateOfToday(), 'date')
+    })
+
     for (const date of dates) {
-      const r = await globalNxController.getDayView({
-        day: date,
-        queryType: QueryType.participate
-      })
+      const isCompleted = historyDates.includes(date)
 
-      const list = r.data.list || []
+      const getInfo = async () => {
+        const r = await globalNxController.getDayView({
+          day: date,
+          queryType: isCompleted ? QueryType.completed : QueryType.participate
+        })
 
-      const { repeatDict, dict } = batchUpdateTask(list, {
-        isFinished: false
-      })
+        const list = r.data.list || []
+
+        return {
+          ...batchUpdateTask(list, {
+            isFinished: isCompleted
+          }),
+          list
+        }
+      }
+
+      const { repeatDict, dict, list } = await getInfo()
 
       newTaskDict = {
         ...newTaskDict,
@@ -73,8 +87,14 @@ class ListHandler {
 
       repeatDictByDate[date] = repeatDict
 
-      scheduleByDate[date] = getSortedSchedule({ date, tasks: list })
+      if (isCompleted) {
+        finishedScheduleByDate[date] = list.map((i) => i.ref_task_id)
+      } else {
+        scheduleByDate[date] = getSortedSchedule({ date, tasks: list })
+      }
     }
+
+    console.log('check scheduledate', scheduleByDate, finishedScheduleByDate)
 
     useScheduleStore.setState(
       produce((state: IState) => {
@@ -91,6 +111,11 @@ class ListHandler {
         state.schedule = {
           ...state.schedule,
           ...scheduleByDate
+        }
+
+        state.finishSchedule = {
+          ...state.finishSchedule,
+          ...finishedScheduleByDate
         }
       })
     )

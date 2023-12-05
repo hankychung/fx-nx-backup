@@ -678,7 +678,7 @@ export const getScheduleDate = ({
     case MatterType.meeting: {
       return {
         txt: `${
-          finishTime && !isCN ? '' : `Ended ${isTeamSchedule ? 'on' : 'at'} `
+          finishTime && !isCN ? `Ended ${isTeamSchedule ? 'on' : 'at'} ` : ``
         }${dateRange(startTime, end_time, {
           needAllDate: isTeamSchedule
         })}${finishTime && isCN ? ` ${I18N.common.ended}` : ''}`

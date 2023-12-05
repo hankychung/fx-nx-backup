@@ -76,6 +76,8 @@ class ListHandler {
       scheduleByDate[date] = getSortedSchedule({ date, tasks: list })
     }
 
+    console.log('check scheduledate', scheduleByDate)
+
     useScheduleStore.setState(
       produce((state: IState) => {
         state.taskDict = {

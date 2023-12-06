@@ -10,15 +10,20 @@ import {
   HeaderRefreshIcon
 } from '@flyele-nx/icon'
 import { HeaderActions } from './const'
-import { inviteModal } from '@flyele-nx/service-module'
+// import { inviteModal } from '@flyele-nx/service-module'
+import { useNavigate } from 'react-router-dom'
 
 const _BoardHeader: FC = () => {
   const [activeTab, setActiveTab] = useState<RoutePath>(RoutePath.board)
+  const navigate = useNavigate()
 
   const onChange = (key: RoutePath) => {
     if (key === activeTab) return
 
-    inviteModal.open()
+    // 跳转到key
+    navigate(key)
+
+    // inviteModal.open()
 
     setActiveTab(key)
   }

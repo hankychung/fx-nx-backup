@@ -138,7 +138,7 @@ const MemberInfo = ({
               <span>
                 <i>￥</i>
                 {/* <span>{regFenToYuan(vipMeal?.original_price || 0)}</span> */}
-                <span>499</span>
+                <span>299</span>
               </span>
             )}
             <div>

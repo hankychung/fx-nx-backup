@@ -50,7 +50,8 @@ const MemberInfo = ({
             res.data &&
             res.data.length &&
             // 14-终身会员 / 29-年套餐
-            res.data.filter((item) => item.id === (isCN ? 14 : 29))
+            res.data.filter((item) => item.id === 29)
+          // res.data.filter((item) => item.id === (isCN ? 14 : 29))
           if (list) {
             const new_arr = list.map((item) => {
               const arr = getItem(item.id, _.data || [])

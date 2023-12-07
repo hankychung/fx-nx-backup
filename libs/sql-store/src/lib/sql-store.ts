@@ -619,7 +619,8 @@ class SqlStore {
                 ...parseError(e),
                 item,
                 table,
-                type: 'writting-diff-update'
+                type: 'writting-diff-update',
+                sql: this.getInsertSql(item, table, 'zip-full') + ';'
               }
             })
 
@@ -637,10 +638,14 @@ class SqlStore {
   }
 
   private updateDB() {
-    set(this.dbId, this.db!.export()).then(() => {
-      // record the timestamp
-      set(this.recordKey, this.recordInfo)
-    })
+    set(this.dbId, this.db!.export())
+      .then(() => {
+        // record the timestamp
+        set(this.recordKey, this.recordInfo)
+      })
+      .catch((err) => {
+        console.error('导出出错', err)
+      })
   }
 
   private getDecentItem(
@@ -731,10 +736,10 @@ class SqlStore {
         }
 
         if (i && typeof i === 'object') {
-          return `'${JSON.stringify(i)}'`
+          return `'${JSON.stringify(i).replace(/'/g, `''`)}'`
         }
 
-        return i || 'null'
+        return typeof i === 'string' ? i.replace(/'/g, `''`) : i || 'null'
       })
       .join(' ,')})`
 

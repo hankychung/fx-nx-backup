@@ -2,7 +2,7 @@ import { I18N, isCN } from '@flyele-nx/i18n'
 import React, { useMemo } from 'react'
 import { FlyBasePopper } from '@flyele/flyele-components'
 import { getQuadrantBeforeIcon } from './hook/useQuadrantBefore'
-import { CheckIcon } from '@flyele-nx/icon'
+import { CheckIcon, RightArrowIcon } from '@flyele-nx/icon'
 import styles from './index.module.scss'
 import { TaskApi } from '@flyele-nx/service'
 import { useMemoizedFn } from 'ahooks'
@@ -114,7 +114,10 @@ export const PriorityLevelPopper = (props: Props) => {
       content={PriorityLevelMenu}
       zIndex={9999}
     >
-      <span>{I18N.common.priority}</span>
+      <div className={styles.priorityItem}>
+        <span>{I18N.common.priority}</span>
+        <RightArrowIcon color="#6A6A6A" style={{ marginRight: '8px' }} />
+      </div>
     </FlyBasePopper>
   )
 }

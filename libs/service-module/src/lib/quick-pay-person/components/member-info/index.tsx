@@ -137,8 +137,8 @@ const MemberInfo = ({
             {isCN && vipMeal?.original_price && (
               <span>
                 <i>￥</i>
-                {/* <span>{regFenToYuan(vipMeal?.original_price || 0)}</span> */}
-                <span>299</span>
+                <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
+                {/* <span>299</span> */}
               </span>
             )}
             <div>

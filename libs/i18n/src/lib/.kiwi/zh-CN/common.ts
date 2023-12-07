@@ -2544,7 +2544,7 @@ export default {
   selectedForYou: '已为您选择最优惠套餐',
   individualMembershipRights: '个人会员权益',
   openEnjoyMore: '开通后立即享受众多',
-  individualMembershipEnd: '个人会员·终身会员',
+  individualMembershipEnd: '一年',
   customerService: '客服',
   addToTikTok: '新增到点提醒（不影响事项原本的时间）',
   forOnesOwnStubbornness2: '为自己的执行时间，将改变日程排序',

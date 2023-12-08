@@ -1,5 +1,5 @@
 import { I18N, isCN } from '@flyele-nx/i18n'
-import React, { useMemo, useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import { FlyBasePopper } from '@flyele/flyele-components'
 import { getQuadrantBeforeIcon } from './hook/useQuadrantBefore'
 import { CheckIcon, RightArrowIcon } from '@flyele-nx/icon'
@@ -30,9 +30,7 @@ const QuadrantColor = {
 }
 
 export const PriorityLevelPopper = (props: Props) => {
-  const { task_id, priority_level, matter_type, onChange } = props
-  const [priorityLevelInner, setPriorityLevelInner] =
-    useState<QuadrantValue>(priority_level)
+  const { task_id, priority_level, matter_type, close, onChange } = props
 
   const changeLevel = useMemoizedFn((level: QuadrantValue) => {
     TaskApi.updateTask(
@@ -56,7 +54,6 @@ export const PriorityLevelPopper = (props: Props) => {
             type: 'updateDetail'
           }
         )
-        setPriorityLevelInner(level)
         onChange?.(level)
       })
       .catch(() => {
@@ -64,6 +61,9 @@ export const PriorityLevelPopper = (props: Props) => {
           content: I18N.common.modificationFailed,
           msgType: '错误'
         })
+      })
+      .finally(() => {
+        close?.()
       })
   })
 
@@ -96,7 +96,7 @@ export const PriorityLevelPopper = (props: Props) => {
                     {value}
                   </div>
                 </div>
-                {priorityLevelInner === level ? (
+                {priority_level === level ? (
                   <div className={styles.checkIcon}>
                     <CheckIcon width={14} height={14} color="#1DD2C1" />
                   </div>
@@ -108,11 +108,7 @@ export const PriorityLevelPopper = (props: Props) => {
           })}
       </div>
     )
-  }, [changeLevel, priorityLevelInner])
-
-  useEffect(() => {
-    setPriorityLevelInner(priority_level)
-  }, [priority_level])
+  }, [changeLevel, priority_level])
 
   return (
     <FlyBasePopper

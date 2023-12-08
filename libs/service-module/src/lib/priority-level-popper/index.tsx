@@ -1,5 +1,5 @@
 import { I18N, isCN } from '@flyele-nx/i18n'
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { FlyBasePopper } from '@flyele/flyele-components'
 import { getQuadrantBeforeIcon } from './hook/useQuadrantBefore'
 import { CheckIcon, RightArrowIcon } from '@flyele-nx/icon'
@@ -30,7 +30,9 @@ const QuadrantColor = {
 }
 
 export const PriorityLevelPopper = (props: Props) => {
-  const { task_id, priority_level, matter_type, close, onChange } = props
+  const { task_id, priority_level, matter_type, onChange } = props
+  const [priorityLevelInner, setPriorityLevelInner] =
+    useState<QuadrantValue>(priority_level)
 
   const changeLevel = useMemoizedFn((level: QuadrantValue) => {
     TaskApi.updateTask(
@@ -54,6 +56,7 @@ export const PriorityLevelPopper = (props: Props) => {
             type: 'updateDetail'
           }
         )
+        setPriorityLevelInner(level)
         onChange?.(level)
       })
       .catch(() => {
@@ -61,9 +64,6 @@ export const PriorityLevelPopper = (props: Props) => {
           content: I18N.common.modificationFailed,
           msgType: '错误'
         })
-      })
-      .finally(() => {
-        close?.()
       })
   })
 
@@ -79,7 +79,12 @@ export const PriorityLevelPopper = (props: Props) => {
               <div
                 className={styles.item}
                 key={key}
-                onClick={() => changeLevel(level)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+
+                  changeLevel(level)
+                }}
                 style={{ width: isCN ? '130px' : '200px' }}
               >
                 <div className={styles.title}>
@@ -91,7 +96,7 @@ export const PriorityLevelPopper = (props: Props) => {
                     {value}
                   </div>
                 </div>
-                {priority_level === level ? (
+                {priorityLevelInner === level ? (
                   <div className={styles.checkIcon}>
                     <CheckIcon width={14} height={14} color="#1DD2C1" />
                   </div>
@@ -103,7 +108,11 @@ export const PriorityLevelPopper = (props: Props) => {
           })}
       </div>
     )
-  }, [changeLevel, priority_level])
+  }, [changeLevel, priorityLevelInner])
+
+  useEffect(() => {
+    setPriorityLevelInner(priority_level)
+  }, [priority_level])
 
   return (
     <FlyBasePopper

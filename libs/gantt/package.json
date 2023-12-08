@@ -1,6 +1,6 @@
 {
   "name": "@flyele-nx/gantt",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "main": "./index.mjs",
   "types": "./index.d.ts",
   "exports": {

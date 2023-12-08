@@ -79,7 +79,12 @@ export const PriorityLevelPopper = (props: Props) => {
               <div
                 className={styles.item}
                 key={key}
-                onClick={() => changeLevel(level)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+
+                  changeLevel(level)
+                }}
                 style={{ width: isCN ? '130px' : '200px' }}
               >
                 <div className={styles.title}>

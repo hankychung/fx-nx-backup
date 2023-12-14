@@ -825,7 +825,6 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
                   <GanttRight
                     style={{
                       display:
-                        _.x1 > svgContainerClientWidth + scrollX ||
                         _.x2 > svgContainerClientWidth + scrollX
                           ? 'block'
                           : 'none'

@@ -118,6 +118,7 @@ export const PriorityLevelPopper = (props: Props) => {
       showArrow={false}
       content={PriorityLevelMenu}
       zIndex={9999}
+      overlayClassName={styles.popperContent}
     >
       <div className={styles.priorityItem}>
         <span>{I18N.common.priority}</span>

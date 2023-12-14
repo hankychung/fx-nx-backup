@@ -40,7 +40,7 @@ const QuickPay = (props: Iprops) => {
   const [vipMeal, setVipMeal] = useState<IActiveGoods>() // 套餐list
   const [productId, setProductId] = useState('')
 
-  const getOrder = useMemoizedFn(async (vipMeal?: IActiveGoods) => {
+  const getOrder = useMemoizedFn(async () => {
     const params = {
       amount: 1,
       coupon_id: 0,
@@ -67,7 +67,7 @@ const QuickPay = (props: Iprops) => {
   useEffect(() => {
     if (isCN || !vipMeal) return
 
-    getOrder(vipMeal).then((res) => {
+    getOrder().then((res) => {
       setProductId(res?.out_trade_no || '')
     })
   }, [getOrder, vipMeal])

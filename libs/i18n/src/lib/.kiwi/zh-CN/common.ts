@@ -1483,7 +1483,7 @@ export default {
   atTheEndOfTheCycle: '循环截止时间过短，无法产生循环',
   creationFailed: '创建失败',
   announcements: '个公告',
-  openingATeamMeeting: '开团团队会员，加入项目讨论',
+  openingATeamMeeting: '开通团队会员，加入项目讨论',
   afterDeletingFiles: '删除文件后触发对话列表事件',
   withdraw: '{val1}撤回了一条消息',
   iWithdrewOne: '我撤回了一条消息',

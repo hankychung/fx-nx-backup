@@ -58,7 +58,10 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
   const getLoginKey = useMemoizedFn(async () => {
     const params = await util.getLoginKeyParams(loginKey, deviceParams)
 
+    console.log('@@@ params', params)
+
     const res = await UsercApi.getLoginKey(params)
+    console.log('@@@ UsercApi.getLoginKey res', res)
 
     return res.data
   })
@@ -83,8 +86,11 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
   }, [])
 
   const generateQrCode = useMemoizedFn(async () => {
+    console.log('@@@ 进入 generateQrCode')
     const loginKey = await getLoginKey()
+    console.log('@@@ loginKey', loginKey)
     const qrCode = await getQrCode(loginKey)
+    console.log('@@@ qrCode', qrCode)
 
     setScanCode(false)
 
@@ -104,6 +110,7 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
   })
 
   const refreshQrCode = useMemoizedFn((isResetCounter = true) => {
+    console.log('@@@ 进入 refreshQrCode')
     if (isResetCounter) {
       autoRefreshCounter.current = 1
     }
@@ -112,7 +119,8 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
       .then(() => {
         setWatchTimeOut(false)
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log('@@@ refreshQrCode 错误', e)
         setException(true)
       })
   })
@@ -168,6 +176,7 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
                     type: 'error',
                     content: '登录失败，请重试'
                   })
+                  console.log('@@@ 登录失败')
                   setException(true)
                 }
               })
@@ -236,7 +245,10 @@ const QrCodeLogin: React.FC<React.PropsWithChildren<Props>> = (props) => {
     // 首次进入初始
     setTimeout(() => {
       autoRefreshCounter.current = 1
-      generateQrCode().catch(() => setException(true))
+      generateQrCode().catch(() => {
+        console.log('@@@@ 首次进入初始 generateQrCode 错误')
+        setException(true)
+      })
     }, 50)
 
     isInit.current = true

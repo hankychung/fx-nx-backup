@@ -35,15 +35,14 @@ class Service {
         config.headers.Authorization = this.token
 
         if (!envStore.IsNxDev()) {
+          const globalLang = (global as any).lang || 'zh-CN'
+
           config.headers['X-Auth-Timezone'] =
             -new Date().getTimezoneOffset() / 60
 
-          config.headers['X-Auth-Language'] = (global as any).lang.split(
-            '-'
-          )[0] as string
+          config.headers['X-Auth-Area'] = globalLang === 'zh-CN' ? 0 : 1
 
-          config.headers['X-Auth-Area'] =
-            (global as any).lang === 'zh-CN' ? 0 : 1
+          config.headers['X-Auth-Language'] = globalLang.split('-')[0] as string
         }
 
         if (config.data && config.data.NxBaseUrl) {

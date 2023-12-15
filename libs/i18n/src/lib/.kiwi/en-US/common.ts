@@ -2160,6 +2160,7 @@ export default {
   currentSpaceCapacity: 'The storage has reached its maximum limit of 2G',
   upgradeProfessionalEmpty2: 'More storage in Pro Teamspace',
   notUsed: 'vaild',
+  notUsed1: 'vaild',
   insufficientSpace: 'Not enough storage',
   theCurrentSpaceIsAlready: 'The teamspace has been deleted',
   youHaveBeenTransferredTo: 'You have been convert to guest',

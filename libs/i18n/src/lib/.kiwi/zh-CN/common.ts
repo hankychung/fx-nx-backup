@@ -2099,6 +2099,7 @@ export default {
   currentSpaceCapacity: '当前空间容量已达上限（2G）',
   upgradeProfessionalEmpty2: '升级专业空间，获取更多空间容量',
   notUsed: '未使用',
+  notUsed1: '不使用',
   insufficientSpace: '空间不足',
   theCurrentSpaceIsAlready: '当前空间已解散',
   youHaveBeenTransferredTo: '你已被转为外部成员',

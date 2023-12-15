@@ -47,7 +47,26 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       verticalGanttContainerRef.current?.clientWidth || 0
     )
   }, [setSvgContainerClientWidth, verticalGanttContainerRef])
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === verticalGanttContainerRef.current) {
+          const newWidth = entry.target.clientWidth
+          // console.log('新的宽度:', newWidth);
+          setSvgContainerClientWidth(newWidth || 0)
+        }
+      }
+    })
 
+    if (verticalGanttContainerRef.current) {
+      resizeObserver.observe(verticalGanttContainerRef.current)
+    }
+
+    // 清除观察器
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [setSvgContainerClientWidth])
   useEffect(() => {
     if (verticalGanttContainerRef.current && !isWheel.current) {
       verticalGanttContainerRef.current.scrollLeft = scrollX

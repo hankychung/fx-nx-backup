@@ -815,19 +815,16 @@ export const Gantt: React.FunctionComponent<IFullViewGanttProps> = ({
           >
             {barTasks.map((_) => {
               return (
-                <div
-                  key={_.task_id}
-                  className={styles.leftItem}
-                  onClick={() => {
-                    setScrollX(_.x2 - svgContainerClientWidth + columnWidth)
-                  }}
-                >
+                <div key={_.task_id} className={styles.leftItem}>
                   <GanttRight
                     style={{
                       display:
                         _.x2 > svgContainerClientWidth + scrollX
                           ? 'block'
                           : 'none'
+                    }}
+                    onClick={() => {
+                      setScrollX(_.x2 - svgContainerClientWidth + columnWidth)
                     }}
                   ></GanttRight>
                 </div>

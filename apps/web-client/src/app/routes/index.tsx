@@ -8,6 +8,7 @@ import { DayView } from '../pages/board/modules/day-view'
 import { NoviceGuidePage } from '../pages/novice-guide-page'
 import { Detail } from '../pages/detail'
 import { WeekView } from '../pages/board/modules/week-view'
+import { MonthView } from '../pages/month-view'
 
 const DefaultPage = () => <Navigate to="/" />
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             path: RoutePath.weekView,
             element: <WeekView />
+          },
+          {
+            path: RoutePath.monthView,
+            element: <MonthView />
           }
         ]
       },

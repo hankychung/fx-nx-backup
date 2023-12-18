@@ -18,6 +18,8 @@ const _BoardHeader: FC = () => {
   const navigate = useNavigate()
 
   const onChange = (key: RoutePath) => {
+    console.log('check keeee', key, activeTab)
+
     if (key === activeTab) return
 
     // 跳转到key

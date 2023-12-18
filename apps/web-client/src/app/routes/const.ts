@@ -16,7 +16,7 @@ export enum RoutePath {
   //子路由头部
   dayView = '/board/day-view',
   weekView = '/board/week-view',
-  monthView = '/board/day-view',
+  monthView = '/board/month-view',
   fullView = '/board/full-view',
   quadrantView = '/board/quadrant-view'
 }

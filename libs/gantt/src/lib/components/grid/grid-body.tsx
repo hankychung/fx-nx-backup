@@ -87,7 +87,6 @@ export const GridBody: React.FC<GridBodyProps> = ({
     let today: ReactChild = <rect />
     for (let i = 0; i < dates.length; i++) {
       const date = dates[i]
-      console.log(date)
 
       if (i !== 0) {
         if (
@@ -107,9 +106,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
           setTodayLines([
             <line
               key={date.getTime()}
-              x1={tickX}
+              x1={tickX - columnWidth / 2}
               y1={0}
-              x2={tickX}
+              x2={tickX - columnWidth / 2}
               y2={y}
               className={styles.gridTodayTick}
             />
@@ -121,7 +120,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
               y1={0}
               x2={tickX}
               y2={y}
-              className={styles.gridTodayTick}
+              className={styles.gridTick}
             />
           )
           // return

@@ -79,7 +79,12 @@ export const PriorityLevelPopper = (props: Props) => {
               <div
                 className={styles.item}
                 key={key}
-                onClick={() => changeLevel(level)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+
+                  changeLevel(level)
+                }}
                 style={{ width: isCN ? '130px' : '200px' }}
               >
                 <div className={styles.title}>
@@ -113,6 +118,7 @@ export const PriorityLevelPopper = (props: Props) => {
       showArrow={false}
       content={PriorityLevelMenu}
       zIndex={9999}
+      overlayClassName={styles.popperContent}
     >
       <div className={styles.priorityItem}>
         <span>{I18N.common.priority}</span>

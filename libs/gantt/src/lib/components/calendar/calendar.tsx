@@ -181,20 +181,18 @@ export const Calendar: React.FC<CalendarProps> = ({
       let topValue = ''
       if (i === 0 || date.getMonth() !== dates[i - 1].getMonth()) {
         // top
-        topValue = `${getLocaleMonth(date, locale)}, ${date.getFullYear()}`
+        topValue = ``
       }
       // bottom
       const bottomValue = `${dayjs(date)
         .startOf('week')
-        .format('MM/DD')}-${dayjs(date)
-        .endOf('week')
-        .format('MM/DD')}(第${getWeekNumberISO8601(date)}周)`
+        .format('MM/DD')}-${dayjs(date).endOf('week').format('MM/DD')}`
 
       bottomValues.push(
         <text
           key={date.getTime()}
           y={headerHeight * 0.7}
-          x={columnWidth * (i + +rtl)}
+          x={columnWidth * (i + +rtl) + columnWidth / 2}
           className={styles.calendarBottomText}
         >
           {bottomValue}

@@ -110,7 +110,8 @@ const PersonPayModal = (props: Iprops) => {
             {/* 头部信息 */}
             <div>
               <Header
-                onClose={RetrieveModal}
+                // onClose={RetrieveModal}
+                onClose={onClose}
                 mineId={mineId}
                 memberList={memberList}
               />

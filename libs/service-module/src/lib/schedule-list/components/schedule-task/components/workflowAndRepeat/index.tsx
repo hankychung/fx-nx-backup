@@ -13,7 +13,7 @@ interface IPROPWorkflow {
   opacity?: boolean
 }
 
-export const Workflow: React.FC<IPROPWorkflow> = ({
+export const WorkflowAndRepeat: React.FC<IPROPWorkflow> = ({
   taskId,
   isDarkMode = false,
   opacity
@@ -52,7 +52,7 @@ export const Workflow: React.FC<IPROPWorkflow> = ({
 
   // 是否工作流类型
   const isFlow = useMemo(
-    () => task?.application_name || task?.flow_step_name,
+    () => task?.application_name || task?.flow_step_name || task?.flow_step_id,
     [task]
   )
 

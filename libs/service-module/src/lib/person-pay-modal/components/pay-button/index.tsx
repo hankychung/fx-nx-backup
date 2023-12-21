@@ -41,21 +41,21 @@ const PayButton = (props: Iprops) => {
     }
   }
   const activeItem = activeGood[0]
-  useEffect(() => {
-    service.addListener((ev) => {
-      const { event } = ev
-      if (event === 'showPay') {
-        const vipMealType = service.getData('showPay').vipMealType
-        if (vipMealType === 1) {
-          setIsShow(true)
-        }
-      }
-    })
+  // useEffect(() => {
+  //   service.addListener((ev) => {
+  //     const { event } = ev
+  //     if (event === 'showPay') {
+  //       const vipMealType = service.getData('showPay').vipMealType
+  //       if (vipMealType === 1) {
+  //         setIsShow(true)
+  //       }
+  //     }
+  //   })
 
-    return () => {
-      service.dispose()
-    }
-  }, [service])
+  //   return () => {
+  //     service.dispose()
+  //   }
+  // }, [service])
   return (
     <div className={style.payButton}>
       {activeItem && (

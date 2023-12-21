@@ -617,10 +617,9 @@ export const getLoopDatesAndCount = async (value: {
     repeat_config
   } = value
   const firstTime = dayjs.unix(startTime)
-  const res: { count: number; dates: Map<string, Dayjs> } = {
-    count: 0,
-    dates: new Map()
-  }
+
+  const cycleDates: string[] = []
+
   const ignoreHolidayValue = !repeat_config
     ? ignoreHoliday
     : repeat_config.ignore_holiday === 1
@@ -640,7 +639,10 @@ export const getLoopDatesAndCount = async (value: {
     _startTime.isAfter(dayjs.unix(finnishTime), 'day') ||
     loopOpt === LOOP_MATTER.noLoop
   ) {
-    return res
+    return {
+      cycleDates: [],
+      count: 0
+    }
   }
 
   // 设置默认的  循环次数、循环所在日期 ；貌似直接走下面的 while 就可以, 不用再设置默认的
@@ -683,7 +685,9 @@ export const getLoopDatesAndCount = async (value: {
     time = infoIsMoment(info) ? info : info.date
 
     if (time.isBetween(_startTime, _finnishTime, 'day', '[]')) {
-      res.dates.set(time.format('YYYY-MM-DD'), time.clone())
+      // res.dates.set(time.format('YYYY-MM-DD'), time.clone())
+
+      cycleDates.push(time.format('YYYY-MM-DD'))
     }
 
     const needGap = !infoIsMoment(info) && info.isJumpAmount && repeat_config
@@ -691,12 +695,12 @@ export const getLoopDatesAndCount = async (value: {
     if (needGap) {
       time =
         timeUnit === 'week'
-          ? time.clone().add(timeAmount, timeUnit).weekday(1)
-          : time.clone().add(timeAmount, timeUnit).date(1)
+          ? time.add(timeAmount, timeUnit).weekday(1)
+          : time.add(timeAmount, timeUnit).date(1)
 
       isFirst = true
     }
   }
 
-  return { ...res, count: res.dates.size }
+  return { count: cycleDates.length, cycleDates }
 }

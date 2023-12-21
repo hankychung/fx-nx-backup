@@ -24,7 +24,7 @@ import { Follow } from './components/follow'
 import { ScheduleType } from './components/schedule-type'
 import { Expand } from './components/expand'
 import { Indent } from './components/indent'
-import { Workflow } from './components/workflow'
+import { WorkflowAndRepeat } from './components/workflowAndRepeat'
 import { ParentInfo } from './components/parentInfo'
 import { Time } from './components/time'
 import { Tags } from './components/tags'
@@ -334,8 +334,8 @@ const _ScheduleTask: FC<PropsWithChildren<IProps>> = ({
           </div>
         )}
 
-        {!isSimple && !isTimeLine && data.flow_step_id && (
-          <Workflow
+        {!isSimple && !isTimeLine && (
+          <WorkflowAndRepeat
             taskId={taskKey}
             opacity={opacity}
             isDarkMode={isDarkMode}

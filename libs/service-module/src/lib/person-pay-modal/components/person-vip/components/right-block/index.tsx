@@ -51,10 +51,33 @@ const RightBlock = ({
   const getMealList = useMemoizedFn(async () => {
     paymentApi.getGoodsList({ good_type: 'person' }).then((res) => {
       if (res.code === 0) {
-        const new_arr = res.data.map((item, index) => {
-          const arr = getItem(item.id, couponList || [])
+        const new_arr = res.data
+          .filter((i) => i.day_num !== 9999) // 屏蔽终生会员
+          .map((item, index) => {
+            const arr = getItem(item.id, couponList || [])
 
-          if (index === 0) {
+            // 默认选中年费会员
+            if (item.day_num === 365) {
+              if (arr.length > 0) {
+                const num = arr[0].end_at
+                  ? dayjs.unix(arr[0].end_at).valueOf() / 1000
+                  : 0 //结束时间
+                return {
+                  ...arr[0],
+                  ...item,
+                  active: true,
+                  price:
+                    arr[0].end_at && getResidueTime(num - nowScecond) === '0'
+                      ? 0
+                      : arr[0].price
+                }
+              } else {
+                return {
+                  ...item,
+                  active: true
+                }
+              }
+            }
             if (arr.length > 0) {
               const num = arr[0].end_at
                 ? dayjs.unix(arr[0].end_at).valueOf() / 1000
@@ -62,7 +85,7 @@ const RightBlock = ({
               return {
                 ...arr[0],
                 ...item,
-                active: true,
+                active: false,
                 price:
                   arr[0].end_at && getResidueTime(num - nowScecond) === '0'
                     ? 0
@@ -71,30 +94,10 @@ const RightBlock = ({
             } else {
               return {
                 ...item,
-                active: true
+                active: false
               }
             }
-          }
-          if (arr.length > 0) {
-            const num = arr[0].end_at
-              ? dayjs.unix(arr[0].end_at).valueOf() / 1000
-              : 0 //结束时间
-            return {
-              ...arr[0],
-              ...item,
-              active: false,
-              price:
-                arr[0].end_at && getResidueTime(num - nowScecond) === '0'
-                  ? 0
-                  : arr[0].price
-            }
-          } else {
-            return {
-              ...item,
-              active: false
-            }
-          }
-        })
+          })
         setVipMealList(new_arr)
       }
       setIsRequest && setIsRequest(false)

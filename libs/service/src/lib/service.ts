@@ -17,7 +17,7 @@ class Service {
 
   token =
     LocalStore.getToken() ||
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDE0Mjk4NTIsImlhdCI6MTcwMTQyMjYzMywiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNTA5MDQ2MDYzMzAwODgzIiwiRGV2aWNlSUQiOiIzOGVjYmM4OGYwZmVlOTZjODE1ZjRiZTgwY2RkNmMxNjYwZjM2Y2NiZjI0ZTYwMTg1MjNmMmZkZDk5MDU2MmUyIiwiUGxhdGZvcm0iOiJtb2JpbGUiLCJDbGllbnRWZXJzaW9uIjoiMi4zMC4xMCIsIlBob25lIjoiIiwiTmlja05hbWUiOiIiLCJBdmF0YXIiOiIifQ.p2d-3qR26f7ouYUXiq6-cR7Ugcox2Jbfqd3lM9apo7w'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDI2Mjk5MTQsImlhdCI6MTcwMjYyMTY4NCwiaXNzIjoiYXBpLmZseWVsZS5uZXQiLCJVc2VySUQiOiIyNDg4MzY3MjIwNzg1MjY4IiwiRGV2aWNlSUQiOiIzOGVjYmM4OGYwZmVlOTZjODE1ZjRiZTgwY2RkNmMxNjYwZjM2Y2NiZjI0ZTYwMTg1MjNmMmZkZDk5MDU2MmUyIiwiUGxhdGZvcm0iOiJtb2JpbGUiLCJDbGllbnRWZXJzaW9uIjoiMi4zMC4xMCIsIlBob25lIjoiIiwiTmlja05hbWUiOiIiLCJBdmF0YXIiOiIifQ.S0g0KA_T1xEQppxuEp0JeKFlaM353xnjaw6amiHPaEI'
   /**
    * token失效
    */
@@ -35,15 +35,14 @@ class Service {
         config.headers.Authorization = this.token
 
         if (!envStore.IsNxDev()) {
+          const globalLang = (global as any).lang || 'zh-CN'
+
           config.headers['X-Auth-Timezone'] =
             -new Date().getTimezoneOffset() / 60
 
-          config.headers['X-Auth-Language'] = (global as any).lang.split(
-            '-'
-          )[0] as string
+          config.headers['X-Auth-Area'] = globalLang === 'zh-CN' ? 0 : 1
 
-          config.headers['X-Auth-Area'] =
-            (global as any).lang === 'zh-CN' ? 0 : 1
+          config.headers['X-Auth-Language'] = globalLang.split('-')[0] as string
         }
 
         if (config.data && config.data.NxBaseUrl) {

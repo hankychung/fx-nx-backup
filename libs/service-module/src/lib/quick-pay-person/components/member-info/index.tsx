@@ -49,8 +49,12 @@ const MemberInfo = ({
           const list =
             res.data &&
             res.data.length &&
-            // 14-终身会员 / 29-年套餐
-            res.data.filter((item) => item.id === (isCN ? 14 : 29))
+            /**
+             * 14-终身会员 / 29-年套餐
+             * 2023-12-07 修改 年套餐id变成13了, 终身会员去掉了
+             * */
+            res.data.filter((item) => item.id === 13)
+          // res.data.filter((item) => item.id === (isCN ? 14 : 29))
           if (list) {
             const new_arr = list.map((item) => {
               const arr = getItem(item.id, _.data || [])
@@ -133,8 +137,8 @@ const MemberInfo = ({
             {isCN && vipMeal?.original_price && (
               <span>
                 <i>￥</i>
-                {/* <span>{regFenToYuan(vipMeal?.original_price || 0)}</span> */}
-                <span>499</span>
+                <span>{regFenToYuan(vipMeal?.original_price || 0)}</span>
+                {/* <span>299</span> */}
               </span>
             )}
             <div>

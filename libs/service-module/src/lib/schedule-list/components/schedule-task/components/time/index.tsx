@@ -60,9 +60,9 @@ export const Time: React.FC<IPROPTime> = ({
       setRepeatTotal(0)
       return
     }
-    loopStuff.getValue(task).then((res) => {
-      setRepeatTotal(res.count)
-    })
+
+    const res = loopStuff.getValue(task)
+    setRepeatTotal(res.count)
   }, [task])
 
   const date = useMemo(() => {

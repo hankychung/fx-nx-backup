@@ -162,7 +162,7 @@ const checkDateAndReturnDate = ({
 
   if (isJump) {
     return checkDateAndReturnDate({
-      time: time.clone().add(timeAmount, timeUnit),
+      time: time.add(timeAmount, timeUnit),
       finnishTime,
       realHolidays,
       dutyHoliday,
@@ -205,7 +205,7 @@ const isDateJump = ({
 
       const lastDay =
         repeatDate[repeatDateLen - 1] === 7 ? 0 : repeatDate[repeatDateLen - 1]
-      const targetDate = time.clone().day(lastDay as number)
+      const targetDate = time.day(lastDay as number)
 
       isJump = !(repeatDate as number[]).includes(date)
       isJumpAmount = time.isSameOrAfter(targetDate, 'day') && timeAmount !== 1
@@ -213,10 +213,10 @@ const isDateJump = ({
 
     if (timeUnit === 'month') {
       let cloneRepeatDate = cloneDeep(repeatDate) as number[]
-      const lastMonthDate = time.clone().endOf('month').get('date')
+      const lastMonthDate = time.endOf('month').get('date')
       const lastRepeatDateValue = Number(repeatDate[repeatDateLen - 1])
       const lastMonthNum = Math.min(lastRepeatDateValue, lastMonthDate)
-      const targetDate = time.clone().date(lastMonthNum)
+      const targetDate = time.date(lastMonthNum)
 
       // 需求要的，如果用户选了31号，这个月又没有31号，那么就取这个月的最后一天
       if (lastRepeatDateValue > lastMonthNum) {
@@ -242,8 +242,8 @@ const isDateJump = ({
         if (isJumpAmount) {
           const newTime =
             timeUnit === 'week'
-              ? time.clone().add(timeAmount, timeUnit).weekday(1)
-              : time.clone().add(timeAmount, timeUnit).date(1)
+              ? time.add(timeAmount, timeUnit).weekday(1)
+              : time.add(timeAmount, timeUnit).date(1)
 
           return isDateJump({
             time: newTime,
@@ -258,7 +258,7 @@ const isDateJump = ({
         }
 
         return isDateJump({
-          time: time.clone().add(1, 'day'),
+          time: time.add(1, 'day'),
           repeat_date,
           timeAmount,
           timeUnit,
@@ -307,7 +307,7 @@ const checkDateRepeatConfig = ({
     ].includes(repeat_type)
   ) {
     return isDateJump({
-      time: isFirst ? time.clone() : time.clone().add(1, 'day'),
+      time: isFirst ? time : time.add(1, 'day'),
       repeat_date: repeat_date || [],
       timeAmount,
       timeUnit,
@@ -318,9 +318,7 @@ const checkDateRepeatConfig = ({
     })
   }
   // 每天、每年 不处理
-  const jumpStart = isFirst
-    ? time.clone()
-    : time.clone().add(timeAmount, timeUnit)
+  const jumpStart = isFirst ? time : time.add(timeAmount, timeUnit)
 
   if (ignoreHoliday) {
     return checkDateAndReturnDate({
@@ -362,10 +360,10 @@ export const nextLoopRule: {
 
       // 事项开始时间在历史日
       if (time.isBefore(startTime, 'day')) {
-        return startTime.clone()
+        return startTime
       }
 
-      let addTime = time.clone()
+      let addTime = time
 
       if (!isFirst) {
         addTime = addTime.add(1, 'day')
@@ -401,12 +399,12 @@ export const nextLoopRule: {
         // 事项开始时间与比对的时间为同一个星期则跳到下一个星期
         // 事项开始时间与比对时间不同星期但跳到周几小于比对时间则跳到下一个星期
         return startTime.isSame(time, 'week') ||
-          startTime.clone().day(week).isBefore(startTime, 'day')
-          ? startTime.clone().add(1, 'week').weekday(week)
-          : startTime.clone().day(week)
+          startTime.day(week).isBefore(startTime, 'day')
+          ? startTime.add(1, 'week').weekday(week)
+          : startTime.day(week)
       }
 
-      let addTime = time.clone()
+      let addTime = time
 
       if (!isFirst) {
         addTime = addTime.add(1, 'week')
@@ -438,10 +436,10 @@ export const nextLoopRule: {
 
       // 事项开始时间在历史日
       if (time.isBefore(startTime, 'day')) {
-        return startTime.clone().add(2, 'week').weekday(time.get('day'))
+        return startTime.add(2, 'week').weekday(time.get('day'))
       }
 
-      let addTime = time.clone()
+      let addTime = time
 
       if (!isFirst) {
         addTime = addTime.add(2, 'week')
@@ -480,8 +478,8 @@ export const nextLoopRule: {
 
       // 如果是周五周六，下一个工作日是下周一
       return nextWeeks.includes(week)
-        ? time.clone().add(1, 'week').weekday(1)
-        : time.clone().add(1, 'day')
+        ? time.add(1, 'week').weekday(1)
+        : time.add(1, 'day')
     }
   },
   [LOOP_MATTER.nonWork]: {
@@ -501,11 +499,11 @@ export const nextLoopRule: {
       }
 
       if (weekdays.includes(week)) {
-        return time.clone().weekday(6) // 工作日跳转到本周六
+        return time.weekday(6) // 工作日跳转到本周六
       }
 
       // 如果是周日则跳到下周六
-      return week === 0 ? time.clone().weekday(6) : time.clone().add(1, 'day')
+      return week === 0 ? time.weekday(6) : time.add(1, 'day')
     }
   },
   [LOOP_MATTER.monthly]: {
@@ -531,7 +529,7 @@ export const nextLoopRule: {
           ? startTime.add(1, 'month')
           : startTime.date(_day)
       } else {
-        let addTime = time.clone()
+        let addTime = time
 
         if (!isFirst) {
           addTime = addTime.add(1, 'month')
@@ -574,7 +572,7 @@ export const nextLoopRule: {
 
       // 事项开始时间在历史日
       if (time.isBefore(startTime, 'day')) {
-        return startTime.clone()
+        return startTime
       }
 
       let addTime: Dayjs | { date: Dayjs; isJumpAmount: boolean } = time
@@ -589,7 +587,7 @@ export const nextLoopRule: {
           realHolidays,
           dutyHoliday
         })
-      } else if (!isFirst) addTime = time.clone().add(1, 'day')
+      } else if (!isFirst) addTime = time.add(1, 'day')
 
       return addTime
     }
@@ -600,7 +598,7 @@ export const nextLoopRule: {
  * 获取循环的日期和次数
  * @param value
  */
-export const getLoopDatesAndCount = async (value: {
+export const getLoopDatesAndCount = (value: {
   startTime: number
   createAt: number
   finnishTime: number
@@ -645,13 +643,9 @@ export const getLoopDatesAndCount = async (value: {
     }
   }
 
-  // 设置默认的  循环次数、循环所在日期 ；貌似直接走下面的 while 就可以, 不用再设置默认的
-  // res.count = 1
-  // res.dates = new Map([[firstTime.format('YYYY-MM-DD'), firstTime]]) // 循环所在日期
-
   let time = firstTime.clone()
   const _finnishTime = dayjs.unix(finnishTime)
-  const { realHolidays, dutyHoliday } = await getHoliday()
+  const { realHolidays, dutyHoliday } = getHoliday()
 
   const { getNext } = nextLoopRule[loopOpt]
 
@@ -662,9 +656,6 @@ export const getLoopDatesAndCount = async (value: {
 
   let isFirst = true
 
-  // TODO 应该把 判断是否为有效周期 和 获取下一个循环日 拆开，不应该用一个 getNext 来处理，现在很乱
-  //  应该类似 下面 needGap 一样，上面函数是判断是否符合条件，然后把 add日期 放在 下面去做
-  //  目前是 getNext 里面又add日期。。。
   const cloneRepeatConfig = cloneDeep(repeat_config)
 
   while (time.isBefore(_finnishTime, 'day')) {
@@ -685,8 +676,6 @@ export const getLoopDatesAndCount = async (value: {
     time = infoIsMoment(info) ? info : info.date
 
     if (time.isBetween(_startTime, _finnishTime, 'day', '[]')) {
-      // res.dates.set(time.format('YYYY-MM-DD'), time.clone())
-
       cycleDates.push(time.format('YYYY-MM-DD'))
     }
 

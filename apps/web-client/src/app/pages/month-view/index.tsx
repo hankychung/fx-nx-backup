@@ -1,5 +1,5 @@
 import React from 'react'
-import { Calendar } from './components/calendar'
+import { Calendar } from '@flyele-nx/month-calendar'
 
 const MonthView: React.FC = () => {
   return <Calendar />

@@ -600,7 +600,7 @@ export const nextLoopRule: {
  * 获取循环的日期和次数
  * @param value
  */
-export const getLoopDatesAndCount = async (value: {
+export const getLoopDatesAndCount = (value: {
   startTime: number
   createAt: number
   finnishTime: number
@@ -651,7 +651,7 @@ export const getLoopDatesAndCount = async (value: {
 
   let time = firstTime.clone()
   const _finnishTime = dayjs.unix(finnishTime)
-  const { realHolidays, dutyHoliday } = await getHoliday()
+  const { realHolidays, dutyHoliday } = getHoliday()
 
   const { getNext } = nextLoopRule[loopOpt]
 

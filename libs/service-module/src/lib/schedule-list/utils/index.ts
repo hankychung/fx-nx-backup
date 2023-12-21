@@ -194,7 +194,7 @@ const getRepeatTxt = async (task?: IScheduleTask) => {
 
     _obj.t_r = `${isCN ? '已循环' : 'Repeat:'}（${
       cycle || getNowRepeatData(task)?.cycle || 0
-    }/${await loopStuff.getRepeatTotal(task)}）`
+    }/${loopStuff.getRepeatTotal(task)}）`
   }
   return _obj
 }

@@ -35,25 +35,23 @@ class LoopStuff {
     return { key, compareKey }
   }
 
-  async getValue(item: IScheduleTask) {
+  getRepeatTotal(item: IScheduleTask) {
     const { key, compareKey } = this.getKey(item)
 
     const info = this.dict[key]
 
     if (info && info.compareKey === compareKey) {
-      return info.value
+      return info.value.count
     }
 
-    await this.getRepeatTotalCount(item)
-
-    return this.dict[key].value
+    return this.getRepeatTotalCount(item)
   }
 
-  async getRepeatTotal(item: IScheduleTask) {
-    return await this.getRepeatTotalCount(item)
-  }
+  // getRepeatTotal(item: IScheduleTask) {
+  //   return this.getRepeatTotalCount(item)
+  // }
 
-  private async getRepeatTotalCount(task: IScheduleTask) {
+  private getRepeatTotalCount(task: IScheduleTask) {
     const { key, compareKey } = this.getKey(task)
 
     if (!task.repeat_type || !task.end_repeat_at) {
@@ -83,7 +81,7 @@ class LoopStuff {
       repeat_config: task.repeat_config
     }
 
-    const repeatData = await getLoopDatesAndCount(params)
+    const repeatData = getLoopDatesAndCount(params)
 
     this.dict[key] = {
       compareKey,
